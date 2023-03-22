@@ -47,7 +47,7 @@ int add(int a, int b) {
 ```
 
 
-Importing Modules <a name="importing-modules"></a>
+## Importing Modules <a name="importing-modules"></a>
 
 To use a module, you'll need to import it using the import keyword:
 
@@ -60,7 +60,7 @@ int main() {
 }
 ```
 
-Exporting Modules <a name="exporting-modules"></a>
+## Exporting Modules <a name="exporting-modules"></a>
 To make a module's functions or classes available to other modules, you'll need to use the export keyword:
 
 ```cpp
@@ -71,7 +71,7 @@ export int add(int a, int b) {
 }
 ```
 
-Module Partitions <a name="module-partitions"></a>
+## Module Partitions <a name="module-partitions"></a>
 Module partitions help you split a module into smaller pieces for better organization. Use the module keyword followed by the : symbol and the partition name:
 
 ```cpp
@@ -93,7 +93,7 @@ int main() {
 
 ```
 
-Compatibility with Legacy Code <a name="compatibility-with-legacy-code"></a>
+## Compatibility with Legacy Code <a name="compatibility-with-legacy-code"></a>
 C++20 modules can coexist with traditional header files. You can use the export module and import keywords to incorporate header files into your module-based code:
 
 
@@ -118,7 +118,7 @@ In the example above, I've imported the legacy_header.h header file into our my_
 
 Remember, though, that the goal is to eventually migrate away from legacy header files and fully embrace the benefits of C++20 modules. This compatibility feature helps you transition more smoothly, but it's important to refactor your code over time to maximize the advantages of modules.
 
-## Conclusion
+## Conclusion <a name="conclusion"></a>
 
 Embracing C++20 modules is an excellent step towards modernizing your C++ development experience. They not only improve code organization and compilation times but also encourage the adoption of cleaner and more maintainable code. With the growing support from various compilers and the C++ community, modules are set to become a standard feature in the coming years.
 
