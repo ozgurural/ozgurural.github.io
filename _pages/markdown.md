@@ -1,6 +1,6 @@
 ---
 permalink: /beyond/
-title: "News & Blog"
+title: "Blog"
 author_profile: true
 redirect_from: 
   - /markdown/
