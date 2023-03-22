@@ -52,6 +52,7 @@ _August 2021 - Current_
 - Collaborated with Katalyst Space, a company partnering with my university, to develop and refine simulation models for satellite networks.
 - Contributed to the design and testing of new simulation scenarios and features, providing valuable insights into the performance and behavior of satellite networks under different conditions.
 - Skills: Smart Contracts, Machine Learning, Network Simulation, C++
+
 ### [Havelsan](https://havelsan.com.tr/en)
 _Ankara, Turkey_
 
