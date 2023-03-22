@@ -9,9 +9,6 @@ redirect_from:
 
 {% include base_path %}
 
-
-# Ozgur Ural Resume
-
 _Last update on 2023-03-22_
 
 ---
