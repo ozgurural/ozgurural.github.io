@@ -9,7 +9,7 @@ Contact Information:
 - Email: [ozgururalusa@gmail.com](mailto:ozgururalpro@gmail.com)
 - Phone: +1 386 383 9467
 - Linkedin: [uralozgur](https://www.linkedin.com/in/uralozgur/)
-- Github: [ozzgural](https://github.com/ozzgural)
+- Github: [ozgurural](https://github.com/ozgurural)
 - Google Scholar: [Link](https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en)
 - Location: Florida, USA
 
