@@ -85,10 +85,10 @@ author:
   bio              : "Graduate Research Assistant @ERAU"
   location         : "Daytona Beach, FL, USA"
   employer         :
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "http://yourfullgooglescholarurl.com"
+  pubmed           : # "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  googlescholar    : "https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate"
   email            :
-  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+  researchgate     : https://www.researchgate.net/profile/Ozgur-Ural
   uri              :
   bitbucket        :
   codepen          :
