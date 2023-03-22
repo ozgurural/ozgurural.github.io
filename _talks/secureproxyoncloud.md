@@ -3,7 +3,7 @@ title: "Secure Proxy on Cloud Paper Demonstration"
 collection: talks
 type: "Paper Demonstration"
 permalink: /talks/secure-proxy-on-cloud
-date: "2016"
+date: ""Jul 17, 2016"
 location: "Online"
 ---
 
