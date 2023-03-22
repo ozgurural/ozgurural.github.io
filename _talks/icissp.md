@@ -4,8 +4,8 @@ collection: talks
 type: "Paper Presentation"
 permalink: /talks/icissp-presentation
 venue: "The International Conference on Information Systems Security and Privacy (ICISSP)"
-date: "Date of the Presentation"
-location: "Online or Physical Location"
+date: "2021"
+location: "Online"
 ---
 
 [This presentation](https://www.youtube.com/watch?v=MTFimNPxAKw&t=25s) was about my paper titled "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data" at the International Conference on Information Systems Security and Privacy (ICISSP).
