@@ -13,18 +13,7 @@ _Last update on 2023-03-22_
 
 ---
 
-Contact Information:
-
-- Email: [ozgururalusa@gmail.com](mailto:ozgururalpro@gmail.com)
-- Phone: +1 386 383 9467
-- Linkedin: [uralozgur](https://www.linkedin.com/in/uralozgur/)
-- Github: [ozgurural](https://github.com/ozgurural)
-- Google Scholar: [Link](https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en)
-- Location: Florida, USA
-
----
-
-## SENIOR SOFTWARE ENGINEER
+## SENIOR SOFTWARE ENGINEER & COMPUTER SCIENCE PHD STUDENT
 
 PhD student and graduate research assistant in the Computer Science department of Embry-Riddle Aeronautical University. A valued and multifaceted professional with **8 years full-time software engineering experience** focused on cyber security and autonomous systems domains. Results-oriented and highly analytical, skilled at implementing efficient solutions and prioritizing/managing short and long-term project goals, adept at leading teams.
 
