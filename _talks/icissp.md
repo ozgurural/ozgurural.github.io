@@ -4,7 +4,7 @@ collection: talks
 type: "Paper Presentation"
 permalink: /talks/icissp-presentation
 venue: "The International Conference on Information Systems Security and Privacy (ICISSP)"
-date: "2021"
+date: "2021-02-01"
 location: "Online"
 ---
 
