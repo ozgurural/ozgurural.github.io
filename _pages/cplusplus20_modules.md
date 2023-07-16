@@ -3,7 +3,6 @@ permalink: /beyond/cplusplus20_modules
 title: "Unleashing the Power of C++20 Modules: A Comprehensive Guide"
 ---
 
-# Unleashing the Power of C++20 Modules: A Comprehensive Guide
 
 C++20 has brought about many exciting changes, with one of the most significant being the introduction of modules. Modules are a game-changer for the C++ ecosystem, offering a more efficient and modern way to manage and organize code. This blog post aims to give you a comprehensive understanding of C++20 modules, how they work, and how to get started with them in your projects.
 

@@ -3,8 +3,6 @@ permalink: /beyond/pyqt5_image_measurer
 title: "Image Measurement with PyQt5: A Cardiology Aid"
 ---
 
-# Image Measurement with PyQt5: A Cardiology Aid
-
 Python's versatility allows it to create tools for a broad spectrum of professional fields. In this blog post, we delve into creating an image measurement tool using PyQt5 - a set of Python bindings for Qt libraries. This tool, tailored for cardiology doctors analyzing EKG (Electrocardiogram) reports, lets users load an image, select two points on the image, and calculate the distance between them.
 
 This application, named "Image Measurer," was developed for Dr. Görkem Şefik Fatihoğlu, aiding in his analysis of EKG reports.
