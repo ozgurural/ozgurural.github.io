@@ -1,5 +1,5 @@
 ---
-permalink: /beyond/cplusplus20_modules
+permalink: /blog/cplusplus20_modules
 title: "Unleashing the Power of C++20 Modules: A Comprehensive Guide"
 ---
 

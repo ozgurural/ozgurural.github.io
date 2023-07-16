@@ -1,5 +1,5 @@
 ---
-permalink: /beyond/pyqt5_image_measurer
+permalink: /blog/pyqt5_image_measurer
 title: "Image Measurement with PyQt5: A Cardiology Aid"
 ---
 
