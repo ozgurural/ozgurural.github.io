@@ -7,10 +7,11 @@ redirect_from:
   - /markdown.html
 ---
 
-# Welcome to my Technical Blog
 
 Here you can find deep dives into various technical topics. Click on a post title to read more.
 
+## C++ Notes
 - [Unleashing the Power of C++20 Modules: A Comprehensive Guide](/beyond/cplusplus20_modules)
-- [Image Measurement with PyQt5: A Cardiology Aid](/beyond/pyqt5_image_measurer)
 
+## My Open Source Projects
+- [Image Measurement with PyQt5: A Cardiology Aid](/beyond/pyqt5_image_measurer)
