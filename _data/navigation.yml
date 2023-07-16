@@ -1,13 +1,45 @@
-# main links links
 main:
+  - title: "About"
+    url: /about/
+
   - title: "CV"
     url: /cv/
-    
+
   - title: "Publications"
     url: /publications/
 
   - title: "Talks"
-    url: /talks/  
-    
-  - title: "News & Blog"
-    url: /markdown/
+    url: /talks/
+
+  - title: "Technical Blog"
+    url: /blog/
+
+professional:
+  - title: "Projects"
+    url: /projects/
+
+  - title: "Workshops"
+    url: /workshops/
+
+  - title: "Certificates"
+    url: /certificates/
+
+personal:
+  - title: "Hobbies"
+    url: /hobbies/
+
+  - title: "Travel"
+    url: /travel/
+
+  - title: "Photography"
+    url: /photography/
+
+community:
+  - title: "Volunteer Work"
+    url: /volunteer/
+
+  - title: "Mentorship"
+    url: /mentorship/
+
+  - title: "Events"
+    url: /events/
