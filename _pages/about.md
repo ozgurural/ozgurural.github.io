@@ -7,15 +7,17 @@ redirect_from:
   - /about/
   - /about.html
 ---
-Meet Ozgur Ural - a skilled software engineer, trusted team leader, and innovative researcher pushing boundaries. With over a decade of experience, Ozgur has established himself as a versatile technologist and adept leader.
+I am an experienced software engineer and researcher with over a decade of experience leading impactful technology initiatives. I have established expertise in designing, developing, and deploying complex software systems.
 
-He currently serves as a Senior Software Engineer at a simulation technology company while pursuing a Ph.D. in Computer Science at Embry-Riddle Aeronautical University. His PhD research explores advancing resilient, robust, and secure intelligent systems, from high-performance to decentralized AI.
+Currently, I serve as a Senior Software Engineer at a flight simulation company while concurrently pursuing a Ph.D. in Computer Science at Embry-Riddle Aeronautical University. My research investigates resilient, robust, and secure decentralized AI to advance the field meaningfully.
 
-Ozgur boasts expertise in cybersecurity, autonomous systems, flight simulation,  and languages like C++ and Python. He has led projects at companies like Havelsan, STM, and Comodo. An academic at heart, he actively publishes and presents research.
+My technical skills include programming languages like C++, Python, and Scala and capabilities in cybersecurity, autonomous robotics, simulations, machine learning, and blockchain. I have contributed and led engineering teams to successfully deliver significant projects at companies including Havelsan, STM, and Comodo.
 
-His educational background includes a B.Sc. in Computer Engineering and an M.Sc. in Cyber Security from METU, Turkey's premier technology institute. He also holds a BBA from Anadolu University.
+I actively contribute to the academic community through publications, conferences, and open-source projects. This allows me to share innovations that can move the industry forward.
 
-With intellectual curiosity, versatile technical skills, and proven leadership, Ozgur is poised to advance computer science through innovative research and engineering. His security, systems, and machine learning proficiency make him a flexible asset. Driven to push boundaries, Ozgur's contributions will shape the future of technology.
+My educational background includes a B.Sc. in Computer Engineering and an M.Sc. in Cybersecurity from METU, a leading technology institute in Turkey. I also hold a BBA, allowing me to complement my technical expertise with business acumen.
+
+I am driven by intellectual curiosity and passion for leveraging technology to solve complex real-world problems. With over a decade of experience spanning research, engineering leadership, and software delivery, I am committed to pioneering solutions that push boundaries and drive progress.
 
 ## News:
 
