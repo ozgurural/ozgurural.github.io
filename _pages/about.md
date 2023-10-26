@@ -7,9 +7,7 @@ redirect_from:
   - /about/
   - /about.html
 ---
-I am an experienced software engineer and researcher with over a decade of experience leading impactful technology initiatives. I have established expertise in designing, developing, and deploying complex software systems.
-
-Currently, I serve as a Senior Software Engineer at a flight simulation company while concurrently pursuing a Ph.D. in Computer Science at Embry-Riddle Aeronautical University. My research investigates resilient, robust, and secure decentralized AI to advance the field meaningfully.
+I am an experienced software engineer and researcher with over a decade of experience leading technology initiatives. I have established expertise in designing, developing, and deploying complex software systems.
 
 My technical skills include programming languages like C++, Python, and Scala and capabilities in cybersecurity, autonomous robotics, simulations, machine learning, and blockchain. I have contributed and led engineering teams to successfully deliver significant projects at companies including Havelsan, STM, and Comodo.
 
