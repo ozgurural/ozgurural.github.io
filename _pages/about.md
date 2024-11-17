@@ -8,13 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am an experienced software engineer and researcher with over a decade of expertise in leading technology initiatives. My work spans the design, development, and deployment of complex software systems across various domains.
-
-## Technical Expertise
-
-- **Programming Languages:** C++, Python, Scala.
-- **Domains:** Cybersecurity, autonomous robotics, simulations, machine learning, and blockchain.
-- **Professional Contributions:** Successfully led engineering teams to deliver impactful projects for organizations such as Havelsan, STM, and Comodo.
+I am an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans the design, development, and deployment of complex software systems across various domains. My current research focuses on exploring the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I am passionate about advancing the field through innovative solutions to complex challenges.
 
 ## Academic Background
 
@@ -25,10 +19,6 @@ I am an experienced software engineer and researcher with over a decade of exper
 - **B.Sc. in Computer Engineering:** Middle East Technical University (METU), Turkey (2014).
   METU is consistently ranked among the top universities globally. 
 - **Bachelor of Business Administration:** Anadolu University, Turkey.
-
-## Research Interests
-
-My current research focuses on exploring the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I am passionate about advancing the field through innovative solutions to complex challenges.
 
 ## News
 
