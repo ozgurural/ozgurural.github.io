@@ -7,6 +7,7 @@ redirect_from:
   - /about/
   - /about.html
 ---
+
 I am an experienced software engineer and researcher with over a decade of experience leading technology initiatives. I have established expertise in designing, developing, and deploying complex software systems.
 
 My technical skills include programming languages like C++, Python, and Scala and capabilities in cybersecurity, autonomous robotics, simulations, machine learning, and blockchain. I have contributed and led engineering teams to successfully deliver significant projects at companies including Havelsan, STM, and Comodo.
@@ -21,5 +22,3 @@ I am driven by intellectual curiosity and passion for leveraging technology to s
 
 * **January 2023:** Completed all PhD coursework requirements.
 * **May 2022:** Successfully passed the PhD qualifier.
-
-
