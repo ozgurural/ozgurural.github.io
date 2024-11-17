@@ -12,7 +12,7 @@ I am an experienced software engineer and researcher with over a decade of exper
 
 My technical skillset includes proficiency in programming languages such as C++, and Python, alongside cybersecurity, autonomous robotics, simulations, machine learning, and blockchain capabilities. I have successfully contributed to and led engineering teams, delivering impactful projects.
 
-I actively contribute to the academic community through publications, conferences, and open-source projects, sharing innovations to advance the field. My educational journey includes a B.Sc. in Computer Engineering and an M.Sc. in Cybersecurity from METU, a premier technology institute in Turkey. I also hold a BBA, equipping me with a strong foundation in technical and business domains.
+I actively contribute to the academic community through publications, conferences, and open-source projects, sharing innovations to advance the field. My educational journey includes a B.Sc. in Computer Engineering and an M.Sc. in Cybersecurity from Middle East Technical University METU, a premier technology institute in Turkey. I also hold a Bachelor of Business Administration, equipping me with a strong foundation in technical and business domains.
 
 Driven by intellectual curiosity and a passion for leveraging technology to solve complex real-world challenges, I have dedicated my career to pioneering solutions that push boundaries and drive progress.
 
