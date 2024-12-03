@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans the design, development, and deployment of complex software systems across various domains. My current research focuses on exploring the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I am passionate about advancing the field through innovative solutions to complex challenges.
+I am an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans designing, developing, and deploying complex software systems across various domains. My current research focuses on exploring the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I am passionate about advancing the field through innovative solutions to complex challenges.
 
 ## News
 
