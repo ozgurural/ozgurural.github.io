@@ -11,3 +11,6 @@ end
 
 gem 'github-pages'
 gem 'connection_pool', '2.5.0'
+
+# Windows-only: provide timezone data so Jekyll can resolve timezones locally
+gem 'tzinfo-data', platforms: [:mingw, :x64_mingw, :mswin]

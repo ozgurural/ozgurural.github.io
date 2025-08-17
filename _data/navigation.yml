@@ -10,62 +10,17 @@
 main:
   - title: "CV"
     url: /cv/
-
   - title: "Publications"
     url: /publications/
-
   - title: "Talks"
     url: /talks/
-
-<<<<<<< HEAD
-  - title: "Technical Blog"
-    url: /blog/
-
-professional:
-  - title: "Projects"
-    url: /projects/
-
-  - title: "Workshops"
-    url: /workshops/
-
-  - title: "Certificates"
-    url: /certificates/
-
-personal:
-  - title: "Hobbies"
-    url: /hobbies/
-
-  - title: "Travel"
-    url: /travel/
-
-  - title: "Photography"
-    url: /photography/
-
-community:
-  - title: "Volunteer Work"
-    url: /volunteer/
-
-  - title: "Mentorship"
-    url: /mentorship/
-
-  - title: "Events"
-    url: /events/
-=======
   - title: "Teaching"
-    url: /teaching/    
-    
+    url: /teaching/
   - title: "Portfolio"
     url: /portfolio/
-        
   - title: "Blog Posts"
     url: /year-archive/
-    
-  - title: "CV"
-    url: /cv/
-    
-  # - title: "CV"
-  #   url: /cv-json/
-    
+  - title: "Technical Blog"
+    url: /blog/
   - title: "Guide"
     url: /markdown/
->>>>>>> upstream/master

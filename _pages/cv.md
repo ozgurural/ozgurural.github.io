@@ -11,7 +11,6 @@ redirect_from:
 
 _Last update on 2023-03-22_
 
-<<<<<<< HEAD
 ---
 
 ## SENIOR SOFTWARE ENGINEER & COMPUTER SCIENCE PHD STUDENT
@@ -43,7 +42,6 @@ Skills
   * Sub-skill 2.2
   * Sub-skill 2.3
 * Skill 3
->>>>>>> upstream/master
 
 ### Professional Experience Summary
 
