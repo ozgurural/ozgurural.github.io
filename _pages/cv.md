@@ -9,39 +9,15 @@ redirect_from:
 
 {% include base_path %}
 
-_Last update on 2023-03-22_
+_Last update on 2025-08-17_
 
 ---
 
 ## SENIOR SOFTWARE ENGINEER & COMPUTER SCIENCE PHD STUDENT
 
 PhD student and graduate research assistant in the Computer Science department of Embry-Riddle Aeronautical University. A valued and multifaceted professional with **8 years full-time software engineering experience** focused on cyber security and autonomous systems domains. Results-oriented and highly analytical, skilled at implementing efficient solutions and prioritizing/managing short and long-term project goals, adept at leading teams.
-=======
-Work experience
-======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+[Download my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
 
 ### Professional Experience Summary
 
@@ -123,6 +99,9 @@ _Florida, USA_
 **Ph.D. in Electrical Engineering and Computer Science** _(2021 – Current)_
 
 - **Dissertation Topic:** Utilization of Smart Contracts in Mobile Crowdsensing
+- Status: Ph.D. Candidate (since November 2024)
+- Completed all Ph.D. coursework (January 2023)
+- Passed Ph.D. qualifying exam (May 2022)
 
 ### [Middle East Technical University](http://www.metu.edu.tr/)
 _Ankara, Turkey_
@@ -144,9 +123,11 @@ _Distance Education, Turkey_
 
 ## Publications
 
-1. **Ural, O.** and Acartürk, C. (2021). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data. *Proceedings of the 7th International Conference on Information Systems Security and Privacy - ICISSP*, pages 66-76. DOI: [10.5220/0010201600660076](https://doi.org/10.5220/0010201600660076)
-2. **Ural, O.** and Erdur, E. (2016). Secure Proxy on Cloud. DOI: [10.13140/RG.2.2.24058.08649](https://www.researchgate.net/publication/311452605_Secure_Proxy_on_Cloud)
-3. **Clover**: Autonomous Cargo and Mail Delivery. *Turkish Autonomous Robots Conference*, Ankara, Turkey, 2014.
+1. **Ural, O.**, Yoshigoe, K. (2024). Enhancing Security of Proof-of-Learning against Spoofing Attacks Using Feature-Based Model Watermarking. *IEEE Access*. [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10741282)
+2. **Ural, O.** (2023). Survey on Blockchain-Enhanced Machine Learning. *IEEE Access*. [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10366252)
+3. **Ural, O.** and Acartürk, C. (2021). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data. *Proceedings of the 7th International Conference on Information Systems Security and Privacy - ICISSP*, pages 66-76. DOI: [10.5220/0010201600660076](https://doi.org/10.5220/0010201600660076)
+4. **Ural, O.** and Erdur, E. (2016). Secure Proxy on Cloud. DOI: [10.13140/RG.2.2.24058.08649](https://www.researchgate.net/publication/311452605_Secure_Proxy_on_Cloud)
+5. **Clover**: Autonomous Cargo and Mail Delivery. *Turkish Autonomous Robots Conference*, Ankara, Turkey, 2014.
 
 ## Major Achievements
 

@@ -10,6 +10,8 @@ redirect_from:
 
 I am an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans designing, developing, and deploying complex software systems across various domains. My current research focuses on exploring the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I am passionate about advancing the field through innovative solutions to complex challenges.
 
+[View my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
+
 ## News
 
 - **November 2024:** Successfully defended my Ph.D. proposal. I am now officially a Ph.D. Candidate.  
