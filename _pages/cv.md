@@ -13,7 +13,7 @@ _Last update on 2025-08-17_
 
 ---
 
-## SENIOR SOFTWARE ENGINEER & COMPUTER SCIENCE PHD STUDENT
+## SENIOR SOFTWARE ENGINEER & COMPUTER SCIENCE RESEARCHER
 
 PhD student and graduate research assistant in the Computer Science department of Embry-Riddle Aeronautical University. A valued and multifaceted professional with **8 years full-time software engineering experience** focused on cyber security and autonomous systems domains. Results-oriented and highly analytical, skilled at implementing efficient solutions and prioritizing/managing short and long-term project goals, adept at leading teams.
 
@@ -105,10 +105,10 @@ _Ankara, Turkey_
 ### [Embry-Riddle Aeronautical University, Daytona Beach](https://daytonabeach.erau.edu/)
 _Florida, USA_
 
-**Ph.D. in Electrical Engineering and Computer Science** _(2021 – Current)_
+**Ph.D. in Electrical Engineering and Computer Science** _(2021 – 2025)_
 
 - **Dissertation Topic:** Utilization of Smart Contracts in Mobile Crowdsensing
-- Status: Ph.D. Candidate (since November 2024)
+- Defended dissertation and graduated (2025)
 - Completed all Ph.D. coursework (January 2023)
 - Passed Ph.D. qualifying exam (May 2022)
 

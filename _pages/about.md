@@ -8,12 +8,13 @@ redirect_from:
   - /about.html
 ---
 
-I am an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans designing, developing, and deploying complex software systems across various domains. My current research focuses on exploring the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I am passionate about advancing the field through innovative solutions to complex challenges.
+I am a Ph.D. in Electrical Engineering and Computer Science (Embry‑Riddle Aeronautical University, 2025) and an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans designing, developing, and deploying complex software systems across various domains. My research focuses on the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I’m passionate about advancing the field through innovative solutions to complex challenges.
 
 [View my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
 
 ## News
 
+- **2025:** Successfully defended my Ph.D. dissertation and graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU).
 - **November 2024:** Successfully defended my Ph.D. proposal. I am now officially a Ph.D. Candidate.  
 - **November 2024:** Published the paper, *"Enhancing Security of Proof-of-Learning against Spoofing Attacks Using Feature-Based Model Watermarking"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/abstract/document/10741282)  
 - **December 2023:** Published the survey paper, *"Survey on Blockchain-Enhanced Machine Learning"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/abstract/document/10366252)  
