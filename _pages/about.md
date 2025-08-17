@@ -14,7 +14,8 @@ I am a Ph.D. in Electrical Engineering and Computer Science (Embry‑Riddle Aero
 
 ## News
 
-- **2025:** Successfully defended my Ph.D. dissertation and graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU).
+ - **July 2025:** Successfully defended my Ph.D. dissertation (ERAU).  
+ - **August 2025:** Graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU).
 - **November 2024:** Successfully defended my Ph.D. proposal. I am now officially a Ph.D. Candidate.  
 - **November 2024:** Published the paper, *"Enhancing Security of Proof-of-Learning against Spoofing Attacks Using Feature-Based Model Watermarking"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/abstract/document/10741282)  
 - **December 2023:** Published the survey paper, *"Survey on Blockchain-Enhanced Machine Learning"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/abstract/document/10366252)  
