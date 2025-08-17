@@ -9,9 +9,9 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default" # Currently available options are "default", "air"
-title                    : "Ozgur Ural"
+title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
-name                     : &name "Ozgur Ural"
+name                     : &name "Dr. Ozgur Ural"
 description              : &description "personal description"
 url                      : https://ozgurural.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -23,7 +23,7 @@ repository               : "ozgurural/ozgurural.github.io"
 author:
   # Biographic information
   avatar           : "ozgururalpp.jpg"
-  name             : "Ozgur Ural"
+  name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"  
   # Updated bio to reflect current status
   bio              : "Senior Software Engineer & Researcher; Ph.D. in Secure & Distributed ML"
