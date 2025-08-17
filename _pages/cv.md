@@ -108,6 +108,7 @@ _Florida, USA_
 **Ph.D. in Electrical Engineering and Computer Science** _(2021 – 2025)_
 
 - **Dissertation Topic:** Utilization of Smart Contracts in Mobile Crowdsensing
+- Dissertation: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking”
 - Defended dissertation (July 2025); Graduated (August 2025)
 - Completed all Ph.D. coursework (January 2023)
 - Passed Ph.D. qualifying exam (May 2022)

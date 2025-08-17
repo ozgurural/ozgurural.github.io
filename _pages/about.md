@@ -8,7 +8,13 @@ redirect_from:
   - /about.html
 ---
 
-I am a Ph.D. in Electrical Engineering and Computer Science (Embry‑Riddle Aeronautical University, 2025) and an experienced software engineer and applied scientist with over a decade of expertise in leading technology initiatives. My work spans designing, developing, and deploying complex software systems across various domains. My research focuses on the **resiliency, robustness, security, and privacy of intelligent systems**, ranging from high-performance to decentralized artificial intelligence. I’m passionate about advancing the field through innovative solutions to complex challenges.
+I’m a Senior Software Engineer and researcher with 10+ years of experience delivering enterprise-scale systems and leading cross‑functional teams. I completed a Ph.D. (August 2025) in Secure & Distributed Machine Learning at ERAU, focusing on proof‑of‑learning protocols, model watermarking, and distributed ML systems. I build high‑reliability software for real‑time simulators and cloud services, translate research into production, and enjoy solving hard problems across cybersecurity, aerospace, and cloud platforms.
+
+Highlights:
+- Real‑time simulator software (C/C++, multithreading, synchronous comms).
+- Cloud services and web apps (Scala, TypeScript/JavaScript, Svelte, Python, gRPC/Protobuf, Redis, PostgreSQL).
+- CI/CD and ops (Docker, GitLab CI/CD).
+- Research: proof‑of‑learning, ML watermarking, blockchain‑enhanced ML.
 
 [View my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
 

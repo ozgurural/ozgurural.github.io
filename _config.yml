@@ -26,11 +26,11 @@ author:
   name             : "Ozgur Ural"
   pronouns         : # example: "she/her"  
   # Updated bio to reflect current status
-  bio              : "Ph.D. in EECS; Graduate Research Assistant @ ERAU"
-  location         : "Daytona Beach, FL, USA"
-  employer         :
-  uri              : 
-  email            : 
+  bio              : "Senior Software Engineer & Researcher; Ph.D. in Secure & Distributed ML"
+  location         : "Leiden, Netherlands"
+  employer         : "Avion Full Flight Simulators"
+  uri              :
+  email            : "ozgururalnl@gmail.com"
   # Academic websites
   academia         : # URL
   arxiv            : # URL - Update with the correct link to your profile
