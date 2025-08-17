@@ -11,11 +11,39 @@ redirect_from:
 
 _Last update on 2023-03-22_
 
+<<<<<<< HEAD
 ---
 
 ## SENIOR SOFTWARE ENGINEER & COMPUTER SCIENCE PHD STUDENT
 
 PhD student and graduate research assistant in the Computer Science department of Embry-Riddle Aeronautical University. A valued and multifaceted professional with **8 years full-time software engineering experience** focused on cyber security and autonomous systems domains. Results-oriented and highly analytical, skilled at implementing efficient solutions and prioritizing/managing short and long-term project goals, adept at leading teams.
+=======
+Work experience
+======
+* Spring 2024: Academic Pages Collaborator
+  * GitHub University
+  * Duties includes: Updates and improvements to template
+  * Supervisor: The Users
+
+* Fall 2015: Research Assistant
+  * GitHub University
+  * Duties included: Merging pull requests
+  * Supervisor: Professor Hub
+
+* Summer 2015: Research Assistant
+  * GitHub University
+  * Duties included: Tagging issues
+  * Supervisor: Professor Git
+  
+Skills
+======
+* Skill 1
+* Skill 2
+  * Sub-skill 2.1
+  * Sub-skill 2.2
+  * Sub-skill 2.3
+* Skill 3
+>>>>>>> upstream/master
 
 ### Professional Experience Summary
 
