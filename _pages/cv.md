@@ -19,6 +19,15 @@ PhD student and graduate research assistant in the Computer Science department o
 
 [Download my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
 
+<div style="margin: 1rem 0;">
+  <object data="/Ozgur_Ural_PhD_Resume.pdf#view=FitH" type="application/pdf" width="100%" height="900px">
+    <iframe src="/Ozgur_Ural_PhD_Resume.pdf#view=FitH" width="100%" height="900px"></iframe>
+    <p>Your browser can’t display PDFs inline. Please use the link above to download the resume.</p>
+  </object>
+  <p style="font-size: 0.9em; color: #666;">Tip: On mobile, use the download link for the best experience.</p>
+  <hr />
+</div>
+
 ### Professional Experience Summary
 
 - Team leading
