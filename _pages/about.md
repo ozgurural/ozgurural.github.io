@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I’m a Senior Software Engineer and researcher with 10+ years of experience delivering enterprise-scale systems and leading cross‑functional teams. I completed a Ph.D. (August 2025) in Secure & Distributed Machine Learning at ERAU, focusing on proof‑of‑learning protocols, model watermarking, and distributed ML systems. I build high‑reliability software for real‑time simulators and cloud services, translate research into production, and enjoy solving hard problems across cybersecurity, aerospace, and cloud platforms.
+I’m a Senior Software Engineer and researcher with 11+ years of experience delivering enterprise-scale systems and leading cross‑functional teams. I completed a Ph.D. (August 2025) in Secure & Distributed Machine Learning at ERAU, focusing on proof‑of‑learning protocols, model watermarking, and distributed ML systems. I build high‑reliability software for real‑time simulators and cloud services, translate research into production, and enjoy solving hard problems across cybersecurity, aerospace, and cloud platforms.
 
 Highlights:
 - Real‑time simulator software (C/C++, multithreading, synchronous comms).
