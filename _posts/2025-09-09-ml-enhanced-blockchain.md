@@ -1,7 +1,7 @@
 ---
 title: "ML-Enhanced Blockchain: Toward Intelligent, Adaptive Ledgers"
-date: 2025-11-21
-permalink: /posts/2025/11/ml-enhanced-blockchain/
+date: 2025-09-09
+permalink: /posts/2025/09/ml-enhanced-blockchain/
 tags:
   - blockchain
   - machine-learning

@@ -1,6 +1,6 @@
 ---
 title: "Autonomous Drones and Their Future Importance"
-date: 2025-09-10
+date: 2025-09-09
 permalink: /posts/2025/09/autonomous-drones-future/
 tags:
   - drones

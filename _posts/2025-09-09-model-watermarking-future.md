@@ -1,7 +1,7 @@
 ---
 title: "Model Watermarking and the Future of Trustworthy AI"
-date: 2025-10-15
-permalink: /posts/2025/10/model-watermarking-future/
+date: 2025-09-09
+permalink: /posts/2025/09/model-watermarking-future/
 tags:
   - model-watermarking
   - security
