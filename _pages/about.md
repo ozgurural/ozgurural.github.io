@@ -20,7 +20,7 @@ Highlights:
 
 ## News
 
- - **August 2025:** Graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU). Dissertation: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe. [Dissertation link](https://commons.erau.edu/edt/905/).  
+ - **August 2025:** Graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU). Dissertation: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe. [Dissertation link](https://commons.erau.edu/edt/905/). [Diploma verification](https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae).
  - **July 2025:** Successfully defended my Ph.D. dissertation. Title: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe.
 - **November 2024:** Successfully defended my Ph.D. proposal. I am now officially a Ph.D. Candidate.  
 - **November 2024:** Published the paper, *"Enhancing Security of Proof-of-Learning against Spoofing Attacks Using Feature-Based Model Watermarking"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/abstract/document/10741282)  
