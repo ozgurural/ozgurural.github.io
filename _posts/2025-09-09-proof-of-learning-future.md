@@ -2,6 +2,7 @@
 title: "Proof of Learning: Building Trust in Future Machine Learning"
 date: 2025-09-09
 permalink: /posts/2025/09/proof-of-learning-future/
+categories: technical
 tags:
   - proof-of-learning
   - security

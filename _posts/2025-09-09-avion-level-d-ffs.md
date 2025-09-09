@@ -2,6 +2,7 @@
 title: "Avion Level D FFS and Their Future Importance"
 date: 2025-09-09
 permalink: /posts/2025/09/avion-level-d-ffs/
+categories: technical
 tags:
   - aviation
   - simulation
