@@ -2,6 +2,7 @@
 title: "Blockchain-Enhanced Machine Learning: Linking Trust, Data, and Incentives"
 date: 2025-09-09
 permalink: /posts/2025/09/blockchain-enhanced-ml/
+categories: technical
 tags:
   - blockchain
   - machine-learning
