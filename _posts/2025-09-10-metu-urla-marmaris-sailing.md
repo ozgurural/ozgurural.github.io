@@ -1,20 +1,20 @@
 ---
-title: "METU Sailing Team and Baykar: Racing in Urla and Marmaris"
+title: "METU Sailing Team: Racing in Urla and Marmaris"
 date: 2025-09-10
-permalink: /posts/2025/09/metu-baykar-urla-marmaris-sailing/
+permalink: /posts/2025/09/metu-urla-marmaris-sailing/
 categories: life
 tags:
   - sailing
   - race
   - METU
-  - Baykar
   - Marmaris
   - Urla
 ---
 
 Middle East Technical University's sailing club has long been a hub for students who love the sea. The club's team trains on the Aegean coast and connects students with Turkey's growing racing scene.
 
-Baykar, known for its technology and aviation projects, has recently supported several sailing events, including regattas on the Urla coast. Sponsorships like the Baykar Sailing Cup help bring new attention and resources to university teams and local clubs.
+The Aegean coast hosts regattas that draw university crews and local sailors alike.
+
 
 ## Races on Turkey's Aegean Coast
 
@@ -33,7 +33,7 @@ Baykar, known for its technology and aviation projects, has recently supported s
 ## References
 
 - [METU Sailing Club](https://www.instagram.com/odtuyelken/)
-- [Baykar Tech](https://www.baykartech.com/en/)
+- [Aegean Offshore Yacht Club](http://www.eayk.org)
 - [Marmaris International Race Week](https://www.marmarisraceweek.com)
 - [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
 - [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))
