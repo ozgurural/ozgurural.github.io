@@ -2,7 +2,7 @@
 title: "Slowing Down Time Through Novel Experiences"
 date: 2025-09-16
 permalink: /posts/2025/09/slowing-time-novelty/
-categories: neuroscience
+categories: life
 tags:
   - time-perception
   - memory
