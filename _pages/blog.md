@@ -2,10 +2,16 @@
 permalink: /blog/
 title: "Blog"
 author_profile: true
-redirect_from: 
+layout: archive
+redirect_from:
   - /technical-blog/
   - /blog.html
 ---
 
 
 Here you can find deep dives into various technical topics. Click on a post title to read more.
+
+{% include base_path %}
+{% for post in site.posts %}
+  {% include archive-single.html %}
+{% endfor %}
