@@ -32,7 +32,7 @@ Baykar, known for its technology and aviation projects, has recently supported s
 
 ## References
 
-- [METU Sailing Club](https://odtuyelken.com)
+- [METU Sailing Club](https://www.instagram.com/odtuyelken/)
 - [Baykar Tech](https://www.baykartech.com/en/)
 - [Marmaris International Race Week](https://www.marmarisraceweek.com)
 - [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
