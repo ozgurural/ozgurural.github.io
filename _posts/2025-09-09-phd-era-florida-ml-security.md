@@ -2,7 +2,7 @@
 title: "PhD Life at Embry-Riddle: Machine Learning, Security, and Sunshine"
 date: 2025-09-09
 permalink: /posts/2025/09/phd-era-florida-ml-security/
-categories: reflections
+categories: life
 tags:
   - phd
   - machine-learning
