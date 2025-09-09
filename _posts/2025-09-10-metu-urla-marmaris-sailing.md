@@ -18,7 +18,7 @@ The Aegean coast hosts regattas that draw university crews and local sailors ali
 
 ## Races on Turkey's Aegean Coast
 
-- **Urla:** Home to the Aegean Offshore Yacht Club (EAYK), Urla hosts a packed calendar of weekend races and training regattas.
+- **Urla:** Home to the Aegean Offshore Yacht Club (EAYK), Urla hosts a packed calendar of weekend races and training regattas, including the annual [Jimmy Key Cup](https://jimmykeycup.com).
 - **Marmaris:** Each autumn, the Marmaris International Race Week draws crews from across Europe for a week of intense competition.
 
 ## Key Roles on a Racing Sailboat
@@ -35,6 +35,7 @@ The Aegean coast hosts regattas that draw university crews and local sailors ali
 - [METU Sailing Club](https://www.instagram.com/odtuyelken/)
 - [Aegean Offshore Yacht Club](http://www.eayk.org)
 - [Marmaris International Race Week](https://www.marmarisraceweek.com)
+- [Jimmy Key Cup](https://jimmykeycup.com)
 - [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
 - [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))
 
