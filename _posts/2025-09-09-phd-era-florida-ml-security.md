@@ -15,17 +15,14 @@ Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, 
 
 ## Morning Run-Up
 
-Daytona Beach may be famous for NASCAR and spring breakers, but my calendar reads more like a flight plan than a party invite. A typical weekday looks like this:
+Daytona Beach may be famous for NASCAR and spring breakers, but my calendar reads more like the Level-D simulator test cards I drafted at [Avion Full Flight Simulators](/posts/2025/09/avion-level-d-ffs/). A typical weekday now unfolds in arcs instead of tidy half-hour boxes:
 
-| Time | Activity | Why it matters |
-| --- | --- | --- |
-| 6:15 a.m. | Sunrise run along the Halifax River | Clears the cobwebs and generates half my research ideas. |
-| 7:30 a.m. | Lab systems check | Kick off overnight jobs, glance at Prometheus dashboards, and pray to the GPU gods. |
-| 10:00 a.m. | Cybersecurity & Assured Systems stand-up | Rapid-fire updates, new attack scenarios, and the occasional donut economics pun. |
-| 2:00 p.m. | Proof-of-learning experiments | Replaying distributed training runs, logging watermark robustness metrics. |
-| 7:30 p.m. | Manuscript edits or tutoring undergrads | The writing makes the science legible; the teaching keeps me honest. |
+* **First-light warm-up.** Sunrise miles along the Halifax River clear out the humidity, cue up podcast snippets on distributed learning, and—if I’m lucky—deliver an opening joke for the next conference talk. Running in Florida heat is the closest I get to simulating a thermal chamber without filing paperwork.
+* **Systems go/no-go.** By 7:30 a.m. I am in the Cybersecurity & Assured Systems lab coaxing GPU clusters awake, replaying telemetry the way I once replayed avionics data streams. The same bounded-queue backpressure tricks that kept Avion dashboards responsive now keep my Prometheus alerts from screaming when a model checkpoint stalls.
+* **Threat-playbook sprints.** Late-morning stand-ups morph into mini red-team drills. Years spent leading the Havelsan DLP crew and hardening Comodo’s secure web gateways left me with a Rolodex of real attack stories, so I translate them into proof-of-learning test cases before the donuts vanish.
+* **Evening debrief.** When campus quiets down, I swap into manuscript edits, code reviews, or undergrad tutoring. Eleven years of industry engineering makes it impossible to ignore a dangling TODO, and teaching forces me to narrate research decisions with the clarity of a flight safety briefing.
 
-I keep a “runway log” in Notion that tracks experiments, paper deadlines, and even the humidity index—because hardware throttling is a real thing when the air feels like soup.
+The cadence is part training mission, part research retreat, and it keeps the ERAU day grounded in the same disciplined curiosity that powered every simulator, UAV, and secure gateway I shipped before the PhD.
 
 ## Research Altitude: Proof-of-Learning Meets Security
 
