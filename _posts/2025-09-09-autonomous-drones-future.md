@@ -9,26 +9,47 @@ tags:
   - defense
 ---
 
-Between February 2019 and November 2020, I served as an Expert Software Engineer at STM Defence Technologies in Ankara, building operational software for the Kargu loitering munition and the Togan reconnaissance UAV. My focus was the mission-control and ground-control software stack: I architected distributed modules in modern C++ with Boost, Qt, and QML; implemented intuitive operator interfaces so pilots could re-task swarms in seconds; and authored power-on and continuous built-in tests that verified flight-critical subsystems before each sortie. Working shoulder to shoulder with avionics, payload, and field-test teams taught me how to translate tactical requirements into resilient code that keeps crews safe.
+Consider this your two-minute hangar brief. Between February 2019 and November 2020, I served as an Expert Software Engineer at STM Defence Technologies in Ankara. My team and I wrote the operational brains for **Kargu**, a loitering munition that can patiently orbit before striking, and **Togan**, a reconnaissance UAV that refuses to land until it has found every point of interest. Coffee was strong, timelines were tighter than rotor tolerances, and every build had to keep aircrews safe.
 
-That hands-on work made the rapid maturation of autonomous drones tangible. We iterated on perception pipelines, cooperative behaviour modes, and contested-environment resilience at a pace that traditional defense programs rarely achieve. Kargu’s ability to execute precision loitering missions and Togan’s modular sensor suite for persistent ISR both stem from an ecosystem of real-time telemetry, secure comms, and human-in-the-loop safeguards that we tuned over countless flight trials. Delivering those capabilities highlighted the broader shift: autonomy is no longer a research prototype—it is a deployable force multiplier.
+## What “Mission Control” Actually Means
 
-Looking forward, I see the next wave of autonomous drones extending far beyond defense. The same swarm coordination and self-diagnostic frameworks we hardened for military use will anchor civilian applications in disaster response, infrastructure inspection, environmental monitoring, and logistics. Marrying trustworthy autonomy with distributed machine-learning safeguards (the focus of my later doctoral research) will be essential to ensure these fleets remain robust against spoofing and tampering. Platforms like Kargu and Togan are early signals of how intelligent aerial systems will reshape security, emergency management, and even daily city operations in the coming decade.
+Mission-control is where all the distributed systems magic happens. We carved the stack into micro-services long before it was fashionable in defense:
 
-### Platforms I Helped Build
+- **Real-time messaging layer** in modern C++ with Boost ASIO to keep telemetry, video, and mission commands synchronized over noisy tactical radios.
+- **Qt/QML operator console** with latency budgets stricter than airport security, so a pilot could re-task three airframes before finishing a sentence.
+- **Built-in-test harnesses** that power-on self-check the avionics, gimbals, and payloads; if a motor twitched the wrong way, we knew before the prop spun up.
 
-- **Kargu** – an autonomous loitering munition capable of precision engagement with onboard target recognition. [STM product
-  page](https://www.stm.com.tr/en/products/kargu).
-- **Togan** – a rotary-wing surveillance drone offering modular payloads and extended endurance for situational awareness.
-  [STM product page](https://www.stm.com.tr/en/products/togan).
+I spent as much time in the hangar as at the keyboard. Working shoulder-to-shoulder with avionics, payload, and flight-test teams meant translating requests like “make it hover smarter when the wind gusts” into resilient control loops and telemetry dashboards.
 
-### Why Their Future Matters
+## Lessons from the Hangar Floor
 
-Autonomous drones reduce cognitive load on human operators while expanding mission possibilities. As AI-driven perception,
-edge compute, and secure mesh communications mature, the next generation of platforms will collaborate in swarms, share
-telemetry with ground and cloud systems, and self-heal when components degrade. Whether safeguarding borders, mapping wildfire
-perimeters, or delivering urgent supplies, their ability to act as agile, intelligent teammates will define the next era of aerial
-robotics.
+1. **Swarms demand empathy.** The pilots named their drones. When a swarm lost a member, morale dipped. We built UI affordances that acknowledged each airframe as a teammate, not a widget.
+2. **Latency is the silent saboteur.** A 200 ms lag at a desk is nothing; in contested RF environments, it’s the difference between a graceful reposition and a lawn dart. We optimized serialization like our coffee budget depended on it.
+3. **Testing never sleeps.** Continuous built-in tests ran between sorties, catching sensor drift or loose connectors. Trust is earned every take-off.
+
+## Where the Technology Is Headed (and Why I’m Excited)
+
+- **Onboard model compression** lets edge AI classify targets, detect anomalies, and perform collaborative SLAM without hauling gigabits back to base.
+- **Mesh networking + directional antennas** give swarms self-healing comms; lose one repeater and the rest re-route faster than your home Wi-Fi.
+- **Digital twins** simulate flight plans against weather, terrain, and jamming profiles before we commit real rotors—think of it as rehearsal dinner for drones.
+- **Human teaming tooling** is finally catching up. Adaptive autonomy levels and explainable cues help operators stay in the loop without feeling like they’re babysitting a sky full of toddlers.
+
+## Beyond Defense: The Spillover Effect
+
+Everything we hardened for military resilience is marching straight into civilian life:
+
+- **Disaster response** – Autonomous swarms can map collapsed buildings, deliver medical kits, and maintain comms when cell towers fail.
+- **Infrastructure inspection** – Pipelines, bridges, and offshore rigs will rely on self-diagnosing fleets that log structural anomalies and order replacement parts before humans notice the rust.
+- **Environmental stewardship** – Persistent UAV networks can monitor forest health, track illegal fishing, and even drop seed pods post-wildfire.
+- **Logistics** – Think short-haul cargo drones coordinating like bee colonies, optimizing routes while obeying airspace rules nobody wants to recite at parties.
+
+## The Human Factor (a.k.a. Why Humor Matters)
+
+When you’re debugging a swarm in a wind tunnel at midnight, a joke about “teaching drones to respect personal space” goes a long way. The tech matters, but the culture matters just as much. Empowered operators, collaborative engineers, and transparent mission data are the secret ingredients for safe autonomy.
+
+## What Keeps Me Busy Now
+
+My current work extends those lessons into trustworthy autonomy: melding distributed ML safeguards, tamper-resistant logging, and policy-aware mission planners. The goal is simple—make sure autonomous drones stay helpful, accountable, and maybe even charming.
 
 ## References
 
