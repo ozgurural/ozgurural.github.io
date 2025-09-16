@@ -74,6 +74,16 @@ layout: default
         {% endif %}
 
         {% if page.link %}<div><a href="{{ page.link }}" class="btn">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
+
+        {% if page.collection == 'posts' %}
+          <div class="post-interactions" data-post-id="{{ page.id | default: page.url | slugify }}">
+            <button class="post-interactions__like" type="button" data-like-button aria-pressed="false">
+              <span class="post-interactions__like-icon" aria-hidden="true">❤️</span>
+              <span data-like-label data-liked-label="{{ site.data.ui-text[site.locale].liked_label | default: 'Liked' }}">{{ site.data.ui-text[site.locale].like_label | default: "Like" }}</span>
+            </button>
+            <p class="post-interactions__status" data-like-status data-liked-message="{{ site.data.ui-text[site.locale].like_thanks_note | default: 'Thanks for liking this post! (Saved locally.)' }}" data-storage-disabled="{{ site.data.ui-text[site.locale].like_disabled_note | default: 'Local browser storage is disabled, so likes are unavailable.' }}" data-error-storage="{{ site.data.ui-text[site.locale].like_storage_error | default: 'We could not save your like. Please check your browser settings and try again.' }}" role="status" aria-live="polite">{{ site.data.ui-text[site.locale].like_storage_note | default: "Likes are saved locally in this browser." }}</p>
+          </div>
+        {% endif %}
       </section>
 
       <footer class="page__meta">
