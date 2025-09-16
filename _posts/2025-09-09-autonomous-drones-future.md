@@ -49,7 +49,7 @@ When you’re debugging a swarm in a wind tunnel at midnight, a joke about “te
 
 ## What Keeps Me Busy Now
 
-These days I’m a Senior Software Engineer at Avion Full Flight Simulators in the Netherlands, wiring up the real-time pipelines that keep full-flight trainers believable. I shepherd telemetry through C++ and Scala services, keep gRPC, Redis, and PostgreSQL in formation, and ship Svelte dashboards so instructors can spot misbehaving actuators before the coffee cools. On the academic front I’m wrapping up a PhD in Secure & Distributed Machine Learning at Embry-Riddle, hardening proof-of-learning protocols against spoofing attacks. The mission hasn’t changed: build systems that pilots and operators actually trust—preferably before the Redis cluster files a flight plan of its own.
+These days I’m a Senior Software Engineer at Avion Full Flight Simulators in the Netherlands, building the C/C++ and Scala pipelines that push 50 GB/s of simulator telemetry through gRPC and bounded backpressure without spilling coffee on the instructor console. I pair those services with Svelte dashboards so crews can diagnose actuators before the motion base squeaks. On the academic side I recently finished my PhD in Secure & Distributed Machine Learning at Embry-Riddle, where I fortified proof-of-learning protocols with model watermarking so spoofers have a harder time stealing credit. The mission hasn’t changed: ship systems pilots trust—preferably before the Redis cluster asks for a type rating.
 
 ## References
 
