@@ -37,17 +37,36 @@ I treated the rest of the year as a n=1 longitudinal study. Here's what helped m
 - **Teach someone else.** Explaining a new neighborhood find to a friend forces me to relive and solidify it. Also, friends enjoy knowing where to buy the good croissants.
 - **Sprint, then savor.** I stack errands into a two-hour "efficiency sprint" and follow with a novelty break (new café, new route home). The contrast makes both chunks stand out.
 
-### One-week novelty sampler
+### Build-your-own novelty lab (no membership required)
 
-| Day | Micro-novelty | Memory anchor |
-| --- | ------------- | -------------- |
-| Monday | Commute via the canal path and record three smells | Damp stone, roasted chestnuts, rain on leaves |
-| Tuesday | Swap lunch routine for a food truck I have never tried | Spicy mango salsa on everything |
-| Wednesday | Learn a new chord progression and send a voice memo to a friend | The squeaky B-string that finally stayed in tune |
-| Thursday | Co-work from a museum café between meetings | The quiet buzz of tourists debating impressionism |
-| Friday | Map the sunset from a different hill with quick sketches | Sky gradients filed under "do again" |
-| Saturday | Host a potluck with a theme (green foods only, why not) | Laughter about neon pesto |
-| Sunday | Review the week and flag one moment to stretch next week | A sticky note that reads "book night kayak tour" |
+**Step 1: Run an autopilot audit.** On Sunday night I list the three routines that blurred together last week—commute, workout,
+ dinner. Anything I cannot recall in detail earns a yellow highlighter and becomes a candidate for remixing.
+
+**Step 2: Pair it with a sensory system.** Novelty lands harder when multiple senses get involved. A route remix hits vestibular cues, while a new recipe rewires gustatory and olfactory pathways. I ask, "Which sense have I ignored lately?" and design the experiment around it. That extra prediction error is the dopamine trigger that shouts, "Save this one!"[^7]
+
+**Step 3: Draft a novelty arc.** I follow a 10% rule: tweak one variable just beyond comfort. Too safe and my hippocampus shrugs; to
+o wild and I bail. I outline a beginning (prediction), middle (surprise), and end (reflection) so the experiment feels like a sto
+ry, not a dare.
+
+#### Experiment templates to riff on
+
+- **Contrast sprints.** Stack something hyper-familiar (admin blitz) right next to a deliberate oddity (sketching architecture for 20 minutes). The juxtaposition raises prediction error, which is catnip for dopamine neurons.[^7]
+- **Role swaps.** Teach a coworker your specialty while they coach you in theirs. The contextual interference keeps both of you out of autopilot and cements skills more durably.[^8]
+- **Sensory scavenger hunts.** Pick a theme (textures, overheard dialogue, gradients of blue) and collect five instances during a walk. Photograph, sketch, or voice memo them so your brain files the day under "remarkably specific" instead of "just Tuesday."
+- **Micro-quests with witnesses.** Text a friend beforehand: "Ask me tonight about the new spice blend." Social accountability makes me show up, and retelling the story lays down a second memory trace.
+
+Mix and match two templates to create micro-adventures that barely fit in a calendar square. The goal is to have future-you ask, "Did we really do that on a Tuesday?" (Yes, and now there's evidence.)
+
+### Diagnostics: When time refuses to stretch
+
+- **Symptom: Everything feels urgent, nothing feels novel.** *Fix:* Insert a deliberate pause before switching tasks. Label what
+ you expect will happen, then note what actually does. Even tiny mismatches trigger the novelty circuitry.
+- **Symptom: Experiments fizzle after one day.** *Fix:* Shrink the scope. Instead of "learn ceramics," commit to "five imperfect
+ bowls in 30 minutes." The quick reps keep the dopamine feedback loop rolling.
+- **Symptom: Novelty fatigue (aka, please no more adventures).** *Fix:* Alternate between exploration and consolidation days. Journ
+aling, teaching, or reorganizing photos may feel calm, but it still preserves vivid markers in memory.
+- **Symptom: No time.** *Fix:* Attach novelty to existing anchors—audio tours during dish duty, new playlists on the school run,
+ or rotating the meeting backdrop with virtual museum rooms. Your calendar stays intact; your hippocampus gets new scenery.
 
 ## Keeping the experiment going
 
@@ -56,6 +75,8 @@ To avoid sliding back into autopilot, I run a Sunday night retro with three prom
 1. **What moment felt longest?** Usually it's the one with the most novelty or emotional charge.
 2. **What ran on autopilot?** That's the signal to remix or retire it.
 3. **What is next week's anchor event?** I book or prep it right away so Tuesday-me cannot back out.
+
+Then I log the answers in a delightfully nerdy "wow density" tracker—just a spreadsheet with columns for sensory category, emotional spike, and who I told about it. The simple scoring keeps me honest about whether I'm feeding my hippocampus or just doomscrolling with flair.
 
 It sounds like overkill, but the payoff is real: time feels less like it is sprinting past and more like it is pacing alongside me. Dense memory chapters also help future-me remember why a given month mattered. My calendar may still say "September," but my hippocampus swears it was three distinct adventures.
 
@@ -69,3 +90,5 @@ If life's fast-forward button has been stuck, try sprinkling your week with tiny
 [^4]: Düzel, E., Bunzeck, N., Guitart-Masip, M., Wittmann, B., Schott, B.H., & Tobler, P.N. (2010). Functional imaging of the human dopaminergic midbrain. *Trends in Neurosciences, 33*(10), 469–477. https://www.sciencedirect.com/science/article/pii/S0166223610001064
 [^5]: Eagleman, D.M. (2008). Human time perception and its illusions. *Current Opinion in Neurobiology, 18*(2), 131–136. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2830453/
 [^6]: Murty, V.P., & Adcock, R.A. (2014). Enriched encoding: Reward motivation organizes cortical networks for hippocampal detection of unexpected events. *Cerebral Cortex, 24*(8), 2160–2168. https://doi.org/10.1093/cercor/bht063
+[^7]: Schultz, W. (1997). A neural substrate of prediction and reward. *Science, 275*(5306), 1593–1599. https://doi.org/10.1126/science.275.5306.1593
+[^8]: Magill, R.A., & Hall, K.G. (1990). A review of the contextual interference effect in motor skill acquisition. *Research Quarterly for Exercise and Sport, 61*(3), 213–218. https://doi.org/10.1080/02701367.1990.10608699
