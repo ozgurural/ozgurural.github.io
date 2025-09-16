@@ -1,3 +1,20 @@
 <!-- start custom comments snippet -->
-
+{% assign interaction_id = page.id | default: page.url | slugify %}
+<div class="local-comments" data-post-id="{{ interaction_id }}">
+  <h4 class="page__comments-title">{{ comments_label }}</h4>
+  <div class="local-comments__list" data-comment-list data-empty-label="{{ site.data.ui-text[site.locale].comment_empty_label | default: 'No comments yet. Be the first to share your thoughts.' }}" aria-live="polite"></div>
+  <form class="local-comments__form" data-comment-form novalidate>
+    <div class="local-comments__field">
+      <label class="local-comments__label" for="comment-name-{{ interaction_id }}">{{ site.data.ui-text[site.locale].comment_form_name_label | default: "Name" }}</label>
+      <input class="local-comments__input" id="comment-name-{{ interaction_id }}" name="comment-name" type="text" data-comment-name autocomplete="name" required />
+    </div>
+    <div class="local-comments__field">
+      <label class="local-comments__label" for="comment-message-{{ interaction_id }}">{{ site.data.ui-text[site.locale].comment_form_comment_label | default: "Comment" }}</label>
+      <textarea class="local-comments__input local-comments__input--textarea" id="comment-message-{{ interaction_id }}" name="comment-message" rows="4" data-comment-message required></textarea>
+    </div>
+    <button class="btn local-comments__submit" type="submit">{{ site.data.ui-text[site.locale].comment_btn_submit | default: "Submit Comment" }}</button>
+  </form>
+  <p class="local-comments__status" data-comment-status data-success-message="{{ site.data.ui-text[site.locale].comment_success_message | default: 'Thanks for sharing your thoughts! (Saved locally.)' }}" data-error-storage="{{ site.data.ui-text[site.locale].comment_storage_error | default: 'We could not save your comment. Check your browser storage settings and try again.' }}" data-error-validation="{{ site.data.ui-text[site.locale].comment_validation_error | default: 'Please enter your name and a comment.' }}" data-storage-disabled="{{ site.data.ui-text[site.locale].comment_storage_disabled | default: 'Local browser storage is disabled, so comments are unavailable.' }}" role="status" aria-live="polite"></p>
+  <p class="local-comments__note">{{ site.data.ui-text[site.locale].comment_storage_note | default: "Comments are saved in your browser and are not shared with the site owner." }}</p>
+</div>
 <!-- end custom comments snippet -->
