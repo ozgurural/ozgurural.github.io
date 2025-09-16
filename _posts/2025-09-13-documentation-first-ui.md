@@ -13,13 +13,13 @@ Before a developer ever sees your landing page, they might encounter your README
 
 ## Clear Docs Reduce Support Load
 
-Well-written documentation prevents repetitive support requests and frees engineering time. An API company once tracked the top five questions hitting their support queue. Three were answered verbatim in the docs, but the answers were buried in long paragraphs without code examples. After restructuring the documentation into task-based sections with copy‑and‑paste snippets, support tickets dropped by 40%.
+Well-written documentation prevents repetitive support requests and frees engineering time. When we shipped the first version of Avion’s telemetry API, the same three setup questions kept hitting our inbox—even though the answers technically lived in the docs. They were buried in long paragraphs without code examples. After restructuring the documentation into task-based sections with copy‑and‑paste snippets, support tickets dropped by 40%.
 
 Support metrics should inform documentation priorities. If a question appears frequently in chat channels or issue trackers, the docs have failed to address it clearly enough. Incorporating analytics—such as page views and time-on-page—helps identify which sections are confusing or underused.
 
 ## Documentation Reflects Product Clarity
 
-Confusing documentation often mirrors confusing architecture. If it takes a dozen steps to explain how modules interact, the system might be overcomplicated. Documentation thus serves as a design smell detector. During a refactor of a data pipeline, a team wrote down every step required to onboard a new dataset. The exercise exposed redundant transformations and inconsistent naming conventions, prompting an architectural overhaul that cut processing time in half.
+Confusing documentation often mirrors confusing architecture. If it takes a dozen steps to explain how modules interact, the system might be overcomplicated. Documentation thus serves as a design smell detector. When we rewrote the Comodo patch manager ingest pipeline, we documented every step required to onboard a new feed. The exercise exposed redundant transformations and inconsistent naming conventions, prompting an architectural overhaul that cut processing time in half.
 
 Make documentation updates a required part of any significant code change. Pull requests should fail if associated docs are missing or outdated. This establishes a culture where documentation evolves alongside code rather than lags behind it.
 

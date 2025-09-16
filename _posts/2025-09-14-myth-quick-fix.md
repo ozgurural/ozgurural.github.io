@@ -13,7 +13,7 @@ Every engineer knows the temptation of the “five-minute hack.” A bug appears
 
 ## Bandaids Hide Systemic Issues
 
-Quick fixes address symptoms, not root causes. When a backend service began timing out under heavy load, a team raised the request timeout from 30 seconds to 60 seconds. The issue vanished—until peak season, when latency spikes returned with a vengeance. Only then did the team discover that an inefficient database query, not the timeout threshold, was to blame.
+Quick fixes address symptoms, not root causes. When our Avion telemetry API began timing out under heavy load, we initially raised the request timeout from 30 seconds to 60 seconds. The issue vanished—until peak season, when latency spikes returned with a vengeance. Only then did we discover that an inefficient database query, not the timeout threshold, was to blame.
 
 By escalating from patch to postmortem, teams can peel back the layers of a problem. Ask: Why did this issue occur? Why was it not detected earlier? What assumptions failed? Answering these questions may reveal architectural weaknesses or process gaps that one-line patches obscure.
 
