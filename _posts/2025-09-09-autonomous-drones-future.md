@@ -49,7 +49,7 @@ When you’re debugging a swarm in a wind tunnel at midnight, a joke about “te
 
 ## What Keeps Me Busy Now
 
-My current work extends those lessons into trustworthy autonomy: melding distributed ML safeguards, tamper-resistant logging, and policy-aware mission planners. The goal is simple—make sure autonomous drones stay helpful, accountable, and maybe even charming.
+These days I’m a Senior Software Engineer at Avion Full Flight Simulators in the Netherlands, wiring up the real-time pipelines that keep full-flight trainers believable. I shepherd telemetry through C++ and Scala services, keep gRPC, Redis, and PostgreSQL in formation, and ship Svelte dashboards so instructors can spot misbehaving actuators before the coffee cools. On the academic front I’m wrapping up a PhD in Secure & Distributed Machine Learning at Embry-Riddle, hardening proof-of-learning protocols against spoofing attacks. The mission hasn’t changed: build systems that pilots and operators actually trust—preferably before the Redis cluster files a flight plan of its own.
 
 ## References
 
