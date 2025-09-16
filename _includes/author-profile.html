@@ -25,7 +25,12 @@
     <ul class="author__urls social-icons">
       <!-- Font Awesome icons / Biographic information  -->
       {% if author.location %}
-        <li class="author__desktop"><i class="fas fa-fw fa-location-dot icon-pad-right" aria-hidden="true"></i>{{ author.location }}</li>
+        {% assign encoded_location = author.location | uri_escape %}
+        <li class="author__desktop">
+          <a href="https://www.google.com/maps/search/?api=1&query={{ encoded_location }}">
+            <i class="fas fa-fw fa-location-dot icon-pad-right" aria-hidden="true"></i>{{ author.location }}
+          </a>
+        </li>
       {% endif %}
       {% if author.employer %}
         {% if author.employer_url %}
