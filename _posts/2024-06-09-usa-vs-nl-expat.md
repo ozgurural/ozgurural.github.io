@@ -13,7 +13,7 @@ Living as an expat has given me the chance to compare daily life in the United S
 
 ## Work–Life Balance
 
-In Leiden, my mornings start with a bike ride toward the train that carries me to Avion Full Flight Simulators. Our engineering team builds flight-simulator software, and the culture is unapologetically focused on sustainable productivity. Code freezes really mean “log off,” and it is normal to see sprint boards cleared by late afternoon so people can pick up their kids or get to band practice. Back in the U.S., my graduate research assistant days at Embry-Riddle Aeronautical University stretched longer. Evening lab sessions were common, and conference deadlines had us refactoring proof-of-learning experiments well past midnight. I’ve learned to borrow the Dutch discipline for rest while keeping the American appetite for ambitious projects.
+In Leiden, my mornings start with a bike ride toward the train that carries me to Avion Full Flight Simulators. Our engineering team builds flight-simulator software, and the culture is unapologetically focused on sustainable productivity. Code freezes really mean “log off,” and it is normal to see sprint boards cleared by late afternoon so people can pick up their kids or get to band practice. Back in the U.S., my graduate research assistant days at Embry-Riddle Aeronautical University stretched longer. Evening lab sessions were common, and journal submission deadlines had us refining proof-of-learning experiments well past midnight. I’ve learned to borrow the Dutch discipline for rest while keeping the American appetite for ambitious projects.
 
 ## Transportation
 
