@@ -1,25 +1,65 @@
 {% include base_path %}
 
-{% if site.author.github or site.author.bitbucket or site.atom_feed.hide != true %}
-<div class="page__footer-follow">
-  <ul class="social-icons">
-    {% if site.data.ui-text[site.locale].follow_label %}
-      <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
-    {% endif %}
-    {% if site.author.github %}
-      <li><a href="http://github.com/{{ site.author.github }}"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
-    {% endif %}
-    {% if site.author.bitbucket %}
-      <li><a href="http://bitbucket.org/{{ site.author.bitbucket }}"><i class="fab fa-bitbucket" aria-hidden="true"></i> Bitbucket</a></li>
-    {% endif %}
-    {% if site.atom_feed.hide != true %}
-    <li><a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ base_path }}/feed.xml{% endif %}"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].feed_label | default: "Feed" }}</a></li>
-    {% endif %}
-  </ul>
-</div>
-{% endif %}
+{% assign latest_posts = site.posts | slice: 0, 3 %}
 
-<div class="page__footer-copyright">
-  &copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}, {{ site.data.ui-text[site.locale].powered_by | default: "Powered by" }} <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.<br />
-  Site last updated {{ "now" | date: '%Y-%m-%d' }}
+<div class="page__footer">
+  <footer>
+    <div class="footer__grid">
+      <section class="footer-card footer-card--about">
+        <h2 class="footer-card__title">About Dr. Ozgur Ural</h2>
+        <p>Senior software engineer and researcher building secure simulation platforms and distributed ML systems that people trust.</p>
+        <ul class="footer-card__tags">
+          <li>Secure ML</li>
+          <li>Flight Simulation</li>
+          <li>Cybersecurity</li>
+        </ul>
+        <ul class="footer-social">
+          {% if site.author.linkedin %}
+            <li><a href="https://www.linkedin.com/in/{{ site.author.linkedin }}/"><i class="fa fa-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a></li>
+          {% endif %}
+          {% if site.author.github %}
+            <li><a href="https://github.com/{{ site.author.github }}"><i class="fa fa-github" aria-hidden="true"></i><span>GitHub</span></a></li>
+          {% endif %}
+          {% if site.author.twitter %}
+            <li><a href="https://twitter.com/{{ site.author.twitter }}"><i class="fa fa-twitter" aria-hidden="true"></i><span>Twitter</span></a></li>
+          {% endif %}
+        </ul>
+      </section>
+
+      <section class="footer-card footer-card--latest">
+        <h2 class="footer-card__title">Latest writing</h2>
+        <ul class="footer-list">
+          {% for post in latest_posts %}
+            <li>
+              <a href="{{ post.url | relative_url }}">
+                <span class="footer-list__title">{{ post.title }}</span>
+                <span class="footer-list__meta">{{ post.date | date: "%b %d, %Y" }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <a class="footer-link" href="/blog/">View all technical articles</a>
+      </section>
+
+      <section class="footer-card footer-card--connect">
+        <h2 class="footer-card__title">Stay in touch</h2>
+        <p>I share occasional notes about secure ML, simulator engineering, and leadership. Choose how you’d like to follow along.</p>
+        <div class="footer-actions">
+          <a class="btn btn--inverse" href="mailto:{{ site.author.email }}">Email me</a>
+          <a class="btn btn--light-outline" href="/feed.xml">Subscribe via RSS</a>
+        </div>
+        <ul class="footer-quicklinks">
+          <li><a href="/projects/">Projects</a></li>
+          <li><a href="/publications/">Publications</a></li>
+          <li><a href="/talks/">Talks</a></li>
+          <li><a href="/Ozgur_Ural_PhD_Resume.pdf">Résumé (PDF)</a></li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="footer__meta">
+      <p>&copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}. Built with <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> and <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a> on top of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</p>
+      <p>Site last updated {{ "now" | date: '%Y-%m-%d' }}.</p>
+    </div>
+  </footer>
 </div>

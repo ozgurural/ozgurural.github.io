@@ -12,7 +12,7 @@ site_theme               : "default" # Currently available options are "default"
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "personal description"   # Update this with a general description of your site, this is the default if not overridden by a page
+description              : &description "Secure & distributed machine learning leader building trustworthy simulation and cloud systems."   # Update this with a general description of your site, this is the default if not overridden by a page
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -90,11 +90,13 @@ publication_category:
     title: 'Conference Papers'
 
 # Site Settings
-teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews
+teaser                   : homepage.png # filename of teaser fallback teaser image placed in /images/ for social media previews
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160
 future                   : true
-read_more                : "disabled" # if enabled, adds "Read more" links to excerpts
+read_more                : "enabled" # if enabled, adds "Read more" links to excerpts
+search                   : true
+search_full_content      : true
 talkmap_link             : false      #change to true to add link to talkmap on talks page
 comments:
   provider               : false # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman"
