@@ -8,26 +8,13 @@
 #      Markdown formatted page while the second is generated using JSON.
 
 main:
-  - title: "About"
-    url: /
-  - title: "Work"
-    children:
-      - title: "Projects"
-        url: /projects/
-      - title: "Publications"
-        url: /publications/
-      - title: "Talks"
-        url: /talks/
-  - title: "Writing"
-    children:
-      - title: "Technical Blog"
-        url: /blog/
-      - title: "Life Notes"
-        url: /life/
-      - title: "Tags"
-        url: /tags/
-  - title: "Teaching"
-    url: /teaching/
-  - title: "Resume"
+  - title: "Resume (PDF)"
     url: /Ozgur_Ural_PhD_Resume.pdf
-    classes: "masthead__cta"
+  - title: "Publications"
+    url: /publications/
+  - title: "Projects"
+    url: /projects/
+  - title: "Technical Blog"
+    url: /blog/
+  - title: "Life Blog"
+    url: /life/

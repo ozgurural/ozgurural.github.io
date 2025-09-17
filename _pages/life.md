@@ -1,21 +1,13 @@
 ---
 permalink: /life/
-title: "Life Notes"
+title: "Life Blog"
 author_profile: true
 layout: archive
-classes: wide
-entries_layout: grid
-excerpt: "Reflections on moving across continents, building community, and living curiously."
 ---
 
-<div class="archive-intro">
-  <p>Stories about life abroad, cultural discoveries, and the rituals that keep me grounded.</p>
-</div>
+Thoughts and experiences about life abroad, culture, and personal growth.
 
 {% include base_path %}
-{% assign life_posts = site.categories.life | default: site.posts %}
-<div class="grid__wrapper">
-{% for post in life_posts %}
-  {% include archive-single.html type="grid" %}
+{% for post in site.categories.life %}
+  {% include archive-single.html %}
 {% endfor %}
-</div>
