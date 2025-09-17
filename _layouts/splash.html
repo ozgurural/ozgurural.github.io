@@ -8,54 +8,6 @@ layout: default
   {% include page__hero.html %}
 {% endif %}
 
-{% assign hero = page.hero %}
-{% if hero %}
-  <section class="splash__hero">
-    <div class="splash__hero-inner">
-      <div class="splash__hero-body">
-        {% if hero.eyebrow %}
-          <p class="splash__hero-eyebrow">{{ hero.eyebrow }}</p>
-        {% endif %}
-        <h1 class="splash__hero-title">{{ hero.title | default: page.title }}</h1>
-        {% if hero.subtitle %}
-          <div class="splash__hero-subtitle">{{ hero.subtitle | markdownify }}</div>
-        {% endif %}
-        {% if hero.badges %}
-          <ul class="splash__hero-badges">
-            {% for badge in hero.badges %}
-              <li>{{ badge }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-        {% if hero.actions %}
-          <div class="splash__hero-actions">
-            {% for action in hero.actions %}
-              <a class="btn{% if action.style %} btn--{{ action.style }}{% endif %}" href="{{ action.url }}">
-                {% if action.icon %}<i class="{{ action.icon }}" aria-hidden="true"></i>{% endif %}
-                <span>{{ action.label }}</span>
-              </a>
-            {% endfor %}
-          </div>
-        {% endif %}
-        {% if hero.spotlight %}
-          <div class="splash__hero-spotlight">
-            {% if hero.spotlight.title %}<span class="spotlight__label">{{ hero.spotlight.title }}</span>{% endif %}
-            {% if hero.spotlight.description %}<p>{{ hero.spotlight.description }}</p>{% endif %}
-            {% if hero.spotlight.link_label and hero.spotlight.link_url %}
-              <a class="spotlight__link" href="{{ hero.spotlight.link_url }}">{{ hero.spotlight.link_label }}</a>
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-      {% if hero.image %}
-        <div class="splash__hero-media">
-          <img src="{% if hero.image contains '://' %}{{ hero.image }}{% else %}{{ hero.image | prepend: base_path }}{% endif %}" alt="{{ hero.image_alt | default: hero.title | default: page.title }}">
-        </div>
-      {% endif %}
-    </div>
-  </section>
-{% endif %}
-
 <div id="main" role="main">
   <article class="splash" itemscope itemtype="http://schema.org/CreativeWork">
     {% if page.title %}<meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
