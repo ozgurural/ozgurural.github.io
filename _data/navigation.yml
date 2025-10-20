@@ -14,6 +14,8 @@ main:
     url: /publications/
   - title: "Projects"
     url: /projects/
+  - title: "Services"
+    url: /services/
   - title: "Technical Blog"
     url: /blog/
   - title: "Life Blog"
