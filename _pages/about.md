@@ -8,13 +8,19 @@ redirect_from:
   - /about.html
 ---
 
-I’m a Senior Software Engineer and researcher with 11+ years of experience delivering enterprise-scale systems and leading cross‑functional teams. I completed a Ph.D. (August 2025) in Secure & Distributed Machine Learning at ERAU, focusing on proof‑of‑learning protocols, model watermarking, and distributed ML systems. I build high‑reliability software for real‑time simulators and cloud services, translate research into production, and enjoy solving hard problems across cybersecurity, aerospace, and cloud platforms.
+**Driving Innovation in Secure AI & High-Reliability Systems**
+
+I am a **Senior Software Engineer, Researcher, and Technical Leader** with over a decade of experience architecting enterprise-scale systems and leading high-performance cross-functional teams.
+
+Holding a **Ph.D. in Secure & Distributed Machine Learning**, I bridge the gap between advanced academic research and mission-critical industrial applications. My expertise lies in designing proof-of-learning protocols, robust distributed systems, and real-time simulation software where failure is not an option.
+
+As a leader, I specialize in translating complex research into production-ready solutions, mentoring engineering talent, and driving technical strategy for cloud and aerospace platforms.
 
 Highlights:
-- Real‑time simulator software (C/C++, multithreading, synchronous comms).
-- Cloud services and web apps (Scala, TypeScript/JavaScript, Svelte, Python, gRPC/Protobuf, Redis, PostgreSQL).
-- CI/CD and ops (Docker, GitLab CI/CD).
-- Research: proof‑of‑learning, ML watermarking, blockchain‑enhanced ML.
+- **Leadership**: Leading cross-functional teams to deliver critical infrastructure and high-reliability software.
+- **Research Authority**: Pioneering research in Proof-of-Learning, ML Watermarking, and Blockchain-Enhanced ML.
+- **Engineering Excellence**: Architecting cloud-native services (Scala, TypeScript, K8s) and real-time C++ simulation kernels.
+
 
 [View my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
 
