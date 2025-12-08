@@ -11,10 +11,12 @@ tags:
   - Urla
 ---
 
-> **Leadership Insight:**
-> *   **Context:** Competitive sailing is a masterclass in high-stakes teamwork where split-second decisions matter.
-> *   **Lesson:** It teaches you to communicate clearly under pressure ("Communication beats heroics") and trust your crew implicitly.
-> *   **Application:** These same patterns apply directly to Incident Management and Engineering Ops.
+<div class="notice--info" markdown="1">
+**Leadership Insight:**
+*   **Context:** Competitive sailing is a masterclass in high-stakes teamwork where split-second decisions matter.
+*   **Lesson:** It teaches you to communicate clearly under pressure ("Communication beats heroics") and trust your crew implicitly.
+*   **Application:** These same patterns apply directly to Incident Management and Engineering Ops.
+</div>
 
 Middle East Technical University's sailing club has long been a hub for students who love the sea. I joined the club about six years ago, eager to escape Ankara's dry inland climate, and spent nearly every free weekend on the Aegean. I'm not a member today, but the lessons still stick. Learning to call sail trim and feeling the hull surge after a clean tack gave me my first taste of real teamwork.
 
