@@ -1,5 +1,5 @@
 ---
-title: "PhD Life at Embry-Riddle: Machine Learning, Security, and Sunshine"
+title: "Reflections on the PhD Journey: Building Secure AI in Availability Zones"
 date: 2025-09-09
 permalink: /posts/2025/09/phd-era-florida-ml-security/
 categories: life

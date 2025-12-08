@@ -11,6 +11,13 @@ tags:
   - decentralization
 ---
 
+---
+
+> **Executive Summary:**
+> *   **Trend:** Blockchain & ML are converging to create verifiable, decentralized intelligence.
+> *   **Key Insight:** By moving coordination on-chain and computation off-chain, we can build transparent model marketplaces without sacrificing scalability.
+> *   **Impact:** This architecture enables "Proof-of-Useful-Work," where network security is powered by meaningful AI training tasks rather than wasteful hashing.
+
 Blockchain technology and machine learning (ML) have traditionally evolved on parallel tracks. However, recent research shows that their convergence promises **transparent, trustworthy, and decentralized intelligent systems**. In our survey on blockchain-enhanced machine learning [1], we examine how the decentralized design of blockchain can address systemic challenges in ML and pave the way for collaborative, verifiable artificial intelligence.
 
 ## Why Blockchain Matters for ML
@@ -21,7 +28,24 @@ Blockchain technology and machine learning (ML) have traditionally evolved on pa
 
 ## Core Architectural Patterns
 
-Our survey identifies three canonical architectures for combining blockchain with ML:
+Our survey identifies three canonical architectures for combining blockchain with ML. The most promising for scalability is the **On-chain coordination, Off-chain computation** pattern:
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant SmartContract
+    participant OffChainWorker
+    participant Storage as IPFS/Storage
+
+    Client->>SmartContract: Request Model Training (Deposit Tokens)
+    SmartContract->>SmartContract: Emit "TrainingRequested" Event
+    OffChainWorker->>SmartContract: Listen for Event
+    OffChainWorker->>OffChainWorker: Perform Heavy ML Training (GPU)
+    OffChainWorker->>Storage: Upload Model Weights
+    Storage-->>OffChainWorker: Return Hash (CID)
+    OffChainWorker->>SmartContract: Submit Result (Model Hash + Proof)
+    SmartContract->>Client: Model Ready (Release Tokens)
+```
 
 * **On-chain coordination, off-chain computation** – Lightweight smart contracts log events and manage access control while heavy model training occurs off-chain. This pattern balances transparency with scalability and suits federated learning or model marketplaces.
 * **Proof-of-Useful-Work** – Instead of wasteful hashing, miners perform ML training or inference to secure the blockchain. The result is a consensus mechanism where useful computation replaces traditional mining, linking network security with ML progress.
@@ -57,3 +81,6 @@ By marrying blockchain's transparency with machine learning's predictive power, 
 ## References
 
 [1] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
+
+---
+*Dr. Ozgur Ural is a Senior Software Engineer & Researcher specializing in Secure Distributed Systems. This article is based on his Ph.D. research into the intersection of Cryptography and Machine Learning.*
