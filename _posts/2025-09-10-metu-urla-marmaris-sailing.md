@@ -11,6 +11,11 @@ tags:
   - Urla
 ---
 
+> **Leadership Insight:**
+> *   **Context:** Competitive sailing is a masterclass in high-stakes teamwork where split-second decisions matter.
+> *   **Lesson:** It teaches you to communicate clearly under pressure ("Communication beats heroics") and trust your crew implicitly.
+> *   **Application:** These same patterns apply directly to Incident Management and Engineering Ops.
+
 Middle East Technical University's sailing club has long been a hub for students who love the sea. I joined the club about six years ago, eager to escape Ankara's dry inland climate, and spent nearly every free weekend on the Aegean. I'm not a member today, but the lessons still stick. Learning to call sail trim and feeling the hull surge after a clean tack gave me my first taste of real teamwork.
 
 Those early regattas taught me more than boat handling. We planned our own logistics, from borrowing a van for the sails to cooking pasta in the parking lot after long practice days. Keeping a race journal of what went right and wrong became a habit I still lean on, even if my time on the water is a few years behind me.
@@ -52,4 +57,7 @@ Leaving the club didn't mean leaving the habits behind. The discipline of double
 - [Baykar Tech](https://www.baykartech.com)
 - [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
 - [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))
+
+---
+*Dr. Ozgur Ural connects the discipline of elite sports to high-performance engineering leadership.*
 

@@ -1,11 +1,11 @@
 ---
 permalink: /life/
-title: "Life Blog"
+title: "Perspectives & Leadership"
 author_profile: true
 layout: archive
 ---
 
-Thoughts and experiences about life abroad, culture, and personal growth.
+Lessons on leadership, culture, and resilience drawn from beyond the engineering terminal.
 
 {% include base_path %}
 {% for post in site.categories.life %}
