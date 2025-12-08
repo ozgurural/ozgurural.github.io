@@ -14,10 +14,9 @@ tags:
 ---
 
 <div class="notice--info" markdown="1">
-**Executive Summary:**
-*   **Trend:** Blockchain & ML are converging to create verifiable, decentralized intelligence.
-*   **Key Insight:** By moving coordination on-chain and computation off-chain, we can build transparent model marketplaces without sacrificing scalability.
-*   **Impact:** This architecture enables "Proof-of-Useful-Work," where network security is powered by meaningful AI training tasks rather than wasteful hashing.
+**Editor's Note on Distributed Intelligence**
+
+Blockchain and Machine Learning are often discussed as separate revolutions, but their intersection offers a solution to the "black box" problem in AI. This article explores how we can move model coordination on-chain while keeping heavy computation off-chain—a hybrid architecture that finally makes "Proof-of-Useful-Work" a reality.
 </div>
 
 Blockchain technology and machine learning (ML) have traditionally evolved on parallel tracks. However, recent research shows that their convergence promises **transparent, trustworthy, and decentralized intelligent systems**. In our survey on blockchain-enhanced machine learning [1], we examine how the decentralized design of blockchain can address systemic challenges in ML and pave the way for collaborative, verifiable artificial intelligence.
