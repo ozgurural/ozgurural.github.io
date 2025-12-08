@@ -37,48 +37,15 @@ author:
   academia         : # URL
   arxiv            : # URL - Update with the correct link to your profile
   googlescholar    : "https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate"
-  inspire-hep      : # URL
-  impactstory      : # URL
   orcid            : "http://orcid.org/0000-0003-1329-4303"
-  semantic         : # URL
-  pubmed           : # "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   researchgate     : "https://www.researchgate.net/profile/Ozgur-Ural"
-  scopus           : # URL
 
   # Repositories and software development
-  bitbucket        :
-  codepen          :
-  dribbble         :
   github           : "ozgurural"
-  kaggle           : 
-  stackoverflow    : # http://stackoverflow.com/users/123456/username
 
   # Social media
-  artstation       : # Username
-  bluesky          : # Replace this with your Bluesky username
-  facebook         :
-  flickr           :
-  foursquare       :
-  goodreads        :
-  google_plus      :
-  keybase          :
-  instagram        :
-  lastfm           :
   linkedin         : "uralozgur"
-  mastodon         : 
-  medium           :
-  pinterest        :
-  soundcloud       :
-  steam            :
-  telegram         :
-  tumblr           :
   twitter          : "ozgurural"
-  vine             :
-  weibo            :
-  wikipedia        :
-  xing             :
-  youtube          :
-  zhihu            :
 
 # Publication Category - The following the list of publication categories and their headings
 publication_category:
