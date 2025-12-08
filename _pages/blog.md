@@ -9,7 +9,8 @@ redirect_from:
 ---
 
 
-Here you can find deep dives into various technical topics. Click on a post title to read more.
+Here you'll find deep dives into machine learning security, proof-of-learning protocols, distributed systems, flight simulation software, and engineering best practices. Whether you're a researcher, engineer, or curious technologist, I hope these posts spark new ideas.
+
 
 {% include base_path %}
 {% for post in site.categories.technical %}
