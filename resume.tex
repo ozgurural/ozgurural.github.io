@@ -1,0 +1,275 @@
+\documentclass[10pt,a4paper]{article}
+
+% Set the page margins.
+\usepackage[a4paper,margin=0.4in]{geometry}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{amssymb}
+\usepackage{mathpazo}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Setup the language and links
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+
+% Makes resume-specific commands available.
+\usepackage{resume}
+\usepackage{fontawesome}
+
+\begin{document}  % start the content of the document
+\sloppy  % This is to relax whitespace in favor of straight margins
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+% ---------------------------------------------------------------------------
+% Header
+\maintitle{Ozgur Ural, Ph.D.}{}{Last update on \today}
+
+\nobreakvspace{0.1em}
+
+\href{mailto:ozgururalnl@gmail.com}{ozgururalnl@gmail.com} \hfill \textsmaller{\textbar} \hfill
+\faLinkedinSquare\ \href{https://www.linkedin.com/in/uralozgur/}{uralozgur} \hfill \textsmaller{\textbar} \hfill
+\faGithub\ \href{https://ozgurural.github.io/}{https://ozgurural.github.io} \hfill \textsmaller{\textbar}
+\hfill \textsmaller{+}31\ 6\ 2903\ 0434 \hfill \textsmaller{\textbar}
+\hfill Leiden, Netherlands
+
+\spacedhrule{0.2em}{0.2em}
+
+% ---------------------------------------------------------------------------
+% Professional headline & summary
+\roottitle{Senior Software Engineer and Published Researcher \textbar\ PhD in Secure \& Distributed Machine Learning}
+
+Senior software engineer with 11\,+ years of experience delivering enterprise-scale systems and leading cross-functional teams in C++, Java, Scala, and modern web technologies. Completed a PhD (August 2025) in Secure \& Distributed Machine Learning, focusing on proof-of-learning protocols, model watermarking, and large-scale distributed machine learning systems. Architected real-time simulators, led engineering teams of 14+, and consistently translated cutting-edge research into robust production solutions across cybersecurity, aerospace, and enterprise cloud environments.
+
+\spacedhrule{0.9em}{0.1em}
+\roottitle{TECHNICAL SKILLS}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Languages:} C, C++, Java, Scala, Python, TypeScript/JavaScript
+  \item \textbf{Distributed \& Data:} gRPC/Protobuf, Redis, PostgreSQL, REST
+  \item \textbf{Systems:} Linux, multithreading, networking, real-time/low-latency, backpressure
+  \item \textbf{Web \& UI:} Svelte, HTML, CSS/Tailwind
+  \item \textbf{DevOps:} Docker, GitLab CI/CD, Jenkins, Git
+\end{itemize}
+
+% ---------------------------------------------------------------------------
+\roottitle{EXPERIENCE}
+
+% CURRENT ROLE FIRST
+\headedsection
+{\href{https://www.aviongroup.aero/}{Avion Full Flight Simulators}}
+{\textsc{Nieuw-Vennep, Netherlands}} {
+
+\headedsubsection{Senior Software Engineer}{October 2023 -- Present}
+{
+        \bodytext{
+            \begin{itemize}
+                \item Drove technical direction for cloud platform architecture, collaborating with stakeholders to define roadmaps and mentor junior engineers.
+                \item Developed real-time simulator software using C, C++, and Scala.
+                \item Built a low-latency real-time simulation data pipeline to receive telemetry, normalize/aggregate and serialize to JSON/Protobuf, cache in Redis (hot path), persist in PostgreSQL (durable store), and serve the frontend via gRPC/HTTP; sustained \textasciitilde50\,GB/s real-time ingest with batching and bounded-queue backpressure to keep dashboards responsive.
+                \item Built web applications for the Avion Cloud Environment to monitor, configure, and diagnose core simulator components using TypeScript/JavaScript (Svelte), Scala (backend services), Python, gRPC \& Protocol Buffers, HTML, and CSS/Tailwind.
+                \item Containerized and deployed services with Docker; implemented caching and storage with Redis and PostgreSQL; automated testing and deployments via GitLab CI/CD.
+                \item Translated requirements and specifications into efficient solutions, rapidly prototyping complex systems.
+                \item Incorporated multithreading and efficient I/O (sync/async where appropriate) with bounded-queue backpressure to meet rigorous real-time requirements.
+            \end{itemize}
+        }
+}
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{https://daytonabeach.erau.edu/}{Embry-Riddle Aeronautical University, Daytona Beach}}
+{\textsc{Florida, USA}} {
+    \headedsubsection
+    {Graduate Research Assistant in Electrical Engineering and Computer Science}
+    {August 2021 -- August 2025}
+    {
+        \bodytext
+        {
+            \begin{itemize}
+                \item Thesis Advisor: \href{https://ieeexplore.ieee.org/author/37269327300}{Dr.\ Kenji Yoshigoe}
+                \item Dissertation: ``Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking''
+            \end{itemize}
+        }
+    }
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{https://havelsan.com.tr/en}{Havelsan}}
+{\textsc{Ankara, Turkey}}{
+    \headedsubsection
+    {Software Team Lead}
+    {November 2020 -- August 2021}
+    {
+        \bodytext
+        {
+            \href{https://havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp}{Havelsan DLP} Data Leakage Prevention product.
+            \begin{itemize}
+                \item Technologies and tools used: C, C++, Java, Go, JavaScript, Qt, Sonar, Pardus, Windows, Git, Jira.
+                \item Led a team of 14 engineers (developers, QA, DevOps, support).
+                \item Developed and maintained key features of the endpoint agent, ensuring robust data protection.
+                \item Coordinated with stakeholders to align project goals with business objectives, ensuring timely delivery.
+                \item Provided mentorship and training to team members, fostering a collaborative work environment.
+            \end{itemize}
+        }
+    }
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{https://www.stm.com.tr/en}{STM Defence Technologies}}
+{\textsc{Ankara, Turkey}}{
+    \headedsubsection
+    {Expert Software Engineer}
+    {February 2019 -- November 2020}
+    {
+        \bodytext
+        {
+            \href{https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav}{Kargu} Autonomous Rotary-Wing Attack UAV and \href{https://www.stm.com.tr/en/togan}{Togan} Autonomous Multi-Rotor Reconnaissance UAV.
+            \begin{itemize}
+                \item Technologies and tools used: C++11, Boost, Qt, QML, Google Test, Clang-Tidy, Ubuntu, Git.
+                \item Contributed to the architecture and implementation of the mission-control unit, enhancing drone operational capabilities.
+                \item Developed components of the ground-control unit using Qt and QML, ensuring effective communication and control.
+                \item Designed and implemented Power-On and Continuous Built-In Tests to ensure system reliability and performance.
+                \item Worked closely with cross-functional teams to align technical solutions with project requirements and military standards.
+            \end{itemize}
+        }
+    }
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{https://www.comodo.com}{Comodo Cybersecurity}}
+{\textsc{Ankara, Turkey}}{
+    \headedsubsection
+    {Expert Software Engineer}
+    {July 2014 -- February 2019}
+    {
+        \bodytext
+        {
+            \href{https://cdome.comodo.com/}{Comodo Dome Secure Web Gateway}, \href{https://www.itarian.com/patch-management.php}{Comodo Patch Manager}, and the Chromium-based web browser \href{https://www.comodo.com/home/browsers-toolbars/browser.php}{Comodo Dragon}.
+            \begin{itemize}
+                \item Technologies and tools used: C++17, Boost, Qt, Git, Jira, Jenkins, WinAPI, Bitbucket, JavaScript, jQuery.
+                \item Led the design and development of Windows services and applications to enhance functionality and reliability.
+                \item Established unit testing and code-review protocols to ensure software quality.
+                \item Pioneered the development of advanced browser features, enhancing user security and experience.
+                \item Developed statistical reporting modules, providing product managers with insights for data-driven decision-making.
+                \item Coordinated with cross-functional teams, including product management and QA.
+                \item Implemented and maintained CI/CD pipelines using Jenkins.
+            \end{itemize}
+        }
+    }
+}
+
+% ---------------------------------------------------------------------------
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{EDUCATION}
+
+\headedsection
+{\href{https://daytonabeach.erau.edu/}{Embry-Riddle Aeronautical University, Daytona Beach}}
+{\textsc{Florida, USA}} {
+    \headedsubsection
+    {Ph.D.\ in Electrical Engineering and Computer Science}
+    {2021 -- 2025 (conferred August 2025)}
+    {
+        \begin{itemize}
+            \item Dissertation: ``Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking''
+        \end{itemize}
+    }
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}
+{\textsc{Ankara, Turkey}} {
+    \headedsubsection
+    {Master of Science in Cyber Security}
+    {2015 -- 2019}
+    {
+        \begin{itemize}
+            \item Thesis: \href{https://github.com/ozzgural/MSThesis}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data}
+        \end{itemize}
+    }
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}
+{\textsc{Ankara, Turkey}} {
+    \headedsubsection
+    {Bachelor of Science in Computer Engineering}
+    {2010 -- 2014}
+    {
+        \begin{itemize}
+            \item Institutional note: METU is widely regarded as Turkey's leading engineering university and is ranked 269th globally (QS World University Rankings 2026).
+        \end{itemize}
+    }
+}
+
+\vspace{0.3cm}
+
+\headedsection
+{\href{https://www.anadolu.edu.tr/en}{Anadolu University}}
+{\textsc{Eskişehir, Turkey (Distance/Online)}}{
+  \headedsubsection{Bachelor of Business Administration}{2012 -- 2017}{}
+}
+
+% ---------------------------------------------------------------------------
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{PUBLICATIONS}
+\begin{itemize}
+  \item
+    {
+      Ural, O. (2025). \href{https://commons.erau.edu/edt/905/}{Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking}. Doctoral dissertation, Embry-Riddle Aeronautical University, Daytona Beach, Florida.
+    }
+  \item
+    {
+      Ural, O. and Yoshigoe, K. (2025). \href{https://ieeexplore.ieee.org/document/11293969}{SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks}. IEEE Access. DOI: 10.1109/ACCESS.2025.3642198.
+    }
+  \item
+    {
+      Ural, O. and Yoshigoe, K. (2024). \href{https://ieeexplore.ieee.org/abstract/document/10741282}{Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking}. IEEE Access. DOI: 10.1109/ACCESS.2024.3489776.
+    }
+  \item
+    {
+      Ural, O. and Yoshigoe, K. (2023). \href{https://doi.org/10.1109/ACCESS.2023.3344669}{Survey on Blockchain-Enhanced Machine Learning}. IEEE Access, pp.\ 145331--145362. DOI: 10.1109/ACCESS.2023.3344669.
+    }
+  \item
+    {
+      Ural, O. and Acartürk, C. (2021). \href{https://www.scitepress.org/Papers/2021/102016/102016.pdf}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data}. Proceedings of the 7th International Conference on Information Systems Security and Privacy (ICISSP), ISBN 978-989-758-491-6; ISSN 2184-4356, pp.\ 66--76. DOI: 10.5220/0010201600660076.
+    }
+  \item
+    {
+      Ural, Ozgur and Erdur, Efe. (2016). \href{https://www.researchgate.net/publication/316102682_Secure_Proxy_on_Cloud}{Secure Proxy on Cloud}. DOI: 10.13140/RG.2.2.24058.08649.
+    }
+  \item
+    {
+      Ural, Ozgur (2014). \href{http://senior.ceng.metu.edu.tr/2014/clover}{Autonomous Cargo and Mail Delivery}. Turkish Autonomous Robots Conference, Ankara, Turkey.
+    }
+  \item
+    {
+      \textbf{Peer reviewer (2022--present):} Reviewed 10+ manuscripts across machine learning and security venues, including IEEE Access.
+    }
+\end{itemize}
+
+% ---------------------------------------------------------------------------
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{AWARDS \& HONORS}
+\begin{itemize}
+    \item The Scientific and Technological Research Council of Turkey (TÜBİTAK) National Project Competition -- First Prize, June 2014.
+    \item Middle East Technical University Graduation Projects Competition -- Second Prize, June 2014.
+\end{itemize}
+
+\end{document}

@@ -19,13 +19,14 @@ As a leader, I specialize in translating complex research into production-ready 
 Highlights:
 - **Leadership**: Leading cross-functional teams to deliver critical infrastructure and high-reliability software.
 - **Research Authority**: Pioneering research in Proof-of-Learning, ML Watermarking, and Blockchain-Enhanced ML.
-- **Engineering Excellence**: Architecting cloud-native services (Scala, TypeScript, K8s) and real-time C++ simulation kernels.
+- **Engineering Excellence**: Architecting cloud-native services (Scala, TypeScript, gRPC) and real-time C++ simulation kernels.
 
 
 [View my resume (PDF)](/Ozgur_Ural_PhD_Resume.pdf)
 
 ## News
 
+ - **December 2025:** Published the paper, *"SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/document/11293969)
  - **August 2025:** Graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU). Dissertation: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe. [Dissertation link](https://commons.erau.edu/edt/905/). [Diploma verification](https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae).
  - **July 2025:** Successfully defended my Ph.D. dissertation. Title: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe.
 - **November 2024:** Successfully defended my Ph.D. proposal. I am now officially a Ph.D. Candidate.  

@@ -66,6 +66,13 @@
   "references": [],
   "publications": [
     {
+      "name": "SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks",
+      "publisher": "IEEE Access",
+      "releaseDate": "2025-12-10",
+      "website": "https://ieeexplore.ieee.org/document/11293969",
+      "summary": "Proof-of-Learning (PoL) attests training effort but remains vulnerable to tolerance-based spoofing, while model watermarking (WM) protects ownership without verifying how a model was trained. We present SecurePoL, a dual-layer framework that couples immutable PoL logs with three watermarking strategies: feature-based triggers, sparse parameter perturbations, and a non-intrusive auxiliary head, so that verification succeeds only when both the training trajectory and the watermark are consistent. This design forces an attacker to satisfy trajectory consistency and watermark integrity at the same time, rather than bypassing each mechanism in isolation."
+    },
+    {
       "name": "Paper Title Number 1",
       "publisher": "Journal 1",
       "releaseDate": "2009-10-01",
