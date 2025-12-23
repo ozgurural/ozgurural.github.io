@@ -1,42 +1,43 @@
----
-title: "Documentation as the First User Interface"
-date: 2025-09-13
-permalink: /posts/2025/09/documentation-first-ui/
-categories: technical
-tags:
-  - documentation
-  - developer-experience
-  - onboarding
----
-
-Before a developer ever sees your landing page, they might encounter your README. For many technical products, documentation is the first user interface. It guides users through setup, communicates architecture decisions, and sets expectations for how the system behaves. Neglecting documentation is like shipping a GUI with missing buttons and unlabeled fields.
-
-## Clear Docs Reduce Support Load
-
-Well-written documentation prevents repetitive support requests and frees engineering time. When we shipped the first version of Avion‚Äôs telemetry API, the same three setup questions kept hitting our inbox‚Äîeven though the answers technically lived in the docs. They were buried in long paragraphs without code examples. After restructuring the documentation into task-based sections with copy‚Äëand‚Äëpaste snippets, support tickets dropped by 40%.
-
-Support metrics should inform documentation priorities. If a question appears frequently in chat channels or issue trackers, the docs have failed to address it clearly enough. Incorporating analytics‚Äîsuch as page views and time-on-page‚Äîhelps identify which sections are confusing or underused.
-
-## Documentation Reflects Product Clarity
-
-Confusing documentation often mirrors confusing architecture. If it takes a dozen steps to explain how modules interact, the system might be overcomplicated. Documentation thus serves as a design smell detector. When we rewrote the Comodo patch manager ingest pipeline, we documented every step required to onboard a new feed. The exercise exposed redundant transformations and inconsistent naming conventions, prompting an architectural overhaul that cut processing time in half.
-
-Make documentation updates a required part of any significant code change. Pull requests should fail if associated docs are missing or outdated. This establishes a culture where documentation evolves alongside code rather than lags behind it.
-
-## Integrating Docs into the Dev Pipeline
-
-Treat docs as code: version them, review them, and test them. Static-site generators and automated link checkers ensure that code examples compile and that references stay current. Continuous integration can run linting tools to catch broken headings, improper formatting, or outdated API calls.
-
-Some teams go further by generating documentation from annotated source code. While auto-generated docs risk being dry, pairing them with hand‚Äëwritten guides offers both precision and narrative. The key is to reduce friction: when writing docs is as seamless as writing tests, developers are more likely to do it.
-
-## Documentation as Community Infrastructure
-
-Documentation also shapes the community around a project. Clear contribution guides and code of conduct statements signal that newcomers are welcome. For open-source maintainers, this onboarding experience can be the difference between a thriving contributor base and a repository maintained by one exhausted developer.
-
-Encourage community contributions by highlighting doc-related issues, tagging them as ‚Äúgood first issue,‚Äù and providing templates for pull requests. Responsive maintainers who acknowledge documentation fixes build trust, turning casual users into long-term collaborators.
-
-## Docs Are Never Finished
-
-Unlike UI elements that stabilize after release, documentation is a living artifact. APIs deprecate, workflows shift, and user personas change. Schedule periodic doc audits to prune outdated sections and refresh examples. Treat documentation as a garden that needs regular tending, not a stone monument erected at version 1.0.
-
-When documentation is treated as the first user interface, it earns the care and iteration typically reserved for product features. Users notice, adoption increases, and the time saved compounds across every developer who reads a clear sentence instead of filing a ticket.
+--------
+-t-i-t-l-e-:- -"-D-o-c-u-m-e-n-t-a-t-i-o-n- -a-s- -t-h-e- -F-i-r-s-t- -U-s-e-r- -I-n-t-e-r-f-a-c-e-"--
+-d-a-t-e-:- -2-0-2-5---0-9---1-3--
+-p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-d-o-c-u-m-e-n-t-a-t-i-o-n---f-i-r-s-t---u-i-/--
+-c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
+-t-a-g-s-:--
+- - --- -d-o-c-u-m-e-n-t-a-t-i-o-n--
+- - --- -d-e-v-e-l-o-p-e-r---e-x-p-e-r-i-e-n-c-e--
+- - --- -o-n-b-o-a-r-d-i-n-g--
+--------
+--
+-B-e-f-o-r-e- -a- -d-e-v-e-l-o-p-e-r- -e-v-e-r- -s-e-e-s- -y-o-u-r- -l-a-n-d-i-n-g- -p-a-g-e-,- -t-h-e-y- -m-i-g-h-t- -e-n-c-o-u-n-t-e-r- -y-o-u-r- -R-E-A-D-M-E-.- -F-o-r- -m-a-n-y- -t-e-c-h-n-i-c-a-l- -p-r-o-d-u-c-t-s-,- -d-o-c-u-m-e-n-t-a-t-i-o-n- -i-s- -t-h-e- -f-i-r-s-t- -u-s-e-r- -i-n-t-e-r-f-a-c-e-.- -I-t- -g-u-i-d-e-s- -u-s-e-r-s- -t-h-r-o-u-g-h- -s-e-t-u-p-,- -c-o-m-m-u-n-i-c-a-t-e-s- -a-r-c-h-i-t-e-c-t-u-r-e- -d-e-c-i-s-i-o-n-s-,- -a-n-d- -s-e-t-s- -e-x-p-e-c-t-a-t-i-o-n-s- -f-o-r- -h-o-w- -t-h-e- -s-y-s-t-e-m- -b-e-h-a-v-e-s-.- -N-e-g-l-e-c-t-i-n-g- -d-o-c-u-m-e-n-t-a-t-i-o-n- -i-s- -l-i-k-e- -s-h-i-p-p-i-n-g- -a- -G-U-I- -w-i-t-h- -m-i-s-s-i-n-g- -b-u-t-t-o-n-s- -a-n-d- -u-n-l-a-b-e-l-e-d- -f-i-e-l-d-s-.--
+--
+-#-#- -C-l-e-a-r- -D-o-c-s- -R-e-d-u-c-e- -S-u-p-p-o-r-t- -L-o-a-d--
+--
+-W-e-l-l---w-r-i-t-t-e-n- -d-o-c-u-m-e-n-t-a-t-i-o-n- -p-r-e-v-e-n-t-s- -r-e-p-e-t-i-t-i-v-e- -s-u-p-p-o-r-t- -r-e-q-u-e-s-t-s- -a-n-d- -f-r-e-e-s- -e-n-g-i-n-e-e-r-i-n-g- -t-i-m-e-.- -W-h-e-n- -w-e- -s-h-i-p-p-e-d- -t-h-e- -f-i-r-s-t- -v-e-r-s-i-o-n- -o-f- -A-v-i-o-n-‚-Ä-ô-s- -t-e-l-e-m-e-t-r-y- -A-P-I-,- -t-h-e- -s-a-m-e- -t-h-r-e-e- -s-e-t-u-p- -q-u-e-s-t-i-o-n-s- -k-e-p-t- -h-i-t-t-i-n-g- -o-u-r- -i-n-b-o-x-‚-Ä-î-e-v-e-n- -t-h-o-u-g-h- -t-h-e- -a-n-s-w-e-r-s- -t-e-c-h-n-i-c-a-l-l-y- -l-i-v-e-d- -i-n- -t-h-e- -d-o-c-s-.- -T-h-e-y- -w-e-r-e- -b-u-r-i-e-d- -i-n- -l-o-n-g- -p-a-r-a-g-r-a-p-h-s- -w-i-t-h-o-u-t- -c-o-d-e- -e-x-a-m-p-l-e-s-.- -A-f-t-e-r- -r-e-s-t-r-u-c-t-u-r-i-n-g- -t-h-e- -d-o-c-u-m-e-n-t-a-t-i-o-n- -i-n-t-o- -t-a-s-k---b-a-s-e-d- -s-e-c-t-i-o-n-s- -w-i-t-h- -c-o-p-y-‚-Ä-ë-a-n-d-‚-Ä-ë-p-a-s-t-e- -s-n-i-p-p-e-t-s-,- -s-u-p-p-o-r-t- -t-i-c-k-e-t-s- -d-r-o-p-p-e-d- -b-y- -4-0-%-.--
+--
+-S-u-p-p-o-r-t- -m-e-t-r-i-c-s- -s-h-o-u-l-d- -i-n-f-o-r-m- -d-o-c-u-m-e-n-t-a-t-i-o-n- -p-r-i-o-r-i-t-i-e-s-.- -I-f- -a- -q-u-e-s-t-i-o-n- -a-p-p-e-a-r-s- -f-r-e-q-u-e-n-t-l-y- -i-n- -c-h-a-t- -c-h-a-n-n-e-l-s- -o-r- -i-s-s-u-e- -t-r-a-c-k-e-r-s-,- -t-h-e- -d-o-c-s- -h-a-v-e- -f-a-i-l-e-d- -t-o- -a-d-d-r-e-s-s- -i-t- -c-l-e-a-r-l-y- -e-n-o-u-g-h-.- -I-n-c-o-r-p-o-r-a-t-i-n-g- -a-n-a-l-y-t-i-c-s-‚-Ä-î-s-u-c-h- -a-s- -p-a-g-e- -v-i-e-w-s- -a-n-d- -t-i-m-e---o-n---p-a-g-e-‚-Ä-î-h-e-l-p-s- -i-d-e-n-t-i-f-y- -w-h-i-c-h- -s-e-c-t-i-o-n-s- -a-r-e- -c-o-n-f-u-s-i-n-g- -o-r- -u-n-d-e-r-u-s-e-d-.--
+--
+-#-#- -D-o-c-u-m-e-n-t-a-t-i-o-n- -R-e-f-l-e-c-t-s- -P-r-o-d-u-c-t- -C-l-a-r-i-t-y--
+--
+-C-o-n-f-u-s-i-n-g- -d-o-c-u-m-e-n-t-a-t-i-o-n- -o-f-t-e-n- -m-i-r-r-o-r-s- -c-o-n-f-u-s-i-n-g- -a-r-c-h-i-t-e-c-t-u-r-e-.- -I-f- -i-t- -t-a-k-e-s- -a- -d-o-z-e-n- -s-t-e-p-s- -t-o- -e-x-p-l-a-i-n- -h-o-w- -m-o-d-u-l-e-s- -i-n-t-e-r-a-c-t-,- -t-h-e- -s-y-s-t-e-m- -m-i-g-h-t- -b-e- -o-v-e-r-c-o-m-p-l-i-c-a-t-e-d-.- -D-o-c-u-m-e-n-t-a-t-i-o-n- -t-h-u-s- -s-e-r-v-e-s- -a-s- -a- -d-e-s-i-g-n- -s-m-e-l-l- -d-e-t-e-c-t-o-r-.- -W-h-e-n- -w-e- -r-e-w-r-o-t-e- -t-h-e- -C-o-m-o-d-o- -p-a-t-c-h- -m-a-n-a-g-e-r- -i-n-g-e-s-t- -p-i-p-e-l-i-n-e-,- -w-e- -d-o-c-u-m-e-n-t-e-d- -e-v-e-r-y- -s-t-e-p- -r-e-q-u-i-r-e-d- -t-o- -o-n-b-o-a-r-d- -a- -n-e-w- -f-e-e-d-.- -T-h-e- -e-x-e-r-c-i-s-e- -e-x-p-o-s-e-d- -r-e-d-u-n-d-a-n-t- -t-r-a-n-s-f-o-r-m-a-t-i-o-n-s- -a-n-d- -i-n-c-o-n-s-i-s-t-e-n-t- -n-a-m-i-n-g- -c-o-n-v-e-n-t-i-o-n-s-,- -p-r-o-m-p-t-i-n-g- -a-n- -a-r-c-h-i-t-e-c-t-u-r-a-l- -o-v-e-r-h-a-u-l- -t-h-a-t- -c-u-t- -p-r-o-c-e-s-s-i-n-g- -t-i-m-e- -i-n- -h-a-l-f-.--
+--
+-M-a-k-e- -d-o-c-u-m-e-n-t-a-t-i-o-n- -u-p-d-a-t-e-s- -a- -r-e-q-u-i-r-e-d- -p-a-r-t- -o-f- -a-n-y- -s-i-g-n-i-f-i-c-a-n-t- -c-o-d-e- -c-h-a-n-g-e-.- -P-u-l-l- -r-e-q-u-e-s-t-s- -s-h-o-u-l-d- -f-a-i-l- -i-f- -a-s-s-o-c-i-a-t-e-d- -d-o-c-s- -a-r-e- -m-i-s-s-i-n-g- -o-r- -o-u-t-d-a-t-e-d-.- -T-h-i-s- -e-s-t-a-b-l-i-s-h-e-s- -a- -c-u-l-t-u-r-e- -w-h-e-r-e- -d-o-c-u-m-e-n-t-a-t-i-o-n- -e-v-o-l-v-e-s- -a-l-o-n-g-s-i-d-e- -c-o-d-e- -r-a-t-h-e-r- -t-h-a-n- -l-a-g-s- -b-e-h-i-n-d- -i-t-.--
+--
+-#-#- -I-n-t-e-g-r-a-t-i-n-g- -D-o-c-s- -i-n-t-o- -t-h-e- -D-e-v- -P-i-p-e-l-i-n-e--
+--
+-T-r-e-a-t- -d-o-c-s- -a-s- -c-o-d-e-:- -v-e-r-s-i-o-n- -t-h-e-m-,- -r-e-v-i-e-w- -t-h-e-m-,- -a-n-d- -t-e-s-t- -t-h-e-m-.- -S-t-a-t-i-c---s-i-t-e- -g-e-n-e-r-a-t-o-r-s- -a-n-d- -a-u-t-o-m-a-t-e-d- -l-i-n-k- -c-h-e-c-k-e-r-s- -e-n-s-u-r-e- -t-h-a-t- -c-o-d-e- -e-x-a-m-p-l-e-s- -c-o-m-p-i-l-e- -a-n-d- -t-h-a-t- -r-e-f-e-r-e-n-c-e-s- -s-t-a-y- -c-u-r-r-e-n-t-.- -C-o-n-t-i-n-u-o-u-s- -i-n-t-e-g-r-a-t-i-o-n- -c-a-n- -r-u-n- -l-i-n-t-i-n-g- -t-o-o-l-s- -t-o- -c-a-t-c-h- -b-r-o-k-e-n- -h-e-a-d-i-n-g-s-,- -i-m-p-r-o-p-e-r- -f-o-r-m-a-t-t-i-n-g-,- -o-r- -o-u-t-d-a-t-e-d- -A-P-I- -c-a-l-l-s-.--
+--
+-S-o-m-e- -t-e-a-m-s- -g-o- -f-u-r-t-h-e-r- -b-y- -g-e-n-e-r-a-t-i-n-g- -d-o-c-u-m-e-n-t-a-t-i-o-n- -f-r-o-m- -a-n-n-o-t-a-t-e-d- -s-o-u-r-c-e- -c-o-d-e-.- -W-h-i-l-e- -a-u-t-o---g-e-n-e-r-a-t-e-d- -d-o-c-s- -r-i-s-k- -b-e-i-n-g- -d-r-y-,- -p-a-i-r-i-n-g- -t-h-e-m- -w-i-t-h- -h-a-n-d-‚-Ä-ë-w-r-i-t-t-e-n- -g-u-i-d-e-s- -o-f-f-e-r-s- -b-o-t-h- -p-r-e-c-i-s-i-o-n- -a-n-d- -n-a-r-r-a-t-i-v-e-.- -T-h-e- -k-e-y- -i-s- -t-o- -r-e-d-u-c-e- -f-r-i-c-t-i-o-n-:- -w-h-e-n- -w-r-i-t-i-n-g- -d-o-c-s- -i-s- -a-s- -s-e-a-m-l-e-s-s- -a-s- -w-r-i-t-i-n-g- -t-e-s-t-s-,- -d-e-v-e-l-o-p-e-r-s- -a-r-e- -m-o-r-e- -l-i-k-e-l-y- -t-o- -d-o- -i-t-.--
+--
+-#-#- -D-o-c-u-m-e-n-t-a-t-i-o-n- -a-s- -C-o-m-m-u-n-i-t-y- -I-n-f-r-a-s-t-r-u-c-t-u-r-e--
+--
+-D-o-c-u-m-e-n-t-a-t-i-o-n- -a-l-s-o- -s-h-a-p-e-s- -t-h-e- -c-o-m-m-u-n-i-t-y- -a-r-o-u-n-d- -a- -p-r-o-j-e-c-t-.- -C-l-e-a-r- -c-o-n-t-r-i-b-u-t-i-o-n- -g-u-i-d-e-s- -a-n-d- -c-o-d-e- -o-f- -c-o-n-d-u-c-t- -s-t-a-t-e-m-e-n-t-s- -s-i-g-n-a-l- -t-h-a-t- -n-e-w-c-o-m-e-r-s- -a-r-e- -w-e-l-c-o-m-e-.- -F-o-r- -o-p-e-n---s-o-u-r-c-e- -m-a-i-n-t-a-i-n-e-r-s-,- -t-h-i-s- -o-n-b-o-a-r-d-i-n-g- -e-x-p-e-r-i-e-n-c-e- -c-a-n- -b-e- -t-h-e- -d-i-f-f-e-r-e-n-c-e- -b-e-t-w-e-e-n- -a- -t-h-r-i-v-i-n-g- -c-o-n-t-r-i-b-u-t-o-r- -b-a-s-e- -a-n-d- -a- -r-e-p-o-s-i-t-o-r-y- -m-a-i-n-t-a-i-n-e-d- -b-y- -o-n-e- -e-x-h-a-u-s-t-e-d- -d-e-v-e-l-o-p-e-r-.--
+--
+-E-n-c-o-u-r-a-g-e- -c-o-m-m-u-n-i-t-y- -c-o-n-t-r-i-b-u-t-i-o-n-s- -b-y- -h-i-g-h-l-i-g-h-t-i-n-g- -d-o-c---r-e-l-a-t-e-d- -i-s-s-u-e-s-,- -t-a-g-g-i-n-g- -t-h-e-m- -a-s- -‚-Ä-ú-g-o-o-d- -f-i-r-s-t- -i-s-s-u-e-,-‚-Ä-ù- -a-n-d- -p-r-o-v-i-d-i-n-g- -t-e-m-p-l-a-t-e-s- -f-o-r- -p-u-l-l- -r-e-q-u-e-s-t-s-.- -R-e-s-p-o-n-s-i-v-e- -m-a-i-n-t-a-i-n-e-r-s- -w-h-o- -a-c-k-n-o-w-l-e-d-g-e- -d-o-c-u-m-e-n-t-a-t-i-o-n- -f-i-x-e-s- -b-u-i-l-d- -t-r-u-s-t-,- -t-u-r-n-i-n-g- -c-a-s-u-a-l- -u-s-e-r-s- -i-n-t-o- -l-o-n-g---t-e-r-m- -c-o-l-l-a-b-o-r-a-t-o-r-s-.--
+--
+-#-#- -D-o-c-s- -A-r-e- -N-e-v-e-r- -F-i-n-i-s-h-e-d--
+--
+-U-n-l-i-k-e- -U-I- -e-l-e-m-e-n-t-s- -t-h-a-t- -s-t-a-b-i-l-i-z-e- -a-f-t-e-r- -r-e-l-e-a-s-e-,- -d-o-c-u-m-e-n-t-a-t-i-o-n- -i-s- -a- -l-i-v-i-n-g- -a-r-t-i-f-a-c-t-.- -A-P-I-s- -d-e-p-r-e-c-a-t-e-,- -w-o-r-k-f-l-o-w-s- -s-h-i-f-t-,- -a-n-d- -u-s-e-r- -p-e-r-s-o-n-a-s- -c-h-a-n-g-e-.- -S-c-h-e-d-u-l-e- -p-e-r-i-o-d-i-c- -d-o-c- -a-u-d-i-t-s- -t-o- -p-r-u-n-e- -o-u-t-d-a-t-e-d- -s-e-c-t-i-o-n-s- -a-n-d- -r-e-f-r-e-s-h- -e-x-a-m-p-l-e-s-.- -T-r-e-a-t- -d-o-c-u-m-e-n-t-a-t-i-o-n- -a-s- -a- -g-a-r-d-e-n- -t-h-a-t- -n-e-e-d-s- -r-e-g-u-l-a-r- -t-e-n-d-i-n-g-,- -n-o-t- -a- -s-t-o-n-e- -m-o-n-u-m-e-n-t- -e-r-e-c-t-e-d- -a-t- -v-e-r-s-i-o-n- -1-.-0-.--
+--
+-W-h-e-n- -d-o-c-u-m-e-n-t-a-t-i-o-n- -i-s- -t-r-e-a-t-e-d- -a-s- -t-h-e- -f-i-r-s-t- -u-s-e-r- -i-n-t-e-r-f-a-c-e-,- -i-t- -e-a-r-n-s- -t-h-e- -c-a-r-e- -a-n-d- -i-t-e-r-a-t-i-o-n- -t-y-p-i-c-a-l-l-y- -r-e-s-e-r-v-e-d- -f-o-r- -p-r-o-d-u-c-t- -f-e-a-t-u-r-e-s-.- -U-s-e-r-s- -n-o-t-i-c-e-,- -a-d-o-p-t-i-o-n- -i-n-c-r-e-a-s-e-s-,- -a-n-d- -t-h-e- -t-i-m-e- -s-a-v-e-d- -c-o-m-p-o-u-n-d-s- -a-c-r-o-s-s- -e-v-e-r-y- -d-e-v-e-l-o-p-e-r- -w-h-o- -r-e-a-d-s- -a- -c-l-e-a-r- -s-e-n-t-e-n-c-e- -i-n-s-t-e-a-d- -o-f- -f-i-l-i-n-g- -a- -t-i-c-k-e-t-.--
+-

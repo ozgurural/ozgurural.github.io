@@ -1,35 +1,36 @@
----
-title: "Proof of Learning: Building Trust in Future Machine Learning"
-date: 2025-09-09
-permalink: /posts/2025/09/proof-of-learning-future/
-categories: technical
-tags:
-  - proof-of-learning
-  - security
-  - machine-learning
----
-
-Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt the urgency for PoL while helping an aerospace partner document how a safety-critical model was trainedâ€”our counterparts were less interested in raw accuracy and more concerned about whether they could audit each gradient step. As machine learning systems become pervasive in critical domains, PoL offers a mechanism to ensure trust and accountability in model provenance.
-
-### Why PoL Matters in Practice
-
-1. **Model provenance** â€“ PoL links models to their training data and processes, deterring plagiarism and unauthorized reuse. This was decisive when my team compared competing vendors and needed proof that their models werenâ€™t repackaged public checkpoints.
-2. **Regulatory compliance** â€“ Governments and industries are moving toward regulations that demand auditable machine learning pipelines. Draft aerospace guidelines I reviewed would have forced us to deliver tamper-proof logs of every training epoch.
-3. **Economic incentives** â€“ Integrating PoL with blockchain allows useful training work to replace wasteful mining computations [5]. Iâ€™ve seen Web3 founders pitch PoL as the missing incentive layer for decentralized AI training marketplaces.
-
-### Lessons from Building PoL Prototypes
-
-Our research explores model watermarking to protect PoL against spoofing attacks. Feature-based watermarking ties a model to its training data, making forgeries detectable [1]. When we implemented the approach in-house, the most time-consuming step was selecting features that survived model compression without leaking secrets. A follow-up evaluation compares multiple watermarking approaches and analyzes robustness versus computational overhead [2]; the benchmarking rigs we assembled for that study are now my go-to templates for new PoL proofs-of-concept. The dissertation extends these findings and offers deployment guidelines for secure PoL pipelines [3], while earlier survey work examines how blockchain mechanisms complement PoL in decentralized learning environments [4].
-
-### Future Outlook
-
-Emerging blockchain protocols employ PoL as a form of Proof-of-Useful-Work, demonstrating how verifiable training can secure decentralized networks while advancing machine learning [5,6]. I expect the next wave of projects to pair PoL attestations with lightweight compliance dashboards so that technical and policy stakeholders share the same view of model lineage. As the demand for trustworthy AI grows, PoL will underpin open model markets, verifiable federated learning, and energy-efficient consensus systems.
-
-## References
-
-[1] Ural, O. and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access.
-[2] Ural, O. and Yoshigoe, K. (2025). *Evaluation of Model Watermarking Techniques for Proof-of-Learning Security Against Spoofing Attacks*. IEEE Access (in press).
-[3] Ural, O. (2025). *Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking*. Doctoral Dissertation, Embry-Riddle Aeronautical University.
-[4] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
-[5] Lan, Y., Liu, Y., and Li, B. (2020). *Proof of Learning (PoLe): Empowering Machine Learning with Consensus Building on Blockchains*. arXiv:2007.15145.
-[6] Zhao, Z., Fang, Z., Wang, X., Chen, X., Su, H., Xiao, H., and Zhou, Y. (2024). *Proof-of-Learning with Incentive Security*. arXiv:2404.09005.
+--------
+-t-i-t-l-e-:- -"-P-r-o-o-f- -o-f- -L-e-a-r-n-i-n-g-:- -B-u-i-l-d-i-n-g- -T-r-u-s-t- -i-n- -F-u-t-u-r-e- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g-"--
+-d-a-t-e-:- -2-0-2-5---0-9---0-9--
+-p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-p-r-o-o-f---o-f---l-e-a-r-n-i-n-g---f-u-t-u-r-e-/--
+-c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
+-t-a-g-s-:--
+- - --- -p-r-o-o-f---o-f---l-e-a-r-n-i-n-g--
+- - --- -s-e-c-u-r-i-t-y--
+- - --- -m-a-c-h-i-n-e---l-e-a-r-n-i-n-g--
+--------
+--
+-P-r-o-o-f- -o-f- -L-e-a-r-n-i-n-g- -(-P-o-L-)- -v-e-r-i-f-i-e-s- -t-h-a-t- -a- -m-o-d-e-l- -w-a-s- -g-e-n-u-i-n-e-l-y- -t-r-a-i-n-e-d- -o-n- -c-l-a-i-m-e-d- -d-a-t-a- -b-y- -p-r-o-v-i-d-i-n-g- -v-e-r-i-f-i-a-b-l-e- -e-v-i-d-e-n-c-e- -o-f- -t-h-e- -t-r-a-i-n-i-n-g- -p-r-o-c-e-s-s-.- -I- -f-i-r-s-t- -f-e-l-t- -t-h-e- -u-r-g-e-n-c-y- -f-o-r- -P-o-L- -w-h-i-l-e- -h-e-l-p-i-n-g- -a-n- -a-e-r-o-s-p-a-c-e- -p-a-r-t-n-e-r- -d-o-c-u-m-e-n-t- -h-o-w- -a- -s-a-f-e-t-y---c-r-i-t-i-c-a-l- -m-o-d-e-l- -w-a-s- -t-r-a-i-n-e-d-â-€-”-o-u-r- -c-o-u-n-t-e-r-p-a-r-t-s- -w-e-r-e- -l-e-s-s- -i-n-t-e-r-e-s-t-e-d- -i-n- -r-a-w- -a-c-c-u-r-a-c-y- -a-n-d- -m-o-r-e- -c-o-n-c-e-r-n-e-d- -a-b-o-u-t- -w-h-e-t-h-e-r- -t-h-e-y- -c-o-u-l-d- -a-u-d-i-t- -e-a-c-h- -g-r-a-d-i-e-n-t- -s-t-e-p-.- -A-s- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g- -s-y-s-t-e-m-s- -b-e-c-o-m-e- -p-e-r-v-a-s-i-v-e- -i-n- -c-r-i-t-i-c-a-l- -d-o-m-a-i-n-s-,- -P-o-L- -o-f-f-e-r-s- -a- -m-e-c-h-a-n-i-s-m- -t-o- -e-n-s-u-r-e- -t-r-u-s-t- -a-n-d- -a-c-c-o-u-n-t-a-b-i-l-i-t-y- -i-n- -m-o-d-e-l- -p-r-o-v-e-n-a-n-c-e-.--
+--
+-#-#-#- -W-h-y- -P-o-L- -M-a-t-t-e-r-s- -i-n- -P-r-a-c-t-i-c-e--
+--
+-1-.- -*-*-M-o-d-e-l- -p-r-o-v-e-n-a-n-c-e-*-*- -â-€-“- -P-o-L- -l-i-n-k-s- -m-o-d-e-l-s- -t-o- -t-h-e-i-r- -t-r-a-i-n-i-n-g- -d-a-t-a- -a-n-d- -p-r-o-c-e-s-s-e-s-,- -d-e-t-e-r-r-i-n-g- -p-l-a-g-i-a-r-i-s-m- -a-n-d- -u-n-a-u-t-h-o-r-i-z-e-d- -r-e-u-s-e-.- -T-h-i-s- -w-a-s- -d-e-c-i-s-i-v-e- -w-h-e-n- -m-y- -t-e-a-m- -c-o-m-p-a-r-e-d- -c-o-m-p-e-t-i-n-g- -v-e-n-d-o-r-s- -a-n-d- -n-e-e-d-e-d- -p-r-o-o-f- -t-h-a-t- -t-h-e-i-r- -m-o-d-e-l-s- -w-e-r-e-n-â-€-™-t- -r-e-p-a-c-k-a-g-e-d- -p-u-b-l-i-c- -c-h-e-c-k-p-o-i-n-t-s-.--
+-2-.- -*-*-R-e-g-u-l-a-t-o-r-y- -c-o-m-p-l-i-a-n-c-e-*-*- -â-€-“- -G-o-v-e-r-n-m-e-n-t-s- -a-n-d- -i-n-d-u-s-t-r-i-e-s- -a-r-e- -m-o-v-i-n-g- -t-o-w-a-r-d- -r-e-g-u-l-a-t-i-o-n-s- -t-h-a-t- -d-e-m-a-n-d- -a-u-d-i-t-a-b-l-e- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g- -p-i-p-e-l-i-n-e-s-.- -D-r-a-f-t- -a-e-r-o-s-p-a-c-e- -g-u-i-d-e-l-i-n-e-s- -I- -r-e-v-i-e-w-e-d- -w-o-u-l-d- -h-a-v-e- -f-o-r-c-e-d- -u-s- -t-o- -d-e-l-i-v-e-r- -t-a-m-p-e-r---p-r-o-o-f- -l-o-g-s- -o-f- -e-v-e-r-y- -t-r-a-i-n-i-n-g- -e-p-o-c-h-.--
+-3-.- -*-*-E-c-o-n-o-m-i-c- -i-n-c-e-n-t-i-v-e-s-*-*- -â-€-“- -I-n-t-e-g-r-a-t-i-n-g- -P-o-L- -w-i-t-h- -b-l-o-c-k-c-h-a-i-n- -a-l-l-o-w-s- -u-s-e-f-u-l- -t-r-a-i-n-i-n-g- -w-o-r-k- -t-o- -r-e-p-l-a-c-e- -w-a-s-t-e-f-u-l- -m-i-n-i-n-g- -c-o-m-p-u-t-a-t-i-o-n-s- -[-5-]-.- -I-â-€-™-v-e- -s-e-e-n- -W-e-b-3- -f-o-u-n-d-e-r-s- -p-i-t-c-h- -P-o-L- -a-s- -t-h-e- -m-i-s-s-i-n-g- -i-n-c-e-n-t-i-v-e- -l-a-y-e-r- -f-o-r- -d-e-c-e-n-t-r-a-l-i-z-e-d- -A-I- -t-r-a-i-n-i-n-g- -m-a-r-k-e-t-p-l-a-c-e-s-.--
+--
+-#-#-#- -L-e-s-s-o-n-s- -f-r-o-m- -B-u-i-l-d-i-n-g- -P-o-L- -P-r-o-t-o-t-y-p-e-s--
+--
+-O-u-r- -r-e-s-e-a-r-c-h- -e-x-p-l-o-r-e-s- -m-o-d-e-l- -w-a-t-e-r-m-a-r-k-i-n-g- -t-o- -p-r-o-t-e-c-t- -P-o-L- -a-g-a-i-n-s-t- -s-p-o-o-f-i-n-g- -a-t-t-a-c-k-s-.- -F-e-a-t-u-r-e---b-a-s-e-d- -w-a-t-e-r-m-a-r-k-i-n-g- -t-i-e-s- -a- -m-o-d-e-l- -t-o- -i-t-s- -t-r-a-i-n-i-n-g- -d-a-t-a-,- -m-a-k-i-n-g- -f-o-r-g-e-r-i-e-s- -d-e-t-e-c-t-a-b-l-e- -[-1-]-.- -W-h-e-n- -w-e- -i-m-p-l-e-m-e-n-t-e-d- -t-h-e- -a-p-p-r-o-a-c-h- -i-n---h-o-u-s-e-,- -t-h-e- -m-o-s-t- -t-i-m-e---c-o-n-s-u-m-i-n-g- -s-t-e-p- -w-a-s- -s-e-l-e-c-t-i-n-g- -f-e-a-t-u-r-e-s- -t-h-a-t- -s-u-r-v-i-v-e-d- -m-o-d-e-l- -c-o-m-p-r-e-s-s-i-o-n- -w-i-t-h-o-u-t- -l-e-a-k-i-n-g- -s-e-c-r-e-t-s-.- -A- -f-o-l-l-o-w---u-p- -e-v-a-l-u-a-t-i-o-n- -c-o-m-p-a-r-e-s- -m-u-l-t-i-p-l-e- -w-a-t-e-r-m-a-r-k-i-n-g- -a-p-p-r-o-a-c-h-e-s- -a-n-d- -a-n-a-l-y-z-e-s- -r-o-b-u-s-t-n-e-s-s- -v-e-r-s-u-s- -c-o-m-p-u-t-a-t-i-o-n-a-l- -o-v-e-r-h-e-a-d- -[-2-]-;- -t-h-e- -b-e-n-c-h-m-a-r-k-i-n-g- -r-i-g-s- -w-e- -a-s-s-e-m-b-l-e-d- -f-o-r- -t-h-a-t- -s-t-u-d-y- -a-r-e- -n-o-w- -m-y- -g-o---t-o- -t-e-m-p-l-a-t-e-s- -f-o-r- -n-e-w- -P-o-L- -p-r-o-o-f-s---o-f---c-o-n-c-e-p-t-.- -T-h-e- -d-i-s-s-e-r-t-a-t-i-o-n- -e-x-t-e-n-d-s- -t-h-e-s-e- -f-i-n-d-i-n-g-s- -a-n-d- -o-f-f-e-r-s- -d-e-p-l-o-y-m-e-n-t- -g-u-i-d-e-l-i-n-e-s- -f-o-r- -s-e-c-u-r-e- -P-o-L- -p-i-p-e-l-i-n-e-s- -[-3-]-,- -w-h-i-l-e- -e-a-r-l-i-e-r- -s-u-r-v-e-y- -w-o-r-k- -e-x-a-m-i-n-e-s- -h-o-w- -b-l-o-c-k-c-h-a-i-n- -m-e-c-h-a-n-i-s-m-s- -c-o-m-p-l-e-m-e-n-t- -P-o-L- -i-n- -d-e-c-e-n-t-r-a-l-i-z-e-d- -l-e-a-r-n-i-n-g- -e-n-v-i-r-o-n-m-e-n-t-s- -[-4-]-.--
+--
+-#-#-#- -F-u-t-u-r-e- -O-u-t-l-o-o-k--
+--
+-E-m-e-r-g-i-n-g- -b-l-o-c-k-c-h-a-i-n- -p-r-o-t-o-c-o-l-s- -e-m-p-l-o-y- -P-o-L- -a-s- -a- -f-o-r-m- -o-f- -P-r-o-o-f---o-f---U-s-e-f-u-l---W-o-r-k-,- -d-e-m-o-n-s-t-r-a-t-i-n-g- -h-o-w- -v-e-r-i-f-i-a-b-l-e- -t-r-a-i-n-i-n-g- -c-a-n- -s-e-c-u-r-e- -d-e-c-e-n-t-r-a-l-i-z-e-d- -n-e-t-w-o-r-k-s- -w-h-i-l-e- -a-d-v-a-n-c-i-n-g- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g- -[-5-,-6-]-.- -I- -e-x-p-e-c-t- -t-h-e- -n-e-x-t- -w-a-v-e- -o-f- -p-r-o-j-e-c-t-s- -t-o- -p-a-i-r- -P-o-L- -a-t-t-e-s-t-a-t-i-o-n-s- -w-i-t-h- -l-i-g-h-t-w-e-i-g-h-t- -c-o-m-p-l-i-a-n-c-e- -d-a-s-h-b-o-a-r-d-s- -s-o- -t-h-a-t- -t-e-c-h-n-i-c-a-l- -a-n-d- -p-o-l-i-c-y- -s-t-a-k-e-h-o-l-d-e-r-s- -s-h-a-r-e- -t-h-e- -s-a-m-e- -v-i-e-w- -o-f- -m-o-d-e-l- -l-i-n-e-a-g-e-.- -A-s- -t-h-e- -d-e-m-a-n-d- -f-o-r- -t-r-u-s-t-w-o-r-t-h-y- -A-I- -g-r-o-w-s-,- -P-o-L- -w-i-l-l- -u-n-d-e-r-p-i-n- -o-p-e-n- -m-o-d-e-l- -m-a-r-k-e-t-s-,- -v-e-r-i-f-i-a-b-l-e- -f-e-d-e-r-a-t-e-d- -l-e-a-r-n-i-n-g-,- -a-n-d- -e-n-e-r-g-y---e-f-f-i-c-i-e-n-t- -c-o-n-s-e-n-s-u-s- -s-y-s-t-e-m-s-.--
+--
+-#-#- -R-e-f-e-r-e-n-c-e-s--
+--
+-[-1-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-4-)-.- -*-E-n-h-a-n-c-i-n-g- -S-e-c-u-r-i-t-y- -o-f- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -a-g-a-i-n-s-t- -S-p-o-o-f-i-n-g- -A-t-t-a-c-k-s- -u-s-i-n-g- -F-e-a-t-u-r-e---B-a-s-e-d- -M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g-*-.- -I-E-E-E- -A-c-c-e-s-s-.--
+-[-2-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-5-)-.- -*-E-v-a-l-u-a-t-i-o-n- -o-f- -M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g- -T-e-c-h-n-i-q-u-e-s- -f-o-r- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -S-e-c-u-r-i-t-y- -A-g-a-i-n-s-t- -S-p-o-o-f-i-n-g- -A-t-t-a-c-k-s-*-.- -I-E-E-E- -A-c-c-e-s-s- -(-i-n- -p-r-e-s-s-)-.--
+-[-3-]- -U-r-a-l-,- -O-.- -(-2-0-2-5-)-.- -*-E-n-h-a-n-c-i-n-g- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -S-e-c-u-r-i-t-y- -A-g-a-i-n-s-t- -S-p-o-o-f-i-n-g- -A-t-t-a-c-k-s- -U-s-i-n-g- -M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g-*-.- -D-o-c-t-o-r-a-l- -D-i-s-s-e-r-t-a-t-i-o-n-,- -E-m-b-r-y---R-i-d-d-l-e- -A-e-r-o-n-a-u-t-i-c-a-l- -U-n-i-v-e-r-s-i-t-y-.--
+-[-4-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-3-)-.- -*-S-u-r-v-e-y- -o-n- -B-l-o-c-k-c-h-a-i-n---E-n-h-a-n-c-e-d- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g-*-.- -I-E-E-E- -A-c-c-e-s-s-.--
+-[-5-]- -L-a-n-,- -Y-.-,- -L-i-u-,- -Y-.-,- -a-n-d- -L-i-,- -B-.- -(-2-0-2-0-)-.- -*-P-r-o-o-f- -o-f- -L-e-a-r-n-i-n-g- -(-P-o-L-e-)-:- -E-m-p-o-w-e-r-i-n-g- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g- -w-i-t-h- -C-o-n-s-e-n-s-u-s- -B-u-i-l-d-i-n-g- -o-n- -B-l-o-c-k-c-h-a-i-n-s-*-.- -a-r-X-i-v-:-2-0-0-7-.-1-5-1-4-5-.--
+-[-6-]- -Z-h-a-o-,- -Z-.-,- -F-a-n-g-,- -Z-.-,- -W-a-n-g-,- -X-.-,- -C-h-e-n-,- -X-.-,- -S-u-,- -H-.-,- -X-i-a-o-,- -H-.-,- -a-n-d- -Z-h-o-u-,- -Y-.- -(-2-0-2-4-)-.- -*-P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -w-i-t-h- -I-n-c-e-n-t-i-v-e- -S-e-c-u-r-i-t-y-*-.- -a-r-X-i-v-:-2-4-0-4-.-0-9-0-0-5-.--
+-

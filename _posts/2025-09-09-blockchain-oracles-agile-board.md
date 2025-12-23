@@ -1,55 +1,56 @@
----
-title: "Blockchain Oracles and Smart Contracts: The World's Agile Board"
-date: 2025-09-09
-permalink: /posts/2025/09/blockchain-oracles-agile-board/
-categories: technical
-tags:
-  - blockchain
-  - smart-contracts
-  - oracles
-  - agile
----
-
-Traditional agile boards depend on centralized tools and manual updates. As projects span multiple organizations and trust boundaries, these boards struggle to provide real-time, trustworthy visibility. Blockchain oracles and smart contracts offer a path to an autonomous, tamper-evident coordination layer that could serve as the world's agile board.
-
-## Oracles bridge real-world progress
-
-On-chain smart contracts cannot access external data directly. Oracles solve this by feeding verified off-chain events into the blockchain. Delivery confirmations, test results, or even IoT sensor readings can trigger contract state changes that reflect real-world progress. Modern oracle networks like [Chainlink](https://docs.chain.link/architecture-overview) and [UMA](https://docs.umaproject.org/) aggregate data from multiple independent nodes and apply cryptographic proofs, reducing the risk of manipulation.
-
-## Smart contracts automate the backlog
-
-Once real-world signals reach the chain, smart contracts can enforce workflows without a central administrator. Tasks can be represented as tokensâ€”ERCâ€‘721 NFTs or ERCâ€‘1155 semi-fungible itemsâ€”with states such as "todo," "in progress," and "done." Transitions between states are governed by contract logic (e.g., [OpenZeppelin's Governor](https://docs.openzeppelin.com/contracts/5.x/governance)) and triggered by oracle inputs. Milestone payments or reputation updates can execute automatically using [Chainlink Automation](https://docs.chain.link/chainlink-automation/introduction), aligning incentives across globally distributed teams.
-
-## Anonymous task markets and autonomous companies
-
-Smart contracts also enable pseudonymous work. Individuals can open issues from fresh Ethereum addresses or through privacy layers like [zk-SNARK mixers](https://vitalik.ca/general/2022/06/15/using_snarks.html). Funds are escrowed in the contract, and oracles validate completionâ€”such as GitHub commit hashes, CI results, or shipment dataâ€”before releasing payment. This guarantees that contributors are compensated even if no human project manager intervenes.
-
-When these contracts are coupled with decentralized governance frameworks such as [Aragon DAO](https://aragon.org/) or [DAOstack](https://daostack.io/), the result is a self-directing organization. Task creation, prioritization, and funding are driven entirely by code and token holder votes. In effect, a fully autonomous company can coordinate labor, pay suppliers, and distribute profits without centralized leadership.
-
-## Benefits of a decentralized agile board
-
-* **Transparency:** Every task change is recorded on an immutable ledger, enabling auditable project histories.
-* **Trustless collaboration:** Teams that do not fully trust each other can still coordinate because contract rules are open and enforceable.
-* **Programmable incentives:** Contracts can release funds or reputation points as soon as oracles confirm that deliverables meet agreed criteria.
-* **Interoperability:** Cross-chain messaging protocols like [IBC](https://ibcprotocol.org/) and standardized token interfaces allow tasks and rewards to move between ecosystems.
-
-## Challenges and the road ahead
-
-Oracle reliability, contract upgrades, and user experience remain open challenges. However, advances in decentralized oracle networks, formal verification tools such as [Certora](https://www.certora.com/), and wallet usability are rapidly reducing these barriers. Pilot projects in supply chain management and decentralized autonomous organizations already demonstrate the model.
-
-## Outlook
-
-As oracle infrastructure matures and smart contract platforms scale, the concept of a blockchain-based agile board will move from experiment to default practice. Teams will collaborate through open protocols, and the ledger will coordinate work with precision and impartiality. The world's agile board may soon run on code rather than sticky notes.
-
-## References
-
-- [Chainlink Architecture Overview](https://docs.chain.link/architecture-overview)
-- [UMA Protocol Documentation](https://docs.umaproject.org/)
-- [OpenZeppelin Governor Contracts](https://docs.openzeppelin.com/contracts/5.x/governance)
-- [Chainlink Automation](https://docs.chain.link/chainlink-automation/introduction)
-- [zk-SNARKs for Privacy](https://vitalik.ca/general/2022/06/15/using_snarks.html)
-- [Aragon DAO Framework](https://aragon.org/)
-- [DAOstack Platform](https://daostack.io/)
-- [Inter-Blockchain Communication Protocol](https://ibcprotocol.org/)
-- [Certora Formal Verification](https://www.certora.com/)
-
+--------
+-t-i-t-l-e-:- -"-B-l-o-c-k-c-h-a-i-n- -O-r-a-c-l-e-s- -a-n-d- -S-m-a-r-t- -C-o-n-t-r-a-c-t-s-:- -T-h-e- -W-o-r-l-d-'-s- -A-g-i-l-e- -B-o-a-r-d-"--
+-d-a-t-e-:- -2-0-2-5---0-9---0-9--
+-p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-b-l-o-c-k-c-h-a-i-n---o-r-a-c-l-e-s---a-g-i-l-e---b-o-a-r-d-/--
+-c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
+-t-a-g-s-:--
+- - --- -b-l-o-c-k-c-h-a-i-n--
+- - --- -s-m-a-r-t---c-o-n-t-r-a-c-t-s--
+- - --- -o-r-a-c-l-e-s--
+- - --- -a-g-i-l-e--
+--------
+--
+-T-r-a-d-i-t-i-o-n-a-l- -a-g-i-l-e- -b-o-a-r-d-s- -d-e-p-e-n-d- -o-n- -c-e-n-t-r-a-l-i-z-e-d- -t-o-o-l-s- -a-n-d- -m-a-n-u-a-l- -u-p-d-a-t-e-s-.- -A-s- -p-r-o-j-e-c-t-s- -s-p-a-n- -m-u-l-t-i-p-l-e- -o-r-g-a-n-i-z-a-t-i-o-n-s- -a-n-d- -t-r-u-s-t- -b-o-u-n-d-a-r-i-e-s-,- -t-h-e-s-e- -b-o-a-r-d-s- -s-t-r-u-g-g-l-e- -t-o- -p-r-o-v-i-d-e- -r-e-a-l---t-i-m-e-,- -t-r-u-s-t-w-o-r-t-h-y- -v-i-s-i-b-i-l-i-t-y-.- -B-l-o-c-k-c-h-a-i-n- -o-r-a-c-l-e-s- -a-n-d- -s-m-a-r-t- -c-o-n-t-r-a-c-t-s- -o-f-f-e-r- -a- -p-a-t-h- -t-o- -a-n- -a-u-t-o-n-o-m-o-u-s-,- -t-a-m-p-e-r---e-v-i-d-e-n-t- -c-o-o-r-d-i-n-a-t-i-o-n- -l-a-y-e-r- -t-h-a-t- -c-o-u-l-d- -s-e-r-v-e- -a-s- -t-h-e- -w-o-r-l-d-'-s- -a-g-i-l-e- -b-o-a-r-d-.--
+--
+-#-#- -O-r-a-c-l-e-s- -b-r-i-d-g-e- -r-e-a-l---w-o-r-l-d- -p-r-o-g-r-e-s-s--
+--
+-O-n---c-h-a-i-n- -s-m-a-r-t- -c-o-n-t-r-a-c-t-s- -c-a-n-n-o-t- -a-c-c-e-s-s- -e-x-t-e-r-n-a-l- -d-a-t-a- -d-i-r-e-c-t-l-y-.- -O-r-a-c-l-e-s- -s-o-l-v-e- -t-h-i-s- -b-y- -f-e-e-d-i-n-g- -v-e-r-i-f-i-e-d- -o-f-f---c-h-a-i-n- -e-v-e-n-t-s- -i-n-t-o- -t-h-e- -b-l-o-c-k-c-h-a-i-n-.- -D-e-l-i-v-e-r-y- -c-o-n-f-i-r-m-a-t-i-o-n-s-,- -t-e-s-t- -r-e-s-u-l-t-s-,- -o-r- -e-v-e-n- -I-o-T- -s-e-n-s-o-r- -r-e-a-d-i-n-g-s- -c-a-n- -t-r-i-g-g-e-r- -c-o-n-t-r-a-c-t- -s-t-a-t-e- -c-h-a-n-g-e-s- -t-h-a-t- -r-e-f-l-e-c-t- -r-e-a-l---w-o-r-l-d- -p-r-o-g-r-e-s-s-.- -M-o-d-e-r-n- -o-r-a-c-l-e- -n-e-t-w-o-r-k-s- -l-i-k-e- -[-C-h-a-i-n-l-i-n-k-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-c-h-a-i-n-.-l-i-n-k-/-a-r-c-h-i-t-e-c-t-u-r-e---o-v-e-r-v-i-e-w-)- -a-n-d- -[-U-M-A-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-u-m-a-p-r-o-j-e-c-t-.-o-r-g-/-)- -a-g-g-r-e-g-a-t-e- -d-a-t-a- -f-r-o-m- -m-u-l-t-i-p-l-e- -i-n-d-e-p-e-n-d-e-n-t- -n-o-d-e-s- -a-n-d- -a-p-p-l-y- -c-r-y-p-t-o-g-r-a-p-h-i-c- -p-r-o-o-f-s-,- -r-e-d-u-c-i-n-g- -t-h-e- -r-i-s-k- -o-f- -m-a-n-i-p-u-l-a-t-i-o-n-.--
+--
+-#-#- -S-m-a-r-t- -c-o-n-t-r-a-c-t-s- -a-u-t-o-m-a-t-e- -t-h-e- -b-a-c-k-l-o-g--
+--
+-O-n-c-e- -r-e-a-l---w-o-r-l-d- -s-i-g-n-a-l-s- -r-e-a-c-h- -t-h-e- -c-h-a-i-n-,- -s-m-a-r-t- -c-o-n-t-r-a-c-t-s- -c-a-n- -e-n-f-o-r-c-e- -w-o-r-k-f-l-o-w-s- -w-i-t-h-o-u-t- -a- -c-e-n-t-r-a-l- -a-d-m-i-n-i-s-t-r-a-t-o-r-.- -T-a-s-k-s- -c-a-n- -b-e- -r-e-p-r-e-s-e-n-t-e-d- -a-s- -t-o-k-e-n-s-â-€-”-E-R-C-â-€-‘-7-2-1- -N-F-T-s- -o-r- -E-R-C-â-€-‘-1-1-5-5- -s-e-m-i---f-u-n-g-i-b-l-e- -i-t-e-m-s-â-€-”-w-i-t-h- -s-t-a-t-e-s- -s-u-c-h- -a-s- -"-t-o-d-o-,-"- -"-i-n- -p-r-o-g-r-e-s-s-,-"- -a-n-d- -"-d-o-n-e-.-"- -T-r-a-n-s-i-t-i-o-n-s- -b-e-t-w-e-e-n- -s-t-a-t-e-s- -a-r-e- -g-o-v-e-r-n-e-d- -b-y- -c-o-n-t-r-a-c-t- -l-o-g-i-c- -(-e-.-g-.-,- -[-O-p-e-n-Z-e-p-p-e-l-i-n-'-s- -G-o-v-e-r-n-o-r-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-o-p-e-n-z-e-p-p-e-l-i-n-.-c-o-m-/-c-o-n-t-r-a-c-t-s-/-5-.-x-/-g-o-v-e-r-n-a-n-c-e-)-)- -a-n-d- -t-r-i-g-g-e-r-e-d- -b-y- -o-r-a-c-l-e- -i-n-p-u-t-s-.- -M-i-l-e-s-t-o-n-e- -p-a-y-m-e-n-t-s- -o-r- -r-e-p-u-t-a-t-i-o-n- -u-p-d-a-t-e-s- -c-a-n- -e-x-e-c-u-t-e- -a-u-t-o-m-a-t-i-c-a-l-l-y- -u-s-i-n-g- -[-C-h-a-i-n-l-i-n-k- -A-u-t-o-m-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-c-h-a-i-n-.-l-i-n-k-/-c-h-a-i-n-l-i-n-k---a-u-t-o-m-a-t-i-o-n-/-i-n-t-r-o-d-u-c-t-i-o-n-)-,- -a-l-i-g-n-i-n-g- -i-n-c-e-n-t-i-v-e-s- -a-c-r-o-s-s- -g-l-o-b-a-l-l-y- -d-i-s-t-r-i-b-u-t-e-d- -t-e-a-m-s-.--
+--
+-#-#- -A-n-o-n-y-m-o-u-s- -t-a-s-k- -m-a-r-k-e-t-s- -a-n-d- -a-u-t-o-n-o-m-o-u-s- -c-o-m-p-a-n-i-e-s--
+--
+-S-m-a-r-t- -c-o-n-t-r-a-c-t-s- -a-l-s-o- -e-n-a-b-l-e- -p-s-e-u-d-o-n-y-m-o-u-s- -w-o-r-k-.- -I-n-d-i-v-i-d-u-a-l-s- -c-a-n- -o-p-e-n- -i-s-s-u-e-s- -f-r-o-m- -f-r-e-s-h- -E-t-h-e-r-e-u-m- -a-d-d-r-e-s-s-e-s- -o-r- -t-h-r-o-u-g-h- -p-r-i-v-a-c-y- -l-a-y-e-r-s- -l-i-k-e- -[-z-k---S-N-A-R-K- -m-i-x-e-r-s-]-(-h-t-t-p-s-:-/-/-v-i-t-a-l-i-k-.-c-a-/-g-e-n-e-r-a-l-/-2-0-2-2-/-0-6-/-1-5-/-u-s-i-n-g-_-s-n-a-r-k-s-.-h-t-m-l-)-.- -F-u-n-d-s- -a-r-e- -e-s-c-r-o-w-e-d- -i-n- -t-h-e- -c-o-n-t-r-a-c-t-,- -a-n-d- -o-r-a-c-l-e-s- -v-a-l-i-d-a-t-e- -c-o-m-p-l-e-t-i-o-n-â-€-”-s-u-c-h- -a-s- -G-i-t-H-u-b- -c-o-m-m-i-t- -h-a-s-h-e-s-,- -C-I- -r-e-s-u-l-t-s-,- -o-r- -s-h-i-p-m-e-n-t- -d-a-t-a-â-€-”-b-e-f-o-r-e- -r-e-l-e-a-s-i-n-g- -p-a-y-m-e-n-t-.- -T-h-i-s- -g-u-a-r-a-n-t-e-e-s- -t-h-a-t- -c-o-n-t-r-i-b-u-t-o-r-s- -a-r-e- -c-o-m-p-e-n-s-a-t-e-d- -e-v-e-n- -i-f- -n-o- -h-u-m-a-n- -p-r-o-j-e-c-t- -m-a-n-a-g-e-r- -i-n-t-e-r-v-e-n-e-s-.--
+--
+-W-h-e-n- -t-h-e-s-e- -c-o-n-t-r-a-c-t-s- -a-r-e- -c-o-u-p-l-e-d- -w-i-t-h- -d-e-c-e-n-t-r-a-l-i-z-e-d- -g-o-v-e-r-n-a-n-c-e- -f-r-a-m-e-w-o-r-k-s- -s-u-c-h- -a-s- -[-A-r-a-g-o-n- -D-A-O-]-(-h-t-t-p-s-:-/-/-a-r-a-g-o-n-.-o-r-g-/-)- -o-r- -[-D-A-O-s-t-a-c-k-]-(-h-t-t-p-s-:-/-/-d-a-o-s-t-a-c-k-.-i-o-/-)-,- -t-h-e- -r-e-s-u-l-t- -i-s- -a- -s-e-l-f---d-i-r-e-c-t-i-n-g- -o-r-g-a-n-i-z-a-t-i-o-n-.- -T-a-s-k- -c-r-e-a-t-i-o-n-,- -p-r-i-o-r-i-t-i-z-a-t-i-o-n-,- -a-n-d- -f-u-n-d-i-n-g- -a-r-e- -d-r-i-v-e-n- -e-n-t-i-r-e-l-y- -b-y- -c-o-d-e- -a-n-d- -t-o-k-e-n- -h-o-l-d-e-r- -v-o-t-e-s-.- -I-n- -e-f-f-e-c-t-,- -a- -f-u-l-l-y- -a-u-t-o-n-o-m-o-u-s- -c-o-m-p-a-n-y- -c-a-n- -c-o-o-r-d-i-n-a-t-e- -l-a-b-o-r-,- -p-a-y- -s-u-p-p-l-i-e-r-s-,- -a-n-d- -d-i-s-t-r-i-b-u-t-e- -p-r-o-f-i-t-s- -w-i-t-h-o-u-t- -c-e-n-t-r-a-l-i-z-e-d- -l-e-a-d-e-r-s-h-i-p-.--
+--
+-#-#- -B-e-n-e-f-i-t-s- -o-f- -a- -d-e-c-e-n-t-r-a-l-i-z-e-d- -a-g-i-l-e- -b-o-a-r-d--
+--
+-*- -*-*-T-r-a-n-s-p-a-r-e-n-c-y-:-*-*- -E-v-e-r-y- -t-a-s-k- -c-h-a-n-g-e- -i-s- -r-e-c-o-r-d-e-d- -o-n- -a-n- -i-m-m-u-t-a-b-l-e- -l-e-d-g-e-r-,- -e-n-a-b-l-i-n-g- -a-u-d-i-t-a-b-l-e- -p-r-o-j-e-c-t- -h-i-s-t-o-r-i-e-s-.--
+-*- -*-*-T-r-u-s-t-l-e-s-s- -c-o-l-l-a-b-o-r-a-t-i-o-n-:-*-*- -T-e-a-m-s- -t-h-a-t- -d-o- -n-o-t- -f-u-l-l-y- -t-r-u-s-t- -e-a-c-h- -o-t-h-e-r- -c-a-n- -s-t-i-l-l- -c-o-o-r-d-i-n-a-t-e- -b-e-c-a-u-s-e- -c-o-n-t-r-a-c-t- -r-u-l-e-s- -a-r-e- -o-p-e-n- -a-n-d- -e-n-f-o-r-c-e-a-b-l-e-.--
+-*- -*-*-P-r-o-g-r-a-m-m-a-b-l-e- -i-n-c-e-n-t-i-v-e-s-:-*-*- -C-o-n-t-r-a-c-t-s- -c-a-n- -r-e-l-e-a-s-e- -f-u-n-d-s- -o-r- -r-e-p-u-t-a-t-i-o-n- -p-o-i-n-t-s- -a-s- -s-o-o-n- -a-s- -o-r-a-c-l-e-s- -c-o-n-f-i-r-m- -t-h-a-t- -d-e-l-i-v-e-r-a-b-l-e-s- -m-e-e-t- -a-g-r-e-e-d- -c-r-i-t-e-r-i-a-.--
+-*- -*-*-I-n-t-e-r-o-p-e-r-a-b-i-l-i-t-y-:-*-*- -C-r-o-s-s---c-h-a-i-n- -m-e-s-s-a-g-i-n-g- -p-r-o-t-o-c-o-l-s- -l-i-k-e- -[-I-B-C-]-(-h-t-t-p-s-:-/-/-i-b-c-p-r-o-t-o-c-o-l-.-o-r-g-/-)- -a-n-d- -s-t-a-n-d-a-r-d-i-z-e-d- -t-o-k-e-n- -i-n-t-e-r-f-a-c-e-s- -a-l-l-o-w- -t-a-s-k-s- -a-n-d- -r-e-w-a-r-d-s- -t-o- -m-o-v-e- -b-e-t-w-e-e-n- -e-c-o-s-y-s-t-e-m-s-.--
+--
+-#-#- -C-h-a-l-l-e-n-g-e-s- -a-n-d- -t-h-e- -r-o-a-d- -a-h-e-a-d--
+--
+-O-r-a-c-l-e- -r-e-l-i-a-b-i-l-i-t-y-,- -c-o-n-t-r-a-c-t- -u-p-g-r-a-d-e-s-,- -a-n-d- -u-s-e-r- -e-x-p-e-r-i-e-n-c-e- -r-e-m-a-i-n- -o-p-e-n- -c-h-a-l-l-e-n-g-e-s-.- -H-o-w-e-v-e-r-,- -a-d-v-a-n-c-e-s- -i-n- -d-e-c-e-n-t-r-a-l-i-z-e-d- -o-r-a-c-l-e- -n-e-t-w-o-r-k-s-,- -f-o-r-m-a-l- -v-e-r-i-f-i-c-a-t-i-o-n- -t-o-o-l-s- -s-u-c-h- -a-s- -[-C-e-r-t-o-r-a-]-(-h-t-t-p-s-:-/-/-w-w-w-.-c-e-r-t-o-r-a-.-c-o-m-/-)-,- -a-n-d- -w-a-l-l-e-t- -u-s-a-b-i-l-i-t-y- -a-r-e- -r-a-p-i-d-l-y- -r-e-d-u-c-i-n-g- -t-h-e-s-e- -b-a-r-r-i-e-r-s-.- -P-i-l-o-t- -p-r-o-j-e-c-t-s- -i-n- -s-u-p-p-l-y- -c-h-a-i-n- -m-a-n-a-g-e-m-e-n-t- -a-n-d- -d-e-c-e-n-t-r-a-l-i-z-e-d- -a-u-t-o-n-o-m-o-u-s- -o-r-g-a-n-i-z-a-t-i-o-n-s- -a-l-r-e-a-d-y- -d-e-m-o-n-s-t-r-a-t-e- -t-h-e- -m-o-d-e-l-.--
+--
+-#-#- -O-u-t-l-o-o-k--
+--
+-A-s- -o-r-a-c-l-e- -i-n-f-r-a-s-t-r-u-c-t-u-r-e- -m-a-t-u-r-e-s- -a-n-d- -s-m-a-r-t- -c-o-n-t-r-a-c-t- -p-l-a-t-f-o-r-m-s- -s-c-a-l-e-,- -t-h-e- -c-o-n-c-e-p-t- -o-f- -a- -b-l-o-c-k-c-h-a-i-n---b-a-s-e-d- -a-g-i-l-e- -b-o-a-r-d- -w-i-l-l- -m-o-v-e- -f-r-o-m- -e-x-p-e-r-i-m-e-n-t- -t-o- -d-e-f-a-u-l-t- -p-r-a-c-t-i-c-e-.- -T-e-a-m-s- -w-i-l-l- -c-o-l-l-a-b-o-r-a-t-e- -t-h-r-o-u-g-h- -o-p-e-n- -p-r-o-t-o-c-o-l-s-,- -a-n-d- -t-h-e- -l-e-d-g-e-r- -w-i-l-l- -c-o-o-r-d-i-n-a-t-e- -w-o-r-k- -w-i-t-h- -p-r-e-c-i-s-i-o-n- -a-n-d- -i-m-p-a-r-t-i-a-l-i-t-y-.- -T-h-e- -w-o-r-l-d-'-s- -a-g-i-l-e- -b-o-a-r-d- -m-a-y- -s-o-o-n- -r-u-n- -o-n- -c-o-d-e- -r-a-t-h-e-r- -t-h-a-n- -s-t-i-c-k-y- -n-o-t-e-s-.--
+--
+-#-#- -R-e-f-e-r-e-n-c-e-s--
+--
+--- -[-C-h-a-i-n-l-i-n-k- -A-r-c-h-i-t-e-c-t-u-r-e- -O-v-e-r-v-i-e-w-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-c-h-a-i-n-.-l-i-n-k-/-a-r-c-h-i-t-e-c-t-u-r-e---o-v-e-r-v-i-e-w-)--
+--- -[-U-M-A- -P-r-o-t-o-c-o-l- -D-o-c-u-m-e-n-t-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-u-m-a-p-r-o-j-e-c-t-.-o-r-g-/-)--
+--- -[-O-p-e-n-Z-e-p-p-e-l-i-n- -G-o-v-e-r-n-o-r- -C-o-n-t-r-a-c-t-s-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-o-p-e-n-z-e-p-p-e-l-i-n-.-c-o-m-/-c-o-n-t-r-a-c-t-s-/-5-.-x-/-g-o-v-e-r-n-a-n-c-e-)--
+--- -[-C-h-a-i-n-l-i-n-k- -A-u-t-o-m-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-d-o-c-s-.-c-h-a-i-n-.-l-i-n-k-/-c-h-a-i-n-l-i-n-k---a-u-t-o-m-a-t-i-o-n-/-i-n-t-r-o-d-u-c-t-i-o-n-)--
+--- -[-z-k---S-N-A-R-K-s- -f-o-r- -P-r-i-v-a-c-y-]-(-h-t-t-p-s-:-/-/-v-i-t-a-l-i-k-.-c-a-/-g-e-n-e-r-a-l-/-2-0-2-2-/-0-6-/-1-5-/-u-s-i-n-g-_-s-n-a-r-k-s-.-h-t-m-l-)--
+--- -[-A-r-a-g-o-n- -D-A-O- -F-r-a-m-e-w-o-r-k-]-(-h-t-t-p-s-:-/-/-a-r-a-g-o-n-.-o-r-g-/-)--
+--- -[-D-A-O-s-t-a-c-k- -P-l-a-t-f-o-r-m-]-(-h-t-t-p-s-:-/-/-d-a-o-s-t-a-c-k-.-i-o-/-)--
+--- -[-I-n-t-e-r---B-l-o-c-k-c-h-a-i-n- -C-o-m-m-u-n-i-c-a-t-i-o-n- -P-r-o-t-o-c-o-l-]-(-h-t-t-p-s-:-/-/-i-b-c-p-r-o-t-o-c-o-l-.-o-r-g-/-)--
+--- -[-C-e-r-t-o-r-a- -F-o-r-m-a-l- -V-e-r-i-f-i-c-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-w-w-w-.-c-e-r-t-o-r-a-.-c-o-m-/-)--
+--
+-

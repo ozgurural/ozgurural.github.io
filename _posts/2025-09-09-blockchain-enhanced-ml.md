@@ -1,87 +1,88 @@
----
-title: "Blockchain-Enhanced Machine Learning: Linking Trust, Data, and Incentives"
-date: 2025-09-09
-permalink: /posts/2025/09/blockchain-enhanced-ml/
-categories: technical
-tags:
-  - blockchain
-  - machine-learning
-  - survey
-  - security
-  - decentralization
----
-
----
-
-<div class="notice--info" markdown="1">
-**Editor's Note on Distributed Intelligence**
-
-Blockchain and Machine Learning are often discussed as separate revolutions, but their intersection offers a solution to the "black box" problem in AI. This article explores how we can move model coordination on-chain while keeping heavy computation off-chainâ€”a hybrid architecture that finally makes "Proof-of-Useful-Work" a reality.
-</div>
-
-Blockchain technology and machine learning (ML) have traditionally evolved on parallel tracks. However, recent research shows that their convergence promises **transparent, trustworthy, and decentralized intelligent systems**. In our survey on blockchain-enhanced machine learning [1], we examine how the decentralized design of blockchain can address systemic challenges in ML and pave the way for collaborative, verifiable artificial intelligence.
-
-## Why Blockchain Matters for ML
-
-1. **Auditability and provenance** â€“ Blockchains provide immutable ledgers that record every action in model development pipelines. Training data, model updates, and inference requests can be cryptographically traced, mitigating data poisoning or tampering.
-2. **Decentralized governance** â€“ Smart contracts enable community-driven governance of datasets and models. Stakeholders can vote on dataset curation, model releases, or access policies without centralized authorities.
-3. **Incentive alignment** â€“ Token rewards transform data contribution and model training into economically incentivized activities, encouraging high-quality participation in open ML ecosystems.
-
-## Core Architectural Patterns
-
-Our survey identifies three canonical architectures for combining blockchain with ML. The most promising for scalability is the **On-chain coordination, Off-chain computation** pattern:
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant SmartContract
-    participant OffChainWorker
-    participant Storage as IPFS/Storage
-
-    Client->>SmartContract: Request Model Training (Deposit Tokens)
-    SmartContract->>SmartContract: Emit "TrainingRequested" Event
-    OffChainWorker->>SmartContract: Listen for Event
-    OffChainWorker->>OffChainWorker: Perform Heavy ML Training (GPU)
-    OffChainWorker->>Storage: Upload Model Weights
-    Storage-->>OffChainWorker: Return Hash (CID)
-    OffChainWorker->>SmartContract: Submit Result (Model Hash + Proof)
-    SmartContract->>Client: Model Ready (Release Tokens)
-```
-
-* **On-chain coordination, off-chain computation** â€“ Lightweight smart contracts log events and manage access control while heavy model training occurs off-chain. This pattern balances transparency with scalability and suits federated learning or model marketplaces.
-* **Proof-of-Useful-Work** â€“ Instead of wasteful hashing, miners perform ML training or inference to secure the blockchain. The result is a consensus mechanism where useful computation replaces traditional mining, linking network security with ML progress.
-* **Decentralized data exchanges** â€“ Blockchains act as registries and payment rails for dataset access, encouraging sharing while preserving ownership. Zero-knowledge proofs or differential privacy guard sensitive information.
-
-## Applications in the Wild
-
-- **Federated learning with trusted aggregation** â€“ Each participant's model update is committed to a blockchain, ensuring traceability and deterring malicious clients.
-- **Model marketplaces** â€“ Developers publish models with verifiable training histories. Consumers can audit provenance before purchasing, fostering reusable AI components.
-- **Edge and IoT analytics** â€“ Devices share encrypted features or model outputs through blockchain-based publish/subscribe systems, enabling secure cooperative analytics at scale.
-
-## Challenges and Open Questions
-
-Despite the promise, integrating blockchain and ML introduces nontrivial challenges:
-
-* **Scalability** â€“ Public blockchains struggle with throughput and latency. Layer-2 solutions or permissioned chains can alleviate bottlenecks but complicate interoperability.
-* **Privacy** â€“ Public ledgers conflict with confidential ML workflows. Techniques such as homomorphic encryption, secure multiparty computation, or trusted execution environments help, but remain resource intensive.
-* **Standardization** â€“ The ecosystem lacks common interfaces for deploying models, verifying training claims, or exchanging tokens across networks.
-* **Energy consumption** â€“ Proof-of-Useful-Work schemes must guarantee that their ML outputs are genuinely valuable to offset the energy costs of consensus.
-
-## Looking Ahead
-
-Research continues to explore hybrid approaches that maintain decentralization without sacrificing performance. Cross-chain messaging, sharding, and hierarchical consensus may support global ML collaborations. Privacy-preserving cryptographic primitives are maturing, enabling verifiable yet confidential training. Economic mechanisms such as staking or slashing could discourage malicious behavior in decentralized learning networks.
-
-Our survey [1] concludes that **blockchain-enhanced ML is poised to reshape how data and models are shared, validated, and monetized**. As regulation and ethical guidelines demand greater accountability, blockchain offers a path to verifiable AI pipelines. Future systems may feature:
-
-- Tokenized incentives for dataset curation and model validation.
-- Distributed audit logs linking every model to its training evidence.
-- Modular consensus layers that execute ML tasks as part of securing the network.
-
-By marrying blockchain's transparency with machine learning's predictive power, we can build AI systems that are not only intelligent but also accountable and economically sustainable.
-
-## References
-
-[1] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
-
----
-*Dr. Ozgur Ural is a Senior Software Engineer & Researcher specializing in Secure Distributed Systems. This article is based on his Ph.D. research into the intersection of Cryptography and Machine Learning.*
+--------
+-t-i-t-l-e-:- -"-B-l-o-c-k-c-h-a-i-n---E-n-h-a-n-c-e-d- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g-:- -L-i-n-k-i-n-g- -T-r-u-s-t-,- -D-a-t-a-,- -a-n-d- -I-n-c-e-n-t-i-v-e-s-"--
+-d-a-t-e-:- -2-0-2-5---0-9---0-9--
+-p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-b-l-o-c-k-c-h-a-i-n---e-n-h-a-n-c-e-d---m-l-/--
+-c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
+-t-a-g-s-:--
+- - --- -b-l-o-c-k-c-h-a-i-n--
+- - --- -m-a-c-h-i-n-e---l-e-a-r-n-i-n-g--
+- - --- -s-u-r-v-e-y--
+- - --- -s-e-c-u-r-i-t-y--
+- - --- -d-e-c-e-n-t-r-a-l-i-z-a-t-i-o-n--
+--------
+--
+--------
+--
+-<-d-i-v- -c-l-a-s-s-=-"-n-o-t-i-c-e-----i-n-f-o-"- -m-a-r-k-d-o-w-n-=-"-1-"->--
+-*-*-E-d-i-t-o-r-'-s- -N-o-t-e- -o-n- -D-i-s-t-r-i-b-u-t-e-d- -I-n-t-e-l-l-i-g-e-n-c-e-*-*--
+--
+-B-l-o-c-k-c-h-a-i-n- -a-n-d- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g- -a-r-e- -o-f-t-e-n- -d-i-s-c-u-s-s-e-d- -a-s- -s-e-p-a-r-a-t-e- -r-e-v-o-l-u-t-i-o-n-s-,- -b-u-t- -t-h-e-i-r- -i-n-t-e-r-s-e-c-t-i-o-n- -o-f-f-e-r-s- -a- -s-o-l-u-t-i-o-n- -t-o- -t-h-e- -"-b-l-a-c-k- -b-o-x-"- -p-r-o-b-l-e-m- -i-n- -A-I-.- -T-h-i-s- -a-r-t-i-c-l-e- -e-x-p-l-o-r-e-s- -h-o-w- -w-e- -c-a-n- -m-o-v-e- -m-o-d-e-l- -c-o-o-r-d-i-n-a-t-i-o-n- -o-n---c-h-a-i-n- -w-h-i-l-e- -k-e-e-p-i-n-g- -h-e-a-v-y- -c-o-m-p-u-t-a-t-i-o-n- -o-f-f---c-h-a-i-n-â-€-”-a- -h-y-b-r-i-d- -a-r-c-h-i-t-e-c-t-u-r-e- -t-h-a-t- -f-i-n-a-l-l-y- -m-a-k-e-s- -"-P-r-o-o-f---o-f---U-s-e-f-u-l---W-o-r-k-"- -a- -r-e-a-l-i-t-y-.--
+-<-/-d-i-v->--
+--
+-B-l-o-c-k-c-h-a-i-n- -t-e-c-h-n-o-l-o-g-y- -a-n-d- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g- -(-M-L-)- -h-a-v-e- -t-r-a-d-i-t-i-o-n-a-l-l-y- -e-v-o-l-v-e-d- -o-n- -p-a-r-a-l-l-e-l- -t-r-a-c-k-s-.- -H-o-w-e-v-e-r-,- -r-e-c-e-n-t- -r-e-s-e-a-r-c-h- -s-h-o-w-s- -t-h-a-t- -t-h-e-i-r- -c-o-n-v-e-r-g-e-n-c-e- -p-r-o-m-i-s-e-s- -*-*-t-r-a-n-s-p-a-r-e-n-t-,- -t-r-u-s-t-w-o-r-t-h-y-,- -a-n-d- -d-e-c-e-n-t-r-a-l-i-z-e-d- -i-n-t-e-l-l-i-g-e-n-t- -s-y-s-t-e-m-s-*-*-.- -I-n- -o-u-r- -s-u-r-v-e-y- -o-n- -b-l-o-c-k-c-h-a-i-n---e-n-h-a-n-c-e-d- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g- -[-1-]-,- -w-e- -e-x-a-m-i-n-e- -h-o-w- -t-h-e- -d-e-c-e-n-t-r-a-l-i-z-e-d- -d-e-s-i-g-n- -o-f- -b-l-o-c-k-c-h-a-i-n- -c-a-n- -a-d-d-r-e-s-s- -s-y-s-t-e-m-i-c- -c-h-a-l-l-e-n-g-e-s- -i-n- -M-L- -a-n-d- -p-a-v-e- -t-h-e- -w-a-y- -f-o-r- -c-o-l-l-a-b-o-r-a-t-i-v-e-,- -v-e-r-i-f-i-a-b-l-e- -a-r-t-i-f-i-c-i-a-l- -i-n-t-e-l-l-i-g-e-n-c-e-.--
+--
+-#-#- -W-h-y- -B-l-o-c-k-c-h-a-i-n- -M-a-t-t-e-r-s- -f-o-r- -M-L--
+--
+-1-.- -*-*-A-u-d-i-t-a-b-i-l-i-t-y- -a-n-d- -p-r-o-v-e-n-a-n-c-e-*-*- -â-€-“- -B-l-o-c-k-c-h-a-i-n-s- -p-r-o-v-i-d-e- -i-m-m-u-t-a-b-l-e- -l-e-d-g-e-r-s- -t-h-a-t- -r-e-c-o-r-d- -e-v-e-r-y- -a-c-t-i-o-n- -i-n- -m-o-d-e-l- -d-e-v-e-l-o-p-m-e-n-t- -p-i-p-e-l-i-n-e-s-.- -T-r-a-i-n-i-n-g- -d-a-t-a-,- -m-o-d-e-l- -u-p-d-a-t-e-s-,- -a-n-d- -i-n-f-e-r-e-n-c-e- -r-e-q-u-e-s-t-s- -c-a-n- -b-e- -c-r-y-p-t-o-g-r-a-p-h-i-c-a-l-l-y- -t-r-a-c-e-d-,- -m-i-t-i-g-a-t-i-n-g- -d-a-t-a- -p-o-i-s-o-n-i-n-g- -o-r- -t-a-m-p-e-r-i-n-g-.--
+-2-.- -*-*-D-e-c-e-n-t-r-a-l-i-z-e-d- -g-o-v-e-r-n-a-n-c-e-*-*- -â-€-“- -S-m-a-r-t- -c-o-n-t-r-a-c-t-s- -e-n-a-b-l-e- -c-o-m-m-u-n-i-t-y---d-r-i-v-e-n- -g-o-v-e-r-n-a-n-c-e- -o-f- -d-a-t-a-s-e-t-s- -a-n-d- -m-o-d-e-l-s-.- -S-t-a-k-e-h-o-l-d-e-r-s- -c-a-n- -v-o-t-e- -o-n- -d-a-t-a-s-e-t- -c-u-r-a-t-i-o-n-,- -m-o-d-e-l- -r-e-l-e-a-s-e-s-,- -o-r- -a-c-c-e-s-s- -p-o-l-i-c-i-e-s- -w-i-t-h-o-u-t- -c-e-n-t-r-a-l-i-z-e-d- -a-u-t-h-o-r-i-t-i-e-s-.--
+-3-.- -*-*-I-n-c-e-n-t-i-v-e- -a-l-i-g-n-m-e-n-t-*-*- -â-€-“- -T-o-k-e-n- -r-e-w-a-r-d-s- -t-r-a-n-s-f-o-r-m- -d-a-t-a- -c-o-n-t-r-i-b-u-t-i-o-n- -a-n-d- -m-o-d-e-l- -t-r-a-i-n-i-n-g- -i-n-t-o- -e-c-o-n-o-m-i-c-a-l-l-y- -i-n-c-e-n-t-i-v-i-z-e-d- -a-c-t-i-v-i-t-i-e-s-,- -e-n-c-o-u-r-a-g-i-n-g- -h-i-g-h---q-u-a-l-i-t-y- -p-a-r-t-i-c-i-p-a-t-i-o-n- -i-n- -o-p-e-n- -M-L- -e-c-o-s-y-s-t-e-m-s-.--
+--
+-#-#- -C-o-r-e- -A-r-c-h-i-t-e-c-t-u-r-a-l- -P-a-t-t-e-r-n-s--
+--
+-O-u-r- -s-u-r-v-e-y- -i-d-e-n-t-i-f-i-e-s- -t-h-r-e-e- -c-a-n-o-n-i-c-a-l- -a-r-c-h-i-t-e-c-t-u-r-e-s- -f-o-r- -c-o-m-b-i-n-i-n-g- -b-l-o-c-k-c-h-a-i-n- -w-i-t-h- -M-L-.- -T-h-e- -m-o-s-t- -p-r-o-m-i-s-i-n-g- -f-o-r- -s-c-a-l-a-b-i-l-i-t-y- -i-s- -t-h-e- -*-*-O-n---c-h-a-i-n- -c-o-o-r-d-i-n-a-t-i-o-n-,- -O-f-f---c-h-a-i-n- -c-o-m-p-u-t-a-t-i-o-n-*-*- -p-a-t-t-e-r-n-:--
+--
+-`-`-`-m-e-r-m-a-i-d--
+-s-e-q-u-e-n-c-e-D-i-a-g-r-a-m--
+- - - - -p-a-r-t-i-c-i-p-a-n-t- -C-l-i-e-n-t--
+- - - - -p-a-r-t-i-c-i-p-a-n-t- -S-m-a-r-t-C-o-n-t-r-a-c-t--
+- - - - -p-a-r-t-i-c-i-p-a-n-t- -O-f-f-C-h-a-i-n-W-o-r-k-e-r--
+- - - - -p-a-r-t-i-c-i-p-a-n-t- -S-t-o-r-a-g-e- -a-s- -I-P-F-S-/-S-t-o-r-a-g-e--
+--
+- - - - -C-l-i-e-n-t--->->-S-m-a-r-t-C-o-n-t-r-a-c-t-:- -R-e-q-u-e-s-t- -M-o-d-e-l- -T-r-a-i-n-i-n-g- -(-D-e-p-o-s-i-t- -T-o-k-e-n-s-)--
+- - - - -S-m-a-r-t-C-o-n-t-r-a-c-t--->->-S-m-a-r-t-C-o-n-t-r-a-c-t-:- -E-m-i-t- -"-T-r-a-i-n-i-n-g-R-e-q-u-e-s-t-e-d-"- -E-v-e-n-t--
+- - - - -O-f-f-C-h-a-i-n-W-o-r-k-e-r--->->-S-m-a-r-t-C-o-n-t-r-a-c-t-:- -L-i-s-t-e-n- -f-o-r- -E-v-e-n-t--
+- - - - -O-f-f-C-h-a-i-n-W-o-r-k-e-r--->->-O-f-f-C-h-a-i-n-W-o-r-k-e-r-:- -P-e-r-f-o-r-m- -H-e-a-v-y- -M-L- -T-r-a-i-n-i-n-g- -(-G-P-U-)--
+- - - - -O-f-f-C-h-a-i-n-W-o-r-k-e-r--->->-S-t-o-r-a-g-e-:- -U-p-l-o-a-d- -M-o-d-e-l- -W-e-i-g-h-t-s--
+- - - - -S-t-o-r-a-g-e----->->-O-f-f-C-h-a-i-n-W-o-r-k-e-r-:- -R-e-t-u-r-n- -H-a-s-h- -(-C-I-D-)--
+- - - - -O-f-f-C-h-a-i-n-W-o-r-k-e-r--->->-S-m-a-r-t-C-o-n-t-r-a-c-t-:- -S-u-b-m-i-t- -R-e-s-u-l-t- -(-M-o-d-e-l- -H-a-s-h- -+- -P-r-o-o-f-)--
+- - - - -S-m-a-r-t-C-o-n-t-r-a-c-t--->->-C-l-i-e-n-t-:- -M-o-d-e-l- -R-e-a-d-y- -(-R-e-l-e-a-s-e- -T-o-k-e-n-s-)--
+-`-`-`--
+--
+-*- -*-*-O-n---c-h-a-i-n- -c-o-o-r-d-i-n-a-t-i-o-n-,- -o-f-f---c-h-a-i-n- -c-o-m-p-u-t-a-t-i-o-n-*-*- -â-€-“- -L-i-g-h-t-w-e-i-g-h-t- -s-m-a-r-t- -c-o-n-t-r-a-c-t-s- -l-o-g- -e-v-e-n-t-s- -a-n-d- -m-a-n-a-g-e- -a-c-c-e-s-s- -c-o-n-t-r-o-l- -w-h-i-l-e- -h-e-a-v-y- -m-o-d-e-l- -t-r-a-i-n-i-n-g- -o-c-c-u-r-s- -o-f-f---c-h-a-i-n-.- -T-h-i-s- -p-a-t-t-e-r-n- -b-a-l-a-n-c-e-s- -t-r-a-n-s-p-a-r-e-n-c-y- -w-i-t-h- -s-c-a-l-a-b-i-l-i-t-y- -a-n-d- -s-u-i-t-s- -f-e-d-e-r-a-t-e-d- -l-e-a-r-n-i-n-g- -o-r- -m-o-d-e-l- -m-a-r-k-e-t-p-l-a-c-e-s-.--
+-*- -*-*-P-r-o-o-f---o-f---U-s-e-f-u-l---W-o-r-k-*-*- -â-€-“- -I-n-s-t-e-a-d- -o-f- -w-a-s-t-e-f-u-l- -h-a-s-h-i-n-g-,- -m-i-n-e-r-s- -p-e-r-f-o-r-m- -M-L- -t-r-a-i-n-i-n-g- -o-r- -i-n-f-e-r-e-n-c-e- -t-o- -s-e-c-u-r-e- -t-h-e- -b-l-o-c-k-c-h-a-i-n-.- -T-h-e- -r-e-s-u-l-t- -i-s- -a- -c-o-n-s-e-n-s-u-s- -m-e-c-h-a-n-i-s-m- -w-h-e-r-e- -u-s-e-f-u-l- -c-o-m-p-u-t-a-t-i-o-n- -r-e-p-l-a-c-e-s- -t-r-a-d-i-t-i-o-n-a-l- -m-i-n-i-n-g-,- -l-i-n-k-i-n-g- -n-e-t-w-o-r-k- -s-e-c-u-r-i-t-y- -w-i-t-h- -M-L- -p-r-o-g-r-e-s-s-.--
+-*- -*-*-D-e-c-e-n-t-r-a-l-i-z-e-d- -d-a-t-a- -e-x-c-h-a-n-g-e-s-*-*- -â-€-“- -B-l-o-c-k-c-h-a-i-n-s- -a-c-t- -a-s- -r-e-g-i-s-t-r-i-e-s- -a-n-d- -p-a-y-m-e-n-t- -r-a-i-l-s- -f-o-r- -d-a-t-a-s-e-t- -a-c-c-e-s-s-,- -e-n-c-o-u-r-a-g-i-n-g- -s-h-a-r-i-n-g- -w-h-i-l-e- -p-r-e-s-e-r-v-i-n-g- -o-w-n-e-r-s-h-i-p-.- -Z-e-r-o---k-n-o-w-l-e-d-g-e- -p-r-o-o-f-s- -o-r- -d-i-f-f-e-r-e-n-t-i-a-l- -p-r-i-v-a-c-y- -g-u-a-r-d- -s-e-n-s-i-t-i-v-e- -i-n-f-o-r-m-a-t-i-o-n-.--
+--
+-#-#- -A-p-p-l-i-c-a-t-i-o-n-s- -i-n- -t-h-e- -W-i-l-d--
+--
+--- -*-*-F-e-d-e-r-a-t-e-d- -l-e-a-r-n-i-n-g- -w-i-t-h- -t-r-u-s-t-e-d- -a-g-g-r-e-g-a-t-i-o-n-*-*- -â-€-“- -E-a-c-h- -p-a-r-t-i-c-i-p-a-n-t-'-s- -m-o-d-e-l- -u-p-d-a-t-e- -i-s- -c-o-m-m-i-t-t-e-d- -t-o- -a- -b-l-o-c-k-c-h-a-i-n-,- -e-n-s-u-r-i-n-g- -t-r-a-c-e-a-b-i-l-i-t-y- -a-n-d- -d-e-t-e-r-r-i-n-g- -m-a-l-i-c-i-o-u-s- -c-l-i-e-n-t-s-.--
+--- -*-*-M-o-d-e-l- -m-a-r-k-e-t-p-l-a-c-e-s-*-*- -â-€-“- -D-e-v-e-l-o-p-e-r-s- -p-u-b-l-i-s-h- -m-o-d-e-l-s- -w-i-t-h- -v-e-r-i-f-i-a-b-l-e- -t-r-a-i-n-i-n-g- -h-i-s-t-o-r-i-e-s-.- -C-o-n-s-u-m-e-r-s- -c-a-n- -a-u-d-i-t- -p-r-o-v-e-n-a-n-c-e- -b-e-f-o-r-e- -p-u-r-c-h-a-s-i-n-g-,- -f-o-s-t-e-r-i-n-g- -r-e-u-s-a-b-l-e- -A-I- -c-o-m-p-o-n-e-n-t-s-.--
+--- -*-*-E-d-g-e- -a-n-d- -I-o-T- -a-n-a-l-y-t-i-c-s-*-*- -â-€-“- -D-e-v-i-c-e-s- -s-h-a-r-e- -e-n-c-r-y-p-t-e-d- -f-e-a-t-u-r-e-s- -o-r- -m-o-d-e-l- -o-u-t-p-u-t-s- -t-h-r-o-u-g-h- -b-l-o-c-k-c-h-a-i-n---b-a-s-e-d- -p-u-b-l-i-s-h-/-s-u-b-s-c-r-i-b-e- -s-y-s-t-e-m-s-,- -e-n-a-b-l-i-n-g- -s-e-c-u-r-e- -c-o-o-p-e-r-a-t-i-v-e- -a-n-a-l-y-t-i-c-s- -a-t- -s-c-a-l-e-.--
+--
+-#-#- -C-h-a-l-l-e-n-g-e-s- -a-n-d- -O-p-e-n- -Q-u-e-s-t-i-o-n-s--
+--
+-D-e-s-p-i-t-e- -t-h-e- -p-r-o-m-i-s-e-,- -i-n-t-e-g-r-a-t-i-n-g- -b-l-o-c-k-c-h-a-i-n- -a-n-d- -M-L- -i-n-t-r-o-d-u-c-e-s- -n-o-n-t-r-i-v-i-a-l- -c-h-a-l-l-e-n-g-e-s-:--
+--
+-*- -*-*-S-c-a-l-a-b-i-l-i-t-y-*-*- -â-€-“- -P-u-b-l-i-c- -b-l-o-c-k-c-h-a-i-n-s- -s-t-r-u-g-g-l-e- -w-i-t-h- -t-h-r-o-u-g-h-p-u-t- -a-n-d- -l-a-t-e-n-c-y-.- -L-a-y-e-r---2- -s-o-l-u-t-i-o-n-s- -o-r- -p-e-r-m-i-s-s-i-o-n-e-d- -c-h-a-i-n-s- -c-a-n- -a-l-l-e-v-i-a-t-e- -b-o-t-t-l-e-n-e-c-k-s- -b-u-t- -c-o-m-p-l-i-c-a-t-e- -i-n-t-e-r-o-p-e-r-a-b-i-l-i-t-y-.--
+-*- -*-*-P-r-i-v-a-c-y-*-*- -â-€-“- -P-u-b-l-i-c- -l-e-d-g-e-r-s- -c-o-n-f-l-i-c-t- -w-i-t-h- -c-o-n-f-i-d-e-n-t-i-a-l- -M-L- -w-o-r-k-f-l-o-w-s-.- -T-e-c-h-n-i-q-u-e-s- -s-u-c-h- -a-s- -h-o-m-o-m-o-r-p-h-i-c- -e-n-c-r-y-p-t-i-o-n-,- -s-e-c-u-r-e- -m-u-l-t-i-p-a-r-t-y- -c-o-m-p-u-t-a-t-i-o-n-,- -o-r- -t-r-u-s-t-e-d- -e-x-e-c-u-t-i-o-n- -e-n-v-i-r-o-n-m-e-n-t-s- -h-e-l-p-,- -b-u-t- -r-e-m-a-i-n- -r-e-s-o-u-r-c-e- -i-n-t-e-n-s-i-v-e-.--
+-*- -*-*-S-t-a-n-d-a-r-d-i-z-a-t-i-o-n-*-*- -â-€-“- -T-h-e- -e-c-o-s-y-s-t-e-m- -l-a-c-k-s- -c-o-m-m-o-n- -i-n-t-e-r-f-a-c-e-s- -f-o-r- -d-e-p-l-o-y-i-n-g- -m-o-d-e-l-s-,- -v-e-r-i-f-y-i-n-g- -t-r-a-i-n-i-n-g- -c-l-a-i-m-s-,- -o-r- -e-x-c-h-a-n-g-i-n-g- -t-o-k-e-n-s- -a-c-r-o-s-s- -n-e-t-w-o-r-k-s-.--
+-*- -*-*-E-n-e-r-g-y- -c-o-n-s-u-m-p-t-i-o-n-*-*- -â-€-“- -P-r-o-o-f---o-f---U-s-e-f-u-l---W-o-r-k- -s-c-h-e-m-e-s- -m-u-s-t- -g-u-a-r-a-n-t-e-e- -t-h-a-t- -t-h-e-i-r- -M-L- -o-u-t-p-u-t-s- -a-r-e- -g-e-n-u-i-n-e-l-y- -v-a-l-u-a-b-l-e- -t-o- -o-f-f-s-e-t- -t-h-e- -e-n-e-r-g-y- -c-o-s-t-s- -o-f- -c-o-n-s-e-n-s-u-s-.--
+--
+-#-#- -L-o-o-k-i-n-g- -A-h-e-a-d--
+--
+-R-e-s-e-a-r-c-h- -c-o-n-t-i-n-u-e-s- -t-o- -e-x-p-l-o-r-e- -h-y-b-r-i-d- -a-p-p-r-o-a-c-h-e-s- -t-h-a-t- -m-a-i-n-t-a-i-n- -d-e-c-e-n-t-r-a-l-i-z-a-t-i-o-n- -w-i-t-h-o-u-t- -s-a-c-r-i-f-i-c-i-n-g- -p-e-r-f-o-r-m-a-n-c-e-.- -C-r-o-s-s---c-h-a-i-n- -m-e-s-s-a-g-i-n-g-,- -s-h-a-r-d-i-n-g-,- -a-n-d- -h-i-e-r-a-r-c-h-i-c-a-l- -c-o-n-s-e-n-s-u-s- -m-a-y- -s-u-p-p-o-r-t- -g-l-o-b-a-l- -M-L- -c-o-l-l-a-b-o-r-a-t-i-o-n-s-.- -P-r-i-v-a-c-y---p-r-e-s-e-r-v-i-n-g- -c-r-y-p-t-o-g-r-a-p-h-i-c- -p-r-i-m-i-t-i-v-e-s- -a-r-e- -m-a-t-u-r-i-n-g-,- -e-n-a-b-l-i-n-g- -v-e-r-i-f-i-a-b-l-e- -y-e-t- -c-o-n-f-i-d-e-n-t-i-a-l- -t-r-a-i-n-i-n-g-.- -E-c-o-n-o-m-i-c- -m-e-c-h-a-n-i-s-m-s- -s-u-c-h- -a-s- -s-t-a-k-i-n-g- -o-r- -s-l-a-s-h-i-n-g- -c-o-u-l-d- -d-i-s-c-o-u-r-a-g-e- -m-a-l-i-c-i-o-u-s- -b-e-h-a-v-i-o-r- -i-n- -d-e-c-e-n-t-r-a-l-i-z-e-d- -l-e-a-r-n-i-n-g- -n-e-t-w-o-r-k-s-.--
+--
+-O-u-r- -s-u-r-v-e-y- -[-1-]- -c-o-n-c-l-u-d-e-s- -t-h-a-t- -*-*-b-l-o-c-k-c-h-a-i-n---e-n-h-a-n-c-e-d- -M-L- -i-s- -p-o-i-s-e-d- -t-o- -r-e-s-h-a-p-e- -h-o-w- -d-a-t-a- -a-n-d- -m-o-d-e-l-s- -a-r-e- -s-h-a-r-e-d-,- -v-a-l-i-d-a-t-e-d-,- -a-n-d- -m-o-n-e-t-i-z-e-d-*-*-.- -A-s- -r-e-g-u-l-a-t-i-o-n- -a-n-d- -e-t-h-i-c-a-l- -g-u-i-d-e-l-i-n-e-s- -d-e-m-a-n-d- -g-r-e-a-t-e-r- -a-c-c-o-u-n-t-a-b-i-l-i-t-y-,- -b-l-o-c-k-c-h-a-i-n- -o-f-f-e-r-s- -a- -p-a-t-h- -t-o- -v-e-r-i-f-i-a-b-l-e- -A-I- -p-i-p-e-l-i-n-e-s-.- -F-u-t-u-r-e- -s-y-s-t-e-m-s- -m-a-y- -f-e-a-t-u-r-e-:--
+--
+--- -T-o-k-e-n-i-z-e-d- -i-n-c-e-n-t-i-v-e-s- -f-o-r- -d-a-t-a-s-e-t- -c-u-r-a-t-i-o-n- -a-n-d- -m-o-d-e-l- -v-a-l-i-d-a-t-i-o-n-.--
+--- -D-i-s-t-r-i-b-u-t-e-d- -a-u-d-i-t- -l-o-g-s- -l-i-n-k-i-n-g- -e-v-e-r-y- -m-o-d-e-l- -t-o- -i-t-s- -t-r-a-i-n-i-n-g- -e-v-i-d-e-n-c-e-.--
+--- -M-o-d-u-l-a-r- -c-o-n-s-e-n-s-u-s- -l-a-y-e-r-s- -t-h-a-t- -e-x-e-c-u-t-e- -M-L- -t-a-s-k-s- -a-s- -p-a-r-t- -o-f- -s-e-c-u-r-i-n-g- -t-h-e- -n-e-t-w-o-r-k-.--
+--
+-B-y- -m-a-r-r-y-i-n-g- -b-l-o-c-k-c-h-a-i-n-'-s- -t-r-a-n-s-p-a-r-e-n-c-y- -w-i-t-h- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g-'-s- -p-r-e-d-i-c-t-i-v-e- -p-o-w-e-r-,- -w-e- -c-a-n- -b-u-i-l-d- -A-I- -s-y-s-t-e-m-s- -t-h-a-t- -a-r-e- -n-o-t- -o-n-l-y- -i-n-t-e-l-l-i-g-e-n-t- -b-u-t- -a-l-s-o- -a-c-c-o-u-n-t-a-b-l-e- -a-n-d- -e-c-o-n-o-m-i-c-a-l-l-y- -s-u-s-t-a-i-n-a-b-l-e-.--
+--
+-#-#- -R-e-f-e-r-e-n-c-e-s--
+--
+-[-1-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-3-)-.- -*-S-u-r-v-e-y- -o-n- -B-l-o-c-k-c-h-a-i-n---E-n-h-a-n-c-e-d- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g-*-.- -I-E-E-E- -A-c-c-e-s-s-.--
+--
+--------
+-*-D-r-.- -O-z-g-u-r- -U-r-a-l- -i-s- -a- -S-e-n-i-o-r- -S-o-f-t-w-a-r-e- -E-n-g-i-n-e-e-r- -&- -R-e-s-e-a-r-c-h-e-r- -s-p-e-c-i-a-l-i-z-i-n-g- -i-n- -S-e-c-u-r-e- -D-i-s-t-r-i-b-u-t-e-d- -S-y-s-t-e-m-s-.- -T-h-i-s- -a-r-t-i-c-l-e- -i-s- -b-a-s-e-d- -o-n- -h-i-s- -P-h-.-D-.- -r-e-s-e-a-r-c-h- -i-n-t-o- -t-h-e- -i-n-t-e-r-s-e-c-t-i-o-n- -o-f- -C-r-y-p-t-o-g-r-a-p-h-y- -a-n-d- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g-.-*--
+-

@@ -1,81 +1,82 @@
----
-title: "Reflections on the PhD Journey: Building Secure AI in Availability Zones"
-date: 2025-09-09
-permalink: /posts/2025/09/phd-era-florida-ml-security/
-categories: life
-tags:
-  - phd
-  - machine-learning
-  - security
-  - florida
-  - erau
----
-
-Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at [Embry-Riddle Aeronautical University](https://www.erau.edu/). My advisor jokes that our campus smells like jet fuel and ambition; he‚Äôs right on both counts. By 7 a.m. I am usually rolling past the flight line with a notebook full of model checkpoints to validate and a thermos of Cuban coffee strong enough to double as rocket propellant.
-
-## Morning Run-Up
-
-Daytona Beach may be famous for NASCAR and spring breakers, but my calendar reads more like the Level-D simulator test cards I drafted at [Avion Full Flight Simulators](/posts/2025/09/avion-level-d-ffs/). A typical weekday now unfolds in arcs instead of tidy half-hour boxes:
-
-* **First-light warm-up.** Sunrise miles along the Halifax River clear out the humidity, cue up podcast snippets on distributed learning, and‚Äîif I‚Äôm lucky‚Äîdeliver an opening joke for the next conference talk. Running in Florida heat is the closest I get to simulating a thermal chamber without filing paperwork.
-* **Systems go/no-go.** By 7:30 a.m. I am in the Cybersecurity & Assured Systems lab coaxing GPU clusters awake, replaying telemetry the way I once replayed avionics data streams. The same bounded-queue backpressure tricks that kept Avion dashboards responsive now keep my Prometheus alerts from screaming when a model checkpoint stalls.
-* **Threat-playbook sprints.** Late-morning stand-ups morph into mini red-team drills. Years spent leading the Havelsan DLP crew and hardening Comodo‚Äôs secure web gateways left me with a Rolodex of real attack stories, so I translate them into proof-of-learning test cases before the donuts vanish.
-* **Evening debrief.** When campus quiets down, I swap into manuscript edits, code reviews, or undergrad tutoring. Eleven years of industry engineering makes it impossible to ignore a dangling TODO, and teaching forces me to narrate research decisions with the clarity of a flight safety briefing.
-
-The cadence is part training mission, part research retreat, and it keeps the ERAU day grounded in the same disciplined curiosity that powered every simulator, UAV, and secure gateway I shipped before the PhD.
-
-## Research Altitude: Proof-of-Learning Meets Security
-
-My dissertation, **‚ÄúEnhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking,‚Äù** sits at the intersection of machine learning, cryptography, and just enough paranoia to make for great conference talks. Most mornings begin in the GPU lab, where I:
-
-1. Reconstruct adversarial training traces from our spoofing catalog.
-2. Stress-test watermarking strategies that survive pruning, quantization, and model surgery.
-3. Compare protocol performance with telemetry from simulated avionics workloads.
-
-Working on proof-of-learning keeps me anchored to the questions that pulled me into graduate school: **How do we know a model was trained honestly, and how do we preserve that assurance when adversaries adapt faster than Florida‚Äôs weather?**
-
-### Tooling That Keeps the Plane in the Air
-
-* **Core stack:** PyTorch + Lightning, Hydra for configuration, and Weights & Biases for experiment lineage.
-* **Security sandbox:** Custom Kubernetes namespace with policy enforcement, plus [Falco](https://falco.org/) alerts piped into Slack for real-time anomaly detection.
-* **Data hygiene:** Weekly audits using [Great Expectations](https://greatexpectations.io/) to ensure new telemetry hasn‚Äôt quietly drifted off course.
-
-Every Friday, I run a ‚Äúturbulence drill‚Äù where I intentionally sabotage a pipeline component‚Äîrevoking a key, injecting poisoned gradients, or throttling IO‚Äîto verify our detection scripts still trip. It is part chaos monkey, part therapy.
-
-## Community Tower: Mentors, Peers, and Pancakes
-
-I am fortunate to tackle these questions under the guidance of Dr. Kenji Yoshigoe and the research community inside the [Cybersecurity and Assured Systems Engineering center](https://erau.edu/research/cybersecurity-assured-systems). Weekly meetings feel like focused research roundtables, with faculty dissecting avionics incidents and classmates presenting fresh experimental results. Someone inevitably brings pancakes from the student union; security conversations go down easier with maple syrup.
-
-To keep collaboration lively, we rotate responsibilities:
-
-* **Threat-model Thursdays:** One student leads a tabletop exercise simulating a new attack against aircraft systems.
-* **Launch-and-Learn nights:** We stream NASA or SpaceX launches from the causeway while debating the ethics of autonomous flight.
-* **Paper pilot program:** First-year PhD students co-author blog summaries to demystify recent security papers for undergrads.
-
-These rituals create feedback loops between coursework, research, and community mentorship. They also remind me that the best debugging happens when someone else is holding a plate of pancakes.
-
-## Sunshine, Sanity, and the Occasional Hurricane Watch
-
-Florida‚Äôs climate supplies its own rhythm. Afternoon thunderstorms chase me from the lab only to leave sherbet-colored sunsets over the water. On clear nights we carpool south to watch a launch, and the sight of a rocket carving through the sky has become my favorite antidote to research fatigue. When the forecast turns ominous, I switch to a ‚Äúhurricane mode‚Äù checklist: backup datasets to off-site storage, charge every laptop, and stock up on empanadas.
-
-To stay balanced, I lean on a few habits:
-
-* **Pomodoro sprints on the balcony** whenever the UV index dips below ‚Äúdragon fire.‚Äù
-* **Mentor walks**‚Äîliterally pacing the flight line with my advisor, which somehow makes debugging graph neural networks feel breezy.
-* **Monthly ‚Äúdata detox‚Äù days** with zero commits, where I read fiction at the beach and pretend my models do not exist for six hours.
-
-## Pre-Flight Checklist for Prospective ERAU PhDs
-
-Thinking of mixing machine learning, security, and sunshine yourself? Here are my distilled takeaways:
-
-1. **Design for auditability from day one.** Version everything‚Äîdatasets, configs, container builds‚Äîbecause future-you will forget which run was the good one.
-2. **Get comfortable with interdisciplinary translation.** You will explain backpropagation to pilots and avionics safety to data scientists, often in the same meeting.
-3. **Lean into the aerospace ecosystem.** Collaborate with flight test teams, simulation labs, and even meteorology researchers; their constraints sharpen your threat models.
-4. **Budget time for funding logistics.** ERAU‚Äôs [Graduate Studies page](https://erau.edu/degrees/graduate) lists assistantships early, and they go as fast as prime launch windows.
-5. **Protect your joy.** Schedule the beach walk, the surf lesson, the sunset photo. Burnout looks suspiciously like cloud cover if you ignore it long enough.
-
-## Reading Radar
-
-If you‚Äôre curious about securing AI, start with *Machine Learning and Security* by [Clarence Chio and David Freeman](https://www.oreilly.com/library/view/machine-learning-and/9781491979897/) for pragmatic frameworks, then dive into the [Proof-of-Learning](https://arxiv.org/abs/2103.06217) literature for protocol mechanics. For a systems spin, the [MITRE ATT&CK for ML](https://attack.mitre.org/techniques/ML/) matrix pairs nicely with ERAU‚Äôs avionics case studies.
-
-Research may keep me indoors, but Florida never lets me forget that discovery can be as expansive as the horizon beyond the runway‚Äîand that the best ideas often arrive somewhere between a lightning storm and a launch countdown, preferably while holding a mango smoothie.
+--------
+-t-i-t-l-e-:- -"-R-e-f-l-e-c-t-i-o-n-s- -o-n- -t-h-e- -P-h-D- -J-o-u-r-n-e-y-:- -B-u-i-l-d-i-n-g- -S-e-c-u-r-e- -A-I- -i-n- -A-v-a-i-l-a-b-i-l-i-t-y- -Z-o-n-e-s-"--
+-d-a-t-e-:- -2-0-2-5---0-9---0-9--
+-p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-p-h-d---e-r-a---f-l-o-r-i-d-a---m-l---s-e-c-u-r-i-t-y-/--
+-c-a-t-e-g-o-r-i-e-s-:- -l-i-f-e--
+-t-a-g-s-:--
+- - --- -p-h-d--
+- - --- -m-a-c-h-i-n-e---l-e-a-r-n-i-n-g--
+- - --- -s-e-c-u-r-i-t-y--
+- - --- -f-l-o-r-i-d-a--
+- - --- -e-r-a-u--
+--------
+--
+-E-m-b-a-r-k-i-n-g- -o-n- -a- -P-h-D- -i-n- -F-l-o-r-i-d-a- -m-e-a-n-s- -w-a-k-i-n-g- -u-p- -t-o- -s-a-l-t- -a-i-r-,- -s-u-n-s-c-r-e-e-n- -r-e-m-i-n-d-e-r-s-,- -a-n-d- -t-h-e- -l-o-w- -r-u-m-b-l-e- -o-f- -a-i-r-c-r-a-f-t- -t-e-s-t-i-n-g- -e-n-g-i-n-e-s- -a-t- -[-E-m-b-r-y---R-i-d-d-l-e- -A-e-r-o-n-a-u-t-i-c-a-l- -U-n-i-v-e-r-s-i-t-y-]-(-h-t-t-p-s-:-/-/-w-w-w-.-e-r-a-u-.-e-d-u-/-)-.- -M-y- -a-d-v-i-s-o-r- -j-o-k-e-s- -t-h-a-t- -o-u-r- -c-a-m-p-u-s- -s-m-e-l-l-s- -l-i-k-e- -j-e-t- -f-u-e-l- -a-n-d- -a-m-b-i-t-i-o-n-;- -h-e-‚-Ä-ô-s- -r-i-g-h-t- -o-n- -b-o-t-h- -c-o-u-n-t-s-.- -B-y- -7- -a-.-m-.- -I- -a-m- -u-s-u-a-l-l-y- -r-o-l-l-i-n-g- -p-a-s-t- -t-h-e- -f-l-i-g-h-t- -l-i-n-e- -w-i-t-h- -a- -n-o-t-e-b-o-o-k- -f-u-l-l- -o-f- -m-o-d-e-l- -c-h-e-c-k-p-o-i-n-t-s- -t-o- -v-a-l-i-d-a-t-e- -a-n-d- -a- -t-h-e-r-m-o-s- -o-f- -C-u-b-a-n- -c-o-f-f-e-e- -s-t-r-o-n-g- -e-n-o-u-g-h- -t-o- -d-o-u-b-l-e- -a-s- -r-o-c-k-e-t- -p-r-o-p-e-l-l-a-n-t-.--
+--
+-#-#- -M-o-r-n-i-n-g- -R-u-n---U-p--
+--
+-D-a-y-t-o-n-a- -B-e-a-c-h- -m-a-y- -b-e- -f-a-m-o-u-s- -f-o-r- -N-A-S-C-A-R- -a-n-d- -s-p-r-i-n-g- -b-r-e-a-k-e-r-s-,- -b-u-t- -m-y- -c-a-l-e-n-d-a-r- -r-e-a-d-s- -m-o-r-e- -l-i-k-e- -t-h-e- -L-e-v-e-l---D- -s-i-m-u-l-a-t-o-r- -t-e-s-t- -c-a-r-d-s- -I- -d-r-a-f-t-e-d- -a-t- -[-A-v-i-o-n- -F-u-l-l- -F-l-i-g-h-t- -S-i-m-u-l-a-t-o-r-s-]-(-/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-a-v-i-o-n---l-e-v-e-l---d---f-f-s-/-)-.- -A- -t-y-p-i-c-a-l- -w-e-e-k-d-a-y- -n-o-w- -u-n-f-o-l-d-s- -i-n- -a-r-c-s- -i-n-s-t-e-a-d- -o-f- -t-i-d-y- -h-a-l-f---h-o-u-r- -b-o-x-e-s-:--
+--
+-*- -*-*-F-i-r-s-t---l-i-g-h-t- -w-a-r-m---u-p-.-*-*- -S-u-n-r-i-s-e- -m-i-l-e-s- -a-l-o-n-g- -t-h-e- -H-a-l-i-f-a-x- -R-i-v-e-r- -c-l-e-a-r- -o-u-t- -t-h-e- -h-u-m-i-d-i-t-y-,- -c-u-e- -u-p- -p-o-d-c-a-s-t- -s-n-i-p-p-e-t-s- -o-n- -d-i-s-t-r-i-b-u-t-e-d- -l-e-a-r-n-i-n-g-,- -a-n-d-‚-Ä-î-i-f- -I-‚-Ä-ô-m- -l-u-c-k-y-‚-Ä-î-d-e-l-i-v-e-r- -a-n- -o-p-e-n-i-n-g- -j-o-k-e- -f-o-r- -t-h-e- -n-e-x-t- -c-o-n-f-e-r-e-n-c-e- -t-a-l-k-.- -R-u-n-n-i-n-g- -i-n- -F-l-o-r-i-d-a- -h-e-a-t- -i-s- -t-h-e- -c-l-o-s-e-s-t- -I- -g-e-t- -t-o- -s-i-m-u-l-a-t-i-n-g- -a- -t-h-e-r-m-a-l- -c-h-a-m-b-e-r- -w-i-t-h-o-u-t- -f-i-l-i-n-g- -p-a-p-e-r-w-o-r-k-.--
+-*- -*-*-S-y-s-t-e-m-s- -g-o-/-n-o---g-o-.-*-*- -B-y- -7-:-3-0- -a-.-m-.- -I- -a-m- -i-n- -t-h-e- -C-y-b-e-r-s-e-c-u-r-i-t-y- -&- -A-s-s-u-r-e-d- -S-y-s-t-e-m-s- -l-a-b- -c-o-a-x-i-n-g- -G-P-U- -c-l-u-s-t-e-r-s- -a-w-a-k-e-,- -r-e-p-l-a-y-i-n-g- -t-e-l-e-m-e-t-r-y- -t-h-e- -w-a-y- -I- -o-n-c-e- -r-e-p-l-a-y-e-d- -a-v-i-o-n-i-c-s- -d-a-t-a- -s-t-r-e-a-m-s-.- -T-h-e- -s-a-m-e- -b-o-u-n-d-e-d---q-u-e-u-e- -b-a-c-k-p-r-e-s-s-u-r-e- -t-r-i-c-k-s- -t-h-a-t- -k-e-p-t- -A-v-i-o-n- -d-a-s-h-b-o-a-r-d-s- -r-e-s-p-o-n-s-i-v-e- -n-o-w- -k-e-e-p- -m-y- -P-r-o-m-e-t-h-e-u-s- -a-l-e-r-t-s- -f-r-o-m- -s-c-r-e-a-m-i-n-g- -w-h-e-n- -a- -m-o-d-e-l- -c-h-e-c-k-p-o-i-n-t- -s-t-a-l-l-s-.--
+-*- -*-*-T-h-r-e-a-t---p-l-a-y-b-o-o-k- -s-p-r-i-n-t-s-.-*-*- -L-a-t-e---m-o-r-n-i-n-g- -s-t-a-n-d---u-p-s- -m-o-r-p-h- -i-n-t-o- -m-i-n-i- -r-e-d---t-e-a-m- -d-r-i-l-l-s-.- -Y-e-a-r-s- -s-p-e-n-t- -l-e-a-d-i-n-g- -t-h-e- -H-a-v-e-l-s-a-n- -D-L-P- -c-r-e-w- -a-n-d- -h-a-r-d-e-n-i-n-g- -C-o-m-o-d-o-‚-Ä-ô-s- -s-e-c-u-r-e- -w-e-b- -g-a-t-e-w-a-y-s- -l-e-f-t- -m-e- -w-i-t-h- -a- -R-o-l-o-d-e-x- -o-f- -r-e-a-l- -a-t-t-a-c-k- -s-t-o-r-i-e-s-,- -s-o- -I- -t-r-a-n-s-l-a-t-e- -t-h-e-m- -i-n-t-o- -p-r-o-o-f---o-f---l-e-a-r-n-i-n-g- -t-e-s-t- -c-a-s-e-s- -b-e-f-o-r-e- -t-h-e- -d-o-n-u-t-s- -v-a-n-i-s-h-.--
+-*- -*-*-E-v-e-n-i-n-g- -d-e-b-r-i-e-f-.-*-*- -W-h-e-n- -c-a-m-p-u-s- -q-u-i-e-t-s- -d-o-w-n-,- -I- -s-w-a-p- -i-n-t-o- -m-a-n-u-s-c-r-i-p-t- -e-d-i-t-s-,- -c-o-d-e- -r-e-v-i-e-w-s-,- -o-r- -u-n-d-e-r-g-r-a-d- -t-u-t-o-r-i-n-g-.- -E-l-e-v-e-n- -y-e-a-r-s- -o-f- -i-n-d-u-s-t-r-y- -e-n-g-i-n-e-e-r-i-n-g- -m-a-k-e-s- -i-t- -i-m-p-o-s-s-i-b-l-e- -t-o- -i-g-n-o-r-e- -a- -d-a-n-g-l-i-n-g- -T-O-D-O-,- -a-n-d- -t-e-a-c-h-i-n-g- -f-o-r-c-e-s- -m-e- -t-o- -n-a-r-r-a-t-e- -r-e-s-e-a-r-c-h- -d-e-c-i-s-i-o-n-s- -w-i-t-h- -t-h-e- -c-l-a-r-i-t-y- -o-f- -a- -f-l-i-g-h-t- -s-a-f-e-t-y- -b-r-i-e-f-i-n-g-.--
+--
+-T-h-e- -c-a-d-e-n-c-e- -i-s- -p-a-r-t- -t-r-a-i-n-i-n-g- -m-i-s-s-i-o-n-,- -p-a-r-t- -r-e-s-e-a-r-c-h- -r-e-t-r-e-a-t-,- -a-n-d- -i-t- -k-e-e-p-s- -t-h-e- -E-R-A-U- -d-a-y- -g-r-o-u-n-d-e-d- -i-n- -t-h-e- -s-a-m-e- -d-i-s-c-i-p-l-i-n-e-d- -c-u-r-i-o-s-i-t-y- -t-h-a-t- -p-o-w-e-r-e-d- -e-v-e-r-y- -s-i-m-u-l-a-t-o-r-,- -U-A-V-,- -a-n-d- -s-e-c-u-r-e- -g-a-t-e-w-a-y- -I- -s-h-i-p-p-e-d- -b-e-f-o-r-e- -t-h-e- -P-h-D-.--
+--
+-#-#- -R-e-s-e-a-r-c-h- -A-l-t-i-t-u-d-e-:- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -M-e-e-t-s- -S-e-c-u-r-i-t-y--
+--
+-M-y- -d-i-s-s-e-r-t-a-t-i-o-n-,- -*-*-‚-Ä-ú-E-n-h-a-n-c-i-n-g- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -S-e-c-u-r-i-t-y- -A-g-a-i-n-s-t- -S-p-o-o-f-i-n-g- -A-t-t-a-c-k-s- -U-s-i-n-g- -M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g-,-‚-Ä-ù-*-*- -s-i-t-s- -a-t- -t-h-e- -i-n-t-e-r-s-e-c-t-i-o-n- -o-f- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g-,- -c-r-y-p-t-o-g-r-a-p-h-y-,- -a-n-d- -j-u-s-t- -e-n-o-u-g-h- -p-a-r-a-n-o-i-a- -t-o- -m-a-k-e- -f-o-r- -g-r-e-a-t- -c-o-n-f-e-r-e-n-c-e- -t-a-l-k-s-.- -M-o-s-t- -m-o-r-n-i-n-g-s- -b-e-g-i-n- -i-n- -t-h-e- -G-P-U- -l-a-b-,- -w-h-e-r-e- -I-:--
+--
+-1-.- -R-e-c-o-n-s-t-r-u-c-t- -a-d-v-e-r-s-a-r-i-a-l- -t-r-a-i-n-i-n-g- -t-r-a-c-e-s- -f-r-o-m- -o-u-r- -s-p-o-o-f-i-n-g- -c-a-t-a-l-o-g-.--
+-2-.- -S-t-r-e-s-s---t-e-s-t- -w-a-t-e-r-m-a-r-k-i-n-g- -s-t-r-a-t-e-g-i-e-s- -t-h-a-t- -s-u-r-v-i-v-e- -p-r-u-n-i-n-g-,- -q-u-a-n-t-i-z-a-t-i-o-n-,- -a-n-d- -m-o-d-e-l- -s-u-r-g-e-r-y-.--
+-3-.- -C-o-m-p-a-r-e- -p-r-o-t-o-c-o-l- -p-e-r-f-o-r-m-a-n-c-e- -w-i-t-h- -t-e-l-e-m-e-t-r-y- -f-r-o-m- -s-i-m-u-l-a-t-e-d- -a-v-i-o-n-i-c-s- -w-o-r-k-l-o-a-d-s-.--
+--
+-W-o-r-k-i-n-g- -o-n- -p-r-o-o-f---o-f---l-e-a-r-n-i-n-g- -k-e-e-p-s- -m-e- -a-n-c-h-o-r-e-d- -t-o- -t-h-e- -q-u-e-s-t-i-o-n-s- -t-h-a-t- -p-u-l-l-e-d- -m-e- -i-n-t-o- -g-r-a-d-u-a-t-e- -s-c-h-o-o-l-:- -*-*-H-o-w- -d-o- -w-e- -k-n-o-w- -a- -m-o-d-e-l- -w-a-s- -t-r-a-i-n-e-d- -h-o-n-e-s-t-l-y-,- -a-n-d- -h-o-w- -d-o- -w-e- -p-r-e-s-e-r-v-e- -t-h-a-t- -a-s-s-u-r-a-n-c-e- -w-h-e-n- -a-d-v-e-r-s-a-r-i-e-s- -a-d-a-p-t- -f-a-s-t-e-r- -t-h-a-n- -F-l-o-r-i-d-a-‚-Ä-ô-s- -w-e-a-t-h-e-r-?-*-*--
+--
+-#-#-#- -T-o-o-l-i-n-g- -T-h-a-t- -K-e-e-p-s- -t-h-e- -P-l-a-n-e- -i-n- -t-h-e- -A-i-r--
+--
+-*- -*-*-C-o-r-e- -s-t-a-c-k-:-*-*- -P-y-T-o-r-c-h- -+- -L-i-g-h-t-n-i-n-g-,- -H-y-d-r-a- -f-o-r- -c-o-n-f-i-g-u-r-a-t-i-o-n-,- -a-n-d- -W-e-i-g-h-t-s- -&- -B-i-a-s-e-s- -f-o-r- -e-x-p-e-r-i-m-e-n-t- -l-i-n-e-a-g-e-.--
+-*- -*-*-S-e-c-u-r-i-t-y- -s-a-n-d-b-o-x-:-*-*- -C-u-s-t-o-m- -K-u-b-e-r-n-e-t-e-s- -n-a-m-e-s-p-a-c-e- -w-i-t-h- -p-o-l-i-c-y- -e-n-f-o-r-c-e-m-e-n-t-,- -p-l-u-s- -[-F-a-l-c-o-]-(-h-t-t-p-s-:-/-/-f-a-l-c-o-.-o-r-g-/-)- -a-l-e-r-t-s- -p-i-p-e-d- -i-n-t-o- -S-l-a-c-k- -f-o-r- -r-e-a-l---t-i-m-e- -a-n-o-m-a-l-y- -d-e-t-e-c-t-i-o-n-.--
+-*- -*-*-D-a-t-a- -h-y-g-i-e-n-e-:-*-*- -W-e-e-k-l-y- -a-u-d-i-t-s- -u-s-i-n-g- -[-G-r-e-a-t- -E-x-p-e-c-t-a-t-i-o-n-s-]-(-h-t-t-p-s-:-/-/-g-r-e-a-t-e-x-p-e-c-t-a-t-i-o-n-s-.-i-o-/-)- -t-o- -e-n-s-u-r-e- -n-e-w- -t-e-l-e-m-e-t-r-y- -h-a-s-n-‚-Ä-ô-t- -q-u-i-e-t-l-y- -d-r-i-f-t-e-d- -o-f-f- -c-o-u-r-s-e-.--
+--
+-E-v-e-r-y- -F-r-i-d-a-y-,- -I- -r-u-n- -a- -‚-Ä-ú-t-u-r-b-u-l-e-n-c-e- -d-r-i-l-l-‚-Ä-ù- -w-h-e-r-e- -I- -i-n-t-e-n-t-i-o-n-a-l-l-y- -s-a-b-o-t-a-g-e- -a- -p-i-p-e-l-i-n-e- -c-o-m-p-o-n-e-n-t-‚-Ä-î-r-e-v-o-k-i-n-g- -a- -k-e-y-,- -i-n-j-e-c-t-i-n-g- -p-o-i-s-o-n-e-d- -g-r-a-d-i-e-n-t-s-,- -o-r- -t-h-r-o-t-t-l-i-n-g- -I-O-‚-Ä-î-t-o- -v-e-r-i-f-y- -o-u-r- -d-e-t-e-c-t-i-o-n- -s-c-r-i-p-t-s- -s-t-i-l-l- -t-r-i-p-.- -I-t- -i-s- -p-a-r-t- -c-h-a-o-s- -m-o-n-k-e-y-,- -p-a-r-t- -t-h-e-r-a-p-y-.--
+--
+-#-#- -C-o-m-m-u-n-i-t-y- -T-o-w-e-r-:- -M-e-n-t-o-r-s-,- -P-e-e-r-s-,- -a-n-d- -P-a-n-c-a-k-e-s--
+--
+-I- -a-m- -f-o-r-t-u-n-a-t-e- -t-o- -t-a-c-k-l-e- -t-h-e-s-e- -q-u-e-s-t-i-o-n-s- -u-n-d-e-r- -t-h-e- -g-u-i-d-a-n-c-e- -o-f- -D-r-.- -K-e-n-j-i- -Y-o-s-h-i-g-o-e- -a-n-d- -t-h-e- -r-e-s-e-a-r-c-h- -c-o-m-m-u-n-i-t-y- -i-n-s-i-d-e- -t-h-e- -[-C-y-b-e-r-s-e-c-u-r-i-t-y- -a-n-d- -A-s-s-u-r-e-d- -S-y-s-t-e-m-s- -E-n-g-i-n-e-e-r-i-n-g- -c-e-n-t-e-r-]-(-h-t-t-p-s-:-/-/-e-r-a-u-.-e-d-u-/-r-e-s-e-a-r-c-h-/-c-y-b-e-r-s-e-c-u-r-i-t-y---a-s-s-u-r-e-d---s-y-s-t-e-m-s-)-.- -W-e-e-k-l-y- -m-e-e-t-i-n-g-s- -f-e-e-l- -l-i-k-e- -f-o-c-u-s-e-d- -r-e-s-e-a-r-c-h- -r-o-u-n-d-t-a-b-l-e-s-,- -w-i-t-h- -f-a-c-u-l-t-y- -d-i-s-s-e-c-t-i-n-g- -a-v-i-o-n-i-c-s- -i-n-c-i-d-e-n-t-s- -a-n-d- -c-l-a-s-s-m-a-t-e-s- -p-r-e-s-e-n-t-i-n-g- -f-r-e-s-h- -e-x-p-e-r-i-m-e-n-t-a-l- -r-e-s-u-l-t-s-.- -S-o-m-e-o-n-e- -i-n-e-v-i-t-a-b-l-y- -b-r-i-n-g-s- -p-a-n-c-a-k-e-s- -f-r-o-m- -t-h-e- -s-t-u-d-e-n-t- -u-n-i-o-n-;- -s-e-c-u-r-i-t-y- -c-o-n-v-e-r-s-a-t-i-o-n-s- -g-o- -d-o-w-n- -e-a-s-i-e-r- -w-i-t-h- -m-a-p-l-e- -s-y-r-u-p-.--
+--
+-T-o- -k-e-e-p- -c-o-l-l-a-b-o-r-a-t-i-o-n- -l-i-v-e-l-y-,- -w-e- -r-o-t-a-t-e- -r-e-s-p-o-n-s-i-b-i-l-i-t-i-e-s-:--
+--
+-*- -*-*-T-h-r-e-a-t---m-o-d-e-l- -T-h-u-r-s-d-a-y-s-:-*-*- -O-n-e- -s-t-u-d-e-n-t- -l-e-a-d-s- -a- -t-a-b-l-e-t-o-p- -e-x-e-r-c-i-s-e- -s-i-m-u-l-a-t-i-n-g- -a- -n-e-w- -a-t-t-a-c-k- -a-g-a-i-n-s-t- -a-i-r-c-r-a-f-t- -s-y-s-t-e-m-s-.--
+-*- -*-*-L-a-u-n-c-h---a-n-d---L-e-a-r-n- -n-i-g-h-t-s-:-*-*- -W-e- -s-t-r-e-a-m- -N-A-S-A- -o-r- -S-p-a-c-e-X- -l-a-u-n-c-h-e-s- -f-r-o-m- -t-h-e- -c-a-u-s-e-w-a-y- -w-h-i-l-e- -d-e-b-a-t-i-n-g- -t-h-e- -e-t-h-i-c-s- -o-f- -a-u-t-o-n-o-m-o-u-s- -f-l-i-g-h-t-.--
+-*- -*-*-P-a-p-e-r- -p-i-l-o-t- -p-r-o-g-r-a-m-:-*-*- -F-i-r-s-t---y-e-a-r- -P-h-D- -s-t-u-d-e-n-t-s- -c-o---a-u-t-h-o-r- -b-l-o-g- -s-u-m-m-a-r-i-e-s- -t-o- -d-e-m-y-s-t-i-f-y- -r-e-c-e-n-t- -s-e-c-u-r-i-t-y- -p-a-p-e-r-s- -f-o-r- -u-n-d-e-r-g-r-a-d-s-.--
+--
+-T-h-e-s-e- -r-i-t-u-a-l-s- -c-r-e-a-t-e- -f-e-e-d-b-a-c-k- -l-o-o-p-s- -b-e-t-w-e-e-n- -c-o-u-r-s-e-w-o-r-k-,- -r-e-s-e-a-r-c-h-,- -a-n-d- -c-o-m-m-u-n-i-t-y- -m-e-n-t-o-r-s-h-i-p-.- -T-h-e-y- -a-l-s-o- -r-e-m-i-n-d- -m-e- -t-h-a-t- -t-h-e- -b-e-s-t- -d-e-b-u-g-g-i-n-g- -h-a-p-p-e-n-s- -w-h-e-n- -s-o-m-e-o-n-e- -e-l-s-e- -i-s- -h-o-l-d-i-n-g- -a- -p-l-a-t-e- -o-f- -p-a-n-c-a-k-e-s-.--
+--
+-#-#- -S-u-n-s-h-i-n-e-,- -S-a-n-i-t-y-,- -a-n-d- -t-h-e- -O-c-c-a-s-i-o-n-a-l- -H-u-r-r-i-c-a-n-e- -W-a-t-c-h--
+--
+-F-l-o-r-i-d-a-‚-Ä-ô-s- -c-l-i-m-a-t-e- -s-u-p-p-l-i-e-s- -i-t-s- -o-w-n- -r-h-y-t-h-m-.- -A-f-t-e-r-n-o-o-n- -t-h-u-n-d-e-r-s-t-o-r-m-s- -c-h-a-s-e- -m-e- -f-r-o-m- -t-h-e- -l-a-b- -o-n-l-y- -t-o- -l-e-a-v-e- -s-h-e-r-b-e-t---c-o-l-o-r-e-d- -s-u-n-s-e-t-s- -o-v-e-r- -t-h-e- -w-a-t-e-r-.- -O-n- -c-l-e-a-r- -n-i-g-h-t-s- -w-e- -c-a-r-p-o-o-l- -s-o-u-t-h- -t-o- -w-a-t-c-h- -a- -l-a-u-n-c-h-,- -a-n-d- -t-h-e- -s-i-g-h-t- -o-f- -a- -r-o-c-k-e-t- -c-a-r-v-i-n-g- -t-h-r-o-u-g-h- -t-h-e- -s-k-y- -h-a-s- -b-e-c-o-m-e- -m-y- -f-a-v-o-r-i-t-e- -a-n-t-i-d-o-t-e- -t-o- -r-e-s-e-a-r-c-h- -f-a-t-i-g-u-e-.- -W-h-e-n- -t-h-e- -f-o-r-e-c-a-s-t- -t-u-r-n-s- -o-m-i-n-o-u-s-,- -I- -s-w-i-t-c-h- -t-o- -a- -‚-Ä-ú-h-u-r-r-i-c-a-n-e- -m-o-d-e-‚-Ä-ù- -c-h-e-c-k-l-i-s-t-:- -b-a-c-k-u-p- -d-a-t-a-s-e-t-s- -t-o- -o-f-f---s-i-t-e- -s-t-o-r-a-g-e-,- -c-h-a-r-g-e- -e-v-e-r-y- -l-a-p-t-o-p-,- -a-n-d- -s-t-o-c-k- -u-p- -o-n- -e-m-p-a-n-a-d-a-s-.--
+--
+-T-o- -s-t-a-y- -b-a-l-a-n-c-e-d-,- -I- -l-e-a-n- -o-n- -a- -f-e-w- -h-a-b-i-t-s-:--
+--
+-*- -*-*-P-o-m-o-d-o-r-o- -s-p-r-i-n-t-s- -o-n- -t-h-e- -b-a-l-c-o-n-y-*-*- -w-h-e-n-e-v-e-r- -t-h-e- -U-V- -i-n-d-e-x- -d-i-p-s- -b-e-l-o-w- -‚-Ä-ú-d-r-a-g-o-n- -f-i-r-e-.-‚-Ä-ù--
+-*- -*-*-M-e-n-t-o-r- -w-a-l-k-s-*-*-‚-Ä-î-l-i-t-e-r-a-l-l-y- -p-a-c-i-n-g- -t-h-e- -f-l-i-g-h-t- -l-i-n-e- -w-i-t-h- -m-y- -a-d-v-i-s-o-r-,- -w-h-i-c-h- -s-o-m-e-h-o-w- -m-a-k-e-s- -d-e-b-u-g-g-i-n-g- -g-r-a-p-h- -n-e-u-r-a-l- -n-e-t-w-o-r-k-s- -f-e-e-l- -b-r-e-e-z-y-.--
+-*- -*-*-M-o-n-t-h-l-y- -‚-Ä-ú-d-a-t-a- -d-e-t-o-x-‚-Ä-ù- -d-a-y-s-*-*- -w-i-t-h- -z-e-r-o- -c-o-m-m-i-t-s-,- -w-h-e-r-e- -I- -r-e-a-d- -f-i-c-t-i-o-n- -a-t- -t-h-e- -b-e-a-c-h- -a-n-d- -p-r-e-t-e-n-d- -m-y- -m-o-d-e-l-s- -d-o- -n-o-t- -e-x-i-s-t- -f-o-r- -s-i-x- -h-o-u-r-s-.--
+--
+-#-#- -P-r-e---F-l-i-g-h-t- -C-h-e-c-k-l-i-s-t- -f-o-r- -P-r-o-s-p-e-c-t-i-v-e- -E-R-A-U- -P-h-D-s--
+--
+-T-h-i-n-k-i-n-g- -o-f- -m-i-x-i-n-g- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g-,- -s-e-c-u-r-i-t-y-,- -a-n-d- -s-u-n-s-h-i-n-e- -y-o-u-r-s-e-l-f-?- -H-e-r-e- -a-r-e- -m-y- -d-i-s-t-i-l-l-e-d- -t-a-k-e-a-w-a-y-s-:--
+--
+-1-.- -*-*-D-e-s-i-g-n- -f-o-r- -a-u-d-i-t-a-b-i-l-i-t-y- -f-r-o-m- -d-a-y- -o-n-e-.-*-*- -V-e-r-s-i-o-n- -e-v-e-r-y-t-h-i-n-g-‚-Ä-î-d-a-t-a-s-e-t-s-,- -c-o-n-f-i-g-s-,- -c-o-n-t-a-i-n-e-r- -b-u-i-l-d-s-‚-Ä-î-b-e-c-a-u-s-e- -f-u-t-u-r-e---y-o-u- -w-i-l-l- -f-o-r-g-e-t- -w-h-i-c-h- -r-u-n- -w-a-s- -t-h-e- -g-o-o-d- -o-n-e-.--
+-2-.- -*-*-G-e-t- -c-o-m-f-o-r-t-a-b-l-e- -w-i-t-h- -i-n-t-e-r-d-i-s-c-i-p-l-i-n-a-r-y- -t-r-a-n-s-l-a-t-i-o-n-.-*-*- -Y-o-u- -w-i-l-l- -e-x-p-l-a-i-n- -b-a-c-k-p-r-o-p-a-g-a-t-i-o-n- -t-o- -p-i-l-o-t-s- -a-n-d- -a-v-i-o-n-i-c-s- -s-a-f-e-t-y- -t-o- -d-a-t-a- -s-c-i-e-n-t-i-s-t-s-,- -o-f-t-e-n- -i-n- -t-h-e- -s-a-m-e- -m-e-e-t-i-n-g-.--
+-3-.- -*-*-L-e-a-n- -i-n-t-o- -t-h-e- -a-e-r-o-s-p-a-c-e- -e-c-o-s-y-s-t-e-m-.-*-*- -C-o-l-l-a-b-o-r-a-t-e- -w-i-t-h- -f-l-i-g-h-t- -t-e-s-t- -t-e-a-m-s-,- -s-i-m-u-l-a-t-i-o-n- -l-a-b-s-,- -a-n-d- -e-v-e-n- -m-e-t-e-o-r-o-l-o-g-y- -r-e-s-e-a-r-c-h-e-r-s-;- -t-h-e-i-r- -c-o-n-s-t-r-a-i-n-t-s- -s-h-a-r-p-e-n- -y-o-u-r- -t-h-r-e-a-t- -m-o-d-e-l-s-.--
+-4-.- -*-*-B-u-d-g-e-t- -t-i-m-e- -f-o-r- -f-u-n-d-i-n-g- -l-o-g-i-s-t-i-c-s-.-*-*- -E-R-A-U-‚-Ä-ô-s- -[-G-r-a-d-u-a-t-e- -S-t-u-d-i-e-s- -p-a-g-e-]-(-h-t-t-p-s-:-/-/-e-r-a-u-.-e-d-u-/-d-e-g-r-e-e-s-/-g-r-a-d-u-a-t-e-)- -l-i-s-t-s- -a-s-s-i-s-t-a-n-t-s-h-i-p-s- -e-a-r-l-y-,- -a-n-d- -t-h-e-y- -g-o- -a-s- -f-a-s-t- -a-s- -p-r-i-m-e- -l-a-u-n-c-h- -w-i-n-d-o-w-s-.--
+-5-.- -*-*-P-r-o-t-e-c-t- -y-o-u-r- -j-o-y-.-*-*- -S-c-h-e-d-u-l-e- -t-h-e- -b-e-a-c-h- -w-a-l-k-,- -t-h-e- -s-u-r-f- -l-e-s-s-o-n-,- -t-h-e- -s-u-n-s-e-t- -p-h-o-t-o-.- -B-u-r-n-o-u-t- -l-o-o-k-s- -s-u-s-p-i-c-i-o-u-s-l-y- -l-i-k-e- -c-l-o-u-d- -c-o-v-e-r- -i-f- -y-o-u- -i-g-n-o-r-e- -i-t- -l-o-n-g- -e-n-o-u-g-h-.--
+--
+-#-#- -R-e-a-d-i-n-g- -R-a-d-a-r--
+--
+-I-f- -y-o-u-‚-Ä-ô-r-e- -c-u-r-i-o-u-s- -a-b-o-u-t- -s-e-c-u-r-i-n-g- -A-I-,- -s-t-a-r-t- -w-i-t-h- -*-M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g- -a-n-d- -S-e-c-u-r-i-t-y-*- -b-y- -[-C-l-a-r-e-n-c-e- -C-h-i-o- -a-n-d- -D-a-v-i-d- -F-r-e-e-m-a-n-]-(-h-t-t-p-s-:-/-/-w-w-w-.-o-r-e-i-l-l-y-.-c-o-m-/-l-i-b-r-a-r-y-/-v-i-e-w-/-m-a-c-h-i-n-e---l-e-a-r-n-i-n-g---a-n-d-/-9-7-8-1-4-9-1-9-7-9-8-9-7-/-)- -f-o-r- -p-r-a-g-m-a-t-i-c- -f-r-a-m-e-w-o-r-k-s-,- -t-h-e-n- -d-i-v-e- -i-n-t-o- -t-h-e- -[-P-r-o-o-f---o-f---L-e-a-r-n-i-n-g-]-(-h-t-t-p-s-:-/-/-a-r-x-i-v-.-o-r-g-/-a-b-s-/-2-1-0-3-.-0-6-2-1-7-)- -l-i-t-e-r-a-t-u-r-e- -f-o-r- -p-r-o-t-o-c-o-l- -m-e-c-h-a-n-i-c-s-.- -F-o-r- -a- -s-y-s-t-e-m-s- -s-p-i-n-,- -t-h-e- -[-M-I-T-R-E- -A-T-T-&-C-K- -f-o-r- -M-L-]-(-h-t-t-p-s-:-/-/-a-t-t-a-c-k-.-m-i-t-r-e-.-o-r-g-/-t-e-c-h-n-i-q-u-e-s-/-M-L-/-)- -m-a-t-r-i-x- -p-a-i-r-s- -n-i-c-e-l-y- -w-i-t-h- -E-R-A-U-‚-Ä-ô-s- -a-v-i-o-n-i-c-s- -c-a-s-e- -s-t-u-d-i-e-s-.--
+--
+-R-e-s-e-a-r-c-h- -m-a-y- -k-e-e-p- -m-e- -i-n-d-o-o-r-s-,- -b-u-t- -F-l-o-r-i-d-a- -n-e-v-e-r- -l-e-t-s- -m-e- -f-o-r-g-e-t- -t-h-a-t- -d-i-s-c-o-v-e-r-y- -c-a-n- -b-e- -a-s- -e-x-p-a-n-s-i-v-e- -a-s- -t-h-e- -h-o-r-i-z-o-n- -b-e-y-o-n-d- -t-h-e- -r-u-n-w-a-y-‚-Ä-î-a-n-d- -t-h-a-t- -t-h-e- -b-e-s-t- -i-d-e-a-s- -o-f-t-e-n- -a-r-r-i-v-e- -s-o-m-e-w-h-e-r-e- -b-e-t-w-e-e-n- -a- -l-i-g-h-t-n-i-n-g- -s-t-o-r-m- -a-n-d- -a- -l-a-u-n-c-h- -c-o-u-n-t-d-o-w-n-,- -p-r-e-f-e-r-a-b-l-y- -w-h-i-l-e- -h-o-l-d-i-n-g- -a- -m-a-n-g-o- -s-m-o-o-t-h-i-e-.--
+-

@@ -1,26 +1,27 @@
----
-title: "USA vs Netherlands: An Expat's Perspective"
-date: 2024-06-09
-permalink: /posts/2024/06/usa-vs-nl-expat/
-categories: life
-tags:
-  - expat
-  - culture
-  - comparison
----
-
-Living as an expat has given me the chance to compare daily life in the United States and the Netherlands in a way that guidebooks never could. My notebook is full of tiny contrasts: Leiden grocery receipts, NS train schedules for my commute, and lab to-do lists from Daytona Beach.
-
-## Work‚ÄìLife Balance
-
-In Leiden, my mornings start with a bike ride toward the train that carries me to Avion Full Flight Simulators. Our engineering team builds flight-simulator software, and the culture is unapologetically focused on sustainable productivity. Code freezes really mean ‚Äúlog off,‚Äù and it is normal to see sprint boards cleared by late afternoon so people can pick up their kids or get to band practice. Back in the U.S., my graduate research assistant days at Embry-Riddle Aeronautical University stretched longer. Evening lab sessions were common, and journal submission deadlines had us refining proof-of-learning experiments well past midnight. I‚Äôve learned to borrow the Dutch discipline for rest while keeping the American appetite for ambitious projects.
-
-## Transportation
-
-Cycling everywhere in the Netherlands rewired my sense of distance. I measure days in canals crossed and count meetings by the number of times I‚Äôve balanced my backpack on the rear rack before catching the intercity. Trains arriving exactly when the NS app promises make it easy to plan simulator release windows around travel. In Florida, the car becomes my lifeline again. Daytona Beach has buses, but late-night lab work means driving to campus, blasting podcasts, and budgeting extra time for thunderstorms that slow down traffic.
-
-## Community
-
-My Leiden neighbors keep their circles small but steadfast. The first time they invited me for stamppot felt like earning a long-term trust badge, and now our apartment courtyard doubles as a potluck venue every few months. In the U.S., strangers compliment your sneakers while you wait for coffee, and it‚Äôs easy to collect surface-level friendships in a weekend. Both styles have taught me different versions of belonging‚Äîone built slowly around dinner tables, the other forged in spontaneous conversations after seminar talks.
-
-These differences shape daily experiences and remind me that ‚Äúhome‚Äù can stretch across two very different coastlines, each offering habits worth carrying into the other.
+--------
+-t-i-t-l-e-:- -"-U-S-A- -v-s- -N-e-t-h-e-r-l-a-n-d-s-:- -A-n- -E-x-p-a-t-'-s- -P-e-r-s-p-e-c-t-i-v-e-"--
+-d-a-t-e-:- -2-0-2-4---0-6---0-9--
+-p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-4-/-0-6-/-u-s-a---v-s---n-l---e-x-p-a-t-/--
+-c-a-t-e-g-o-r-i-e-s-:- -l-i-f-e--
+-t-a-g-s-:--
+- - --- -e-x-p-a-t--
+- - --- -c-u-l-t-u-r-e--
+- - --- -c-o-m-p-a-r-i-s-o-n--
+--------
+--
+-L-i-v-i-n-g- -a-s- -a-n- -e-x-p-a-t- -h-a-s- -g-i-v-e-n- -m-e- -t-h-e- -c-h-a-n-c-e- -t-o- -c-o-m-p-a-r-e- -d-a-i-l-y- -l-i-f-e- -i-n- -t-h-e- -U-n-i-t-e-d- -S-t-a-t-e-s- -a-n-d- -t-h-e- -N-e-t-h-e-r-l-a-n-d-s- -i-n- -a- -w-a-y- -t-h-a-t- -g-u-i-d-e-b-o-o-k-s- -n-e-v-e-r- -c-o-u-l-d-.- -M-y- -n-o-t-e-b-o-o-k- -i-s- -f-u-l-l- -o-f- -t-i-n-y- -c-o-n-t-r-a-s-t-s-:- -L-e-i-d-e-n- -g-r-o-c-e-r-y- -r-e-c-e-i-p-t-s-,- -N-S- -t-r-a-i-n- -s-c-h-e-d-u-l-e-s- -f-o-r- -m-y- -c-o-m-m-u-t-e-,- -a-n-d- -l-a-b- -t-o---d-o- -l-i-s-t-s- -f-r-o-m- -D-a-y-t-o-n-a- -B-e-a-c-h-.--
+--
+-#-#- -W-o-r-k-‚-Ä-ì-L-i-f-e- -B-a-l-a-n-c-e--
+--
+-I-n- -L-e-i-d-e-n-,- -m-y- -m-o-r-n-i-n-g-s- -s-t-a-r-t- -w-i-t-h- -a- -b-i-k-e- -r-i-d-e- -t-o-w-a-r-d- -t-h-e- -t-r-a-i-n- -t-h-a-t- -c-a-r-r-i-e-s- -m-e- -t-o- -A-v-i-o-n- -F-u-l-l- -F-l-i-g-h-t- -S-i-m-u-l-a-t-o-r-s-.- -O-u-r- -e-n-g-i-n-e-e-r-i-n-g- -t-e-a-m- -b-u-i-l-d-s- -f-l-i-g-h-t---s-i-m-u-l-a-t-o-r- -s-o-f-t-w-a-r-e-,- -a-n-d- -t-h-e- -c-u-l-t-u-r-e- -i-s- -u-n-a-p-o-l-o-g-e-t-i-c-a-l-l-y- -f-o-c-u-s-e-d- -o-n- -s-u-s-t-a-i-n-a-b-l-e- -p-r-o-d-u-c-t-i-v-i-t-y-.- -C-o-d-e- -f-r-e-e-z-e-s- -r-e-a-l-l-y- -m-e-a-n- -‚-Ä-ú-l-o-g- -o-f-f-,-‚-Ä-ù- -a-n-d- -i-t- -i-s- -n-o-r-m-a-l- -t-o- -s-e-e- -s-p-r-i-n-t- -b-o-a-r-d-s- -c-l-e-a-r-e-d- -b-y- -l-a-t-e- -a-f-t-e-r-n-o-o-n- -s-o- -p-e-o-p-l-e- -c-a-n- -p-i-c-k- -u-p- -t-h-e-i-r- -k-i-d-s- -o-r- -g-e-t- -t-o- -b-a-n-d- -p-r-a-c-t-i-c-e-.- -B-a-c-k- -i-n- -t-h-e- -U-.-S-.-,- -m-y- -g-r-a-d-u-a-t-e- -r-e-s-e-a-r-c-h- -a-s-s-i-s-t-a-n-t- -d-a-y-s- -a-t- -E-m-b-r-y---R-i-d-d-l-e- -A-e-r-o-n-a-u-t-i-c-a-l- -U-n-i-v-e-r-s-i-t-y- -s-t-r-e-t-c-h-e-d- -l-o-n-g-e-r-.- -E-v-e-n-i-n-g- -l-a-b- -s-e-s-s-i-o-n-s- -w-e-r-e- -c-o-m-m-o-n-,- -a-n-d- -j-o-u-r-n-a-l- -s-u-b-m-i-s-s-i-o-n- -d-e-a-d-l-i-n-e-s- -h-a-d- -u-s- -r-e-f-i-n-i-n-g- -p-r-o-o-f---o-f---l-e-a-r-n-i-n-g- -e-x-p-e-r-i-m-e-n-t-s- -w-e-l-l- -p-a-s-t- -m-i-d-n-i-g-h-t-.- -I-‚-Ä-ô-v-e- -l-e-a-r-n-e-d- -t-o- -b-o-r-r-o-w- -t-h-e- -D-u-t-c-h- -d-i-s-c-i-p-l-i-n-e- -f-o-r- -r-e-s-t- -w-h-i-l-e- -k-e-e-p-i-n-g- -t-h-e- -A-m-e-r-i-c-a-n- -a-p-p-e-t-i-t-e- -f-o-r- -a-m-b-i-t-i-o-u-s- -p-r-o-j-e-c-t-s-.--
+--
+-#-#- -T-r-a-n-s-p-o-r-t-a-t-i-o-n--
+--
+-C-y-c-l-i-n-g- -e-v-e-r-y-w-h-e-r-e- -i-n- -t-h-e- -N-e-t-h-e-r-l-a-n-d-s- -r-e-w-i-r-e-d- -m-y- -s-e-n-s-e- -o-f- -d-i-s-t-a-n-c-e-.- -I- -m-e-a-s-u-r-e- -d-a-y-s- -i-n- -c-a-n-a-l-s- -c-r-o-s-s-e-d- -a-n-d- -c-o-u-n-t- -m-e-e-t-i-n-g-s- -b-y- -t-h-e- -n-u-m-b-e-r- -o-f- -t-i-m-e-s- -I-‚-Ä-ô-v-e- -b-a-l-a-n-c-e-d- -m-y- -b-a-c-k-p-a-c-k- -o-n- -t-h-e- -r-e-a-r- -r-a-c-k- -b-e-f-o-r-e- -c-a-t-c-h-i-n-g- -t-h-e- -i-n-t-e-r-c-i-t-y-.- -T-r-a-i-n-s- -a-r-r-i-v-i-n-g- -e-x-a-c-t-l-y- -w-h-e-n- -t-h-e- -N-S- -a-p-p- -p-r-o-m-i-s-e-s- -m-a-k-e- -i-t- -e-a-s-y- -t-o- -p-l-a-n- -s-i-m-u-l-a-t-o-r- -r-e-l-e-a-s-e- -w-i-n-d-o-w-s- -a-r-o-u-n-d- -t-r-a-v-e-l-.- -I-n- -F-l-o-r-i-d-a-,- -t-h-e- -c-a-r- -b-e-c-o-m-e-s- -m-y- -l-i-f-e-l-i-n-e- -a-g-a-i-n-.- -D-a-y-t-o-n-a- -B-e-a-c-h- -h-a-s- -b-u-s-e-s-,- -b-u-t- -l-a-t-e---n-i-g-h-t- -l-a-b- -w-o-r-k- -m-e-a-n-s- -d-r-i-v-i-n-g- -t-o- -c-a-m-p-u-s-,- -b-l-a-s-t-i-n-g- -p-o-d-c-a-s-t-s-,- -a-n-d- -b-u-d-g-e-t-i-n-g- -e-x-t-r-a- -t-i-m-e- -f-o-r- -t-h-u-n-d-e-r-s-t-o-r-m-s- -t-h-a-t- -s-l-o-w- -d-o-w-n- -t-r-a-f-f-i-c-.--
+--
+-#-#- -C-o-m-m-u-n-i-t-y--
+--
+-M-y- -L-e-i-d-e-n- -n-e-i-g-h-b-o-r-s- -k-e-e-p- -t-h-e-i-r- -c-i-r-c-l-e-s- -s-m-a-l-l- -b-u-t- -s-t-e-a-d-f-a-s-t-.- -T-h-e- -f-i-r-s-t- -t-i-m-e- -t-h-e-y- -i-n-v-i-t-e-d- -m-e- -f-o-r- -s-t-a-m-p-p-o-t- -f-e-l-t- -l-i-k-e- -e-a-r-n-i-n-g- -a- -l-o-n-g---t-e-r-m- -t-r-u-s-t- -b-a-d-g-e-,- -a-n-d- -n-o-w- -o-u-r- -a-p-a-r-t-m-e-n-t- -c-o-u-r-t-y-a-r-d- -d-o-u-b-l-e-s- -a-s- -a- -p-o-t-l-u-c-k- -v-e-n-u-e- -e-v-e-r-y- -f-e-w- -m-o-n-t-h-s-.- -I-n- -t-h-e- -U-.-S-.-,- -s-t-r-a-n-g-e-r-s- -c-o-m-p-l-i-m-e-n-t- -y-o-u-r- -s-n-e-a-k-e-r-s- -w-h-i-l-e- -y-o-u- -w-a-i-t- -f-o-r- -c-o-f-f-e-e-,- -a-n-d- -i-t-‚-Ä-ô-s- -e-a-s-y- -t-o- -c-o-l-l-e-c-t- -s-u-r-f-a-c-e---l-e-v-e-l- -f-r-i-e-n-d-s-h-i-p-s- -i-n- -a- -w-e-e-k-e-n-d-.- -B-o-t-h- -s-t-y-l-e-s- -h-a-v-e- -t-a-u-g-h-t- -m-e- -d-i-f-f-e-r-e-n-t- -v-e-r-s-i-o-n-s- -o-f- -b-e-l-o-n-g-i-n-g-‚-Ä-î-o-n-e- -b-u-i-l-t- -s-l-o-w-l-y- -a-r-o-u-n-d- -d-i-n-n-e-r- -t-a-b-l-e-s-,- -t-h-e- -o-t-h-e-r- -f-o-r-g-e-d- -i-n- -s-p-o-n-t-a-n-e-o-u-s- -c-o-n-v-e-r-s-a-t-i-o-n-s- -a-f-t-e-r- -s-e-m-i-n-a-r- -t-a-l-k-s-.--
+--
+-T-h-e-s-e- -d-i-f-f-e-r-e-n-c-e-s- -s-h-a-p-e- -d-a-i-l-y- -e-x-p-e-r-i-e-n-c-e-s- -a-n-d- -r-e-m-i-n-d- -m-e- -t-h-a-t- -‚-Ä-ú-h-o-m-e-‚-Ä-ù- -c-a-n- -s-t-r-e-t-c-h- -a-c-r-o-s-s- -t-w-o- -v-e-r-y- -d-i-f-f-e-r-e-n-t- -c-o-a-s-t-l-i-n-e-s-,- -e-a-c-h- -o-f-f-e-r-i-n-g- -h-a-b-i-t-s- -w-o-r-t-h- -c-a-r-r-y-i-n-g- -i-n-t-o- -t-h-e- -o-t-h-e-r-.--
+-
