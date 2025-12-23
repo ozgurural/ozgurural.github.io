@@ -26,6 +26,7 @@ Highlights:
 
 ## News
 
+ - **December 2025:** Joined the **Program Committee** for the *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)* at the University of Alicante, Spain. [Conference website](https://nlpaics2026.gplsi.es/)
  - **December 2025:** Published the paper, *"SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks"*, in the IEEE Access Journal. [Read more](https://ieeexplore.ieee.org/document/11293969)
  - **August 2025:** Graduated with a Ph.D. in Electrical Engineering and Computer Science (ERAU). Dissertation: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe. [Dissertation link](https://commons.erau.edu/edt/905/). [Diploma verification](https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae).
  - **July 2025:** Successfully defended my Ph.D. dissertation. Title: “Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.” Advisor: Dr. Kenji Yoshigoe.
