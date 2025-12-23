@@ -7,8 +7,8 @@ My research interests include computer security, data privacy, machine learning,
 
 ### Service Roles
 
-- **Journal Referee** &mdash; IEEE Access, TÜBİTAK Journal of Electrical Engineering & Computer Sciences, Arabian Journal for Science and Engineering, and related journals spanning security, privacy, distributed systems, and intelligent infrastructure.
-- **Conference Reviewer** &mdash; IEEE conferences and symposia focused on computer security, data privacy, machine learning, distributed systems, and blockchain technologies.
-- **Session Chair** &mdash; Open to chairing sessions that align with my research expertise.
+- **Journal Referee:** IEEE Access, TÜBİTAK Journal of Electrical Engineering & Computer Sciences, Arabian Journal for Science and Engineering, and related journals spanning security, privacy, distributed systems, and intelligent infrastructure.
+- **Conference Reviewer:** IEEE conferences and symposia focused on computer security, data privacy, machine learning, distributed systems, and blockchain technologies.
+- **Session Chair:** Open to chairing sessions that align with my research expertise.
 
 Please reach out via [email](mailto:drozgurural@gmail.com) for service invitations or collaborations.
