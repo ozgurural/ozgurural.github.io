@@ -38,9 +38,3 @@ Highlights:
 - **May 2021:** Published the paper, *"Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data"*, in the International Conference on Information Systems Security and Privacy (ICISSP). [Read more](https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf)  
 
 ---
-
-## Professional Service
-
-- **Program Committee Member**, 2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026), University of Alicante, Spain. [Conference website](https://nlpaics2026.gplsi.es/)
-
----
