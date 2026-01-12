@@ -1,65 +1,64 @@
---------
--t-i-t-l-e-:- -"-M-E-T-U- -S-a-i-l-i-n-g- -T-e-a-m-:- -R-a-c-i-n-g- -i-n- -U-r-l-a-,- -B-o-d-r-u-m-,- -a-n-d- -M-a-r-m-a-r-i-s-"--
--d-a-t-e-:- -2-0-2-5---0-9---1-0--
--p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-m-e-t-u---u-r-l-a---m-a-r-m-a-r-i-s---s-a-i-l-i-n-g-/--
--c-a-t-e-g-o-r-i-e-s-:- -l-i-f-e--
--t-a-g-s-:--
-- - --- -s-a-i-l-i-n-g--
-- - --- -r-a-c-e--
-- - --- -M-E-T-U--
-- - --- -M-a-r-m-a-r-i-s--
-- - --- -U-r-l-a--
---------
---
--<-d-i-v- -c-l-a-s-s-=-"-n-o-t-i-c-e-----i-n-f-o-"- -m-a-r-k-d-o-w-n-=-"-1-"->--
--*-*-F-r-o-m- -t-h-e- -H-e-l-m-*-*--
---
--C-o-m-p-e-t-i-t-i-v-e- -s-a-i-l-i-n-g- -i-s- -a- -m-a-s-t-e-r-c-l-a-s-s- -i-n- -h-i-g-h---s-t-a-k-e-s- -t-e-a-m-w-o-r-k- -w-h-e-r-e- -s-p-l-i-t---s-e-c-o-n-d- -d-e-c-i-s-i-o-n-s- -m-a-t-t-e-r-.- -I-t- -t-e-a-c-h-e-s- -y-o-u- -t-o- -t-r-u-s-t- -y-o-u-r- -c-r-e-w- -i-m-p-l-i-c-i-t-l-y- -a-n-d- -c-o-m-m-u-n-i-c-a-t-e- -w-i-t-h- -a-b-s-o-l-u-t-e- -c-l-a-r-i-t-y- -u-n-d-e-r- -p-r-e-s-s-u-r-e- -(-"-C-o-m-m-u-n-i-c-a-t-i-o-n- -b-e-a-t-s- -h-e-r-o-i-c-s-"-)-.- -I- -h-a-v-e- -f-o-u-n-d- -t-h-e-s-e- -p-a-t-t-e-r-n-s- -a-p-p-l-y- -d-i-r-e-c-t-l-y- -t-o- -I-n-c-i-d-e-n-t- -M-a-n-a-g-e-m-e-n-t- -a-n-d- -E-n-g-i-n-e-e-r-i-n-g- -O-p-s-.--
--<-/-d-i-v->--
---
--M-i-d-d-l-e- -E-a-s-t- -T-e-c-h-n-i-c-a-l- -U-n-i-v-e-r-s-i-t-y-'-s- -s-a-i-l-i-n-g- -c-l-u-b- -h-a-s- -l-o-n-g- -b-e-e-n- -a- -h-u-b- -f-o-r- -s-t-u-d-e-n-t-s- -w-h-o- -l-o-v-e- -t-h-e- -s-e-a-.- -I- -j-o-i-n-e-d- -t-h-e- -c-l-u-b- -a-b-o-u-t- -s-i-x- -y-e-a-r-s- -a-g-o-,- -e-a-g-e-r- -t-o- -e-s-c-a-p-e- -A-n-k-a-r-a-'-s- -d-r-y- -i-n-l-a-n-d- -c-l-i-m-a-t-e-,- -a-n-d- -s-p-e-n-t- -n-e-a-r-l-y- -e-v-e-r-y- -f-r-e-e- -w-e-e-k-e-n-d- -o-n- -t-h-e- -A-e-g-e-a-n-.- -I-'-m- -n-o-t- -a- -m-e-m-b-e-r- -t-o-d-a-y-,- -b-u-t- -t-h-e- -l-e-s-s-o-n-s- -s-t-i-l-l- -s-t-i-c-k-.- -L-e-a-r-n-i-n-g- -t-o- -c-a-l-l- -s-a-i-l- -t-r-i-m- -a-n-d- -f-e-e-l-i-n-g- -t-h-e- -h-u-l-l- -s-u-r-g-e- -a-f-t-e-r- -a- -c-l-e-a-n- -t-a-c-k- -g-a-v-e- -m-e- -m-y- -f-i-r-s-t- -t-a-s-t-e- -o-f- -r-e-a-l- -t-e-a-m-w-o-r-k-.--
---
--T-h-o-s-e- -e-a-r-l-y- -r-e-g-a-t-t-a-s- -t-a-u-g-h-t- -m-e- -m-o-r-e- -t-h-a-n- -b-o-a-t- -h-a-n-d-l-i-n-g-.- -W-e- -p-l-a-n-n-e-d- -o-u-r- -o-w-n- -l-o-g-i-s-t-i-c-s-,- -f-r-o-m- -b-o-r-r-o-w-i-n-g- -a- -v-a-n- -f-o-r- -t-h-e- -s-a-i-l-s- -t-o- -c-o-o-k-i-n-g- -p-a-s-t-a- -i-n- -t-h-e- -p-a-r-k-i-n-g- -l-o-t- -a-f-t-e-r- -l-o-n-g- -p-r-a-c-t-i-c-e- -d-a-y-s-.- -K-e-e-p-i-n-g- -a- -r-a-c-e- -j-o-u-r-n-a-l- -o-f- -w-h-a-t- -w-e-n-t- -r-i-g-h-t- -a-n-d- -w-r-o-n-g- -b-e-c-a-m-e- -a- -h-a-b-i-t- -I- -s-t-i-l-l- -l-e-a-n- -o-n-,- -e-v-e-n- -i-f- -m-y- -t-i-m-e- -o-n- -t-h-e- -w-a-t-e-r- -i-s- -a- -f-e-w- -y-e-a-r-s- -b-e-h-i-n-d- -m-e-.--
---
---
--#-#- -R-a-c-e-s- -o-n- -T-u-r-k-e-y-'-s- -A-e-g-e-a-n- -C-o-a-s-t--
---
---- -*-*-U-r-l-a-:-*-*- -H-o-m-e- -t-o- -t-h-e- -A-e-g-e-a-n- -O-f-f-s-h-o-r-e- -Y-a-c-h-t- -C-l-u-b- -(-E-A-Y-K-)-,- -U-r-l-a- -h-o-s-t-s- -a- -p-a-c-k-e-d- -c-a-l-e-n-d-a-r- -o-f- -w-e-e-k-e-n-d- -r-a-c-e-s- -a-n-d- -t-r-a-i-n-i-n-g- -r-e-g-a-t-t-a-s-,- -i-n-c-l-u-d-i-n-g- -t-h-e- -a-n-n-u-a-l- -[-J-i-m-m-y- -K-e-y- -C-u-p-]-(-h-t-t-p-s-:-/-/-j-i-m-m-y-k-e-y-c-u-p-.-c-o-m-)-.- -A-f-t-e-r-n-o-o-n- -t-h-e-r-m-a-l-s- -c-a-n- -d-i-e- -w-i-t-h-o-u-t- -w-a-r-n-i-n-g-,- -s-o- -w-e- -l-e-a-r-n-e-d- -t-o- -b-a-n-k- -a- -l-e-a-d- -e-a-r-l-y-.--
---- -*-*-B-o-d-r-u-m-:-*-*- -B-A-Y-K-'-s- -[-B-a-y-k-a-r- -W-i-n-t-e-r- -T-r-o-p-h-y-]-(-h-t-t-p-s-:-/-/-w-w-w-.-b-a-y-k-.-o-r-g-)-,- -s-p-o-n-s-o-r-e-d- -b-y- -B-a-y-k-a-r-,- -k-e-e-p-s- -c-r-e-w-s- -s-h-a-r-p- -t-h-r-o-u-g-h- -t-h-e- -o-f-f---s-e-a-s-o-n- -i-n- -B-o-d-r-u-m-'-s- -s-h-e-l-t-e-r-e-d- -w-a-t-e-r-s-.- -G-u-s-t-s- -f-u-n-n-e-l-i-n-g- -o-f-f- -t-h-e- -h-i-l-l-s- -r-e-w-a-r-d- -c-r-e-w-s- -w-h-o- -t-r-i-m- -q-u-i-c-k-l-y-.--
---- -*-*-M-a-r-m-a-r-i-s-:-*-*- -E-a-c-h- -a-u-t-u-m-n-,- -t-h-e- -M-a-r-m-a-r-i-s- -I-n-t-e-r-n-a-t-i-o-n-a-l- -R-a-c-e- -W-e-e-k- -d-r-a-w-s- -c-r-e-w-s- -f-r-o-m- -a-c-r-o-s-s- -E-u-r-o-p-e- -f-o-r- -a- -w-e-e-k- -o-f- -i-n-t-e-n-s-e- -c-o-m-p-e-t-i-t-i-o-n-.- -T-h-e- -l-o-n-g- -d-o-w-n-w-i-n-d- -l-e-g-s- -h-e-r-e- -t-a-u-g-h-t- -u-s- -t-o- -t-r-u-s-t- -t-h-e- -s-p-i-n-n-a-k-e-r- -a-n-d- -s-t-a-y- -p-a-t-i-e-n-t-.--
---
--#-#- -L-e-s-s-o-n-s- -f-r-o-m- -t-h-e- -C-o-c-k-p-i-t--
---
---- -T-e-l-l-t-a-l-e-s- -a-r-e- -t-h-e- -b-o-a-t-'-s- -h-e-a-r-t-b-e-a-t-â-€-”-g-l-a-n-c-e- -a-t- -t-h-e-m- -e-v-e-r-y- -f-e-w- -s-e-c-o-n-d-s-.--
---- -C-o-m-m-u-n-i-c-a-t-i-o-n- -b-e-a-t-s- -h-e-r-o-i-c-s-;- -c-a-l-l- -y-o-u-r- -m-o-v-e-s- -e-a-r-l-y- -a-n-d- -c-l-e-a-r-l-y-.--
---- -I-f- -y-o-u- -h-a-v-e- -t-i-m-e- -t-o- -r-e-l-a-x-,- -y-o-u- -h-a-v-e- -t-i-m-e- -t-o- -c-o-i-l- -a- -l-i-n-e-.--
---
--#-#- -K-e-y- -R-o-l-e-s- -o-n- -a- -R-a-c-i-n-g- -S-a-i-l-b-o-a-t--
---
---- -O-n- -o-u-r- -b-o-a-t- -I- -o-f-t-e-n- -t-r-i-m-m-e-d- -t-h-e- -j-i-b-,- -b-u-t- -r-o-t-a-t-i-n-g- -t-h-r-o-u-g-h- -e-a-c-h- -p-o-s-i-t-i-o-n- -t-a-u-g-h-t- -m-e- -h-o-w- -e-v-e-r-y- -r-o-l-e- -m-a-t-t-e-r-s-.--
---- -*-*-H-e-l-m-s-m-a-n-:-*-*- -S-t-e-e-r-s- -t-h-e- -b-o-a-t- -a-n-d- -k-e-e-p-s- -i-t- -o-n- -c-o-u-r-s-e-.- -A- -c-a-l-m- -h-e-l-m- -k-e-e-p-s- -t-h-e- -c-r-e-w- -f-o-c-u-s-e-d- -d-u-r-i-n-g- -h-e-c-t-i-c- -p-r-e---s-t-a-r-t-s-.--
---- -*-*-T-a-c-t-i-c-i-a-n-:-*-*- -P-l-a-n-s- -t-h-e- -b-e-s-t- -r-o-u-t-e- -b-a-s-e-d- -o-n- -w-i-n-d- -a-n-d- -c-o-m-p-e-t-i-t-o-r-s-,- -o-f-t-e-n- -w-i-t-h- -o-n-e- -e-y-e- -o-n- -t-h-e- -c-o-m-p-a-s-s- -a-n-d- -o-n-e- -o-n- -t-h-e- -f-l-e-e-t-.--
---- -*-*-T-r-i-m-m-e-r-s-:-*-*- -A-d-j-u-s-t- -s-a-i-l-s- -f-o-r- -s-p-e-e-d- -a-n-d- -b-a-l-a-n-c-e-;- -I- -l-e-a-r-n-e-d- -t-o- -w-a-t-c-h- -t-h-e- -l-e-e-w-a-r-d- -t-e-l-l-t-a-l-e-s- -a-n-d- -f-e-a-t-h-e-r- -i-n- -g-u-s-t-s-.--
---- -*-*-B-o-w-m-a-n-:-*-*- -M-a-n-a-g-e-s- -s-a-i-l-s- -a-n-d- -l-i-n-e-s- -a-t- -t-h-e- -f-r-o-n-t- -o-f- -t-h-e- -b-o-a-t- -d-u-r-i-n-g- -m-a-n-e-u-v-e-r-s-,- -l-e-a-p-i-n-g- -l-i-k-e- -a- -c-a-t- -t-o- -s-e-t- -o-r- -d-o-u-s-e- -t-h-e- -s-p-i-n-n-a-k-e-r-.--
---- -*-*-P-i-t-:-*-*- -C-o-o-r-d-i-n-a-t-e-s- -l-i-n-e-s- -a-n-d- -h-a-l-y-a-r-d-s- -b-e-t-w-e-e-n- -d-e-c-k- -a-n-d- -c-o-c-k-p-i-t-,- -k-e-e-p-i-n-g- -t-h-e- -c-h-a-o-s- -o-r-g-a-n-i-z-e-d-.--
---- -*-*-N-a-v-i-g-a-t-o-r-:-*-*- -T-r-a-c-k-s- -p-o-s-i-t-i-o-n- -a-n-d- -c-o-u-r-s-e-,- -e-s-p-e-c-i-a-l-l-y- -o-n- -l-o-n-g-e-r- -o-f-f-s-h-o-r-e- -l-e-g-s-,- -a-n-d- -k-e-e-p-s- -a- -l-o-g- -f-o-r- -l-a-t-e-r- -d-e-b-r-i-e-f-s-.--
---
--#-#- -W-h-a-t- -S-t-a-y-e-d- -w-i-t-h- -M-e--
---
--L-e-a-v-i-n-g- -t-h-e- -c-l-u-b- -d-i-d-n-'-t- -m-e-a-n- -l-e-a-v-i-n-g- -t-h-e- -h-a-b-i-t-s- -b-e-h-i-n-d-.- -T-h-e- -d-i-s-c-i-p-l-i-n-e- -o-f- -d-o-u-b-l-e---c-h-e-c-k-i-n-g- -k-n-o-t-s- -s-h-o-w-s- -u-p- -i-n- -m-y- -c-o-d-e- -r-e-v-i-e-w-s-,- -a-n-d- -t-h-e- -c-a-l-m- -b-r-e-a-t-h-i-n-g- -b-e-f-o-r-e- -a- -s-t-a-r-t- -l-i-n-e- -h-e-l-p-s- -w-h-e-n- -s-t-e-p-p-i-n-g- -i-n-t-o- -t-o-u-g-h- -m-e-e-t-i-n-g-s-.- -E-v-e-n- -w-i-t-h-o-u-t- -a- -c-r-e-w- -a-r-o-u-n-d- -m-e-,- -I- -s-t-i-l-l- -w-a-t-c-h- -t-h-e- -f-l-a-g-s- -a-n-d- -c-l-o-u-d-s- -o-u-t- -o-f- -s-h-e-e-r- -r-e-f-l-e-x-.--
---
--#-#- -R-e-f-e-r-e-n-c-e-s--
---
---- -[-M-E-T-U- -S-a-i-l-i-n-g- -C-l-u-b-]-(-h-t-t-p-s-:-/-/-w-w-w-.-i-n-s-t-a-g-r-a-m-.-c-o-m-/-o-d-t-u-y-e-l-k-e-n-/-)--
---- -[-A-e-g-e-a-n- -O-f-f-s-h-o-r-e- -Y-a-c-h-t- -C-l-u-b-]-(-h-t-t-p-:-/-/-w-w-w-.-e-a-y-k-.-o-r-g-)--
---- -[-B-A-Y-K- --- -B-o-d-r-u-m- -O-f-f-s-h-o-r-e- -S-a-i-l-i-n-g- -C-l-u-b-]-(-h-t-t-p-s-:-/-/-w-w-w-.-b-a-y-k-.-o-r-g-)--
---- -[-M-a-r-m-a-r-i-s- -I-n-t-e-r-n-a-t-i-o-n-a-l- -R-a-c-e- -W-e-e-k-]-(-h-t-t-p-s-:-/-/-w-w-w-.-m-a-r-m-a-r-i-s-r-a-c-e-w-e-e-k-.-c-o-m-)--
---- -[-J-i-m-m-y- -K-e-y- -C-u-p-]-(-h-t-t-p-s-:-/-/-j-i-m-m-y-k-e-y-c-u-p-.-c-o-m-)--
---- -[-B-a-y-k-a-r- -T-e-c-h-]-(-h-t-t-p-s-:-/-/-w-w-w-.-b-a-y-k-a-r-t-e-c-h-.-c-o-m-)--
---- -[-Y-a-c-h-t- -r-a-c-i-n-g- --- -W-i-k-i-p-e-d-i-a-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-Y-a-c-h-t-_-r-a-c-i-n-g-)--
---- -[-S-a-i-l-i-n-g- -(-s-p-o-r-t-)- --- -W-i-k-i-p-e-d-i-a-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-S-a-i-l-i-n-g-_-(-s-p-o-r-t-)-)--
---
---------
--*-D-r-.- -O-z-g-u-r- -U-r-a-l- -c-o-n-n-e-c-t-s- -t-h-e- -d-i-s-c-i-p-l-i-n-e- -o-f- -e-l-i-t-e- -s-p-o-r-t-s- -t-o- -h-i-g-h---p-e-r-f-o-r-m-a-n-c-e- -e-n-g-i-n-e-e-r-i-n-g- -l-e-a-d-e-r-s-h-i-p-.-*--
---
--
+---
+title: "METU Sailing Team: Racing in Urla, Bodrum, and Marmaris"
+date: 2025-09-10
+permalink: /posts/2025/09/metu-urla-marmaris-sailing/
+categories: life
+tags:
+  - sailing
+  - race
+  - METU
+  - Marmaris
+  - Urla
+---
+
+<div class="notice--info" markdown="1">
+**From the Helm**
+
+Competitive sailing is a masterclass in high-stakes teamwork where split-second decisions matter. It teaches you to trust your crew implicitly and communicate with absolute clarity under pressure ("Communication beats heroics"). I have found these patterns apply directly to Incident Management and Engineering Ops.
+</div>
+
+Middle East Technical University's sailing club has long been a hub for students who love the sea. I joined the club about six years ago, eager to escape Ankara's dry inland climate, and spent nearly every free weekend on the Aegean. I'm not a member today, but the lessons still stick. Learning to call sail trim and feeling the hull surge after a clean tack gave me my first taste of real teamwork.
+
+Those early regattas taught me more than boat handling. We planned our own logistics, from borrowing a van for the sails to cooking pasta in the parking lot after long practice days. Keeping a race journal of what went right and wrong became a habit I still lean on, even if my time on the water is a few years behind me.
+
+
+## Races on Turkey's Aegean Coast
+
+- **Urla:** Home to the Aegean Offshore Yacht Club (EAYK), Urla hosts a packed calendar of weekend races and training regattas, including the annual [Jimmy Key Cup](https://jimmykeycup.com). Afternoon thermals can die without warning, so we learned to bank a lead early.
+- **Bodrum:** BAYK's [Baykar Winter Trophy](https://www.bayk.org), sponsored by Baykar, keeps crews sharp through the off-season in Bodrum's sheltered waters. Gusts funneling off the hills reward crews who trim quickly.
+- **Marmaris:** Each autumn, the Marmaris International Race Week draws crews from across Europe for a week of intense competition. The long downwind legs here taught us to trust the spinnaker and stay patient.
+
+## Lessons from the Cockpit
+
+- Telltales are the boat's heartbeatâ€”glance at them every few seconds.
+- Communication beats heroics; call your moves early and clearly.
+- If you have time to relax, you have time to coil a line.
+
+## Key Roles on a Racing Sailboat
+
+- On our boat I often trimmed the jib, but rotating through each position taught me how every role matters.
+- **Helmsman:** Steers the boat and keeps it on course. A calm helm keeps the crew focused during hectic pre-starts.
+- **Tactician:** Plans the best route based on wind and competitors, often with one eye on the compass and one on the fleet.
+- **Trimmers:** Adjust sails for speed and balance; I learned to watch the leeward telltales and feather in gusts.
+- **Bowman:** Manages sails and lines at the front of the boat during maneuvers, leaping like a cat to set or douse the spinnaker.
+- **Pit:** Coordinates lines and halyards between deck and cockpit, keeping the chaos organized.
+- **Navigator:** Tracks position and course, especially on longer offshore legs, and keeps a log for later debriefs.
+
+## What Stayed with Me
+
+Leaving the club didn't mean leaving the habits behind. The discipline of double-checking knots shows up in my code reviews, and the calm breathing before a start line helps when stepping into tough meetings. Even without a crew around me, I still watch the flags and clouds out of sheer reflex.
+
+## References
+
+- [METU Sailing Club](https://www.instagram.com/odtuyelken/)
+- [Aegean Offshore Yacht Club](http://www.eayk.org)
+- [BAYK - Bodrum Offshore Sailing Club](https://www.bayk.org)
+- [Marmaris International Race Week](https://www.marmarisraceweek.com)
+- [Jimmy Key Cup](https://jimmykeycup.com)
+- [Baykar Tech](https://www.baykartech.com)
+- [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
+- [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))
+
+---
+*Dr. Ozgur Ural connects the discipline of elite sports to high-performance engineering leadership.*
+

@@ -1,37 +1,36 @@
---------
--t-i-t-l-e-:- -"-T-h-e- -M-y-t-h- -o-f- -t-h-e- -Q-u-i-c-k- -F-i-x-"--
--d-a-t-e-:- -2-0-2-5---0-9---1-4--
--p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-m-y-t-h---q-u-i-c-k---f-i-x-/--
--c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
--t-a-g-s-:--
-- - --- -t-e-c-h-n-i-c-a-l---d-e-b-t--
-- - --- -e-n-g-i-n-e-e-r-i-n-g---p-r-a-c-t-i-c-e-s--
-- - --- -a-r-c-h-i-t-e-c-t-u-r-e--
---------
---
--E-v-e-r-y- -e-n-g-i-n-e-e-r- -k-n-o-w-s- -t-h-e- -t-e-m-p-t-a-t-i-o-n- -o-f- -t-h-e- -‚-Ä-ú-f-i-v-e---m-i-n-u-t-e- -h-a-c-k-.-‚-Ä-ù- -A- -b-u-g- -a-p-p-e-a-r-s-,- -t-h-e- -s-c-h-e-d-u-l-e- -i-s- -t-i-g-h-t-,- -a-n-d- -a- -c-l-e-v-e-r- -s-h-o-r-t-c-u-t- -p-r-o-m-i-s-e-s- -t-o- -s-a-v-e- -t-h-e- -d-a-y-.- -W-e-e-k-s- -l-a-t-e-r-,- -t-h-e- -t-e-a-m- -i-s- -s-t-i-l-l- -w-r-e-s-t-l-i-n-g- -w-i-t-h- -t-h-e- -f-a-l-l-o-u-t-.- -T-h-e- -m-y-t-h- -o-f- -t-h-e- -q-u-i-c-k- -f-i-x- -l-i-e-s- -i-n- -i-t-s- -i-n-v-i-s-i-b-i-l-i-t-y-‚-Ä-î-s-h-o-r-t---t-e-r-m- -p-a-t-c-h-e-s- -o-f-t-e-n- -m-a-s-q-u-e-r-a-d-e- -a-s- -e-f-f-i-c-i-e-n-t- -s-o-l-u-t-i-o-n-s- -w-h-i-l-e- -s-e-c-r-e-t-l-y- -a-c-c-r-u-i-n-g- -i-n-t-e-r-e-s-t- -t-h-a-t- -c-o-m-p-o-u-n-d-s- -o-v-e-r- -t-i-m-e-.--
---
--#-#- -B-a-n-d-a-i-d-s- -H-i-d-e- -S-y-s-t-e-m-i-c- -I-s-s-u-e-s--
---
--Q-u-i-c-k- -f-i-x-e-s- -a-d-d-r-e-s-s- -s-y-m-p-t-o-m-s-,- -n-o-t- -r-o-o-t- -c-a-u-s-e-s-.- -W-h-e-n- -o-u-r- -A-v-i-o-n- -t-e-l-e-m-e-t-r-y- -A-P-I- -b-e-g-a-n- -t-i-m-i-n-g- -o-u-t- -u-n-d-e-r- -h-e-a-v-y- -l-o-a-d-,- -w-e- -i-n-i-t-i-a-l-l-y- -r-a-i-s-e-d- -t-h-e- -r-e-q-u-e-s-t- -t-i-m-e-o-u-t- -f-r-o-m- -3-0- -s-e-c-o-n-d-s- -t-o- -6-0- -s-e-c-o-n-d-s-.- -T-h-e- -i-s-s-u-e- -v-a-n-i-s-h-e-d-‚-Ä-î-u-n-t-i-l- -p-e-a-k- -s-e-a-s-o-n-,- -w-h-e-n- -l-a-t-e-n-c-y- -s-p-i-k-e-s- -r-e-t-u-r-n-e-d- -w-i-t-h- -a- -v-e-n-g-e-a-n-c-e-.- -O-n-l-y- -t-h-e-n- -d-i-d- -w-e- -d-i-s-c-o-v-e-r- -t-h-a-t- -a-n- -i-n-e-f-f-i-c-i-e-n-t- -d-a-t-a-b-a-s-e- -q-u-e-r-y-,- -n-o-t- -t-h-e- -t-i-m-e-o-u-t- -t-h-r-e-s-h-o-l-d-,- -w-a-s- -t-o- -b-l-a-m-e-.--
---
--B-y- -e-s-c-a-l-a-t-i-n-g- -f-r-o-m- -p-a-t-c-h- -t-o- -p-o-s-t-m-o-r-t-e-m-,- -t-e-a-m-s- -c-a-n- -p-e-e-l- -b-a-c-k- -t-h-e- -l-a-y-e-r-s- -o-f- -a- -p-r-o-b-l-e-m-.- -A-s-k-:- -W-h-y- -d-i-d- -t-h-i-s- -i-s-s-u-e- -o-c-c-u-r-?- -W-h-y- -w-a-s- -i-t- -n-o-t- -d-e-t-e-c-t-e-d- -e-a-r-l-i-e-r-?- -W-h-a-t- -a-s-s-u-m-p-t-i-o-n-s- -f-a-i-l-e-d-?- -A-n-s-w-e-r-i-n-g- -t-h-e-s-e- -q-u-e-s-t-i-o-n-s- -m-a-y- -r-e-v-e-a-l- -a-r-c-h-i-t-e-c-t-u-r-a-l- -w-e-a-k-n-e-s-s-e-s- -o-r- -p-r-o-c-e-s-s- -g-a-p-s- -t-h-a-t- -o-n-e---l-i-n-e- -p-a-t-c-h-e-s- -o-b-s-c-u-r-e-.--
---
--#-#- -A-r-c-h-i-t-e-c-t-u-r-a-l- -D-e-b-t- -A-c-c-u-m-u-l-a-t-e-s- -I-n-t-e-r-e-s-t--
---
--E-v-e-r-y- -s-h-o-r-t-c-u-t- -a-d-d-s- -t-o- -a-r-c-h-i-t-e-c-t-u-r-a-l- -d-e-b-t-.- -J-u-s-t- -a-s- -f-i-n-a-n-c-i-a-l- -d-e-b-t- -a-c-c-r-u-e-s- -i-n-t-e-r-e-s-t-,- -t-e-c-h-n-i-c-a-l- -s-h-o-r-t-c-u-t-s- -d-e-m-a-n-d- -f-u-t-u-r-e- -p-a-y-m-e-n-t-s- -i-n- -t-h-e- -f-o-r-m- -o-f- -b-u-g-s-,- -o-u-t-a-g-e-s-,- -o-r- -r-e-w-r-i-t-e-s-.- -T-h-e- -c-l-a-s-s-i-c- -e-x-a-m-p-l-e- -i-s- -h-a-r-d---c-o-d-e-d- -c-o-n-f-i-g-u-r-a-t-i-o-n-.- -I-t- -s-e-e-m-s- -e-x-p-e-d-i-e-n-t- -f-o-r- -a- -o-n-e---o-f-f- -d-e-p-l-o-y-m-e-n-t-,- -b-u-t- -a-s- -e-n-v-i-r-o-n-m-e-n-t-s- -m-u-l-t-i-p-l-y-,- -t-h-e- -h-a-r-d---c-o-d-e-d- -v-a-l-u-e-s- -s-p-a-w-n- -i-f-/-e-l-s-e- -b-r-a-n-c-h-e-s- -a-n-d- -e-n-v-i-r-o-n-m-e-n-t---s-p-e-c-i-f-i-c- -c-o-d-e- -p-a-t-h-s-.- -T-h-e- -e-f-f-o-r-t- -r-e-q-u-i-r-e-d- -t-o- -u-n-w-i-n-d- -t-h-e- -m-e-s-s- -l-a-t-e-r- -d-w-a-r-f-s- -t-h-e- -m-i-n-u-t-e-s- -s-a-v-e-d- -u-p-f-r-o-n-t-.--
---
--A- -s-u-s-t-a-i-n-a-b-l-e- -a-p-p-r-o-a-c-h- -i-s- -t-o- -t-r-e-a-t- -t-h-e- -c-o-d-e-b-a-s-e- -l-i-k-e- -a- -l-o-n-g---t-e-r-m- -a-s-s-e-t-.- -E-n-g-i-n-e-e-r-s- -s-h-o-u-l-d- -d-o-c-u-m-e-n-t- -t-h-e- -r-a-t-i-o-n-a-l-e- -b-e-h-i-n-d- -a-n-y- -t-e-m-p-o-r-a-r-y- -f-i-x-,- -s-e-t- -a-n- -e-x-p-i-r-a-t-i-o-n- -d-a-t-e-,- -a-n-d- -t-r-a-c-k- -i-t- -i-n- -t-h-e- -i-s-s-u-e- -t-r-a-c-k-e-r-.- -F-a-i-l-i-n-g- -t-o- -d-o- -s-o- -t-u-r-n-s- -t-e-m-p-o-r-a-r-y- -m-e-a-s-u-r-e-s- -i-n-t-o- -p-e-r-m-a-n-e-n-t- -l-i-a-b-i-l-i-t-i-e-s-.--
---
--#-#- -S-a-y-i-n-g- -‚-Ä-ú-N-o-‚-Ä-ù- -t-o- -Q-u-i-c-k- -F-i-x-e-s--
---
--E-n-g-i-n-e-e-r-i-n-g- -l-e-a-d-e-r-s- -p-l-a-y- -a- -c-r-u-c-i-a-l- -r-o-l-e- -i-n- -r-e-s-i-s-t-i-n-g- -t-h-e- -q-u-i-c-k---f-i-x- -m-i-n-d-s-e-t-.- -E-m-p-o-w-e-r- -d-e-v-e-l-o-p-e-r-s- -t-o- -p-u-s-h- -b-a-c-k- -w-h-e-n- -a-s-k-e-d- -t-o- -s-h-i-p- -b-a-n-d-a-i-d-s-.- -I-n-s-t-e-a-d- -o-f- -r-e-w-a-r-d-i-n-g- -f-i-r-e-f-i-g-h-t-i-n-g-,- -c-e-l-e-b-r-a-t-e- -t-e-a-m-s- -t-h-a-t- -e-l-i-m-i-n-a-t-e- -t-h-e- -r-o-o-t- -c-a-u-s-e-.- -S-o-m-e- -o-r-g-a-n-i-z-a-t-i-o-n-s- -a-d-o-p-t- -a- -‚-Ä-ú-f-i-x- -i-t- -p-r-o-p-e-r-l-y- -o-r- -e-s-c-a-l-a-t-e-‚-Ä-ù- -r-u-l-e-:- -i-f- -a- -d-u-r-a-b-l-e- -s-o-l-u-t-i-o-n- -c-a-n-n-o-t- -b-e- -i-m-p-l-e-m-e-n-t-e-d- -w-i-t-h-i-n- -t-h-e- -s-p-r-i-n-t-,- -t-h-e- -i-s-s-u-e- -i-s- -e-s-c-a-l-a-t-e-d- -t-o- -l-e-a-d-e-r-s-h-i-p-,- -w-h-o- -t-h-e-n- -m-a-k-e- -a-n- -e-x-p-l-i-c-i-t- -d-e-c-i-s-i-o-n- -a-b-o-u-t- -s-c-o-p-e- -a-n-d- -t-i-m-e-l-i-n-e-.--
---
--A-u-t-o-m-a-t-i-o-n- -a-l-s-o- -r-e-d-u-c-e-s- -r-e-l-i-a-n-c-e- -o-n- -s-h-o-r-t-c-u-t-s-.- -C-o-n-t-i-n-u-o-u-s- -i-n-t-e-g-r-a-t-i-o-n-,- -c-o-m-p-r-e-h-e-n-s-i-v-e- -t-e-s-t- -s-u-i-t-e-s-,- -a-n-d- -s-t-a-t-i-c- -a-n-a-l-y-s-i-s- -c-a-t-c-h- -i-s-s-u-e-s- -b-e-f-o-r-e- -t-h-e-y- -r-e-a-c-h- -p-r-o-d-u-c-t-i-o-n-,- -m-i-n-i-m-i-z-i-n-g- -t-h-e- -n-e-e-d- -f-o-r- -r-i-s-k-y- -h-o-t-f-i-x-e-s-.- -W-h-e-n- -a- -g-e-n-u-i-n-e- -e-m-e-r-g-e-n-c-y- -a-r-i-s-e-s-,- -f-e-a-t-u-r-e- -f-l-a-g-s- -a-n-d- -s-t-a-g-e-d- -r-o-l-l-o-u-t-s- -a-l-l-o-w- -c-o-n-t-r-o-l-l-e-d- -m-i-t-i-g-a-t-i-o-n- -w-i-t-h-o-u-t- -r-e-s-o-r-t-i-n-g- -t-o- -k-l-u-d-g-e-s-.--
---
--#-#- -L-o-n-g---T-e-r-m- -V-e-l-o-c-i-t-y- -O-v-e-r- -S-h-o-r-t---T-e-r-m- -W-i-n-s--
---
--T-e-a-m-s- -t-h-a-t- -a-v-o-i-d- -q-u-i-c-k- -f-i-x-e-s- -b-u-i-l-d- -l-o-n-g---t-e-r-m- -v-e-l-o-c-i-t-y-.- -T-h-e-i-r- -c-o-d-e-b-a-s-e-s- -r-e-m-a-i-n- -c-l-e-a-n-,- -o-n-b-o-a-r-d-i-n-g- -i-s- -s-m-o-o-t-h-e-r-,- -a-n-d- -i-n-c-i-d-e-n-t-s- -a-r-e- -r-a-r-e-r-.- -T-h-e- -c-u-m-u-l-a-t-i-v-e- -e-f-f-e-c-t- -o-f- -d-i-s-c-i-p-l-i-n-e-d- -e-n-g-i-n-e-e-r-i-n-g- -p-r-a-c-t-i-c-e-s- -i-s- -a- -p-r-o-d-u-c-t- -t-h-a-t- -c-a-n- -a-d-a-p-t- -q-u-i-c-k-l-y- -t-o- -n-e-w- -r-e-q-u-i-r-e-m-e-n-t-s- -w-i-t-h-o-u-t- -c-o-l-l-a-p-s-i-n-g- -u-n-d-e-r- -i-t-s- -o-w-n- -w-e-i-g-h-t-.--
---
--I-n- -t-h-e- -e-n-d-,- -t-h-e- -f-a-s-t-e-s-t- -p-a-t-h- -i-s- -o-f-t-e-n- -t-h-e- -o-n-e- -t-h-a-t- -l-o-o-k-s- -s-l-o-w-e-s-t-.- -I-n-v-e-s-t-i-n-g- -t-i-m-e- -t-o- -u-n-d-e-r-s-t-a-n-d- -a-n-d- -r-e-s-o-l-v-e- -u-n-d-e-r-l-y-i-n-g- -i-s-s-u-e-s- -p-a-y-s- -d-i-v-i-d-e-n-d-s- -i-n- -r-e-l-i-a-b-i-l-i-t-y- -a-n-d- -d-e-v-e-l-o-p-e-r- -h-a-p-p-i-n-e-s-s-.- -T-h-e- -m-y-t-h- -o-f- -t-h-e- -q-u-i-c-k- -f-i-x- -d-i-s-s-o-l-v-e-s- -w-h-e-n- -t-e-a-m-s- -r-e-c-o-g-n-i-z-e- -t-h-a-t- -t-r-u-e- -v-e-l-o-c-i-t-y- -c-o-m-e-s- -f-r-o-m- -b-u-i-l-d-i-n-g- -s-t-u-r-d-y- -f-o-u-n-d-a-t-i-o-n-s-,- -n-o-t- -s-t-a-c-k-i-n-g- -u-n-s-t-a-b-l-e- -h-a-c-k-s-.--
--
+---
+title: "The Myth of the Quick Fix"
+date: 2025-09-14
+permalink: /posts/2025/09/myth-quick-fix/
+categories: technical
+tags:
+  - technical-debt
+  - engineering-practices
+  - architecture
+---
+
+Every engineer knows the temptation of the ‚Äúfive-minute hack.‚Äù A bug appears, the schedule is tight, and a clever shortcut promises to save the day. Weeks later, the team is still wrestling with the fallout. The myth of the quick fix lies in its invisibility‚Äîshort-term patches often masquerade as efficient solutions while secretly accruing interest that compounds over time.
+
+## Bandaids Hide Systemic Issues
+
+Quick fixes address symptoms, not root causes. When our Avion telemetry API began timing out under heavy load, we initially raised the request timeout from 30 seconds to 60 seconds. The issue vanished‚Äîuntil peak season, when latency spikes returned with a vengeance. Only then did we discover that an inefficient database query, not the timeout threshold, was to blame.
+
+By escalating from patch to postmortem, teams can peel back the layers of a problem. Ask: Why did this issue occur? Why was it not detected earlier? What assumptions failed? Answering these questions may reveal architectural weaknesses or process gaps that one-line patches obscure.
+
+## Architectural Debt Accumulates Interest
+
+Every shortcut adds to architectural debt. Just as financial debt accrues interest, technical shortcuts demand future payments in the form of bugs, outages, or rewrites. The classic example is hard-coded configuration. It seems expedient for a one-off deployment, but as environments multiply, the hard-coded values spawn if/else branches and environment-specific code paths. The effort required to unwind the mess later dwarfs the minutes saved upfront.
+
+A sustainable approach is to treat the codebase like a long-term asset. Engineers should document the rationale behind any temporary fix, set an expiration date, and track it in the issue tracker. Failing to do so turns temporary measures into permanent liabilities.
+
+## Saying ‚ÄúNo‚Äù to Quick Fixes
+
+Engineering leaders play a crucial role in resisting the quick-fix mindset. Empower developers to push back when asked to ship bandaids. Instead of rewarding firefighting, celebrate teams that eliminate the root cause. Some organizations adopt a ‚Äúfix it properly or escalate‚Äù rule: if a durable solution cannot be implemented within the sprint, the issue is escalated to leadership, who then make an explicit decision about scope and timeline.
+
+Automation also reduces reliance on shortcuts. Continuous integration, comprehensive test suites, and static analysis catch issues before they reach production, minimizing the need for risky hotfixes. When a genuine emergency arises, feature flags and staged rollouts allow controlled mitigation without resorting to kludges.
+
+## Long-Term Velocity Over Short-Term Wins
+
+Teams that avoid quick fixes build long-term velocity. Their codebases remain clean, onboarding is smoother, and incidents are rarer. The cumulative effect of disciplined engineering practices is a product that can adapt quickly to new requirements without collapsing under its own weight.
+
+In the end, the fastest path is often the one that looks slowest. Investing time to understand and resolve underlying issues pays dividends in reliability and developer happiness. The myth of the quick fix dissolves when teams recognize that true velocity comes from building sturdy foundations, not stacking unstable hacks.

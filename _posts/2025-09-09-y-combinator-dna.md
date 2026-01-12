@@ -1,45 +1,44 @@
---------
--t-i-t-l-e-:- -"-Y- -C-o-m-b-i-n-a-t-o-r- -a-n-d- -D-N-A-:- -F-i-x-e-d- -P-o-i-n-t-s- -i-n- -C-o-d-e- -a-n-d- -B-i-o-l-o-g-y-"--
--d-a-t-e-:- -2-0-2-5---0-9---0-9--
--p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-y---c-o-m-b-i-n-a-t-o-r---d-n-a-/--
--c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
--t-a-g-s-:--
-- - --- -l-a-m-b-d-a---c-a-l-c-u-l-u-s--
-- - --- -y---c-o-m-b-i-n-a-t-o-r--
-- - --- -b-i-o-l-o-g-y--
-- - --- -c-o-m-p-u-t-a-t-i-o-n--
---------
---
--I-t- -s-t-a-r-t-e-d- -w-h-i-l-e- -I- -w-a-s- -n-u-r-s-i-n-g- -a- -S-a-t-u-r-d-a-y---m-o-r-n-i-n-g- -c-o-f-f-e-e- -a-n-d- -c-a-t-c-h-i-n-g- -u-p- -o-n- -Y-o-u-T-u-b-e-.- -A-r-o-u-n-d- -t-h-e- -[-1-1-:-2-0- -m-a-r-k- -o-f- -t-h-i-s- -t-a-l-k-]-(-h-t-t-p-s-:-/-/-y-o-u-t-u-.-b-e-/-e-i-s-1-1-j-_-i-g-m-s-?-t-=-6-8-0-)-,- -t-h-e- -s-p-e-a-k-e-r- -d-e-s-c-r-i-b-e-d- -t-h-e- -c-h-o-r-e-o-g-r-a-p-h-y- -o-f- -[-D-N-A- -r-e-p-l-i-c-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-D-N-A-_-r-e-p-l-i-c-a-t-i-o-n-)-â-€-”-h-o-w- -s-t-r-a-n-d-s- -o-f- -g-e-n-e-t-i-c- -c-o-d-e- -c-a-r-r-y- -i-n-s-t-r-u-c-t-i-o-n-s- -t-h-a-t- -p-r-o-d-u-c-e- -t-h-e- -v-e-r-y- -e-n-z-y-m-e-s-,- -s-u-c-h- -a-s- -[-D-N-A- -p-o-l-y-m-e-r-a-s-e-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-D-N-A-_-p-o-l-y-m-e-r-a-s-e-)-,- -n-e-e-d-e-d- -t-o- -c-o-p-y- -t-h-e-m-s-e-l-v-e-s-.- -T-h-e- -d-i-a-g-r-a-m- -o-n- -s-c-r-e-e-n- -s-p-a-r-k-e-d- -a-n- -i-m-m-e-d-i-a-t-e- -f-l-a-s-h-b-a-c-k- -t-o- -t-h-e- -t-i-m-e- -I- -f-i-r-s-t- -w-r-a-n-g-l-e-d- -t-h-e- -[-Y- -c-o-m-b-i-n-a-t-o-r-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-i-x-e-d---p-o-i-n-t-_-c-o-m-b-i-n-a-t-o-r-#-Y-_-c-o-m-b-i-n-a-t-o-r-)- -i-n-t-o- -a- -H-a-s-k-e-l-l- -l-a-b- -a-s-s-i-g-n-m-e-n-t-.- -S-u-d-d-e-n-l-y-,- -t-h-e- -e-l-e-g-a-n-c-e- -o-f- -C-h-u-r-c-h-'-s- -a-b-s-t-r-a-c-t-i-o-n- -a-n-d- -t-h-e- -b-i-o-l-o-g-y- -l-e-c-t-u-r-e- -o-v-e-r-l-a-p-p-e-d- -i-n- -m-y- -h-e-a-d-:- -b-o-t-h- -w-e-r-e- -t-e-l-l-i-n-g- -a- -s-t-o-r-y- -a-b-o-u-t- -s-y-s-t-e-m-s- -t-h-a-t- -b-o-o-t-s-t-r-a-p- -t-h-e-i-r- -o-w-n- -c-o-n-t-i-n-u-a-t-i-o-n-.--
---
--B-a-c-k- -i-n- -t-h-a-t- -f-u-n-c-t-i-o-n-a-l---p-r-o-g-r-a-m-m-i-n-g- -c-o-u-r-s-e-,- -t-h-e- -`-Y-`- -c-o-m-b-i-n-a-t-o-r- -f-e-l-t- -l-i-k-e- -a- -m-a-g-i-c- -t-r-i-c-k-.- -I-n- -[-l-a-m-b-d-a- -c-a-l-c-u-l-u-s-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-L-a-m-b-d-a-_-c-a-l-c-u-l-u-s-)-,- -i-n-t-r-o-d-u-c-e-d- -b-y- -[-A-l-o-n-z-o- -C-h-u-r-c-h-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-A-l-o-n-z-o-_-C-h-u-r-c-h-)-,- -t-h-e-r-e- -i-s- -n-o- -n-a-t-i-v-e- -r-e-c-u-r-s-i-o-n-.- -T-h-e- -`-Y-`- -c-o-m-b-i-n-a-t-o-r- -s-t-e-p-s- -i-n- -a-s- -a- -h-i-g-h-e-r---o-r-d-e-r- -f-u-n-c-t-i-o-n- -t-h-a-t- -f-i-n-d-s- -t-h-e- -f-i-x-e-d- -p-o-i-n-t- -o-f- -o-t-h-e-r- -f-u-n-c-t-i-o-n-s-,- -c-r-e-a-t-i-n-g- -a- -w-a-y- -f-o-r- -a-n- -a-n-o-n-y-m-o-u-s- -f-u-n-c-t-i-o-n- -t-o- -c-a-l-l- -i-t-s-e-l-f-.- -A-p-p-l-y- -`-Y-`- -t-o- -a- -f-u-n-c-t-i-o-n- -d-e-s-c-r-i-b-i-n-g- -f-a-c-t-o-r-i-a-l- -o-r- -F-i-b-o-n-a-c-c-i-,- -a-n-d- -y-o-u- -s-u-d-d-e-n-l-y- -g-e-t- -a- -v-e-r-s-i-o-n- -t-h-a-t- -c-a-n- -l-o-o-p- -f-o-r-e-v-e-r- -w-i-t-h-o-u-t- -m-e-n-t-i-o-n-i-n-g- -i-t-s- -o-w-n- -n-a-m-e-.- -T-u-t-o-r-i-a-l-s- -s-u-c-h- -a-s- -t-h-e- -[-H-a-s-k-e-l-l- -W-i-k-i- -o-n- -f-i-x-e-d---p-o-i-n-t- -c-o-m-b-i-n-a-t-o-r-s-]-(-h-t-t-p-s-:-/-/-w-i-k-i-.-h-a-s-k-e-l-l-.-o-r-g-/-F-i-x-e-d---p-o-i-n-t-_-c-o-m-b-i-n-a-t-o-r-s-#-T-h-e-_-Y-_-c-o-m-b-i-n-a-t-o-r-)- -a-n-d- -M-.- -V-a-n-i-e-r-'-s- -[-"-Y- -C-o-m-b-i-n-a-t-o-r- -(-n-o-,- -n-o-t- -t-h-a-t- -o-n-e-)-"-]-(-h-t-t-p-s-:-/-/-m-v-a-n-i-e-r-.-l-i-v-e-j-o-u-r-n-a-l-.-c-o-m-/-2-8-9-7-.-h-t-m-l-)- -s-t-i-l-l- -w-a-l-k- -t-h-r-o-u-g-h- -t-h-a-t- -s-l-e-i-g-h-t- -o-f- -h-a-n-d- -s-t-e-p- -b-y- -s-t-e-p-.--
---
--W-h-a-t- -t-h-e- -v-i-d-e-o- -r-e-m-i-n-d-e-d- -m-e- -i-s- -t-h-a-t- -b-i-o-l-o-g-y- -h-a-s- -b-e-e-n- -r-u-n-n-i-n-g- -t-h-e- -s-a-m-e- -p-l-a-y- -f-o-r- -e-o-n-s-.- -D-N-A-'-s- -i-n-s-t-r-u-c-t-i-o-n-s- -a-r-e- -n-o-t- -j-u-s-t- -b-l-u-e-p-r-i-n-t-s- -f-o-r- -b-u-i-l-d-i-n-g- -p-r-o-t-e-i-n-s-;- -t-h-e-y- -i-n-c-l-u-d-e- -r-e-c-i-p-e-s- -f-o-r- -t-h-e- -e-n-z-y-m-e-s- -t-h-a-t- -c-o-p-y- -t-h-e- -b-l-u-e-p-r-i-n-t-s- -t-h-e-m-s-e-l-v-e-s-.- -T-h-i-s- -[-s-e-l-f---r-e-f-e-r-e-n-t-i-a-l-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-S-e-l-f---r-e-f-e-r-e-n-c-e-)- -l-o-o-p- -i-s- -a- -b-i-o-c-h-e-m-i-c-a-l- -f-i-x-e-d- -p-o-i-n-t-,- -t-h-e- -w-e-t---l-a-b- -a-n-a-l-o-g-u-e- -o-f- -t-h-e- -m-a-t-h-e-m-a-t-i-c-a-l- -o-n-e- -t-h-e- -`-Y-`- -c-o-m-b-i-n-a-t-o-r- -e-n-f-o-r-c-e-s-.--
---
--#-#-#- -F-i-x-e-d- -P-o-i-n-t-s- -a-n-d- -L-i-f-e--
---
--I-n- -m-a-t-h-e-m-a-t-i-c-s-,- -a- -[-f-i-x-e-d- -p-o-i-n-t-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-i-x-e-d-_-p-o-i-n-t-_-(-m-a-t-h-e-m-a-t-i-c-s-)-)- -o-c-c-u-r-s- -w-h-e-n- -a- -f-u-n-c-t-i-o-n-'-s- -o-u-t-p-u-t- -e-q-u-a-l-s- -i-t-s- -i-n-p-u-t-.- -T-h-e- -`-Y-`- -c-o-m-b-i-n-a-t-o-r- -f-o-r-c-e-s- -s-u-c-h- -a- -s-t-a-t-e-,- -g-i-v-i-n-g- -r-i-s-e- -t-o- -s-t-a-b-l-e- -r-e-c-u-r-s-i-v-e- -p-r-o-c-e-s-s-e-s- -t-h-a-t- -k-e-e-p- -p-r-o-d-u-c-i-n-g- -n-e-w- -v-a-l-u-e-s- -w-i-t-h-o-u-t- -c-h-a-n-g-i-n-g- -t-h-e- -u-n-d-e-r-l-y-i-n-g- -d-e-f-i-n-i-t-i-o-n-.- -D-N-A- -a-c-h-i-e-v-e-s- -a- -b-i-o-l-o-g-i-c-a-l- -f-i-x-e-d- -p-o-i-n-t- -w-h-e-n- -r-e-p-l-i-c-a-t-i-o-n- -p-r-o-d-u-c-e-s- -a- -c-o-p-y- -t-h-a-t- -c-a-n-,- -i-n- -t-u-r-n-,- -r-e-p-l-i-c-a-t-e- -i-t-s-e-l-f-,- -e-c-h-o-i-n-g- -t-h-e- -[-c-e-n-t-r-a-l- -d-o-g-m-a- -o-f- -m-o-l-e-c-u-l-a-r- -b-i-o-l-o-g-y-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-C-e-n-t-r-a-l-_-d-o-g-m-a-_-o-f-_-m-o-l-e-c-u-l-a-r-_-b-i-o-l-o-g-y-)-.- -B-o-t-h- -s-y-s-t-e-m-s- -r-e-l-y- -o-n- -e-l-e-g-a-n-t- -m-i-n-i-m-a-l- -r-u-l-e-s- -t-o- -g-e-n-e-r-a-t-e- -c-o-m-p-l-e-x-,- -s-e-l-f---s-u-s-t-a-i-n-i-n-g- -b-e-h-a-v-i-o-r-.--
---
--#-#-#- -W-h-y- -t-h-e- -A-n-a-l-o-g-y- -M-a-t-t-e-r-s--
---
--A-s- -s-o-m-e-o-n-e- -w-h-o- -n-o-w- -t-o-g-g-l-e-s- -b-e-t-w-e-e-n- -c-o-d-e- -r-e-v-i-e-w-s- -a-n-d- -j-o-u-r-n-a-l- -a-r-t-i-c-l-e-s-,- -I- -f-i-n-d- -t-h-i-s- -a-n-a-l-o-g-y- -c-l-a-r-i-f-y-i-n-g-.- -I-t- -b-r-i-d-g-e-s- -[-f-u-n-c-t-i-o-n-a-l- -p-r-o-g-r-a-m-m-i-n-g-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-u-n-c-t-i-o-n-a-l-_-p-r-o-g-r-a-m-m-i-n-g-)- -a-n-d- -[-m-o-l-e-c-u-l-a-r- -b-i-o-l-o-g-y-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-M-o-l-e-c-u-l-a-r-_-b-i-o-l-o-g-y-)- -i-n- -a- -w-a-y- -t-h-a-t- -m-a-k-e-s- -b-o-t-h- -d-o-m-a-i-n-s- -f-e-e-l- -l-e-s-s- -a-l-i-e-n-.- -L-i-f-e-'-s- -c-a-p-a-c-i-t-y- -f-o-r- -[-s-e-l-f---r-e-p-l-i-c-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-S-e-l-f---r-e-p-l-i-c-a-t-i-o-n-)- -i-s- -n-o-t- -j-u-s-t- -a- -q-u-i-r-k- -o-f- -c-h-e-m-i-s-t-r-y-;- -i-t-'-s- -a- -c-o-m-p-u-t-a-t-i-o-n-a-l- -s-t-r-a-t-e-g-y- -f-a-m-i-l-i-a-r- -t-o- -a-n-y-o-n-e- -w-h-o-'-s- -e-v-e-r- -u-s-e-d- -a- -f-i-x-e-d---p-o-i-n-t- -c-o-m-b-i-n-a-t-o-r- -t-o- -g-e-t- -w-o-r-k- -d-o-n-e-.- -W-h-e-n- -y-o-u- -s-e-e- -D-N-A- -a-s- -a- -p-r-o-g-r-a-m- -t-h-a-t- -s-u-m-m-o-n-s- -i-t-s- -o-w-n- -i-n-t-e-r-p-r-e-t-e-r-,- -t-h-e- -b-o-u-n-d-a-r-y- -b-e-t-w-e-e-n- -s-i-l-i-c-o-n- -a-n-d- -c-a-r-b-o-n---b-a-s-e-d- -s-y-s-t-e-m-s- -l-o-o-k-s- -m-o-r-e- -l-i-k-e- -a- -g-r-a-d-i-e-n-t- -t-h-a-n- -a- -w-a-l-l-.--
---
--U-n-d-e-r-s-t-a-n-d-i-n-g- -t-h-e- -`-Y-`- -c-o-m-b-i-n-a-t-o-r-â-€-”-a-n-d- -s-p-o-t-t-i-n-g- -i-t-s- -e-c-h-o-e-s- -i-n- -t-h-e- -l-a-b-â-€-”-r-e-i-n-f-o-r-c-e-s- -h-o-w- -s-i-m-p-l-e- -f-o-r-m-u-l-a-s- -c-a-n- -l-e-a-d- -t-o- -*-*-s-e-l-f---r-e-f-e-r-e-n-t-i-a-l-,- -l-i-f-e---l-i-k-e- -p-r-o-c-e-s-s-e-s-*-*-.- -W-h-e-t-h-e-r- -I-'-m- -s-k-e-t-c-h-i-n-g- -r-e-c-u-r-s-i-o-n- -o-n- -a- -w-h-i-t-e-b-o-a-r-d- -o-r- -r-e-p-l-a-y-i-n-g- -t-h-a-t- -Y-o-u-T-u-b-e- -s-e-g-m-e-n-t-,- -t-h-e- -l-e-s-s-o-n- -i-s- -t-h-e- -s-a-m-e-:- -e-l-e-g-a-n-t- -f-e-e-d-b-a-c-k- -l-o-o-p-s- -a-r-e- -t-h-e- -e-n-g-i-n-e-s- -o-f- -b-o-t-h- -s-o-f-t-w-a-r-e- -a-n-d- -b-i-o-l-o-g-y-.--
---
--#-#-#- -R-e-f-e-r-e-n-c-e-s- -&- -F-u-r-t-h-e-r- -R-e-a-d-i-n-g--
---
---- -[-L-a-m-b-d-a- -c-a-l-c-u-l-u-s-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-L-a-m-b-d-a-_-c-a-l-c-u-l-u-s-)--
---- -[-A-l-o-n-z-o- -C-h-u-r-c-h-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-A-l-o-n-z-o-_-C-h-u-r-c-h-)--
---- -[-F-i-x-e-d---p-o-i-n-t- -c-o-m-b-i-n-a-t-o-r- -a-n-d- -t-h-e- -Y- -c-o-m-b-i-n-a-t-o-r-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-i-x-e-d---p-o-i-n-t-_-c-o-m-b-i-n-a-t-o-r-#-Y-_-c-o-m-b-i-n-a-t-o-r-)--
---- -[-H-a-s-k-e-l-l- -W-i-k-i-:- -f-i-x-e-d---p-o-i-n-t- -c-o-m-b-i-n-a-t-o-r-s-]-(-h-t-t-p-s-:-/-/-w-i-k-i-.-h-a-s-k-e-l-l-.-o-r-g-/-F-i-x-e-d---p-o-i-n-t-_-c-o-m-b-i-n-a-t-o-r-s-#-T-h-e-_-Y-_-c-o-m-b-i-n-a-t-o-r-)--
---- -M-.- -V-a-n-i-e-r-,- -[-"-Y- -C-o-m-b-i-n-a-t-o-r- -(-n-o-,- -n-o-t- -t-h-a-t- -o-n-e-)-"-]-(-h-t-t-p-s-:-/-/-m-v-a-n-i-e-r-.-l-i-v-e-j-o-u-r-n-a-l-.-c-o-m-/-2-8-9-7-.-h-t-m-l-)--
---- -[-F-a-c-t-o-r-i-a-l-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-a-c-t-o-r-i-a-l-)--
---- -[-F-i-b-o-n-a-c-c-i- -n-u-m-b-e-r-s-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-i-b-o-n-a-c-c-i-_-n-u-m-b-e-r-)--
---- -[-D-N-A- -r-e-p-l-i-c-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-D-N-A-_-r-e-p-l-i-c-a-t-i-o-n-)--
---- -[-D-N-A- -p-o-l-y-m-e-r-a-s-e-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-D-N-A-_-p-o-l-y-m-e-r-a-s-e-)--
---- -[-S-e-l-f---r-e-f-e-r-e-n-c-e-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-S-e-l-f---r-e-f-e-r-e-n-c-e-)--
---- -[-C-e-n-t-r-a-l- -d-o-g-m-a- -o-f- -m-o-l-e-c-u-l-a-r- -b-i-o-l-o-g-y-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-C-e-n-t-r-a-l-_-d-o-g-m-a-_-o-f-_-m-o-l-e-c-u-l-a-r-_-b-i-o-l-o-g-y-)--
---- -[-F-u-n-c-t-i-o-n-a-l- -p-r-o-g-r-a-m-m-i-n-g-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-F-u-n-c-t-i-o-n-a-l-_-p-r-o-g-r-a-m-m-i-n-g-)--
---- -[-S-e-l-f---r-e-p-l-i-c-a-t-i-o-n-]-(-h-t-t-p-s-:-/-/-e-n-.-w-i-k-i-p-e-d-i-a-.-o-r-g-/-w-i-k-i-/-S-e-l-f---r-e-p-l-i-c-a-t-i-o-n-)--
---
--
+---
+title: "Y Combinator and DNA: Fixed Points in Code and Biology"
+date: 2025-09-09
+permalink: /posts/2025/09/y-combinator-dna/
+categories: technical
+tags:
+  - lambda-calculus
+  - y-combinator
+  - biology
+  - computation
+---
+
+It started while I was nursing a Saturday-morning coffee and catching up on YouTube. Around the [11:20 mark of this talk](https://youtu.be/eis11j_igms?t=680), the speaker described the choreography of [DNA replication](https://en.wikipedia.org/wiki/DNA_replication)â€”how strands of genetic code carry instructions that produce the very enzymes, such as [DNA polymerase](https://en.wikipedia.org/wiki/DNA_polymerase), needed to copy themselves. The diagram on screen sparked an immediate flashback to the time I first wrangled the [Y combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Y_combinator) into a Haskell lab assignment. Suddenly, the elegance of Church's abstraction and the biology lecture overlapped in my head: both were telling a story about systems that bootstrap their own continuation.
+
+Back in that functional-programming course, the `Y` combinator felt like a magic trick. In [lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus), introduced by [Alonzo Church](https://en.wikipedia.org/wiki/Alonzo_Church), there is no native recursion. The `Y` combinator steps in as a higher-order function that finds the fixed point of other functions, creating a way for an anonymous function to call itself. Apply `Y` to a function describing factorial or Fibonacci, and you suddenly get a version that can loop forever without mentioning its own name. Tutorials such as the [Haskell Wiki on fixed-point combinators](https://wiki.haskell.org/Fixed-point_combinators#The_Y_combinator) and M. Vanier's ["Y Combinator (no, not that one)"](https://mvanier.livejournal.com/2897.html) still walk through that sleight of hand step by step.
+
+What the video reminded me is that biology has been running the same play for eons. DNA's instructions are not just blueprints for building proteins; they include recipes for the enzymes that copy the blueprints themselves. This [self-referential](https://en.wikipedia.org/wiki/Self-reference) loop is a biochemical fixed point, the wet-lab analogue of the mathematical one the `Y` combinator enforces.
+
+### Fixed Points and Life
+
+In mathematics, a [fixed point](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)) occurs when a function's output equals its input. The `Y` combinator forces such a state, giving rise to stable recursive processes that keep producing new values without changing the underlying definition. DNA achieves a biological fixed point when replication produces a copy that can, in turn, replicate itself, echoing the [central dogma of molecular biology](https://en.wikipedia.org/wiki/Central_dogma_of_molecular_biology). Both systems rely on elegant minimal rules to generate complex, self-sustaining behavior.
+
+### Why the Analogy Matters
+
+As someone who now toggles between code reviews and journal articles, I find this analogy clarifying. It bridges [functional programming](https://en.wikipedia.org/wiki/Functional_programming) and [molecular biology](https://en.wikipedia.org/wiki/Molecular_biology) in a way that makes both domains feel less alien. Life's capacity for [self-replication](https://en.wikipedia.org/wiki/Self-replication) is not just a quirk of chemistry; it's a computational strategy familiar to anyone who's ever used a fixed-point combinator to get work done. When you see DNA as a program that summons its own interpreter, the boundary between silicon and carbon-based systems looks more like a gradient than a wall.
+
+Understanding the `Y` combinatorâ€”and spotting its echoes in the labâ€”reinforces how simple formulas can lead to **self-referential, life-like processes**. Whether I'm sketching recursion on a whiteboard or replaying that YouTube segment, the lesson is the same: elegant feedback loops are the engines of both software and biology.
+
+### References & Further Reading
+
+- [Lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus)
+- [Alonzo Church](https://en.wikipedia.org/wiki/Alonzo_Church)
+- [Fixed-point combinator and the Y combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Y_combinator)
+- [Haskell Wiki: fixed-point combinators](https://wiki.haskell.org/Fixed-point_combinators#The_Y_combinator)
+- M. Vanier, ["Y Combinator (no, not that one)"](https://mvanier.livejournal.com/2897.html)
+- [Factorial](https://en.wikipedia.org/wiki/Factorial)
+- [Fibonacci numbers](https://en.wikipedia.org/wiki/Fibonacci_number)
+- [DNA replication](https://en.wikipedia.org/wiki/DNA_replication)
+- [DNA polymerase](https://en.wikipedia.org/wiki/DNA_polymerase)
+- [Self-reference](https://en.wikipedia.org/wiki/Self-reference)
+- [Central dogma of molecular biology](https://en.wikipedia.org/wiki/Central_dogma_of_molecular_biology)
+- [Functional programming](https://en.wikipedia.org/wiki/Functional_programming)
+- [Self-replication](https://en.wikipedia.org/wiki/Self-replication)
+

@@ -1,52 +1,51 @@
---------
--t-i-t-l-e-:- -"-H-i-r-i-n-g- -G-e-n-e-r-a-l-i-s-t-s-:- -T-h-e- -S-m-a-l-l- -T-e-a-m-‚-Ä-ô-s- -S-e-c-r-e-t- -W-e-a-p-o-n-"--
--d-a-t-e-:- -2-0-2-5---0-9---1-2--
--p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-h-i-r-i-n-g---g-e-n-e-r-a-l-i-s-t-s-/--
--c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
--t-a-g-s-:--
-- - --- -h-i-r-i-n-g--
-- - --- -s-t-a-r-t-u-p-s--
-- - --- -c-u-l-t-u-r-e--
---------
---
---------
---
--<-d-i-v- -c-l-a-s-s-=-"-n-o-t-i-c-e-----i-n-f-o-"- -m-a-r-k-d-o-w-n-=-"-1-"->--
--*-*-T-h-e- -C-a-s-e- -f-o-r- -G-e-n-e-r-a-l-i-s-t-s-*-*--
---
--I-n- -e-a-r-l-y---s-t-a-g-e- -e-n-g-i-n-e-e-r-i-n-g-,- -o-v-e-r---s-p-e-c-i-a-l-i-z-a-t-i-o-n- -i-s- -a- -h-i-d-d-e-n- -t-e-c-h-n-i-c-a-l- -d-e-b-t-.- -I- -h-a-v-e- -o-b-s-e-r-v-e-d- -t-h-a-t- -"-G-e-n-e-r-a-l-i-s-t-"- -e-n-g-i-n-e-e-r-s- -a-c-t- -a-s- -t-h-e- -e-s-s-e-n-t-i-a-l- -g-l-u-e- -b-e-t-w-e-e-n- -d-i-s-j-o-i-n-t-e-d- -s-y-s-t-e-m-s-,- -r-e-d-u-c-i-n-g- -t-h-e- -c-o-m-m-u-n-i-c-a-t-i-o-n- -o-v-e-r-h-e-a-d- -t-h-a-t- -k-i-l-l-s- -v-e-l-o-c-i-t-y-.- -W-e- -s-h-o-u-l-d- -h-i-r-e- -f-o-r- -*-s-l-o-p-e-*- -(-l-e-a-r-n-i-n-g- -r-a-t-e-)- -r-a-t-h-e-r- -t-h-a-n- -j-u-s-t- -t-h-e- -*-y---i-n-t-e-r-c-e-p-t-*- -(-c-u-r-r-e-n-t- -d-o-m-a-i-n- -k-n-o-w-l-e-d-g-e-)-.--
--<-/-d-i-v->--
---
--L-e-a-n- -e-n-g-i-n-e-e-r-i-n-g- -t-e-a-m-s- -f-a-c-e- -a- -p-a-r-a-d-o-x-:- -t-h-e-y- -n-e-e-d- -s-p-e-c-i-a-l-i-s-t-s- -t-o- -b-u-i-l-d- -c-o-m-p-l-e-x- -p-r-o-d-u-c-t-s-,- -b-u-t- -t-h-e-y- -a-l-s-o- -n-e-e-d- -p-e-o-p-l-e- -w-h-o- -c-a-n- -s-w-i-t-c-h- -c-o-n-t-e-x-t-s- -r-a-p-i-d-l-y- -a-s- -p-r-i-o-r-i-t-i-e-s- -s-h-i-f-t-.- -G-e-n-e-r-a-l-i-s-t-s- -t-h-r-i-v-e- -i-n- -t-h-i-s- -e-n-v-i-r-o-n-m-e-n-t-.- -T-h-e-y- -f-i-l-l- -g-a-p-s- -n-o- -j-o-b- -d-e-s-c-r-i-p-t-i-o-n- -a-n-t-i-c-i-p-a-t-e-d- -a-n-d- -c-r-e-a-t-e- -c-o-n-n-e-c-t-i-v-e- -t-i-s-s-u-e- -b-e-t-w-e-e-n- -d-i-s-c-i-p-l-i-n-e-s-.--
---
--#-#- -G-e-n-e-r-a-l-i-s-t-s- -F-i-l-l- -I-n-v-i-s-i-b-l-e- -G-a-p-s--
---
--W-h-e-n- -w-e- -b-u-i-l-t- -o-u-t- -A-v-i-o-n-‚-Ä-ô-s- -s-i-m-u-l-a-t-o-r- -d-i-a-g-n-o-s-t-i-c-s- -p-o-r-t-a-l-,- -t-h-e- -f-i-r-s-t- -‚-Ä-ú-o-p-s-‚-Ä-ù- -e-n-g-i-n-e-e-r- -o-n- -t-h-e- -p-r-o-j-e-c-t- -w-a-s- -a-l-s-o- -o-u-r- -i-n-c-i-d-e-n-t- -c-o-o-r-d-i-n-a-t-o-r-,- -r-e-l-e-a-s-e- -m-a-n-a-g-e-r-,- -a-n-d- -p-a-r-t---t-i-m-e- -Q-A- -l-e-a-d-.- -E-a-c-h- -r-o-l-e- -c-o-u-l-d- -h-a-v-e- -j-u-s-t-i-f-i-e-d- -a- -d-e-d-i-c-a-t-e-d- -h-i-r-e-,- -b-u-t- -i-n- -t-h-e- -b-e-g-i-n-n-i-n-g-,- -t-h-e-s-e- -d-u-t-i-e-s- -l-a-n-d-e-d- -o-n- -w-h-i-c-h-e-v-e-r- -g-e-n-e-r-a-l-i-s-t- -h-a-d- -t-h-e- -b-a-n-d-w-i-d-t-h-.- -W-e- -a-v-o-i-d-e-d- -s-p-l-i-n-t-e-r-i-n-g- -t-h-e- -t-e-a-m- -b-y- -e-m-p-o-w-e-r-i-n-g- -o-n-e- -a-d-a-p-t-a-b-l-e- -e-n-g-i-n-e-e-r- -t-o- -w-e-a-r- -m-u-l-t-i-p-l-e- -h-a-t-s- -a-n-d- -r-o-t-a-t-e- -r-e-s-p-o-n-s-i-b-i-l-i-t-i-e-s- -a-s- -t-h-e- -b-a-c-k-l-o-g- -e-v-o-l-v-e-d-.--
---
--T-h-e-s-e- -i-n-v-i-s-i-b-l-e- -g-a-p-s- -a-p-p-e-a-r- -b-e-c-a-u-s-e- -e-a-r-l-y- -p-r-o-d-u-c-t-s- -e-v-o-l-v-e- -q-u-i-c-k-l-y-.- -A- -f-e-a-t-u-r-e- -d-e-m-o-e-d- -o-n- -M-o-n-d-a-y- -m-i-g-h-t- -p-i-v-o-t- -b-y- -F-r-i-d-a-y-,- -r-e-q-u-i-r-i-n-g- -u-p-d-a-t-e-s- -t-o- -d-o-c-u-m-e-n-t-a-t-i-o-n-,- -d-e-p-l-o-y-m-e-n-t-s-,- -a-n-d- -m-a-r-k-e-t-i-n-g- -c-o-l-l-a-t-e-r-a-l-.- -S-p-e-c-i-a-l-i-s-t-s- -w-i-t-h- -n-a-r-r-o-w- -s-c-o-p-e-s- -s-t-r-u-g-g-l-e- -t-o- -k-e-e-p- -u-p-.- -G-e-n-e-r-a-l-i-s-t-s-,- -b-y- -c-o-n-t-r-a-s-t-,- -e-m-b-r-a-c-e- -t-h-e- -f-l-u-i-d-i-t-y- -a-n-d- -p-a-t-c-h- -t-h-e- -s-e-a-m-s- -t-h-a-t- -w-o-u-l-d- -o-t-h-e-r-w-i-s-e- -t-e-a-r-.--
---
--#-#- -B-r-e-a-d-t-h- -E-a-r-l-y-,- -S-p-e-c-i-a-l-i-z-a-t-i-o-n- -L-a-t-e-r--
---
--B-r-e-a-d-t-h- -d-o-e-s- -n-o-t- -m-e-a-n- -l-a-c-k- -o-f- -d-e-p-t-h-.- -A- -s-t-r-o-n-g- -g-e-n-e-r-a-l-i-s-t- -o-f-t-e-n- -h-a-s- -o-n-e- -o-r- -t-w-o- -a-n-c-h-o-r- -s-p-e-c-i-a-l-t-i-e-s- -b-u-t- -w-i-l-l-i-n-g-l-y- -e-x-t-e-n-d-s- -i-n-t-o- -a-d-j-a-c-e-n-t- -d-o-m-a-i-n-s-.- -A-s- -t-h-e- -o-r-g-a-n-i-z-a-t-i-o-n- -s-c-a-l-e-s-,- -t-h-e-s-e- -g-e-n-e-r-a-l-i-s-t-s- -c-a-n- -n-a-r-r-o-w- -t-h-e-i-r- -f-o-c-u-s- -o-r- -t-r-a-n-s-i-t-i-o-n- -i-n-t-o- -l-e-a-d-e-r-s-h-i-p- -r-o-l-e-s- -t-h-a-t- -b-e-n-e-f-i-t- -f-r-o-m- -t-h-e-i-r- -c-r-o-s-s---f-u-n-c-t-i-o-n-a-l- -p-e-r-s-p-e-c-t-i-v-e-.--
---
--C-o-n-s-i-d-e-r- -t-h-e- -t-r-a-j-e-c-t-o-r-y- -o-f- -a- -c-o-l-l-e-a-g-u-e- -f-r-o-m- -m-y- -C-o-m-o-d-o- -d-a-y-s-.- -H-e- -s-t-a-r-t-e-d- -a-s- -a- -W-i-n-d-o-w-s- -s-e-r-v-i-c-e- -d-e-v-e-l-o-p-e-r-,- -t-h-e-n- -p-i-c-k-e-d- -u-p- -b-r-o-w-s-e-r- -i-n-t-e-g-r-a-t-i-o-n-s-,- -w-r-o-t-e- -i-n-t-e-r-n-a-l- -t-o-o-l-i-n-g-,- -a-n-d- -e-v-e-n- -j-u-m-p-e-d- -i-n-t-o- -c-u-s-t-o-m-e-r- -e-s-c-a-l-a-t-i-o-n-s-.- -B-y- -t-h-e- -t-i-m-e- -t-h-e- -o-r-g-a-n-i-z-a-t-i-o-n- -s-p-l-i-t- -i-n-t-o- -d-e-d-i-c-a-t-e-d- -p-l-a-t-f-o-r-m-,- -e-n-d-p-o-i-n-t-,- -a-n-d- -a-n-a-l-y-t-i-c-s- -t-e-a-m-s-,- -h-i-s- -e-a-r-l-y- -e-x-p-o-s-u-r-e- -p-o-s-i-t-i-o-n-e-d- -h-i-m- -t-o- -l-e-a-d- -t-h-e- -p-l-a-t-f-o-r-m- -g-r-o-u-p-‚-Ä-î-u-n-d-e-r-s-t-a-n-d-i-n-g- -b-o-t-h- -f-r-o-n-t-e-n-d- -r-e-q-u-i-r-e-m-e-n-t-s- -a-n-d- -b-a-c-k-e-n-d- -c-o-n-s-t-r-a-i-n-t-s- -p-r-o-v-e-d- -i-n-v-a-l-u-a-b-l-e-.--
---
--#-#- -C-r-o-s-s---F-u-n-c-t-i-o-n-a-l- -C-o-l-l-a-b-o-r-a-t-i-o-n- -B-e-c-o-m-e-s- -C-u-l-t-u-r-e--
---
--W-h-e-n- -g-e-n-e-r-a-l-i-s-t-s- -p-o-p-u-l-a-t-e- -t-h-e- -e-a-r-l-y- -t-e-a-m-,- -c-r-o-s-s---f-u-n-c-t-i-o-n-a-l- -c-o-l-l-a-b-o-r-a-t-i-o-n- -b-e-c-o-m-e-s- -a- -d-e-f-a-u-l-t- -b-e-h-a-v-i-o-r- -r-a-t-h-e-r- -t-h-a-n- -a-n- -i-m-p-o-s-e-d- -p-o-l-i-c-y-.- -M-e-e-t-i-n-g-s- -n-a-t-u-r-a-l-l-y- -i-n-c-l-u-d-e- -p-e-r-s-p-e-c-t-i-v-e-s- -f-r-o-m- -d-e-s-i-g-n-,- -p-r-o-d-u-c-t-,- -a-n-d- -e-n-g-i-n-e-e-r-i-n-g- -b-e-c-a-u-s-e- -t-h-e- -s-a-m-e- -i-n-d-i-v-i-d-u-a-l-s- -s-t-r-a-d-d-l-e- -t-h-o-s-e- -d-o-m-a-i-n-s-.- -T-h-a-t- -d-y-n-a-m-i-c- -s-h-a-p-e-d- -o-u-r- -1-4---p-e-r-s-o-n- -H-a-v-e-l-s-a-n- -D-L-P- -g-r-o-u-p-:- -s-e-c-u-r-i-t-y- -r-e-s-e-a-r-c-h-e-r-s-,- -e-n-d-p-o-i-n-t- -d-e-v-e-l-o-p-e-r-s-,- -a-n-d- -c-u-s-t-o-m-e-r---s-u-p-p-o-r-t- -e-n-g-i-n-e-e-r-s- -s-w-a-p-p-e-d- -r-o-l-e-s- -f-o-r- -a- -s-p-r-i-n-t- -w-h-e-n- -n-e-e-d-e-d-.- -T-h-e- -e-m-p-a-t-h-y- -b-u-i-l-t- -t-h-r-o-u-g-h- -t-h-o-s-e- -r-o-t-a-t-i-o-n-s- -s-h-o-r-t-e-n-e-d- -f-e-e-d-b-a-c-k- -l-o-o-p-s- -a-n-d- -k-e-p-t- -s-p-e-c-s- -g-r-o-u-n-d-e-d- -i-n- -f-i-e-l-d- -r-e-a-l-i-t-y-.--
---
--A-s- -t-h-e- -c-o-m-p-a-n-y- -g-r-o-w-s-,- -c-o-d-i-f-y-i-n-g- -t-h-i-s- -c-o-l-l-a-b-o-r-a-t-i-v-e- -s-p-i-r-i-t- -i-s- -c-r-u-c-i-a-l-.- -P-a-i-r- -p-r-o-g-r-a-m-m-i-n-g- -a-c-r-o-s-s- -t-e-a-m-s-,- -l-i-g-h-t-w-e-i-g-h-t- -d-e-s-i-g-n- -r-e-v-i-e-w-s-,- -a-n-d- -s-h-a-r-e-d- -r-o-a-d-m-a-p-s- -k-e-e-p- -s-i-l-o-s- -f-r-o-m- -c-a-l-c-i-f-y-i-n-g-.- -G-e-n-e-r-a-l-i-s-t-s- -c-a-n- -m-e-n-t-o-r- -i-n-c-o-m-i-n-g- -s-p-e-c-i-a-l-i-s-t-s-,- -t-r-a-n-s-l-a-t-i-n-g- -c-o-n-t-e-x-t- -a-n-d- -e-n-s-u-r-i-n-g- -n-e-w- -h-i-r-e-s- -u-n-d-e-r-s-t-a-n-d- -t-h-e- -‚-Ä-ú-w-h-y-,-‚-Ä-ù- -n-o-t- -j-u-s-t- -t-h-e- -‚-Ä-ú-w-h-a-t-,-‚-Ä-ù- -o-f- -t-h-e-i-r- -t-a-s-k-s-.--
---
--#-#- -H-i-r-i-n-g- -f-o-r- -C-u-r-i-o-s-i-t-y- -a-n-d- -A-d-a-p-t-a-b-i-l-i-t-y--
---
--I-d-e-n-t-i-f-y-i-n-g- -s-t-r-o-n-g- -g-e-n-e-r-a-l-i-s-t-s- -d-u-r-i-n-g- -r-e-c-r-u-i-t-i-n-g- -r-e-q-u-i-r-e-s- -d-i-f-f-e-r-e-n-t- -s-i-g-n-a-l-s- -t-h-a-n- -h-i-r-i-n-g- -f-o-r- -a- -n-a-r-r-o-w- -r-o-l-e-.- -L-o-o-k- -f-o-r- -c-a-n-d-i-d-a-t-e-s- -w-h-o- -h-a-v-e- -s-h-i-p-p-e-d- -p-r-o-j-e-c-t-s- -a-c-r-o-s-s- -m-u-l-t-i-p-l-e- -d-o-m-a-i-n-s- -o-r- -w-h-o- -h-a-v-e- -n-a-v-i-g-a-t-e-d- -c-a-r-e-e-r- -t-r-a-n-s-i-t-i-o-n-s-.- -A-s-k- -i-n-t-e-r-v-i-e-w- -q-u-e-s-t-i-o-n-s- -a-b-o-u-t- -h-o-w- -t-h-e-y- -l-e-a-r-n-e-d- -u-n-f-a-m-i-l-i-a-r- -t-e-c-h-n-o-l-o-g-i-e-s- -o-r- -r-e-s-o-l-v-e-d- -p-r-o-b-l-e-m-s- -o-u-t-s-i-d-e- -t-h-e-i-r- -j-o-b- -s-c-o-p-e-.- -G-e-n-u-i-n-e- -c-u-r-i-o-s-i-t-y- -a-n-d- -a- -p-a-t-t-e-r-n- -o-f- -s-e-l-f---d-i-r-e-c-t-e-d- -l-e-a-r-n-i-n-g- -a-r-e- -s-t-r-o-n-g-e-r- -p-r-e-d-i-c-t-o-r-s- -o-f- -s-u-c-c-e-s-s- -t-h-a-n- -d-e-e-p- -e-x-p-e-r-t-i-s-e- -i-n- -a-n-y- -s-i-n-g-l-e- -t-o-o-l-.--
---
--C-o-n-s-t-r-a-i-n-t-s- -o-n- -s-m-a-l-l- -t-e-a-m-s- -a-l-s-o- -d-e-m-a-n-d- -h-u-m-i-l-i-t-y-.- -T-h-e- -i-d-e-a-l- -g-e-n-e-r-a-l-i-s-t- -i-s- -c-o-n-f-i-d-e-n-t- -e-n-o-u-g-h- -t-o- -t-a-c-k-l-e- -a-m-b-i-g-u-o-u-s- -p-r-o-b-l-e-m-s- -b-u-t- -h-u-m-b-l-e- -e-n-o-u-g-h- -t-o- -k-n-o-w- -w-h-e-n- -t-o- -s-e-e-k- -h-e-l-p-.- -R-e-f-e-r-e-n-c-e-s- -f-r-o-m- -p-r-e-v-i-o-u-s- -m-a-n-a-g-e-r-s- -o-r- -t-e-a-m- -l-e-a-d-s- -r-e-v-e-a-l- -h-o-w- -c-a-n-d-i-d-a-t-e-s- -h-a-n-d-l-e- -c-o-n-t-e-x-t- -s-w-i-t-c-h-i-n-g- -a-n-d- -w-h-e-t-h-e-r- -t-h-e-y- -m-a-i-n-t-a-i-n- -q-u-a-l-i-t-y- -w-h-i-l-e- -j-u-g-g-l-i-n-g- -r-e-s-p-o-n-s-i-b-i-l-i-t-i-e-s-.--
---
--#-#- -B-u-i-l-d-i-n-g- -t-h-e- -T-e-a-m- -Y-o-u- -W-a-n-t- -L-a-t-e-r--
---
--U-l-t-i-m-a-t-e-l-y-,- -h-i-r-i-n-g- -g-e-n-e-r-a-l-i-s-t-s- -e-a-r-l-y- -i-s- -a-b-o-u-t- -b-u-i-l-d-i-n-g- -t-h-e- -t-e-a-m- -y-o-u- -w-a-n-t- -l-a-t-e-r-.- -O-n-c-e- -t-h-e- -p-r-o-d-u-c-t- -s-t-a-b-i-l-i-z-e-s-,- -s-p-e-c-i-a-l-i-s-t-s- -c-a-n- -j-o-i-n- -t-o- -s-c-a-l-e- -s-p-e-c-i-f-i-c- -f-u-n-c-t-i-o-n-s-.- -T-h-e- -i-n-i-t-i-a-l- -g-e-n-e-r-a-l-i-s-t-s- -w-i-l-l- -h-a-v-e- -p-a-v-e-d- -t-h-e- -w-a-y-,- -e-s-t-a-b-l-i-s-h-i-n-g- -c-u-l-t-u-r-e-,- -c-r-e-a-t-i-n-g- -f-o-u-n-d-a-t-i-o-n-a-l- -s-y-s-t-e-m-s-,- -a-n-d- -l-e-a-v-i-n-g- -b-e-h-i-n-d- -d-o-c-u-m-e-n-t-a-t-i-o-n- -t-h-a-t- -r-e-f-l-e-c-t-s- -a- -h-o-l-i-s-t-i-c- -v-i-e-w- -o-f- -t-h-e- -p-r-o-d-u-c-t-.- -T-h-e-i-r- -f-i-n-g-e-r-p-r-i-n-t-s- -a-r-e- -e-v-e-r-y-w-h-e-r-e-‚-Ä-î-f-r-o-m- -t-h-e- -f-i-r-s-t- -c-o-m-m-i-t- -t-o- -t-h-e- -o-n-b-o-a-r-d-i-n-g- -g-u-i-d-e-‚-Ä-î-a-n-d- -t-h-a-t- -c-o-n-t-i-n-u-i-t-y- -b-e-c-o-m-e-s- -a- -c-o-m-p-e-t-i-t-i-v-e- -a-d-v-a-n-t-a-g-e-.--
---
---------
--*-D-r-.- -O-z-g-u-r- -U-r-a-l- -i-s- -a- -T-e-c-h-n-i-c-a-l- -L-e-a-d-e-r- -a-n-d- -S-e-n-i-o-r- -S-o-f-t-w-a-r-e- -E-n-g-i-n-e-e-r-.- -H-e- -h-a-s- -b-u-i-l-t- -a-n-d- -l-e-d- -e-n-g-i-n-e-e-r-i-n-g- -t-e-a-m-s- -a-c-r-o-s-s- -c-y-b-e-r-s-e-c-u-r-i-t-y-,- -a-e-r-o-s-p-a-c-e-,- -a-n-d- -s-i-m-u-l-a-t-i-o-n- -i-n-d-u-s-t-r-i-e-s-.-*--
--
+---
+title: "Hiring Generalists: The Small Team‚Äôs Secret Weapon"
+date: 2025-09-12
+permalink: /posts/2025/09/hiring-generalists/
+categories: technical
+tags:
+  - hiring
+  - startups
+  - culture
+---
+
+---
+
+<div class="notice--info" markdown="1">
+**The Case for Generalists**
+
+In early-stage engineering, over-specialization is a hidden technical debt. I have observed that "Generalist" engineers act as the essential glue between disjointed systems, reducing the communication overhead that kills velocity. We should hire for *slope* (learning rate) rather than just the *y-intercept* (current domain knowledge).
+</div>
+
+Lean engineering teams face a paradox: they need specialists to build complex products, but they also need people who can switch contexts rapidly as priorities shift. Generalists thrive in this environment. They fill gaps no job description anticipated and create connective tissue between disciplines.
+
+## Generalists Fill Invisible Gaps
+
+When we built out Avion‚Äôs simulator diagnostics portal, the first ‚Äúops‚Äù engineer on the project was also our incident coordinator, release manager, and part-time QA lead. Each role could have justified a dedicated hire, but in the beginning, these duties landed on whichever generalist had the bandwidth. We avoided splintering the team by empowering one adaptable engineer to wear multiple hats and rotate responsibilities as the backlog evolved.
+
+These invisible gaps appear because early products evolve quickly. A feature demoed on Monday might pivot by Friday, requiring updates to documentation, deployments, and marketing collateral. Specialists with narrow scopes struggle to keep up. Generalists, by contrast, embrace the fluidity and patch the seams that would otherwise tear.
+
+## Breadth Early, Specialization Later
+
+Breadth does not mean lack of depth. A strong generalist often has one or two anchor specialties but willingly extends into adjacent domains. As the organization scales, these generalists can narrow their focus or transition into leadership roles that benefit from their cross-functional perspective.
+
+Consider the trajectory of a colleague from my Comodo days. He started as a Windows service developer, then picked up browser integrations, wrote internal tooling, and even jumped into customer escalations. By the time the organization split into dedicated platform, endpoint, and analytics teams, his early exposure positioned him to lead the platform group‚Äîunderstanding both frontend requirements and backend constraints proved invaluable.
+
+## Cross-Functional Collaboration Becomes Culture
+
+When generalists populate the early team, cross-functional collaboration becomes a default behavior rather than an imposed policy. Meetings naturally include perspectives from design, product, and engineering because the same individuals straddle those domains. That dynamic shaped our 14-person Havelsan DLP group: security researchers, endpoint developers, and customer-support engineers swapped roles for a sprint when needed. The empathy built through those rotations shortened feedback loops and kept specs grounded in field reality.
+
+As the company grows, codifying this collaborative spirit is crucial. Pair programming across teams, lightweight design reviews, and shared roadmaps keep silos from calcifying. Generalists can mentor incoming specialists, translating context and ensuring new hires understand the ‚Äúwhy,‚Äù not just the ‚Äúwhat,‚Äù of their tasks.
+
+## Hiring for Curiosity and Adaptability
+
+Identifying strong generalists during recruiting requires different signals than hiring for a narrow role. Look for candidates who have shipped projects across multiple domains or who have navigated career transitions. Ask interview questions about how they learned unfamiliar technologies or resolved problems outside their job scope. Genuine curiosity and a pattern of self-directed learning are stronger predictors of success than deep expertise in any single tool.
+
+Constraints on small teams also demand humility. The ideal generalist is confident enough to tackle ambiguous problems but humble enough to know when to seek help. References from previous managers or team leads reveal how candidates handle context switching and whether they maintain quality while juggling responsibilities.
+
+## Building the Team You Want Later
+
+Ultimately, hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that reflects a holistic view of the product. Their fingerprints are everywhere‚Äîfrom the first commit to the onboarding guide‚Äîand that continuity becomes a competitive advantage.
+
+---
+*Dr. Ozgur Ural is a Technical Leader and Senior Software Engineer. He has built and led engineering teams across cybersecurity, aerospace, and simulation industries.*

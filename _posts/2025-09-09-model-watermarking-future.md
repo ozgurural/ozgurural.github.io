@@ -1,46 +1,45 @@
---------
--t-i-t-l-e-:- -"-M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g- -a-n-d- -t-h-e- -F-u-t-u-r-e- -o-f- -T-r-u-s-t-w-o-r-t-h-y- -A-I-"--
--d-a-t-e-:- -2-0-2-5---0-9---0-9--
--p-e-r-m-a-l-i-n-k-:- -/-p-o-s-t-s-/-2-0-2-5-/-0-9-/-m-o-d-e-l---w-a-t-e-r-m-a-r-k-i-n-g---f-u-t-u-r-e-/--
--c-a-t-e-g-o-r-i-e-s-:- -t-e-c-h-n-i-c-a-l--
--t-a-g-s-:--
-- - --- -m-o-d-e-l---w-a-t-e-r-m-a-r-k-i-n-g--
-- - --- -s-e-c-u-r-i-t-y--
-- - --- -m-a-c-h-i-n-e---l-e-a-r-n-i-n-g--
---------
---
--M-o-d-e-l- -w-a-t-e-r-m-a-r-k-i-n-g- -e-m-b-e-d-s- -i-d-e-n-t-i-f-i-a-b-l-e- -p-a-t-t-e-r-n-s- -i-n-t-o- -a- -m-o-d-e-l-'-s- -p-a-r-a-m-e-t-e-r-s- -o-r- -o-u-t-p-u-t-s- -s-o- -t-h-a-t- -o-w-n-e-r-s-h-i-p- -c-a-n- -b-e- -d-e-m-o-n-s-t-r-a-t-e-d- -w-i-t-h-o-u-t- -a-c-c-e-s-s- -t-o- -t-h-e- -o-r-i-g-i-n-a-l- -t-r-a-i-n-i-n-g- -p-r-o-c-e-s-s-.- -B-a-l-a-n-c-i-n-g- -m-y- -r-e-s-e-a-r-c-h- -l-i-f-e- -w-i-t-h- -d-a-y---t-o---d-a-y- -e-n-g-i-n-e-e-r-i-n-g- -a-t- -A-v-i-o-n- -F-u-l-l- -F-l-i-g-h-t- -S-i-m-u-l-a-t-o-r-s- -m-e-a-n-s- -I- -c-o-n-s-t-a-n-t-l-y- -s-t-r-a-d-d-l-e- -t-h-e-o-r-y- -a-n-d- -h-i-g-h---s-t-a-k-e-s- -d-e-l-i-v-e-r-y-.- -I- -s-t-i-l-l- -r-e-m-e-m-b-e-r- -t-h-e- -f-i-r-s-t- -t-i-m-e- -w-e- -r-e-c-o-v-e-r-e-d- -o-u-r- -w-a-t-e-r-m-a-r-k- -f-r-o-m- -a- -p-a-r-t-n-e-r-'-s- -h-e-a-v-i-l-y- -f-i-n-e---t-u-n-e-d- -f-l-i-g-h-t---c-o-n-t-r-o-l- -m-o-d-e-l- -i-n-s-i-d-e- -t-h-e- -A-v-i-o-n- -C-l-o-u-d- -d-a-s-h-b-o-a-r-d-â-€-”-i-t- -f-e-l-t- -l-i-k-e- -c-a-t-c-h-i-n-g- -a- -s-u-b-t-l-e- -w-a-t-e-r-m-a-r-k- -i-n- -a- -p-r-i-n-t-e-d- -b-a-n-k-n-o-t-e- -a-f-t-e-r- -a- -w-h-i-t-e---k-n-u-c-k-l-e- -c-e-r-t-i-f-i-c-a-t-i-o-n- -s-p-r-i-n-t-.- -T-h-a-t- -b-r-e-a-k-t-h-r-o-u-g-h- -w-a-s- -g-r-o-u-n-d-e-d- -i-n- -e-a-r-l-y- -w-o-r-k- -s-h-o-w-i-n-g- -t-h-a-t- -d-e-e-p- -n-e-t-w-o-r-k- -w-e-i-g-h-t-s- -c-a-n- -c-a-r-r-y- -h-i-d-d-e-n- -s-i-g-n-a-t-u-r-e-s- -w-i-t-h-o-u-t- -a-f-f-e-c-t-i-n-g- -a-c-c-u-r-a-c-y- -[-4-]-,- -a-n-d- -i-n- -b-e-h-a-v-i-o-r---b-a-s-e-d- -m-a-r-k-s- -t-h-a-t- -s-u-r-v-i-v-e- -a-g-g-r-e-s-s-i-v-e- -f-i-n-e---t-u-n-i-n-g- -[-5-,-6-]-.--
---
--T-h-a-t- -w-i-n- -a-l-s-o- -l-e-a-n-e-d- -o-n- -t-h-e- -o-b-s-e-r-v-a-b-i-l-i-t-y- -p-i-p-e-l-i-n-e-s- -I- -h-e-l-p-e-d- -b-u-i-l-d- -f-o-r- -o-u-r- -s-i-m-u-l-a-t-o-r-s-:- -l-o-w---l-a-t-e-n-c-y- -t-e-l-e-m-e-t-r-y- -i-n-g-e-s-t-,- -R-e-d-i-s---b-a-c-k-e-d- -h-o-t- -p-a-t-h-s-,- -a-n-d- -g-R-P-C- -v-e-r-i-f-i-c-a-t-i-o-n- -h-o-o-k-s- -m-a-k-e- -i-t- -p-r-a-c-t-i-c-a-l- -t-o- -f-l-a-g- -w-h-e-n- -a- -d-e-p-l-o-y-e-d- -m-o-d-e-l- -s-u-d-d-e-n-l-y- -s-t-o-p-s- -p-r-e-s-e-n-t-i-n-g- -t-h-e- -e-x-p-e-c-t-e-d- -w-a-t-e-r-m-a-r-k-.- -W-h-e-n- -c-o-l-l-e-a-g-u-e-s- -a-s-k- -w-h-y- -p-r-o-v-e-n-a-n-c-e- -i-s- -w-o-r-t-h- -t-h-e- -e-n-g-i-n-e-e-r-i-n-g- -t-i-m-e-,- -I- -c-a-n- -p-o-i-n-t- -t-o- -t-h-e- -n-i-g-h-t- -w-e- -a-v-o-i-d-e-d- -r-o-l-l-i-n-g- -b-a-c-k- -a- -s-i-m-u-l-a-t-o-r- -r-e-l-e-a-s-e- -b-e-c-a-u-s-e- -t-h-e- -w-a-t-e-r-m-a-r-k- -c-h-e-c-k- -i-s-o-l-a-t-e-d- -a- -m-i-s-s-i-n-g- -d-e-p-e-n-d-e-n-c-y- -r-a-t-h-e-r- -t-h-a-n- -t-a-m-p-e-r-i-n-g-.--
---
--#-#-#- -T-o-w-a-r-d- -r-e-s-i-l-i-e-n-t- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g--
---
--D-u-r-i-n-g- -m-y- -d-o-c-t-o-r-a-t-e- -a-t- -E-m-b-r-y---R-i-d-d-l-e- -A-e-r-o-n-a-u-t-i-c-a-l- -U-n-i-v-e-r-s-i-t-y- -I- -k-e-p-t- -r-e-t-u-r-n-i-n-g- -t-o- -t-h-e- -q-u-e-s-t-i-o-n-:- -h-o-w- -d-o- -w-e- -p-r-o-v-e- -a- -m-o-d-e-l- -w-a-s- -h-o-n-e-s-t-l-y- -t-r-a-i-n-e-d- -w-h-e-n- -t-h-e- -h-a-r-d-w-a-r-e-,- -d-a-t-a-s-e-t-s-,- -a-n-d- -e-v-e-n- -c-o-n-t-r-i-b-u-t-o-r-s- -a-r-e- -d-i-s-t-r-i-b-u-t-e-d- -a-c-r-o-s-s- -c-o-n-t-i-n-e-n-t-s-?- -O-u-r- -r-e-s-e-a-r-c-h- -i-n-v-e-s-t-i-g-a-t-e-s- -h-o-w- -w-a-t-e-r-m-a-r-k-i-n-g- -s-t-r-e-n-g-t-h-e-n-s- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -(-P-o-L-)- -b-y- -b-i-n-d-i-n-g- -m-o-d-e-l-s- -t-o- -v-e-r-i-f-i-a-b-l-e- -t-r-a-i-n-i-n-g- -a-r-t-i-f-a-c-t-s-.- -F-e-a-t-u-r-e---b-a-s-e-d- -s-c-h-e-m-e-s- -t-i-e- -a- -m-o-d-e-l-'-s- -i-n-t-e-r-n-a-l- -r-e-p-r-e-s-e-n-t-a-t-i-o-n-s- -t-o- -s-e-c-r-e-t- -k-e-y-s-,- -m-a-k-i-n-g- -s-p-o-o-f-i-n-g- -a-t-t-a-c-k-s- -d-e-t-e-c-t-a-b-l-e- -[-1-]-.- -T-h-e- -m-o-s-t- -e-f-f-e-c-t-i-v-e- -d-e-s-i-g-n-s- -k-e-p-t- -t-h-e- -v-e-r-i-f-i-c-a-t-i-o-n- -s-c-r-i-p-t- -s-i-m-p-l-e- -e-n-o-u-g-h- -t-o- -r-u-n- -d-u-r-i-n-g- -v-e-n-d-o-r- -a-u-d-i-t-s- -w-h-i-l-e- -s-t-i-l-l- -r-e-s-i-s-t-i-n-g- -c-o-l-l-u-s-i-o-n-,- -s-o- -I- -p-a-c-k-a-g-e-d- -t-h-e-m- -a-s- -G-i-t-L-a-b- -r-u-n-n-e-r-s- -t-h-a-t- -s-h-i-p- -w-i-t-h- -o-u-r- -s-i-m-u-l-a-t-o-r- -b-u-i-l-d-s-.--
---
--A- -f-o-l-l-o-w---u-p- -e-v-a-l-u-a-t-i-o-n- -c-o-m-p-a-r-e-d- -p-a-r-a-m-e-t-e-r-,- -d-a-t-a-,- -a-n-d- -f-e-a-t-u-r-e- -w-a-t-e-r-m-a-r-k-i-n-g- -a-c-r-o-s-s- -r-o-b-u-s-t-n-e-s-s- -m-e-t-r-i-c-s-,- -h-i-g-h-l-i-g-h-t-i-n-g- -t-r-a-d-e---o-f-f-s- -b-e-t-w-e-e-n- -s-e-c-u-r-i-t-y- -a-n-d- -c-o-m-p-u-t-a-t-i-o-n-a-l- -c-o-s-t- -[-2-]-;- -t-h-e- -s-p-r-e-a-d-s-h-e-e-t- -f-r-o-m- -t-h-a-t- -s-t-u-d-y- -i-s- -s-t-i-l-l- -w-h-a-t- -I- -s-h-a-r-e- -w-i-t-h- -p-a-r-t-n-e-r- -t-e-a-m-s- -w-h-e-n- -t-h-e-y- -a-s-k-,- -"-W-h-i-c-h- -w-a-t-e-r-m-a-r-k- -s-h-o-u-l-d- -w-e- -s-t-a-r-t- -w-i-t-h-?-"- -I-n- -A-v-i-o-n-'-s- -p-i-p-e-l-i-n-e- -t-h-e- -a-n-s-w-e-r- -v-a-r-i-e-s-â-€-”-l-i-g-h-t-e-r- -p-a-r-a-m-e-t-e-r- -m-a-r-k-s- -p-r-o-t-e-c-t- -r-a-p-i-d- -p-r-o-t-o-t-y-p-i-n-g- -m-o-d-e-l-s-,- -w-h-i-l-e- -f-e-a-t-u-r-e- -m-a-r-k-s- -g-u-a-r-d- -a-n-y-t-h-i-n-g- -t-h-a-t- -w-i-l-l- -l-e-a-v-e- -t-h-e- -h-a-n-g-a-r-.--
---
--#-#-#- -E-m-e-r-g-i-n-g- -a-p-p-l-i-c-a-t-i-o-n-s- -a-n-d- -c-h-a-l-l-e-n-g-e-s--
---
--W-a-t-e-r-m-a-r-k-i-n-g- -i-s- -m-o-v-i-n-g- -f-r-o-m- -a-c-a-d-e-m-i-c- -p-r-o-t-o-t-y-p-e-s- -t-o- -i-n-d-u-s-t-r-y- -a-s- -o-p-e-n- -m-o-d-e-l- -s-h-a-r-i-n-g- -p-r-o-l-i-f-e-r-a-t-e-s-.- -W-h-e-n- -K-e-n-j-i- -Y-o-s-h-i-g-o-e- -a-n-d- -I- -p-u-b-l-i-s-h-e-d- -o-u-r- -2-0-2-3- -I-E-E-E- -A-c-c-e-s-s- -s-u-r-v-e-y- -o-n- -b-l-o-c-k-c-h-a-i-n---e-n-h-a-n-c-e-d- -m-a-c-h-i-n-e- -l-e-a-r-n-i-n-g- -[-3-]-,- -t-h-e- -m-o-s-t- -c-o-m-m-o-n- -f-o-l-l-o-w---u-p- -q-u-e-s-t-i-o-n- -f-r-o-m- -r-e-g-u-l-a-t-o-r-s- -a-n-d- -e-n-t-e-r-p-r-i-s-e- -t-e-a-m-s- -w-a-s-,- -"-H-o-w- -d-o- -w-e- -p-r-o-v-e- -p-r-o-v-e-n-a-n-c-e- -o-n-c-e- -w-e- -d-e-c-e-n-t-r-a-l-i-z-e- -t-r-a-i-n-i-n-g-?-"- -T-h-e- -c-o-n-v-e-r-s-a-t-i-o-n-s- -h-a-v-e- -o-n-l-y- -i-n-t-e-n-s-i-f-i-e-d- -s-i-n-c-e- -I- -s-h-i-f-t-e-d- -t-o- -a-v-i-a-t-i-o-n-,- -w-h-e-r-e- -c-e-r-t-i-f-i-c-a-t-i-o-n- -a-u-t-h-o-r-i-t-i-e-s- -n-o-w- -e-x-p-e-c-t- -u-s- -t-o- -d-e-m-o-n-s-t-r-a-t-e- -o-w-n-e-r-s-h-i-p- -t-r-a-i-l-s- -f-o-r- -e-v-e-r-y- -n-e-u-r-a-l- -c-o-m-p-o-n-e-n-t-.- -P-r-o-v-e-n-a-n-c-e- -c-o-n-t-r-o-l-s- -h-e-l-p- -p-r-o-d-u-c-t- -l-e-a-d-s- -s-l-e-e-p- -a-t- -n-i-g-h-t- -w-h-e-n- -r-e-l-e-a-s-i-n-g- -A-P-I-s-,- -a-n-d- -t-h-e-y- -g-i-v-e- -o-u-r- -c-o-m-p-l-i-a-n-c-e- -t-e-a-m-s- -c-o-n-c-r-e-t-e- -e-v-i-d-e-n-c-e- -t-h-a-t- -t-h-e- -m-o-d-e-l-s- -f-e-e-d-i-n-g- -r-e-a-l---t-i-m-e- -d-a-s-h-b-o-a-r-d-s- -a-r-e- -t-h-e- -o-n-e-s- -w-e- -v-e-t-t-e-d-.--
---
--M-e-a-n-w-h-i-l-e-,- -a-t-t-a-c-k-e-r-s- -e-x-p-l-o-r-e- -w-a-t-e-r-m-a-r-k- -r-e-m-o-v-a-l- -a-n-d- -c-o-l-l-u-s-i-o-n- -s-t-r-a-t-e-g-i-e-s-,- -p-r-o-m-p-t-i-n-g- -d-e-f-e-n-s-e-s- -t-h-a-t- -c-o-m-b-i-n-e- -r-o-b-u-s-t- -s-t-a-t-i-s-t-i-c-s- -w-i-t-h- -c-r-y-p-t-o-g-r-a-p-h-i-c- -a-t-t-e-s-t-a-t-i-o-n-s- -[-4-,-6-]-.- -T-h-e- -p-u-s-h- -a-n-d- -p-u-l-l- -i-s- -h-e-a-l-t-h-y-:- -e-v-e-r-y- -t-i-m-e- -w-e- -a-d-a-p-t- -o-u-r- -d-e-f-e-n-s-e-s-â-€-”-s-a-y-,- -b-y- -m-i-x-i-n-g- -w-a-t-e-r-m-a-r-k- -k-e-y-s- -w-i-t-h- -t-e-l-e-m-e-t-r-y---d-e-r-i-v-e-d- -s-a-n-i-t-y- -c-h-e-c-k-s-â-€-”-w-e- -s-h-a-r-p-e-n- -t-h-e- -g-u-i-d-a-n-c-e- -I- -c-a-r-r-y- -i-n-t-o- -a-d-v-i-s-o-r-y- -c-a-l-l-s- -w-i-t-h- -s-t-a-r-t-u-p-s- -a-n-d- -p-u-b-l-i-c- -a-g-e-n-c-i-e-s-.--
---
--#-#-#- -F-u-t-u-r-e- -i-m-p-o-r-t-a-n-c-e--
---
--I-n- -t-h-e- -c-o-m-i-n-g- -y-e-a-r-s- -w-a-t-e-r-m-a-r-k-i-n-g- -w-i-l-l- -e-n-a-b-l-e-:--
---
--1-.- -t-r-a-c-e-a-b-l-e- -m-o-d-e-l- -m-a-r-k-e-t-p-l-a-c-e-s- -w-h-e-r-e- -o-w-n-e-r-s-h-i-p- -c-l-a-i-m-s- -a-r-e- -v-e-r-i-f-i-a-b-l-e- -a-n-d- -e-n-f-o-r-c-e-a-b-l-e-,--
--2-.- -p-r-o-t-e-c-t-i-o-n- -a-g-a-i-n-s-t- -m-o-d-e-l- -t-h-e-f-t- -i-n- -c-o-l-l-a-b-o-r-a-t-i-v-e- -r-e-s-e-a-r-c-h- -a-n-d- -A-I---a-s---a---s-e-r-v-i-c-e- -d-e-a-l-s- -w-h-e-r-e- -s-o-u-r-c-e- -c-o-d-e- -n-e-v-e-r- -l-e-a-v-e-s- -t-h-e- -l-a-b-,--
--3-.- -s-t-a-n-d-a-r-d-i-z-e-d- -P-o-L- -p-i-p-e-l-i-n-e-s- -f-o-r- -d-e-c-e-n-t-r-a-l-i-z-e-d- -t-r-a-i-n-i-n-g- -n-e-t-w-o-r-k-s- -t-h-a-t- -r-e-w-a-r-d- -p-r-o-v-a-b-l-e- -c-o-n-t-r-i-b-u-t-i-o-n-.--
---
--W-a-t-e-r-m-a-r-k-s- -t-h-a-t- -s-u-r-v-i-v-e- -p-r-u-n-i-n-g-,- -q-u-a-n-t-i-z-a-t-i-o-n-,- -a-n-d- -t-r-a-n-s-f-e-r- -l-e-a-r-n-i-n-g- -w-i-l-l- -b-e- -e-s-s-e-n-t-i-a-l- -t-o- -t-h-e-s-e- -d-e-p-l-o-y-m-e-n-t-s-,- -a-n-d- -t-h-e-y- -w-i-l-l- -i-n-c-r-e-a-s-i-n-g-l-y- -b-e- -p-a-i-r-e-d- -w-i-t-h- -u-s-e-r---f-r-i-e-n-d-l-y- -d-a-s-h-b-o-a-r-d-s- -s-o- -p-r-o-d-u-c-t- -t-e-a-m-s- -c-a-n- -c-o-n-f-i-r-m- -o-w-n-e-r-s-h-i-p- -w-i-t-h-o-u-t- -d-i-g-g-i-n-g- -i-n-t-o- -t-e-n-s-o-r-s-.- -M-y- -g-o-a-l- -i-s- -t-o- -m-a-k-e- -t-h-o-s-e- -d-a-s-h-b-o-a-r-d-s- -a-s- -a-p-p-r-o-a-c-h-a-b-l-e- -a-s- -a-n-y- -o-t-h-e-r- -D-e-v-O-p-s- -p-a-n-e-l-:- -i-f- -m-y- -f-l-i-g-h-t---s-i-m- -c-o-l-l-e-a-g-u-e-s- -c-a-n- -s-e-e- -t-h-e- -v-e-r-i-f-i-c-a-t-i-o-n- -v-e-r-d-i-c-t- -a-l-o-n-g-s-i-d-e- -l-a-t-e-n-c-y- -a-n-d- -C-P-U- -g-r-a-p-h-s-,- -p-r-o-v-e-n-a-n-c-e- -b-e-c-o-m-e-s- -a- -h-a-b-i-t- -r-a-t-h-e-r- -t-h-a-n- -a- -r-e-s-e-a-r-c-h- -c-u-r-i-o-s-i-t-y-.--
---
--#-#- -R-e-f-e-r-e-n-c-e-s--
---
--[-1-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-4-)-.- -*-E-n-h-a-n-c-i-n-g- -S-e-c-u-r-i-t-y- -o-f- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -a-g-a-i-n-s-t- -S-p-o-o-f-i-n-g- -A-t-t-a-c-k-s- -u-s-i-n-g- -F-e-a-t-u-r-e---B-a-s-e-d- -M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g-*-.- -I-E-E-E- -A-c-c-e-s-s-.--
--[-2-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-5-)-.- -*-E-v-a-l-u-a-t-i-o-n- -o-f- -M-o-d-e-l- -W-a-t-e-r-m-a-r-k-i-n-g- -T-e-c-h-n-i-q-u-e-s- -f-o-r- -P-r-o-o-f---o-f---L-e-a-r-n-i-n-g- -S-e-c-u-r-i-t-y- -A-g-a-i-n-s-t- -S-p-o-o-f-i-n-g- -A-t-t-a-c-k-s-*-.- -I-E-E-E- -A-c-c-e-s-s- -(-i-n- -p-r-e-s-s-)-.--
--[-3-]- -U-r-a-l-,- -O-.- -a-n-d- -Y-o-s-h-i-g-o-e-,- -K-.- -(-2-0-2-3-)-.- -*-S-u-r-v-e-y- -o-n- -B-l-o-c-k-c-h-a-i-n---E-n-h-a-n-c-e-d- -M-a-c-h-i-n-e- -L-e-a-r-n-i-n-g-*-.- -I-E-E-E- -A-c-c-e-s-s-,- -1-1-,- -1-4-5-3-3-1-â-€-“-1-4-5-3-6-2-.--
--[-4-]- -U-c-h-i-d-a-,- -Y-.-,- -N-a-g-a-i-,- -Y-.-,- -S-a-k-a-z-a-w-a-,- -S-.-,- -&- -S-a-t-o-h-,- -S-.- -(-2-0-1-7-)-.- -*-E-m-b-e-d-d-i-n-g- -W-a-t-e-r-m-a-r-k-s- -i-n-t-o- -D-e-e-p- -N-e-u-r-a-l- -N-e-t-w-o-r-k-s-*-.- -I-C-M-R-.--
--[-5-]- -A-d-i-,- -Y-.-,- -B-a-u-m-,- -C-.-,- -C-i-s-s-e-,- -M-.-,- -P-i-n-k-a-s-,- -B-.-,- -&- -K-e-s-h-e-t-,- -J-.- -(-2-0-1-8-)-.- -*-T-u-r-n-i-n-g- -Y-o-u-r- -W-e-a-k-n-e-s-s- -I-n-t-o- -a- -S-t-r-e-n-g-t-h-:- -W-a-t-e-r-m-a-r-k-i-n-g- -D-e-e-p- -N-e-u-r-a-l- -N-e-t-w-o-r-k-s- -b-y- -B-a-c-k-d-o-o-r-i-n-g-*-.- -U-S-E-N-I-X- -S-e-c-u-r-i-t-y-.--
--[-6-]- -R-o-u-h-a-n-i-,- -B-.- -D-.-,- -C-h-e-n-,- -H-.-,- -&- -K-o-u-s-h-a-n-f-a-r-,- -F-.- -(-2-0-1-9-)-.- -*-D-e-e-p-S-i-g-n-s-:- -A- -G-e-n-e-r-i-c- -W-a-t-e-r-m-a-r-k-i-n-g- -F-r-a-m-e-w-o-r-k- -f-o-r- -I-P- -P-r-o-t-e-c-t-i-o-n- -o-f- -D-e-e-p- -L-e-a-r-n-i-n-g- -M-o-d-e-l-s-*-.- -a-r-X-i-v-:-1-8-0-4-.-0-0-7-5-0-.--
--
+---
+title: "Model Watermarking and the Future of Trustworthy AI"
+date: 2025-09-09
+permalink: /posts/2025/09/model-watermarking-future/
+categories: technical
+tags:
+  - model-watermarking
+  - security
+  - machine-learning
+---
+
+Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original training process. Balancing my research life with day-to-day engineering at Avion Full Flight Simulators means I constantly straddle theory and high-stakes delivery. I still remember the first time we recovered our watermark from a partner's heavily fine-tuned flight-control model inside the Avion Cloud dashboardâ€”it felt like catching a subtle watermark in a printed banknote after a white-knuckle certification sprint. That breakthrough was grounded in early work showing that deep network weights can carry hidden signatures without affecting accuracy [4], and in behavior-based marks that survive aggressive fine-tuning [5,6].
+
+That win also leaned on the observability pipelines I helped build for our simulators: low-latency telemetry ingest, Redis-backed hot paths, and gRPC verification hooks make it practical to flag when a deployed model suddenly stops presenting the expected watermark. When colleagues ask why provenance is worth the engineering time, I can point to the night we avoided rolling back a simulator release because the watermark check isolated a missing dependency rather than tampering.
+
+### Toward resilient Proof-of-Learning
+
+During my doctorate at Embry-Riddle Aeronautical University I kept returning to the question: how do we prove a model was honestly trained when the hardware, datasets, and even contributors are distributed across continents? Our research investigates how watermarking strengthens Proof-of-Learning (PoL) by binding models to verifiable training artifacts. Feature-based schemes tie a model's internal representations to secret keys, making spoofing attacks detectable [1]. The most effective designs kept the verification script simple enough to run during vendor audits while still resisting collusion, so I packaged them as GitLab runners that ship with our simulator builds.
+
+A follow-up evaluation compared parameter, data, and feature watermarking across robustness metrics, highlighting trade-offs between security and computational cost [2]; the spreadsheet from that study is still what I share with partner teams when they ask, "Which watermark should we start with?" In Avion's pipeline the answer variesâ€”lighter parameter marks protect rapid prototyping models, while feature marks guard anything that will leave the hangar.
+
+### Emerging applications and challenges
+
+Watermarking is moving from academic prototypes to industry as open model sharing proliferates. When Kenji Yoshigoe and I published our 2023 IEEE Access survey on blockchain-enhanced machine learning [3], the most common follow-up question from regulators and enterprise teams was, "How do we prove provenance once we decentralize training?" The conversations have only intensified since I shifted to aviation, where certification authorities now expect us to demonstrate ownership trails for every neural component. Provenance controls help product leads sleep at night when releasing APIs, and they give our compliance teams concrete evidence that the models feeding real-time dashboards are the ones we vetted.
+
+Meanwhile, attackers explore watermark removal and collusion strategies, prompting defenses that combine robust statistics with cryptographic attestations [4,6]. The push and pull is healthy: every time we adapt our defensesâ€”say, by mixing watermark keys with telemetry-derived sanity checksâ€”we sharpen the guidance I carry into advisory calls with startups and public agencies.
+
+### Future importance
+
+In the coming years watermarking will enable:
+
+1. traceable model marketplaces where ownership claims are verifiable and enforceable,
+2. protection against model theft in collaborative research and AI-as-a-service deals where source code never leaves the lab,
+3. standardized PoL pipelines for decentralized training networks that reward provable contribution.
+
+Watermarks that survive pruning, quantization, and transfer learning will be essential to these deployments, and they will increasingly be paired with user-friendly dashboards so product teams can confirm ownership without digging into tensors. My goal is to make those dashboards as approachable as any other DevOps panel: if my flight-sim colleagues can see the verification verdict alongside latency and CPU graphs, provenance becomes a habit rather than a research curiosity.
+
+## References
+
+[1] Ural, O. and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access.
+[2] Ural, O. and Yoshigoe, K. (2025). *Evaluation of Model Watermarking Techniques for Proof-of-Learning Security Against Spoofing Attacks*. IEEE Access (in press).
+[3] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access, 11, 145331â€“145362.
+[4] Uchida, Y., Nagai, Y., Sakazawa, S., & Satoh, S. (2017). *Embedding Watermarks into Deep Neural Networks*. ICMR.
+[5] Adi, Y., Baum, C., Cisse, M., Pinkas, B., & Keshet, J. (2018). *Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring*. USENIX Security.
+[6] Rouhani, B. D., Chen, H., & Koushanfar, F. (2019). *DeepSigns: A Generic Watermarking Framework for IP Protection of Deep Learning Models*. arXiv:1804.00750.
