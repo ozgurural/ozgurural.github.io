@@ -9,13 +9,13 @@ tags:
   - machine-learning
 ---
 
-Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt the urgency for PoL while helping an aerospace partner document how a safety-critical model was trained—our counterparts were less interested in raw accuracy and more concerned about whether they could audit each gradient step. As machine learning systems become pervasive in critical domains, PoL offers a mechanism to ensure trust and accountability in model provenance.
+Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt the urgency for PoL while helping an aerospace partner document how a safety-critical model was trained, our counterparts were less interested in raw accuracy and more concerned about whether they could audit each gradient step. As machine learning systems become pervasive in critical domains, PoL offers a mechanism to ensure trust and accountability in model provenance.
 
 ### Why PoL Matters in Practice
 
-1. **Model provenance** – PoL links models to their training data and processes, deterring plagiarism and unauthorized reuse. This was decisive when my team compared competing vendors and needed proof that their models weren’t repackaged public checkpoints.
-2. **Regulatory compliance** – Governments and industries are moving toward regulations that demand auditable machine learning pipelines. Draft aerospace guidelines I reviewed would have forced us to deliver tamper-proof logs of every training epoch.
-3. **Economic incentives** – Integrating PoL with blockchain allows useful training work to replace wasteful mining computations [5]. I’ve seen Web3 founders pitch PoL as the missing incentive layer for decentralized AI training marketplaces.
+1. **Model provenance:** PoL links models to their training data and processes, deterring plagiarism and unauthorized reuse. This was decisive when my team compared competing vendors and needed proof that their models weren’t repackaged public checkpoints.
+2. **Regulatory compliance:** Governments and industries are moving toward regulations that demand auditable machine learning pipelines. Draft aerospace guidelines I reviewed would have forced us to deliver tamper-proof logs of every training epoch.
+3. **Economic incentives:** Integrating PoL with blockchain allows useful training work to replace wasteful mining computations [5]. I’ve seen Web3 founders pitch PoL as the missing incentive layer for decentralized AI training marketplaces.
 
 ### Lessons from Building PoL Prototypes
 

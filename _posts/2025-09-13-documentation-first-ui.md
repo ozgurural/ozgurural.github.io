@@ -13,9 +13,9 @@ Before a developer ever sees your landing page, they might encounter your README
 
 ## Clear Docs Reduce Support Load
 
-Well-written documentation prevents repetitive support requests and frees engineering time. When we shipped the first version of Avion’s telemetry API, the same three setup questions kept hitting our inbox—even though the answers technically lived in the docs. They were buried in long paragraphs without code examples. After restructuring the documentation into task-based sections with copy‑and‑paste snippets, support tickets dropped by 40%.
+Well-written documentation prevents repetitive support requests and frees engineering time. When we shipped the first version of Avion’s telemetry API, the same three setup questions kept hitting our inbox, even though the answers technically lived in the docs. They were buried in long paragraphs without code examples. After restructuring the documentation into task-based sections with copy and paste snippets, support tickets dropped by 40%.
 
-Support metrics should inform documentation priorities. If a question appears frequently in chat channels or issue trackers, the docs have failed to address it clearly enough. Incorporating analytics—such as page views and time-on-page—helps identify which sections are confusing or underused.
+Support metrics should inform documentation priorities. If a question appears frequently in chat channels or issue trackers, the docs have failed to address it clearly enough. Incorporating analytics, such as page views and time-on-page, helps identify which sections are confusing or underused.
 
 ## Documentation Reflects Product Clarity
 
@@ -27,7 +27,7 @@ Make documentation updates a required part of any significant code change. Pull 
 
 Treat docs as code: version them, review them, and test them. Static-site generators and automated link checkers ensure that code examples compile and that references stay current. Continuous integration can run linting tools to catch broken headings, improper formatting, or outdated API calls.
 
-Some teams go further by generating documentation from annotated source code. While auto-generated docs risk being dry, pairing them with hand‑written guides offers both precision and narrative. The key is to reduce friction: when writing docs is as seamless as writing tests, developers are more likely to do it.
+Some teams go further by generating documentation from annotated source code. While auto-generated docs risk being dry, pairing them with hand written guides offers both precision and narrative. The key is to reduce friction: when writing docs is as seamless as writing tests, developers are more likely to do it.
 
 ## Documentation as Community Infrastructure
 

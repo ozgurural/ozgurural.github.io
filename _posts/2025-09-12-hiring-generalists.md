@@ -29,7 +29,7 @@ These invisible gaps appear because early products evolve quickly. A feature dem
 
 Breadth does not mean lack of depth. A strong generalist often has one or two anchor specialties but willingly extends into adjacent domains. As the organization scales, these generalists can narrow their focus or transition into leadership roles that benefit from their cross-functional perspective.
 
-Consider the trajectory of a colleague from my Comodo days. He started as a Windows service developer, then picked up browser integrations, wrote internal tooling, and even jumped into customer escalations. By the time the organization split into dedicated platform, endpoint, and analytics teams, his early exposure positioned him to lead the platform group—understanding both frontend requirements and backend constraints proved invaluable.
+Consider the trajectory of a colleague from my Comodo days. He started as a Windows service developer, then picked up browser integrations, wrote internal tooling, and even jumped into customer escalations. By the time the organization split into dedicated platform, endpoint, and analytics teams, his early exposure positioned him to lead the platform group, understanding both frontend requirements and backend constraints proved invaluable.
 
 ## Cross-Functional Collaboration Becomes Culture
 
@@ -45,7 +45,7 @@ Constraints on small teams also demand humility. The ideal generalist is confide
 
 ## Building the Team You Want Later
 
-Ultimately, hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that reflects a holistic view of the product. Their fingerprints are everywhere—from the first commit to the onboarding guide—and that continuity becomes a competitive advantage.
+Ultimately, hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that reflects a holistic view of the product. Their fingerprints are everywhere, from the first commit to the onboarding guide, and that continuity becomes a competitive advantage.
 
 ---
 *Dr. Ozgur Ural is a Technical Leader and Senior Software Engineer. He has built and led engineering teams across cybersecurity, aerospace, and simulation industries.*

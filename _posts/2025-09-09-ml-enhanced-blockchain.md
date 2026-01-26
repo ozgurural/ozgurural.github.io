@@ -15,15 +15,15 @@ Machine learning (ML) is increasingly used to make blockchain networks more secu
 
 ## Why I lean on ML for blockchains
 
-1. **Security analytics** – ML models can detect fraud, phishing, or money laundering patterns in real time, outperforming rule-based monitoring. Our incident response drills now include a lightweight classifier to flag unusual exchange flows before the compliance hotline rings.
-2. **Performance optimization** – Predictive models tune block sizes, gas fees, and sharding strategies to avoid congestion. During a recent hack week, a reinforcement learner shaved seconds off confirmation times on our testnet simply by learning how to pace validator rotations.
-3. **Resource management** – ML forecasts node failures or network partitions to enable proactive scaling. That capability saved a partner's NFT drop when our anomaly detector spotted a disk I/O bottleneck two hours before the main event.
+1. **Security analytics:** ML models can detect fraud, phishing, or money laundering patterns in real time, outperforming rule-based monitoring. Our incident response drills now include a lightweight classifier to flag unusual exchange flows before the compliance hotline rings.
+2. **Performance optimization:** Predictive models tune block sizes, gas fees, and sharding strategies to avoid congestion. During a recent hack week, a reinforcement learner shaved seconds off confirmation times on our testnet simply by learning how to pace validator rotations.
+3. **Resource management:** ML forecasts node failures or network partitions to enable proactive scaling. That capability saved a partner's NFT drop when our anomaly detector spotted a disk I/O bottleneck two hours before the main event.
 
 ## Recent architectural patterns
 
 ### Reinforcement learning for consensus
 
-Researchers have proposed RL-driven consensus where validators learn optimal block proposal strategies under dynamic conditions [2]. When we reproduced one of these prototypes, the reward shaping mattered more than the algorithm choice—the wrong incentive turned validators into fee hoarders. Careful tuning let us adjust leader selection and staking rewards while maintaining decentralization.
+Researchers have proposed RL-driven consensus where validators learn optimal block proposal strategies under dynamic conditions [2]. When we reproduced one of these prototypes, the reward shaping mattered more than the algorithm choice, the wrong incentive turned validators into fee hoarders. Careful tuning let us adjust leader selection and staking rewards while maintaining decentralization.
 
 ### Graph learning for anomaly detection
 
@@ -39,9 +39,9 @@ Cloud providers integrate ML into validator services to keep nodes healthy. Goog
 
 ## What still keeps me up at night
 
-* **Data quality** – Training robust models requires labeled blockchain datasets, which remain scarce and imbalanced. We spend an unreasonable amount of time cleaning on-chain data before each experiment.
-* **Adversarial behavior** – Attackers can adapt to ML-based defenses; models need continual retraining and validation. I treat every deployment as a living system with red-team drills baked in.
-* **Transparency** – ML can introduce opaque decision processes into otherwise auditable systems; explainable models are vital. My rule of thumb is that a regulator should be able to replay a model decision with a single notebook.
+1. **Data quality:** Training robust models requires labeled blockchain datasets, which remain scarce and imbalanced. We spend an unreasonable amount of time cleaning on-chain data before each experiment.
+2. **Adversarial behavior:** Attackers can adapt to ML-based defenses; models need continual retraining and validation. I treat every deployment as a living system with red-team drills baked in.
+3. **Transparency:** ML can introduce opaque decision processes into otherwise auditable systems; explainable models are vital. My rule of thumb is that a regulator should be able to replay a model decision with a single notebook.
 
 ## Outlook
 
