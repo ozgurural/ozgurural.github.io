@@ -11,7 +11,7 @@ tags:
 
 Living as an expat has given me the chance to compare daily life in the United States and the Netherlands in a way that guidebooks never could. My notebook is full of tiny contrasts: Leiden grocery receipts, NS train schedules for my commute, and lab to-do lists from Daytona Beach.
 
-## Work–Life Balance
+## Work and Life Balance
 
 In Leiden, my mornings start with a bike ride toward the train that carries me to Avion Full Flight Simulators. Our engineering team builds flight-simulator software, and the culture is unapologetically focused on sustainable productivity. Code freezes really mean “log off,” and it is normal to see sprint boards cleared by late afternoon so people can pick up their kids or get to band practice. Back in the U.S., my graduate research assistant days at Embry-Riddle Aeronautical University stretched longer. Evening lab sessions were common, and journal submission deadlines had us refining proof-of-learning experiments well past midnight. I’ve learned to borrow the Dutch discipline for rest while keeping the American appetite for ambitious projects.
 
@@ -21,6 +21,6 @@ Cycling everywhere in the Netherlands rewired my sense of distance. I measure da
 
 ## Community
 
-My Leiden neighbors keep their circles small but steadfast. The first time they invited me for stamppot felt like earning a long-term trust badge, and now our apartment courtyard doubles as a potluck venue every few months. In the U.S., strangers compliment your sneakers while you wait for coffee, and it’s easy to collect surface-level friendships in a weekend. Both styles have taught me different versions of belonging—one built slowly around dinner tables, the other forged in spontaneous conversations after seminar talks.
+My Leiden neighbors keep their circles small but steadfast. The first time they invited me for stamppot felt like earning a long-term trust badge, and now our apartment courtyard doubles as a potluck venue every few months. In the U.S., strangers compliment your sneakers while you wait for coffee, and it’s easy to collect surface-level friendships in a weekend. Both styles have taught me different versions of belonging, one built slowly around dinner tables, the other forged in spontaneous conversations after seminar talks.
 
 These differences shape daily experiences and remind me that “home” can stretch across two very different coastlines, each offering habits worth carrying into the other.

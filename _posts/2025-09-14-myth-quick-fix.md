@@ -9,11 +9,11 @@ tags:
   - architecture
 ---
 
-Every engineer knows the temptation of the “five-minute hack.” A bug appears, the schedule is tight, and a clever shortcut promises to save the day. Weeks later, the team is still wrestling with the fallout. The myth of the quick fix lies in its invisibility—short-term patches often masquerade as efficient solutions while secretly accruing interest that compounds over time.
+Every engineer knows the temptation of the “five-minute hack.” A bug appears, the schedule is tight, and a clever shortcut promises to save the day. Weeks later, the team is still wrestling with the fallout. The myth of the quick fix lies in its invisibility, short-term patches often masquerade as efficient solutions while secretly accruing interest that compounds over time.
 
 ## Bandaids Hide Systemic Issues
 
-Quick fixes address symptoms, not root causes. When our Avion telemetry API began timing out under heavy load, we initially raised the request timeout from 30 seconds to 60 seconds. The issue vanished—until peak season, when latency spikes returned with a vengeance. Only then did we discover that an inefficient database query, not the timeout threshold, was to blame.
+Quick fixes address symptoms, not root causes. When our Avion telemetry API began timing out under heavy load, we initially raised the request timeout from 30 seconds to 60 seconds. The issue vanished, until peak season, when latency spikes returned with a vengeance. Only then did we discover that an inefficient database query, not the timeout threshold, was to blame.
 
 By escalating from patch to postmortem, teams can peel back the layers of a problem. Ask: Why did this issue occur? Why was it not detected earlier? What assumptions failed? Answering these questions may reveal architectural weaknesses or process gaps that one-line patches obscure.
 

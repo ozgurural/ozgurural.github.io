@@ -17,10 +17,10 @@ Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, 
 
 Daytona Beach may be famous for NASCAR and spring breakers, but my calendar reads more like the Level-D simulator test cards I drafted at [Avion Full Flight Simulators](/posts/2025/09/avion-level-d-ffs/). A typical weekday now unfolds in arcs instead of tidy half-hour boxes:
 
-* **First-light warm-up.** Sunrise miles along the Halifax River clear out the humidity, cue up podcast snippets on distributed learning, and—if I’m lucky—deliver an opening joke for the next conference talk. Running in Florida heat is the closest I get to simulating a thermal chamber without filing paperwork.
-* **Systems go/no-go.** By 7:30 a.m. I am in the Cybersecurity & Assured Systems lab coaxing GPU clusters awake, replaying telemetry the way I once replayed avionics data streams. The same bounded-queue backpressure tricks that kept Avion dashboards responsive now keep my Prometheus alerts from screaming when a model checkpoint stalls.
-* **Threat-playbook sprints.** Late-morning stand-ups morph into mini red-team drills. Years spent leading the Havelsan DLP crew and hardening Comodo’s secure web gateways left me with a Rolodex of real attack stories, so I translate them into proof-of-learning test cases before the donuts vanish.
-* **Evening debrief.** When campus quiets down, I swap into manuscript edits, code reviews, or undergrad tutoring. Eleven years of industry engineering makes it impossible to ignore a dangling TODO, and teaching forces me to narrate research decisions with the clarity of a flight safety briefing.
+1. **First-light warm-up.** Sunrise miles along the Halifax River clear out the humidity, cue up podcast snippets on distributed learning, and, if I’m lucky, deliver an opening joke for the next conference talk. Running in Florida heat is the closest I get to simulating a thermal chamber without filing paperwork.
+2. **Systems go/no-go.** By 7:30 a.m. I am in the Cybersecurity & Assured Systems lab coaxing GPU clusters awake, replaying telemetry the way I once replayed avionics data streams. The same bounded-queue backpressure tricks that kept Avion dashboards responsive now keep my Prometheus alerts from screaming when a model checkpoint stalls.
+3. **Threat-playbook sprints.** Late-morning stand-ups morph into mini red-team drills. Years spent leading the Havelsan DLP crew and hardening Comodo’s secure web gateways left me with a Rolodex of real attack stories, so I translate them into proof-of-learning test cases before the donuts vanish.
+4. **Evening debrief.** When campus quiets down, I swap into manuscript edits, code reviews, or undergrad tutoring. Eleven years of industry engineering makes it impossible to ignore a dangling TODO, and teaching forces me to narrate research decisions with the clarity of a flight safety briefing.
 
 The cadence is part training mission, part research retreat, and it keeps the ERAU day grounded in the same disciplined curiosity that powered every simulator, UAV, and secure gateway I shipped before the PhD.
 
@@ -36,11 +36,11 @@ Working on proof-of-learning keeps me anchored to the questions that pulled me i
 
 ### Tooling That Keeps the Plane in the Air
 
-* **Core stack:** PyTorch + Lightning, Hydra for configuration, and Weights & Biases for experiment lineage.
-* **Security sandbox:** Custom Kubernetes namespace with policy enforcement, plus [Falco](https://falco.org/) alerts piped into Slack for real-time anomaly detection.
-* **Data hygiene:** Weekly audits using [Great Expectations](https://greatexpectations.io/) to ensure new telemetry hasn’t quietly drifted off course.
+1. **Core stack:** PyTorch + Lightning, Hydra for configuration, and Weights & Biases for experiment lineage.
+2. **Security sandbox:** Custom Kubernetes namespace with policy enforcement, plus [Falco](https://falco.org/) alerts piped into Slack for real-time anomaly detection.
+3. **Data hygiene:** Weekly audits using [Great Expectations](https://greatexpectations.io/) to ensure new telemetry hasn’t quietly drifted off course.
 
-Every Friday, I run a “turbulence drill” where I intentionally sabotage a pipeline component—revoking a key, injecting poisoned gradients, or throttling IO—to verify our detection scripts still trip. It is part chaos monkey, part therapy.
+Every Friday, I run a “turbulence drill” where I intentionally sabotage a pipeline component, revoking a key, injecting poisoned gradients, or throttling IO, to verify our detection scripts still trip. It is part chaos monkey, part therapy.
 
 ## Community Tower: Mentors, Peers, and Pancakes
 
@@ -48,9 +48,9 @@ I am fortunate to tackle these questions under the guidance of Dr. Kenji Yoshigo
 
 To keep collaboration lively, we rotate responsibilities:
 
-* **Threat-model Thursdays:** One student leads a tabletop exercise simulating a new attack against aircraft systems.
-* **Launch-and-Learn nights:** We stream NASA or SpaceX launches from the causeway while debating the ethics of autonomous flight.
-* **Paper pilot program:** First-year PhD students co-author blog summaries to demystify recent security papers for undergrads.
+1. **Threat-model Thursdays:** One student leads a tabletop exercise simulating a new attack against aircraft systems.
+2. **Launch-and-Learn nights:** We stream NASA or SpaceX launches from the causeway while debating the ethics of autonomous flight.
+3. **Paper pilot program:** First-year PhD students co-author blog summaries to demystify recent security papers for undergrads.
 
 These rituals create feedback loops between coursework, research, and community mentorship. They also remind me that the best debugging happens when someone else is holding a plate of pancakes.
 
@@ -60,15 +60,15 @@ Florida’s climate supplies its own rhythm. Afternoon thunderstorms chase me fr
 
 To stay balanced, I lean on a few habits:
 
-* **Pomodoro sprints on the balcony** whenever the UV index dips below “dragon fire.”
-* **Mentor walks**—literally pacing the flight line with my advisor, which somehow makes debugging graph neural networks feel breezy.
-* **Monthly “data detox” days** with zero commits, where I read fiction at the beach and pretend my models do not exist for six hours.
+1. **Pomodoro sprints on the balcony** whenever the UV index dips below “dragon fire.”
+2. **Mentor walks:** literally pacing the flight line with my advisor, which somehow makes debugging graph neural networks feel breezy.
+3. **Monthly “data detox” days** with zero commits, where I read fiction at the beach and pretend my models do not exist for six hours.
 
 ## Pre-Flight Checklist for Prospective ERAU PhDs
 
 Thinking of mixing machine learning, security, and sunshine yourself? Here are my distilled takeaways:
 
-1. **Design for auditability from day one.** Version everything—datasets, configs, container builds—because future-you will forget which run was the good one.
+1. **Design for auditability from day one.** Version everything, datasets, configs, container builds, because future-you will forget which run was the good one.
 2. **Get comfortable with interdisciplinary translation.** You will explain backpropagation to pilots and avionics safety to data scientists, often in the same meeting.
 3. **Lean into the aerospace ecosystem.** Collaborate with flight test teams, simulation labs, and even meteorology researchers; their constraints sharpen your threat models.
 4. **Budget time for funding logistics.** ERAU’s [Graduate Studies page](https://erau.edu/degrees/graduate) lists assistantships early, and they go as fast as prime launch windows.
@@ -78,4 +78,4 @@ Thinking of mixing machine learning, security, and sunshine yourself? Here are m
 
 If you’re curious about securing AI, start with *Machine Learning and Security* by [Clarence Chio and David Freeman](https://www.oreilly.com/library/view/machine-learning-and/9781491979897/) for pragmatic frameworks, then dive into the [Proof-of-Learning](https://arxiv.org/abs/2103.06217) literature for protocol mechanics. For a systems spin, the [MITRE ATT&CK for ML](https://attack.mitre.org/techniques/ML/) matrix pairs nicely with ERAU’s avionics case studies.
 
-Research may keep me indoors, but Florida never lets me forget that discovery can be as expansive as the horizon beyond the runway—and that the best ideas often arrive somewhere between a lightning storm and a launch countdown, preferably while holding a mango smoothie.
+Research may keep me indoors, but Florida never lets me forget that discovery can be as expansive as the horizon beyond the runway, and that the best ideas often arrive somewhere between a lightning storm and a launch countdown, preferably while holding a mango smoothie.
