@@ -1,0 +1,236 @@
+/* ==========================================================================
+   TYPOGRAPHY — universal coverage
+   Applies the design-system fonts across EVERY surface so masthead,
+   sidebar, content, archive list, and footer share the same voice.
+   No more "half new, half old" mismatch.
+   ========================================================================== */
+
+html { scroll-behavior: smooth; }
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--ds-font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: var(--ds-bg);
+  color: var(--ds-body);
+}
+
+/* ---- Masthead / nav ---- */
+.masthead { background: var(--ds-bg); border-bottom: 1px solid var(--ds-line); }
+.greedy-nav { background: var(--ds-bg); }
+.greedy-nav .site-title,
+.greedy-nav__toggle,
+.greedy-nav .visible-links a,
+.greedy-nav .hidden-links a,
+.greedy-nav button {
+  font-family: var(--ds-font-sans);
+  letter-spacing: 0.005em;
+}
+.greedy-nav .site-title {
+  font-family: var(--ds-font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--ds-ink);
+}
+.greedy-nav .visible-links a {
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: var(--ds-body);
+  transition: color 0.15s ease;
+}
+.greedy-nav .visible-links a:hover { color: var(--ds-accent); }
+.greedy-nav .visible-links a::before {
+  height: 2px;
+  background: var(--ds-accent);
+}
+
+/* ---- Sidebar / author profile ---- */
+.sidebar,
+.sidebar p,
+.sidebar li,
+.author__name,
+.author__pronouns,
+.author__bio,
+.author__urls li,
+.author__urls a {
+  font-family: var(--ds-font-sans);
+}
+.author__avatar { display: flex; justify-content: center; }
+.author__avatar img {
+  border: 2px solid var(--ds-line);
+  border-radius: 50%;
+  box-shadow: var(--ds-shadow-2);
+  transition: transform 0.25s ease;
+}
+.author__avatar img:hover { transform: scale(1.02); }
+.author__name {
+  font-family: var(--ds-font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ds-ink);
+  text-align: center;
+}
+.author__pronouns,
+.author__bio {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ds-muted);
+  text-align: center;
+}
+.author__urls {
+  border-top: 1px solid var(--ds-line);
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+.author__urls li {
+  font-size: 0.92rem;
+  margin-bottom: 0.35rem;
+}
+.author__urls a {
+  color: var(--ds-body);
+  transition: color 0.15s ease;
+  text-decoration: none;
+}
+.author__urls a:hover { color: var(--ds-accent); }
+.author__urls i {
+  color: var(--ds-accent);
+  width: 1.25em;
+}
+/* Keep employer name on a single line in the sidebar */
+.author__urls .author__desktop i.fa-building-columns + a { white-space: nowrap; }
+
+/* ---- Content typography ---- */
+.page__content {
+  font-family: var(--ds-font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ds-body);
+}
+.page__content p { color: var(--ds-body); }
+.page__content p,
+.page__content li { font-size: 1.0625rem; line-height: 1.7; }
+
+.page__title,
+.page__content h1,
+.page__content h2,
+.page__content h3,
+.page__content h4,
+.archive__item-title {
+  font-family: var(--ds-font-display);
+  letter-spacing: -0.015em;
+  color: var(--ds-ink);
+}
+
+.page__title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0.25rem 0 1.25rem;
+}
+
+.page__content h1 { font-size: 2rem; font-weight: 700; line-height: 1.15; margin-top: 2.25rem; }
+.page__content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 2.25rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--ds-line);
+}
+.page__content h3 { font-size: 1.18rem; font-weight: 600; margin-top: 1.75rem; }
+.page__content h4 { font-size: 1rem; font-weight: 600; margin-top: 1.5rem; }
+
+.page__content code,
+.page__content pre,
+.highlight code {
+  font-family: var(--ds-font-mono);
+  font-size: 0.9em;
+}
+.page__content code {
+  background: var(--ds-surface-elev);
+  color: var(--ds-ink);
+  border: 1px solid var(--ds-line);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.page__content a {
+  color: var(--ds-accent-2);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.page__content a:hover {
+  color: var(--ds-accent);
+  text-decoration-thickness: 2px;
+}
+
+/* ---- Archive list (publications, blog, life) ---- */
+.archive .archive__item {
+  padding: 0.85rem 0 0.6rem;
+  border-bottom: 1px solid var(--ds-line-soft);
+}
+.archive__item-title {
+  font-family: var(--ds-font-display);
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+.archive__item-title a { color: var(--ds-ink); }
+.archive__item-title a:hover { color: var(--ds-accent); }
+.archive__item-excerpt,
+.archive__subtitle {
+  font-family: var(--ds-font-sans);
+  font-size: 0.95rem;
+  color: var(--ds-muted);
+  line-height: 1.6;
+}
+.page__meta {
+  font-family: var(--ds-font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ds-muted);
+}
+
+/* ---- Footer ---- */
+.page__footer {
+  background: var(--ds-surface-elev);
+  border-top: 1px solid var(--ds-line);
+}
+.page__footer,
+.page__footer a,
+.page__footer-copyright,
+.page__footer-follow ul li a {
+  font-family: var(--ds-font-sans);
+  color: var(--ds-muted);
+}
+.page__footer a:hover { color: var(--ds-accent); }
+.page__footer-copyright {
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ---- Theme toggle button ---- */
+.theme-toggle {
+  color: var(--ds-muted);
+}
+.theme-toggle:hover { color: var(--ds-accent); }
+
+/* ---- Selection ---- */
+::selection { background: var(--ds-accent-soft); color: var(--ds-ink); }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

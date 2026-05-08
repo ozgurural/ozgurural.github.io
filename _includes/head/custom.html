@@ -12,13 +12,17 @@
 <link rel="icon" type="image/png" href="{{ base_path }}/images/favicon-192x192.png" sizes="192x192"/>
 <link rel="manifest" href="{{ base_path }}/images/manifest.json"/>
 <link rel="icon" href="/images/favicon.ico"/>
-<meta name="theme-color" content="#ffffff"/>
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#0a0f1c" media="(prefers-color-scheme: dark)"/>
+
+<!-- Premium typography: Inter (UI/body), Space Grotesk (display), JetBrains Mono (code) -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
+
+{% if page.url == "/" or page.url == "/index.html" %}
+<!-- On the home page the hero supplies the H1 — hide duplicate page__title -->
+<script>document.documentElement.classList.add('ep-home');</script>
+{% endif %}
 
 <!-- end custom head snippets -->
-
-<style>
-	/* Keep employer name on a single line in the sidebar */
-	.author__urls .author__desktop i.fa-building-columns + a {
-		white-space: nowrap;
-	}
-</style>

@@ -1,6 +1,6 @@
 ---
 permalink: /blog/
-title: "Blog"
+title: "Technical Writing"
 author_profile: true
 layout: archive
 redirect_from:
@@ -8,9 +8,7 @@ redirect_from:
   - /blog.html
 ---
 
-
-Here you'll find deep dives into machine learning security, proof-of-learning protocols, distributed systems, flight simulation software, and engineering best practices. Whether you're a researcher, engineer, or curious technologist, I hope these posts spark new ideas.
-
+<p class="ep-lead">Deep dives into machine learning security, proof-of-learning, distributed systems, and the engineering of high-reliability flight-simulation software — written for senior engineers, researchers, and technical leaders.</p>
 
 {% include base_path %}
 {% for post in site.categories.technical %}
