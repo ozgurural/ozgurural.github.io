@@ -5,7 +5,7 @@ author_profile: true
 layout: archive
 ---
 
-<p class="ep-lead">Notes on leadership, engineering culture, and resilience — drawn from a decade of building teams and shipping critical systems.</p>
+Lessons on leadership, culture, and resilience drawn from beyond the engineering terminal.
 
 {% include base_path %}
 {% for post in site.categories.life %}
