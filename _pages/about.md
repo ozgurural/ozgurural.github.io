@@ -38,7 +38,7 @@ redirect_from:
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Distributed Systems</span>
     <h3>Production-grade architecture</h3>
-    <p>Cloud-native services in Scala, TypeScript, gRPC. Designing for scale, resilience, and verifiability across heterogeneous workloads.</p>
+    <p>Cloud-native services in Scala, TypeScript, and gRPC. Designing for scale, resilience, and verifiability across heterogeneous workloads.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">High-Reliability</span>
@@ -46,29 +46,9 @@ redirect_from:
     <p>Real-time C++ kernels behind FAA Level-D Full Flight Simulators at Avion FFS — software where downtime is unacceptable.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Leadership &amp; Service</span>
+    <span class="ep-pillar__tag">Leadership</span>
     <h3>Cross-functional direction</h3>
-    <p>A decade leading engineers, mentoring researchers, and chairing technical strategy. NLPAICS 2026 PC; reviewer for IEEE Access &amp; TÜBİTAK.</p>
-  </li>
-</ul>
-
-## Currently
-
-<ul class="ep-cards">
-  <li>
-    <div class="meta">Tech Lead · Avion Full Flight Simulators</div>
-    <h3 class="title">Real-time simulation &amp; flight-grade engineering</h3>
-    <p class="desc">Architecting C++ simulation kernels and supporting cloud services for certified flight training devices in Leiden, Netherlands.</p>
-  </li>
-  <li>
-    <div class="meta">Researcher · ML Security</div>
-    <h3 class="title">Proof-of-Learning &amp; Model Watermarking</h3>
-    <p class="desc">Continuing research on integrity verification of ML training — extending the SecurePoL framework introduced in my dissertation.</p>
-  </li>
-  <li>
-    <div class="meta">Program Committee · NLPAICS 2026</div>
-    <h3 class="title">NLP for Information &amp; Cyber Security</h3>
-    <p class="desc">Reviewing for the 2nd Workshop on NLP Applied to Information and Cyber Security at the University of Alicante.</p>
+    <p>A decade leading engineers, mentoring researchers, translating principled research into production-ready systems.</p>
   </li>
 </ul>
 
@@ -77,7 +57,7 @@ redirect_from:
 <ol class="ep-timeline">
   <li>
     <span class="when">Dec 2025</span>
-    <span class="what">Joined the Program Committee for the <em>2nd Workshop on NLP Applied to Information and Cyber Security</em> (NLPAICS 2026), University of Alicante. <a href="https://nlpaics2026.gplsi.es/">Conference website</a>.</span>
+    <span class="what">Joined the Program Committee for the <em>2nd Workshop on NLP Applied to Information and Cyber Security</em> (NLPAICS 2026), University of Alicante. <a href="https://nlpaics2026.gplsi.es/">Conference</a>.</span>
   </li>
   <li>
     <span class="when">Dec 2025</span>
@@ -85,50 +65,17 @@ redirect_from:
   </li>
   <li>
     <span class="when">Aug 2025</span>
-    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. Advisor: Dr. Kenji Yoshigoe. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
-  </li>
-  <li>
-    <span class="when">Jul 2025</span>
-    <span class="what">Successfully defended Ph.D. dissertation.</span>
+    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. <a href="https://commons.erau.edu/edt/905/">Dissertation</a>.</span>
   </li>
   <li>
     <span class="when">Nov 2024</span>
-    <span class="what">Published <em>Enhancing Security of Proof-of-Learning against Spoofing Attacks Using Feature-Based Model Watermarking</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10741282">Read paper</a>.</span>
+    <span class="what">First-author paper <em>Feature-Based Model Watermarking for PoL</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10741282">Read paper</a>.</span>
   </li>
   <li>
     <span class="when">Dec 2023</span>
-    <span class="what">Published the survey <em>Survey on Blockchain-Enhanced Machine Learning</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10366252">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">May 2021</span>
-    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
+    <span class="what">Published the survey <em>Blockchain-Enhanced Machine Learning</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10366252">Read paper</a>.</span>
   </li>
 </ol>
-
-## Selected publications
-
-<ul class="ep-cards">
-  <li>
-    <div class="meta">2025 · IEEE Access</div>
-    <h3 class="title"><a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
-    <p class="desc">Defends proof-of-learning protocols against spoofing by integrating feature-based model watermarking with verification.</p>
-  </li>
-  <li>
-    <div class="meta">2025 · ERAU Dissertation</div>
-    <h3 class="title"><a href="https://commons.erau.edu/edt/905/">Enhancing Proof-of-Learning Security Against Spoofing Attacks</a></h3>
-    <p class="desc">Doctoral thesis formalizing watermark-augmented PoL, threat models, and empirical robustness analysis.</p>
-  </li>
-  <li>
-    <div class="meta">2024 · IEEE Access</div>
-    <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10741282">Feature-Based Model Watermarking for PoL</a></h3>
-    <p class="desc">First-author paper introducing the watermarking-based defense layer for proof-of-learning systems.</p>
-  </li>
-  <li>
-    <div class="meta">2023 · IEEE Access · Survey</div>
-    <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10366252">Survey on Blockchain-Enhanced Machine Learning</a></h3>
-    <p class="desc">Comprehensive survey of the design space at the intersection of distributed ledgers and learning systems.</p>
-  </li>
-</ul>
 
 ## Get in touch
 

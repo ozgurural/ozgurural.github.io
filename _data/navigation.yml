@@ -16,6 +16,8 @@ main:
     url: /projects/
   - title: "Services"
     url: /services/
+  - title: "Lab"
+    url: /lab/
   - title: "Technical Blog"
     url: /blog/
   - title: "Life Blog"
