@@ -1,399 +1,483 @@
 /* =============================================================================
-   Lab — interactive challenges that double as knowledge tests.
+   Lab — research-grade phase-space explorers.
+   Drag the sliders, watch the curves and the animation move with the
+   parameters. Closed-form maths, not Monte-Carlo screenshots.
 
-   1. The Two Generals' Game.
-      Player picks one of four protocols. We run 10 simulated battles with
-      a 40% messenger loss rate and animate each one. The scoreboard then
-      reveals what running all four reveals: more confirmation rounds DO
-      NOT improve the win rate — they reduce it. There is no 100% strategy.
+   1. The Two Generals' Lab
+      Two protocol families compared by closed-form win probability:
+        Naive multi-send : P(win) = 1 − p^N
+        Strict chain     : P(win) = (1 − p)^N
+      Live curves over N ∈ [1,10] for current p, with a marker at the
+      current N. A continuous messenger animation in the channel runs
+      at the current loss rate so the slider has a physical analogue.
 
-   2. The Verifier's Eye.
-      Five sequential rounds of binary classification (watermarked vs
-      plain). Watermark patterns are structured (diagonal / cross /
-      frame / etc.) and the per-cell perturbation magnitude shrinks each
-      round. Exactly one round (chosen randomly inside positions 1..3)
-      is plain noise — to defeat the trivial "always say watermarked"
-      strategy. Final score is compared to verifier / random / untrained
-      baselines.
-
-   Vanilla JS, no deps.
+   2. The Verifier's Lab
+      Feature-based watermark detection in closed form. Per-cell SNR =
+      ε / √(σ² + σ₀²), per-cell detection probability q = Φ(SNR − z_α)
+      at fixed FPR α = 0.05. Aggregate detection by majority vote over
+      k independent cells, computed via normal approximation to the
+      binomial. Live grid of one realisation at current parameters,
+      and curves of detection rate vs σ over a sweep of k values.
    ============================================================================= */
 (function () {
   "use strict";
   const $  = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+  const SVG = "http://www.w3.org/2000/svg";
+  const svg = (tag, attrs, parent) => {
+    const el = document.createElementNS(SVG, tag);
+    if (attrs) for (const k in attrs) el.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(el);
+    return el;
+  };
 
-  /* ===========================================================================
-     PUZZLE 1 · The Two Generals' Game
-     =========================================================================== */
-  function initTwoGenerals() {
-    const root = document.getElementById("puzzle-tg");
-    if (!root) return;
-
-    const widget   = $(".lab-tg", root);
-    const lossRate = parseFloat(widget.dataset.lossRate || "0.4");
-    const valley   = $('[data-role="valley"]', widget);
-    const btnRun   = $('[data-role="run"]', widget);
-    const btnReset = $('[data-role="reset"]', widget);
-    const refs = {
-      aDecision: $('[data-role="a-decision"]', widget),
-      bDecision: $('[data-role="b-decision"]', widget),
-      wins:      $('[data-role="wins"]', widget),
-      aAlone:    $('[data-role="a-alone"]', widget),
-      bAlone:    $('[data-role="b-alone"]', widget),
-      neutral:   $('[data-role="neutral"]', widget),
-      insight:   $('[data-role="insight"]', widget),
-    };
-    const stats = { wins: 0, aAlone: 0, bAlone: 0, neutral: 0, byStrategy: {} };
-    let busy = false;
-
-    /* Each protocol returns:
-         { trace: [{from, delivered}], aAttacks, bAttacks }
-       B's behaviour across protocols (for fairness): B attacks iff B has
-       received the most recent A→B message AND, for protocols beyond
-       'naive', the chain is unbroken up through the last B-side decision
-       point. We keep B's rule the same — only A's commit-rule varies. */
-    const protocols = {
-      naive: function () {
-        // A sends 1 message. A always attacks. B attacks iff B got it.
-        const planDel = Math.random() >= lossRate;
-        return {
-          trace:    [{ from: "A", delivered: planDel }],
-          aAttacks: true,
-          bAttacks: planDel,
-        };
-      },
-      confirm: function () {
-        // A sends. If B got it, B sends ack. A attacks iff A got the ack.
-        // B attacks iff B got the plan.
-        const planDel = Math.random() >= lossRate;
-        const trace = [{ from: "A", delivered: planDel }];
-        let ackDel = false;
-        if (planDel) {
-          ackDel = Math.random() >= lossRate;
-          trace.push({ from: "B", delivered: ackDel });
-        }
-        return { trace: trace, aAttacks: ackDel, bAttacks: planDel };
-      },
-      triple: function () {
-        // Three round-trips. 6 messages: A→B, B→A, A→B, B→A, A→B, B→A.
-        // Each later message is sent only if the previous arrived (chain).
-        // A attacks iff A received message 6 (final ack). B attacks iff B
-        // received the latest A→B that landed (1, 3, or 5).
-        const trace = [];
-        let chain = true;
-        let lastFromA_delivered = false;
-        let lastFromB_delivered = false;
-        for (let r = 0; r < 3 && chain; r++) {
-          const aDel = Math.random() >= lossRate;
-          trace.push({ from: "A", delivered: aDel });
-          if (!aDel) { chain = false; break; }
-          lastFromA_delivered = true;
-          const bDel = Math.random() >= lossRate;
-          trace.push({ from: "B", delivered: bDel });
-          if (!bDel) { chain = false; break; }
-          lastFromB_delivered = true;
-        }
-        return {
-          trace:    trace,
-          aAttacks: lastFromB_delivered && chain, // got the very last ack
-          bAttacks: lastFromA_delivered,           // got at least one A-side msg
-        };
-      },
-      abort: function () {
-        return { trace: [], aAttacks: false, bAttacks: false };
-      },
-    };
-
-    function getStrategy() {
-      const checked = widget.querySelector('input[name="tg-strategy"]:checked');
-      return (checked && checked.value) || "naive";
-    }
-    function getStratLabel(name) {
-      return ({
-        naive:   "Naive",
-        confirm: "Wait for ack",
-        triple:  "Triple round-trip",
-        abort:   "Abort",
-      })[name] || name;
-    }
-    function recordOutcome(strategyName, r) {
-      let key;
-      if (r.aAttacks && r.bAttacks)       { stats.wins++;    key = "wins"; }
-      else if (r.aAttacks && !r.bAttacks) { stats.aAlone++;  key = "aAlone"; }
-      else if (!r.aAttacks && r.bAttacks) { stats.bAlone++;  key = "bAlone"; }
-      else                                { stats.neutral++; key = "neutral"; }
-      const s = (stats.byStrategy[strategyName] = stats.byStrategy[strategyName] || { wins: 0, aAlone: 0, bAlone: 0, neutral: 0, total: 0 });
-      s[key]++; s.total++;
-    }
-
-    function refresh() {
-      refs.wins.textContent    = stats.wins;
-      refs.aAlone.textContent  = stats.aAlone;
-      refs.bAlone.textContent  = stats.bAlone;
-      refs.neutral.textContent = stats.neutral;
-    }
-
-    function setInsight(strategyName) {
-      const s = stats.byStrategy[strategyName];
-      if (!s || s.total === 0) {
-        refs.insight.textContent = "Pick a protocol and run 10 battles. Then try the next.";
-        return;
-      }
-      const pct = (n) => ((n / s.total) * 100).toFixed(0);
-      refs.insight.textContent =
-        getStratLabel(strategyName) +
-        ": " + pct(s.wins) + "% wins, " +
-        pct(s.aAlone + s.bAlone) + "% one-side losses, " +
-        pct(s.neutral) + "% retreats over " + s.total + " battles. " +
-        (strategyName === "abort"
-          ? "Safe — but useless."
-          : "No 100% — and never will be.");
-    }
-
-    /* Animation: walk a dot for each message in the trace, then briefly
-       freeze on the final decisions. Speed picked so 10 battles of the
-       longest protocol take roughly 12s — fast enough to stay engaging. */
-    const ANIM_DOT_MS = 280;
-    const ANIM_GAP_MS = 220;
-
-    function animateBattle(result, doneCallback) {
-      refs.aDecision.textContent = "";
-      refs.bDecision.textContent = "";
-      const trace = result.trace;
-      let i = 0;
-      function nextStep() {
-        if (i >= trace.length) {
-          refs.aDecision.textContent = result.aAttacks ? "⚔ attack" : "retreat";
-          refs.aDecision.className   = "lab-tg__decision lab-tg__decision--" + (result.aAttacks ? "attack" : "retreat");
-          refs.bDecision.textContent = result.bAttacks ? "⚔ attack" : "retreat";
-          refs.bDecision.className   = "lab-tg__decision lab-tg__decision--" + (result.bAttacks ? "attack" : "retreat");
-          setTimeout(doneCallback, ANIM_GAP_MS);
-          return;
-        }
-        const msg = trace[i++];
-        const dot = document.createElement("span");
-        dot.className = "lab-tg__dot lab-tg__dot--" + (msg.from === "A" ? "ab" : "ba") + (msg.delivered ? "" : " lab-tg__dot--lost");
-        dot.style.animationDuration = ANIM_DOT_MS + "ms";
-        valley.appendChild(dot);
-        setTimeout(() => { dot.remove(); nextStep(); }, ANIM_DOT_MS);
-      }
-      nextStep();
-    }
-
-    function runOnce(strategyName, done) {
-      const result = protocols[strategyName]();
-      recordOutcome(strategyName, result);
-      refresh();
-      animateBattle(result, done);
-    }
-
-    function runMany(n) {
-      if (busy) return;
-      busy = true;
-      btnRun.disabled = true;
-      const strategyName = getStrategy();
-      let runs = 0;
-      function step() {
-        if (runs >= n) {
-          busy = false;
-          btnRun.disabled = false;
-          setInsight(strategyName);
-          return;
-        }
-        runs++;
-        runOnce(strategyName, step);
-      }
-      step();
-    }
-
-    btnRun.addEventListener("click", () => runMany(10));
-    btnReset.addEventListener("click", () => {
-      if (busy) return;
-      stats.wins = stats.aAlone = stats.bAlone = stats.neutral = 0;
-      stats.byStrategy = {};
-      refs.aDecision.textContent = "—";
-      refs.bDecision.textContent = "—";
-      refs.aDecision.className = "lab-tg__decision";
-      refs.bDecision.className = "lab-tg__decision";
-      $$('.lab-tg__dot', valley).forEach((d) => d.remove());
-      refresh();
-      refs.insight.textContent = "Pick a protocol and run 10 battles. Then try the next.";
-    });
-
-    refresh();
+  /* ---------- statistics primitives ---------- */
+  // Φ(x), the standard normal CDF. Abramowitz–Stegun approximation 26.2.17.
+  function phi(x) {
+    const a1 =  0.254829592, a2 = -0.284496736, a3 =  1.421413741;
+    const a4 = -1.453152027, a5 =  1.061405429, p  =  0.3275911;
+    const sign = x < 0 ? -1 : 1;
+    const ax = Math.abs(x) / Math.SQRT2;
+    const t = 1 / (1 + p * ax);
+    const y = 1 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1) * t * Math.exp(-ax*ax);
+    return 0.5 * (1 + sign * y);
   }
 
-  /* ===========================================================================
-     PUZZLE 2 · The Verifier's Eye
-     5 rounds of binary classification with rising subtlety.
-     =========================================================================== */
-  function initVerifier() {
-    const root = document.getElementById("puzzle-wm");
+  /* ============================================================================
+     PUZZLE 1 · Two Generals' Lab
+     ============================================================================ */
+  function initTwoGeneralsLab() {
+    const root = document.getElementById("lab-tg");
     if (!root) return;
 
-    const grid       = $('[data-role="grid"]',       root);
-    const btnYes     = $('[data-role="yes"]',         root);
-    const btnNo      = $('[data-role="no"]',          root);
-    const btnRestart = $('[data-role="restart"]',     root);
-    const feedback   = $('[data-role="feedback"]',    root);
-    const scoreEl    = $('[data-role="score"]',       root);
-    const roundEl    = $('[data-role="round-num"]',   root);
-    const diffEl     = $('[data-role="difficulty"]',  root);
-    const finalBar   = $('[data-role="finalbar"]',    root);
-    const finalMsg   = $('[data-role="final-msg"]',   root);
+    const refs = {
+      p:        $('[data-role="p"]', root),
+      n:        $('[data-role="n"]', root),
+      pVal:     $('[data-role="p-val"]', root),
+      nVal:     $('[data-role="n-val"]', root),
+      pDisplay: $('[data-role="p-display"]', root),
+      naive:    $('[data-role="naive-val"]', root),
+      strict:   $('[data-role="strict-val"]', root),
+      delta:    $('[data-role="delta-val"]', root),
+      insight:  $('[data-role="insight"]', root),
+      plot:     $('[data-role="plot"]', root),
+      valley:   $('[data-role="valley"]', root),
+    };
 
-    const N = 8, NCELLS = N * N;
-    const SAT_BUMP = 18;
+    /* ---- Plot rendering ---- */
+    const PW = 640, PH = 260;
+    const M = { l: 52, r: 110, t: 28, b: 40 };
+    const innerW = PW - M.l - M.r;
+    const innerH = PH - M.t - M.b;
+    const N_MIN = 1, N_MAX = 10;
 
-    const PATTERNS = [
-      { name: "main diagonal",  cells: [0, 9, 18, 27, 36, 45, 54, 63] },
-      { name: "anti-diagonal",  cells: [7, 14, 21, 28, 35, 42, 49, 56] },
-      { name: "centred cross",  cells: [3, 11, 19, 27, 35, 43, 51, 59, 24, 25, 26, 28, 29, 30, 31] },
-      { name: "centre block",   cells: [27, 28, 35, 36, 43, 44] },
-      { name: "top row",        cells: [0, 1, 2, 3, 4, 5, 6, 7] },
-      { name: "border frame",   cells: [
-        0,1,2,3,4,5,6,7, 56,57,58,59,60,61,62,63,
-        8,16,24,32,40,48, 15,23,31,39,47,55,
-      ] },
-    ];
+    function xFor(n) { return M.l + ((n - N_MIN) / (N_MAX - N_MIN)) * innerW; }
+    function yFor(p) { return M.t + (1 - p) * innerH; }
 
-    /* Five rounds with declining subtlety. */
-    const ROUNDS = [
-      { shift: 0.32, label: "subtlety: low" },
-      { shift: 0.26, label: "subtlety: medium" },
-      { shift: 0.20, label: "subtlety: high" },
-      { shift: 0.16, label: "subtlety: very high" },
-      { shift: 0.12, label: "subtlety: expert" },
-    ];
+    function pathFor(fn) {
+      let d = "";
+      for (let n = N_MIN; n <= N_MAX; n++) {
+        const x = xFor(n), y = yFor(fn(n));
+        d += (n === N_MIN ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+      }
+      return d.trim();
+    }
 
-    let roundIdx = 0;
-    let correct  = 0;
-    let answered = false;
-    let plainRoundIdx = 0;
-    let currentPattern = PATTERNS[0];
-    let currentIsWatermarked = true;
+    function drawPlot(p, n) {
+      const plot = refs.plot;
+      while (plot.firstChild) plot.removeChild(plot.firstChild);
 
-    function newBaseValues() {
-      return Array.from({ length: NCELLS }, () => {
-        let s = 0;
-        for (let i = 0; i < 3; i++) s += Math.random();
-        return s / 3;
+      // Title
+      const title = svg("text", {
+        x: M.l, y: M.t - 12, class: "lab-plot__title",
+      }, plot);
+      title.textContent = "P(win) vs protocol depth N | p = " + p.toFixed(2);
+
+      // Y-axis gridlines + labels (0%, 25%, 50%, 75%, 100%)
+      [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
+        svg("line", {
+          x1: M.l, x2: M.l + innerW,
+          y1: yFor(v), y2: yFor(v),
+          class: "lab-plot__grid",
+        }, plot);
+        const t = svg("text", {
+          x: M.l - 8, y: yFor(v) + 4,
+          class: "lab-plot__tick lab-plot__tick--y",
+        }, plot);
+        t.textContent = (v * 100).toFixed(0) + "%";
       });
+
+      // X-axis ticks
+      for (let i = N_MIN; i <= N_MAX; i++) {
+        svg("line", {
+          x1: xFor(i), x2: xFor(i),
+          y1: yFor(0), y2: yFor(0) + 4,
+          class: "lab-plot__tick-mark",
+        }, plot);
+        if (i === N_MIN || i === N_MAX || i % 2 === 0) {
+          const t = svg("text", {
+            x: xFor(i), y: yFor(0) + 18,
+            class: "lab-plot__tick lab-plot__tick--x",
+          }, plot);
+          t.textContent = i;
+        }
+      }
+      const xlabel = svg("text", {
+        x: M.l + innerW / 2, y: PH - 8,
+        class: "lab-plot__axis-label",
+      }, plot);
+      xlabel.textContent = "N (messages)";
+
+      // Curves
+      svg("path", {
+        d: pathFor((nn) => 1 - Math.pow(p, nn)),
+        class: "lab-plot__curve lab-plot__curve--naive",
+      }, plot);
+      svg("path", {
+        d: pathFor((nn) => Math.pow(1 - p, nn)),
+        class: "lab-plot__curve lab-plot__curve--strict",
+      }, plot);
+
+      // Vertical marker at current N
+      svg("line", {
+        x1: xFor(n), x2: xFor(n),
+        y1: yFor(0), y2: yFor(1),
+        class: "lab-plot__marker-x",
+      }, plot);
+
+      // Markers + value labels at current N
+      const yN = 1 - Math.pow(p, n);
+      const yS = Math.pow(1 - p, n);
+      svg("circle", {
+        cx: xFor(n), cy: yFor(yN), r: 4.5,
+        class: "lab-plot__marker-dot lab-plot__marker-dot--naive",
+      }, plot);
+      svg("circle", {
+        cx: xFor(n), cy: yFor(yS), r: 4.5,
+        class: "lab-plot__marker-dot lab-plot__marker-dot--strict",
+      }, plot);
+
+      // Legend (right side)
+      const lx = M.l + innerW + 14;
+      const lyN = yFor(yN);
+      const lyS = yFor(yS);
+      const placeLegend = (cy, lbl, val, modifier) => {
+        const tn = svg("text", {
+          x: lx, y: cy - 5,
+          class: "lab-plot__legend-label lab-plot__legend-label--" + modifier,
+        }, plot);
+        tn.textContent = lbl;
+        const tv = svg("text", {
+          x: lx, y: cy + 12,
+          class: "lab-plot__legend-value lab-plot__legend-value--" + modifier,
+        }, plot);
+        tv.textContent = (val * 100).toFixed(1) + "%";
+      };
+      // Avoid label overlap when curves cross close together
+      const minGap = 24;
+      let yNa = lyN, yStrict = lyS;
+      if (Math.abs(yNa - yStrict) < minGap) {
+        const mid = (yNa + yStrict) / 2;
+        if (yNa < yStrict) { yNa = mid - minGap/2; yStrict = mid + minGap/2; }
+        else               { yNa = mid + minGap/2; yStrict = mid - minGap/2; }
+      }
+      placeLegend(yNa, "naive", yN, "naive");
+      placeLegend(yStrict, "strict", yS, "strict");
+    }
+
+    /* ---- Animation strip: continuous messengers at current p ---- */
+    let currentP = 0.40;
+    const ANIM_MS = 1400;
+    const SPAWN_MS = 700;
+    let animTimer = null;
+    function spawnDot() {
+      if (!refs.valley.isConnected) return;
+      const dir = Math.random() < 0.5 ? "ab" : "ba";
+      const lost = Math.random() < currentP;
+      const dot = document.createElement("span");
+      dot.className = "lab-tg__dot lab-tg__dot--" + dir + (lost ? " lab-tg__dot--lost" : "");
+      dot.style.animationDuration = ANIM_MS + "ms";
+      refs.valley.appendChild(dot);
+      setTimeout(() => dot.remove(), ANIM_MS + 60);
+    }
+    function startAnim() {
+      if (animTimer) return;
+      animTimer = setInterval(spawnDot, SPAWN_MS);
+      spawnDot();
+    }
+
+    /* ---- Live update ---- */
+    function update() {
+      const p = parseFloat(refs.p.value);
+      const n = parseInt(refs.n.value, 10);
+      currentP = p;
+      refs.pVal.textContent = p.toFixed(2);
+      refs.nVal.textContent = n;
+      refs.pDisplay.textContent = p.toFixed(2);
+      const pNaive  = 1 - Math.pow(p, n);
+      const pStrict = Math.pow(1 - p, n);
+      const delta   = pNaive - pStrict;
+      refs.naive.textContent  = (pNaive  * 100).toFixed(1) + "%";
+      refs.strict.textContent = (pStrict * 100).toFixed(1) + "%";
+      refs.delta.textContent  = (delta >= 0 ? "+" : "") + (delta * 100).toFixed(1) + "%";
+
+      // Choose insight text by zone of phase space
+      let txt;
+      if (n === 1)               txt = "At N = 1 the protocols coincide. The interesting structure starts at N = 2.";
+      else if (p < 0.05)         txt = "Loss this low, both protocols nearly always succeed. The trap is invisible here — but it is still a trap.";
+      else if (p > 0.65)         txt = "At very high loss, naive multi-send still pulls ahead by accumulating chances rather than depending on any one.";
+      else if (delta > 0.6)      txt = "Δ > 60%: the strict chain pays heavily for its caution. Each confirmation round multiplies failure probability.";
+      else if (delta > 0.3)      txt = "Δ > 30%: the strict chain is silently bleeding. Naive multi-send is strictly better.";
+      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2.";
+      refs.insight.textContent = txt;
+
+      drawPlot(p, n);
+    }
+
+    refs.p.addEventListener("input", update);
+    refs.n.addEventListener("input", update);
+    update();
+    startAnim();
+  }
+
+  /* ============================================================================
+     PUZZLE 2 · The Verifier's Lab
+     ============================================================================ */
+  function initVerifierLab() {
+    const root = document.getElementById("lab-wm");
+    if (!root) return;
+
+    const refs = {
+      eps:      $('[data-role="eps"]', root),
+      k:        $('[data-role="k"]', root),
+      sigma:    $('[data-role="sigma"]', root),
+      epsVal:   $('[data-role="eps-val"]', root),
+      kVal:     $('[data-role="k-val"]', root),
+      sigmaVal: $('[data-role="sigma-val"]', root),
+      grid:     $('[data-role="grid"]', root),
+      plot:     $('[data-role="plot-wm"]', root),
+      det:      $('[data-role="det-val"]', root),
+      fpr:      $('[data-role="fpr-val"]', root),
+      snr:      $('[data-role="snr-val"]', root),
+      insight:  $('[data-role="insight-wm"]', root),
+    };
+
+    const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
+    const ALPHA  = 0.05;       // per-cell FPR
+    const Z_ALPHA = 1.6448536;  // one-sided 95th percentile
+
+    /* per-cell detection probability under perturbation eps + attack noise sigma */
+    function qDetect(eps, sigma) {
+      const sd = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
+      const snr = eps / sd;
+      return phi(snr - Z_ALPHA);
+    }
+    /* aggregate detection over k cells, majority vote, normal approximation */
+    function aggregateDetect(q, k) {
+      // P(X >= ceil(k/2)) where X ~ Binom(k, q). Normal approx with cc.
+      const mu = k * q;
+      const sd = Math.sqrt(k * q * (1 - q) + 1e-9);
+      const thresh = Math.ceil(k / 2) - 0.5;  // continuity correction
+      return 1 - phi((thresh - mu) / sd);
+    }
+
+    /* ---- Live grid: 8x8, key cells perturbed ---- */
+    const GRID_N = 8, GRID_CELLS = 64;
+    const KEY_PATTERNS = [
+      [0,9,18,27,36,45,54,63],
+      [7,14,21,28,35,42,49,56],
+      [3,11,19,27,35,43,51,59,24,25,26,28,29,30,31],
+      [27,28,35,36,43,44],
+      [0,1,2,3,4,5,6,7],
+      [0,1,2,3,4,5,6,7,56,57,58,59,60,61,62,63,8,16,24,32,40,48,15,23,31,39,47,55],
+    ];
+    function pickKey(k) {
+      // Pick a structured pattern with cell count nearest to requested k.
+      let best = KEY_PATTERNS[0], diff = Math.abs(KEY_PATTERNS[0].length - k);
+      for (const p of KEY_PATTERNS) {
+        const d = Math.abs(p.length - k);
+        if (d < diff) { best = p; diff = d; }
+      }
+      // If pattern has more than k, take first k; if fewer, just use them all.
+      return best.slice(0, k);
+    }
+    function rngBase() {
+      // Smoothed gaussian-ish noise per cell, mean 0.5 sd ≈ 0.12
+      const out = new Array(GRID_CELLS);
+      for (let i = 0; i < GRID_CELLS; i++) {
+        // Sum of 6 uniforms, scaled — Irwin-Hall normalised, central limit
+        let s = 0; for (let j = 0; j < 6; j++) s += Math.random();
+        out[i] = 0.5 + (s/6 - 0.5) * 0.55;
+      }
+      return out;
     }
     function valueToColor(v, isKey) {
-      const hue   = 200 - v * 30;
-      let   sat   = 60 + v * 20;
-      let   light = 32 + v * 38;
-      if (isKey) {
-        sat   = Math.min(95, sat + SAT_BUMP);
-        light = Math.max(26, light - 6);
-      }
+      let c = Math.max(0, Math.min(1, v));
+      const hue   = 200 - c * 30;
+      let   sat   = 60 + c * 20;
+      let   light = 32 + c * 38;
+      if (isKey) { sat = Math.min(95, sat + 18); light = Math.max(26, light - 6); }
       return "hsl(" + hue.toFixed(0) + " " + sat.toFixed(0) + "% " + light.toFixed(0) + "%)";
     }
-    function buildGrid(values, isWm, keySet) {
-      grid.innerHTML = "";
-      grid.classList.remove("lab-wm__grid--reveal");
-      const vmin = Math.min.apply(null, values);
-      const vmax = Math.max.apply(null, values);
+    function buildGrid(eps, k, sigma) {
+      while (refs.grid.firstChild) refs.grid.removeChild(refs.grid.firstChild);
+      const base = rngBase();
+      const keyCells = pickKey(k);
+      const keySet = new Set(keyCells);
+      // Adversary's noise
+      for (let i = 0; i < GRID_CELLS; i++) {
+        const noise = (Math.random() * 2 - 1) * sigma * 1.2;  // crude uniform; visual only
+        base[i] += noise;
+        if (keySet.has(i)) base[i] += eps;
+      }
+      const vmin = Math.min.apply(null, base), vmax = Math.max.apply(null, base);
       const range = (vmax - vmin) || 1;
-      values.forEach((raw, i) => {
+      base.forEach((raw, i) => {
         const v = (raw - vmin) / range;
-        const isKey = isWm && keySet.has(i);
         const cell = document.createElement("span");
         cell.className = "lab-wm__cell";
-        cell.style.background = valueToColor(v, isKey);
-        if (isKey) cell.dataset.key = "1";
-        grid.appendChild(cell);
+        cell.style.background = valueToColor(v, keySet.has(i));
+        if (keySet.has(i)) cell.dataset.key = "1";
+        refs.grid.appendChild(cell);
       });
+      refs.grid.classList.add("lab-wm__grid--reveal");
     }
 
-    function startGame() {
-      roundIdx = 0;
-      correct  = 0;
-      finalBar.hidden = true;
-      // Pick which round (1..3, zero-indexed) is plain noise — never first or last
-      // so the user has to actively reason rather than memorise position.
-      plainRoundIdx = 1 + Math.floor(Math.random() * 3);
-      newRound();
-      btnYes.disabled = false;
-      btnNo.disabled = false;
-    }
+    /* ---- Plot: detection rate vs sigma, multi-curve over k ---- */
+    const PW = 640, PH = 260;
+    const M = { l: 52, r: 110, t: 28, b: 40 };
+    const innerW = PW - M.l - M.r;
+    const innerH = PH - M.t - M.b;
+    const SIGMA_MAX = 0.4;
+    const K_CURVES = [2, 4, 8, 16, 32];
 
-    function newRound() {
-      answered = false;
-      const cfg = ROUNDS[roundIdx];
-      // Cycle patterns; pick one for this round.
-      currentPattern = PATTERNS[roundIdx % PATTERNS.length];
-      currentIsWatermarked = roundIdx !== plainRoundIdx;
-      const keySet = new Set(currentPattern.cells);
-      const base = newBaseValues();
-      const values = currentIsWatermarked
-        ? base.map((v, i) => keySet.has(i) ? Math.max(0, Math.min(1, v + cfg.shift)) : v)
-        : base.slice();
-      buildGrid(values, currentIsWatermarked, keySet);
-      roundEl.textContent = roundIdx + 1;
-      diffEl.textContent  = cfg.label;
-      scoreEl.textContent = correct + " / " + roundIdx;
-      feedback.textContent = "Look carefully. The watermark, if present, traces a structured shape. Make your call.";
-      feedback.className   = "lab-wm__feedback";
-    }
+    function xFor(s) { return M.l + (s / SIGMA_MAX) * innerW; }
+    function yFor(p) { return M.t + (1 - p) * innerH; }
 
-    function answer(saidWatermarked) {
-      if (answered) return;
-      answered = true;
-      const isRight = saidWatermarked === currentIsWatermarked;
-      if (isRight) correct++;
-      // Reveal the truth visually
-      if (currentIsWatermarked) grid.classList.add("lab-wm__grid--reveal");
-      const truth = currentIsWatermarked
-        ? "actually watermarked (pattern: " + currentPattern.name + ")"
-        : "actually plain noise — no pattern";
-      feedback.textContent = (isRight ? "Correct" : "Wrong") + " — this grid was " + truth + ".";
-      feedback.className   = "lab-wm__feedback lab-wm__feedback--" + (isRight ? "ok" : "no");
-      scoreEl.textContent  = correct + " / " + (roundIdx + 1);
-      btnYes.disabled = true;
-      btnNo.disabled  = true;
+    function drawPlot(eps, kCur, sigmaCur) {
+      const plot = refs.plot;
+      while (plot.firstChild) plot.removeChild(plot.firstChild);
 
-      // Advance after a brief beat.
-      setTimeout(() => {
-        if (roundIdx + 1 < ROUNDS.length) {
-          roundIdx++;
-          btnYes.disabled = false;
-          btnNo.disabled  = false;
-          newRound();
-        } else {
-          finishGame();
+      // Title
+      const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
+      title.textContent = "Detection rate vs attacker noise σ | ε = " + eps.toFixed(2);
+
+      // Y-axis gridlines/ticks
+      [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
+        svg("line", {
+          x1: M.l, x2: M.l + innerW,
+          y1: yFor(v), y2: yFor(v),
+          class: "lab-plot__grid",
+        }, plot);
+        const t = svg("text", {
+          x: M.l - 8, y: yFor(v) + 4,
+          class: "lab-plot__tick lab-plot__tick--y",
+        }, plot);
+        t.textContent = (v * 100).toFixed(0) + "%";
+      });
+
+      // X-axis ticks
+      [0, 0.1, 0.2, 0.3, 0.4].forEach((s) => {
+        svg("line", {
+          x1: xFor(s), x2: xFor(s),
+          y1: yFor(0), y2: yFor(0) + 4,
+          class: "lab-plot__tick-mark",
+        }, plot);
+        const t = svg("text", {
+          x: xFor(s), y: yFor(0) + 18,
+          class: "lab-plot__tick lab-plot__tick--x",
+        }, plot);
+        t.textContent = s.toFixed(1);
+      });
+      const xlabel = svg("text", { x: M.l + innerW/2, y: PH - 8, class: "lab-plot__axis-label" }, plot);
+      xlabel.textContent = "σ (attacker noise)";
+
+      // Curves: detection rate vs σ for each k
+      const SAMPLES = 80;
+      K_CURVES.forEach((k) => {
+        let d = "";
+        for (let i = 0; i <= SAMPLES; i++) {
+          const sigma = (i / SAMPLES) * SIGMA_MAX;
+          const q = qDetect(eps, sigma);
+          const det = aggregateDetect(q, k);
+          const x = xFor(sigma), y = yFor(det);
+          d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
         }
-      }, 1500);
+        const isCurrent = (k === kCur);
+        svg("path", {
+          d: d,
+          class: "lab-plot__curve lab-plot__curve--wm" + (isCurrent ? " lab-plot__curve--wm-current" : ""),
+        }, plot);
+        // Label at right edge
+        const finalSigma = SIGMA_MAX;
+        const finalQ = qDetect(eps, finalSigma);
+        const finalDet = aggregateDetect(finalQ, k);
+        const t = svg("text", {
+          x: M.l + innerW + 10, y: yFor(finalDet) + 4,
+          class: "lab-plot__legend-value lab-plot__legend-value--wm" + (isCurrent ? " lab-plot__legend-value--wm-current" : ""),
+        }, plot);
+        t.textContent = "k=" + k;
+      });
+
+      // Vertical marker at current σ
+      svg("line", {
+        x1: xFor(sigmaCur), x2: xFor(sigmaCur),
+        y1: yFor(0), y2: yFor(1),
+        class: "lab-plot__marker-x",
+      }, plot);
+
+      // Marker dot at (σ, detection_for_current_k)
+      const qCur = qDetect(eps, sigmaCur);
+      const detCur = aggregateDetect(qCur, kCur);
+      svg("circle", {
+        cx: xFor(sigmaCur), cy: yFor(detCur), r: 5,
+        class: "lab-plot__marker-dot lab-plot__marker-dot--wm",
+      }, plot);
     }
 
-    function finishGame() {
-      btnYes.disabled = true;
-      btnNo.disabled  = true;
-      finalBar.hidden = false;
-      const lines = {
-        5: "5 / 5 — verifier-grade. You'd have caught every spoofing attempt.",
-        4: "4 / 5 — strong. Better than an attentive eye without the key (~3/5).",
-        3: "3 / 5 — about even with random guessing on the harder rounds.",
-        2: "2 / 5 — below random. The adversarial round caught you.",
-        1: "1 / 5 — almost the inverse of the right answer.",
-        0: "0 / 5 — try again. Perfect-inverse is itself a signal.",
-      };
-      finalMsg.textContent = lines[correct] || ("Score: " + correct + " / 5.");
+    /* ---- Live update ---- */
+    function update() {
+      const eps   = parseFloat(refs.eps.value);
+      const k     = parseInt(refs.k.value, 10);
+      const sigma = parseFloat(refs.sigma.value);
+      refs.epsVal.textContent   = eps.toFixed(2);
+      refs.kVal.textContent     = k;
+      refs.sigmaVal.textContent = sigma.toFixed(2);
+
+      const sd  = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
+      const snr = eps / sd;
+      const q   = qDetect(eps, sigma);
+      const det = aggregateDetect(q, k);
+      const fpr = aggregateDetect(ALPHA, k);
+
+      refs.snr.textContent = snr.toFixed(2);
+      refs.det.textContent = (det * 100).toFixed(1) + "%";
+      refs.fpr.textContent = (fpr * 100).toFixed(2) + "%";
+
+      let txt;
+      if (det > 0.99)             txt = "Detection saturated — verifier wins easily under these conditions. Increase σ or shrink ε to find the cliff.";
+      else if (det > 0.9 && fpr < 0.1)
+                                  txt = "On the operating frontier: > 90% detection, low false positive. Production-credible regime.";
+      else if (det > 0.5 && k <= 4)
+                                  txt = "Small key, marginal signal — try doubling k. The gain from k = " + k + " → " + (k*2) + " comes from √k SNR amplification.";
+      else if (det < 0.2)         txt = "Watermark washed out — at this (ε, σ) the attacker has effectively defeated detection. Either raise ε or grow k.";
+      else                        txt = "k = " + k + " amplifies SNR by √k ≈ " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with ε alone.";
+      refs.insight.textContent = txt;
+
+      buildGrid(eps, k, sigma);
+      drawPlot(eps, k, sigma);
     }
 
-    btnYes.addEventListener("click", () => answer(true));
-    btnNo.addEventListener("click",  () => answer(false));
-    btnRestart.addEventListener("click", startGame);
-
-    startGame();
+    refs.eps.addEventListener("input", update);
+    refs.k.addEventListener("input", update);
+    refs.sigma.addEventListener("input", update);
+    update();
   }
 
   /* ----------------------------------------------------------------- bootstrap */
   function boot() {
-    initTwoGenerals();
-    initVerifier();
+    initTwoGeneralsLab();
+    initVerifierLab();
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);

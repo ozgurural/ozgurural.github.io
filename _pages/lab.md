@@ -1,143 +1,150 @@
 ---
 permalink: /lab/
 title: "Lab"
-excerpt: "Two playable challenges in distributed systems and ML security: pick a protocol, watch the battles; play the verifier with the key."
+excerpt: "Two interactive phase-space explorers in distributed systems and ML security — drag the sliders, watch the curves move."
 ---
 
 <p class="ep-lead">
-  Two playable challenges. Each one runs a real simulation, scores you, and the score itself is the answer. The protocols and patterns are familiar to anyone who's worked in the field — but the right answer is rarely the intuitive one.
+  Two live experiments. Each one is a phase-space explorer: drag the sliders, watch the animation react, watch the curves move. The numbers come from real probability calculations, not canned screenshots — these are the same simulations I'd run on a whiteboard, ported to the browser. The interesting structure of each problem lives in how the curves behave as you cross a threshold.
 </p>
 
-<section class="lab-card" id="puzzle-tg">
-  <span class="ep-eyebrow">Distributed systems · Consensus protocol</span>
-  <h2>The Two Generals' Game</h2>
+<section class="lab-card lab-experiment" id="lab-tg">
+  <span class="ep-eyebrow">Distributed systems · Phase-space exploration</span>
+  <h2>The Two Generals' Lab</h2>
   <p class="lab-card__lead">
-    You are General A. The goal: coordinate with General B so that <em>both</em> attack at dawn. If only one of you attacks, that side is destroyed alone. The channel between you loses 40% of messengers. Pick a protocol, run ten battles, and see how often it actually wins. Try every option — the best one is rarely the one that <em>feels</em> safest.
+    Two armies must agree to attack. Their channel loses messengers with probability <em>p</em>. Two protocol families: <strong>naive</strong> (send <em>N</em> independent messengers, attack as long as any arrives) and <strong>strict-chain</strong> (a back-and-forth handshake of <em>N</em> messages where any single loss aborts the attack). The phase diagram below answers — for every (p, N) — which protocol wins more often.
   </p>
 
-  <div class="lab-tg" data-loss-rate="0.4">
-    <div class="lab-tg__strategies" role="radiogroup" aria-label="Choose a protocol">
-      <label class="lab-tg__strategy">
-        <input type="radio" name="tg-strategy" value="naive" checked>
-        <div class="lab-tg__strategy-card">
-          <span class="lab-tg__strategy-letter">a</span>
-          <strong>Naive</strong>
-          <span>Send 1 messenger. Always attack. Hope B got the plan.</span>
-        </div>
+  <div class="lab-experiment__panel">
+    <div class="lab-experiment__controls">
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Loss rate</span>
+          <span class="lab-control__var">p</span>
+          <span class="lab-control__value" data-role="p-val">0.40</span>
+        </span>
+        <input type="range" min="0" max="0.85" step="0.01" value="0.40" data-role="p" aria-label="loss rate p">
       </label>
-      <label class="lab-tg__strategy">
-        <input type="radio" name="tg-strategy" value="confirm">
-        <div class="lab-tg__strategy-card">
-          <span class="lab-tg__strategy-letter">b</span>
-          <strong>Wait for ack</strong>
-          <span>Send plan. Attack only if B's acknowledgement arrives.</span>
-        </div>
-      </label>
-      <label class="lab-tg__strategy">
-        <input type="radio" name="tg-strategy" value="triple">
-        <div class="lab-tg__strategy-card">
-          <span class="lab-tg__strategy-letter">c</span>
-          <strong>Triple round-trip</strong>
-          <span>Plan + ack + ack-of-ack + ack-of-ack-of-ack. Attack only if the last one arrived.</span>
-        </div>
-      </label>
-      <label class="lab-tg__strategy">
-        <input type="radio" name="tg-strategy" value="abort">
-        <div class="lab-tg__strategy-card">
-          <span class="lab-tg__strategy-letter">d</span>
-          <strong>Abort</strong>
-          <span>Recognise the impossibility. Do not engage.</span>
-        </div>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Protocol depth</span>
+          <span class="lab-control__var">N</span>
+          <span class="lab-control__value" data-role="n-val">3</span>
+        </span>
+        <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="protocol depth N">
       </label>
     </div>
 
-    <div class="lab-tg__field">
-      <div class="lab-tg__army lab-tg__army--a">
-        <div class="lab-tg__flag" aria-hidden="true">A</div>
-        <div class="lab-tg__decision" data-role="a-decision">—</div>
+    <div class="lab-experiment__visual">
+      <div class="lab-tg__field" aria-hidden="true">
+        <div class="lab-tg__army lab-tg__army--a"><div class="lab-tg__flag">A</div></div>
+        <div class="lab-tg__valley" data-role="valley">
+          <span class="lab-tg__valley-label">channel · loss <span data-role="p-display">0.40</span></span>
+        </div>
+        <div class="lab-tg__army lab-tg__army--b"><div class="lab-tg__flag">B</div></div>
       </div>
-      <div class="lab-tg__valley" data-role="valley" aria-hidden="true">
-        <span class="lab-tg__valley-label">the channel · 40% loss</span>
+
+      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot" preserveAspectRatio="xMidYMid meet" role="img" aria-label="win probability vs protocol depth"></svg>
+    </div>
+
+    <div class="lab-experiment__readout">
+      <div class="lab-experiment__metric lab-experiment__metric--naive">
+        <span class="lab-experiment__metric-label">Naive multi-send</span>
+        <span class="lab-experiment__metric-value" data-role="naive-val">—</span>
+        <span class="lab-experiment__metric-formula">P(win) = 1 − p<sup>N</sup></span>
       </div>
-      <div class="lab-tg__army lab-tg__army--b">
-        <div class="lab-tg__flag" aria-hidden="true">B</div>
-        <div class="lab-tg__decision" data-role="b-decision">—</div>
+      <div class="lab-experiment__metric lab-experiment__metric--strict">
+        <span class="lab-experiment__metric-label">Strict chain</span>
+        <span class="lab-experiment__metric-value" data-role="strict-val">—</span>
+        <span class="lab-experiment__metric-formula">P(win) = (1 − p)<sup>N</sup></span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--delta">
+        <span class="lab-experiment__metric-label">Δ</span>
+        <span class="lab-experiment__metric-value" data-role="delta-val">—</span>
+        <span class="lab-experiment__metric-formula">in favour of naive</span>
       </div>
     </div>
 
-    <div class="lab-tg__controls">
-      <button class="lab-btn" data-role="run" type="button">Run 10 battles</button>
-      <button class="lab-btn lab-btn--ghost" data-role="reset" type="button">Reset stats</button>
-    </div>
-
-    <div class="lab-tg__scoreboard">
-      <div class="lab-tg__stat lab-tg__stat--win">
-        <span class="lab-tg__stat-label">Both attack · win</span>
-        <strong data-role="wins">0</strong>
-      </div>
-      <div class="lab-tg__stat lab-tg__stat--loss">
-        <span class="lab-tg__stat-label">A alone · loss</span>
-        <strong data-role="a-alone">0</strong>
-      </div>
-      <div class="lab-tg__stat lab-tg__stat--loss">
-        <span class="lab-tg__stat-label">B alone · loss</span>
-        <strong data-role="b-alone">0</strong>
-      </div>
-      <div class="lab-tg__stat">
-        <span class="lab-tg__stat-label">Both retreat · neutral</span>
-        <strong data-role="neutral">0</strong>
-      </div>
-    </div>
-    <p class="lab-tg__insight" data-role="insight">Pick a protocol and run 10 battles. Then try the next.</p>
+    <p class="lab-experiment__insight" data-role="insight">Drag the sliders.</p>
   </div>
 
   <details class="lab-reveal">
     <summary>What this shows</summary>
-    <p>Run all four. The numbers reveal the point: <strong>more confirmation rounds make things worse, not better.</strong> Each ack adds another 40% chance of loss to the chain. The naive "send and pray" outperforms the careful triple-handshake by a wide margin — and <em>still</em> doesn't reach 100% wins. The Two Generals' Paradox isn't that you'll usually fail. It's that <em>no protocol</em> achieves 100% guaranteed agreement on a lossy channel.</p>
-    <p>The implication is foundational. Every distributed system that needs agreement — database commits, blockchain consensus, atomic broadcast — must accept a weaker safety property: <em>agreement with high probability</em>, never with certainty. Production systems use Paxos and Raft variants because they degrade gracefully, not because they remove the impossibility.</p>
+    <p>Two protocols, both intuitive, both feasible — and one strictly dominates the other for any non-trivial loss rate. <strong>Naive</strong> sends N parallel messengers and attacks if at least one arrives: P(win) = 1 − p<sup>N</sup>, which approaches 1 as N grows. <strong>Strict-chain</strong> requires every messenger in a back-and-forth handshake to arrive — failure of any one aborts: P(win) = (1 − p)<sup>N</sup>, which falls to 0.</p>
+    <p>For p = 0.4 and N = 5, naive wins 99% of battles; strict-chain wins about 8%. Yet "wait for confirmation" is the protocol every cautious engineer reaches for. The phase diagram tells you it's a trap. The deeper structural reason is that each additional confirmation round multiplies the failure probability, while parallel sends multiply the success probability — additive vs multiplicative composition of independent events. Production consensus protocols (Paxos, Raft) avoid the trap by using quorum-style any-of-N tolerance rather than every-of-N chains.</p>
   </details>
 </section>
 
-<section class="lab-card" id="puzzle-wm">
-  <span class="ep-eyebrow">ML security · Model watermarking</span>
-  <h2>The Verifier's Eye</h2>
+<section class="lab-card lab-experiment" id="lab-wm">
+  <span class="ep-eyebrow">ML security · Detection-evasion frontier</span>
+  <h2>The Verifier's Lab</h2>
   <p class="lab-card__lead">
-    You are the verifier. Each round shows one model output grid. Most carry a structured watermark embedded at a known set of cells — a diagonal, a cross, a frame. One round, somewhere in the run, has <strong>no watermark</strong>: just noise. Saying "watermarked" everywhere is the wrong answer. Subtlety rises every round. You get five.
+    A feature-based watermark embeds a small per-cell perturbation of magnitude <em>ε</em> at <em>k</em> known cells of a model output. An adversary, trying to wash the watermark out, adds noise of standard deviation <em>σ</em>. The verifier — who knows which cells — runs a per-cell hypothesis test (FPR fixed at 5%) and aggregates by majority. The detection rate is closed-form once you fix those three knobs.
   </p>
 
-  <div class="lab-wm">
-    <div class="lab-wm__roundbar">
-      <span class="lab-wm__round-label">Round <strong data-role="round-num">1</strong> of 5</span>
-      <span class="lab-wm__diff-label" data-role="difficulty">subtlety: low</span>
-      <span class="lab-wm__score">Score <strong data-role="score">0 / 0</strong></span>
+  <div class="lab-experiment__panel">
+    <div class="lab-experiment__controls">
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Perturbation</span>
+          <span class="lab-control__var">ε</span>
+          <span class="lab-control__value" data-role="eps-val">0.20</span>
+        </span>
+        <input type="range" min="0.02" max="0.45" step="0.01" value="0.20" data-role="eps" aria-label="perturbation magnitude epsilon">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Key size</span>
+          <span class="lab-control__var">k</span>
+          <span class="lab-control__value" data-role="k-val">8</span>
+        </span>
+        <input type="range" min="1" max="32" step="1" value="8" data-role="k" aria-label="key size k">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Attack noise</span>
+          <span class="lab-control__var">σ</span>
+          <span class="lab-control__value" data-role="sigma-val">0.10</span>
+        </span>
+        <input type="range" min="0" max="0.40" step="0.01" value="0.10" data-role="sigma" aria-label="attack noise sigma">
+      </label>
     </div>
 
-    <div class="lab-wm__grid-wrap">
-      <div class="lab-wm__grid" data-role="grid"></div>
+    <div class="lab-experiment__visual">
+      <div class="lab-wm__grid" data-role="grid" aria-hidden="true"></div>
+      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-wm" preserveAspectRatio="xMidYMid meet" role="img" aria-label="detection rate vs attacker noise"></svg>
     </div>
 
-    <div class="lab-wm__verdict-buttons">
-      <button class="lab-btn" data-role="yes" type="button">Watermarked</button>
-      <button class="lab-btn lab-btn--ghost" data-role="no" type="button">Plain noise</button>
+    <div class="lab-experiment__readout">
+      <div class="lab-experiment__metric lab-experiment__metric--detect">
+        <span class="lab-experiment__metric-label">Detection rate</span>
+        <span class="lab-experiment__metric-value" data-role="det-val">—</span>
+        <span class="lab-experiment__metric-formula">verifier with key</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--fpr">
+        <span class="lab-experiment__metric-label">False-positive rate</span>
+        <span class="lab-experiment__metric-value" data-role="fpr-val">—</span>
+        <span class="lab-experiment__metric-formula">on plain noise</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--snr">
+        <span class="lab-experiment__metric-label">SNR (per cell)</span>
+        <span class="lab-experiment__metric-value" data-role="snr-val">—</span>
+        <span class="lab-experiment__metric-formula">ε / √(σ²+σ₀²)</span>
+      </div>
     </div>
 
-    <p class="lab-wm__feedback" data-role="feedback">Look carefully. The watermark, if present, traces a structured shape. Make your call.</p>
-
-    <div class="lab-wm__finalbar" data-role="finalbar" hidden>
-      <p data-role="final-msg"></p>
-      <button class="lab-btn lab-btn--ghost" data-role="restart" type="button">Try again with fresh patterns</button>
-    </div>
+    <p class="lab-experiment__insight" data-role="insight-wm">Drag the sliders.</p>
   </div>
 
   <details class="lab-reveal">
     <summary>What this shows</summary>
-    <p>The watermark is a perturbation embedded at a specific structured set of cells (the <em>secret key</em>). With the key, a verifier checks those exact cells — the watermark is unmistakable. Without the key, the watermark blends into normal model output variation; even an attentive eye is roughly at chance on the harder rounds.</p>
-    <p>This is the asymmetry that makes <strong>feature-based model watermarking</strong> work as a defence: the verifier — who knows where to look — has overwhelming evidence; the adversary, who doesn't know the cells, has to either accept detection or distort the model badly enough to break it. The line of work is in IEEE Access (<a href="https://ieeexplore.ieee.org/abstract/document/10741282">2024</a>, <a href="https://ieeexplore.ieee.org/document/11293969">2025</a>), integrated with proof-of-learning to defend against spoofing attacks on training claims.</p>
+    <p>Aggregate detection over <em>k</em> independent cells with per-cell signal-to-noise ratio SNR = ε / √(σ² + σ₀²). Per-cell detection probability is q = Φ(SNR − z<sub>α</sub>) at a fixed FPR of 5% (z<sub>α</sub> ≈ 1.645). Majority-vote on k cells gives the curves you see — increasing k <em>amplifies</em> SNR roughly by √k via the central limit theorem, which is why feature-based watermarking holds up under attacker noise that would defeat single-cell detection.</p>
+    <p>The Pareto frontier here matches what's published in the IEEE Access work (<a href="https://ieeexplore.ieee.org/abstract/document/10741282">2024</a>, <a href="https://ieeexplore.ieee.org/document/11293969">2025</a>): for proof-of-learning under spoofing, an honest trainer with a key of even k = 8 cells maintains > 90% detection against substantial fine-tuning noise — while a forger without the key cannot replicate the signature without distorting the model badly enough to fail downstream evaluation.</p>
   </details>
 </section>
 
 <section class="lab-footer">
-  <p>A sharper protocol you'd like to play, a better verifier challenge, a correction? <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=lab-feedback&amp;title=Lab+feedback">Open an issue</a> or <a href="mailto:drozgurural@gmail.com">email me</a>.</p>
+  <p>A sharper experiment, a parameter you'd like exposed, a paper you want me to wire up next? <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=lab-feedback&amp;title=Lab+feedback">Open an issue</a> or <a href="mailto:drozgurural@gmail.com">email me</a>.</p>
 </section>
 
 <script src="{{ '/assets/js/lab.js' | relative_url }}" defer></script>
