@@ -5,7 +5,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 ---
 
 <p class="ep-lead">
-  Two live experiments. Each one is a phase-space explorer: drag the sliders, watch the animation react, watch the curves move. The numbers come from real probability calculations, not canned screenshots — these are the same simulations I'd run on a whiteboard, ported to the browser. The interesting structure of each problem lives in how the curves behave as you cross a threshold.
+  Two phase-space explorers and a set of calibration probes. The labs let you drag sliders and watch the animation react and the curves move — closed-form maths, not canned screenshots. The probes are short field-calibration questions: pick, see the answer, move on. The whole page should take about ten minutes if you stop to think.
 </p>
 
 <section class="lab-card lab-experiment" id="lab-tg">
@@ -143,8 +143,76 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   </details>
 </section>
 
+<section class="lab-probes">
+  <header class="lab-probes__header">
+    <span class="ep-eyebrow">Calibration · Field probes</span>
+    <h2>Six probes</h2>
+    <p class="lab-probes__lead">Short field-calibration questions. Pick one; the reveal is one sentence — the surface, not the proof. The labs above are where the proofs live.</p>
+  </header>
+
+  <ol class="lab-probes__list">
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">1</span><span><em>n</em> = 3 generals, <em>f</em> = 1 Byzantine fault, no signatures.</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Solvable</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Impossible</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Impossible.</strong> Lamport, Shostak &amp; Pease (1982): consensus needs <code>n ≥ 3f + 1</code>; three nodes tolerate zero.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">2</span><span>Naive parallel multi-send vs strict confirmation chain. <em>p</em> = 0.4, <em>N</em> = 5.</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Strict wins</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Naive wins</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Equivalent</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Naive.</strong> 1 − 0.4⁵ ≈ 99% vs (0.6)⁵ ≈ 8%. Each ack <em>multiplies</em> failure probability while parallel sends multiply success.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">3</span><span>Aggregate watermark detection over <em>k</em> independent cells scales roughly as:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">k</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">√k</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">log k</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>√<em>k</em>.</strong> Per-cell SNR amplifies via the central limit theorem. Doubling the key gives √2× detection at fixed (ε, σ).</p>
+    </li>
+
+    <li class="lab-probe" data-correct="a">
+      <p class="lab-probe__q"><span class="lab-probe__num">4</span><span>SHA-256 collision resistance is approximately:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">2¹²⁸</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">2²⁵⁶</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>2¹²⁸.</strong> Birthday bound: collisions in <code>O(2^(n/2))</code>. Pre-image and second-pre-image resistance are 2²⁵⁶.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">5</span><span>Two-phase commit. All voted YES; coordinator crashes before COMMIT. Safe action for participants:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Commit</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Abort</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Wait</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Wait.</strong> The blocking problem of 2PC. Participants don't know what the coordinator already sent before crashing. Three-phase or Paxos remove the blocking.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">6</span><span>99.9% test accuracy on CIFAR-10 + an adversarial example exists for every input at <em>ε</em> = 0.01. Both true:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Bug</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Geometry</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Overfitting</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Geometry.</strong> Test accuracy and adversarial robustness are different geometries on the same model — natural images sit close to decision boundaries in high-dim space (Goodfellow 2014).</p>
+    </li>
+  </ol>
+</section>
+
 <section class="lab-footer">
-  <p>A sharper experiment, a parameter you'd like exposed, a paper you want me to wire up next? <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=lab-feedback&amp;title=Lab+feedback">Open an issue</a> or <a href="mailto:drozgurural@gmail.com">email me</a>.</p>
+  <p>A sharper experiment, a parameter you'd like exposed, a probe you want added? <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=lab-feedback&amp;title=Lab+feedback">Open an issue</a> or <a href="mailto:drozgurural@gmail.com">email me</a>.</p>
 </section>
 
 <script src="{{ '/assets/js/lab.js' | relative_url }}" defer></script>

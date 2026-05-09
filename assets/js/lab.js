@@ -474,10 +474,40 @@
     update();
   }
 
+  /* ============================================================================
+     SECTION 3 · Calibration probes — short MCQ, one-sentence reveal
+     ============================================================================ */
+  function initProbes() {
+    const probes = $$('.lab-probe');
+    probes.forEach((probe) => {
+      const correct = probe.dataset.correct;
+      if (!correct) return;
+      const choices = $$('.lab-probe__choice', probe);
+      const reveal  = $('.lab-probe__reveal', probe);
+      let answered = false;
+      choices.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (answered) return;
+          answered = true;
+          const picked = btn.dataset.choice;
+          const isRight = picked === correct;
+          btn.classList.add(isRight ? 'lab-probe__choice--right' : 'lab-probe__choice--wrong');
+          if (!isRight) {
+            const correctBtn = $('[data-choice="' + correct + '"]', probe);
+            if (correctBtn) correctBtn.classList.add('lab-probe__choice--right');
+          }
+          choices.forEach((c) => { c.disabled = true; });
+          if (reveal) reveal.hidden = false;
+        });
+      });
+    });
+  }
+
   /* ----------------------------------------------------------------- bootstrap */
   function boot() {
     initTwoGeneralsLab();
     initVerifierLab();
+    initProbes();
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
