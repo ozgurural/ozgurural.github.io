@@ -450,22 +450,25 @@
 .lab-reveal p strong { color: var(--ds-ink); }
 .lab-reveal p em { color: var(--ds-ink); font-style: italic; }
 
-/* ---- Two Generals ---- */
+/* ---- Two Generals — world strip + per-side terminals ---- */
 .lab-tg__field {
   display: grid;
-  grid-template-columns: 110px 1fr 110px;
+  grid-template-columns: 80px 1fr 80px;
   align-items: stretch;
   gap: 0;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius);
   background: var(--ds-surface-elev);
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  height: 78px;
 }
 .lab-tg__army {
-  padding: 0.85rem 0.7rem;
-  text-align: center;
+  padding: 0;
   background: var(--ds-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .lab-tg__army--a { border-right: 1px solid var(--ds-line); }
 .lab-tg__army--b { border-left: 1px solid var(--ds-line); }
@@ -481,19 +484,7 @@
   font-family: var(--ds-font-display);
   font-weight: 700;
   font-size: 1.05rem;
-  margin-bottom: 0.5rem;
 }
-.lab-tg__state {
-  font-size: 0.82rem;
-  line-height: 1.4;
-  color: var(--ds-muted);
-  min-height: 2.6rem;
-  transition: color 0.2s ease;
-}
-.lab-tg__state--ok { color: var(--ds-ink); }
-.lab-tg__state--pending { color: var(--ds-accent-2); }
-.lab-tg__state--lost { color: #b91c1c; }
-html[data-theme="dark"] .lab-tg__state--lost { color: #fca5a5; }
 .lab-tg__valley {
   position: relative;
   background: repeating-linear-gradient(
@@ -501,8 +492,70 @@ html[data-theme="dark"] .lab-tg__state--lost { color: #fca5a5; }
     var(--ds-surface-elev) 0 8px,
     var(--ds-line-soft) 8px 9px
   );
-  min-height: 88px;
   overflow: hidden;
+}
+.lab-tg__valley-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--ds-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ds-soft);
+  pointer-events: none;
+}
+/* Per-side terminals — what each general actually knows. */
+.lab-tg__terminals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin: 0 0 0.95rem;
+}
+.lab-tg__terminal {
+  padding: 0.85rem 1rem 0.95rem;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+}
+.lab-tg__terminal-head {
+  display: block;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+  margin-bottom: 0.55rem;
+}
+.lab-tg__lines {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.18rem 0.7rem;
+  margin: 0 0 0.55rem;
+  align-items: baseline;
+}
+.lab-tg__lines dt {
+  font-family: var(--ds-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-soft);
+  font-weight: 500;
+}
+.lab-tg__lines dd {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.94rem;
+  color: var(--ds-ink);
+  letter-spacing: 0.005em;
+}
+.lab-tg__belief {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ds-body);
+  margin: 0;
+  min-height: 2.6em;
 }
 .lab-tg__dot {
   position: absolute;
@@ -559,6 +612,10 @@ html[data-theme="dark"] .lab-tg__state--lost { color: #fca5a5; }
   color: var(--ds-muted);
 }
 .lab-tg__counter strong { color: var(--ds-ink); font-family: var(--ds-font-display); font-weight: 600; }
+.lab-tg__counter [data-role="paradox-status"] {
+  color: var(--ds-accent-2);
+  font-style: italic;
+}
 
 /* ---- Spot the Watermark ---- */
 .lab-wm__choices {
@@ -591,14 +648,21 @@ html[data-theme="dark"] .lab-tg__state--lost { color: #fca5a5; }
 .lab-wm__grid--reveal .lab-wm__cell[data-key="1"] {
   outline: 2px solid #f59e0b;
   outline-offset: -2px;
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5) inset;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.55) inset, 0 0 8px rgba(245, 158, 11, 0.5);
+  z-index: 1;
+  position: relative;
+  animation: lab-wm-pulse 1.6s ease-in-out infinite;
+}
+@keyframes lab-wm-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.55) inset, 0 0 6px rgba(245, 158, 11, 0.45); }
+  50%      { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.55) inset, 0 0 14px rgba(245, 158, 11, 0.85); }
 }
 .lab-wm__cell {
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 2px;
-  transition: outline 0.2s ease;
+  transition: outline 0.2s ease, box-shadow 0.2s ease;
 }
 .lab-wm__feedback {
   font-size: 0.94rem;
@@ -751,8 +815,9 @@ html[data-theme="dark"] .lab-wm__feedback--no { color: #fca5a5; }
 }
 
 @media (max-width: 600px) {
-  .lab-tg__field { grid-template-columns: 90px 1fr 90px; }
-  .lab-tg__valley { min-height: 64px; }
+  .lab-tg__field { grid-template-columns: 60px 1fr 60px; height: 64px; }
+  .lab-tg__valley-label { font-size: 0.62rem; letter-spacing: 0.08em; }
+  .lab-tg__terminals { grid-template-columns: 1fr; gap: 0.5rem; }
   .lab-card { padding: 1.1rem 1rem 1.2rem; }
 }
 
