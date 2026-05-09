@@ -5,14 +5,14 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 ---
 
 <p class="ep-lead">
-  Two phase-space explorers and a set of calibration probes. The labs let you drag sliders and watch the animation react and the curves move — closed-form maths, not canned screenshots. The probes are short field-calibration questions: pick, see the answer, move on. The whole page should take about ten minutes if you stop to think.
+  Two phase-space explorers and a set of calibration probes. The labs let you drag sliders and watch the animation react and the curves move — closed-form maths, not canned screenshots. The probes are short field-calibration questions: pick, see the answer, move on. The whole page should take about ten minutes if you stop to think. (If you open DevTools the maths leaves a forwarding address.)
 </p>
 
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Distributed systems · Phase-space exploration</span>
   <h2>The Two Generals' Lab</h2>
   <p class="lab-card__lead">
-    Two armies must agree to attack. Their channel loses messengers with probability <em>p</em>. Two protocol families: <strong>naive</strong> (send <em>N</em> independent messengers, attack as long as any arrives) and <strong>strict-chain</strong> (a back-and-forth handshake of <em>N</em> messages where any single loss aborts the attack). The phase diagram below answers — for every (p, N) — which protocol wins more often.
+    Two armies must agree to attack. Their channel loses messengers with probability <em>p</em>. Two protocol families: <strong>naive</strong> (send <em>N</em> independent messengers, attack as long as any arrives) and <strong>strict-chain</strong> (a back-and-forth handshake of <em>N</em> messages where any single loss aborts the attack). The phase diagram below answers — for every (p, N) — which protocol wins more often. <em>Spoiler: the protocol that feels safer isn't.</em>
   </p>
 
   <div class="lab-experiment__panel">
@@ -79,7 +79,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   <span class="ep-eyebrow">ML security · Detection-evasion frontier</span>
   <h2>The Verifier's Lab</h2>
   <p class="lab-card__lead">
-    A feature-based watermark embeds a small per-cell perturbation of magnitude <em>ε</em> at <em>k</em> known cells of a model output. An adversary, trying to wash the watermark out, adds noise of standard deviation <em>σ</em>. The verifier — who knows which cells — runs a per-cell hypothesis test (FPR fixed at 5%) and aggregates by majority. The detection rate is closed-form once you fix those three knobs.
+    A feature-based watermark embeds a small per-cell perturbation of magnitude <em>ε</em> at <em>k</em> known cells of a model output. An adversary, trying to wash the watermark out, adds noise of standard deviation <em>σ</em>. The verifier — who knows which cells — runs a per-cell hypothesis test (FPR fixed at 5%) and aggregates by majority. The detection rate is closed-form once you fix those three knobs. (Φ here is the standard normal CDF. If you've never had a fight with one, you've never tried to compute one by hand.)
   </p>
 
   <div class="lab-experiment__panel">

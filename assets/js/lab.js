@@ -31,6 +31,53 @@
     return el;
   };
 
+  /* ---------- DevTools signature ---------- */
+  try {
+    if (typeof console !== "undefined" && console.log) {
+      const sig = [
+        "%c lab.js %c — research-grade phase-space explorers.",
+        "background:#0c4a6e;color:#fff;padding:2px 6px;border-radius:3px;font-weight:600;",
+        "color:#94a3b8;font-style:italic;"
+      ];
+      console.log.apply(console, sig);
+      console.log("%cThe maths is real. Φ(x) is Abramowitz–Stegun 26.2.17, no Monte Carlo. If you read code while drinking coffee, drop me a note: drozgurural@gmail.com.", "color:#64748b;");
+    }
+  } catch (e) { /* noop */ }
+
+  /* ---------- tiny tween helper for readout values ---------- */
+  /* Animates a single text element from `from` to `to` over `ms` using
+     easeOutCubic. Cancels any in-flight tween on the same element so
+     rapid slider drags don't pile up. */
+  const tweenStore = new WeakMap();
+  function tweenNumber(el, from, to, ms, fmt) {
+    if (!el) return;
+    const prev = tweenStore.get(el);
+    if (prev) cancelAnimationFrame(prev);
+    if (Math.abs(to - from) < 1e-6) { el.textContent = fmt(to); return; }
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - start) / ms);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = from + (to - from) * eased;
+      el.textContent = fmt(v);
+      if (t < 1) {
+        const id = requestAnimationFrame(step);
+        tweenStore.set(el, id);
+      } else {
+        tweenStore.delete(el);
+      }
+    }
+    const id = requestAnimationFrame(step);
+    tweenStore.set(el, id);
+  }
+  function pulseRow(el) {
+    if (!el) return;
+    el.classList.remove("is-updating");
+    /* force reflow so the animation can replay */
+    void el.offsetWidth;
+    el.classList.add("is-updating");
+  }
+
   /* ---------- statistics primitives ---------- */
   // Φ(x), the standard normal CDF. Abramowitz–Stegun approximation 26.2.17.
   function phi(x) {
@@ -199,6 +246,17 @@
       dot.style.animationDuration = ANIM_MS + "ms";
       refs.valley.appendChild(dot);
       setTimeout(() => dot.remove(), ANIM_MS + 60);
+      // Lost messengers leave a small puff of dust at their last known position.
+      if (lost) {
+        setTimeout(() => {
+          if (!refs.valley.isConnected) return;
+          const puff = document.createElement("span");
+          puff.className = "lab-tg__puff";
+          puff.style.left = "50%";
+          refs.valley.appendChild(puff);
+          setTimeout(() => puff.remove(), 700);
+        }, ANIM_MS * 0.55);
+      }
     }
     function startAnim() {
       if (animTimer) return;
@@ -206,7 +264,8 @@
       spawnDot();
     }
 
-    /* ---- Live update ---- */
+    /* ---- Live update with tweened readouts ---- */
+    let prev = { naive: 1 - Math.pow(0.4, 3), strict: Math.pow(0.6, 3), delta: 0 };
     function update() {
       const p = parseFloat(refs.p.value);
       const n = parseInt(refs.n.value, 10);
@@ -217,18 +276,27 @@
       const pNaive  = 1 - Math.pow(p, n);
       const pStrict = Math.pow(1 - p, n);
       const delta   = pNaive - pStrict;
-      refs.naive.textContent  = (pNaive  * 100).toFixed(1) + "%";
-      refs.strict.textContent = (pStrict * 100).toFixed(1) + "%";
-      refs.delta.textContent  = (delta >= 0 ? "+" : "") + (delta * 100).toFixed(1) + "%";
 
-      // Choose insight text by zone of phase space
+      const pct = (v) => (v * 100).toFixed(1) + "%";
+      const sgn = (v) => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
+      tweenNumber(refs.naive,  prev.naive,  pNaive,  260, pct);
+      tweenNumber(refs.strict, prev.strict, pStrict, 260, pct);
+      tweenNumber(refs.delta,  prev.delta,  delta,   260, sgn);
+      prev = { naive: pNaive, strict: pStrict, delta: delta };
+
+      $$('.lab-experiment__metric', root).forEach(pulseRow);
+
+      // Insight text — by zone of phase space, with the occasional MIT aside.
       let txt;
-      if (n === 1)               txt = "At N = 1 the protocols coincide. The interesting structure starts at N = 2.";
+      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. Both protocols win 100% — but only because there is no problem.";
+      else if (p > 0.84)         txt = "Loss this severe — surrender starts to look like the dominant strategy. Even naive falls below 1 in 100 wins.";
+      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no acknowledgement. The interesting structure starts at N = 2.";
       else if (p < 0.05)         txt = "Loss this low, both protocols nearly always succeed. The trap is invisible here — but it is still a trap.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "p = ½. Entropy maxes out; the war becomes a coin flip. Naive still wins by accumulating tries.";
       else if (p > 0.65)         txt = "At very high loss, naive multi-send still pulls ahead by accumulating chances rather than depending on any one.";
-      else if (delta > 0.6)      txt = "Δ > 60%: the strict chain pays heavily for its caution. Each confirmation round multiplies failure probability.";
-      else if (delta > 0.3)      txt = "Δ > 30%: the strict chain is silently bleeding. Naive multi-send is strictly better.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2.";
+      else if (delta > 0.6)      txt = "Δ > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed.";
+      else if (delta > 0.3)      txt = "Δ > 30%: strict chain is paying heavily for its caution. Naive multi-send is strictly better.";
+      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2 — yes, including the regimes where it 'feels' wrong.";
       refs.insight.textContent = txt;
 
       drawPlot(p, n);
@@ -435,7 +503,8 @@
       }, plot);
     }
 
-    /* ---- Live update ---- */
+    /* ---- Live update with tweened readouts ---- */
+    let prev = { snr: 1.28, det: 0.32, fpr: 0 };
     function update() {
       const eps   = parseFloat(refs.eps.value);
       const k     = parseInt(refs.k.value, 10);
@@ -450,17 +519,26 @@
       const det = aggregateDetect(q, k);
       const fpr = aggregateDetect(ALPHA, k);
 
-      refs.snr.textContent = snr.toFixed(2);
-      refs.det.textContent = (det * 100).toFixed(1) + "%";
-      refs.fpr.textContent = (fpr * 100).toFixed(2) + "%";
+      const num1 = (v) => v.toFixed(2);
+      const pctH = (v) => (v * 100).toFixed(1) + "%";
+      const pctL = (v) => (v * 100).toFixed(2) + "%";
+      tweenNumber(refs.snr, prev.snr, snr, 240, num1);
+      tweenNumber(refs.det, prev.det, det, 240, pctH);
+      tweenNumber(refs.fpr, prev.fpr, fpr, 240, pctL);
+      prev = { snr: snr, det: det, fpr: fpr };
+
+      $$('.lab-experiment__metric', root).forEach(pulseRow);
 
       let txt;
-      if (det > 0.99)             txt = "Detection saturated — verifier wins easily under these conditions. Increase σ or shrink ε to find the cliff.";
+      if (eps < 0.04)             txt = "ε this small — the perturbation is below the noise floor. Even the verifier with the key cannot do much. (Lorenz couldn't either.)";
+      else if (det > 0.995)       txt = "Detection saturated. The verifier is winning by a landslide. To find the cliff, push σ higher or shrink ε.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "On the operating frontier: > 90% detection, low false positive. Production-credible regime.";
+                                  txt = "On the operating frontier: > 90% detection, < 10% false-positive. The production-credible regime — the one I'd ship.";
       else if (det > 0.5 && k <= 4)
                                   txt = "Small key, marginal signal — try doubling k. The gain from k = " + k + " → " + (k*2) + " comes from √k SNR amplification.";
-      else if (det < 0.2)         txt = "Watermark washed out — at this (ε, σ) the attacker has effectively defeated detection. Either raise ε or grow k.";
+      else if (det < 0.15 && sigma > 0.3)
+                                  txt = "σ at this level — the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink ε.";
+      else if (det < 0.2)         txt = "Watermark washed out. At this (ε, σ) the attacker has effectively defeated detection. Raise ε or grow k.";
       else                        txt = "k = " + k + " amplifies SNR by √k ≈ " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with ε alone.";
       refs.insight.textContent = txt;
 
