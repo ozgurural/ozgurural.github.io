@@ -18,6 +18,8 @@ main:
     url: /services/
   - title: "Lab"
     url: /lab/
+  - title: "Essays"
+    url: /essays/
   - title: "Technical Blog"
     url: /blog/
   - title: "Life Blog"

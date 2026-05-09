@@ -634,6 +634,122 @@ html[data-theme="dark"] .lab-wm__feedback--no { color: #fca5a5; }
   color: var(--ds-muted);
 }
 
+/* --------------------------------------------------------------------------
+   Essays — long-form, indirect-storytelling pieces (/essays/)
+   Typography-forward; designed to be read at the speed of a long walk.
+   -------------------------------------------------------------------------- */
+.ep-lead--secondary {
+  margin-top: -0.4rem;
+  font-size: 0.96rem;
+  color: var(--ds-soft);
+}
+
+.ep-essay {
+  margin: 2.5rem 0;
+  padding-top: 2rem;
+}
+.ep-essay__header {
+  margin-bottom: 1.4rem;
+}
+.ep-essay__title {
+  font-family: var(--ds-font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ds-ink);
+  margin: 0.4rem 0 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.ep-essay__body {
+  font-family: var(--ds-font-sans);
+  max-width: 64ch;
+  font-feature-settings: "kern", "liga", "cv11";
+}
+.ep-essay__body p {
+  font-size: 1.075rem;
+  line-height: 1.8;
+  color: var(--ds-body);
+  margin: 0 0 1.15rem;
+}
+.ep-essay__body p:first-child {
+  /* slightly heavier opening — sets the literary register */
+  font-size: 1.12rem;
+  line-height: 1.7;
+  color: var(--ds-ink);
+}
+.ep-essay__body em {
+  color: var(--ds-ink);
+  font-style: italic;
+}
+.ep-essay__body strong { color: var(--ds-ink); }
+
+/* Asides in italics within paragraphs read slightly muted */
+.ep-essay__body p > em:only-child,
+.ep-essay__body p em:first-child:last-child {
+  /* full-paragraph italic — softer color, smaller */
+  display: inline;
+  color: var(--ds-muted);
+}
+
+.ep-essay__rule {
+  margin: 1.6rem auto;
+  font-family: var(--ds-font-mono);
+  font-size: 1.4rem;
+  letter-spacing: 0.6em;
+  color: var(--ds-soft);
+  text-align: center;
+  user-select: none;
+}
+
+.ep-essay__signoff {
+  margin-top: 1.4rem !important;
+  font-size: 0.95rem !important;
+  color: var(--ds-muted) !important;
+  font-style: italic;
+}
+.ep-essay__signoff em { color: var(--ds-muted) !important; }
+
+.ep-essay__divider {
+  margin: 3rem auto;
+  font-family: var(--ds-font-display);
+  font-size: 1.3rem;
+  color: var(--ds-soft);
+  text-align: center;
+  user-select: none;
+  position: relative;
+}
+.ep-essay__divider::before,
+.ep-essay__divider::after {
+  content: "";
+  display: inline-block;
+  width: 3.5rem;
+  height: 1px;
+  background: var(--ds-line);
+  vertical-align: middle;
+  margin: 0 1rem;
+}
+
+.ep-essay__more {
+  margin-top: 2rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--ds-line);
+  font-size: 0.95rem;
+  color: var(--ds-muted);
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .ep-essay { margin: 1.6rem 0; padding-top: 1.4rem; }
+  .ep-essay__title { font-size: 1.45rem; }
+  .ep-essay__body p { font-size: 1rem; line-height: 1.7; }
+  .ep-essay__body p:first-child { font-size: 1.06rem; line-height: 1.65; }
+  .ep-essay__divider { margin: 2rem auto; }
+  .ep-essay__divider::before,
+  .ep-essay__divider::after { width: 2rem; margin: 0 0.6rem; }
+}
+
 @media (max-width: 600px) {
   .lab-tg__field { grid-template-columns: 90px 1fr 90px; }
   .lab-tg__valley { min-height: 64px; }
