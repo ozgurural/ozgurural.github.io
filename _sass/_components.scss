@@ -660,12 +660,12 @@
 }
 
 .lab-experiment__visual {
-  display: grid;
-  grid-template-columns: minmax(220px, 280px) 1fr;
-  gap: 1.1rem;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  align-items: stretch;
 }
-.lab-experiment__visual > .lab-tg__field { grid-column: 1 / -1; }
+.lab-experiment__visual > .lab-wm__grid { align-self: center; }
 
 .lab-plot {
   width: 100%;
