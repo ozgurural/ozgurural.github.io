@@ -61,6 +61,34 @@
   margin: 0 0 1.4rem;
 }
 .ep-hero__lede strong { color: var(--ds-ink); font-weight: 600; }
+/* Status line — subtle "currently / available" signal under hero lede */
+.ep-hero__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.75rem 0 0;
+  font-family: var(--ds-font-sans);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ds-muted);
+}
+.ep-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
+  flex-shrink: 0;
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ep-status-dot { animation: ep-status-pulse 2.4s ease-in-out infinite; }
+}
+@keyframes ep-status-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.20); }
+  50%      { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.05); }
+}
+
 .ep-hero__cta {
   display: flex;
   flex-wrap: wrap;

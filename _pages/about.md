@@ -14,12 +14,10 @@ redirect_from:
   <p class="ep-hero__lede">
     I'm <strong>Dr. Ozgur Ural</strong> — a senior engineer and researcher operating at the intersection of artificial intelligence, distributed systems, and cybersecurity. My work spans peer-reviewed research on <em>proof-of-learning</em> and <em>model watermarking</em>, real-time C++ kernels powering FAA Level-D flight simulators, and cloud-native services in production. I help teams move trustworthy AI from paper to runtime.
   </p>
-  <div class="ep-hero__cta">
-    <a href="/Ozgur_Ural_PhD_Resume.pdf">Resume (PDF)</a>
-    <a href="/publications/">Publications</a>
-    <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>
-    <a href="mailto:drozgurural@gmail.com">Contact</a>
-  </div>
+  <p class="ep-hero__status">
+    <span class="ep-status-dot" aria-hidden="true"></span>
+    <span>Currently in Leiden, Netherlands &nbsp;·&nbsp; open to research collaboration and technical advisory.</span>
+  </p>
 </section>
 
 <ul class="ep-stats">
@@ -134,4 +132,4 @@ redirect_from:
 
 ## Get in touch
 
-For research collaboration, technical advisory, speaking, or hiring conversations, reach me by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [open-source projects](/projects/), [professional service](/services/), and [technical writing](/blog/).
+For research collaboration, technical advisory, or speaking engagements, please reach me at [drozgurural@gmail.com](mailto:drozgurural@gmail.com).
