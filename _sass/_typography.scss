@@ -187,8 +187,17 @@ select {
   margin-top: 0;
   margin-bottom: 0.25rem;
 }
-.archive__item-title a { color: var(--ds-ink); }
-.archive__item-title a:hover { color: var(--ds-accent); }
+.archive__item-title a,
+.archive__item-title a:link,
+.archive__item-title a:visited {
+  color: var(--ds-ink);
+  text-decoration: none;
+  border-bottom: none;
+}
+.archive__item-title a:hover {
+  color: var(--ds-accent);
+  text-decoration: none;
+}
 .archive__item-excerpt,
 .archive__subtitle {
   font-family: var(--ds-font-sans);

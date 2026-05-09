@@ -306,22 +306,37 @@
 
 /* --------------------------------------------------------------------------
    Notice boxes — softer surfaces using design tokens
+   Higher specificity to win against academicpages theme rules.
    -------------------------------------------------------------------------- */
 .page__content .notice,
-.page__content .notice--info,
 .page__content .notice--primary,
+.page__content .notice--info,
 .page__content .notice--warning,
 .page__content .notice--success,
-.page__content .notice--danger {
-  background: var(--ds-surface-elev);
-  border-left: 3px solid var(--ds-accent);
-  border-radius: var(--ds-radius-sm);
-  padding: 0.85rem 1.1rem;
-  margin: 1.25rem 0;
+.page__content .notice--danger,
+.archive .notice,
+.archive .notice--info,
+.archive__item-excerpt .notice,
+.archive__item-excerpt .notice--info,
+.notice,
+.notice--primary,
+.notice--info,
+.notice--warning,
+.notice--success,
+.notice--danger {
+  background: var(--ds-surface-elev) !important;
+  border-left: 3px solid var(--ds-accent) !important;
+  border-radius: var(--ds-radius-sm) !important;
+  padding: 0.85rem 1.1rem !important;
+  margin: 1.25rem 0 !important;
   font-size: 0.98rem;
   line-height: 1.6;
-  color: var(--ds-body);
+  color: var(--ds-body) !important;
 }
+.notice p,
+.notice--info p,
+.notice strong,
+.notice--info strong { color: var(--ds-ink); }
 
 /* --------------------------------------------------------------------------
    Subtle entrance motion
