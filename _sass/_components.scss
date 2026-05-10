@@ -833,6 +833,79 @@ html[data-theme="dark"] .lab-experiment__metric--strict .lab-experiment__metric-
   border-left: 2px solid var(--ds-accent-soft);
 }
 
+/* ---- Triple Modular Redundancy — channel strip + voter flash ---- */
+.lab-tmr__strip {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  column-gap: 0.85rem;
+  row-gap: 0.45rem;
+  padding: 0.85rem 1rem;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+}
+.lab-tmr__row { display: contents; }
+.lab-tmr__row-label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  align-self: center;
+  text-align: right;
+}
+.lab-tmr__row--sys .lab-tmr__row-label {
+  color: var(--ds-accent);
+  font-weight: 700;
+}
+.lab-tmr__cells {
+  display: flex;
+  gap: 2px;
+  height: 18px;
+  align-items: stretch;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.lab-tmr__row--sys .lab-tmr__cells {
+  height: 22px;
+  outline: 1px solid var(--ds-line);
+  outline-offset: 1px;
+  border-radius: 4px;
+  transition: outline-color 0.25s ease, box-shadow 0.25s ease;
+}
+.lab-tmr__row--sys.is-flashing .lab-tmr__cells {
+  outline-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.35), 0 0 12px rgba(220, 38, 38, 0.5);
+  animation: lab-tmr-sys-flash 0.6s ease-out;
+}
+@keyframes lab-tmr-sys-flash {
+  0%   { outline-color: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.5), 0 0 18px rgba(220, 38, 38, 0.7); }
+  100% { outline-color: var(--ds-line); box-shadow: 0 0 0 0 transparent; }
+}
+.lab-tmr__cell {
+  flex: 1 1 0;
+  min-width: 8px;
+  background: var(--ds-line);
+  border-radius: 1px;
+  transition: background-color 0.15s ease;
+  animation: lab-tmr-cell-in 0.22s ease-out both;
+}
+.lab-tmr__cell--ok    { background: #16a34a; }
+.lab-tmr__cell--fault { background: #dc2626; }
+html[data-theme="dark"] .lab-tmr__cell--ok    { background: #4ade80; }
+html[data-theme="dark"] .lab-tmr__cell--fault { background: #f87171; }
+@keyframes lab-tmr-cell-in {
+  from { transform: scaleY(0.3); opacity: 0; }
+  to   { transform: scaleY(1);   opacity: 1; }
+}
+
+/* TMR card: stack its parts vertically with breathing room. */
+.lab-tmr {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 /* ---- Calibration probes ---- */
 .lab-probes {
   margin: 2.5rem 0 0;

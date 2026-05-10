@@ -553,6 +553,236 @@
   }
 
   /* ============================================================================
+     PUZZLE 3 · Triple Modular Redundancy
+     A live simulation of three independent channels + a majority voter, with
+     correlation between channels controlled by a slider. The math is closed-
+     form: P(sys fail) = ρ·q + (1−ρ)·(3q²−2q³). The curve plot draws four
+     curves (ρ ∈ {0, 0.1, 0.5, 1}) plus the single-channel y=q line, with a
+     marker at the current operating point.
+     ============================================================================ */
+  function initTMRLab() {
+    const root = document.getElementById("lab-tmr");
+    if (!root) return;
+
+    const refs = {
+      q:        $('[data-role="q"]', root),
+      rho:      $('[data-role="rho"]', root),
+      qVal:     $('[data-role="q-val"]', root),
+      rhoVal:   $('[data-role="rho-val"]', root),
+      sysVal:   $('[data-role="sys-val"]', root),
+      singleVal:$('[data-role="single-val"]', root),
+      gainVal:  $('[data-role="gain-val"]', root),
+      insight:  $('[data-role="insight-tmr"]', root),
+      plot:     $('[data-role="plot-tmr"]', root),
+      cells1:   $('[data-cells="1"]', root),
+      cells2:   $('[data-cells="2"]', root),
+      cells3:   $('[data-cells="3"]', root),
+      cellsSys: $('[data-cells="sys"]', root),
+    };
+
+    /* Closed-form system failure rate. */
+    function pSysFail(q, rho) {
+      const indep = 3*q*q*(1 - q) + q*q*q; // = 3q² − 2q³
+      return rho*q + (1 - rho)*indep;
+    }
+
+    /* ---- Plot rendering: P(sys fail) vs q for several ρ curves ---- */
+    const PW = 640, PH = 260;
+    const M = { l: 56, r: 110, t: 28, b: 40 };
+    const innerW = PW - M.l - M.r;
+    const innerH = PH - M.t - M.b;
+    const Q_MAX = 0.30;
+    const Y_MAX = 0.30;
+    const RHO_CURVES = [0, 0.1, 0.5, 1];
+
+    function xFor(qq) { return M.l + (qq / Q_MAX) * innerW; }
+    function yFor(p)  { return M.t + (1 - p / Y_MAX) * innerH; }
+
+    function drawPlot(qCur, rhoCur) {
+      const plot = refs.plot;
+      while (plot.firstChild) plot.removeChild(plot.firstChild);
+
+      const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
+      title.textContent = "P(sys fail) vs q | ρ = " + rhoCur.toFixed(2);
+
+      // Y gridlines + ticks
+      [0, 0.10, 0.20, 0.30].forEach((v) => {
+        svg("line", {
+          x1: M.l, x2: M.l + innerW,
+          y1: yFor(v), y2: yFor(v),
+          class: "lab-plot__grid",
+        }, plot);
+        const t = svg("text", {
+          x: M.l - 8, y: yFor(v) + 4,
+          class: "lab-plot__tick lab-plot__tick--y",
+        }, plot);
+        t.textContent = (v * 100).toFixed(0) + "%";
+      });
+      // X ticks
+      [0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30].forEach((qq) => {
+        svg("line", {
+          x1: xFor(qq), x2: xFor(qq),
+          y1: yFor(0), y2: yFor(0) + 4,
+          class: "lab-plot__tick-mark",
+        }, plot);
+        const t = svg("text", {
+          x: xFor(qq), y: yFor(0) + 18,
+          class: "lab-plot__tick lab-plot__tick--x",
+        }, plot);
+        t.textContent = qq.toFixed(2);
+      });
+      const xlabel = svg("text", { x: M.l + innerW/2, y: PH - 8, class: "lab-plot__axis-label" }, plot);
+      xlabel.textContent = "q (per-channel)";
+
+      // Single-channel reference line (y = q), drawn as the "strict" amber curve
+      let dSingle = "";
+      const STEPS = 80;
+      for (let i = 0; i <= STEPS; i++) {
+        const qq = (i / STEPS) * Q_MAX;
+        const x = xFor(qq);
+        const y = yFor(Math.min(qq, Y_MAX));
+        dSingle += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+      }
+      svg("path", { d: dSingle, class: "lab-plot__curve lab-plot__curve--strict" }, plot);
+
+      // TMR curves for several ρ
+      RHO_CURVES.forEach((rho) => {
+        let d = "";
+        for (let i = 0; i <= STEPS; i++) {
+          const qq = (i / STEPS) * Q_MAX;
+          const v = Math.min(pSysFail(qq, rho), Y_MAX);
+          const x = xFor(qq), y = yFor(v);
+          d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+        }
+        const isCur = Math.abs(rho - rhoCur) < 0.06;
+        svg("path", {
+          d: d,
+          class: "lab-plot__curve lab-plot__curve--wm" + (isCur ? " lab-plot__curve--wm-current" : ""),
+        }, plot);
+        // ρ label at right edge
+        const finalQ = Q_MAX;
+        const finalY = yFor(Math.min(pSysFail(finalQ, rho), Y_MAX));
+        const t = svg("text", {
+          x: M.l + innerW + 10, y: finalY + 4,
+          class: "lab-plot__legend-value lab-plot__legend-value--wm" + (isCur ? " lab-plot__legend-value--wm-current" : ""),
+        }, plot);
+        t.textContent = "ρ=" + rho;
+      });
+
+      // Single-channel label
+      const singleLabel = svg("text", {
+        x: M.l + innerW + 10,
+        y: yFor(Math.min(Q_MAX, Y_MAX)) + 4,
+        class: "lab-plot__legend-value lab-plot__legend-value--strict",
+      }, plot);
+      singleLabel.textContent = "single";
+
+      // Vertical marker at current q
+      svg("line", {
+        x1: xFor(qCur), x2: xFor(qCur),
+        y1: yFor(0), y2: yFor(Y_MAX),
+        class: "lab-plot__marker-x",
+      }, plot);
+
+      // Marker dot at (q, p_sys)
+      const v = Math.min(pSysFail(qCur, rhoCur), Y_MAX);
+      svg("circle", {
+        cx: xFor(qCur), cy: yFor(v), r: 5,
+        class: "lab-plot__marker-dot lab-plot__marker-dot--wm",
+      }, plot);
+    }
+
+    /* ---- Live simulation: scrolling channel strip ---- */
+    const MAX_CELLS = 28;
+    let totalTicks = 0;
+    let sysFailCount = 0;
+    let simTimer = null;
+    let currentQ = 0.05, currentRho = 0;
+
+    function addCell(container, isFault) {
+      const cell = document.createElement("span");
+      cell.className = "lab-tmr__cell " + (isFault ? "lab-tmr__cell--fault" : "lab-tmr__cell--ok");
+      container.appendChild(cell);
+      while (container.children.length > MAX_CELLS) {
+        container.removeChild(container.firstChild);
+      }
+    }
+    function tick() {
+      // Common-mode event with probability ρ; if it hits, all 3 share one Bernoulli(q).
+      let fails;
+      if (Math.random() < currentRho) {
+        const f = Math.random() < currentQ;
+        fails = [f, f, f];
+      } else {
+        fails = [
+          Math.random() < currentQ,
+          Math.random() < currentQ,
+          Math.random() < currentQ,
+        ];
+      }
+      const numFail = (fails[0]?1:0) + (fails[1]?1:0) + (fails[2]?1:0);
+      const sysFail = numFail >= 2;
+      addCell(refs.cells1,   fails[0]);
+      addCell(refs.cells2,   fails[1]);
+      addCell(refs.cells3,   fails[2]);
+      addCell(refs.cellsSys, sysFail);
+      totalTicks++;
+      if (sysFail) sysFailCount++;
+      // Briefly flash the SYS row when it fails
+      if (sysFail) {
+        const sysRow = refs.cellsSys.parentElement;
+        if (sysRow) {
+          sysRow.classList.remove("is-flashing");
+          void sysRow.offsetWidth;
+          sysRow.classList.add("is-flashing");
+        }
+      }
+    }
+    function startSim() {
+      if (simTimer) return;
+      simTimer = setInterval(tick, 600);
+      tick();
+    }
+
+    /* ---- Live update from sliders ---- */
+    let prev = { sys: 3*0.05*0.05 - 2*Math.pow(0.05,3), single: 0.05, gain: 0 };
+    function update() {
+      const q   = parseFloat(refs.q.value);
+      const rho = parseFloat(refs.rho.value);
+      currentQ = q; currentRho = rho;
+      refs.qVal.textContent   = q.toFixed(3);
+      refs.rhoVal.textContent = rho.toFixed(2);
+
+      const pSys = pSysFail(q, rho);
+      const gain = pSys > 0 ? q / pSys : 1;
+
+      const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
+      const pctS = (v) => (v * 100).toFixed(1) + "%";
+      const xRaw = (v) => (v >= 100 ? Math.round(v) + "×" : v.toFixed(1) + "×");
+
+      tweenNumber(refs.sysVal,    prev.sys,    pSys,   240, pctH);
+      tweenNumber(refs.singleVal, prev.single, q,      240, pctS);
+      tweenNumber(refs.gainVal,   prev.gain,   gain,   260, xRaw);
+      prev = { sys: pSys, single: q, gain: gain };
+      $$('.lab-experiment__metric', root).forEach(pulseRow);
+
+      let txt;
+      if (rho >= 0.95)        txt = "ρ ≈ 1: redundancy with full correlation isn't redundancy — it's a single channel three times. (See: every famous software bug compiled identically into 'three' systems.)";
+      else if (rho < 0.05)    txt = "Independent faults — TMR delivers cubic reliability gain. This is the regime DO-178C lives in.";
+      else if (rho < 0.5)     txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than ρ alone would suggest.";
+      else                    txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor — not the ~1/(3q) you get under independence.";
+      refs.insight.textContent = txt;
+
+      drawPlot(q, rho);
+    }
+
+    refs.q.addEventListener("input", update);
+    refs.rho.addEventListener("input", update);
+    update();
+    startSim();
+  }
+
+  /* ============================================================================
      SECTION 3 · Calibration probes — short MCQ, one-sentence reveal
      ============================================================================ */
   function initProbes() {
@@ -585,6 +815,7 @@
   function boot() {
     initTwoGeneralsLab();
     initVerifierLab();
+    initTMRLab();
     initProbes();
   }
   if (document.readyState === "loading") {

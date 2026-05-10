@@ -143,11 +143,88 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   </details>
 </section>
 
+<section class="lab-card lab-experiment" id="lab-tmr">
+  <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
+  <h2>Triple Modular Redundancy</h2>
+  <p class="lab-card__lead">
+    Three independent channels compute the same answer. A voter picks the majority. The miracle of TMR is reliability cubed: for independent failures, the system fails as <code>3q² − 2q³</code> instead of <code>q</code> — a brutal cubic in your favour. The footnote is that real failures are rarely independent. (The A320, the 787, and the Apollo Guidance Computer all use TMR. They use <em>diverse</em> hardware specifically because three identical computers running identical software fail identically.)
+  </p>
+
+  <div class="lab-tmr">
+    <div class="lab-experiment__controls">
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Per-channel failure rate</span>
+          <span class="lab-control__var">q</span>
+          <span class="lab-control__value" data-role="q-val">0.05</span>
+        </span>
+        <input type="range" min="0.005" max="0.30" step="0.005" value="0.05" data-role="q" aria-label="per-channel failure rate q">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Common-mode correlation</span>
+          <span class="lab-control__var">ρ</span>
+          <span class="lab-control__value" data-role="rho-val">0.00</span>
+        </span>
+        <input type="range" min="0" max="1" step="0.01" value="0.00" data-role="rho" aria-label="common-mode correlation rho">
+      </label>
+    </div>
+
+    <div class="lab-tmr__strip" aria-hidden="true">
+      <div class="lab-tmr__row" data-ch="1">
+        <span class="lab-tmr__row-label">CH 1</span>
+        <div class="lab-tmr__cells" data-cells="1"></div>
+      </div>
+      <div class="lab-tmr__row" data-ch="2">
+        <span class="lab-tmr__row-label">CH 2</span>
+        <div class="lab-tmr__cells" data-cells="2"></div>
+      </div>
+      <div class="lab-tmr__row" data-ch="3">
+        <span class="lab-tmr__row-label">CH 3</span>
+        <div class="lab-tmr__cells" data-cells="3"></div>
+      </div>
+      <div class="lab-tmr__row lab-tmr__row--sys">
+        <span class="lab-tmr__row-label">SYS</span>
+        <div class="lab-tmr__cells" data-cells="sys"></div>
+      </div>
+    </div>
+
+    <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-tmr" preserveAspectRatio="xMidYMid meet" role="img" aria-label="system failure rate vs per-channel failure rate"></svg>
+
+    <div class="lab-experiment__readout">
+      <div class="lab-experiment__metric lab-experiment__metric--detect">
+        <span class="lab-experiment__metric-label">System failure rate</span>
+        <span class="lab-experiment__metric-value" data-role="sys-val">—</span>
+        <span class="lab-experiment__metric-formula">ρq + (1−ρ)(3q² − 2q³)</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--strict">
+        <span class="lab-experiment__metric-label">Single channel</span>
+        <span class="lab-experiment__metric-value" data-role="single-val">—</span>
+        <span class="lab-experiment__metric-formula">P(fail) = q</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--naive">
+        <span class="lab-experiment__metric-label">Reliability gain</span>
+        <span class="lab-experiment__metric-value" data-role="gain-val">—</span>
+        <span class="lab-experiment__metric-formula">single ÷ TMR</span>
+      </div>
+    </div>
+
+    <p class="lab-experiment__insight" data-role="insight-tmr">Drag the sliders. The strip on top is a live simulation; the curves are closed-form.</p>
+  </div>
+
+  <details class="lab-reveal">
+    <summary>What this shows</summary>
+    <p>For <em>independent</em> per-channel failures the voter masks any single fault: the system fails iff at least two channels fail in the same tick, which is <code>3q²(1−q) + q³ ≈ 3q²</code> — far less than <code>q</code> when <code>q</code> is small. This is why aerospace, satellites, and secure enclaves love TMR.</p>
+    <p>The trap is correlation. A cosmic-ray shower, a thermal event, a power glitch, or — most often — the same software bug compiled three times, all hit all three channels at once. Under perfectly correlated failures the cubic gain collapses to identity: <code>P(sys fail) = q</code>, the same as a single channel. The slider <em>ρ</em> here interpolates between the two regimes.</p>
+    <p>This is the structural reason DO-178C requires <em>dissimilar</em> hardware <em>and</em> dissimilar software for the highest design assurance levels. Three computers running the same code aren't redundant; they're a single computer with extra parts. (And it's why N-version programming, despite its costs, has refused to die.)</p>
+  </details>
+</section>
+
 <section class="lab-probes">
   <header class="lab-probes__header">
     <span class="ep-eyebrow">Calibration · Field probes</span>
-    <h2>Six probes</h2>
-    <p class="lab-probes__lead">Short field-calibration questions. Pick one; the reveal is one sentence — the surface, not the proof. The labs above are where the proofs live.</p>
+    <h2>A dozen probes</h2>
+    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, ML, AI agents, and aerospace. Pick one; the reveal is one sentence — the surface, not the proof. The labs above are where the proofs live.</p>
   </header>
 
   <ol class="lab-probes__list">
@@ -207,6 +284,66 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="c" type="button">Overfitting</button>
       </div>
       <p class="lab-probe__reveal" hidden><strong>Geometry.</strong> Test accuracy and adversarial robustness are different geometries on the same model — natural images sit close to decision boundaries in high-dim space (Goodfellow 2014).</p>
+    </li>
+
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">7</span><span>An AI agent calls a tool with 70% per-attempt success rate, retrying up to 5 times. Effective success rate:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">70%</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">~85%</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">~99.8%</button>
+        <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>~99.8%.</strong> 1 − 0.3⁵ ≈ 99.76%. The bill comes in latency: successful runs average 1.43 attempts; the worst case is 5×.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">8</span><span>A classifier outputs confidence 0.9 on 1,000 predictions. To be <em>calibrated</em>, what fraction must be correct?</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">~60%</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">~90%</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">100%</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>~90%.</strong> Calibration means predicted probability matches empirical frequency. Most LLMs aren't — they say 0.9 and are right ~70% of the time. Brier score and ECE are the standard yardsticks.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="a">
+      <p class="lab-probe__q"><span class="lab-probe__num">9</span><span>Drone swarm, <em>n</em> = 7 nodes, up to <em>f</em> = 2 jammed (Byzantine). Can the rest agree on a target?</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Yes</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">No</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Yes.</strong> Byzantine consensus needs <code>n ≥ 3f + 1</code>; with n = 7, f = 2 you have exactly the threshold. One more jammer (f = 3) breaks it.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">10</span><span>DLP — strongest published guarantee against re-identification:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">k-anonymity</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">ℓ-diversity</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">t-closeness</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>t-closeness.</strong> k-anonymity blocks identity disclosure within an equivalence class; ℓ-diversity adds attribute disclosure protection; t-closeness additionally bounds the distribution skew. All three sit below differential privacy.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">11</span><span>Three pitot tubes on an A320 report airspeeds <code>250</code>, <code>240</code>, <code>600</code> kt. The flight computer should output:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Mean (363)</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Median + flag (250)</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Disconnect autopilot</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Median + outlier flag.</strong> Mean is dragged by the outlier; median (250) survives. Air France 447 turned on a similar moment — frozen pitots, conflicting readings, autopilot disconnect.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">12</span><span>At cruise altitude (~36 kft) single-event upset rate is roughly 10× ground level. Why?</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Heat / thermal noise</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Cosmic-ray flux</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Cabin EM</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Cosmic-ray flux.</strong> Atmospheric shielding drops with altitude; secondary neutrons hit silicon and flip bits. ECC RAM, scrubbed memory, and TMR are the standard responses — the lab two sections up is the actual maths.</p>
     </li>
   </ol>
 </section>
