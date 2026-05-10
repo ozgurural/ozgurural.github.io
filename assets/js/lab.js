@@ -290,13 +290,13 @@
       let txt;
       if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail — except the postman is honest, sober, and on time. Both protocols win 100%.";
       else if (p > 0.84)         txt = "Loss this severe — surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet'.)";
-      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation. This is what you get if you set a Bitcoin confirmation requirement of 1.";
+      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation. The interesting structure starts at N = 2.";
       else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here — but it is still a trap, and it shows up at the tails.";
       else if (Math.abs(p - 0.5) < 0.005) txt = "p = ½. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries — same trick TCP uses on bad WiFi.";
-      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one. This is also Bitcoin's six-confirmation policy at work.";
+      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one — the math every blockchain confirmation depth and every database read quorum runs on.";
       else if (delta > 0.6)      txt = "Δ > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
-      else if (delta > 0.3)      txt = "Δ > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better — same shape Satoshi codified into block confirmations.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2. Production blockchains chose naive on purpose.";
+      else if (delta > 0.3)      txt = "Δ > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better — same shape every retry-with-backoff and every blockchain confirmation depth uses.";
+      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2. Production distributed systems chose naive on purpose.";
       refs.insight.textContent = txt;
 
       drawPlot(p, n);

@@ -10,10 +10,10 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
-  <h2>Why Bitcoin Waits for Six Confirmations</h2>
-  <p class="lab-card__usecase">Used in <strong>Bitcoin</strong> · <strong>Ethereum</strong> · <strong>TCP retransmission</strong> · <strong>Database 2PC</strong></p>
+  <h2>Why Distributed Systems Fake Consensus</h2>
+  <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
   <p class="lab-card__lead">
-    Two computers want to agree: <em>did Alice send Bob $100?</em> Their messages cross the public internet — packets drop, routers crash, undersea cables get bitten by sharks (real failure mode, look it up). In 1975 a paper proved consensus over a lossy channel can never reach <em>certainty</em>. And yet your bank app says "transfer complete" in 200 ms. The trick: they don't reach certainty either. They reach <strong>arbitrarily-high probability</strong>, which at six nines is indistinguishable from certainty for anything that pays your salary. Two protocol families pull this off: <strong>naive parallel</strong> (the Bitcoin trick — keep adding confirmations; six of them put P(reorg) below 0.1%) and <strong>strict-chain</strong> (textbook two-phase commit, where every round has to succeed). The phase diagram below answers, for every loss rate <em>p</em> and depth <em>N</em>, which family wins more often. <em>Spoiler: production blockchains chose naive on purpose.</em>
+    Two computers want to agree: <em>did Alice send Bob $100?</em> Their messages cross the public internet — packets drop, routers crash, undersea cables get bitten by sharks (real failure mode, look it up). In 1975 a paper proved consensus over a lossy channel can never reach <em>certainty</em>. And yet your bank confirms in 200 ms, your blockchain finalises in seconds, and Cassandra serves your query before the last replica even hears about it. The trick: <strong>nobody reaches certainty</strong>. They reach arbitrarily-high <em>probability</em>, which at six nines is indistinguishable from certainty for anything that pays your salary. Two protocol families pull this off: <strong>naive parallel</strong> (just keep retrying — TCP retransmission, blockchain confirmation depth, microservice retry budgets) and <strong>strict-chain</strong> (textbook two-phase commit, where every round has to succeed). The phase diagram below answers, for every loss rate <em>p</em> and depth <em>N</em>, which family wins more often. <em>Spoiler: production distributed systems chose naive on purpose.</em>
   </p>
 
   <div class="lab-experiment__panel">
@@ -226,8 +226,8 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 <section class="lab-probes">
   <header class="lab-probes__header">
     <span class="ep-eyebrow">Calibration · Field probes</span>
-    <h2>Fourteen probes</h2>
-    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, ML, AI agents, blockchain, and aerospace. None are textbook trivia — each one corresponds to a system you've used today. Pick; the reveal is one sentence.</p>
+    <h2>Seventeen probes</h2>
+    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, AI agents, ML, blockchain, and aerospace. None are textbook trivia — each one corresponds to a system you've used today. Pick; the reveal is one sentence.</p>
   </header>
 
   <ol class="lab-probes__list">
@@ -367,6 +367,38 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="c" type="button">51% attack</button>
       </div>
       <p class="lab-probe__reveal" hidden><strong>Reentrancy.</strong> The withdraw function called the attacker's contract <em>before</em> updating its own balance — the attacker's contract called withdraw again, recursing through the unchanged balance. Why "checks-effects-interactions" is now Solidity scripture, and why Ethereum hard-forked.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">15</span><span>A frontier-model training run uses 16,000 GPUs for 4 weeks. Per-GPU MTBF ~100 days. Expected hardware failures during the run:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">~50</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">~500</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">~5,000</button>
+        <button class="lab-probe__choice" data-choice="d" type="button">~50,000</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>~5,000.</strong> 16,000 × 28 / 100 ≈ 4,480 expected hardware events per run. This is why every modern frontier-training stack (FSDP, DeepSpeed, Megatron) treats checkpoint-restart, sharded recovery, and async fault tolerance as a primary feature — not a footnote.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">16</span><span>Five independent LLM samples each have 80% accuracy on a task. Majority-vote accuracy:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">80%</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">~90%</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">~94%</button>
+        <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>~94%.</strong> P(≥3 of 5 correct | each 0.8) = 0.942. This is <em>self-consistency</em> sampling (Wang et al. 2022) — the same TMR voting argument three labs up, applied to LLM outputs. Diminishing returns past ~5 samples.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">17</span><span>Speculative decoding speeds up LLM inference primarily by:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Quantising the big model</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Draft-and-verify</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Batched logits</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Draft-and-verify.</strong> A small "draft" model proposes <em>k</em> tokens cheaply; the big model verifies all <em>k</em> in a single forward pass and accepts the longest correct prefix. 2–3× wall-clock speedup with no quality loss (Leviathan et al. 2023, Chen et al. 2023).</p>
     </li>
   </ol>
 </section>
