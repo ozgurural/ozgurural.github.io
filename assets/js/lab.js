@@ -286,17 +286,17 @@
 
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
-      // Insight text — by zone of phase space, with the occasional MIT aside.
+      // Insight — branches on phase-space zone, anchored to production systems.
       let txt;
-      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. Both protocols win 100% — but only because there is no problem.";
-      else if (p > 0.84)         txt = "Loss this severe — surrender starts to look like the dominant strategy. Even naive falls below 1 in 100 wins.";
-      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no acknowledgement. The interesting structure starts at N = 2.";
-      else if (p < 0.05)         txt = "Loss this low, both protocols nearly always succeed. The trap is invisible here — but it is still a trap.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "p = ½. Entropy maxes out; the war becomes a coin flip. Naive still wins by accumulating tries.";
-      else if (p > 0.65)         txt = "At very high loss, naive multi-send still pulls ahead by accumulating chances rather than depending on any one.";
-      else if (delta > 0.6)      txt = "Δ > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed.";
-      else if (delta > 0.3)      txt = "Δ > 30%: strict chain is paying heavily for its caution. Naive multi-send is strictly better.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2 — yes, including the regimes where it 'feels' wrong.";
+      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail — except the postman is honest, sober, and on time. Both protocols win 100%.";
+      else if (p > 0.84)         txt = "Loss this severe — surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet'.)";
+      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation. This is what you get if you set a Bitcoin confirmation requirement of 1.";
+      else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here — but it is still a trap, and it shows up at the tails.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "p = ½. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries — same trick TCP uses on bad WiFi.";
+      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one. This is also Bitcoin's six-confirmation policy at work.";
+      else if (delta > 0.6)      txt = "Δ > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
+      else if (delta > 0.3)      txt = "Δ > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better — same shape Satoshi codified into block confirmations.";
+      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2. Production blockchains chose naive on purpose.";
       refs.insight.textContent = txt;
 
       drawPlot(p, n);
@@ -530,14 +530,14 @@
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
       let txt;
-      if (eps < 0.04)             txt = "ε this small — the perturbation is below the noise floor. Even the verifier with the key cannot do much. (Lorenz couldn't either.)";
-      else if (det > 0.995)       txt = "Detection saturated. The verifier is winning by a landslide. To find the cliff, push σ higher or shrink ε.";
+      if (eps < 0.04)             txt = "ε this small — the perturbation is below the model's own noise floor. Even the verifier with the key cannot do much. (Lorenz couldn't either.)";
+      else if (det > 0.995)       txt = "Detection saturated. The verifier wins by a landslide. Court-credible regime: the lawyers have evidence; the thief has homework.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "On the operating frontier: > 90% detection, < 10% false-positive. The production-credible regime — the one I'd ship.";
+                                  txt = "On the operating frontier: > 90% detection, < 10% false-positive. The production-credible regime — the one a real provenance dispute can defend.";
       else if (det > 0.5 && k <= 4)
                                   txt = "Small key, marginal signal — try doubling k. The gain from k = " + k + " → " + (k*2) + " comes from √k SNR amplification.";
       else if (det < 0.15 && sigma > 0.3)
-                                  txt = "σ at this level — the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink ε.";
+                                  txt = "σ at this level — the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink ε. (At this point a determined fine-tune attack succeeds.)";
       else if (det < 0.2)         txt = "Watermark washed out. At this (ε, σ) the attacker has effectively defeated detection. Raise ε or grow k.";
       else                        txt = "k = " + k + " amplifies SNR by √k ≈ " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with ε alone.";
       refs.insight.textContent = txt;
@@ -767,10 +767,10 @@
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
       let txt;
-      if (rho >= 0.95)        txt = "ρ ≈ 1: redundancy with full correlation isn't redundancy — it's a single channel three times. (See: every famous software bug compiled identically into 'three' systems.)";
-      else if (rho < 0.05)    txt = "Independent faults — TMR delivers cubic reliability gain. This is the regime DO-178C lives in.";
-      else if (rho < 0.5)     txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than ρ alone would suggest.";
-      else                    txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor — not the ~1/(3q) you get under independence.";
+      if (rho >= 0.95)        txt = "ρ ≈ 1: redundancy with full correlation isn't redundancy — it's a single channel three times. The Therac-25 had three voting computers running the same buggy software. They all agreed, exactly when wrong.";
+      else if (rho < 0.05)    txt = "Independent faults — TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight.";
+      else if (rho < 0.5)     txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than ρ alone suggests — common-cause failures are doing real damage.";
+      else                    txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor — not the ~1/(3q) you get under independence. (Diverse-versions programming exists for exactly this reason.)";
       refs.insight.textContent = txt;
 
       drawPlot(q, rho);

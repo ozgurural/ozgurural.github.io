@@ -399,6 +399,31 @@
 }
 .lab-card__lead strong { color: var(--ds-ink); }
 
+/* "Used in: …" chip — small mono caption tagging each lab to real systems */
+.lab-card__usecase {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: baseline;
+  margin: -0.45rem 0 1rem;
+  padding: 0.35rem 0.7rem;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-left: 2px solid var(--ds-accent);
+  border-radius: 0 var(--ds-radius-sm) var(--ds-radius-sm) 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--ds-muted);
+}
+.lab-card__usecase strong {
+  font-family: var(--ds-font-display);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ds-ink);
+  font-size: 0.84rem;
+}
+
 /* Buttons used inside lab widgets */
 .lab-btn {
   display: inline-flex;

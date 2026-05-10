@@ -5,14 +5,15 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 ---
 
 <p class="ep-lead">
-  Two phase-space explorers and a set of calibration probes. The labs let you drag sliders and watch the animation react and the curves move — closed-form maths, not canned screenshots. The probes are short field-calibration questions: pick, see the answer, move on. The whole page should take about ten minutes if you stop to think. (If you open DevTools the maths leaves a forwarding address.)
+  Three live experiments. None of them are textbook abstractions — each one runs the world: your bank when you tap a card, your phone when it verifies your face, your plane when it cruises through cosmic rays. Drag the sliders. Watch what fails, when, and by how much. (And if you open DevTools the maths leaves a forwarding address.)
 </p>
 
 <section class="lab-card lab-experiment" id="lab-tg">
-  <span class="ep-eyebrow">Distributed systems · Phase-space exploration</span>
-  <h2>The Two Generals' Lab</h2>
+  <span class="ep-eyebrow">Distributed systems · Consensus</span>
+  <h2>Why Bitcoin Waits for Six Confirmations</h2>
+  <p class="lab-card__usecase">Used in <strong>Bitcoin</strong> · <strong>Ethereum</strong> · <strong>TCP retransmission</strong> · <strong>Database 2PC</strong></p>
   <p class="lab-card__lead">
-    Two armies must agree to attack. Their channel loses messengers with probability <em>p</em>. Two protocol families: <strong>naive</strong> (send <em>N</em> independent messengers, attack as long as any arrives) and <strong>strict-chain</strong> (a back-and-forth handshake of <em>N</em> messages where any single loss aborts the attack). The phase diagram below answers — for every (p, N) — which protocol wins more often. <em>Spoiler: the protocol that feels safer isn't.</em>
+    Two computers want to agree: <em>did Alice send Bob $100?</em> Their messages cross the public internet — packets drop, routers crash, undersea cables get bitten by sharks (real failure mode, look it up). In 1975 a paper proved consensus over a lossy channel can never reach <em>certainty</em>. And yet your bank app says "transfer complete" in 200 ms. The trick: they don't reach certainty either. They reach <strong>arbitrarily-high probability</strong>, which at six nines is indistinguishable from certainty for anything that pays your salary. Two protocol families pull this off: <strong>naive parallel</strong> (the Bitcoin trick — keep adding confirmations; six of them put P(reorg) below 0.1%) and <strong>strict-chain</strong> (textbook two-phase commit, where every round has to succeed). The phase diagram below answers, for every loss rate <em>p</em> and depth <em>N</em>, which family wins more often. <em>Spoiler: production blockchains chose naive on purpose.</em>
   </p>
 
   <div class="lab-experiment__panel">
@@ -76,10 +77,11 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 </section>
 
 <section class="lab-card lab-experiment" id="lab-wm">
-  <span class="ep-eyebrow">ML security · Detection-evasion frontier</span>
-  <h2>The Verifier's Lab</h2>
+  <span class="ep-eyebrow">ML security · Model provenance</span>
+  <h2>How to Prove a Stolen Model in Court</h2>
+  <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
   <p class="lab-card__lead">
-    A feature-based watermark embeds a small per-cell perturbation of magnitude <em>ε</em> at <em>k</em> known cells of a model output. An adversary, trying to wash the watermark out, adds noise of standard deviation <em>σ</em>. The verifier — who knows which cells — runs a per-cell hypothesis test (FPR fixed at 5%) and aggregates by majority. The detection rate is closed-form once you fix those three knobs. (Φ here is the standard normal CDF. If you've never had a fight with one, you've never tried to compute one by hand.)
+    Imagine you're an AI lab. You spent <em>$10M</em> training a model and shipped a public version. A competitor downloads it, fine-tunes it on a small dataset, ships it under their own brand. Their lawyers say "prove it." This is no longer hypothetical — it's been the subject of actual lawsuits in the last twelve months. <strong>Feature-based watermarking</strong> is one of the cleaner answers. At training time, the model's outputs are subtly perturbed by magnitude <em>ε</em> at <em>k</em> secret cells (the "key"). The competitor doesn't know which cells. The verifier — you — does. Even after their fine-tuning, the watermark survives in the statistical pattern. The phase diagram below maps the detection-vs-evasion frontier this lives on. (Φ is the standard normal CDF. If you've never had a fight with one, you've never tried to compute one by hand.)
   </p>
 
   <div class="lab-experiment__panel">
@@ -145,9 +147,10 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 
 <section class="lab-card lab-experiment" id="lab-tmr">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
-  <h2>Triple Modular Redundancy</h2>
+  <h2>How Your Plane Survives a Cosmic Ray</h2>
+  <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
   <p class="lab-card__lead">
-    Three independent channels compute the same answer. A voter picks the majority. The miracle of TMR is reliability cubed: for independent failures, the system fails as <code>3q² − 2q³</code> instead of <code>q</code> — a brutal cubic in your favour. The footnote is that real failures are rarely independent. (The A320, the 787, and the Apollo Guidance Computer all use TMR. They use <em>diverse</em> hardware specifically because three identical computers running identical software fail identically.)
+    Your A320 is at 36,000 ft, somewhere over the Atlantic. A cosmic ray — a high-energy particle from a supernova that may have detonated before the dinosaurs — strikes the flight computer's silicon and flips a bit. Without redundancy, that bit could be the difference between <em>maintain altitude</em> and <em>pitch down 5°</em>. <strong>Triple Modular Redundancy</strong> is the answer the industry settled on: three independent flight computers compute the same answer, a voter picks the majority, single-channel errors get masked. The miracle is reliability cubed: P(sys fail) drops from <em>q</em> to <code>3q² − 2q³</code> — a brutal cubic in your favour. The catch is that "independent" is doing all the work. Cosmic-ray showers, thermal events, and — most often — the same software bug compiled three times all hit the channels at once. The slider <em>ρ</em> below dials in that correlation. (Yes, this is the structural reason DO-178C requires <em>diverse</em> hardware AND diverse software for the highest design assurance levels.)
   </p>
 
   <div class="lab-tmr">
@@ -223,8 +226,8 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
 <section class="lab-probes">
   <header class="lab-probes__header">
     <span class="ep-eyebrow">Calibration · Field probes</span>
-    <h2>A dozen probes</h2>
-    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, ML, AI agents, and aerospace. Pick one; the reveal is one sentence — the surface, not the proof. The labs above are where the proofs live.</p>
+    <h2>Fourteen probes</h2>
+    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, ML, AI agents, blockchain, and aerospace. None are textbook trivia — each one corresponds to a system you've used today. Pick; the reveal is one sentence.</p>
   </header>
 
   <ol class="lab-probes__list">
@@ -344,6 +347,26 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="c" type="button">Cabin EM</button>
       </div>
       <p class="lab-probe__reveal" hidden><strong>Cosmic-ray flux.</strong> Atmospheric shielding drops with altitude; secondary neutrons hit silicon and flip bits. ECC RAM, scrubbed memory, and TMR are the standard responses — the lab two sections up is the actual maths.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">13</span><span>Why do exchanges wait for <em>six</em> Bitcoin block confirmations before crediting a deposit?</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Tradition</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Probabilistic finality</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Latency budget</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Probabilistic finality.</strong> P(reorg | N confirmations) ≈ (α / (1 − α))<sup>N</sup>. At α = 0.1 attacker hash-power and N = 6, that's ~10<sup>−6</sup>. Six is just the bargain that pays the asymptote — the same trick the Two Generals' Lab visualises.</p>
+    </li>
+
+    <li class="lab-probe" data-correct="b">
+      <p class="lab-probe__q"><span class="lab-probe__num">14</span><span>The DAO hack drained ~$50M from an Ethereum smart contract in 2016. Root cause:</span></p>
+      <div class="lab-probe__choices">
+        <button class="lab-probe__choice" data-choice="a" type="button">Weak ECDSA</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Reentrancy</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">51% attack</button>
+      </div>
+      <p class="lab-probe__reveal" hidden><strong>Reentrancy.</strong> The withdraw function called the attacker's contract <em>before</em> updating its own balance — the attacker's contract called withdraw again, recursing through the unchanged balance. Why "checks-effects-interactions" is now Solidity scripture, and why Ethereum hard-forked.</p>
     </li>
   </ol>
 </section>
