@@ -637,6 +637,11 @@
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-sm);
 }
+.lab-experiment__slider-guide {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--ds-soft);
+}
 .lab-control {
   display: flex;
   flex-direction: column;
