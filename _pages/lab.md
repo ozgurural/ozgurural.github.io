@@ -1,11 +1,11 @@
 ---
 permalink: /lab/
 title: "Lab"
-excerpt: "Two interactive phase-space explorers in distributed systems and ML security — drag the sliders, watch the curves move."
+excerpt: "Three interactive phase-space explorers in distributed systems, ML security, and aerospace fault tolerance. Drag the sliders, watch the curves move."
 ---
 
 <p class="ep-lead">
-  Three live experiments. None of them are textbook abstractions — each one runs the world: your bank when you tap a card, your phone when it verifies your face, your plane when it cruises through cosmic rays. Drag the sliders. Watch what fails, when, and by how much. (And if you open DevTools the maths leaves a forwarding address.)
+  Three live experiments. None of them are textbook abstractions. Each one runs the world: your bank when you tap a card, your phone when it verifies your face, your plane when it cruises through cosmic rays. Drag the sliders. Watch what fails, when, and by how much. (And if you open DevTools the maths leaves a forwarding address.)
 </p>
 
 <section class="lab-card lab-experiment" id="lab-tg">
@@ -13,7 +13,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   <h2>Why Distributed Systems Fake Consensus</h2>
   <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
   <p class="lab-card__lead">
-    Two computers want to agree: <em>did Alice send Bob $100?</em> Their messages cross the public internet — packets drop, routers crash, undersea cables get bitten by sharks (real failure mode, look it up). In 1975 a paper proved consensus over a lossy channel can never reach <em>certainty</em>. And yet your bank confirms in 200 ms, your blockchain finalises in seconds, and Cassandra serves your query before the last replica even hears about it. The trick: <strong>nobody reaches certainty</strong>. They reach arbitrarily-high <em>probability</em>, which at six nines is indistinguishable from certainty for anything that pays your salary. Two protocol families pull this off: <strong>naive parallel</strong> (just keep retrying — TCP retransmission, blockchain confirmation depth, microservice retry budgets) and <strong>strict-chain</strong> (textbook two-phase commit, where every round has to succeed). The phase diagram below answers, for every loss rate <em>p</em> and depth <em>N</em>, which family wins more often. <em>Spoiler: production distributed systems chose naive on purpose.</em>
+    Two computers want to agree: <em>did Alice send Bob $100?</em> Their messages cross the public internet. Packets drop, routers crash, undersea cables get bitten by sharks (real failure mode, look it up). In 1975 a paper proved consensus over a lossy channel can never reach <em>certainty</em>. And yet your bank confirms in 200 ms, your blockchain finalises in seconds, and Cassandra serves your query before the last replica even hears about it. The trick: <strong>nobody reaches certainty</strong>. They reach arbitrarily-high <em>probability</em>, which at six nines is indistinguishable from certainty for anything that pays your salary. Two protocol families pull this off: <strong>naive parallel</strong> (just keep retrying: TCP retransmission, blockchain confirmation depth, microservice retry budgets) and <strong>strict-chain</strong> (textbook two-phase commit, where every round has to succeed). The naive protocol wins for any p &gt; 0 and N &ge; 2. That is not the interesting question. The interesting question is: <em>what is the minimum N to hit a target reliability at a given loss rate?</em> That is the design question every distributed systems engineer faces when sizing retry budgets, confirmation depths, and quorum sizes. Raft, Cassandra, and Bitcoin confirmation depth all answer it the same way. The phase diagram below shows you why. <em>Drag the sliders and find the operating point yourself.</em>
   </p>
 
   <div class="lab-experiment__panel">
@@ -64,15 +64,21 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <span class="lab-experiment__metric-value" data-role="delta-val">—</span>
         <span class="lab-experiment__metric-formula">in favour of naive</span>
       </div>
+      <div class="lab-experiment__metric lab-experiment__metric--minN">
+        <span class="lab-experiment__metric-label">Min N for 99%</span>
+        <span class="lab-experiment__metric-value" data-role="minN-val">—</span>
+        <span class="lab-experiment__metric-formula">naive ≥ 0.99</span>
+      </div>
     </div>
 
     <p class="lab-experiment__insight" data-role="insight">Drag the sliders.</p>
+    <p class="lab-experiment__sweet" data-role="sweet-spot-tg" hidden></p>
   </div>
 
   <details class="lab-reveal">
     <summary>What this shows</summary>
-    <p>Two protocols, both intuitive, both feasible — and one strictly dominates the other for any non-trivial loss rate. <strong>Naive</strong> sends N parallel messengers and attacks if at least one arrives: P(win) = 1 − p<sup>N</sup>, which approaches 1 as N grows. <strong>Strict-chain</strong> requires every messenger in a back-and-forth handshake to arrive — failure of any one aborts: P(win) = (1 − p)<sup>N</sup>, which falls to 0.</p>
-    <p>For p = 0.4 and N = 5, naive wins 99% of battles; strict-chain wins about 8%. Yet "wait for confirmation" is the protocol every cautious engineer reaches for. The phase diagram tells you it's a trap. The deeper structural reason is that each additional confirmation round multiplies the failure probability, while parallel sends multiply the success probability — additive vs multiplicative composition of independent events. Production consensus protocols (Paxos, Raft) avoid the trap by using quorum-style any-of-N tolerance rather than every-of-N chains.</p>
+    <p>Two protocols, both intuitive, both feasible. One strictly dominates the other for any non-trivial loss rate. <strong>Naive</strong> sends N parallel messengers and succeeds if at least one arrives: P(win) = 1 &minus; p<sup>N</sup>, which approaches 1 as N grows. <strong>Strict-chain</strong> requires every messenger in a back-and-forth handshake to arrive. Failure of any one aborts: P(win) = (1 &minus; p)<sup>N</sup>, which falls to 0.</p>
+    <p>The naive protocol wins for any p &gt; 0 and N &ge; 2. That is not the interesting result. The interesting result is the minimum-N design question: given a target reliability R and a measured loss rate p, what is the smallest N that achieves it? For naive multi-send, the answer is N = &lceil;log(1 &minus; R) / log(p)&rceil;. At R = 99% and p = 0.4, that is N = 5. At p = 0.1, it is N = 2. This is the calculation behind every retry budget, every confirmation depth, and every quorum size in production distributed systems. Raft, Cassandra, and Bitcoin confirmation depth all live in the regime where p is between 0.10 and 0.75 and N is small. The "Min N for 99%" readout above computes this directly. Drag p to a realistic WAN loss rate and read off the minimum confirmation depth your protocol needs. The strict-chain protocol needs the same N to achieve a far lower reliability, which is the structural reason two-phase commit has a blocking problem and Paxos does not.</p>
   </details>
 </section>
 
@@ -81,7 +87,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   <h2>How to Prove a Stolen Model in Court</h2>
   <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
   <p class="lab-card__lead">
-    Imagine you're an AI lab. You spent <em>$10M</em> training a model and shipped a public version. A competitor downloads it, fine-tunes it on a small dataset, ships it under their own brand. Their lawyers say "prove it." This is no longer hypothetical — it's been the subject of actual lawsuits in the last twelve months. <strong>Feature-based watermarking</strong> is one of the cleaner answers. At training time, the model's outputs are subtly perturbed by magnitude <em>ε</em> at <em>k</em> secret cells (the "key"). The competitor doesn't know which cells. The verifier — you — does. Even after their fine-tuning, the watermark survives in the statistical pattern. The phase diagram below maps the detection-vs-evasion frontier this lives on. (Φ is the standard normal CDF. If you've never had a fight with one, you've never tried to compute one by hand.)
+    Imagine you are an AI lab. You spent <em>$10M</em> training a model and shipped a public version. A competitor downloads it, fine-tunes it on a small dataset, ships it under their own brand. Their lawyers say "prove it." This is no longer hypothetical. It has been the subject of actual lawsuits in the last twelve months. <strong>Feature-based watermarking</strong> is one of the cleaner answers. At training time, the model's outputs are subtly perturbed by magnitude <em>ε</em> at <em>k</em> secret cells (the "key"). The competitor doesn't know which cells. The verifier does. Even after their fine-tuning, the watermark survives in the statistical pattern. The engineering problem is not simply "does detection work." It is finding the operating point on the detection-evasion Pareto frontier where all three constraints hold simultaneously: detection rate &ge; 90%, false-positive rate &le; 5%, and perturbation magnitude &epsilon; &le; 0.25. Above that threshold, fine-tuned model accuracy degrades measurably, and the watermark becomes its own evidence of tampering. Below it, the watermark is court-admissible. The phase diagram below maps that frontier. (Φ is the standard normal CDF. If you have never had a fight with one, you have never tried to compute one by hand.)
   </p>
 
   <div class="lab-experiment__panel">
@@ -133,15 +139,21 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <span class="lab-experiment__metric-value" data-role="snr-val">—</span>
         <span class="lab-experiment__metric-formula">ε / √(σ²+σ₀²)</span>
       </div>
+      <div class="lab-experiment__metric lab-experiment__metric--utility">
+        <span class="lab-experiment__metric-label">Utility margin</span>
+        <span class="lab-experiment__metric-value" data-role="utility-val">—</span>
+        <span class="lab-experiment__metric-formula">0.25 − ε</span>
+      </div>
     </div>
 
     <p class="lab-experiment__insight" data-role="insight-wm">Drag the sliders.</p>
+    <p class="lab-experiment__sweet" data-role="sweet-spot-wm" hidden></p>
   </div>
 
   <details class="lab-reveal">
     <summary>What this shows</summary>
-    <p>Aggregate detection over <em>k</em> independent cells with per-cell signal-to-noise ratio SNR = ε / √(σ² + σ₀²). Per-cell detection probability is q = Φ(SNR − z<sub>α</sub>) at a fixed FPR of 5% (z<sub>α</sub> ≈ 1.645). Majority-vote on k cells gives the curves you see — increasing k <em>amplifies</em> SNR roughly by √k via the central limit theorem, which is why feature-based watermarking holds up under attacker noise that would defeat single-cell detection.</p>
-    <p>The Pareto frontier here matches what's published in the IEEE Access work (<a href="https://ieeexplore.ieee.org/abstract/document/10741282">2024</a>, <a href="https://ieeexplore.ieee.org/document/11293969">2025</a>): for proof-of-learning under spoofing, an honest trainer with a key of even k = 8 cells maintains > 90% detection against substantial fine-tuning noise — while a forger without the key cannot replicate the signature without distorting the model badly enough to fail downstream evaluation.</p>
+    <p>Aggregate detection over <em>k</em> independent cells with per-cell signal-to-noise ratio SNR = ε / √(σ² + σ₀²). Per-cell detection probability is q = Φ(SNR &minus; z<sub>α</sub>) at a fixed FPR of 5% (z<sub>α</sub> &asymp; 1.645). Majority-vote on k cells gives the curves you see. Increasing k <em>amplifies</em> SNR roughly by √k via the central limit theorem, which is why feature-based watermarking holds up under attacker noise that would defeat single-cell detection.</p>
+    <p>The three-way tradeoff is the research contribution. Detection rate, false-positive rate, and perturbation magnitude ε are not independently optimisable. Raising ε improves detection but crosses the utility-degradation threshold at ε = 0.25, above which the fine-tuned model's downstream accuracy degrades measurably. Raising k improves detection without touching ε, but only up to the point where the key size itself becomes a fingerprint. The publishable operating point is the region where all three constraints hold: detection &ge; 90%, FPR &le; 5%, ε &le; 0.25. The "Utility margin" readout above shows how much headroom remains below the degradation threshold. The Pareto frontier here matches what is published in the IEEE Access work (<a href="https://ieeexplore.ieee.org/abstract/document/10741282">2024</a>, <a href="https://ieeexplore.ieee.org/document/11293969">2025</a>): for proof-of-learning under spoofing, an honest trainer with a key of even k = 8 cells maintains &gt; 90% detection against substantial fine-tuning noise. A forger without the key cannot replicate the signature without distorting the model badly enough to fail downstream evaluation.</p>
   </details>
 </section>
 
@@ -150,7 +162,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   <h2>How Your Plane Survives a Cosmic Ray</h2>
   <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
   <p class="lab-card__lead">
-    Your A320 is at 36,000 ft, somewhere over the Atlantic. A cosmic ray — a high-energy particle from a supernova that may have detonated before the dinosaurs — strikes the flight computer's silicon and flips a bit. Without redundancy, that bit could be the difference between <em>maintain altitude</em> and <em>pitch down 5°</em>. <strong>Triple Modular Redundancy</strong> is the answer the industry settled on: three independent flight computers compute the same answer, a voter picks the majority, single-channel errors get masked. The miracle is reliability cubed: P(sys fail) drops from <em>q</em> to <code>3q² − 2q³</code> — a brutal cubic in your favour. The catch is that "independent" is doing all the work. Cosmic-ray showers, thermal events, and — most often — the same software bug compiled three times all hit the channels at once. The slider <em>ρ</em> below dials in that correlation. (Yes, this is the structural reason DO-178C requires <em>diverse</em> hardware AND diverse software for the highest design assurance levels.)
+    Your A320 is at 36,000 ft, somewhere over the Atlantic. A cosmic ray, a high-energy particle from a supernova that may have detonated before the dinosaurs, strikes the flight computer's silicon and flips a bit. Without redundancy, that bit could be the difference between <em>maintain altitude</em> and <em>pitch down 5°</em>. <strong>Triple Modular Redundancy</strong> is the answer the industry settled on: three independent flight computers compute the same answer, a voter picks the majority, single-channel errors get masked. The miracle is reliability cubed: P(sys fail) drops from <em>q</em> to <code>3q² &minus; 2q³</code>, a brutal cubic in your favour. The catch is that "independent" is doing all the work. Cosmic-ray showers, thermal events, and most often the same software bug compiled three times all hit the channels at once. The slider <em>ρ</em> below dials in that correlation. The engineering question is not "does TMR help." It always helps when ρ is small. The question is: at what common-mode correlation ρ does TMR stop being worth the hardware cost? The break-even is where the reliability gain drops below 10x. Below that threshold, the cost of three diverse computers is not justified by the reliability improvement. This is the DO-178C design question. Drag ρ up and watch the gain collapse. (Yes, this is the structural reason DO-178C requires <em>diverse</em> hardware AND diverse software for the highest design assurance levels.)
   </p>
 
   <div class="lab-tmr">
@@ -210,16 +222,22 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <span class="lab-experiment__metric-value" data-role="gain-val">—</span>
         <span class="lab-experiment__metric-formula">single ÷ TMR</span>
       </div>
+      <div class="lab-experiment__metric lab-experiment__metric--breakeven">
+        <span class="lab-experiment__metric-label">Break-even ρ</span>
+        <span class="lab-experiment__metric-value" data-role="rho-breakeven-val">—</span>
+        <span class="lab-experiment__metric-formula">gain = 10×</span>
+      </div>
     </div>
 
     <p class="lab-experiment__insight" data-role="insight-tmr">Drag the sliders. The strip on top is a live simulation; the curves are closed-form.</p>
+    <p class="lab-experiment__sweet" data-role="sweet-spot-tmr" hidden></p>
   </div>
 
   <details class="lab-reveal">
     <summary>What this shows</summary>
-    <p>For <em>independent</em> per-channel failures the voter masks any single fault: the system fails iff at least two channels fail in the same tick, which is <code>3q²(1−q) + q³ ≈ 3q²</code> — far less than <code>q</code> when <code>q</code> is small. This is why aerospace, satellites, and secure enclaves love TMR.</p>
-    <p>The trap is correlation. A cosmic-ray shower, a thermal event, a power glitch, or — most often — the same software bug compiled three times, all hit all three channels at once. Under perfectly correlated failures the cubic gain collapses to identity: <code>P(sys fail) = q</code>, the same as a single channel. The slider <em>ρ</em> here interpolates between the two regimes.</p>
-    <p>This is the structural reason DO-178C requires <em>dissimilar</em> hardware <em>and</em> dissimilar software for the highest design assurance levels. Three computers running the same code aren't redundant; they're a single computer with extra parts. (And it's why N-version programming, despite its costs, has refused to die.)</p>
+    <p>For <em>independent</em> per-channel failures the voter masks any single fault: the system fails iff at least two channels fail in the same tick, which is <code>3q²(1&minus;q) + q³ &asymp; 3q²</code>, far less than <code>q</code> when <code>q</code> is small. This is why aerospace, satellites, and secure enclaves love TMR.</p>
+    <p>The trap is correlation. A cosmic-ray shower, a thermal event, a power glitch, or most often the same software bug compiled three times, all hit all three channels at once. Under perfectly correlated failures the cubic gain collapses to identity: <code>P(sys fail) = q</code>, the same as a single channel. The slider <em>ρ</em> here interpolates between the two regimes.</p>
+    <p>The break-even question is the DO-178C design question. For a given per-channel failure rate q, there is a critical correlation ρ* above which the reliability gain drops below 10x. Below that threshold, three diverse computers are worth every euro. Above it, the hardware cost is not justified by the reliability improvement. The "Break-even ρ" readout above computes ρ* directly from the closed-form expression: ρ* = (q/10 &minus; indep) / (q &minus; indep), where indep = 3q² &minus; 2q³. This is the structural reason DO-178C requires <em>dissimilar</em> hardware <em>and</em> dissimilar software for the highest design assurance levels. Three computers running the same code are not redundant; they are a single computer with extra parts. (And it is why N-version programming, despite its costs, has refused to die.)</p>
   </details>
 </section>
 
@@ -227,7 +245,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
   <header class="lab-probes__header">
     <span class="ep-eyebrow">Calibration · Field probes</span>
     <h2>Seventeen probes</h2>
-    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, AI agents, ML, blockchain, and aerospace. None are textbook trivia — each one corresponds to a system you've used today. Pick; the reveal is one sentence.</p>
+    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, AI agents, ML, blockchain, and aerospace. None are textbook trivia. Each one corresponds to a system you've used today. Pick; the reveal is one sentence.</p>
   </header>
 
   <ol class="lab-probes__list">
@@ -286,7 +304,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="b" type="button">Geometry</button>
         <button class="lab-probe__choice" data-choice="c" type="button">Overfitting</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Geometry.</strong> Test accuracy and adversarial robustness are different geometries on the same model — natural images sit close to decision boundaries in high-dim space (Goodfellow 2014).</p>
+      <p class="lab-probe__reveal" hidden><strong>Geometry.</strong> Test accuracy and adversarial robustness are different geometries on the same model. Natural images sit close to decision boundaries in high-dim space (Goodfellow 2014).</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -297,7 +315,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="c" type="button">~99.8%</button>
         <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~99.8%.</strong> 1 − 0.3⁵ ≈ 99.76%. The bill comes in latency: successful runs average 1.43 attempts; the worst case is 5×.</p>
+      <p class="lab-probe__reveal" hidden><strong>~99.8%.</strong> 1 − 0.3⁵ ≈ 99.76%. The bill comes in latency: successful runs average 1.43 attempts; the worst case is 5x.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -307,7 +325,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="b" type="button">~90%</button>
         <button class="lab-probe__choice" data-choice="c" type="button">100%</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~90%.</strong> Calibration means predicted probability matches empirical frequency. Most LLMs aren't — they say 0.9 and are right ~70% of the time. Brier score and ECE are the standard yardsticks.</p>
+      <p class="lab-probe__reveal" hidden><strong>~90%.</strong> Calibration means predicted probability matches empirical frequency. Most LLMs aren't. They say 0.9 and are right ~70% of the time. Brier score and ECE are the standard yardsticks.</p>
     </li>
 
     <li class="lab-probe" data-correct="a">
@@ -336,7 +354,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="b" type="button">Median + flag (250)</button>
         <button class="lab-probe__choice" data-choice="c" type="button">Disconnect autopilot</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Median + outlier flag.</strong> Mean is dragged by the outlier; median (250) survives. Air France 447 turned on a similar moment — frozen pitots, conflicting readings, autopilot disconnect.</p>
+      <p class="lab-probe__reveal" hidden><strong>Median + outlier flag.</strong> Mean is dragged by the outlier; median (250) survives. Air France 447 turned at a similar pivot. Frozen pitots, conflicting readings, autopilot disconnect.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -346,7 +364,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="b" type="button">Cosmic-ray flux</button>
         <button class="lab-probe__choice" data-choice="c" type="button">Cabin EM</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Cosmic-ray flux.</strong> Atmospheric shielding drops with altitude; secondary neutrons hit silicon and flip bits. ECC RAM, scrubbed memory, and TMR are the standard responses — the lab two sections up is the actual maths.</p>
+      <p class="lab-probe__reveal" hidden><strong>Cosmic-ray flux.</strong> Atmospheric shielding drops with altitude; secondary neutrons hit silicon and flip bits. ECC RAM, scrubbed memory, and TMR are the standard responses. The lab two sections up is the actual maths.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -356,7 +374,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="b" type="button">Probabilistic finality</button>
         <button class="lab-probe__choice" data-choice="c" type="button">Latency budget</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Probabilistic finality.</strong> P(reorg | N confirmations) ≈ (α / (1 − α))<sup>N</sup>. At α = 0.1 attacker hash-power and N = 6, that's ~10<sup>−6</sup>. Six is just the bargain that pays the asymptote — the same trick the Two Generals' Lab visualises.</p>
+      <p class="lab-probe__reveal" hidden><strong>Probabilistic finality.</strong> P(reorg | N confirmations) ≈ (α / (1 − α))<sup>N</sup>. At α = 0.1 attacker hash-power and N = 6, that's ~10<sup>−6</sup>. Six is just the bargain that pays the asymptote, the same trick the Two Generals' Lab visualises.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -366,7 +384,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="b" type="button">Reentrancy</button>
         <button class="lab-probe__choice" data-choice="c" type="button">51% attack</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Reentrancy.</strong> The withdraw function called the attacker's contract <em>before</em> updating its own balance — the attacker's contract called withdraw again, recursing through the unchanged balance. Why "checks-effects-interactions" is now Solidity scripture, and why Ethereum hard-forked.</p>
+      <p class="lab-probe__reveal" hidden><strong>Reentrancy.</strong> The withdraw function called the attacker's contract <em>before</em> updating its own balance. The attacker's contract called withdraw again, recursing through the unchanged balance. Why "checks-effects-interactions" is now Solidity scripture, and why Ethereum hard-forked.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -377,7 +395,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="c" type="button">~5,000</button>
         <button class="lab-probe__choice" data-choice="d" type="button">~50,000</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~5,000.</strong> 16,000 × 28 / 100 ≈ 4,480 expected hardware events per run. This is why every modern frontier-training stack (FSDP, DeepSpeed, Megatron) treats checkpoint-restart, sharded recovery, and async fault tolerance as a primary feature — not a footnote.</p>
+      <p class="lab-probe__reveal" hidden><strong>~5,000.</strong> 16,000 × 28 / 100 ≈ 4,480 expected hardware events per run. This is why every modern frontier-training stack (FSDP, DeepSpeed, Megatron) treats checkpoint-restart, sharded recovery, and async fault tolerance as a primary feature, not a footnote.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -388,7 +406,7 @@ excerpt: "Two interactive phase-space explorers in distributed systems and ML se
         <button class="lab-probe__choice" data-choice="c" type="button">~94%</button>
         <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~94%.</strong> P(≥3 of 5 correct | each 0.8) = 0.942. This is <em>self-consistency</em> sampling (Wang et al. 2022) — the same TMR voting argument three labs up, applied to LLM outputs. Diminishing returns past ~5 samples.</p>
+      <p class="lab-probe__reveal" hidden><strong>~94%.</strong> P(≥3 of 5 correct | each 0.8) = 0.942. This is <em>self-consistency</em> sampling (Wang et al. 2022), the same TMR voting argument three labs up, applied to LLM outputs. Diminishing returns past ~5 samples.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">

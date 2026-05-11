@@ -106,6 +106,8 @@
       naive:    $('[data-role="naive-val"]', root),
       strict:   $('[data-role="strict-val"]', root),
       delta:    $('[data-role="delta-val"]', root),
+      minNVal:  $('[data-role="minN-val"]', root),
+      sweetTg:  $('[data-role="sweet-spot-tg"]', root),
       insight:  $('[data-role="insight"]', root),
       plot:     $('[data-role="plot"]', root),
       valley:   $('[data-role="valley"]', root),
@@ -235,8 +237,12 @@
     /* ---- Animation strip: continuous messengers at current p ---- */
     let currentP = 0.40;
     const ANIM_MS = 1400;
-    const SPAWN_MS = 700;
+    let spawnMs = 700;
+    let lastSweetZone = false;
     let animTimer = null;
+    function stopAnim() {
+      if (animTimer) { clearInterval(animTimer); animTimer = null; }
+    }
     function spawnDot() {
       if (!refs.valley.isConnected) return;
       const dir = Math.random() < 0.5 ? "ab" : "ba";
@@ -260,9 +266,17 @@
     }
     function startAnim() {
       if (animTimer) return;
-      animTimer = setInterval(spawnDot, SPAWN_MS);
+      animTimer = setInterval(spawnDot, spawnMs);
       spawnDot();
     }
+    function restartAnim() {
+      stopAnim();
+      animTimer = setInterval(spawnDot, spawnMs);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { stopAnim(); } else { startAnim(); }
+    });
 
     /* ---- Live update with tweened readouts ---- */
     let prev = { naive: 1 - Math.pow(0.4, 3), strict: Math.pow(0.6, 3), delta: 0 };
@@ -286,17 +300,46 @@
 
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
+      // Minimum N for naive to hit 99% at current p
+      let minN99;
+      if (p <= 0) minN99 = 1;
+      else if (p >= 0.99) minN99 = Infinity;
+      else minN99 = Math.ceil(Math.log(0.01) / Math.log(p));
+      refs.minNVal.textContent = isFinite(minN99) ? minN99 : "\u221e";
+
+      // Sweet spot detection
+      const inSweetZone = p >= 0.10 && p <= 0.75 && isFinite(minN99) && n >= minN99;
+      if (refs.sweetTg) {
+        refs.sweetTg.hidden = !inSweetZone;
+        if (inSweetZone) {
+          refs.sweetTg.textContent = "You found the operating point. At p = " + p.toFixed(2) + " and N = " + n + ", naive multi-send hits " + (pNaive*100).toFixed(1) + "% reliability. This is the regime Raft, Cassandra, and Bitcoin confirmation depth all live in. Strict-chain manages " + (pStrict*100).toFixed(1) + "% -- which is why two-phase commit has a blocking problem and Paxos does not.";
+        }
+      }
+
+      // Animation speed: faster in sweet zone; restart only when zone changes
+      const newSpawnMs = inSweetZone ? 500 : 700;
+      if (newSpawnMs !== spawnMs || inSweetZone !== lastSweetZone) {
+        spawnMs = newSpawnMs;
+        restartAnim();
+      }
+      lastSweetZone = inSweetZone;
+
+      // Valley class for sweet zone styling
+      if (refs.valley) {
+        refs.valley.classList.toggle("lab-tg__valley--sweet", inSweetZone);
+      }
+
       // Insight — branches on phase-space zone, anchored to production systems.
       let txt;
-      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail — except the postman is honest, sober, and on time. Both protocols win 100%.";
-      else if (p > 0.84)         txt = "Loss this severe — surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet'.)";
+      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. The postman is honest, sober, and on time. Both protocols win 100%.";
+      else if (p > 0.84)         txt = "Loss this severe and surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet'.)";
       else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation. The interesting structure starts at N = 2.";
-      else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here — but it is still a trap, and it shows up at the tails.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "p = ½. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries — same trick TCP uses on bad WiFi.";
-      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one — the math every blockchain confirmation depth and every database read quorum runs on.";
-      else if (delta > 0.6)      txt = "Δ > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
-      else if (delta > 0.3)      txt = "Δ > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better — same shape every retry-with-backoff and every blockchain confirmation depth uses.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p ∈ (0,1) and N ≥ 2. Production distributed systems chose naive on purpose.";
+      else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here but it is still a trap, and it shows up at the tails.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "p = 0.5. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries, same trick TCP uses on bad WiFi.";
+      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one. That is the math every blockchain confirmation depth and every database read quorum runs on.";
+      else if (delta > 0.6)      txt = "Delta > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
+      else if (delta > 0.3)      txt = "Delta > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better, same shape every retry-with-backoff and every blockchain confirmation depth uses.";
+      else                       txt = "Naive multi-send dominates strict-chain for any p in (0,1) and N >= 2. Production distributed systems chose naive on purpose.";
       refs.insight.textContent = txt;
 
       drawPlot(p, n);
@@ -316,18 +359,20 @@
     if (!root) return;
 
     const refs = {
-      eps:      $('[data-role="eps"]', root),
-      k:        $('[data-role="k"]', root),
-      sigma:    $('[data-role="sigma"]', root),
-      epsVal:   $('[data-role="eps-val"]', root),
-      kVal:     $('[data-role="k-val"]', root),
-      sigmaVal: $('[data-role="sigma-val"]', root),
-      grid:     $('[data-role="grid"]', root),
-      plot:     $('[data-role="plot-wm"]', root),
-      det:      $('[data-role="det-val"]', root),
-      fpr:      $('[data-role="fpr-val"]', root),
-      snr:      $('[data-role="snr-val"]', root),
-      insight:  $('[data-role="insight-wm"]', root),
+      eps:        $('[data-role="eps"]', root),
+      k:          $('[data-role="k"]', root),
+      sigma:      $('[data-role="sigma"]', root),
+      epsVal:     $('[data-role="eps-val"]', root),
+      kVal:       $('[data-role="k-val"]', root),
+      sigmaVal:   $('[data-role="sigma-val"]', root),
+      grid:       $('[data-role="grid"]', root),
+      plot:       $('[data-role="plot-wm"]', root),
+      det:        $('[data-role="det-val"]', root),
+      fpr:        $('[data-role="fpr-val"]', root),
+      snr:        $('[data-role="snr-val"]', root),
+      utilityVal: $('[data-role="utility-val"]', root),
+      sweetWm:    $('[data-role="sweet-spot-wm"]', root),
+      insight:    $('[data-role="insight-wm"]', root),
     };
 
     const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
@@ -529,17 +574,32 @@
 
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
+      // Utility margin: headroom below the accuracy-degradation threshold
+      const utilityMargin = 0.25 - eps;
+      if (refs.utilityVal) {
+        refs.utilityVal.textContent = (utilityMargin >= 0 ? "+" : "") + utilityMargin.toFixed(2);
+      }
+
+      // Sweet spot: publishable operating point
+      const inSweetWm = det >= 0.90 && fpr <= 0.05 && eps <= 0.25 && snr >= 1.0;
+      if (refs.sweetWm) {
+        refs.sweetWm.hidden = !inSweetWm;
+        if (inSweetWm) {
+          refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible.";
+        }
+      }
+
       let txt;
-      if (eps < 0.04)             txt = "ε this small — the perturbation is below the model's own noise floor. Even the verifier with the key cannot do much. (Lorenz couldn't either.)";
+      if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much.";
       else if (det > 0.995)       txt = "Detection saturated. The verifier wins by a landslide. Court-credible regime: the lawyers have evidence; the thief has homework.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "On the operating frontier: > 90% detection, < 10% false-positive. The production-credible regime — the one a real provenance dispute can defend.";
+                                  txt = "On the operating frontier: over 90% detection, under 10% false-positive. The production-credible regime, the one a real provenance dispute can defend.";
       else if (det > 0.5 && k <= 4)
-                                  txt = "Small key, marginal signal — try doubling k. The gain from k = " + k + " → " + (k*2) + " comes from √k SNR amplification.";
+                                  txt = "Small key, marginal signal. Try doubling k. The gain from k = " + k + " to " + (k*2) + " comes from sqrt(k) SNR amplification.";
       else if (det < 0.15 && sigma > 0.3)
-                                  txt = "σ at this level — the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink ε. (At this point a determined fine-tune attack succeeds.)";
-      else if (det < 0.2)         txt = "Watermark washed out. At this (ε, σ) the attacker has effectively defeated detection. Raise ε or grow k.";
-      else                        txt = "k = " + k + " amplifies SNR by √k ≈ " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with ε alone.";
+                                  txt = "Sigma at this level means the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink epsilon. At this point a determined fine-tune attack succeeds.";
+      else if (det < 0.2)         txt = "Watermark washed out. At this (epsilon, sigma) the attacker has effectively defeated detection. Raise epsilon or grow k.";
+      else                        txt = "k = " + k + " amplifies SNR by sqrt(k) which is approximately " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with epsilon alone.";
       refs.insight.textContent = txt;
 
       buildGrid(eps, k, sigma);
@@ -565,25 +625,36 @@
     if (!root) return;
 
     const refs = {
-      q:        $('[data-role="q"]', root),
-      rho:      $('[data-role="rho"]', root),
-      qVal:     $('[data-role="q-val"]', root),
-      rhoVal:   $('[data-role="rho-val"]', root),
-      sysVal:   $('[data-role="sys-val"]', root),
-      singleVal:$('[data-role="single-val"]', root),
-      gainVal:  $('[data-role="gain-val"]', root),
-      insight:  $('[data-role="insight-tmr"]', root),
-      plot:     $('[data-role="plot-tmr"]', root),
-      cells1:   $('[data-cells="1"]', root),
-      cells2:   $('[data-cells="2"]', root),
-      cells3:   $('[data-cells="3"]', root),
-      cellsSys: $('[data-cells="sys"]', root),
+      q:               $('[data-role="q"]', root),
+      rho:             $('[data-role="rho"]', root),
+      qVal:            $('[data-role="q-val"]', root),
+      rhoVal:          $('[data-role="rho-val"]', root),
+      sysVal:          $('[data-role="sys-val"]', root),
+      singleVal:       $('[data-role="single-val"]', root),
+      gainVal:         $('[data-role="gain-val"]', root),
+      rhoBreakevenVal: $('[data-role="rho-breakeven-val"]', root),
+      sweetTmr:        $('[data-role="sweet-spot-tmr"]', root),
+      insight:         $('[data-role="insight-tmr"]', root),
+      plot:            $('[data-role="plot-tmr"]', root),
+      cells1:          $('[data-cells="1"]', root),
+      cells2:          $('[data-cells="2"]', root),
+      cells3:          $('[data-cells="3"]', root),
+      cellsSys:        $('[data-cells="sys"]', root),
     };
 
     /* Closed-form system failure rate. */
     function pSysFail(q, rho) {
-      const indep = 3*q*q*(1 - q) + q*q*q; // = 3q² − 2q³
+      const indep = 3*q*q*(1 - q) + q*q*q; // = 3q^2 - 2q^3
       return rho*q + (1 - rho)*indep;
+    }
+
+    /* Break-even correlation: rho where gain = 10x (pSysFail = q/10).
+       Solved analytically: rho*(q - indep) = q/10 - indep => rho = (q/10 - indep)/(q - indep). */
+    function rhoBreakeven(q) {
+      const indep = 3*q*q*(1 - q) + q*q*q;
+      if (Math.abs(q - indep) < 1e-10) return 1; // degenerate: q=0 or q=1
+      const rho = (q/10 - indep) / (q - indep);
+      return Math.max(0, Math.min(1, rho));
     }
 
     /* ---- Plot rendering: P(sys fail) vs q for several ρ curves ---- */
@@ -694,8 +765,6 @@
 
     /* ---- Live simulation: scrolling channel strip ---- */
     const MAX_CELLS = 28;
-    let totalTicks = 0;
-    let sysFailCount = 0;
     let simTimer = null;
     let currentQ = 0.05, currentRho = 0;
 
@@ -726,8 +795,6 @@
       addCell(refs.cells2,   fails[1]);
       addCell(refs.cells3,   fails[2]);
       addCell(refs.cellsSys, sysFail);
-      totalTicks++;
-      if (sysFail) sysFailCount++;
       // Briefly flash the SYS row when it fails
       if (sysFail) {
         const sysRow = refs.cellsSys.parentElement;
@@ -743,6 +810,13 @@
       simTimer = setInterval(tick, 600);
       tick();
     }
+    function stopSim() {
+      if (simTimer) { clearInterval(simTimer); simTimer = null; }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { stopSim(); } else { startSim(); }
+    });
 
     /* ---- Live update from sliders ---- */
     let prev = { sys: 3*0.05*0.05 - 2*Math.pow(0.05,3), single: 0.05, gain: 0 };
@@ -766,11 +840,36 @@
       prev = { sys: pSys, single: q, gain: gain };
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
+      // Break-even correlation for 10x gain
+      const rhoBE = rhoBreakeven(q);
+      if (refs.rhoBreakevenVal) {
+        refs.rhoBreakevenVal.textContent = rhoBE.toFixed(2);
+      }
+
+      // Sweet spot: well inside the safe operating envelope
+      const inSweetTmr = rho < rhoBE * 0.5 && q < 0.10 && gain >= 10;
+      const overBreakeven = rho > rhoBE && rhoBE < 0.99;
+
+      if (refs.sweetTmr) {
+        refs.sweetTmr.hidden = !inSweetTmr;
+        if (inSweetTmr) {
+          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have a Therac-25.";
+        }
+      }
+
+      // Override insight text when over break-even
       let txt;
-      if (rho >= 0.95)        txt = "ρ ≈ 1: redundancy with full correlation isn't redundancy — it's a single channel three times. The Therac-25 had three voting computers running the same buggy software. They all agreed, exactly when wrong.";
-      else if (rho < 0.05)    txt = "Independent faults — TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight.";
-      else if (rho < 0.5)     txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than ρ alone suggests — common-cause failures are doing real damage.";
-      else                    txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor — not the ~1/(3q) you get under independence. (Diverse-versions programming exists for exactly this reason.)";
+      if (overBreakeven) {
+        txt = "Warning: \u03c1 = " + rho.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Therac-25 lived in.";
+      } else if (rho >= 0.95) {
+        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times. The Therac-25 had three voting computers running the same buggy software. They all agreed, exactly when wrong.";
+      } else if (rho < 0.05) {
+        txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight.";
+      } else if (rho < 0.5) {
+        txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than rho alone suggests. Common-cause failures are doing real damage.";
+      } else {
+        txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor, not the roughly 1/(3q) you get under independence. Diverse-versions programming exists for exactly this reason.";
+      }
       refs.insight.textContent = txt;
 
       drawPlot(q, rho);
