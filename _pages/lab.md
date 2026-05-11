@@ -87,11 +87,22 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   <h2>How to Prove a Stolen Model in Court</h2>
   <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
   <p class="lab-card__lead">
-    Imagine you are an AI lab. You spent <em>$10M</em> training a model and shipped a public version. A competitor downloads it, fine-tunes it on a small dataset, ships it under their own brand. Their lawyers say "prove it." This is no longer hypothetical. It has been the subject of actual lawsuits in the last twelve months. <strong>Feature-based watermarking</strong> is one of the cleaner answers. At training time, the model's outputs are subtly perturbed by magnitude <em>ε</em> at <em>k</em> secret cells (the "key"). The competitor doesn't know which cells. The verifier does. Even after their fine-tuning, the watermark survives in the statistical pattern. The engineering problem is not simply "does detection work." It is finding the operating point on the detection-evasion Pareto frontier where all three constraints hold simultaneously: detection rate &ge; 90%, false-positive rate &le; 5%, and perturbation magnitude &epsilon; &le; 0.25. Above that threshold, fine-tuned model accuracy degrades measurably, and the watermark becomes its own evidence of tampering. Below it, the watermark is court-admissible. The phase diagram below maps that frontier. (Φ is the standard normal CDF. If you have never had a fight with one, you have never tried to compute one by hand.)
+    Imagine you are an AI lab. You spent <em>$10M</em> training a model and shipped a public version. A competitor downloads it, fine-tunes it on a small dataset, and ships it under their own brand. Their lawyers say "prove it." This is no longer hypothetical. It has been the subject of actual lawsuits in the last twelve months.
+  </p>
+  <p class="lab-card__lead">
+    The answer is <strong>feature-based watermarking</strong>. Before you release the model, you secretly perturb its weights at <em>k</em> chosen positions by a small amount <em>ε</em>. You keep the list of positions (the "key") private. The competitor fine-tunes your model, which adds noise <em>σ</em> on top. Later, you run a statistical test: do the weights at your secret positions still carry your perturbation signal? If yes, the model is yours. If no, either the fine-tuning was too aggressive (and the model is now useless) or the attacker got lucky and guessed your key (probability negligible for large <em>k</em>).
+  </p>
+  <p class="lab-card__lead">
+    The engineering problem is the three-way tradeoff. Raise <em>ε</em> and detection improves, but above <em>ε</em> = 0.25 the model's accuracy degrades visibly and the watermark becomes its own evidence of tampering. Raise <em>k</em> and detection improves without touching accuracy, but key size has practical limits. The attacker raises <em>σ</em> by fine-tuning harder, which washes out the signal. The diagram below maps the detection-evasion frontier across all three dimensions. Your goal: find the operating point where detection stays above 90%, false-positive rate stays below 5%, and <em>ε</em> stays below 0.25. That is the publishable, court-admissible regime from the <a href="https://ieeexplore.ieee.org/abstract/document/10741282">2024 IEEE Access paper</a>.
   </p>
 
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
+      <p class="lab-experiment__slider-guide">
+        <strong>ε (perturbation):</strong> how hard you stamp the watermark. Higher = easier to detect, but damages model accuracy above 0.25.<br>
+        <strong>k (key size):</strong> how many weight positions you perturb. More positions = harder to wash out, scales detection by √k.<br>
+        <strong>σ (attack noise):</strong> how aggressively the attacker fine-tunes. Higher = watermark gets noisier. This is the adversary's lever.
+      </p>
       <label class="lab-control">
         <span class="lab-control__row">
           <span class="lab-control__name">Perturbation</span>
