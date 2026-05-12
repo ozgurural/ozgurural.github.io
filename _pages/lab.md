@@ -256,7 +256,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   <header class="lab-probes__header">
     <span class="ep-eyebrow">Calibration · Field probes</span>
     <h2>Seventeen probes</h2>
-    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, AI agents, ML, blockchain, and aerospace. None are textbook trivia. Each one corresponds to a system you've used today. Pick; the reveal is one sentence.</p>
+    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, AI agents, ML, blockchain, and aerospace. None are textbook trivia. Each one corresponds to a system you've used today. Pick the answer that survives a bad day; the reveal explains why.</p>
   </header>
 
   <ol class="lab-probes__list">
@@ -295,7 +295,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         <button class="lab-probe__choice" data-choice="a" type="button">2¹²⁸</button>
         <button class="lab-probe__choice" data-choice="b" type="button">2²⁵⁶</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>2¹²⁸.</strong> Birthday bound: collisions in <code>O(2^(n/2))</code>. Pre-image and second-pre-image resistance are 2²⁵⁶.</p>
+      <p class="lab-probe__reveal" hidden><strong>2¹²⁸.</strong> The Birthday Paradox cuts the space in half. Finding a collision takes ~2¹²⁸ effort; finding a specific hash's pre-image takes 2²⁵⁶. Still waiting for the sun to burn out.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -305,7 +305,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         <button class="lab-probe__choice" data-choice="b" type="button">Abort</button>
         <button class="lab-probe__choice" data-choice="c" type="button">Wait</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Wait.</strong> The blocking problem of 2PC. Participants don't know what the coordinator already sent before crashing. Three-phase or Paxos remove the blocking.</p>
+      <p class="lab-probe__reveal" hidden><strong>Wait.</strong> The classic 2PC blocking trap. If the coordinator dies mid-flight, everyone is stuck holding locks waiting for the punchline. Consensus algorithms like Paxos and Raft get you out of this.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -319,24 +319,24 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
     </li>
 
     <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">7</span><span>An AI agent calls a tool with 70% per-attempt success rate, retrying up to 5 times. Effective success rate:</span></p>
+      <p class="lab-probe__q"><span class="lab-probe__num">7</span><span>An AI agent gets a 70% per-attempt tool-call success rate and retries up to 5 times. What is the chance it eventually succeeds?</span></p>
       <div class="lab-probe__choices">
         <button class="lab-probe__choice" data-choice="a" type="button">70%</button>
         <button class="lab-probe__choice" data-choice="b" type="button">~85%</button>
         <button class="lab-probe__choice" data-choice="c" type="button">~99.8%</button>
         <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~99.8%.</strong> 1 − 0.3⁵ ≈ 99.76%. The bill comes in latency: successful runs average 1.43 attempts; the worst case is 5x.</p>
+      <p class="lab-probe__reveal" hidden><strong>~99.8%.</strong> 1 − 0.3⁵ ≈ 99.76%. Retries buy reliability by renting latency: successful runs average 1.43 attempts, but the tail still bills you for the full 5x.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">8</span><span>A classifier outputs confidence 0.9 on 1,000 predictions. To be <em>calibrated</em>, what fraction must be correct?</span></p>
+      <p class="lab-probe__q"><span class="lab-probe__num">8</span><span>A classifier outputs 0.9 confidence on 1,000 predictions. If it is calibrated, about what fraction should be correct?</span></p>
       <div class="lab-probe__choices">
         <button class="lab-probe__choice" data-choice="a" type="button">~60%</button>
         <button class="lab-probe__choice" data-choice="b" type="button">~90%</button>
         <button class="lab-probe__choice" data-choice="c" type="button">100%</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~90%.</strong> Calibration means predicted probability matches empirical frequency. Most LLMs aren't. They say 0.9 and are right ~70% of the time. Brier score and ECE are the standard yardsticks.</p>
+      <p class="lab-probe__reveal" hidden><strong>~90%.</strong> Calibration means predicted probability matches empirical frequency. If the model says 0.9 and is calibrated, it should land near 90% right over time. Confidence is not competence unless the histogram agrees.</p>
     </li>
 
     <li class="lab-probe" data-correct="a">
@@ -345,17 +345,17 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         <button class="lab-probe__choice" data-choice="a" type="button">Yes</button>
         <button class="lab-probe__choice" data-choice="b" type="button">No</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Yes.</strong> Byzantine consensus needs <code>n ≥ 3f + 1</code>; with n = 7, f = 2 you have exactly the threshold. One more jammer (f = 3) breaks it.</p>
+      <p class="lab-probe__reveal" hidden><strong>Yes.</strong> Byzantine consensus needs <code>n ≥ 3f + 1</code>; with n = 7, f = 2 you are exactly on the threshold. One more jammer and the swarm turns into a meeting with no quorum.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">10</span><span>DLP — strongest published guarantee against re-identification:</span></p>
+      <p class="lab-probe__q"><span class="lab-probe__num">10</span><span>DLP: strongest published guarantee against re-identification when quasi-identifiers are already known:</span></p>
       <div class="lab-probe__choices">
         <button class="lab-probe__choice" data-choice="a" type="button">k-anonymity</button>
         <button class="lab-probe__choice" data-choice="b" type="button">ℓ-diversity</button>
         <button class="lab-probe__choice" data-choice="c" type="button">t-closeness</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>t-closeness.</strong> k-anonymity blocks identity disclosure within an equivalence class; ℓ-diversity adds attribute disclosure protection; t-closeness additionally bounds the distribution skew. All three sit below differential privacy.</p>
+      <p class="lab-probe__reveal" hidden><strong>t-closeness.</strong> k-anonymity hides identities, ℓ-diversity weakens attribute leakage, and t-closeness constrains distribution skew. Privacy is a spectrum, not a trophy.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -385,7 +385,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         <button class="lab-probe__choice" data-choice="b" type="button">Probabilistic finality</button>
         <button class="lab-probe__choice" data-choice="c" type="button">Latency budget</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Probabilistic finality.</strong> P(reorg | N confirmations) ≈ (α / (1 − α))<sup>N</sup>. At α = 0.1 attacker hash-power and N = 6, that's ~10<sup>−6</sup>. Six is just the bargain that pays the asymptote, the same trick the Two Generals' Lab visualises.</p>
+      <p class="lab-probe__reveal" hidden><strong>Probabilistic finality.</strong> Each confirmation buys down the reorg tail geometrically; six is an exchange risk budget, not a sacred number. The same asymptote shows up in the Two Generals' Lab.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -401,12 +401,12 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
     <li class="lab-probe" data-correct="c">
       <p class="lab-probe__q"><span class="lab-probe__num">15</span><span>A frontier-model training run uses 16,000 GPUs for 4 weeks. Per-GPU MTBF ~100 days. Expected hardware failures during the run:</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">~50</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">~500</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">~500</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">~4,500</button>
         <button class="lab-probe__choice" data-choice="c" type="button">~5,000</button>
         <button class="lab-probe__choice" data-choice="d" type="button">~50,000</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~5,000.</strong> 16,000 × 28 / 100 ≈ 4,480 expected hardware events per run. This is why every modern frontier-training stack (FSDP, DeepSpeed, Megatron) treats checkpoint-restart, sharded recovery, and async fault tolerance as a primary feature, not a footnote.</p>
+      <p class="lab-probe__reveal" hidden><strong>~4,500.</strong> 16,000 × 28 / 100 ≈ 4,480 expected hardware events per run. At this scale, failure is a schedule item. Checkpoint-restart, sharded recovery, and async fault tolerance are the product, not the garnish.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -417,7 +417,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         <button class="lab-probe__choice" data-choice="c" type="button">~94%</button>
         <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>~94%.</strong> P(≥3 of 5 correct | each 0.8) = 0.942. This is <em>self-consistency</em> sampling (Wang et al. 2022), the same TMR voting argument three labs up, applied to LLM outputs. Diminishing returns past ~5 samples.</p>
+      <p class="lab-probe__reveal" hidden><strong>~94%.</strong> P(≥3 of 5 correct | each 0.8) = 0.942. This is self-consistency sampling: majority vote turns noisy single samples into a better estimate, as long as the samples are not all the same flavor of wrong.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">

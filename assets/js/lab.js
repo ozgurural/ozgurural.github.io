@@ -652,9 +652,10 @@
        Solved analytically: rho*(q - indep) = q/10 - indep => rho = (q/10 - indep)/(q - indep). */
     function rhoBreakeven(q) {
       const indep = 3*q*q*(1 - q) + q*q*q;
-      if (Math.abs(q - indep) < 1e-10) return 1; // degenerate: q=0 or q=1
-      const rho = (q/10 - indep) / (q - indep);
-      return Math.max(0, Math.min(1, rho));
+      const target = q / 10;
+      if (target < indep || Math.abs(q - indep) < 1e-10) return null;
+      const rho = (target - indep) / (q - indep);
+      return (rho >= 0 && rho <= 1) ? rho : null;
     }
 
     /* ---- Plot rendering: P(sys fail) vs q for several ρ curves ---- */
@@ -843,26 +844,28 @@
       // Break-even correlation for 10x gain
       const rhoBE = rhoBreakeven(q);
       if (refs.rhoBreakevenVal) {
-        refs.rhoBreakevenVal.textContent = rhoBE.toFixed(2);
+        refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
 
       // Sweet spot: well inside the safe operating envelope
-      const inSweetTmr = rho < rhoBE * 0.5 && q < 0.10 && gain >= 10;
-      const overBreakeven = rho > rhoBE && rhoBE < 0.99;
+      const inSweetTmr = rhoBE !== null && rho < rhoBE * 0.5 && q < 0.10 && gain >= 10;
+      const overBreakeven = rhoBE !== null && rho > rhoBE && rhoBE < 0.99;
 
       if (refs.sweetTmr) {
         refs.sweetTmr.hidden = !inSweetTmr;
         if (inSweetTmr) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have a Therac-25.";
+          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5.";
         }
       }
 
       // Override insight text when over break-even
       let txt;
-      if (overBreakeven) {
-        txt = "Warning: \u03c1 = " + rho.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Therac-25 lived in.";
+      if (rhoBE === null) {
+        txt = "At this q, even perfect independence cannot reach a 10x gain. The best case is " + (q / pSysFail(q, 0)).toFixed(1) + "x, so the break-even readout is N/A rather than a fake threshold.";
+      } else if (overBreakeven) {
+        txt = "Warning: \u03c1 = " + rho.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
       } else if (rho >= 0.95) {
-        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times. The Therac-25 had three voting computers running the same buggy software. They all agreed, exactly when wrong.";
+        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times. The Ariane 5 had redundant flight computers running the exact same inertial reference software. They both crashed in the same millisecond.";
       } else if (rho < 0.05) {
         txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight.";
       } else if (rho < 0.5) {
