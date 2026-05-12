@@ -603,6 +603,8 @@
       refs.insight.textContent = txt;
 
       buildGrid(eps, k, sigma);
+      if (eps > 0.25) refs.grid.classList.add('lab-wm__grid--glitch');
+      else refs.grid.classList.remove('lab-wm__grid--glitch');
       drawPlot(eps, k, sigma);
     }
 

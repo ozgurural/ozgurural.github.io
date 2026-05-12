@@ -130,6 +130,14 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         </span>
         <input type="range" min="0" max="0.40" step="0.01" value="0.10" data-role="sigma" aria-label="attack noise sigma">
       </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Significance</span>
+          <span class="lab-control__var">α</span>
+          <span class="lab-control__value" data-role="alpha-val">0.050</span>
+        </span>
+        <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="significance level alpha">
+      </label>
     </div>
 
     <div class="lab-experiment__visual">
@@ -203,9 +211,17 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         </span>
         <input type="range" min="0" max="1" step="0.01" value="0.00" data-role="rho" aria-label="common-mode correlation rho">
       </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Redundant Channels (N)</span>
+          <span class="lab-control__var">N</span>
+          <span class="lab-control__value" data-role="n-channels-val">3</span>
+        </span>
+        <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="number of redundant channels">
+      </label>
     </div>
 
-    <div class="lab-tmr__strip" aria-hidden="true">
+    <div class="lab-tmr__strip" aria-hidden="true" data-role="tmr-strip">
       <div class="lab-tmr__row" data-ch="1">
         <span class="lab-tmr__row-label">CH 1</span>
         <div class="lab-tmr__cells" data-cells="1"></div>
@@ -287,6 +303,14 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
           <span class="lab-control__value" data-role="mom-val">0.00</span>
         </span>
         <input type="range" min="0.00" max="0.99" step="0.01" value="0.00" data-role="mom" aria-label="momentum">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Batch Noise</span>
+          <span class="lab-control__var">ζ</span>
+          <span class="lab-control__value" data-role="noise-val">0.00</span>
+        </span>
+        <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="batch noise">
       </label>
       <button class="lab-probe__choice" type="button" data-role="train-btn" style="margin-top: 1rem; width: 100%; border: 1px solid var(--border); background: var(--surface);">Train!</button>
     </div>

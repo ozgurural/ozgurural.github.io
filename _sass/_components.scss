@@ -1267,3 +1267,27 @@ button:focus-visible {
   .ep-hero__cta a { font-size: 0.9rem; padding: 0.5rem 0.9rem; }
   .ep-stats .num { font-size: 1.2rem; }
 }
+@keyframes sweet-pulse {
+  0% { box-shadow: 0 0 0 0 var(--glow-col); }
+  70% { box-shadow: 0 0 20px 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.sweet-spot-glow {
+  animation: sweet-pulse 2s infinite !important;
+  border-color: var(--glow-col) !important;
+  outline: 2px solid var(--glow-col);
+  outline-offset: 4px;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
+}
+.lab-wm__grid--glitch {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) infinite;
+}
