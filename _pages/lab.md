@@ -312,7 +312,10 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
         </span>
         <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="batch noise">
       </label>
-      <button class="lab-probe__choice" type="button" data-role="train-btn" style="margin-top: 1rem; width: 100%; border: 1px solid var(--border); background: var(--surface);">Train!</button>
+      <button class="lab-btn lab-btn--train" type="button" data-role="train-btn">
+        <span class="lab-btn__text">Train!</span>
+        <span class="lab-btn__bg"></span>
+      </button>
     </div>
 
     <div class="lab-experiment__visual">

@@ -1291,3 +1291,49 @@ button:focus-visible {
 .lab-wm__grid--glitch {
   animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) infinite;
 }
+/* ---- Shiny Gradient Train Button ---- */
+.lab-btn {
+  margin-top: 1rem;
+  width: 100%;
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.lab-btn--train .lab-btn__bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  z-index: 0;
+  transition: opacity 0.3s ease;
+  opacity: 0.9;
+}
+
+.lab-btn--train:hover .lab-btn__bg {
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+}
+
+.lab-btn--train .lab-btn__text {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.lab-btn--train.is-running .lab-btn__bg {
+  background: linear-gradient(135deg, #f43f5e, #f97316);
+}
+
+.lab-btn--train.is-running:hover .lab-btn__bg {
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
+}

@@ -986,8 +986,15 @@
       renderTrail();
       updateReadout();
       renderParticle();
-      refs.trainBtn.textContent = "Train!";
+      
+      // Update actual button text content cleanly depending on layout
+      const span = refs.trainBtn.querySelector('.lab-btn__text');
+      if (span) span.textContent = "Train!";
+      else refs.trainBtn.textContent = "Train!";
+      
+      refs.trainBtn.classList.remove('is-running');
       refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>.";
+      triggerCongrats(refs.plot, false);
     }
     
     function updateReadout() {
@@ -1034,18 +1041,25 @@
       if (running) {
         animationId = requestAnimationFrame(() => setTimeout(doEpoch, 30));
       } else {
-        refs.trainBtn.textContent = "Reset";
+        const span = refs.trainBtn.querySelector('.lab-btn__text');
+        if (span) span.textContent = "Reset";
+        else refs.trainBtn.textContent = "Reset";
+        refs.trainBtn.classList.remove('is-running');
       }
     }
     
     refs.trainBtn.addEventListener("click", () => {
-      if (running || refs.trainBtn.textContent === "Reset") {
+      const btnText = refs.trainBtn.querySelector('.lab-btn__text') ? refs.trainBtn.querySelector('.lab-btn__text').textContent : refs.trainBtn.textContent;
+      if (running || btnText.trim() === "Reset") {
         running = false;
         if (animationId) cancelAnimationFrame(animationId);
         reset();
       } else {
         running = true;
-        refs.trainBtn.textContent = "Stop";
+        refs.trainBtn.classList.add('is-running');
+        const span = refs.trainBtn.querySelector('.lab-btn__text');
+        if (span) span.textContent = "Stop";
+        else refs.trainBtn.textContent = "Stop";
         refs.insight.textContent = "Training... (watch the loss)";
         doEpoch();
       }
