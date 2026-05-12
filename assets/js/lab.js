@@ -885,40 +885,180 @@
   }
 
   /* ============================================================================
-     SECTION 3 · Calibration probes — short MCQ, one-sentence reveal
+     PUZZLE 4 · Gradient Descent Lab
      ============================================================================ */
-  function initProbes() {
-    const probes = $$('.lab-probe');
-    probes.forEach((probe) => {
-      const correct = probe.dataset.correct;
-      if (!correct) return;
-      const choices = $$('.lab-probe__choice', probe);
-      const reveal  = $('.lab-probe__reveal', probe);
-      let answered = false;
-      choices.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          if (answered) return;
-          answered = true;
-          const picked = btn.dataset.choice;
-          const isRight = picked === correct;
-          btn.classList.add(isRight ? 'lab-probe__choice--right' : 'lab-probe__choice--wrong');
-          if (!isRight) {
-            const correctBtn = $('[data-choice="' + correct + '"]', probe);
-            if (correctBtn) correctBtn.classList.add('lab-probe__choice--right');
-          }
-          choices.forEach((c) => { c.disabled = true; });
-          if (reveal) reveal.hidden = false;
-        });
-      });
+  function initGradientDescentLab() {
+    const root = document.getElementById("lab-gd");
+    if (!root) return;
+
+    const refs = {
+      lr:        document.querySelector('[data-role="lr"]', root) || root.querySelector('[data-role="lr"]'),
+      mom:       document.querySelector('[data-role="mom"]', root) || root.querySelector('[data-role="mom"]'),
+      lrVal:     document.querySelector('[data-role="lr-val"]', root) || root.querySelector('[data-role="lr-val"]'),
+      momVal:    document.querySelector('[data-role="mom-val"]', root) || root.querySelector('[data-role="mom-val"]'),
+      trainBtn:  document.querySelector('[data-role="train-btn"]', root) || root.querySelector('[data-role="train-btn"]'),
+      plot:      document.querySelector('[data-role="plot-gd"]', root) || root.querySelector('[data-role="plot-gd"]'),
+      epochVal:  document.querySelector('[data-role="epoch-val"]', root) || root.querySelector('[data-role="epoch-val"]'),
+      lossVal:   document.querySelector('[data-role="loss-val"]', root) || root.querySelector('[data-role="loss-val"]'),
+      velVal:    document.querySelector('[data-role="vel-val"]', root) || root.querySelector('[data-role="vel-val"]'),
+      insight:   document.querySelector('[data-role="insight-gd"]', root) || root.querySelector('[data-role="insight-gd"]'),
+    };
+
+    const PW = 640, PH = 260;
+    const M = { l: 40, r: 40, t: 20, b: 20 };
+    const innerW = PW - M.l - M.r;
+    const innerH = PH - M.t - M.b;
+
+    // f(x) = x^4/4 - x^3/3 - x^2 + 2 
+    function f(x) { return Math.pow(x, 4)/4.0 - Math.pow(x, 3)/3.0 - Math.pow(x, 2) + 2; }
+    function df(x) { return Math.pow(x, 3) - Math.pow(x, 2) - 2*x; }
+
+    const X_MIN = -2.5, X_MAX = 3.2;
+    const Y_MIN = -1, Y_MAX = 8;
+    
+    function xFor(x) { return M.l + ((x - X_MIN) / (X_MAX - X_MIN)) * innerW; }
+    function yFor(y) { return M.t + (1 - (y - Y_MIN) / (Y_MAX - Y_MIN)) * innerH; }
+
+    function drawCurve() {
+      let d = "";
+      for (let i = 0; i <= 100; i++) {
+        const x = X_MIN + (X_MAX - X_MIN) * (i / 100);
+        const y = f(x);
+        d += (i === 0 ? "M" : "L") + xFor(x).toFixed(1) + " " + yFor(y).toFixed(1) + " ";
+      }
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "#94a3b8"); // theme muted text color
+      path.setAttribute("stroke-width", "2");
+      refs.plot.appendChild(path);
+    }
+    
+    if(!refs.lr) return;
+    
+    refs.lr.addEventListener("input", () => { refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3); });
+    refs.mom.addEventListener("input", () => { refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2); });
+    
+    let animationId = null;
+    let particle = null;
+    let trailPath = null;
+    let trail = [];
+    
+    function initPlot() {
+      while(refs.plot.firstChild) refs.plot.removeChild(refs.plot.firstChild);
+      drawCurve();
+      trailPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      trailPath.setAttribute("stroke-dasharray", "4 4");
+      trailPath.setAttribute("fill", "none");
+      trailPath.setAttribute("stroke", "#38bdf8"); // bright color
+      refs.plot.appendChild(trailPath);
+
+      particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      particle.setAttribute("r", 6);
+      particle.setAttribute("fill", "#0284c7");
+      refs.plot.appendChild(particle);
+      reset();
+    }
+    
+    const START_X = -2.4; 
+    let currentX = START_X;
+    let velocity = 0;
+    let epoch = 0;
+    let running = false;
+    
+    function renderTrail() {
+      if (trail.length === 0) return;
+      let d = "M" + xFor(trail[0]).toFixed(1) + " " + yFor(f(trail[0])).toFixed(1) + " ";
+      for(let i=1; i<trail.length; i++) {
+         d += "L" + xFor(trail[i]).toFixed(1) + " " + yFor(f(trail[i])).toFixed(1) + " ";
+      }
+      trailPath.setAttribute("d", d);
+    }
+
+    function reset() {
+      currentX = START_X;
+      velocity = 0;
+      epoch = 0;
+      running = false;
+      trail = [currentX];
+      renderTrail();
+      updateReadout();
+      renderParticle();
+      refs.trainBtn.textContent = "Train!";
+      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>.";
+    }
+    
+    function updateReadout() {
+      refs.epochVal.textContent = epoch;
+      refs.lossVal.textContent = f(currentX).toFixed(2);
+      refs.velVal.textContent = velocity.toFixed(3);
+    }
+    
+    function renderParticle() {
+      particle.setAttribute("cx", xFor(currentX));
+      particle.setAttribute("cy", yFor(f(currentX)));
+    }
+    
+    function doEpoch() {
+      if (!running) return;
+      const lr = parseFloat(refs.lr.value);
+      const mom = parseFloat(refs.mom.value);
+      
+      const grad = df(currentX);
+      velocity = mom * velocity - lr * grad;
+      currentX += velocity;
+      epoch++;
+      trail.push(currentX);
+      
+      updateReadout();
+      renderParticle();
+      renderTrail();
+      
+      if (currentX < X_MIN || currentX > X_MAX) {
+        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold. Lower the learning rate.";
+        running = false;
+      } else if (epoch > 500) {
+        refs.insight.textContent = "⏳ Training timed out (500 epochs). Try higher learning rate or momentum.";
+        running = false;
+      } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
+        if (Math.abs(currentX - 2) < 0.1) {
+           refs.insight.textContent = "⭐ Global minimum reached. Doctoral thesis accepted. You may now sleep.";
+        } else {
+           refs.insight.textContent = "💀 Stuck in a local minimum. Gradient zeroed out in the saddle point of despair. Increase momentum.";
+        }
+        running = false;
+      }
+      
+      if (running) {
+        animationId = requestAnimationFrame(() => setTimeout(doEpoch, 30));
+      } else {
+        refs.trainBtn.textContent = "Reset";
+      }
+    }
+    
+    refs.trainBtn.addEventListener("click", () => {
+      if (running || refs.trainBtn.textContent === "Reset") {
+        running = false;
+        if (animationId) cancelAnimationFrame(animationId);
+        reset();
+      } else {
+        running = true;
+        refs.trainBtn.textContent = "Stop";
+        refs.insight.textContent = "Training... (watch the loss)";
+        doEpoch();
+      }
     });
+
+    initPlot();
   }
 
   /* ----------------------------------------------------------------- bootstrap */
   function boot() {
-    initTwoGeneralsLab();
-    initVerifierLab();
-    initTMRLab();
-    initProbes();
+    if(typeof initTwoGeneralsLab === "function") initTwoGeneralsLab();
+    if(typeof initVerifierLab === "function") initVerifierLab();
+    if(typeof initWatermarkLab === "function") initWatermarkLab();
+    if(typeof initTMRLab === "function") initTMRLab();
+    if(typeof initGradientDescentLab === "function") initGradientDescentLab();
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);

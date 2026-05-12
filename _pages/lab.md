@@ -252,186 +252,61 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   </details>
 </section>
 
-<section class="lab-probes">
-  <header class="lab-probes__header">
-    <span class="ep-eyebrow">Calibration · Field probes</span>
-    <h2>Seventeen probes</h2>
-    <p class="lab-probes__lead">Short field-calibration questions across distributed systems, AI agents, ML, blockchain, and aerospace. None are textbook trivia. Each one corresponds to a system you've used today. Pick the answer that survives a bad day; the reveal explains why.</p>
-  </header>
+<section class="lab-card lab-experiment" id="lab-gd">
+  <span class="ep-eyebrow">Deep Learning · Optimization</span>
+  <h2>The Topology of Regret (Gradient Descent)</h2>
+  <p class="lab-card__usecase">Used in <strong>Training LLMs</strong> · <strong>Backpropagation</strong> · <strong>Physics Simulations</strong></p>
+  <p class="lab-card__lead">
+    Training a neural network is basically playing mini-golf in the dark on a million-dimensional course. You want to get the ball into the lowest hole (the global minimum) to minimize your loss. But if your <strong>Learning Rate (α)</strong> is too high, you smash the ball out of the valley entirely (exploding gradients). Too low, and you get stuck in a shallow dent (local minimum). <strong>Momentum (β)</strong> lets you carry speed through the shallow dents, but too much of it sends you orbiting the rim forever.
+  </p>
+  <p class="lab-card__lead">
+    Below is a highly non-convex valley. Your goal: Tune α and β, click <strong>Train</strong>, and reach the global minimum on the right without flying off the screen or getting trapped on the left.
+  </p>
+  <div class="lab-experiment__panel">
+    <div class="lab-experiment__controls">
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Learning Rate</span>
+          <span class="lab-control__var">α</span>
+          <span class="lab-control__value" data-role="lr-val">0.02</span>
+        </span>
+        <input type="range" min="0.001" max="0.10" step="0.001" value="0.02" data-role="lr" aria-label="learning rate">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Momentum</span>
+          <span class="lab-control__var">β</span>
+          <span class="lab-control__value" data-role="mom-val">0.00</span>
+        </span>
+        <input type="range" min="0.00" max="0.99" step="0.01" value="0.00" data-role="mom" aria-label="momentum">
+      </label>
+      <button class="lab-probe__choice" type="button" data-role="train-btn" style="margin-top: 1rem; width: 100%; border: 1px solid var(--border); background: var(--surface);">Train!</button>
+    </div>
 
-  <ol class="lab-probes__list">
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">1</span><span>Asynchronous network, messages arrive eventually but bounds are unknown. How many nodes are needed for consensus to tolerate a single crash fault?</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">3</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">2f + 1</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Impossible</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Impossible.</strong> Fischer, Lynch, and Paterson (1985) FLP Impossibility. You cannot securely distinguish a crashed node from a very slow network, forcing the protocol to risk stalling forever or splitting the brain.</p>
-    </li>
+    <div class="lab-experiment__visual">
+      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-gd" preserveAspectRatio="xMidYMid meet" role="img" aria-label="loss landscape"></svg>
+    </div>
 
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">2</span><span>Naive parallel multi-send vs strict confirmation chain. <em>p</em> = 0.4, <em>N</em> = 5.</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Strict wins</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Naive wins</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Equivalent</button>
+    <div class="lab-experiment__readout">
+      <div class="lab-experiment__metric lab-experiment__metric--detect">
+        <span class="lab-experiment__metric-label">Epochs</span>
+        <span class="lab-experiment__metric-value" data-role="epoch-val">0</span>
+        <span class="lab-experiment__metric-formula">steps taken</span>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Naive.</strong> 1 − 0.4⁵ ≈ 99% vs (0.6)⁵ ≈ 8%. Each ack <em>multiplies</em> failure probability while parallel sends multiply success.</p>
-    </li>
+      <div class="lab-experiment__metric lab-experiment__metric--strict">
+        <span class="lab-experiment__metric-label">Loss</span>
+        <span class="lab-experiment__metric-value" data-role="loss-val">0.00</span>
+        <span class="lab-experiment__metric-formula">f(x)</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--naive">
+        <span class="lab-experiment__metric-label">Velocity</span>
+        <span class="lab-experiment__metric-value" data-role="vel-val">0.00</span>
+        <span class="lab-experiment__metric-formula">Δx</span>
+      </div>
+    </div>
 
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">3</span><span>Aggregate watermark detection over <em>k</em> independent cells scales roughly as:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">k</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">√k</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">log k</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>√<em>k</em>.</strong> Per-cell SNR amplifies via the central limit theorem. Doubling the key gives √2× detection at fixed (ε, σ).</p>
-    </li>
-
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">4</span><span>You sign two Ethereum transactions, but the entropy source rolls a repeated ephemeral nonce ($k$). The attacker can now:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Replay tx</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Block you</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Find private key</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Find private key.</strong> The ECDSA math collapses: one subtraction in the finite field hands the private key to anyone running a block scanner. The exact math that broke the PlayStation 3 in 2010.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">5</span><span>Two-phase commit. All voted YES; coordinator crashes before COMMIT. Safe action for participants:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Commit</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Abort</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Wait</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Wait.</strong> The classic 2PC blocking trap. If the coordinator dies mid-flight, everyone is stuck holding locks waiting for the punchline. Consensus algorithms like Paxos and Raft get you out of this.</p>
-    </li>
-c">
-      <p class="lab-probe__q"><span class="lab-probe__num">6</span><span>Training a ResNet: as the number of parameters approaches the training set size, test error spikes (overfitting). If you keep adding parameters, test error:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Rises</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Plateaus</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Drops</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Drops.</strong> Belkin et al. (2019) Double Descent. Massive overparameterization gives the model enough degrees of freedom to interpolate the data smoothly, instead of oscillating to fit noise like classical bias-variance theory expects
-      <p class="lab-probe__reveal" hidden><strong>Geometry.</strong> Test accuracy and adversarial robustness are different geometries on the same model. Natural images sit close to decision boundaries in high-dim space (Goodfellow 2014).</p>
-    </li>
-
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">7</span><span>An AI agent gets a 70% per-attempt tool-call success rate and retries up to 5 times. What is the chance it eventually succeeds?</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">70%</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">~85%</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">~99.8%</button>
-        <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>~99.8%.</strong> 1 − 0.3⁵ ≈ 99.76%. Retries buy reliability by renting latency: successful runs average 1.43 attempts, but the tail still bills you for the full 5x.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">8</span><span>A classifier outputs 0.9 confidence on 1,000 predictions. If it is calibrated, about what fraction should be correct?</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">~60%</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">~90%</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">100%</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>~90%.</strong> Calibration means predicted probability matches empirical frequency. If the model says 0.9 and is calibrated, it should land near 90% right over time. Confidence is not competence unless the histogram agrees.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="a">
-      <p class="lab-probe__q"><span class="lab-probe__num">9</span><span>Drone swarm, <em>n</em> = 7 nodes, up to <em>f</em> = 2 jammed (Byzantine). Can the rest agree on a target?</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Yes</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">No</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Yes.</strong> Byzantine consensus needs <code>n ≥ 3f + 1</code>; with n = 7, f = 2 you are exactly on the threshold. One more jammer and the swarm turns into a meeting with no quorum.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">10</span><span>DLP: strongest published guarantee against re-identification when quasi-identifiers are already known:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">k-anonymity</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">ℓ-diversity</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">t-closeness</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>t-closeness.</strong> k-anonymity hides identities, ℓ-diversity weakens attribute leakage, and t-closeness constrains distribution skew. Privacy is a spectrum, not a trophy.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">11</span><span>Mars Pathfinder keeps resetting. A low-priority thread holds a mutex; a high-priority thread waits on it, while a medium-priority thread hogs the CPU.</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Deadlock</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Priority Inversion</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Race Condition</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Priority Inversion.</strong> A textbook OS flaw that actually went to Mars. The watchdog timer assumed the system froze and reset the rover. NASA patched it over a 160M km radio link by enabling Priority Inheritance.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">12</span><span>At cruise altitude (~36 kft) single-event upset rate is roughly 10× ground level. Why?</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Heat / thermal noise</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Cosmic-ray flux</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Cabin EM</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Cosmic-ray flux.</strong> Atmospheric shielding drops with altitude; secondary neutrons hit silicon and flip bits. ECC RAM, scrubbed memory, and TMR are the standard responses. The lab two sections up is the actual maths.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">13</span><span>Why do exchanges wait for <em>six</em> Bitcoin block confirmations before crediting a deposit?</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Tradition</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Probabilistic finality</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Latency budget</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Probabilistic finality.</strong> Each confirmation buys down the reorg tail geometrically; six is an exchange risk budget, not a sacred number. The same asymptote shows up in the Two Generals' Lab.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">14</span><span>DeFi app prices a token using the pool ratio. Attacker borrows $50M, blasts the pool to warp the price, steals funds based on the warped price, then repays the loan instantly.</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">51% Attack</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Flash Loan Oracle Manip</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Reentrancy</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Flash Loan Oracle Manip.</strong> The atomic borrow makes capital effectively infinite and free. If an app uses a spot price instead of a Time-Weighted Average Price (TWAP), the attacker sets the price to whatever they want for that millisecond.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">15</span><span>A frontier-model training run uses 16,000 GPUs for 4 weeks. Per-GPU MTBF ~100 days. Expected hardware failures during the run:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">~500</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">~4,500</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">~5,000</button>
-        <button class="lab-probe__choice" data-choice="d" type="button">~50,000</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>~4,500.</strong> 16,000 × 28 / 100 ≈ 4,480 expected hardware events per run. At this scale, failure is a schedule item. Checkpoint-restart, sharded recovery, and async fault tolerance are the product, not the garnish.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="c">
-      <p class="lab-probe__q"><span class="lab-probe__num">16</span><span>Five independent LLM samples each have 80% accuracy on a task. Majority-vote accuracy:</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">80%</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">~90%</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">~94%</button>
-        <button class="lab-probe__choice" data-choice="d" type="button">100%</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>~94%.</strong> P(≥3 of 5 correct | each 0.8) = 0.942. This is self-consistency sampling: majority vote turns noisy single samples into a better estimate, as long as the samples are not all the same flavor of wrong.</p>
-    </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">17</span><span>An LLM is trained on 4k-token contexts. You want to summarize an 8k-token doc without retraining. The best way to stretch the Rotary Position Embeddings (RoPE):</span></p>
-      <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Modulo 4k wrap</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Interpolate angles</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Extrapolate angles</button>
-      </div>
-      <p class="lab-probe__reveal" hidden><strong>Interpolate angles.</strong> Chen et al. (2023) Position Interpolation. Squeezing the 8k range into the 4k domain keeps the attention angles within what the model actually learned. Extrapolating blows up the attention scores into catastrophic noise.</p>
-    </li>
-  </ol>
+    <p class="lab-experiment__insight" data-role="insight-gd">Set params and hit Train.</p>
+  </div>
 </section>
 
 <section class="lab-footer">
