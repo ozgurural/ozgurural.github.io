@@ -260,13 +260,14 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   </header>
 
   <ol class="lab-probes__list">
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">1</span><span><em>n</em> = 3 generals, <em>f</em> = 1 Byzantine fault, no signatures.</span></p>
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">1</span><span>Asynchronous network, messages arrive eventually but bounds are unknown. How many nodes are needed for consensus to tolerate a single crash fault?</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Solvable</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Impossible</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">3</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">2f + 1</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Impossible</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Impossible.</strong> Lamport, Shostak &amp; Pease (1982): consensus needs <code>n ≥ 3f + 1</code>; three nodes tolerate zero.</p>
+      <p class="lab-probe__reveal" hidden><strong>Impossible.</strong> Fischer, Lynch, and Paterson (1985) FLP Impossibility. You cannot securely distinguish a crashed node from a very slow network, forcing the protocol to risk stalling forever or splitting the brain.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -289,13 +290,14 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
       <p class="lab-probe__reveal" hidden><strong>√<em>k</em>.</strong> Per-cell SNR amplifies via the central limit theorem. Doubling the key gives √2× detection at fixed (ε, σ).</p>
     </li>
 
-    <li class="lab-probe" data-correct="a">
-      <p class="lab-probe__q"><span class="lab-probe__num">4</span><span>SHA-256 collision resistance is approximately:</span></p>
+    <li class="lab-probe" data-correct="c">
+      <p class="lab-probe__q"><span class="lab-probe__num">4</span><span>You sign two Ethereum transactions, but the entropy source rolls a repeated ephemeral nonce ($k$). The attacker can now:</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">2¹²⁸</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">2²⁵⁶</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">Replay tx</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Block you</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Find private key</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>2¹²⁸.</strong> The Birthday Paradox cuts the space in half. Finding a collision takes ~2¹²⁸ effort; finding a specific hash's pre-image takes 2²⁵⁶. Still waiting for the sun to burn out.</p>
+      <p class="lab-probe__reveal" hidden><strong>Find private key.</strong> The ECDSA math collapses: one subtraction in the finite field hands the private key to anyone running a block scanner. The exact math that broke the PlayStation 3 in 2010.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -307,14 +309,14 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
       </div>
       <p class="lab-probe__reveal" hidden><strong>Wait.</strong> The classic 2PC blocking trap. If the coordinator dies mid-flight, everyone is stuck holding locks waiting for the punchline. Consensus algorithms like Paxos and Raft get you out of this.</p>
     </li>
-
-    <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">6</span><span>99.9% test accuracy on CIFAR-10 + an adversarial example exists for every input at <em>ε</em> = 0.01. Both true:</span></p>
+c">
+      <p class="lab-probe__q"><span class="lab-probe__num">6</span><span>Training a ResNet: as the number of parameters approaches the training set size, test error spikes (overfitting). If you keep adding parameters, test error:</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Bug</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Geometry</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Overfitting</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">Rises</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Plateaus</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Drops</button>
       </div>
+      <p class="lab-probe__reveal" hidden><strong>Drops.</strong> Belkin et al. (2019) Double Descent. Massive overparameterization gives the model enough degrees of freedom to interpolate the data smoothly, instead of oscillating to fit noise like classical bias-variance theory expects
       <p class="lab-probe__reveal" hidden><strong>Geometry.</strong> Test accuracy and adversarial robustness are different geometries on the same model. Natural images sit close to decision boundaries in high-dim space (Goodfellow 2014).</p>
     </li>
 
@@ -359,13 +361,13 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
     </li>
 
     <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">11</span><span>Three pitot tubes on an A320 report airspeeds <code>250</code>, <code>240</code>, <code>600</code> kt. The flight computer should output:</span></p>
+      <p class="lab-probe__q"><span class="lab-probe__num">11</span><span>Mars Pathfinder keeps resetting. A low-priority thread holds a mutex; a high-priority thread waits on it, while a medium-priority thread hogs the CPU.</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Mean (363)</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Median + flag (250)</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Disconnect autopilot</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">Deadlock</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Priority Inversion</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Race Condition</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Median + outlier flag.</strong> Mean is dragged by the outlier; median (250) survives. Air France 447 turned at a similar pivot. Frozen pitots, conflicting readings, autopilot disconnect.</p>
+      <p class="lab-probe__reveal" hidden><strong>Priority Inversion.</strong> A textbook OS flaw that actually went to Mars. The watchdog timer assumed the system froze and reset the rover. NASA patched it over a 160M km radio link by enabling Priority Inheritance.</p>
     </li>
 
     <li class="lab-probe" data-correct="b">
@@ -389,13 +391,13 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
     </li>
 
     <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">14</span><span>The DAO hack drained ~$50M from an Ethereum smart contract in 2016. Root cause:</span></p>
+      <p class="lab-probe__q"><span class="lab-probe__num">14</span><span>DeFi app prices a token using the pool ratio. Attacker borrows $50M, blasts the pool to warp the price, steals funds based on the warped price, then repays the loan instantly.</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Weak ECDSA</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Reentrancy</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">51% attack</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">51% Attack</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Flash Loan Oracle Manip</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Reentrancy</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Reentrancy.</strong> The withdraw function called the attacker's contract <em>before</em> updating its own balance. The attacker's contract called withdraw again, recursing through the unchanged balance. Why "checks-effects-interactions" is now Solidity scripture, and why Ethereum hard-forked.</p>
+      <p class="lab-probe__reveal" hidden><strong>Flash Loan Oracle Manip.</strong> The atomic borrow makes capital effectively infinite and free. If an app uses a spot price instead of a Time-Weighted Average Price (TWAP), the attacker sets the price to whatever they want for that millisecond.</p>
     </li>
 
     <li class="lab-probe" data-correct="c">
@@ -421,13 +423,13 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
     </li>
 
     <li class="lab-probe" data-correct="b">
-      <p class="lab-probe__q"><span class="lab-probe__num">17</span><span>Speculative decoding speeds up LLM inference primarily by:</span></p>
+      <p class="lab-probe__q"><span class="lab-probe__num">17</span><span>An LLM is trained on 4k-token contexts. You want to summarize an 8k-token doc without retraining. The best way to stretch the Rotary Position Embeddings (RoPE):</span></p>
       <div class="lab-probe__choices">
-        <button class="lab-probe__choice" data-choice="a" type="button">Quantising the big model</button>
-        <button class="lab-probe__choice" data-choice="b" type="button">Draft-and-verify</button>
-        <button class="lab-probe__choice" data-choice="c" type="button">Batched logits</button>
+        <button class="lab-probe__choice" data-choice="a" type="button">Modulo 4k wrap</button>
+        <button class="lab-probe__choice" data-choice="b" type="button">Interpolate angles</button>
+        <button class="lab-probe__choice" data-choice="c" type="button">Extrapolate angles</button>
       </div>
-      <p class="lab-probe__reveal" hidden><strong>Draft-and-verify.</strong> A small "draft" model proposes <em>k</em> tokens cheaply; the big model verifies all <em>k</em> in a single forward pass and accepts the longest correct prefix. 2–3× wall-clock speedup with no quality loss (Leviathan et al. 2023, Chen et al. 2023).</p>
+      <p class="lab-probe__reveal" hidden><strong>Interpolate angles.</strong> Chen et al. (2023) Position Interpolation. Squeezing the 8k range into the 4k domain keeps the attention angles within what the model actually learned. Extrapolating blows up the attention scores into catastrophic noise.</p>
     </li>
   </ol>
 </section>
