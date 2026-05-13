@@ -992,18 +992,18 @@
     const root = document.getElementById("lab-gd");
     if (!root) return;
 
+    const $gd = (role) => root.querySelector('[data-role="' + role + '"]');
     const refs = {
-      lr:        document.querySelector('[data-role="lr"]', root) || root.querySelector('[data-role="lr"]'),
-      mom:       document.querySelector('[data-role="mom"]', root) || root.querySelector('[data-role="mom"]'),
-      lrVal:     document.querySelector('[data-role="lr-val"]', root) || root.querySelector('[data-role="lr-val"]'),
-      momVal:    document.querySelector('[data-role="mom-val"]', root) || root.querySelector('[data-role="mom-val"]'),
-      trainBtn:  document.querySelector('[data-role="train-btn"]', root) || root.querySelector('[data-role="train-btn"]'),
-      rerollBtn: root.querySelector('[data-role="gd-reroll-btn"]'),
-      plot:      document.querySelector('[data-role="plot-gd"]', root) || root.querySelector('[data-role="plot-gd"]'),
-      epochVal:  document.querySelector('[data-role="epoch-val"]', root) || root.querySelector('[data-role="epoch-val"]'),
-      lossVal:   document.querySelector('[data-role="loss-val"]', root) || root.querySelector('[data-role="loss-val"]'),
-      velVal:    document.querySelector('[data-role="vel-val"]', root) || root.querySelector('[data-role="vel-val"]'),
-      insight:   document.querySelector('[data-role="insight-gd"]', root) || root.querySelector('[data-role="insight-gd"]'),
+      lr:        $gd("lr"),
+      mom:       $gd("mom"),
+      lrVal:     $gd("lr-val"),
+      momVal:    $gd("mom-val"),
+      trainBtn:  $gd("train-btn"),
+      plot:      $gd("plot-gd"),
+      epochVal:  $gd("epoch-val"),
+      lossVal:   $gd("loss-val"),
+      velVal:    $gd("vel-val"),
+      insight:   $gd("insight-gd"),
     };
 
     const PW = 640, PH = 260;
@@ -1055,8 +1055,18 @@
       return bestX;
     }
 
+    let landscapeIndex = -1;
     function pickLandscape() {
-      activeLandscape = landscapes[Math.floor(Math.random() * landscapes.length)];
+      if (landscapes.length <= 1) {
+        landscapeIndex = 0;
+      } else {
+        var ni;
+        do {
+          ni = Math.floor(Math.random() * landscapes.length);
+        } while (ni === landscapeIndex);
+        landscapeIndex = ni;
+      }
+      activeLandscape = landscapes[landscapeIndex];
       f = activeLandscape.f;
       df = activeLandscape.df;
       startX = activeLandscape.startX;
@@ -1082,7 +1092,7 @@
       refs.plot.appendChild(path);
     }
     
-    if (!refs.lr) return;
+    if (!refs.lr || !refs.plot || !refs.trainBtn || !refs.insight) return;
 
     function applyRandomControls() {
       const randomLr = (0.008 + Math.random() * 0.028).toFixed(3);
@@ -1103,6 +1113,20 @@
     }
 
     let animationId = null;
+    let epochTimeoutId = null;
+
+    function stopMotion() {
+      running = false;
+      if (animationId != null) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+      if (epochTimeoutId != null) {
+        clearTimeout(epochTimeoutId);
+        epochTimeoutId = null;
+      }
+    }
+
     let particle = null;
     let trailPath = null;
     let trail = [];
@@ -1200,7 +1224,13 @@
       }
       
       if (running) {
-        animationId = requestAnimationFrame(() => setTimeout(doEpoch, 30));
+        animationId = requestAnimationFrame(function () {
+          animationId = null;
+          epochTimeoutId = setTimeout(function () {
+            epochTimeoutId = null;
+            doEpoch();
+          }, 30);
+        });
       } else {
         const span = refs.trainBtn.querySelector('.lab-btn__text');
         if (span) span.textContent = "Reset";
@@ -1212,8 +1242,7 @@
     refs.trainBtn.addEventListener("click", () => {
       const btnText = refs.trainBtn.querySelector('.lab-btn__text') ? refs.trainBtn.querySelector('.lab-btn__text').textContent : refs.trainBtn.textContent;
       if (running || btnText.trim() === "Reset") {
-        running = false;
-        if (animationId) cancelAnimationFrame(animationId);
+        stopMotion();
         reset();
       } else {
         running = true;
@@ -1226,15 +1255,15 @@
       }
     });
 
-    if (refs.rerollBtn) {
-      refs.rerollBtn.addEventListener("click", () => {
-        running = false;
-        if (animationId) cancelAnimationFrame(animationId);
-        pickLandscape();
-        applyRandomControls();
-        initPlot();
-      });
-    }
+    root.addEventListener("click", (ev) => {
+      const reroll = ev.target.closest('[data-role="gd-reroll-btn"]');
+      if (!reroll || !root.contains(reroll)) return;
+      ev.preventDefault();
+      stopMotion();
+      pickLandscape();
+      applyRandomControls();
+      initPlot();
+    });
 
     initPlot();
   }

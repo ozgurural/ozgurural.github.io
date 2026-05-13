@@ -1365,6 +1365,7 @@ button:focus-visible {
   border-radius: 4px;
   background: linear-gradient(135deg, #0ea5e9, #6366f1);
   z-index: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease;
   opacity: 0.9;
 }
@@ -1377,6 +1378,7 @@ button:focus-visible {
 .lab-btn--train .lab-btn__text {
   position: relative;
   z-index: 1;
+  pointer-events: none;
   display: block;
   padding: 0.75rem 1rem;
   color: #fff;
