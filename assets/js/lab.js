@@ -1123,32 +1123,91 @@
       lossVal:  $('[data-role="pol-loss-val"]', root),
       uniqueVal: $('[data-role="pol-unique-val"]', root),
       fakeVal:  $('[data-role="pol-fake-val"]', root),
+      scoreVal: $('[data-role="pol-score-val"]', root),
+      badgeVal: $('[data-role="pol-badge-val"]', root),
+      streakVal: $('[data-role="pol-streak-val"]', root),
       plot:     $('[data-role="plot-pol"]', root),
       insight:  $('[data-role="insight-pol"]', root),
     };
 
-    if (!refs.plot) return;
+    if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs || !refs.noise) return;
 
-    /* ---- Constants ---- */
     const BATCH_SIZES = [8, 16, 32, 64, 128, 256, 512, 1024];
     const MAX_EPOCHS = 100;
-    const PW = 640, PH = 260;
     const M = { l: 52, r: 40, t: 28, b: 40 };
-    const innerW = PW - M.l - M.r;
-    const innerH = PH - M.t - M.b;
+    const innerW = 640 - M.l - M.r;
+    const innerH = 260 - M.t - M.b;
+    const FAKE_LINE = 6.4;
 
-    let trainingCurve = []; // Array of {epoch, loss}
+    let trainingCurve = [];
     let running = false;
     let animationId = null;
+    let streak = 0;
 
-    /* ---- Loss function: smoothly decreasing with noise ---- */
-    function computeLoss(epoch, alpha, batchSize, noise) {
-      const baseDecay = Math.exp(-epoch / 25) * 10;
-      const stochastic = noise * Math.cos(epoch * Math.PI / (MAX_EPOCHS / batchSize)) * Math.random();
-      return Math.max(0.1, baseDecay + stochastic);
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function normBand(v, min, max, spread) {
+      if (v >= min && v <= max) return 1;
+      const d = v < min ? (min - v) : (v - max);
+      return clamp(1 - d / spread, 0, 1);
     }
 
-    /* ---- Plot rendering ---- */
+    function celebrate(plot) {
+      const particles = [];
+      const cx = M.l + innerW * 0.75;
+      const cy = M.t + 30;
+      const colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e"];
+
+      for (let i = 0; i < 18; i++) {
+        const p = svg("circle", {
+          cx: cx,
+          cy: cy,
+          r: 2 + Math.random() * 2,
+          fill: colors[i % colors.length],
+          opacity: "0.95",
+        }, plot);
+        particles.push({
+          el: p,
+          x: cx,
+          y: cy,
+          vx: (Math.random() - 0.5) * 5,
+          vy: -2 - Math.random() * 4,
+          life: 40 + Math.floor(Math.random() * 20),
+        });
+      }
+
+      let frame = 0;
+      function tick() {
+        frame++;
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.18;
+          p.life -= 1;
+          p.el.setAttribute("cx", p.x.toFixed(1));
+          p.el.setAttribute("cy", p.y.toFixed(1));
+          p.el.setAttribute("opacity", String(clamp(p.life / 55, 0, 1)));
+        });
+
+        if (frame < 60) {
+          requestAnimationFrame(tick);
+        } else {
+          particles.forEach((p) => {
+            if (p.el && p.el.parentNode) p.el.parentNode.removeChild(p.el);
+          });
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function computeLoss(epoch, alpha, batchSize, noise) {
+      const speed = alpha * 24 * Math.sqrt(batchSize / 64);
+      const baseline = 8.2 * Math.exp(-(speed * epoch) / 11) + 0.24 + noise * 2.0;
+      const wobble = noise * (64 / batchSize) *
+        (0.65 * Math.sin(0.37 * epoch) + 0.35 * (Math.random() - 0.5));
+      const warmupPenalty = epoch < 8 ? (8 - epoch) * 0.03 : 0;
+      return clamp(baseline + wobble + warmupPenalty, 0.12, 10);
+    }
+
     function xFor(epoch) { return M.l + (epoch / MAX_EPOCHS) * innerW; }
     function yFor(loss) { return M.t + (1 - Math.min(1, loss / 10)) * innerH; }
 
@@ -1160,7 +1219,7 @@
       const title = svg("text", {
         x: M.l, y: M.t - 12, class: "lab-plot__title",
       }, plot);
-      title.textContent = "Training Loss Trajectory (Proof-of-Learning)";
+      title.textContent = "Proof-of-Learning Challenge: find the Gold zone";
 
       // Y-axis gridlines
       [0, 2.5, 5, 7.5, 10].forEach((v) => {
@@ -1198,14 +1257,14 @@
       svg("line", { x1: M.l, y1: M.t, x2: M.l, y2: M.t + innerH, stroke: "#333", "stroke-width": 1.5 }, plot);
       svg("line", { x1: M.l, y1: M.t + innerH, x2: M.l + innerW, y2: M.t + innerH, stroke: "#333", "stroke-width": 1.5 }, plot);
 
-      // "Fake" model line (flat at some random high loss)
+      // Flat fake-line reference: "downloaded weights, no real training run"
       svg("line", {
-        x1: M.l, y1: yFor(6.5),
-        x2: M.l + innerW, y2: yFor(6.5),
+        x1: M.l, y1: yFor(FAKE_LINE),
+        x2: M.l + innerW, y2: yFor(FAKE_LINE),
         stroke: "#ef4444", "stroke-width": 2, "stroke-dasharray": "4,4", opacity: 0.6,
       }, plot);
       svg("text", {
-        x: M.l + innerW + 8, y: yFor(6.5) + 4,
+        x: M.l + innerW + 8, y: yFor(FAKE_LINE) + 4,
         class: "lab-plot__label", fill: "#ef4444", "font-size": "11px",
       }, plot).textContent = "Downloaded model (no training)";
 
@@ -1240,7 +1299,7 @@
 
     function updateSliderDisplay() {
       refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
-      const bsIdx = parseInt(refs.bs.value);
+      const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
       refs.bsVal.textContent = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
       refs.noiseVal.textContent = parseFloat(refs.noise.value).toFixed(2);
     }
@@ -1249,25 +1308,80 @@
       refs.epochVal.textContent = epoch;
       refs.lossVal.textContent = loss.toFixed(3);
 
-      // Trajectory uniqueness: lower loss → more unique (less likely to be accident)
-      const uniqueness = Math.max(0, Math.min(1, (10 - loss) / 10));
+      const uniqueness = clamp((FAKE_LINE - loss) / FAKE_LINE, 0, 1);
       const uniquePercent = Math.round(uniqueness * 100);
       refs.uniqueVal.textContent = uniquePercent + "% unique";
 
-      // Fake detection
-      const isFake = epoch > 5 && loss < 6.5 && Math.abs(loss - 6.5) > 0.5;
+      const isFake = epoch > 10 && uniqueness > 0.45;
       refs.fakeVal.textContent = isFake ? "✓ Not plausible as fake" : "—";
+    }
+
+    function evaluateRun(alpha, batchSize, noise) {
+      if (trainingCurve.length < 6) return;
+
+      const losses = trainingCurve.map((p) => p.loss);
+      const finalLoss = losses[losses.length - 1];
+
+      let decreasing = 0;
+      let absSecondDiff = 0;
+      for (let i = 1; i < losses.length; i++) {
+        if (losses[i] <= losses[i - 1]) decreasing++;
+      }
+      for (let i = 2; i < losses.length; i++) {
+        absSecondDiff += Math.abs(losses[i] - 2 * losses[i - 1] + losses[i - 2]);
+      }
+
+      const monotonic = decreasing / (losses.length - 1);
+      const roughness = absSecondDiff / Math.max(1, losses.length - 2);
+      const smoothness = clamp(1 - roughness / 0.20, 0, 1);
+      const distanceFromFake = clamp((FAKE_LINE - finalLoss) / FAKE_LINE, 0, 1);
+
+      const lrFit = normBand(alpha, 0.008, 0.018, 0.02);
+      const bsFit = normBand(batchSize, 64, 256, 512);
+      const noiseFit = normBand(noise, 0.02, 0.08, 0.12);
+      const paramFit = (lrFit + bsFit + noiseFit) / 3;
+
+      const score = Math.round(100 * (
+        0.30 * monotonic +
+        0.25 * smoothness +
+        0.25 * distanceFromFake +
+        0.20 * paramFit
+      ));
+
+      let badge = "Needs more science";
+      if (score >= 88) badge = "Gold Proof";
+      else if (score >= 75) badge = "Silver Proof";
+      else if (score >= 60) badge = "Bronze Proof";
+
+      refs.scoreVal.textContent = String(score);
+      refs.badgeVal.textContent = badge;
+      refs.fakeVal.textContent = (distanceFromFake > 0.45 && monotonic > 0.65)
+        ? "✓ Not plausible as fake"
+        : "⚠ Too easy to spoof";
+
+      if (score >= 88) {
+        streak += 1;
+        celebrate(refs.plot);
+        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> You found the credible training regime. Keep this up for courtroom-grade provenance. Right-answer zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
+      } else {
+        streak = 0;
+        refs.insight.innerHTML = "No badge yet. Aim for smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, and ζ around 0.05.";
+      }
+      refs.streakVal.textContent = String(streak);
     }
 
     function reset() {
       running = false;
       trainingCurve = [];
-      updateMetrics(0, 0);
+      updateMetrics(0, FAKE_LINE);
+      refs.scoreVal.textContent = "0";
+      refs.badgeVal.textContent = "—";
+      refs.streakVal.textContent = String(streak);
       refs.fakeVal.textContent = "—";
       drawPlot();
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
-      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong> to generate your unique loss trajectory.";
+      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Your goal is to reach <strong>Gold Proof</strong> (score ≥ 88).";
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {
@@ -1280,13 +1394,13 @@
 
       if (epoch < MAX_EPOCHS) {
         animationId = requestAnimationFrame(() => {
-          setTimeout(() => doEpoch(epoch + 1, alpha, batchSize, noise), 50);
+          setTimeout(() => doEpoch(epoch + 1, alpha, batchSize, noise), 36);
         });
       } else {
         running = false;
         refs.trainBtn.classList.remove('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Reset";
-        refs.insight.innerHTML = "✨ Training complete. Your <strong>irreproducible</strong> trajectory is now your proof-of-learning credential. An attacker would need to reverse-engineer your exact hyperparameters to forge this—computationally harder than training from scratch.";
+        evaluateRun(alpha, batchSize, noise);
       }
     }
 
@@ -1299,10 +1413,10 @@
         running = true;
         refs.trainBtn.classList.add('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
-        refs.insight.textContent = "Generating your unique loss trajectory...";
+        refs.insight.textContent = "Running experiment. Let's see if this trajectory smells like real training or downloaded cosplay.";
 
         const alpha = parseFloat(refs.lr.value);
-        const bsIdx = parseInt(refs.bs.value);
+        const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
         const batchSize = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
         const noise = parseFloat(refs.noise.value);
 
@@ -1311,12 +1425,12 @@
       }
     });
 
-    refs.lr.addEventListener("change", updateSliderDisplay);
-    refs.bs.addEventListener("change", updateSliderDisplay);
-    refs.noise.addEventListener("change", updateSliderDisplay);
+    refs.lr.addEventListener("input", updateSliderDisplay);
+    refs.bs.addEventListener("input", updateSliderDisplay);
+    refs.noise.addEventListener("input", updateSliderDisplay);
 
     updateSliderDisplay();
-    drawPlot();
+    reset();
   }
 
   /* ----------------------------------------------------------------- bootstrap */

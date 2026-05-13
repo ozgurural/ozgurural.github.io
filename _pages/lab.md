@@ -1,7 +1,7 @@
 ---
 permalink: /lab/
 title: "Lab"
-excerpt: "Three interactive phase-space explorers in distributed systems, ML security, and aerospace fault tolerance. Drag the sliders, watch the curves move."
+excerpt: "Five interactive experiments in distributed systems, ML provenance, optimization, and aerospace fault tolerance. Drag the sliders, solve the challenges, and watch the curves move."
 ---
 
 <p class="ep-lead">
@@ -195,6 +195,11 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
 
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
+      <p class="lab-experiment__slider-guide">
+        <strong>Mission:</strong> hit <strong>Gold Proof</strong> by finding a training setup that yields a realistic, stable trajectory.<br>
+        <strong>Hint zone:</strong> α in <strong>[0.008, 0.018]</strong>, B in <strong>[64, 256]</strong>, ζ in <strong>[0.02, 0.08]</strong>.<br>
+        <strong>Dopamine rule:</strong> score at least <strong>88</strong> and the lab throws a tiny celebration.
+      </p>
       <label class="lab-control">
         <span class="lab-control__row">
           <span class="lab-control__name">Learning rate</span>
@@ -231,28 +236,43 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
 
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
+        <span class="lab-experiment__metric-label">Verification score</span>
+        <span class="lab-experiment__metric-value" data-role="pol-score-val">0</span>
+        <span class="lab-experiment__metric-formula">target: Gold ≥ 88</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--strict">
+        <span class="lab-experiment__metric-label">Badge</span>
+        <span class="lab-experiment__metric-value" data-role="pol-badge-val">—</span>
+        <span class="lab-experiment__metric-formula">Bronze / Silver / Gold</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--naive">
+        <span class="lab-experiment__metric-label">Win streak</span>
+        <span class="lab-experiment__metric-value" data-role="pol-streak-val">0</span>
+        <span class="lab-experiment__metric-formula">consecutive Gold runs</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--breakeven">
+        <span class="lab-experiment__metric-label">Current loss</span>
+        <span class="lab-experiment__metric-value" data-role="pol-loss-val">—</span>
+        <span class="lab-experiment__metric-formula">f(θ)</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Epochs completed</span>
         <span class="lab-experiment__metric-value" data-role="pol-epoch-val">0</span>
         <span class="lab-experiment__metric-formula">training progress</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Current loss</span>
-        <span class="lab-experiment__metric-value" data-role="pol-loss-val">—</span>
-        <span class="lab-experiment__metric-formula">f(θ)</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--naive">
         <span class="lab-experiment__metric-label">Trajectory uniqueness</span>
         <span class="lab-experiment__metric-value" data-role="pol-unique-val">—</span>
         <span class="lab-experiment__metric-formula">collision risk</span>
       </div>
-      <div class="lab-experiment__metric lab-experiment__metric--breakeven">
+      <div class="lab-experiment__metric lab-experiment__metric--naive">
         <span class="lab-experiment__metric-label">Fake model detected?</span>
         <span class="lab-experiment__metric-value" data-role="pol-fake-val">—</span>
         <span class="lab-experiment__metric-formula">via trajectory</span>
       </div>
     </div>
 
-    <p class="lab-experiment__insight" data-role="insight-pol">Adjust sliders and hit Train. Notice how your unique trajectory curves upward on the plot—that's your unforgeable proof you actually trained.</p>
+    <p class="lab-experiment__insight" data-role="insight-pol">Adjust sliders and hit Train. Real training should descend with controlled chaos, not flatline like a suspiciously convenient download.</p>
   </div>
 
   <details class="lab-reveal">
