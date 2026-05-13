@@ -35,12 +35,12 @@
   try {
     if (typeof console !== "undefined" && console.log) {
       const sig = [
-        "%c lab.js %c — research-grade phase-space explorers.",
+        "%c lab.js %c — research-grade phase-space explorers. Unimpressive humans may still find the curves educational.",
         "background:#0c4a6e;color:#fff;padding:2px 6px;border-radius:3px;font-weight:600;",
         "color:#94a3b8;font-style:italic;"
       ];
       console.log.apply(console, sig);
-      console.log("%cThe maths is real. Φ(x) is Abramowitz–Stegun 26.2.17, no Monte Carlo. If you read code while drinking coffee, drop me a note: drozgurural@gmail.com.", "color:#64748b;");
+      console.log("%cΦ(x) is Abramowitz–Stegun 26.2.17—real math, not a spoon. There is also no cake in this console. If you read code while drinking coffee, congratulations: you are statistically rare. drozgurural@gmail.com", "color:#64748b;");
     }
   } catch (e) { /* noop */ }
 
@@ -123,8 +123,8 @@
     const msg = $('[data-role="quest-msg"]');
     if (msg) {
       if (message) msg.textContent = message;
-      else if (completedQuestCount() === 5) msg.textContent = "All five solved. You are now mathematically certified caffeinated.";
-      else msg.textContent = "Solve each mission to unlock all five badges.";
+      else if (completedQuestCount() === 5) msg.textContent = "All five solved. The simulation acknowledges your persistence. You may now brag in any lobby that is not legally binding.";
+      else msg.textContent = "Complete five enrichment activities. Unlock badges. Disappoint nobody—especially not the eigenvalues.";
     }
   }
   function unlockQuest(key, message) {
@@ -132,7 +132,7 @@
     if (quest[key]) return;
     quest[key] = true;
     saveQuest();
-    renderQuest(message || "Badge unlocked: " + key.toUpperCase());
+    renderQuest(message || "Badge unlocked. The enrichment center is mildly proud.");
   }
 
   loadQuest();
@@ -372,8 +372,8 @@
       if (refs.sweetTg) {
         refs.sweetTg.hidden = !inSweetZone;
         if (inSweetZone) {
-          refs.sweetTg.textContent = "You found the operating point. At p = " + p.toFixed(2) + " and N = " + n + ", naive multi-send hits " + (pNaive*100).toFixed(1) + "% reliability. This is the regime Raft, Cassandra, and Bitcoin confirmation depth all live in. Strict-chain manages " + (pStrict*100).toFixed(1) + "% -- which is why two-phase commit has a blocking problem and Paxos does not.";
-          unlockQuest("tg", "Consensus lab: you found the operating point.");
+          refs.sweetTg.textContent = "You found the operating point. At p = " + p.toFixed(2) + " and N = " + n + ", naive multi-send hits " + (pNaive*100).toFixed(1) + "% reliability. This is the regime Raft, Cassandra, and Bitcoin confirmation depth all live in. Strict-chain manages " + (pStrict*100).toFixed(1) + "% -- which is why two-phase commit has a blocking problem and Paxos does not. Reload the Matrix all you want; this inequality still holds.";
+          unlockQuest("tg", "Consensus: you found a viable reality branch. The Architect sends regards.");
         }
       }
 
@@ -392,15 +392,15 @@
 
       // Insight — branches on phase-space zone, anchored to production systems.
       let txt;
-      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. The postman is honest, sober, and on time. Both protocols win 100%.";
-      else if (p > 0.84)         txt = "Loss this severe and surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet'.)";
-      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation. The interesting structure starts at N = 2.";
+      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. The postman is honest, sober, and on time. Both protocols win 100%. For science.";
+      else if (p > 0.84)         txt = "Loss this severe and surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet' and the simulation gets honest.)";
+      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation—like taking the blue pill and pretending handshakes do not exist. The interesting structure starts at N = 2.";
       else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here but it is still a trap, and it shows up at the tails.";
       else if (Math.abs(p - 0.5) < 0.005) txt = "p = 0.5. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries, same trick TCP uses on bad WiFi.";
       else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one. That is the math every blockchain confirmation depth and every database read quorum runs on.";
       else if (delta > 0.6)      txt = "Delta > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
       else if (delta > 0.3)      txt = "Delta > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better, same shape every retry-with-backoff and every blockchain confirmation depth uses.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p in (0,1) and N >= 2. Production distributed systems chose naive on purpose.";
+      else                       txt = "Naive multi-send dominates strict-chain for any p in (0,1) and N >= 2. Production distributed systems chose naive on purpose. The cake was also never on-chain.";
       refs.insight.textContent = txt;
 
       drawPlot(p, n);
@@ -682,21 +682,21 @@
       if (refs.sweetWm) {
         refs.sweetWm.hidden = !inSweetWm;
         if (inSweetWm) {
-          refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible.";
-          unlockQuest("wm", "Watermark lab: publishable detection regime.");
+          refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible. The cake remains non-admissible.";
+          unlockQuest("wm", "Watermark: court-grade signal. Still no cake.");
         }
       }
 
       let txt;
-      if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much.";
-      else if (det > 0.995)       txt = "Detection saturated. The verifier wins by a landslide. Court-credible regime: the lawyers have evidence; the thief has homework.";
+      if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much. This is not a failure; it is an enrichment opportunity.";
+      else if (det > 0.995)       txt = "Detection saturated. The verifier wins by a landslide. Court-credible regime: the lawyers have evidence; the thief has homework. Still no cake.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "On the operating frontier: over 90% detection, under 10% false-positive. The production-credible regime, the one a real provenance dispute can defend.";
+                                  txt = "On the operating frontier: over 90% detection, under 10% false-positive. The production-credible regime—the one a real provenance dispute can defend without bending spoons.";
       else if (det > 0.5 && k <= 4)
                                   txt = "Small key, marginal signal. Try doubling k. The gain from k = " + k + " to " + (k*2) + " comes from sqrt(k) SNR amplification.";
       else if (det < 0.15 && sigma > 0.3)
-                                  txt = "Sigma at this level means the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink epsilon. At this point a determined fine-tune attack succeeds.";
-      else if (det < 0.2)         txt = "Watermark washed out. At this (epsilon, sigma) the attacker has effectively defeated detection. Raise epsilon or grow k.";
+                                  txt = "Sigma at this level means the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink epsilon. At this point a determined fine-tune attack succeeds—and blames the oracle.";
+      else if (det < 0.2)         txt = "Watermark washed out. At this (epsilon, sigma) the attacker has effectively defeated detection. Raise epsilon or grow k. The simulation is disappointed but not surprised.";
       else                        txt = "k = " + k + " amplifies SNR by sqrt(k) which is approximately " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with epsilon alone.";
       refs.insight.textContent = txt;
 
@@ -954,8 +954,8 @@
       if (refs.sweetTmr) {
         refs.sweetTmr.hidden = !inSweetTmr;
         if (inSweetTmr) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5.";
-          unlockQuest("tmr", "TMR lab: safe operating envelope.");
+          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
+          unlockQuest("tmr", "TMR: redundancy that is not three copies of the same bug. Refreshing.");
         }
       }
 
@@ -966,9 +966,9 @@
       } else if (overBreakeven) {
         txt = "Warning: \u03c1 = " + rho.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
       } else if (rho >= 0.95) {
-        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times. The Ariane 5 had redundant flight computers running the exact same inertial reference software. They both crashed in the same millisecond.";
+        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times—Agent Smith cubed, but in RTL. The Ariane 5 had redundant flight computers running the exact same inertial reference software. They both crashed in the same millisecond.";
       } else if (rho < 0.05) {
-        txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight.";
+        txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight. Pleasant. Unexciting. Correct.";
       } else if (rho < 0.5) {
         txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than rho alone suggests. Common-cause failures are doing real damage.";
       } else {
@@ -1177,7 +1177,7 @@
       else refs.trainBtn.textContent = "Train!";
       
       refs.trainBtn.classList.remove('is-running');
-      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New challenge: <strong>" + activeLandscape.name + "</strong>.";
+      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New test chamber—sorry, <em>challenge</em>: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
     }
     
@@ -1208,17 +1208,17 @@
       renderTrail();
       
       if (currentX < X_MIN || currentX > X_MAX) {
-        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold. Lower the learning rate.";
+        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold—there is no spoon, only NaN. Lower the learning rate.";
         running = false;
       } else if (epoch > 500) {
-        refs.insight.textContent = "⏳ Training timed out (500 epochs). Try higher learning rate or momentum.";
+        refs.insight.textContent = "⏳ Training timed out (500 epochs). The Matrix reloaded the same epoch; try higher learning rate or momentum.";
         running = false;
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         if (Math.abs(currentX - TARGET_X) < 0.12) {
-          refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Dopamine unlocked. You now have reproducible enlightenment.";
-          unlockQuest("gd", "Gradient descent: global minimum reached.");
+          refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
+          unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
         } else {
-           refs.insight.textContent = "💀 Stuck in a local minimum. Gradient zeroed out in the saddle point of despair. Increase momentum.";
+           refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
         }
         running = false;
       }
@@ -1250,7 +1250,7 @@
         const span = refs.trainBtn.querySelector('.lab-btn__text');
         if (span) span.textContent = "Stop";
         else refs.trainBtn.textContent = "Stop";
-        refs.insight.textContent = "Training... (watch the loss)";
+        refs.insight.textContent = "Training... (watch the loss bend reality in real time)";
         doEpoch();
       }
     });
@@ -1383,7 +1383,7 @@
       const title = svg("text", {
         x: M.l, y: M.t - 12, class: "lab-plot__title",
       }, plot);
-      title.textContent = "Proof-of-Learning Challenge: find the Gold zone";
+      title.textContent = "Proof-of-Learning: find the Gold zone (still no cake)";
 
       // Y-axis gridlines
       [0, 2.5, 5, 7.5, 10].forEach((v) => {
@@ -1526,11 +1526,11 @@
       if (score >= 88) {
         streak += 1;
         celebrate(refs.plot);
-        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> You found the credible training regime. Keep this up for courtroom-grade provenance. Right-answer zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
-        unlockQuest("pol", "Proof-of-Learning: Gold Proof (score ≥ 88).");
+        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
+        unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose... wisely.");
       } else {
         streak = 0;
-        refs.insight.innerHTML = "No badge yet. Aim for smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, and ζ around 0.05.";
+        refs.insight.innerHTML = "No badge yet. The simulation suggests smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, ζ around 0.05. We will be monitoring your failure for science.";
       }
       refs.streakVal.textContent = String(streak);
     }
@@ -1546,7 +1546,7 @@
       drawPlot();
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
-      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Your goal is to reach <strong>Gold Proof</strong> (score ≥ 88).";
+      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88). There is no spoon—only a loss curve that either trained or downloaded its personality.";
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {
@@ -1578,7 +1578,7 @@
         running = true;
         refs.trainBtn.classList.add('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
-        refs.insight.textContent = "Running experiment. Let's see if this trajectory smells like real training or downloaded cosplay.";
+        refs.insight.textContent = "Running experiment. Trajectory smells like real training, or like someone chose the blue pill and a flat loss line.";
 
         const alpha = parseFloat(refs.lr.value);
         const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
