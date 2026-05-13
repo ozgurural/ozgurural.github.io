@@ -133,10 +133,8 @@
     quest[key] = true;
     saveQuest();
     renderQuest(message || "Badge unlocked. The enrichment center is mildly proud.");
+    labFxQuestCelebration();
   }
-
-  loadQuest();
-  renderQuest();
 
   /* ---------- statistics primitives ---------- */
   // Φ(x), the standard normal CDF. Abramowitz–Stegun approximation 26.2.17.
@@ -148,6 +146,138 @@
     const t = 1 / (1 + p * ax);
     const y = 1 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1) * t * Math.exp(-ax*ax);
     return 0.5 * (1 + sign * y);
+  }
+
+  /* one-sided Gaussian critical value z with Φ(z) = 1 − α (bisection on Φ) */
+  function zForOneSidedAlpha(alpha) {
+    var lo = 0, hi = 5, mid, i;
+    var a = Math.max(1e-4, Math.min(0.24, parseFloat(alpha) || 0.05));
+    var target = 1 - a;
+    for (i = 0; i < 55; i++) {
+      mid = (lo + hi) / 2;
+      if (phi(mid) < target) lo = mid;
+      else hi = mid;
+    }
+    return hi;
+  }
+
+  /* ---------- global “arcade” feedback (combo, juice, haptics) ---------- */
+  const FX_LS_JUICE = "lab.fx.juice";
+  const FX_LS_HAPTIC = "lab.fx.haptic";
+  let labFxCombo = 0;
+  let labFxComboTimer = null;
+
+  function labFxJuiceOn() {
+    return document.documentElement.classList.contains("lab-juice-mode");
+  }
+  function labFxHapticOn() {
+    const h = document.querySelector('[data-role="lab-haptic"]');
+    return !!(h && h.checked);
+  }
+  function labFxBumpCombo(delta) {
+    var d = delta == null ? 1 : delta;
+    labFxCombo += d;
+    var el = document.querySelector('[data-role="lab-combo-val"]');
+    if (el) el.textContent = String(labFxCombo);
+    if (labFxComboTimer) clearTimeout(labFxComboTimer);
+    labFxComboTimer = setTimeout(function () {
+      labFxCombo = Math.max(0, labFxCombo - 1);
+      var c = document.querySelector('[data-role="lab-combo-val"]');
+      if (c) c.textContent = String(labFxCombo);
+    }, 3200);
+  }
+  function labFxQuestCelebration() {
+    var q = document.querySelector(".lab-quest");
+    if (q) {
+      q.classList.remove("lab-quest--hit");
+      void q.offsetWidth;
+      q.classList.add("lab-quest--hit");
+      setTimeout(function () { q.classList.remove("lab-quest--hit"); }, 520);
+    }
+    labFxBumpCombo(4);
+    labFxBuzz();
+  }
+  function labFxBuzz() {
+    if (!labFxHapticOn()) return;
+    try {
+      if (navigator.vibrate) navigator.vibrate([10, 35, 12]);
+    } catch (e) { /* noop */ }
+  }
+  function labFxMiniConfetti(plot, count) {
+    if (!plot || !labFxJuiceOn()) return;
+    var n = count || 22;
+    var M = { l: 52, t: 28 };
+    var innerW = 400;
+    var colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e", "#a78bfa"];
+    var i, cx = M.l + innerW * 0.72, cy = M.t + 40;
+    var parts = [];
+    for (i = 0; i < n; i++) {
+      parts.push({
+        el: svg("circle", {
+          cx: cx, cy: cy, r: 2 + Math.random() * 2.5,
+          fill: colors[i % colors.length], opacity: "0.95",
+        }, plot),
+        x: cx, y: cy,
+        vx: (Math.random() - 0.5) * 6,
+        vy: -2 - Math.random() * 4,
+        life: 35 + Math.floor(Math.random() * 18),
+      });
+    }
+    var frame = 0;
+    function tick() {
+      frame++;
+      parts.forEach(function (p) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.2;
+        p.life -= 1;
+        p.el.setAttribute("cx", p.x.toFixed(1));
+        p.el.setAttribute("cy", p.y.toFixed(1));
+        p.el.setAttribute("opacity", String(Math.max(0, Math.min(1, p.life / 50))));
+      });
+      if (frame < 55) requestAnimationFrame(tick);
+      else {
+        parts.forEach(function (p) {
+          if (p.el && p.el.parentNode) p.el.parentNode.removeChild(p.el);
+        });
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function initLabPlaybar() {
+    if (!document.getElementById("lab-playbar")) return;
+    var juice = document.querySelector('[data-role="lab-juice"]');
+    var hapt = document.querySelector('[data-role="lab-haptic"]');
+    function syncJuice() {
+      document.documentElement.classList.toggle("lab-juice-mode", !!(juice && juice.checked));
+      try {
+        if (juice) safeStorageSet(FX_LS_JUICE, juice.checked ? "1" : "0");
+      } catch (e) { /* noop */ }
+    }
+    function syncHapt() {
+      try {
+        if (hapt) safeStorageSet(FX_LS_HAPTIC, hapt.checked ? "1" : "0");
+      } catch (e) { /* noop */ }
+    }
+    try {
+      if (juice) {
+        var sj = safeStorageGet(FX_LS_JUICE);
+        if (sj !== null) juice.checked = sj === "1";
+      }
+      if (hapt) {
+        var sh = safeStorageGet(FX_LS_HAPTIC);
+        if (sh !== null) hapt.checked = sh === "1";
+      }
+    } catch (e) { /* noop */ }
+    syncJuice();
+    if (juice) juice.addEventListener("change", syncJuice);
+    if (hapt) hapt.addEventListener("change", syncHapt);
+    document.addEventListener("input", function (e) {
+      var t = e.target;
+      if (!t || !t.matches || !t.matches("input[type=\"range\"]")) return;
+      if (t.closest && t.closest(".lab-experiment")) labFxBumpCombo(1);
+    }, true);
   }
 
   /* ============================================================================
@@ -171,6 +301,8 @@
       insight:  $('[data-role="insight"]', root),
       plot:     $('[data-role="plot"]', root),
       valley:   $('[data-role="valley"]', root),
+      turbo:    $('[data-role="tg-turbo"]', root),
+      neonplot: $('[data-role="tg-neonplot"]', root),
     };
 
     /* ---- Plot rendering ---- */
@@ -377,8 +509,11 @@
         }
       }
 
-      // Animation speed: faster in sweet zone; restart only when zone changes
-      const newSpawnMs = inSweetZone ? 500 : 700;
+      // Animation speed: faster in sweet zone; turbo shrinks baseline
+      const tgTurbo = refs.turbo && refs.turbo.checked;
+      const baseMs = tgTurbo ? 280 : 700;
+      const sweetMs = tgTurbo ? 180 : 500;
+      const newSpawnMs = inSweetZone ? sweetMs : baseMs;
       if (newSpawnMs !== spawnMs || inSweetZone !== lastSweetZone) {
         spawnMs = newSpawnMs;
         restartAnim();
@@ -388,6 +523,9 @@
       // Valley class for sweet zone styling
       if (refs.valley) {
         refs.valley.classList.toggle("lab-tg__valley--sweet", inSweetZone);
+      }
+      if (refs.plot && refs.neonplot) {
+        refs.plot.classList.toggle("lab-plot--neon-sweet", inSweetZone && refs.neonplot.checked);
       }
 
       // Insight — branches on phase-space zone, anchored to production systems.
@@ -408,6 +546,8 @@
 
     refs.p.addEventListener("input", update);
     refs.n.addEventListener("input", update);
+    if (refs.turbo) refs.turbo.addEventListener("change", update);
+    if (refs.neonplot) refs.neonplot.addEventListener("change", update);
     update();
     startAnim();
   }
@@ -434,17 +574,19 @@
       utilityVal: $('[data-role="utility-val"]', root),
       sweetWm:    $('[data-role="sweet-spot-wm"]', root),
       insight:    $('[data-role="insight-wm"]', root),
+      alpha:      $('[data-role="alpha"]', root),
+      alphaVal:   $('[data-role="alpha-val"]', root),
+      wmNeon:     $('[data-role="wm-neon"]', root),
+      wmPop:      $('[data-role="wm-pop"]', root),
     };
 
     const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
-    const ALPHA  = 0.05;       // per-cell FPR
-    const Z_ALPHA = 1.6448536;  // one-sided 95th percentile
 
-    /* per-cell detection probability under perturbation eps + attack noise sigma */
-    function qDetect(eps, sigma) {
+    /* per-cell detection probability; zcrit from nominal one-sided level α */
+    function qDetect(eps, sigma, zcrit) {
       const sd = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
       const snr = eps / sd;
-      return phi(snr - Z_ALPHA);
+      return phi(snr - zcrit);
     }
     /* aggregate detection over k cells, majority vote, normal approximation */
     function aggregateDetect(q, k) {
@@ -501,19 +643,21 @@
       }
       return out;
     }
-    function valueToColor(v, isKey) {
+    function valueToColor(v, isKey, neon) {
       let c = Math.max(0, Math.min(1, v));
       const hue   = 200 - c * 30;
       let   sat   = 60 + c * 20;
       let   light = 32 + c * 38;
-      if (isKey) { sat = Math.min(95, sat + 18); light = Math.max(26, light - 6); }
+      if (isKey) { sat = Math.min(98, sat + (neon ? 32 : 18)); light = Math.max(22, light - (neon ? 10 : 6)); }
       return "hsl(" + hue.toFixed(0) + " " + sat.toFixed(0) + "% " + light.toFixed(0) + "%)";
     }
+    let wmPopTimer = null;
     function buildGrid(eps, k, sigma) {
       while (refs.grid.firstChild) refs.grid.removeChild(refs.grid.firstChild);
       const base = rngBase();
       const keyCells = pickKey(k);
       const keySet = new Set(keyCells);
+      const neonOn = refs.wmNeon && refs.wmNeon.checked;
       // Adversary's noise
       for (let i = 0; i < GRID_CELLS; i++) {
         const noise = (Math.random() * 2 - 1) * sigma * 1.2;  // crude uniform; visual only
@@ -526,7 +670,7 @@
         const v = (raw - vmin) / range;
         const cell = document.createElement("span");
         cell.className = "lab-wm__cell";
-        cell.style.background = valueToColor(v, keySet.has(i));
+        cell.style.background = valueToColor(v, keySet.has(i), neonOn);
         if (keySet.has(i)) cell.dataset.key = "1";
         refs.grid.appendChild(cell);
       });
@@ -551,6 +695,8 @@
       // Title
       const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
       title.textContent = "Detection rate vs attacker noise σ | ε = " + eps.toFixed(2);
+
+      const zc = zForOneSidedAlpha(parseFloat(refs.alpha.value));
 
       // Y-axis gridlines/ticks
       [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
@@ -588,7 +734,7 @@
         let d = "";
         for (let i = 0; i <= SAMPLES; i++) {
           const sigma = (i / SAMPLES) * SIGMA_MAX;
-          const q = qDetect(eps, sigma);
+          const q = qDetect(eps, sigma, zc);
           const det = aggregateDetect(q, k);
           const x = xFor(sigma),
             y = yFor(det);
@@ -602,7 +748,7 @@
           d: pathForK(k),
           class: "lab-plot__curve lab-plot__curve--wm",
         }, plot);
-        const finalQ = qDetect(eps, SIGMA_MAX);
+        const finalQ = qDetect(eps, SIGMA_MAX, zc);
         const finalDet = aggregateDetect(finalQ, k);
         const t = svg("text", {
           x: M.l + innerW + 10,
@@ -615,7 +761,7 @@
         d: pathForK(kCur),
         class: "lab-plot__curve lab-plot__curve--wm lab-plot__curve--wm-current",
       }, plot);
-      const curFinalQ = qDetect(eps, SIGMA_MAX);
+      const curFinalQ = qDetect(eps, SIGMA_MAX, zc);
       const curFinalDet = aggregateDetect(curFinalQ, kCur);
       const curLabel = svg(
         "text",
@@ -637,7 +783,7 @@
       }, plot);
 
       // Marker dot at (σ, detection_for_current_k)
-      const qCur = qDetect(eps, sigmaCur);
+      const qCur = qDetect(eps, sigmaCur, zc);
       const detCur = aggregateDetect(qCur, kCur);
       svg("circle", {
         cx: xFor(sigmaCur), cy: yFor(detCur), r: 5,
@@ -651,15 +797,18 @@
       const eps   = parseFloat(refs.eps.value);
       const k     = parseInt(refs.k.value, 10);
       const sigma = parseFloat(refs.sigma.value);
+      const alphaSig = parseFloat(refs.alpha.value);
+      const zc = zForOneSidedAlpha(alphaSig);
       refs.epsVal.textContent   = eps.toFixed(2);
       refs.kVal.textContent     = k;
       refs.sigmaVal.textContent = sigma.toFixed(2);
+      if (refs.alphaVal) refs.alphaVal.textContent = alphaSig.toFixed(3);
 
       const sd  = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
       const snr = eps / sd;
-      const q   = qDetect(eps, sigma);
+      const q   = qDetect(eps, sigma, zc);
       const det = aggregateDetect(q, k);
-      const fpr = aggregateDetect(ALPHA, k);
+      const fpr = aggregateDetect(alphaSig, k);
 
       const num1 = (v) => v.toFixed(2);
       const pctH = (v) => (v * 100).toFixed(1) + "%";
@@ -703,12 +852,23 @@
       buildGrid(eps, k, sigma);
       if (eps > 0.25) refs.grid.classList.add('lab-wm__grid--glitch');
       else refs.grid.classList.remove('lab-wm__grid--glitch');
+      if (refs.wmNeon) refs.grid.classList.toggle("lab-wm__grid--neon", refs.wmNeon.checked);
+      if (refs.wmPop && refs.wmPop.checked) {
+        refs.grid.classList.add("lab-wm__grid--pop");
+        clearTimeout(wmPopTimer);
+        wmPopTimer = setTimeout(function () {
+          refs.grid.classList.remove("lab-wm__grid--pop");
+        }, 360);
+      }
       drawPlot(eps, k, sigma);
     }
 
     refs.eps.addEventListener("input", update);
     refs.k.addEventListener("input", update);
     refs.sigma.addEventListener("input", update);
+    if (refs.alpha) refs.alpha.addEventListener("input", update);
+    if (refs.wmNeon) refs.wmNeon.addEventListener("change", update);
+    if (refs.wmPop) refs.wmPop.addEventListener("change", update);
     update();
   }
 
@@ -740,6 +900,9 @@
       cells2:          $('[data-cells="2"]', root),
       cells3:          $('[data-cells="3"]', root),
       cellsSys:        $('[data-cells="sys"]', root),
+      tmrStrip:        $('[data-role="tmr-strip"]', root),
+      hypersim:        $('[data-role="tmr-hypersim"]', root),
+      glow:            $('[data-role="tmr-glow"]', root),
     };
 
     /* Closed-form system failure rate. */
@@ -867,6 +1030,7 @@
     /* ---- Live simulation: scrolling channel strip ---- */
     const MAX_CELLS = 28;
     let simTimer = null;
+    let tmrTickMs = 600;
     let currentQ = 0.05, currentRho = 0;
 
     function addCell(container, isFault) {
@@ -904,11 +1068,24 @@
           void sysRow.offsetWidth;
           sysRow.classList.add("is-flashing");
         }
+        if (refs.glow && refs.glow.checked && refs.tmrStrip) {
+          refs.tmrStrip.classList.remove("lab-tmr-strip--pulse");
+          void refs.tmrStrip.offsetWidth;
+          refs.tmrStrip.classList.add("lab-tmr-strip--pulse");
+          setTimeout(function () {
+            if (refs.tmrStrip) refs.tmrStrip.classList.remove("lab-tmr-strip--pulse");
+          }, 520);
+        }
       }
     }
     function startSim() {
       if (simTimer) return;
-      simTimer = setInterval(tick, 600);
+      simTimer = setInterval(tick, tmrTickMs);
+      tick();
+    }
+    function restartSimInterval() {
+      if (simTimer) { clearInterval(simTimer); simTimer = null; }
+      simTimer = setInterval(tick, tmrTickMs);
       tick();
     }
     function stopSim() {
@@ -981,6 +1158,12 @@
 
     refs.q.addEventListener("input", update);
     refs.rho.addEventListener("input", update);
+    if (refs.hypersim) {
+      refs.hypersim.addEventListener("change", function () {
+        tmrTickMs = refs.hypersim.checked ? 200 : 600;
+        restartSimInterval();
+      });
+    }
     update();
     startSim();
   }
@@ -1000,6 +1183,9 @@
       momVal:    $gd("mom-val"),
       trainBtn:  $gd("train-btn"),
       plot:      $gd("plot-gd"),
+      noise:     $gd("noise"),
+      gdTurbo:   $gd("gd-turbo"),
+      gdRainbow: $gd("gd-rainbow"),
       epochVal:  $gd("epoch-val"),
       lossVal:   $gd("loss-val"),
       velVal:    $gd("vel-val"),
@@ -1106,10 +1292,47 @@
 
     refs.lr.addEventListener("input", () => { refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3); });
     refs.mom.addEventListener("input", () => { refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2); });
+    if (refs.noise) refs.noise.addEventListener("input", function () { renderParticle(); });
+    if (refs.gdRainbow) refs.gdRainbow.addEventListener("change", syncGdTrailStyle);
+
+    function gdEpochDelay() {
+      return (refs.gdTurbo && refs.gdTurbo.checked) ? 11 : 30;
+    }
+
+    function ensureTrailGradient() {
+      if (!refs.plot || refs.plot.querySelector('[id="lab-gd-trail-grad"]')) return;
+      var defs = document.createElementNS(SVG, "defs");
+      var lg = document.createElementNS(SVG, "linearGradient");
+      lg.setAttribute("id", "lab-gd-trail-grad");
+      lg.setAttribute("gradientUnits", "userSpaceOnUse");
+      lg.setAttribute("x1", "0");
+      lg.setAttribute("y1", "0");
+      lg.setAttribute("x2", "640");
+      lg.setAttribute("y2", "0");
+      ["#22d3ee", "#a78bfa", "#fb7185", "#fbbf24", "#34d399"].forEach(function (col, i, arr) {
+        var st = document.createElementNS(SVG, "stop");
+        st.setAttribute("offset", (i / (arr.length - 1) * 100).toFixed(1) + "%");
+        st.setAttribute("stop-color", col);
+        lg.appendChild(st);
+      });
+      defs.appendChild(lg);
+      refs.plot.insertBefore(defs, refs.plot.firstChild);
+    }
+
+    function syncGdTrailStyle() {
+      if (!trailPath) return;
+      var rainbow = refs.gdRainbow && refs.gdRainbow.checked;
+      if (rainbow) {
+        trailPath.setAttribute("stroke", "url(#lab-gd-trail-grad)");
+        trailPath.setAttribute("stroke-width", "3");
+      } else {
+        trailPath.setAttribute("stroke", "#38bdf8");
+        trailPath.setAttribute("stroke-width", "2.5");
+      }
+    }
 
     function triggerCongrats(el, on) {
-      void el;
-      void on;
+      if (on && labFxJuiceOn()) labFxMiniConfetti(el, 30);
     }
 
     let animationId = null;
@@ -1139,11 +1362,13 @@
     function initPlot() {
       while(refs.plot.firstChild) refs.plot.removeChild(refs.plot.firstChild);
       drawCurve();
+      ensureTrailGradient();
       trailPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
       trailPath.setAttribute("stroke-dasharray", "4 4");
       trailPath.setAttribute("fill", "none");
       trailPath.setAttribute("stroke", "#38bdf8"); // bright color
       refs.plot.appendChild(trailPath);
+      syncGdTrailStyle();
 
       particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       particle.setAttribute("r", 6);
@@ -1188,8 +1413,16 @@
     }
     
     function renderParticle() {
-      particle.setAttribute("cx", xFor(currentX));
-      particle.setAttribute("cy", yFor(f(currentX)));
+      var jx = 0, jy = 0;
+      if (refs.noise) {
+        var nz = parseFloat(refs.noise.value) || 0;
+        if (nz > 0) {
+          jx = nz * 0.035 * Math.sin(epoch * 0.95);
+          jy = nz * 0.022 * Math.cos(epoch * 0.72);
+        }
+      }
+      particle.setAttribute("cx", xFor(currentX) + jx);
+      particle.setAttribute("cy", yFor(f(currentX)) + jy);
     }
     
     function doEpoch() {
@@ -1217,6 +1450,7 @@
         if (Math.abs(currentX - TARGET_X) < 0.12) {
           refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
           unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
+          triggerCongrats(refs.plot, true);
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
         }
@@ -1229,7 +1463,7 @@
           epochTimeoutId = setTimeout(function () {
             epochTimeoutId = null;
             doEpoch();
-          }, 30);
+          }, gdEpochDelay());
         });
       } else {
         const span = refs.trainBtn.querySelector('.lab-btn__text');
@@ -1292,6 +1526,8 @@
       streakVal: $('[data-role="pol-streak-val"]', root),
       plot:     $('[data-role="plot-pol"]', root),
       insight:  $('[data-role="insight-pol"]', root),
+      polTurbo: $('[data-role="pol-turbo"]', root),
+      polMega:  $('[data-role="pol-mega"]', root),
     };
 
     if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs || !refs.noise) return;
@@ -1306,6 +1542,7 @@
     let trainingCurve = [];
     let running = false;
     let animationId = null;
+    let polEpochTid = null;
     let streak = 0;
 
     function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
@@ -1315,13 +1552,14 @@
       return clamp(1 - d / spread, 0, 1);
     }
 
-    function celebrate(plot) {
+    function celebrate(plot, mega) {
       const particles = [];
       const cx = M.l + innerW * 0.75;
       const cy = M.t + 30;
       const colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e"];
+      const count = mega ? 44 : 18;
 
-      for (let i = 0; i < 18; i++) {
+      for (let i = 0; i < count; i++) {
         const p = svg("circle", {
           cx: cx,
           cy: cy,
@@ -1525,7 +1763,7 @@
 
       if (score >= 88) {
         streak += 1;
-        celebrate(refs.plot);
+        celebrate(refs.plot, !!(refs.polMega && refs.polMega.checked));
         refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
         unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose... wisely.");
       } else {
@@ -1537,6 +1775,8 @@
 
     function reset() {
       running = false;
+      if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+      if (polEpochTid) { clearTimeout(polEpochTid); polEpochTid = null; }
       trainingCurve = [];
       updateMetrics(0, FAKE_LINE);
       refs.scoreVal.textContent = "0";
@@ -1558,8 +1798,13 @@
       drawPlot();
 
       if (epoch < MAX_EPOCHS) {
-        animationId = requestAnimationFrame(() => {
-          setTimeout(() => doEpoch(epoch + 1, alpha, batchSize, noise), 36);
+        animationId = requestAnimationFrame(function () {
+          animationId = null;
+          var ms = refs.polTurbo && refs.polTurbo.checked ? 11 : 36;
+          polEpochTid = setTimeout(function () {
+            polEpochTid = null;
+            doEpoch(epoch + 1, alpha, batchSize, noise);
+          }, ms);
         });
       } else {
         running = false;
@@ -1572,7 +1817,8 @@
     refs.trainBtn.addEventListener("click", () => {
       const btnText = refs.trainBtn.querySelector('.lab-btn__text').textContent;
       if (btnText.trim() === "Reset" || running) {
-        if (animationId) cancelAnimationFrame(animationId);
+        if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+        if (polEpochTid) { clearTimeout(polEpochTid); polEpochTid = null; }
         reset();
       } else {
         running = true;
@@ -1600,6 +1846,9 @@
 
   /* ----------------------------------------------------------------- bootstrap */
   function boot() {
+    loadQuest();
+    renderQuest();
+    initLabPlaybar();
     if(typeof initTwoGeneralsLab === "function") initTwoGeneralsLab();
     if(typeof initVerifierLab === "function") initVerifierLab();
     if(typeof initWatermarkLab === "function") initWatermarkLab();

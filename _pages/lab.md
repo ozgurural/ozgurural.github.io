@@ -23,6 +23,19 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
   <p class="lab-quest__total" aria-live="polite"><span data-role="quest-total">0/5</span> missions</p>
 </div>
 
+<div class="lab-playbar" id="lab-playbar" role="region" aria-label="Playground feedback and motion">
+  <div class="lab-playbar__cluster">
+    <span class="lab-playbar__kicker">Arcade layer</span>
+    <label class="lab-playset__opt"><input type="checkbox" data-role="lab-juice" checked> Juice mode <span class="lab-playbar__hint">faster pulses, bigger wins</span></label>
+    <label class="lab-playset__opt"><input type="checkbox" data-role="lab-haptic"> Haptic wins <span class="lab-playbar__hint">mobile buzz</span></label>
+  </div>
+  <div class="lab-playbar__cluster lab-playbar__cluster--score">
+    <span class="lab-playbar__kicker">Combo</span>
+    <span class="lab-playbar__combo" aria-live="polite"><span data-role="lab-combo-val">0</span></span>
+    <span class="lab-playbar__hint">move any slider to build it</span>
+  </div>
+</div>
+
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Why Distributed Systems Fake Consensus</h2>
@@ -52,6 +65,10 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         </span>
         <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="protocol depth N">
       </label>
+      <div class="lab-playset" aria-label="Two generals display options">
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-turbo"> Hyper-lane messengers</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-neonplot" checked> Neon plot when in sweet zone</label>
+      </div>
     </div>
 
     <div class="lab-experiment__visual">
@@ -153,6 +170,10 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         </span>
         <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="significance level alpha">
       </label>
+      <div class="lab-playset" aria-label="Watermark display options">
+        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked> Neon key cells</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop"> Pulse grid on update</label>
+      </div>
     </div>
 
     <div class="lab-experiment__visual">
@@ -239,6 +260,10 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         </span>
         <input type="range" min="0.01" max="0.20" step="0.01" value="0.05" data-role="pol-noise" aria-label="data noise zeta">
       </label>
+      <div class="lab-playset" aria-label="Proof-of-Learning pacing">
+        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-turbo"> Hyper-training (faster epochs)</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-mega"> Mega confetti on Gold</label>
+      </div>
       <button class="lab-btn lab-btn--train" type="button" data-role="pol-train-btn">
         <span class="lab-btn__text">Train!</span>
         <span class="lab-btn__bg"></span>
@@ -337,6 +362,10 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         </span>
         <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="number of redundant channels">
       </label>
+      <div class="lab-playset" aria-label="TMR simulation options">
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-hypersim"> Hyperspeed strip</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-glow" checked> Glow voter row on SYS fail</label>
+      </div>
     </div>
 
     <div class="lab-tmr__strip" aria-hidden="true" data-role="tmr-strip">
@@ -433,6 +462,11 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         </span>
         <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="batch noise">
       </label>
+      <div class="lab-playset" aria-label="Gradient descent display options">
+        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-turbo"> Hyper-training (faster steps)</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-rainbow" checked> Rainbow optimizer trail</label>
+        <span class="lab-playbar__hint" style="grid-column:1/-1;margin:0">ζ adds visual jitter only; the loss math is unchanged.</span>
+      </div>
       <button class="lab-btn lab-btn--train" type="button" data-role="train-btn">
         <span class="lab-btn__text">Train!</span>
         <span class="lab-btn__bg"></span>
