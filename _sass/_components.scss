@@ -621,6 +621,21 @@
   z-index: 1;
   position: relative;
 }
+.lab-wm__grid--neon.lab-wm__grid--reveal .lab-wm__cell[data-key="1"] {
+  filter: saturate(1.35) brightness(1.08);
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.65) inset,
+    0 0 10px rgba(245, 158, 11, 0.55),
+    0 0 18px rgba(244, 63, 94, 0.2);
+}
+.lab-wm__grid--pop {
+  animation: lab-wm-grid-pop 0.38s ease-out;
+}
+@keyframes lab-wm-grid-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
 
 /* ---- Lab page: cross-experiment mission strip ---- */
 .lab-quest {
@@ -676,6 +691,109 @@
   margin: 0.55rem 0 0;
   font-size: 0.85rem;
   color: var(--ds-muted);
+}
+
+/* ---- Lab arcade playbar (global juice / combo) ---- */
+.lab-playbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem 1.25rem;
+  margin: -0.35rem 0 1.35rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--ds-font-sans);
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.06), rgba(56, 189, 248, 0.08));
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  box-shadow: var(--ds-shadow-1);
+}
+.lab-playbar__cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+  min-width: min(100%, 220px);
+}
+.lab-playbar__cluster--score {
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  min-width: 140px;
+}
+.lab-playbar__cluster--score .lab-playbar__kicker {
+  width: 100%;
+  text-align: right;
+}
+.lab-playbar__kicker {
+  display: block;
+  width: 100%;
+  font-family: var(--ds-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+}
+.lab-playbar__combo {
+  font-family: var(--ds-font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--ds-accent);
+  text-shadow: 0 0 18px rgba(244, 63, 94, 0.35);
+}
+.lab-playbar__hint {
+  font-size: 0.72rem;
+  color: var(--ds-soft);
+  line-height: 1.35;
+  max-width: 16rem;
+}
+.lab-playset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  grid-column: 1 / -1;
+  margin: 0.35rem 0 0.15rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px dashed var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+}
+.lab-playset__opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ds-body);
+  cursor: pointer;
+  user-select: none;
+}
+.lab-playset__opt input {
+  accent-color: var(--ds-accent);
+  width: 1rem;
+  height: 1rem;
+}
+.lab-quest.lab-quest--hit {
+  animation: lab-quest-hit-pop 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.25), 0 8px 28px rgba(16, 185, 129, 0.12);
+}
+@keyframes lab-quest-hit-pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-quest.lab-quest--hit,
+  .lab-wm__grid--pop,
+  .lab-plot--neon-sweet,
+  .lab-tmr__strip.lab-tmr-strip--pulse {
+    animation: none !important;
+  }
+  html.lab-juice-mode .lab-experiment__metric.is-updating {
+    animation: lab-metric-pulse 0.35s ease-out !important;
+  }
 }
 
 /* ---- Experiment shell: controls + visual + readout + insight ---- */
@@ -776,6 +894,14 @@
   width: 100%;
   height: auto;
   display: block;
+}
+.lab-plot--neon-sweet {
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45)) drop-shadow(0 0 14px rgba(244, 63, 94, 0.25));
+  animation: lab-plot-neon-breathe 2.4s ease-in-out infinite;
+}
+@keyframes lab-plot-neon-breathe {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.35)) drop-shadow(0 0 10px rgba(244, 63, 94, 0.18)); }
+  50%      { filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.55)) drop-shadow(0 0 22px rgba(244, 63, 94, 0.32)); }
 }
 .lab-plot__title {
   font-family: var(--ds-font-mono);
@@ -882,6 +1008,22 @@ html[data-theme="dark"] .lab-plot__legend-value--strict { fill: #fbbf24; }
   0%   { background: var(--ds-accent-soft); box-shadow: inset 0 0 0 1px var(--ds-accent-2); }
   100% { background: var(--ds-surface); box-shadow: none; }
 }
+html.lab-juice-mode .lab-experiment__metric.is-updating {
+  animation: lab-metric-pulse-juice 0.72s ease-out;
+}
+@keyframes lab-metric-pulse-juice {
+  0% {
+    background: rgba(244, 63, 94, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(244, 63, 94, 0.45), 0 0 12px rgba(56, 189, 248, 0.2);
+  }
+  100% { background: var(--ds-surface); box-shadow: none; }
+}
+html.lab-juice-mode .lab-experiment__visual .lab-plot {
+  transition: filter 0.25s ease, box-shadow 0.25s ease;
+}
+html.lab-juice-mode .lab-experiment__visual .lab-plot:not(.lab-plot--neon-sweet) {
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.06));
+}
 .lab-experiment__metric-label {
   font-family: var(--ds-font-mono);
   font-size: 0.7rem;
@@ -983,6 +1125,14 @@ html[data-theme="dark"] .lab-tmr__cell--fault { background: #f87171; }
 @keyframes lab-tmr-cell-in {
   from { transform: scaleY(0.3); opacity: 0; }
   to   { transform: scaleY(1);   opacity: 1; }
+}
+.lab-tmr__strip.lab-tmr-strip--pulse {
+  animation: lab-tmr-strip-pulse 0.55s ease-out 2;
+  border-color: rgba(220, 38, 38, 0.45);
+}
+@keyframes lab-tmr-strip-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50%      { box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2), 0 0 22px rgba(220, 38, 38, 0.25); }
 }
 
 /* TMR card: stack its parts vertically with breathing room. */
