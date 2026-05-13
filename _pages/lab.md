@@ -5,7 +5,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
 ---
 
 <p class="ep-lead">
-  Welcome to the ontological petting zoo of modern engineering. Three live phase-space explorers. None of them are sterile textbook abstractions—they are the bleeding-edge duct tape holding our civilization together: your bank pretending it has consensus, your VC-funded startup pretending it didn't steal its LLM weights, and your Airbus politely ignoring a supernova's attempt to flip a bit in its L1 cache. Drag the sliders. Watch theories collapse. (If you still believe in deterministic AGI or "the cloud", open DevTools and let the math traumatize you directly.)
+  Welcome to the interactive graveyard of pristine theoretical computer science. None of the exhibits below are pure textbook abstractions—they are live simulations of the statistical duct tape currently holding human civilization together. Here you will find your bank hallucinating network consensus in real-time, a VC-funded startup mathematically failing to launder stolen LLM weights, and your Airbus politely surviving a cosmic ray strike at 36,000 feet. Drag the sliders. Watch beautiful theories collapse into statistical panic. (And if you still naively believe in deterministic systems, open DevTools and let the floating-point math personally offend you.)
 </p>
 
 <section class="lab-card lab-experiment" id="lab-tg">
