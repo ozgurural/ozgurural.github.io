@@ -422,6 +422,10 @@ excerpt: "Five interactive experiments in distributed systems, ML provenance, op
         <span class="lab-btn__text">Train!</span>
         <span class="lab-btn__bg"></span>
       </button>
+      <button class="lab-btn lab-btn--train" type="button" data-role="gd-reroll-btn" aria-label="new random challenge">
+        <span class="lab-btn__text">New Challenge</span>
+        <span class="lab-btn__bg"></span>
+      </button>
     </div>
 
     <div class="lab-experiment__visual">

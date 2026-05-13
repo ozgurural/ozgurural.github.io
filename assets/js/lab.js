@@ -78,6 +78,63 @@
     el.classList.add("is-updating");
   }
 
+  /* ---------- global quest tracker ---------- */
+  const QUEST_KEY = "lab.quest.v2";
+  const QUEST_KEYS = ["tg", "wm", "pol", "tmr", "gd"];
+  let quest = { tg: false, wm: false, pol: false, tmr: false, gd: false };
+
+  function safeStorageGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function safeStorageSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) { /* noop */ }
+  }
+  function loadQuest() {
+    const raw = safeStorageGet(QUEST_KEY);
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw);
+      QUEST_KEYS.forEach((k) => { quest[k] = !!parsed[k]; });
+    } catch (e) { /* noop */ }
+  }
+  function saveQuest() {
+    safeStorageSet(QUEST_KEY, JSON.stringify(quest));
+  }
+  function completedQuestCount() {
+    return QUEST_KEYS.reduce((acc, k) => acc + (quest[k] ? 1 : 0), 0);
+  }
+  function renderQuest(message) {
+    const map = {
+      tg: $('[data-role="quest-tg"]'),
+      wm: $('[data-role="quest-wm"]'),
+      pol: $('[data-role="quest-pol"]'),
+      tmr: $('[data-role="quest-tmr"]'),
+      gd: $('[data-role="quest-gd"]'),
+    };
+    QUEST_KEYS.forEach((k) => {
+      if (!map[k]) return;
+      map[k].textContent = quest[k] ? "Unlocked" : "Locked";
+      map[k].setAttribute("aria-label", k + " status: " + (quest[k] ? "unlocked" : "locked"));
+    });
+    const total = $('[data-role="quest-total"]');
+    if (total) total.textContent = completedQuestCount() + "/5";
+    const msg = $('[data-role="quest-msg"]');
+    if (msg) {
+      if (message) msg.textContent = message;
+      else if (completedQuestCount() === 5) msg.textContent = "All five solved. You are now mathematically certified caffeinated.";
+      else msg.textContent = "Solve each mission to unlock all five badges.";
+    }
+  }
+  function unlockQuest(key, message) {
+    if (!Object.prototype.hasOwnProperty.call(quest, key)) return;
+    if (quest[key]) return;
+    quest[key] = true;
+    saveQuest();
+    renderQuest(message || "Badge unlocked: " + key.toUpperCase());
+  }
+
+  loadQuest();
+
   /* ---------- statistics primitives ---------- */
   // Φ(x), the standard normal CDF. Abramowitz–Stegun approximation 26.2.17.
   function phi(x) {
