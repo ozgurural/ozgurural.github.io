@@ -179,6 +179,89 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   </details>
 </section>
 
+<section class="lab-card lab-experiment" id="lab-pol">
+  <span class="ep-eyebrow">Machine Learning · Model provenance</span>
+  <h2>The Training Fingerprint (Proof-of-Learning)</h2>
+  <p class="lab-card__usecase">Used in <strong>Foundation model auditing</strong> · <strong>Competitive intelligence</strong> · <strong>Patent disputes</strong> · <strong>Minting training credentials</strong> · <strong>Open-source verification</strong></p>
+  <p class="lab-card__lead">
+    Here lies the brutal asymmetry of modern AI theft. You can steal a model's weights in 10 minutes. But you cannot steal *time*. Every neural network legitimately trained leaves a chronological scar—a loss curve that evolved, stuttered, and converged across thousands of epochs. A thief downloading your weights? They have the destination but not the journey. They have the answers but not the homework.
+  </p>
+  <p class="lab-card__lead">
+    <strong>Proof-of-Learning is the opposite of watermarking.</strong> Watermarking (the experiment above) is you paranoidly poisoning specific weights like some deranged art forger signing the back of the canvas. It's intentional, adversarial, and requires secrets. Proof-of-Learning is simpler and more devastating: you just record your loss trajectory. No ink. No sabotage. No signatures. Just pure statistical evidence that work was actually done. The attacker can download your final weights, but they cannot rewind time and replicate your exact training path without actually training.
+  </p>
+  <p class="lab-card__lead">
+    Here is the devastating math: a model's loss curve is shaped by your data distribution, your architecture, your learning rate $\alpha$, your batch size $B$, your initialization seeds, even your GPU's floating-point rounding quirks. An attacker would need to reverse-engineer all of these simultaneously. Drag the sliders below to train. Watch how wildly different hyperparameters produce unmistakably different trajectories. Then ask yourself the uncomfortable question: could a thief replicate this exact loss curve without actually doing the training? The answer is no. Not practically. Not without more compute than the original training. Complementary to watermarking, Proof-of-Learning is the unforgeable chronological anchor. Together—trajectory plus watermark—you have both means and motive forensics covered (see <a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL</a>, 2025).
+  </p>
+
+  <div class="lab-experiment__panel">
+    <div class="lab-experiment__controls">
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Learning rate</span>
+          <span class="lab-control__var">α</span>
+          <span class="lab-control__value" data-role="pol-lr-val">0.01</span>
+        </span>
+        <input type="range" min="0.001" max="0.05" step="0.001" value="0.01" data-role="pol-lr" aria-label="learning rate alpha">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Batch size</span>
+          <span class="lab-control__var">B</span>
+          <span class="lab-control__value" data-role="pol-bs-val">32</span>
+        </span>
+        <input type="range" min="1" max="8" step="1" value="3" data-role="pol-bs" aria-label="batch size index">
+      </label>
+      <label class="lab-control">
+        <span class="lab-control__row">
+          <span class="lab-control__name">Data noise</span>
+          <span class="lab-control__var">ζ</span>
+          <span class="lab-control__value" data-role="pol-noise-val">0.05</span>
+        </span>
+        <input type="range" min="0.01" max="0.20" step="0.01" value="0.05" data-role="pol-noise" aria-label="data noise zeta">
+      </label>
+      <button class="lab-btn lab-btn--train" type="button" data-role="pol-train-btn">
+        <span class="lab-btn__text">Train!</span>
+        <span class="lab-btn__bg"></span>
+      </button>
+    </div>
+
+    <div class="lab-experiment__visual">
+      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-pol" preserveAspectRatio="xMidYMid meet" role="img" aria-label="training loss trajectory"></svg>
+    </div>
+
+    <div class="lab-experiment__readout">
+      <div class="lab-experiment__metric lab-experiment__metric--detect">
+        <span class="lab-experiment__metric-label">Epochs completed</span>
+        <span class="lab-experiment__metric-value" data-role="pol-epoch-val">0</span>
+        <span class="lab-experiment__metric-formula">training progress</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--strict">
+        <span class="lab-experiment__metric-label">Current loss</span>
+        <span class="lab-experiment__metric-value" data-role="pol-loss-val">—</span>
+        <span class="lab-experiment__metric-formula">f(θ)</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--naive">
+        <span class="lab-experiment__metric-label">Trajectory uniqueness</span>
+        <span class="lab-experiment__metric-value" data-role="pol-unique-val">—</span>
+        <span class="lab-experiment__metric-formula">collision risk</span>
+      </div>
+      <div class="lab-experiment__metric lab-experiment__metric--breakeven">
+        <span class="lab-experiment__metric-label">Fake model detected?</span>
+        <span class="lab-experiment__metric-value" data-role="pol-fake-val">—</span>
+        <span class="lab-experiment__metric-formula">via trajectory</span>
+      </div>
+    </div>
+
+    <p class="lab-experiment__insight" data-role="insight-pol">Adjust sliders and hit Train. Notice how your unique trajectory curves upward on the plot—that's your unforgeable proof you actually trained.</p>
+  </div>
+
+  <details class="lab-reveal">
+    <summary>What this shows</summary>
+    <p>When you train a neural network, each epoch adds a data point to your loss trajectory. Early epochs drop steeply (finding obvious patterns), middle epochs plateau (hitting local optima), late epochs oscillate around a minimum (stochastic noise dominates). The exact shape is a function of your hyperparameters: smaller learning rates converge slower but more steadily; noisier data makes curves jaggier.</p>
+    <p>An attacker who downloads your final weights doesn't have this trajectory. They have a flat line: "I obtained this model at timestamp T." They can fine-tune it (creating a new, different trajectory), but they cannot fabricate your original training curve. The computational cost of reverse-engineering your exact hyperparameters and data distribution, then retraining to match your loss curve point-by-point, exceeds the cost of just training from scratch. This is why financial institutions, AI labs, and patent offices increasingly log training metrics. Proof-of-Learning is not about hiding information. It's about making forgery mathematically uneconomical. See your <a href="https://commons.erau.edu/edt/905/">2025 dissertation</a> and the dual-layer approach in <a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL</a> for how trajectory logging couples with watermarking to create an unforgeable dual-anchor: you can't fake the journey, and even if you steal the weights, you can't replicate the watermark without the original training run.</p>
+  </details>
+</section>
+
 <section class="lab-card lab-experiment" id="lab-tmr">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>How Your Plane Survives a Cosmic Ray</h2>

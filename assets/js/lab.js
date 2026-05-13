@@ -1104,11 +1104,227 @@
     initPlot();
   }
 
+  /* ============================================================================
+     PUZZLE 3.5 · Proof-of-Learning Lab
+     ============================================================================ */
+  function initProofOfLearningLab() {
+    const root = document.getElementById("lab-pol");
+    if (!root) return;
+
+    const refs = {
+      lr:       $('[data-role="pol-lr"]', root),
+      bs:       $('[data-role="pol-bs"]', root),
+      noise:    $('[data-role="pol-noise"]', root),
+      trainBtn: $('[data-role="pol-train-btn"]', root),
+      lrVal:    $('[data-role="pol-lr-val"]', root),
+      bsVal:    $('[data-role="pol-bs-val"]', root),
+      noiseVal: $('[data-role="pol-noise-val"]', root),
+      epochVal: $('[data-role="pol-epoch-val"]', root),
+      lossVal:  $('[data-role="pol-loss-val"]', root),
+      uniqueVal: $('[data-role="pol-unique-val"]', root),
+      fakeVal:  $('[data-role="pol-fake-val"]', root),
+      plot:     $('[data-role="plot-pol"]', root),
+      insight:  $('[data-role="insight-pol"]', root),
+    };
+
+    if (!refs.plot) return;
+
+    /* ---- Constants ---- */
+    const BATCH_SIZES = [8, 16, 32, 64, 128, 256, 512, 1024];
+    const MAX_EPOCHS = 100;
+    const PW = 640, PH = 260;
+    const M = { l: 52, r: 40, t: 28, b: 40 };
+    const innerW = PW - M.l - M.r;
+    const innerH = PH - M.t - M.b;
+
+    let trainingCurve = []; // Array of {epoch, loss}
+    let running = false;
+    let animationId = null;
+
+    /* ---- Loss function: smoothly decreasing with noise ---- */
+    function computeLoss(epoch, alpha, batchSize, noise) {
+      const baseDecay = Math.exp(-epoch / 25) * 10;
+      const stochastic = noise * Math.cos(epoch * Math.PI / (MAX_EPOCHS / batchSize)) * Math.random();
+      return Math.max(0.1, baseDecay + stochastic);
+    }
+
+    /* ---- Plot rendering ---- */
+    function xFor(epoch) { return M.l + (epoch / MAX_EPOCHS) * innerW; }
+    function yFor(loss) { return M.t + (1 - Math.min(1, loss / 10)) * innerH; }
+
+    function drawPlot() {
+      const plot = refs.plot;
+      while (plot.firstChild) plot.removeChild(plot.firstChild);
+
+      // Title
+      const title = svg("text", {
+        x: M.l, y: M.t - 12, class: "lab-plot__title",
+      }, plot);
+      title.textContent = "Training Loss Trajectory (Proof-of-Learning)";
+
+      // Y-axis gridlines
+      [0, 2.5, 5, 7.5, 10].forEach((v) => {
+        svg("line", {
+          x1: M.l, x2: M.l + innerW,
+          y1: yFor(v), y2: yFor(v),
+          class: "lab-plot__grid",
+        }, plot);
+      });
+
+      // Y-axis labels
+      [0, 2.5, 5, 7.5, 10].forEach((v) => {
+        svg("text", {
+          x: M.l - 12, y: yFor(v) + 4,
+          class: "lab-plot__label",
+          "text-anchor": "end",
+        }, plot).textContent = v.toFixed(1);
+      });
+
+      // X-axis labels
+      [0, 25, 50, 75, 100].forEach((e) => {
+        svg("line", {
+          x1: xFor(e), y1: M.t + innerH,
+          x2: xFor(e), y2: M.t + innerH + 4,
+          stroke: "#ccc", "stroke-width": 1,
+        }, plot);
+        svg("text", {
+          x: xFor(e), y: M.t + innerH + 16,
+          class: "lab-plot__label",
+          "text-anchor": "middle",
+        }, plot).textContent = e;
+      });
+
+      // Axes
+      svg("line", { x1: M.l, y1: M.t, x2: M.l, y2: M.t + innerH, stroke: "#333", "stroke-width": 1.5 }, plot);
+      svg("line", { x1: M.l, y1: M.t + innerH, x2: M.l + innerW, y2: M.t + innerH, stroke: "#333", "stroke-width": 1.5 }, plot);
+
+      // "Fake" model line (flat at some random high loss)
+      svg("line", {
+        x1: M.l, y1: yFor(6.5),
+        x2: M.l + innerW, y2: yFor(6.5),
+        stroke: "#ef4444", "stroke-width": 2, "stroke-dasharray": "4,4", opacity: 0.6,
+      }, plot);
+      svg("text", {
+        x: M.l + innerW + 8, y: yFor(6.5) + 4,
+        class: "lab-plot__label", fill: "#ef4444", "font-size": "11px",
+      }, plot).textContent = "Downloaded model (no training)";
+
+      // Training curve path
+      if (trainingCurve.length > 1) {
+        let d = "";
+        trainingCurve.forEach((pt, i) => {
+          const x = xFor(pt.epoch), y = yFor(pt.loss);
+          d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+        });
+        svg("path", {
+          d: d.trim(),
+          fill: "none",
+          stroke: "#10b981",
+          "stroke-width": 2.5,
+          "stroke-linecap": "round",
+          "stroke-linejoin": "round",
+        }, plot);
+      }
+
+      // Current point
+      if (trainingCurve.length > 0) {
+        const last = trainingCurve[trainingCurve.length - 1];
+        svg("circle", {
+          cx: xFor(last.epoch),
+          cy: yFor(last.loss),
+          r: 4,
+          fill: "#10b981",
+        }, plot);
+      }
+    }
+
+    function updateSliderDisplay() {
+      refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
+      const bsIdx = parseInt(refs.bs.value);
+      refs.bsVal.textContent = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
+      refs.noiseVal.textContent = parseFloat(refs.noise.value).toFixed(2);
+    }
+
+    function updateMetrics(epoch, loss) {
+      refs.epochVal.textContent = epoch;
+      refs.lossVal.textContent = loss.toFixed(3);
+
+      // Trajectory uniqueness: lower loss → more unique (less likely to be accident)
+      const uniqueness = Math.max(0, Math.min(1, (10 - loss) / 10));
+      const uniquePercent = Math.round(uniqueness * 100);
+      refs.uniqueVal.textContent = uniquePercent + "% unique";
+
+      // Fake detection
+      const isFake = epoch > 5 && loss < 6.5 && Math.abs(loss - 6.5) > 0.5;
+      refs.fakeVal.textContent = isFake ? "✓ Not plausible as fake" : "—";
+    }
+
+    function reset() {
+      running = false;
+      trainingCurve = [];
+      updateMetrics(0, 0);
+      refs.fakeVal.textContent = "—";
+      drawPlot();
+      refs.trainBtn.classList.remove('is-running');
+      refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
+      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong> to generate your unique loss trajectory.";
+    }
+
+    function doEpoch(epoch, alpha, batchSize, noise) {
+      if (!running) return;
+
+      const loss = computeLoss(epoch, alpha, batchSize, noise);
+      trainingCurve.push({ epoch, loss });
+      updateMetrics(epoch, loss);
+      drawPlot();
+
+      if (epoch < MAX_EPOCHS) {
+        animationId = requestAnimationFrame(() => {
+          setTimeout(() => doEpoch(epoch + 1, alpha, batchSize, noise), 50);
+        });
+      } else {
+        running = false;
+        refs.trainBtn.classList.remove('is-running');
+        refs.trainBtn.querySelector('.lab-btn__text').textContent = "Reset";
+        refs.insight.innerHTML = "✨ Training complete. Your <strong>irreproducible</strong> trajectory is now your proof-of-learning credential. An attacker would need to reverse-engineer your exact hyperparameters to forge this—computationally harder than training from scratch.";
+      }
+    }
+
+    refs.trainBtn.addEventListener("click", () => {
+      const btnText = refs.trainBtn.querySelector('.lab-btn__text').textContent;
+      if (btnText.trim() === "Reset" || running) {
+        if (animationId) cancelAnimationFrame(animationId);
+        reset();
+      } else {
+        running = true;
+        refs.trainBtn.classList.add('is-running');
+        refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
+        refs.insight.textContent = "Generating your unique loss trajectory...";
+
+        const alpha = parseFloat(refs.lr.value);
+        const bsIdx = parseInt(refs.bs.value);
+        const batchSize = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
+        const noise = parseFloat(refs.noise.value);
+
+        trainingCurve = [];
+        doEpoch(0, alpha, batchSize, noise);
+      }
+    });
+
+    refs.lr.addEventListener("change", updateSliderDisplay);
+    refs.bs.addEventListener("change", updateSliderDisplay);
+    refs.noise.addEventListener("change", updateSliderDisplay);
+
+    updateSliderDisplay();
+    drawPlot();
+  }
+
   /* ----------------------------------------------------------------- bootstrap */
   function boot() {
     if(typeof initTwoGeneralsLab === "function") initTwoGeneralsLab();
     if(typeof initVerifierLab === "function") initVerifierLab();
     if(typeof initWatermarkLab === "function") initWatermarkLab();
+    if(typeof initProofOfLearningLab === "function") initProofOfLearningLab();
     if(typeof initTMRLab === "function") initTMRLab();
     if(typeof initGradientDescentLab === "function") initGradientDescentLab();
   }
