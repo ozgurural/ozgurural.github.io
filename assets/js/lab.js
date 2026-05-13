@@ -405,14 +405,30 @@
       [0,1,2,3,4,5,6,7,56,57,58,59,60,61,62,63,8,16,24,32,40,48,15,23,31,39,47,55],
     ];
     function pickKey(k) {
-      // Pick a structured pattern with cell count nearest to requested k.
-      let best = KEY_PATTERNS[0], diff = Math.abs(KEY_PATTERNS[0].length - k);
+      // Prefer a structured pattern, then pad to exactly k distinct cells (0..63).
+      const kk = Math.max(1, Math.min(GRID_CELLS, k | 0));
+      let best = KEY_PATTERNS[0],
+        diff = Math.abs(KEY_PATTERNS[0].length - kk);
       for (const p of KEY_PATTERNS) {
-        const d = Math.abs(p.length - k);
-        if (d < diff) { best = p; diff = d; }
+        const d = Math.abs(p.length - kk);
+        if (d < diff) {
+          best = p;
+          diff = d;
+        }
       }
-      // If pattern has more than k, take first k; if fewer, just use them all.
-      return best.slice(0, k);
+      const chosen = [];
+      const used = new Set();
+      for (let i = 0; i < best.length && chosen.length < kk; i++) {
+        chosen.push(best[i]);
+        used.add(best[i]);
+      }
+      for (let i = 0; i < GRID_CELLS && chosen.length < kk; i++) {
+        if (!used.has(i)) {
+          chosen.push(i);
+          used.add(i);
+        }
+      }
+      return chosen;
     }
     function rngBase() {
       // Smoothed gaussian-ish noise per cell, mean 0.5 sd ≈ 0.12
@@ -505,32 +521,52 @@
       const xlabel = svg("text", { x: M.l + innerW/2, y: PH - 8, class: "lab-plot__axis-label" }, plot);
       xlabel.textContent = "σ (attacker noise)";
 
-      // Curves: detection rate vs σ for each k
+      // Reference curves (fixed k); current slider k is drawn on top in accent.
       const SAMPLES = 80;
-      K_CURVES.forEach((k) => {
+      function pathForK(k) {
         let d = "";
         for (let i = 0; i <= SAMPLES; i++) {
           const sigma = (i / SAMPLES) * SIGMA_MAX;
           const q = qDetect(eps, sigma);
           const det = aggregateDetect(q, k);
-          const x = xFor(sigma), y = yFor(det);
+          const x = xFor(sigma),
+            y = yFor(det);
           d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
         }
-        const isCurrent = (k === kCur);
+        return d;
+      }
+      K_CURVES.forEach((k) => {
+        if (k === kCur) return;
         svg("path", {
-          d: d,
-          class: "lab-plot__curve lab-plot__curve--wm" + (isCurrent ? " lab-plot__curve--wm-current" : ""),
+          d: pathForK(k),
+          class: "lab-plot__curve lab-plot__curve--wm",
         }, plot);
-        // Label at right edge
-        const finalSigma = SIGMA_MAX;
-        const finalQ = qDetect(eps, finalSigma);
+        const finalQ = qDetect(eps, SIGMA_MAX);
         const finalDet = aggregateDetect(finalQ, k);
         const t = svg("text", {
-          x: M.l + innerW + 10, y: yFor(finalDet) + 4,
-          class: "lab-plot__legend-value lab-plot__legend-value--wm" + (isCurrent ? " lab-plot__legend-value--wm-current" : ""),
+          x: M.l + innerW + 10,
+          y: yFor(finalDet) + 4,
+          class: "lab-plot__legend-value lab-plot__legend-value--wm",
         }, plot);
         t.textContent = "k=" + k;
       });
+      svg("path", {
+        d: pathForK(kCur),
+        class: "lab-plot__curve lab-plot__curve--wm lab-plot__curve--wm-current",
+      }, plot);
+      const curFinalQ = qDetect(eps, SIGMA_MAX);
+      const curFinalDet = aggregateDetect(curFinalQ, kCur);
+      const curLabel = svg(
+        "text",
+        {
+          x: M.l + innerW + 10,
+          y: yFor(curFinalDet) + 4,
+          class:
+            "lab-plot__legend-value lab-plot__legend-value--wm lab-plot__legend-value--wm-current",
+        },
+        plot
+      );
+      curLabel.textContent = "k=" + kCur;
 
       // Vertical marker at current σ
       svg("line", {
