@@ -947,12 +947,47 @@
     const innerW = PW - M.l - M.r;
     const innerH = PH - M.t - M.b;
 
-    // f(x) = x^4/4 - x^3/3 - x^2 + 2 
-    function f(x) { return Math.pow(x, 4)/4.0 - Math.pow(x, 3)/3.0 - Math.pow(x, 2) + 2; }
-    function df(x) { return Math.pow(x, 3) - Math.pow(x, 2) - 2*x; }
+    const landscapes = [
+      {
+        name: "Classic regret valley",
+        startX: -2.4,
+        f: function (x) { return Math.pow(x, 4)/4.0 - Math.pow(x, 3)/3.0 - Math.pow(x, 2) + 2; },
+        df: function (x) { return Math.pow(x, 3) - Math.pow(x, 2) - 2*x; },
+      },
+      {
+        name: "Budget committee valley",
+        startX: -2.15,
+        f: function (x) { return 0.22*Math.pow(x, 4) + 0.15*Math.pow(x, 3) - 1.35*Math.pow(x, 2) + 1.8; },
+        df: function (x) { return 0.88*Math.pow(x, 3) + 0.45*Math.pow(x, 2) - 2.70*x; },
+      },
+      {
+        name: "Reviewer-2 canyon",
+        startX: -2.25,
+        f: function (x) { return 0.18*Math.pow(x, 4) - 0.55*Math.pow(x, 3) - 0.65*Math.pow(x, 2) + 0.12*x + 2.1; },
+        df: function (x) { return 0.72*Math.pow(x, 3) - 1.65*Math.pow(x, 2) - 1.30*x + 0.12; },
+      }
+    ];
+    const activeLandscape = landscapes[Math.floor(Math.random() * landscapes.length)];
+    const f = activeLandscape.f;
+    const df = activeLandscape.df;
 
     const X_MIN = -2.5, X_MAX = 3.2;
     const Y_MIN = -1, Y_MAX = 8;
+
+    function findGlobalMinX() {
+      let bestX = X_MIN;
+      let bestY = Number.POSITIVE_INFINITY;
+      for (let i = 0; i <= 600; i++) {
+        const x = X_MIN + (X_MAX - X_MIN) * (i / 600);
+        const y = f(x);
+        if (y < bestY) {
+          bestY = y;
+          bestX = x;
+        }
+      }
+      return bestX;
+    }
+    const TARGET_X = findGlobalMinX();
     
     function xFor(x) { return M.l + ((x - X_MIN) / (X_MAX - X_MIN)) * innerW; }
     function yFor(y) { return M.t + (1 - (y - Y_MIN) / (Y_MAX - Y_MIN)) * innerH; }
@@ -974,6 +1009,14 @@
     
     if(!refs.lr) return;
     
+    // Randomize initial controls on each refresh for replayable challenges.
+    const randomLr = (0.008 + Math.random() * 0.028).toFixed(3);
+    const randomMom = (Math.random() * 0.7).toFixed(2);
+    refs.lr.value = randomLr;
+    refs.mom.value = randomMom;
+    if (refs.lrVal) refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
+    if (refs.momVal) refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2);
+
     refs.lr.addEventListener("input", () => { refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3); });
     refs.mom.addEventListener("input", () => { refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2); });
     
@@ -998,7 +1041,7 @@
       reset();
     }
     
-    const START_X = -2.4; 
+    const START_X = activeLandscape.startX;
     let currentX = START_X;
     let velocity = 0;
     let epoch = 0;
@@ -1029,7 +1072,7 @@
       else refs.trainBtn.textContent = "Train!";
       
       refs.trainBtn.classList.remove('is-running');
-      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>.";
+      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New challenge: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
     }
     
@@ -1066,8 +1109,8 @@
         refs.insight.textContent = "⏳ Training timed out (500 epochs). Try higher learning rate or momentum.";
         running = false;
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
-        if (Math.abs(currentX - 2) < 0.1) {
-           refs.insight.textContent = "⭐ Global minimum reached. Doctoral thesis accepted. You may now sleep.";
+        if (Math.abs(currentX - TARGET_X) < 0.12) {
+          refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Dopamine unlocked. You now have reproducible enlightenment.";
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Gradient zeroed out in the saddle point of despair. Increase momentum.";
         }
