@@ -1337,3 +1337,38 @@ button:focus-visible {
 .lab-btn--train.is-running:hover .lab-btn__bg {
   box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
 }
+/* ---- Cool Glowing Input Sliders ---- */
+input[type=range] {
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+input[type=range]:hover::-webkit-slider-thumb {
+  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.4);
+}
+input[type=range]:active::-webkit-slider-thumb {
+  transform: scale(1.3);
+  background: #0ea5e9;
+  box-shadow: 0 0 15px rgba(14, 165, 233, 0.9);
+}
+/* Firefox thubms */
+input[type=range]:hover::-moz-range-thumb {
+  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.4);
+}
+input[type=range]:active::-moz-range-thumb {
+  transform: scale(1.3);
+  background: #0ea5e9;
+  box-shadow: 0 0 15px rgba(14, 165, 233, 0.9);
+}
+/* Pulse animation for the play button */
+@keyframes pulse-intensely {
+  0% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 40px rgba(14, 165, 233, 0.4); }
+  100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.4); }
+}
+.lab-btn--train {
+  animation: pulse-intensely 2s infinite;
+}
+.lab-btn--train.is-running {
+  animation: none;
+}

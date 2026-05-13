@@ -5,7 +5,7 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
 ---
 
 <p class="ep-lead">
-  Three live experiments. None of them are textbook abstractions. Each one runs the world: your bank when you tap a card, your phone when it verifies your face, your plane when it cruises through cosmic rays. Drag the sliders. Watch what fails, when, and by how much. (And if you open DevTools the maths leaves a forwarding address.)
+  Welcome to the ontological petting zoo of modern engineering. Three live phase-space explorers. None of them are sterile textbook abstractions—they are the bleeding-edge duct tape holding our civilization together: your bank pretending it has consensus, your VC-funded startup pretending it didn't steal its LLM weights, and your Airbus politely ignoring a supernova's attempt to flip a bit in its L1 cache. Drag the sliders. Watch theories collapse. (If you still believe in deterministic AGI or "the cloud", open DevTools and let the math traumatize you directly.)
 </p>
 
 <section class="lab-card lab-experiment" id="lab-tg">
@@ -13,10 +13,10 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   <h2>Why Distributed Systems Fake Consensus</h2>
   <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
   <p class="lab-card__lead">
-    Two generals want to attack a valley. Or, less dangerously, two data centers want to agree: <em>did Alice just overdraft her checking account?</em> Packets drop, BGP routes flap, and occasionally a rogue backhoe severs a fiber line. In 1975, Akkoyunlu et al. proved that deterministic consensus over a lossy channel is strictly impossible. You cannot know for sure. And yet your bank confirms trades in 200 ms, and Cassandra happily serves your data before the last replica even wakes up. The trick: <strong>abandon certainty.</strong> They settle for asymptotically bounded <em>probability</em>. At six nines of reliability, capitalism considers it "good enough."
+    Two generals want to attack a valley. Or, putting down the 1970s war metaphors, two AWS regions want to agree: <em>did Alice just overdraft her checking account to buy a Bored Ape NFT?</em> Packets drop, BGP routes flap, and a rogue backhoe inevitably severs a fiber line. Physics and Information Theory (specifically Akkoyunlu et al., 1975) brutally dictate that deterministic consensus over a lossy channel is <em>strictly impossible</em>. You literally cannot know for sure. Yet your bank confirms trades in 200 ms. The secret? <strong>They just gave up.</strong> They abandoned ontological certainty for asymptotically bounded <em>probability</em>. At six nines of reliability, late-stage capitalism simply declares it "truth."
   </p>
   <p class="lab-card__lead">
-    Two architectures pull this off: <strong>naive parallel</strong> (TCP retransmission, microservice retries) and <strong>strict-chain</strong> (two-phase commit). Watch the phase diagram below. As you'll see, naive multi-send completely obliterates strict chaining for any $p > 0$. The real engineering problem isn't choosing the protocol—it's sizing the retry budget. Given a mathematically provable packet loss rate, exactly how many parallel messengers ($N$) do you need to send so you can sleep soundly at night? Find the operating point yourself.
+    Watch the epistemological crisis unfold below. <strong>Strict-chain</strong> (two-phase commit) insists on perfect handshakes like a neurotic Victorian bureaucrat—and dies gracefully. <strong>Naive parallel</strong> (microservice retries) acts like an overly caffeinated telemarketer, just blasting messages until one gets through. Spoiler: the telemarketer wins every time. Drag the sliders to find the exact packet loss threshold where you stop losing sleep.
   </p>
 
   <div class="lab-experiment__panel">
@@ -90,10 +90,10 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   <h2>How to Prove a Stolen Model in Court</h2>
   <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
   <p class="lab-card__lead">
-    You just spent $20M and the GDP of a small island nation in electricity to train a borderline-sentient LLM. You open-source the weights. A competitor downloads them, aggressively fine-tunes on <em>Harry Potter</em> fanfiction, and ships it under a new VC-funded brand. Their legal team says, "Prove we stole it." This is no longer hypothetical.
+    You just spent $20M, burned the equivalent electricity of a medium-sized European nation, and evaporated the world's supply of GPUs to train a supposedly "AGI-adjacent" LLM. You enthusiastically open-source the weights. Ten minutes later, a Stanford dropout downloads them, fine-tunes it entirely on Reddit arguments and <em>Harry Potter</em> fanfiction, slaps a UI on it, and raises an $80M Series A. Their lawyers mockingly ask, "Prove we stole it." This isn't a Black Mirror episode; it's just Tuesday in Silicon Valley.
   </p>
   <p class="lab-card__lead">
-    The solution isn't a subpoena; it's <strong>feature-based watermarking</strong>. Before releasing the model, you subtly poison your own gradients at <em>k</em> secret coordinates by a perturbation <em>ε</em>. When the lawsuit drops, you extract their weights and run a statistical test. Did your specific statistical poison survive their fine-tuning (attack noise <em>σ</em>)? If yes, you own their startup.
+    The solution isn't a subpoena; it's <strong>feature-based watermarking</strong>. Before releasing the model, you subtly poison your own gradients at <em>k</em> secret coordinates by a perturbation <em>ε</em>. When the lawsuit drops, you extract their weights and run a statistical test. Did your proprietary flavor of mathematical poison survive their catastrophic fine-tuning (attack noise <em>σ</em>)? If yes, congratulations, you now own their startup and their ping-pong tables.
   </p>
   <p class="lab-card__lead">
     The engineering problem is a brutal three-way constraint. Crank <em>ε</em> too high, and your flagship model becomes visibly lobotomized. Raise <em>k</em>, and you risk the key becoming statistically guessable. The adversary's only lever is to fine-tune so violently (high <em>σ</em>) that they wash the watermark out—usually destroying the model's coherence in the process. Your goal: find the Pareto frontier where you trap the thief without breaking downstream benchmarks. That is the publishable, court-admissible regime from the <a href="https://ieeexplore.ieee.org/abstract/document/10741282">2024 IEEE Access paper</a>.
@@ -184,13 +184,13 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   <h2>How Your Plane Survives a Cosmic Ray</h2>
   <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
   <p class="lab-card__lead">
-    You are cruising at 36,000 feet. An ionized particle from a supernova that detonated during the late Cretaceous period strikes the flight computer's L1 cache and flips a single bit. Without redundancy, that flipped bit means the autopilot violently pitches the nose down 15 degrees.
+    You are cruising at 36,000 feet, casually sipping lukewarm tomato juice. Meanwhile, an ionized particle from a supernova that detonated during the late Cretaceous period finally reaches its earthly destiny: striking your flight computer's L1 cache and flipping a single logic bit. Without redundancy, that flipped bit interprets your altitude as negative, and the autopilot vigorously attempts to fly you into the Earth's mantle.
   </p>
   <p class="lab-card__lead">
-    To avoid this, aerospace engineers deploy <strong>Triple Modular Redundancy (TMR)</strong>. Three isolated computers calculate the same kinematics; an infallible voter circuits takes the majority result. The math is a beautiful cubic polynomial: the probability of a system failure drops from $q$ to $3q^2 - 2q^3$. A brutal cubic in your favor!
+    To prevent you from becoming geology, aerospace engineers deploy <strong>Triple Modular Redundancy (TMR)</strong>. Three isolated computers calculate the same kinematics; an infallible voter circuit takes the majority result. The math is a beautiful cubic polynomial: the probability of system failure drops from $q$ to $3q^2 - 2q^3$. A brutal cubic suppression in your favor!
   </p>
   <p class="lab-card__lead">
-    But here is the trap. The math assumes failures are <em>independent</em>. What if the glitch isn't a high-energy neutron, but a thermal spike? Or worse, a C++ logic bug compiled three times? If common-cause correlation (<em>ρ</em>) creeps in, the cubic miracle collapses perfectly back into linear reality. Drag <em>ρ</em> up and watch a billion dollars of redundant avionics regress to the reliability of a single Dell laptop. This is the exact reason DO-178C forces vendors to write the flight software three different times, using three different languages.
+    But here is the trap: mathematical hubris. The math assumes failures are <em>independent</em>. What if the glitch isn't a high-energy neutron, but a C++ memory leak a junior dev wrote ten years ago that is now running flawlessly on all three CPUs simultaneously? If common-cause correlation (<em>ρ</em>) creeps in, the cubic miracle collapses perfectly back into linear reality. Drag <em>ρ</em> up and watch a billion dollars of space-grade avionics regress to the reliability of a damp Chromebook. This is exactly why civil aviation standards sentence engineers to the ultimate punishment: writing the same flight software three separate times, in three different languages.
   </p>
 
   <div class="lab-tmr">
@@ -281,10 +281,13 @@ excerpt: "Three interactive phase-space explorers in distributed systems, ML sec
   <h2>The Topology of Regret (Gradient Descent)</h2>
   <p class="lab-card__usecase">Used in <strong>Training LLMs</strong> · <strong>Backpropagation</strong> · <strong>Physics Simulations</strong></p>
   <p class="lab-card__lead">
-    Training a neural network is basically playing mini-golf in the dark on a million-dimensional course. You want to get the ball into the lowest hole (the global minimum) to minimize your loss. But if your <strong>Learning Rate (α)</strong> is too high, you smash the ball out of the valley entirely (exploding gradients). Too low, and you get stuck in a shallow dent (local minimum). <strong>Momentum (β)</strong> lets you carry speed through the shallow dents, but too much of it sends you orbiting the rim forever.
+    Here is the dirty secret of modern "State-of-the-Art" AI: underneath the majestic philosophical debates about consciousness, training a neural network is essentially playing mini-golf in the dark on a billion-dimensional, topologically cursed course. You just want the loss function to hit the absolute bottom.
   </p>
   <p class="lab-card__lead">
-    Below is a highly non-convex valley. Your goal: Tune α and β, click <strong>Train</strong>, and reach the global minimum on the right without flying off the screen or getting trapped on the left.
+    If your <strong>Learning Rate (α)</strong> is too enthusiastic, you smack the gradient so hard it achieves escape velocity, NaN-ing your entire quarter's budget (exploding gradients). Too low, and you get irrevocably stuck in a shallow dent near the starting point. <strong>Momentum (β)</strong> supposedly helps you surf over these local depressions, but crank it too high and your optimizer turns into a frictionless rollercoaster trapped in perpetual orbit.
+  </p>
+  <p class="lab-card__lead">
+    Below is a highly non-convex valley. Your test: Tune α and β, click <strong>Train</strong>, and reach the global minimum on the right without flying off the screen or getting trapped. Watch the brutal reality of non-convex optimization mock your intelligence.
   </p>
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
