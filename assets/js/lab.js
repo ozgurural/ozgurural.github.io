@@ -115,6 +115,8 @@
       if (!map[k]) return;
       map[k].textContent = quest[k] ? "Unlocked" : "Locked";
       map[k].setAttribute("aria-label", k + " status: " + (quest[k] ? "unlocked" : "locked"));
+      const row = document.querySelector('[data-quest-item="' + k + '"]');
+      if (row) row.classList.toggle("is-unlocked", !!quest[k]);
     });
     const total = $('[data-role="quest-total"]');
     if (total) total.textContent = completedQuestCount() + "/5";
@@ -134,6 +136,7 @@
   }
 
   loadQuest();
+  renderQuest();
 
   /* ---------- statistics primitives ---------- */
   // Φ(x), the standard normal CDF. Abramowitz–Stegun approximation 26.2.17.
@@ -370,6 +373,7 @@
         refs.sweetTg.hidden = !inSweetZone;
         if (inSweetZone) {
           refs.sweetTg.textContent = "You found the operating point. At p = " + p.toFixed(2) + " and N = " + n + ", naive multi-send hits " + (pNaive*100).toFixed(1) + "% reliability. This is the regime Raft, Cassandra, and Bitcoin confirmation depth all live in. Strict-chain manages " + (pStrict*100).toFixed(1) + "% -- which is why two-phase commit has a blocking problem and Paxos does not.";
+          unlockQuest("tg", "Consensus lab: you found the operating point.");
         }
       }
 
@@ -679,6 +683,7 @@
         refs.sweetWm.hidden = !inSweetWm;
         if (inSweetWm) {
           refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible.";
+          unlockQuest("wm", "Watermark lab: publishable detection regime.");
         }
       }
 
@@ -950,6 +955,7 @@
         refs.sweetTmr.hidden = !inSweetTmr;
         if (inSweetTmr) {
           refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5.";
+          unlockQuest("tmr", "TMR lab: safe operating envelope.");
         }
       }
 
@@ -992,6 +998,7 @@
       lrVal:     document.querySelector('[data-role="lr-val"]', root) || root.querySelector('[data-role="lr-val"]'),
       momVal:    document.querySelector('[data-role="mom-val"]', root) || root.querySelector('[data-role="mom-val"]'),
       trainBtn:  document.querySelector('[data-role="train-btn"]', root) || root.querySelector('[data-role="train-btn"]'),
+      rerollBtn: root.querySelector('[data-role="gd-reroll-btn"]'),
       plot:      document.querySelector('[data-role="plot-gd"]', root) || root.querySelector('[data-role="plot-gd"]'),
       epochVal:  document.querySelector('[data-role="epoch-val"]', root) || root.querySelector('[data-role="epoch-val"]'),
       lossVal:   document.querySelector('[data-role="loss-val"]', root) || root.querySelector('[data-role="loss-val"]'),
@@ -1024,12 +1031,15 @@
         df: function (x) { return 0.72*Math.pow(x, 3) - 1.65*Math.pow(x, 2) - 1.30*x + 0.12; },
       }
     ];
-    const activeLandscape = landscapes[Math.floor(Math.random() * landscapes.length)];
-    const f = activeLandscape.f;
-    const df = activeLandscape.df;
 
     const X_MIN = -2.5, X_MAX = 3.2;
     const Y_MIN = -1, Y_MAX = 8;
+
+    let activeLandscape = landscapes[0];
+    let f = activeLandscape.f;
+    let df = activeLandscape.df;
+    let startX = activeLandscape.startX;
+    let TARGET_X = 0;
 
     function findGlobalMinX() {
       let bestX = X_MIN;
@@ -1044,7 +1054,15 @@
       }
       return bestX;
     }
-    const TARGET_X = findGlobalMinX();
+
+    function pickLandscape() {
+      activeLandscape = landscapes[Math.floor(Math.random() * landscapes.length)];
+      f = activeLandscape.f;
+      df = activeLandscape.df;
+      startX = activeLandscape.startX;
+      TARGET_X = findGlobalMinX();
+    }
+    pickLandscape();
     
     function xFor(x) { return M.l + ((x - X_MIN) / (X_MAX - X_MIN)) * innerW; }
     function yFor(y) { return M.t + (1 - (y - Y_MIN) / (Y_MAX - Y_MIN)) * innerH; }
@@ -1064,24 +1082,36 @@
       refs.plot.appendChild(path);
     }
     
-    if(!refs.lr) return;
-    
-    // Randomize initial controls on each refresh for replayable challenges.
-    const randomLr = (0.008 + Math.random() * 0.028).toFixed(3);
-    const randomMom = (Math.random() * 0.7).toFixed(2);
-    refs.lr.value = randomLr;
-    refs.mom.value = randomMom;
-    if (refs.lrVal) refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
-    if (refs.momVal) refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2);
+    if (!refs.lr) return;
+
+    function applyRandomControls() {
+      const randomLr = (0.008 + Math.random() * 0.028).toFixed(3);
+      const randomMom = (Math.random() * 0.7).toFixed(2);
+      refs.lr.value = randomLr;
+      refs.mom.value = randomMom;
+      if (refs.lrVal) refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
+      if (refs.momVal) refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2);
+    }
+    applyRandomControls();
 
     refs.lr.addEventListener("input", () => { refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3); });
     refs.mom.addEventListener("input", () => { refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2); });
-    
+
+    function triggerCongrats(el, on) {
+      void el;
+      void on;
+    }
+
     let animationId = null;
     let particle = null;
     let trailPath = null;
     let trail = [];
-    
+
+    let currentX = startX;
+    let velocity = 0;
+    let epoch = 0;
+    let running = false;
+
     function initPlot() {
       while(refs.plot.firstChild) refs.plot.removeChild(refs.plot.firstChild);
       drawCurve();
@@ -1097,13 +1127,7 @@
       refs.plot.appendChild(particle);
       reset();
     }
-    
-    const START_X = activeLandscape.startX;
-    let currentX = START_X;
-    let velocity = 0;
-    let epoch = 0;
-    let running = false;
-    
+
     function renderTrail() {
       if (trail.length === 0) return;
       let d = "M" + xFor(trail[0]).toFixed(1) + " " + yFor(f(trail[0])).toFixed(1) + " ";
@@ -1114,7 +1138,7 @@
     }
 
     function reset() {
-      currentX = START_X;
+      currentX = startX;
       velocity = 0;
       epoch = 0;
       running = false;
@@ -1168,6 +1192,7 @@
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         if (Math.abs(currentX - TARGET_X) < 0.12) {
           refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Dopamine unlocked. You now have reproducible enlightenment.";
+          unlockQuest("gd", "Gradient descent: global minimum reached.");
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Gradient zeroed out in the saddle point of despair. Increase momentum.";
         }
@@ -1200,6 +1225,16 @@
         doEpoch();
       }
     });
+
+    if (refs.rerollBtn) {
+      refs.rerollBtn.addEventListener("click", () => {
+        running = false;
+        if (animationId) cancelAnimationFrame(animationId);
+        pickLandscape();
+        applyRandomControls();
+        initPlot();
+      });
+    }
 
     initPlot();
   }
@@ -1463,6 +1498,7 @@
         streak += 1;
         celebrate(refs.plot);
         refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> You found the credible training regime. Keep this up for courtroom-grade provenance. Right-answer zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
+        unlockQuest("pol", "Proof-of-Learning: Gold Proof (score ≥ 88).");
       } else {
         streak = 0;
         refs.insight.innerHTML = "No badge yet. Aim for smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, and ζ around 0.05.";

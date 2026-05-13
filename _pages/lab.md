@@ -8,6 +8,18 @@ excerpt: "Five interactive experiments in distributed systems, ML provenance, op
   Welcome to the interactive graveyard of pristine theoretical computer science. None of the exhibits below are pure textbook abstractions. They are live simulations of the statistical duct tape currently holding human civilization together. Here you will find your bank hallucinating network consensus in real-time, a VC-funded startup mathematically failing to launder stolen LLM weights, and your Airbus politely surviving a cosmic ray strike at 36,000 feet. Drag the sliders. Watch beautiful theories collapse into statistical panic. If you still naively believe in deterministic systems, simply open DevTools and let the floating-point math personally offend you.
 </p>
 
+<div class="lab-quest" role="region" aria-label="Lab mission progress">
+  <p class="lab-quest__msg" data-role="quest-msg">Solve each mission to unlock all five badges.</p>
+  <ul class="lab-quest__list">
+    <li class="lab-quest__item" data-quest-item="tg"><span class="lab-quest__name">Consensus</span> <span class="lab-quest__status" data-role="quest-tg">Locked</span></li>
+    <li class="lab-quest__item" data-quest-item="wm"><span class="lab-quest__name">Watermark</span> <span class="lab-quest__status" data-role="quest-wm">Locked</span></li>
+    <li class="lab-quest__item" data-quest-item="tmr"><span class="lab-quest__name">TMR</span> <span class="lab-quest__status" data-role="quest-tmr">Locked</span></li>
+    <li class="lab-quest__item" data-quest-item="pol"><span class="lab-quest__name">Proof-of-Learning</span> <span class="lab-quest__status" data-role="quest-pol">Locked</span></li>
+    <li class="lab-quest__item" data-quest-item="gd"><span class="lab-quest__name">Gradient descent</span> <span class="lab-quest__status" data-role="quest-gd">Locked</span></li>
+  </ul>
+  <p class="lab-quest__total" aria-live="polite"><span data-role="quest-total">0/5</span> missions</p>
+</div>
+
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Why Distributed Systems Fake Consensus</h2>
@@ -422,7 +434,7 @@ excerpt: "Five interactive experiments in distributed systems, ML provenance, op
         <span class="lab-btn__text">Train!</span>
         <span class="lab-btn__bg"></span>
       </button>
-      <button class="lab-btn lab-btn--train" type="button" data-role="gd-reroll-btn" aria-label="new random challenge">
+      <button class="lab-btn lab-btn--train" type="button" data-role="gd-reroll-btn" aria-label="New random landscape and parameters">
         <span class="lab-btn__text">New Challenge</span>
         <span class="lab-btn__bg"></span>
       </button>

@@ -622,6 +622,62 @@
   position: relative;
 }
 
+/* ---- Lab page: cross-experiment mission strip ---- */
+.lab-quest {
+  margin: 1.25rem 0 1.75rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--ds-font-sans);
+}
+.lab-quest__msg {
+  margin: 0 0 0.65rem;
+  font-size: 0.92rem;
+  color: var(--ds-soft);
+  line-height: 1.45;
+}
+.lab-quest__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+}
+.lab-quest__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  border: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+  color: var(--ds-muted);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.lab-quest__item.is-unlocked {
+  border-color: rgba(16, 185, 129, 0.55);
+  color: var(--ds-ink);
+  background: rgba(16, 185, 129, 0.12);
+}
+.lab-quest__name {
+  font-family: var(--ds-font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+}
+.lab-quest__status {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.lab-quest__total {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ds-muted);
+}
+
 /* ---- Experiment shell: controls + visual + readout + insight ---- */
 .lab-experiment__panel {
   display: flex;
