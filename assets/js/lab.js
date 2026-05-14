@@ -544,6 +544,12 @@
       drawPlot(p, n);
     }
 
+    // Randomize starting parameters on each refresh for replayability
+    const randP = (0.25 + Math.random() * 0.45).toFixed(2);
+    const randN = Math.floor(2 + Math.random() * 5);
+    refs.p.value = randP;
+    refs.n.value = randN;
+
     refs.p.addEventListener("input", update);
     refs.n.addEventListener("input", update);
     if (refs.turbo) refs.turbo.addEventListener("change", update);
@@ -890,6 +896,14 @@
       drawPlot(eps, k, sigma);
     }
 
+    // Randomize starting parameters on each refresh for replayability
+    const randEps = (0.12 + Math.random() * 0.20).toFixed(2);
+    const randK = Math.floor(4 + Math.random() * 20);
+    const randSigma = (0.05 + Math.random() * 0.15).toFixed(2);
+    refs.eps.value = randEps;
+    refs.k.value = randK;
+    refs.sigma.value = randSigma;
+
     refs.eps.addEventListener("input", update);
     refs.k.addEventListener("input", update);
     refs.sigma.addEventListener("input", update);
@@ -1182,6 +1196,12 @@
 
       drawPlot(q, rho);
     }
+
+    // Randomize starting parameters on each refresh for replayability
+    const randQ = (0.02 + Math.random() * 0.12).toFixed(3);
+    const randRho = (Math.random() * 0.3).toFixed(2);
+    refs.q.value = randQ;
+    refs.rho.value = randRho;
 
     refs.q.addEventListener("input", update);
     refs.rho.addEventListener("input", update);
@@ -1866,6 +1886,14 @@
     refs.lr.addEventListener("input", updateSliderDisplay);
     refs.bs.addEventListener("input", updateSliderDisplay);
     refs.noise.addEventListener("input", updateSliderDisplay);
+
+    // Randomize starting parameters on each refresh for replayability
+    const randAlpha = (0.008 + Math.random() * 0.010).toFixed(4);
+    const randBatch = Math.floor(32 + Math.random() * 200);
+    const randNoise = (0.02 + Math.random() * 0.06).toFixed(3);
+    refs.lr.value = randAlpha;
+    refs.bs.value = randBatch;
+    refs.noise.value = randNoise;
 
     updateSliderDisplay();
     reset();
