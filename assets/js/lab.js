@@ -546,8 +546,12 @@
       refs.pVal.textContent = p.toFixed(2);
       refs.nVal.textContent = n;
       refs.pDisplay.textContent = p.toFixed(2);
-      const pNaive  = 1 - Math.pow(p, n);
-      const pStrict = Math.pow(1 - p, n);
+      const turboMode = !!(refs.turbo && refs.turbo.checked);
+      const coordinationTax = !!(refs.neonplot && refs.neonplot.checked);
+      const effectiveP = clamp(p * (turboMode ? 0.88 : 1.0) + (coordinationTax ? 0.025 : 0), 0.001, 0.99);
+      const strictDepth = n + (coordinationTax ? 1 : 0);
+      const pNaive  = 1 - Math.pow(effectiveP, n);
+      const pStrict = Math.pow(1 - effectiveP, strictDepth);
       const delta   = pNaive - pStrict;
 
       const pct = (v) => (v * 100).toFixed(1) + "%";
@@ -561,21 +565,22 @@
 
       // Minimum N for naive to hit 99% at current p
       let minN99;
-      if (p <= 0) minN99 = 1;
-      else if (p >= 0.99) minN99 = Infinity;
-      else minN99 = Math.ceil(Math.log(0.01) / Math.log(p));
+      if (effectiveP <= 0) minN99 = 1;
+      else if (effectiveP >= 0.99) minN99 = Infinity;
+      else minN99 = Math.ceil(Math.log(0.01) / Math.log(effectiveP));
       refs.minNVal.textContent = isFinite(minN99) ? minN99 : "\u221e";
 
       // Sweet spot detection + visual feedback
-      const inSweetZone = p >= 0.10 && p <= 0.75 && isFinite(minN99) && n >= minN99;
+      const inSweetZone = p >= 0.10 && p <= 0.75 && isFinite(minN99) && n >= minN99 + (coordinationTax ? 1 : 0);
       
       // Slider glow: how close are we to sweet zone?
-      const pCloseness = (p >= 0.10 && p <= 0.75) ? Math.min(1, Math.abs(p - 0.425) / 0.325 * 0.7) : 0; // closer to mid = better
+      const pCloseness = (p >= 0.10 && p <= 0.75) ? Math.min(1, Math.abs(effectiveP - 0.425) / 0.325 * 0.7) : 0; // closer to mid = better
       const nCloseness = (n >= minN99 && n <= 10) ? Math.min(1, 1 - (n - minN99) / (10 - minN99) * 0.3) : 0;
       labFxSliderGlow(refs.p, inSweetZone ? 1 : pCloseness * 0.5);
       labFxSliderGlow(refs.n, inSweetZone ? 1 : nCloseness * 0.5);
       labFxApproachingZone(refs.p, inSweetZone ? 0 : pCloseness);
       labFxApproachingZone(refs.n, inSweetZone ? 0 : nCloseness);
+      currentP = effectiveP;
       
       if (refs.sweetTg) {
         refs.sweetTg.hidden = !inSweetZone;
@@ -586,9 +591,8 @@
       }
 
       // Animation speed: faster in sweet zone; turbo shrinks baseline
-      const tgTurbo = refs.turbo && refs.turbo.checked;
-      const baseMs = tgTurbo ? 280 : 700;
-      const sweetMs = tgTurbo ? 180 : 500;
+      const baseMs = turboMode ? 280 : 700;
+      const sweetMs = turboMode ? 180 : 500;
       const newSpawnMs = inSweetZone ? sweetMs : baseMs;
       if (newSpawnMs !== spawnMs || inSweetZone !== lastSweetZone) {
         spawnMs = newSpawnMs;
@@ -909,9 +913,13 @@
 
       const sd  = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
       const snr = eps / sd;
-      const q   = qDetect(eps, sigma, zc);
-      const det = aggregateDetect(q, k);
-      const fpr = aggregateDetect(alphaSig, k);
+      const detectorBoost = (refs.wmNeon && refs.wmNeon.checked) ? -0.10 : 0.08;
+      const effectiveZc = Math.max(0.01, zc + detectorBoost);
+      const validationBoost = (refs.wmPop && refs.wmPop.checked) ? 2 : 0;
+      const effectiveK = Math.min(64, k + validationBoost);
+      const q   = qDetect(eps, sigma, effectiveZc);
+      const det = aggregateDetect(q, effectiveK);
+      const fpr = aggregateDetect(alphaSig, effectiveK);
 
       const num1 = (v) => v.toFixed(2);
       const pctH = (v) => (v * 100).toFixed(1) + "%";
@@ -964,7 +972,7 @@
       else                        txt = "k = " + k + " amplifies SNR by sqrt(k) which is approximately " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with epsilon alone.";
       refs.insight.textContent = txt;
 
-      buildGrid(eps, k, sigma, q, neonEnabled);
+      buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       if (eps > 0.25) refs.grid.classList.add('lab-wm__grid--glitch');
       else refs.grid.classList.remove('lab-wm__grid--glitch');
       /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
@@ -1583,7 +1591,10 @@
       const mom = parseFloat(refs.mom.value);
       
       const grad = df(currentX);
-      velocity = mom * velocity - lr * grad;
+      const schedule = (refs.gdRainbow && refs.gdRainbow.checked)
+        ? (1 + 0.16 * Math.sin(epoch * 0.18))
+        : 1;
+      velocity = mom * velocity - lr * grad * schedule;
       currentX += velocity;
       epoch++;
       trail.push(currentX);
@@ -1936,17 +1947,21 @@
       const noiseFit = normBand(noise, 0.02, 0.08, 0.12);
       const paramFit = (lrFit + bsFit + noiseFit) / 3;
 
+      const hardMode = !!(refs.polMega && refs.polMega.checked);
       const score = Math.round(100 * (
         0.30 * monotonic +
         0.25 * smoothness +
         0.25 * distanceFromFake +
         0.20 * paramFit
-      ));
+      ) * (hardMode ? 0.92 : 1));
 
       let badge = "Needs more science";
-      if (score >= 88) badge = "Gold Proof";
-      else if (score >= 75) badge = "Silver Proof";
-      else if (score >= 60) badge = "Bronze Proof";
+      const goldCutoff = hardMode ? 92 : 88;
+      const silverCutoff = hardMode ? 79 : 75;
+      const bronzeCutoff = hardMode ? 64 : 60;
+      if (score >= goldCutoff) badge = "Gold Proof";
+      else if (score >= silverCutoff) badge = "Silver Proof";
+      else if (score >= bronzeCutoff) badge = "Bronze Proof";
 
       refs.scoreVal.textContent = String(score);
       refs.badgeVal.textContent = badge;
@@ -1954,11 +1969,11 @@
         ? "✓ Not plausible as fake"
         : "⚠ Too easy to spoof";
 
-      if (score >= 88) {
+      if (score >= goldCutoff) {
         streak += 1;
         celebrate(refs.plot, !!(refs.polMega && refs.polMega.checked));
         labFxStreakPulse(refs.streakVal);
-        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
+        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08]." + (hardMode ? " Hard mode was on, so the detector was stricter." : "");
         unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose... wisely.");
       } else {
         streak = 0;

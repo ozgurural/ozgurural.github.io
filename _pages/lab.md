@@ -66,8 +66,8 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="protocol depth N">
       </label>
       <div class="lab-playset" aria-label="Two generals display options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-turbo"> Hyper-lane messengers</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-neonplot" checked> Neon plot when in sweet zone</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-turbo" title="Reduces effective loss and speeds retry cadence"> Fast retry lane</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-neonplot" checked title="Adds coordination overhead and tightens the strict path"> Coordination tax</label>
       </div>
     </div>
 
@@ -171,8 +171,8 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="significance level alpha">
       </label>
       <div class="lab-playset" aria-label="Watermark visualization tied to detector statistics">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked title="Key-cell contrast scales with single-cell q = Φ(SNR − zα); same q as the readouts."> Key glow tracks q(ε, σ, α)</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop" title="Animates only when aggregate detection, FPR, the publishable band, or major thresholds move."> Pulse on metric / regime change</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked title="Lowers detector strictness so q and detection move with the signal."> High-contrast detector</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop" title="Adds a broader validation window, which changes effective k and the published regime."> Broader validation window</label>
       </div>
     </div>
 
@@ -262,7 +262,7 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
       </label>
       <div class="lab-playset" aria-label="Proof-of-Learning pacing">
         <label class="lab-playset__opt"><input type="checkbox" data-role="pol-turbo"> Hyper-training (faster epochs)</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-mega"> Mega confetti on Gold</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-mega" title="Tightens the Gold cutoff and makes the score harder to earn"> Hard-mode validation</label>
       </div>
       <button class="lab-btn lab-btn--train" type="button" data-role="pol-train-btn">
         <span class="lab-btn__text">Train!</span>
@@ -463,9 +463,9 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="batch noise">
       </label>
       <div class="lab-playset" aria-label="Gradient descent display options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-turbo"> Hyper-training (faster steps)</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-rainbow" checked> Rainbow optimizer trail</label>
-        <span class="lab-playbar__hint" style="grid-column:1/-1;margin:0">ζ adds visual jitter only; the loss math is unchanged.</span>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-turbo" title="Speeds the training cadence and shortens the delay between epochs"> Fast epochs</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-rainbow" checked title="Turns on an adaptive step schedule that changes the optimizer path"> Adaptive step schedule</label>
+        <span class="lab-playbar__hint" style="grid-column:1/-1;margin:0">ζ now changes the training path; these toggles alter the optimizer, not just the trail.</span>
       </div>
       <button class="lab-btn lab-btn--train" type="button" data-role="train-btn">
         <span class="lab-btn__text">Train!</span>
@@ -475,6 +475,7 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         <span class="lab-btn__text">New Challenge</span>
         <span class="lab-btn__bg"></span>
       </button>
+      <p class="lab-playbar__hint" data-role="gd-challenge-meta" style="grid-column:1/-1;margin:0">Challenge: loading...</p>
     </div>
 
     <div class="lab-experiment__visual">
