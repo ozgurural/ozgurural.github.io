@@ -363,8 +363,8 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="number of redundant channels">
       </label>
       <div class="lab-playset" aria-label="TMR simulation options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-hypersim"> Hyperspeed strip</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-glow" checked> Glow voter row on SYS fail</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-hypersim" title="Shortens the voting window and changes the sampling cadence"> Short voting window</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-glow" checked title="Reduces effective correlation with a diverse voter model"> Diverse voter row</label>
       </div>
     </div>
 

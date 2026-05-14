@@ -1037,6 +1037,15 @@
       glow:            $('[data-role="tmr-glow"]', root),
     };
 
+    function tmrEffectiveRho(rho) {
+      const fastWindow = !!(refs.hypersim && refs.hypersim.checked);
+      const diverseVoter = !!(refs.glow && refs.glow.checked);
+      let effective = rho;
+      if (fastWindow) effective *= 0.88;
+      if (diverseVoter) effective *= 0.65;
+      return Math.max(0, Math.min(1, effective));
+    }
+
     /* Closed-form system failure rate. */
     function pSysFail(q, rho) {
       const indep = 3*q*q*(1 - q) + q*q*q; // = 3q^2 - 2q^3
@@ -1175,8 +1184,9 @@
     }
     function tick() {
       // Common-mode event with probability ρ; if it hits, all 3 share one Bernoulli(q).
+      const rhoEff = tmrEffectiveRho(currentRho);
       let fails;
-      if (Math.random() < currentRho) {
+      if (Math.random() < rhoEff) {
         const f = Math.random() < currentQ;
         fails = [f, f, f];
       } else {
@@ -1237,7 +1247,8 @@
       refs.qVal.textContent   = q.toFixed(3);
       refs.rhoVal.textContent = rho.toFixed(2);
 
-      const pSys = pSysFail(q, rho);
+      const rhoEff = tmrEffectiveRho(rho);
+      const pSys = pSysFail(q, rhoEff);
       const gain = pSys > 0 ? q / pSys : 1;
 
       const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
@@ -1257,12 +1268,12 @@
       }
 
       // Sweet spot: well inside the safe operating envelope + visual feedback
-      const inSweetTmr = rhoBE !== null && rho < rhoBE * 0.5 && q < 0.10 && gain >= 10;
-      const overBreakeven = rhoBE !== null && rho > rhoBE && rhoBE < 0.99;
+      const inSweetTmr = rhoBE !== null && rhoEff < rhoBE * 0.5 && q < 0.10 && gain >= 10;
+      const overBreakeven = rhoBE !== null && rhoEff > rhoBE && rhoBE < 0.99;
       
       // Slider glow feedback for TMR
       const qCloseness = Math.max(0, 1 - Math.abs(q - 0.035) / 0.10); // 0.035 is good target
-      const rhoCloseness = rhoBE !== null ? Math.max(0, 1 - Math.abs(rho - rhoBE * 0.3) / (rhoBE * 0.5)) : 0;
+      const rhoCloseness = rhoBE !== null ? Math.max(0, 1 - Math.abs(rhoEff - rhoBE * 0.3) / (rhoBE * 0.5)) : 0;
       labFxSliderGlow(refs.q, inSweetTmr ? 1 : qCloseness * 0.6);
       labFxSliderGlow(refs.rho, inSweetTmr ? 1 : rhoCloseness * 0.6);
       labFxApproachingZone(refs.q, inSweetTmr ? 0 : qCloseness);
@@ -1271,7 +1282,7 @@
       if (refs.sweetTmr) {
         refs.sweetTmr.hidden = !inSweetTmr;
         if (inSweetTmr) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
+          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and effective \u03c1 = " + rhoEff.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
           unlockQuest("tmr", "TMR: redundancy that is not three copies of the same bug. Refreshing.");
         }
       }
@@ -1281,19 +1292,19 @@
       if (rhoBE === null) {
         txt = "At this q, even perfect independence cannot reach a 10x gain. The best case is " + (q / pSysFail(q, 0)).toFixed(1) + "x, so the break-even readout is N/A rather than a fake threshold.";
       } else if (overBreakeven) {
-        txt = "Warning: \u03c1 = " + rho.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
-      } else if (rho >= 0.95) {
+        txt = "Warning: effective \u03c1 = " + rhoEff.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
+      } else if (rhoEff >= 0.95) {
         txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times—Agent Smith cubed, but in RTL. The Ariane 5 had redundant flight computers running the exact same inertial reference software. They both crashed in the same millisecond.";
-      } else if (rho < 0.05) {
+      } else if (rhoEff < 0.05) {
         txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight. Pleasant. Unexciting. Correct.";
-      } else if (rho < 0.5) {
+      } else if (rhoEff < 0.5) {
         txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than rho alone suggests. Common-cause failures are doing real damage.";
       } else {
         txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor, not the roughly 1/(3q) you get under independence. Diverse-versions programming exists for exactly this reason.";
       }
       refs.insight.textContent = txt;
 
-      drawPlot(q, rho);
+      drawPlot(q, rhoEff);
     }
 
     // Randomize starting parameters on each refresh for replayability
@@ -1308,6 +1319,12 @@
       refs.hypersim.addEventListener("change", function () {
         tmrTickMs = refs.hypersim.checked ? 200 : 600;
         restartSimInterval();
+        update();
+      });
+    }
+    if (refs.glow) {
+      refs.glow.addEventListener("change", function () {
+        update();
       });
     }
     update();
