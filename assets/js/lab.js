@@ -643,21 +643,30 @@
       }
       return out;
     }
-    function valueToColor(v, isKey, neon) {
+    /* Key-cell chroma: optional "neon" mode scales with per-cell detection power q(ε,σ,α)=Φ(SNR−z_α). */
+    function valueToColor(v, isKey, q, neonEnabled) {
       let c = Math.max(0, Math.min(1, v));
       const hue   = 200 - c * 30;
       let   sat   = 60 + c * 20;
       let   light = 32 + c * 38;
-      if (isKey) { sat = Math.min(98, sat + (neon ? 32 : 18)); light = Math.max(22, light - (neon ? 10 : 6)); }
+      const qn = Math.max(0, Math.min(1, q));
+      if (isKey && neonEnabled) {
+        const boost = 8 + qn * 52;
+        sat = Math.min(98, sat + boost);
+        light = Math.max(18, light - (4 + qn * 16));
+      } else if (isKey) {
+        sat = Math.min(98, sat + 18);
+        light = Math.max(22, light - 6);
+      }
       return "hsl(" + hue.toFixed(0) + " " + sat.toFixed(0) + "% " + light.toFixed(0) + "%)";
     }
     let wmPopTimer = null;
-    function buildGrid(eps, k, sigma) {
+    let wmUpdateSeq = 0;
+    function buildGrid(eps, k, sigma, q, neonEnabled) {
       while (refs.grid.firstChild) refs.grid.removeChild(refs.grid.firstChild);
       const base = rngBase();
       const keyCells = pickKey(k);
       const keySet = new Set(keyCells);
-      const neonOn = refs.wmNeon && refs.wmNeon.checked;
       // Adversary's noise
       for (let i = 0; i < GRID_CELLS; i++) {
         const noise = (Math.random() * 2 - 1) * sigma * 1.2;  // crude uniform; visual only
@@ -670,7 +679,7 @@
         const v = (raw - vmin) / range;
         const cell = document.createElement("span");
         cell.className = "lab-wm__cell";
-        cell.style.background = valueToColor(v, keySet.has(i), neonOn);
+        cell.style.background = valueToColor(v, keySet.has(i), q, neonEnabled);
         if (keySet.has(i)) cell.dataset.key = "1";
         refs.grid.appendChild(cell);
       });
@@ -793,7 +802,19 @@
 
     /* ---- Live update with tweened readouts ---- */
     let prev = { snr: 1.28, det: 0.32, fpr: 0 };
+    let prevSweetWm = false;
+    function wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, det, fpr, sweet) {
+      if (Math.abs(det - prevDet) >= 0.028) return true;
+      if (Math.abs(fpr - prevFpr) >= 0.012) return true;
+      if (sweet !== prevSw) return true;
+      if ((prevDet < 0.5 && det >= 0.5) || (prevDet >= 0.5 && det < 0.5)) return true;
+      if ((prevFpr <= 0.05 && fpr > 0.05) || (prevFpr > 0.05 && fpr <= 0.05)) return true;
+      return false;
+    }
     function update() {
+      const prevDet = prev.det;
+      const prevFpr = prev.fpr;
+      const prevSw = prevSweetWm;
       const eps   = parseFloat(refs.eps.value);
       const k     = parseInt(refs.k.value, 10);
       const sigma = parseFloat(refs.sigma.value);
@@ -835,6 +856,11 @@
           unlockQuest("wm", "Watermark: court-grade signal. Still no cake.");
         }
       }
+      const neonEnabled = !!(refs.wmNeon && refs.wmNeon.checked);
+      const shouldPulse = refs.wmPop && refs.wmPop.checked && wmUpdateSeq > 0 &&
+        wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, det, fpr, inSweetWm);
+      wmUpdateSeq++;
+      prevSweetWm = inSweetWm;
 
       let txt;
       if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much. This is not a failure; it is an enrichment opportunity.";
@@ -849,11 +875,12 @@
       else                        txt = "k = " + k + " amplifies SNR by sqrt(k) which is approximately " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with epsilon alone.";
       refs.insight.textContent = txt;
 
-      buildGrid(eps, k, sigma);
+      buildGrid(eps, k, sigma, q, neonEnabled);
       if (eps > 0.25) refs.grid.classList.add('lab-wm__grid--glitch');
       else refs.grid.classList.remove('lab-wm__grid--glitch');
-      if (refs.wmNeon) refs.grid.classList.toggle("lab-wm__grid--neon", refs.wmNeon.checked);
-      if (refs.wmPop && refs.wmPop.checked) {
+      /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
+      if (refs.wmNeon) refs.grid.classList.toggle("lab-wm__grid--neon", neonEnabled && q >= 0.08);
+      if (shouldPulse) {
         refs.grid.classList.add("lab-wm__grid--pop");
         clearTimeout(wmPopTimer);
         wmPopTimer = setTimeout(function () {

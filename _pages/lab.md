@@ -170,9 +170,9 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         </span>
         <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="significance level alpha">
       </label>
-      <div class="lab-playset" aria-label="Watermark display options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked> Neon key cells</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop"> Pulse grid on update</label>
+      <div class="lab-playset" aria-label="Watermark visualization tied to detector statistics">
+        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked title="Key-cell contrast scales with single-cell q = Φ(SNR − zα); same q as the readouts."> Key glow tracks q(ε, σ, α)</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop" title="Animates only when aggregate detection, FPR, the publishable band, or major thresholds move."> Pulse on metric / regime change</label>
       </div>
     </div>
 
