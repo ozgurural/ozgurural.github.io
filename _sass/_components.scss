@@ -632,9 +632,17 @@
   animation: lab-wm-grid-pop 0.38s ease-out;
 }
 @keyframes lab-wm-grid-pop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0%   { transform: scale(1); filter: saturate(1) brightness(1); }
+  35%  { transform: scale(1.01); filter: saturate(1.18) brightness(1.05); }
+  100% { transform: scale(1); filter: saturate(1) brightness(1); }
+}
+.lab-wm__grid--pop .lab-wm__cell[data-key="1"] {
+  animation: lab-wm-key-threshold 0.38s ease-out;
+}
+@keyframes lab-wm-key-threshold {
+  0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+  40%  { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.7) inset, 0 0 12px rgba(245, 158, 11, 0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
 }
 
 /* ---- Lab page: cross-experiment mission strip ---- */

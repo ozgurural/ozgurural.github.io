@@ -889,7 +889,9 @@
     /* ---- Live update with tweened readouts ---- */
     let prev = { snr: 1.28, det: 0.32, fpr: 0 };
     let prevSweetWm = false;
-    function wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, det, fpr, sweet) {
+    let prevEffectiveK = null;
+    function wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, prevK, det, fpr, sweet, effectiveK) {
+      if (prevK !== effectiveK) return true;
       if (Math.abs(det - prevDet) >= 0.028) return true;
       if (Math.abs(fpr - prevFpr) >= 0.012) return true;
       if (sweet !== prevSw) return true;
@@ -955,9 +957,10 @@
       }
       const neonEnabled = !!(refs.wmNeon && refs.wmNeon.checked);
       const shouldPulse = refs.wmPop && refs.wmPop.checked && wmUpdateSeq > 0 &&
-        wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, det, fpr, inSweetWm);
+        wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, prevEffectiveK, det, fpr, inSweetWm, effectiveK);
       wmUpdateSeq++;
       prevSweetWm = inSweetWm;
+      prevEffectiveK = effectiveK;
 
       let txt;
       if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much. This is not a failure; it is an enrichment opportunity.";
