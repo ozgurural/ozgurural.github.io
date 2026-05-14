@@ -30,6 +30,7 @@
     if (parent) parent.appendChild(el);
     return el;
   };
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
   /* ---------- DevTools signature ---------- */
   try {
