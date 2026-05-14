@@ -132,8 +132,10 @@
     if (quest[key]) return;
     quest[key] = true;
     saveQuest();
+    const count = completedQuestCount();
     renderQuest(message || "Badge unlocked. The enrichment center is mildly proud.");
     labFxQuestCelebration();
+    labFxMilestoneUnlock(count);
   }
 
   /* ---------- statistics primitives ---------- */
@@ -178,13 +180,67 @@
     var d = delta == null ? 1 : delta;
     labFxCombo += d;
     var el = document.querySelector('[data-role="lab-combo-val"]');
-    if (el) el.textContent = String(labFxCombo);
+    if (el) {
+      el.textContent = String(labFxCombo);
+      el.parentElement.classList.remove("lab-playbar__combo--pulse");
+      void el.parentElement.offsetWidth;
+      el.parentElement.classList.add("lab-playbar__combo--pulse");
+      // Milestone bumps: 10, 25, 50 get extra celebration
+      var milestones = [10, 25, 50, 100];
+      if (milestones.indexOf(labFxCombo) !== -1 && labFxJuiceOn()) {
+        labFxBuzz();
+        labFxBuzz();
+      }
+    }
     if (labFxComboTimer) clearTimeout(labFxComboTimer);
     labFxComboTimer = setTimeout(function () {
       labFxCombo = Math.max(0, labFxCombo - 1);
       var c = document.querySelector('[data-role="lab-combo-val"]');
       if (c) c.textContent = String(labFxCombo);
     }, 3200);
+  }
+  function labFxSliderGlow(slider, intensity) {
+    if (!slider) return;
+    if (intensity > 0.7) {
+      slider.classList.add("lab-control--sweet");
+      slider.setAttribute("data-sweet-intensity", Math.min(1, intensity).toFixed(2));
+    } else {
+      slider.classList.remove("lab-control--sweet");
+    }
+  }
+  function labFxApproachingZone(slider, intensity) {
+    if (!slider || intensity <= 0.3) {
+      slider.classList.remove("lab-control--approaching");
+      return;
+    }
+    slider.classList.add("lab-control--approaching");
+    slider.setAttribute("data-approach", Math.min(1, intensity).toFixed(2));
+  }
+  function labFxStreakPulse(el) {
+    if (!el) return;
+    el.classList.remove("lab-experiment__metric--streak-hit");
+    void el.offsetWidth;
+    el.classList.add("lab-experiment__metric--streak-hit");
+  }
+  function labFxMilestoneUnlock(questCount) {
+    if (questCount <= 0 || questCount > 5) return;
+    var msg = "";
+    var emoji = "🎯";
+    if (questCount === 1) { msg = "First unlock! The Architect notices."; emoji = "👁"; }
+    else if (questCount === 2) { msg = "2 of 5. You're learning."; emoji = "🧠"; }
+    else if (questCount === 3) { msg = "Halfway there!"; emoji = "🔥"; }
+    else if (questCount === 4) { msg = "One more..."; emoji = "⚡"; }
+    else if (questCount === 5) { msg = "ALL FIVE. You have conquered the Matrix of regret."; emoji = "👑"; }
+    var toast = document.createElement("div");
+    toast.className = "lab-toast lab-toast--milestone";
+    toast.textContent = emoji + " " + msg;
+    document.body.appendChild(toast);
+    setTimeout(function () { toast.remove(); }, 2800);
+    if (labFxJuiceOn()) {
+      labFxBuzz();
+      labFxBuzz();
+      labFxBuzz();
+    }
   }
   function labFxQuestCelebration() {
     var q = document.querySelector(".lab-quest");
@@ -196,6 +252,11 @@
     }
     labFxBumpCombo(4);
     labFxBuzz();
+    // Bonus haptics on quest unlock
+    if (labFxHapticOn()) {
+      setTimeout(() => labFxBuzz(), 100);
+      setTimeout(() => labFxBuzz(), 200);
+    }
   }
   function labFxBuzz() {
     if (!labFxHapticOn()) return;
@@ -205,22 +266,26 @@
   }
   function labFxMiniConfetti(plot, count) {
     if (!plot || !labFxJuiceOn()) return;
-    var n = count || 22;
+    var n = count || 48; // Increased from 22 for more visual punch
     var M = { l: 52, t: 28 };
     var innerW = 400;
-    var colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e", "#a78bfa"];
+    var colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e", "#a78bfa", "#ec4899"];
     var i, cx = M.l + innerW * 0.72, cy = M.t + 40;
     var parts = [];
     for (i = 0; i < n; i++) {
+      var angle = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      var speed = 4 + Math.random() * 5;
       parts.push({
         el: svg("circle", {
-          cx: cx, cy: cy, r: 2 + Math.random() * 2.5,
-          fill: colors[i % colors.length], opacity: "0.95",
+          cx: cx, cy: cy, r: 2.2 + Math.random() * 3,
+          fill: colors[i % colors.length], opacity: "0.96",
         }, plot),
         x: cx, y: cy,
-        vx: (Math.random() - 0.5) * 6,
-        vy: -2 - Math.random() * 4,
-        life: 35 + Math.floor(Math.random() * 18),
+        vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 1.5,
+        vy: Math.sin(angle) * speed - 2 - Math.random() * 3.5,
+        life: 45 + Math.floor(Math.random() * 25),
+        rot: Math.random() * 360,
+        rotV: (Math.random() - 0.5) * 12,
       });
     }
     var frame = 0;
@@ -229,13 +294,15 @@
       parts.forEach(function (p) {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.2;
+        p.vy += 0.25; // gravity
+        p.vx *= 0.96; // drag
         p.life -= 1;
+        p.rot += p.rotV;
         p.el.setAttribute("cx", p.x.toFixed(1));
         p.el.setAttribute("cy", p.y.toFixed(1));
         p.el.setAttribute("opacity", String(Math.max(0, Math.min(1, p.life / 50))));
       });
-      if (frame < 55) requestAnimationFrame(tick);
+      if (frame < 70) requestAnimationFrame(tick);
       else {
         parts.forEach(function (p) {
           if (p.el && p.el.parentNode) p.el.parentNode.removeChild(p.el);
@@ -499,8 +566,17 @@
       else minN99 = Math.ceil(Math.log(0.01) / Math.log(p));
       refs.minNVal.textContent = isFinite(minN99) ? minN99 : "\u221e";
 
-      // Sweet spot detection
+      // Sweet spot detection + visual feedback
       const inSweetZone = p >= 0.10 && p <= 0.75 && isFinite(minN99) && n >= minN99;
+      
+      // Slider glow: how close are we to sweet zone?
+      const pCloseness = (p >= 0.10 && p <= 0.75) ? Math.min(1, Math.abs(p - 0.425) / 0.325 * 0.7) : 0; // closer to mid = better
+      const nCloseness = (n >= minN99 && n <= 10) ? Math.min(1, 1 - (n - minN99) / (10 - minN99) * 0.3) : 0;
+      labFxSliderGlow(refs.p, inSweetZone ? 1 : pCloseness * 0.5);
+      labFxSliderGlow(refs.n, inSweetZone ? 1 : nCloseness * 0.5);
+      labFxApproachingZone(refs.p, inSweetZone ? 0 : pCloseness);
+      labFxApproachingZone(refs.n, inSweetZone ? 0 : nCloseness);
+      
       if (refs.sweetTg) {
         refs.sweetTg.hidden = !inSweetZone;
         if (inSweetZone) {
@@ -853,8 +929,15 @@
         refs.utilityVal.textContent = (utilityMargin >= 0 ? "+" : "") + utilityMargin.toFixed(2);
       }
 
-      // Sweet spot: publishable operating point
+      // Sweet spot: publishable operating point + visual feedback
       const inSweetWm = det >= 0.90 && fpr <= 0.05 && eps <= 0.25 && snr >= 1.0;
+      const epsCloseness = Math.max(0, 1 - Math.abs(eps - 0.15) / 0.25); // 0.15 is optimal
+      const kCloseness = Math.max(0, 1 - Math.abs(k - 12) / 24); // 12 is around optimal
+      labFxSliderGlow(refs.eps, inSweetWm ? 1 : epsCloseness * 0.6);
+      labFxSliderGlow(refs.k, inSweetWm ? 1 : kCloseness * 0.6);
+      labFxApproachingZone(refs.eps, inSweetWm ? 0 : epsCloseness);
+      labFxApproachingZone(refs.k, inSweetWm ? 0 : kCloseness);
+      
       if (refs.sweetWm) {
         refs.sweetWm.hidden = !inSweetWm;
         if (inSweetWm) {
@@ -1165,9 +1248,17 @@
         refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
 
-      // Sweet spot: well inside the safe operating envelope
+      // Sweet spot: well inside the safe operating envelope + visual feedback
       const inSweetTmr = rhoBE !== null && rho < rhoBE * 0.5 && q < 0.10 && gain >= 10;
       const overBreakeven = rhoBE !== null && rho > rhoBE && rhoBE < 0.99;
+      
+      // Slider glow feedback for TMR
+      const qCloseness = Math.max(0, 1 - Math.abs(q - 0.035) / 0.10); // 0.035 is good target
+      const rhoCloseness = rhoBE !== null ? Math.max(0, 1 - Math.abs(rho - rhoBE * 0.3) / (rhoBE * 0.5)) : 0;
+      labFxSliderGlow(refs.q, inSweetTmr ? 1 : qCloseness * 0.6);
+      labFxSliderGlow(refs.rho, inSweetTmr ? 1 : rhoCloseness * 0.6);
+      labFxApproachingZone(refs.q, inSweetTmr ? 0 : qCloseness);
+      labFxApproachingZone(refs.rho, inSweetTmr ? 0 : rhoCloseness);
 
       if (refs.sweetTmr) {
         refs.sweetTmr.hidden = !inSweetTmr;
@@ -1337,8 +1428,22 @@
     }
     applyRandomControls();
 
-    refs.lr.addEventListener("input", () => { refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3); });
-    refs.mom.addEventListener("input", () => { refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2); });
+    refs.lr.addEventListener("input", () => {
+      refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
+      // Slider glow for GD: good zone is lr~0.012, mom~0.5
+      const lr = parseFloat(refs.lr.value);
+      const lrCloseness = Math.max(0, 1 - Math.abs(lr - 0.012) / 0.035);
+      labFxSliderGlow(refs.lr, lrCloseness * 0.7);
+      labFxApproachingZone(refs.lr, lrCloseness * 0.8);
+    });
+    refs.mom.addEventListener("input", () => {
+      refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2);
+      // Slider glow for GD momentum
+      const mom = parseFloat(refs.mom.value);
+      const momCloseness = Math.max(0, 1 - Math.abs(mom - 0.5) / 0.7);
+      labFxSliderGlow(refs.mom, momCloseness * 0.7);
+      labFxApproachingZone(refs.mom, momCloseness * 0.8);
+    });
     if (refs.noise) refs.noise.addEventListener("input", function () { renderParticle(); });
     if (refs.gdRainbow) refs.gdRainbow.addEventListener("change", syncGdTrailStyle);
 
@@ -1603,24 +1708,27 @@
       const particles = [];
       const cx = M.l + innerW * 0.75;
       const cy = M.t + 30;
-      const colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e"];
-      const count = mega ? 44 : 18;
+      const colors = ["#f59e0b", "#10b981", "#38bdf8", "#f43f5e", "#a78bfa"];
+      const count = mega ? 88 : 32; // Doubled for more dopamine!
 
       for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2; // Radial burst
+        const speed = 3.5 + Math.random() * 4.5;
         const p = svg("circle", {
           cx: cx,
           cy: cy,
-          r: 2 + Math.random() * 2,
+          r: 1.5 + Math.random() * 3.2,
           fill: colors[i % colors.length],
-          opacity: "0.95",
+          opacity: "0.98",
         }, plot);
         particles.push({
           el: p,
           x: cx,
           y: cy,
-          vx: (Math.random() - 0.5) * 5,
-          vy: -2 - Math.random() * 4,
-          life: 40 + Math.floor(Math.random() * 20),
+          vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 1.2,
+          vy: Math.sin(angle) * speed - 1.5 - Math.random() * 2.5,
+          life: 50 + Math.floor(Math.random() * 30),
+          maxLife: 80,
         });
       }
 
@@ -1630,14 +1738,16 @@
         particles.forEach((p) => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.18;
+          p.vy += 0.22; // gravity
+          p.vx *= 0.98; // drag
           p.life -= 1;
           p.el.setAttribute("cx", p.x.toFixed(1));
           p.el.setAttribute("cy", p.y.toFixed(1));
-          p.el.setAttribute("opacity", String(clamp(p.life / 55, 0, 1)));
+          const opacity = Math.max(0, Math.min(1, p.life / 50));
+          p.el.setAttribute("opacity", String(opacity));
         });
 
-        if (frame < 60) {
+        if (frame < 80) {
           requestAnimationFrame(tick);
         } else {
           particles.forEach((p) => {
@@ -1646,6 +1756,25 @@
         }
       }
       requestAnimationFrame(tick);
+      
+      // Visual ripple pulse on the plot
+      if (plot) {
+        const ripple = svg("circle", {
+          cx: cx, cy: cy, r: 8,
+          fill: "none", stroke: "#10b981",
+          "stroke-width": "2", opacity: "0.8",
+        }, plot);
+        let rframe = 0;
+        const maxRipple = 60;
+        function rippleTick() {
+          rframe++;
+          ripple.setAttribute("r", (8 + rframe * 1.5).toFixed(1));
+          ripple.setAttribute("opacity", String(Math.max(0, 1 - rframe / maxRipple)));
+          if (rframe < maxRipple) requestAnimationFrame(rippleTick);
+          else ripple.remove();
+        }
+        requestAnimationFrame(rippleTick);
+      }
     }
 
     function computeLoss(epoch, alpha, batchSize, noise) {
@@ -1747,10 +1876,27 @@
     }
 
     function updateSliderDisplay() {
-      refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3);
-      const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
+      const lr = parseFloat(refs.lr.value);
+      const bs = parseInt(refs.bs.value, 10);
+      const noise = parseFloat(refs.noise.value);
+      
+      refs.lrVal.textContent = lr.toFixed(3);
+      const bsIdx = clamp(bs - 1, 0, BATCH_SIZES.length - 1);
       refs.bsVal.textContent = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
-      refs.noiseVal.textContent = parseFloat(refs.noise.value).toFixed(2);
+      refs.noiseVal.textContent = noise.toFixed(2);
+      
+      // Add slider glow feedback: optimal zone is α~0.012, B~128, ζ~0.05
+      const lrCloseness = Math.max(0, 1 - Math.abs(lr - 0.012) / 0.010);
+      const bsCloseness = Math.max(0, 1 - Math.abs(bs - 128) / 100);
+      const noiseCloseness = Math.max(0, 1 - Math.abs(noise - 0.05) / 0.06);
+      
+      labFxSliderGlow(refs.lr, lrCloseness * 0.7);
+      labFxSliderGlow(refs.bs, bsCloseness * 0.7);
+      labFxSliderGlow(refs.noise, noiseCloseness * 0.7);
+      
+      labFxApproachingZone(refs.lr, lrCloseness * 0.8);
+      labFxApproachingZone(refs.bs, bsCloseness * 0.8);
+      labFxApproachingZone(refs.noise, noiseCloseness * 0.8);
     }
 
     function updateMetrics(epoch, loss) {
@@ -1811,6 +1957,7 @@
       if (score >= 88) {
         streak += 1;
         celebrate(refs.plot, !!(refs.polMega && refs.polMega.checked));
+        labFxStreakPulse(refs.streakVal);
         refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08].";
         unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose... wisely.");
       } else {

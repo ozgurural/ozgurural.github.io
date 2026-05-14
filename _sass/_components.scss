@@ -1622,3 +1622,126 @@ input[type=range]:active::-moz-range-thumb {
 .lab-btn--train:active {
   transform: scale(0.9) translateY(2px);
 }
+
+/* ========== Enhanced Dopamine Feedback System ========== */
+
+/* Slider glow when in sweet zone or approaching */
+.lab-control--sweet input[type=range],
+.lab-control--approaching input[type=range] {
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+  transition: filter 0.3s ease;
+}
+.lab-control--sweet input[type=range] {
+  filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
+  animation: lab-slider-sweet-glow 1.2s ease-in-out infinite;
+}
+@keyframes lab-slider-sweet-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6)); }
+  50% { filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.9)); }
+}
+
+.lab-control--approaching input[type=range] {
+  animation: lab-slider-approach-pulse 0.8s ease-in-out infinite;
+}
+@keyframes lab-slider-approach-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.4)); }
+  50% { filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.7)); }
+}
+
+/* Combo meter pulse on hit + milestone celebration */
+.lab-playbar__combo--pulse {
+  animation: lab-combo-hit 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes lab-combo-hit {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Streak/metric pulse when target hit */
+.lab-experiment__metric--streak-hit {
+  animation: lab-streak-pulse 0.7s ease-out;
+}
+@keyframes lab-streak-pulse {
+  0% {
+    transform: scale(0.9);
+    background: rgba(34, 197, 94, 0.2);
+    box-shadow: inset 0 0 0 2px rgba(34, 197, 94, 0.6), 0 0 16px rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    background: rgba(34, 197, 94, 0.15);
+  }
+  100% {
+    transform: scale(1);
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Quest unlock celebration animation */
+.lab-quest--hit {
+  animation: lab-quest-celebrate 0.52s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+@keyframes lab-quest-celebrate {
+  0% { transform: scale(0.95) rotate(-2deg); }
+  25% { transform: scale(1.08) rotate(1deg); }
+  50% { transform: scale(0.97) rotate(-1deg); }
+  75% { transform: scale(1.05) rotate(0.5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Toast notification for milestone unlocks */
+.lab-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 1rem 1.5rem;
+  border-radius: var(--ds-radius);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  box-shadow: var(--ds-shadow-2);
+  font-weight: 600;
+  color: var(--ds-ink);
+  z-index: 9999;
+  animation: lab-toast-slide-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
+}
+@keyframes lab-toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(120px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.lab-toast--milestone {
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(99, 102, 241, 0.1));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--ds-accent);
+}
+
+/* Approaching zone indicator on label */
+.lab-control--approaching .lab-control__name::after {
+  content: " ✦";
+  animation: lab-indicator-pulse 1.4s ease-in-out infinite;
+  color: #f59e0b;
+}
+@keyframes lab-indicator-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Enhanced combo display with milestone highlights */
+.lab-playbar__combo[data-sweet-intensity="1"] {
+  color: #10b981;
+}
+.lab-playbar__combo[data-sweet-intensity="0.8"],
+.lab-playbar__combo[data-sweet-intensity="0.9"] {
+  color: #f59e0b;
+}
