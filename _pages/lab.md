@@ -23,6 +23,17 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
   <p class="lab-quest__total" aria-live="polite"><span data-role="quest-total">0/5</span> missions</p>
 </div>
 
+<div class="lab-badges" id="lab-badges" aria-live="polite" role="region" aria-label="Badge gallery" style="margin:0.6rem 0 1rem 0">
+  <strong>Badges</strong>
+  <div class="lab-badges__list" style="display:flex;gap:0.6rem;margin-top:0.4rem">
+    <div class="lab-badge lab-badge--locked" data-badge="tg">Consensus</div>
+    <div class="lab-badge lab-badge--locked" data-badge="wm">Watermark</div>
+    <div class="lab-badge lab-badge--locked" data-badge="tmr">TMR</div>
+    <div class="lab-badge lab-badge--locked" data-badge="pol">Proof-of-Learning</div>
+    <div class="lab-badge lab-badge--locked" data-badge="gd">Gradient</div>
+  </div>
+</div>
+
 <div class="lab-playbar" id="lab-playbar" role="region" aria-label="Playground feedback and motion">
   <div class="lab-playbar__cluster">
     <span class="lab-playbar__kicker">Arcade layer</span>
