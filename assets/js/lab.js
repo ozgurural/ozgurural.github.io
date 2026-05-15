@@ -50,26 +50,50 @@
      easeOutCubic. Cancels any in-flight tween on the same element so
      rapid slider drags don't pile up. */
   const tweenStore = new WeakMap();
+  const reducedMotion = (function () {
+    try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+    catch (e) { return false; }
+  })();
   function tweenNumber(el, from, to, ms, fmt) {
     if (!el) return;
     const prev = tweenStore.get(el);
-    if (prev) cancelAnimationFrame(prev);
-    if (Math.abs(to - from) < 1e-6) { el.textContent = fmt(to); return; }
+    if (prev) {
+      if (prev.rafId) cancelAnimationFrame(prev.rafId);
+      if (prev.fallbackId) clearTimeout(prev.fallbackId);
+    }
+    // No motion / no change → write the destination value directly.
+    if (reducedMotion || Math.abs(to - from) < 1e-6) {
+      el.textContent = fmt(to);
+      tweenStore.delete(el);
+      return;
+    }
     const start = performance.now();
+    let firedAnyFrame = false;
+    const entry = { rafId: 0, fallbackId: 0 };
     function step(now) {
+      firedAnyFrame = true;
       const t = Math.min(1, (now - start) / ms);
       const eased = 1 - Math.pow(1 - t, 3);
       const v = from + (to - from) * eased;
       el.textContent = fmt(v);
       if (t < 1) {
-        const id = requestAnimationFrame(step);
-        tweenStore.set(el, id);
+        entry.rafId = requestAnimationFrame(step);
       } else {
+        el.textContent = fmt(to);
+        if (entry.fallbackId) clearTimeout(entry.fallbackId);
         tweenStore.delete(el);
       }
     }
-    const id = requestAnimationFrame(step);
-    tweenStore.set(el, id);
+    entry.rafId = requestAnimationFrame(step);
+    // Safety net: if rAF is paused (background tab, throttled) the visual
+    // tween can stall mid-stream — make sure the destination value always
+    // shows up even if no frame ever fires.
+    entry.fallbackId = setTimeout(function () {
+      if (!firedAnyFrame) el.textContent = fmt(to);
+      else if (parseFloat(el.textContent) !== parseFloat(fmt(to))) el.textContent = fmt(to);
+      tweenStore.delete(el);
+    }, ms + 250);
+    tweenStore.set(el, entry);
   }
   function pulseRow(el) {
     if (!el) return;
@@ -648,6 +672,9 @@
     function restartAnim() {
       stopAnim();
       animTimer = setInterval(spawnDot, spawnMs);
+      // Spawn one immediately so slider changes register visually
+      // without waiting for the next interval tick.
+      spawnDot();
     }
 
     document.addEventListener("visibilitychange", () => {
