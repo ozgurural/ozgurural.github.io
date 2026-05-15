@@ -1066,8 +1066,6 @@
       refs.insight.textContent = txt;
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
-      if (eps > 0.25) refs.grid.classList.add('lab-wm__grid--glitch');
-      else refs.grid.classList.remove('lab-wm__grid--glitch');
       /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
       if (refs.wmNeon) refs.grid.classList.toggle("lab-wm__grid--neon", neonEnabled && q >= 0.08);
       if (shouldPulse) {
