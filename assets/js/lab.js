@@ -134,6 +134,14 @@
     saveQuest();
     const count = completedQuestCount();
     renderQuest(message || "Badge unlocked. The enrichment center is mildly proud.");
+    // update badge gallery UI
+    try {
+      const badge = document.querySelector('[data-badge="' + key + '"]');
+      if (badge) {
+        badge.classList.remove('lab-badge--locked');
+        badge.classList.add('lab-badge--unlocked');
+      }
+    } catch (e) { /* noop */ }
     labFxQuestCelebration();
     labFxMilestoneUnlock(count);
   }
