@@ -41,7 +41,7 @@
         "color:#94a3b8;font-style:italic;"
       ];
       console.log.apply(console, sig);
-      console.log("%cΦ(x) is Abramowitz–Stegun 26.2.17—real math, not a spoon. There is also no cake in this console. If you read code while drinking coffee, congratulations: you are statistically rare. drozgurural@gmail.com", "color:#64748b;");
+      console.log("%cΦ(x) approximation loaded. Real math, arcade wrapper. If you are reading the console, you found the back room. drozgurural@gmail.com", "color:#64748b;");
     }
   } catch (e) { /* noop */ }
 
@@ -118,14 +118,20 @@
       map[k].setAttribute("aria-label", k + " status: " + (quest[k] ? "unlocked" : "locked"));
       const row = document.querySelector('[data-quest-item="' + k + '"]');
       if (row) row.classList.toggle("is-unlocked", !!quest[k]);
+      const badge = document.querySelector('[data-badge="' + k + '"]');
+      if (badge) {
+        badge.classList.toggle("lab-badge--locked", !quest[k]);
+        badge.classList.toggle("lab-badge--unlocked", !!quest[k]);
+        badge.setAttribute("aria-label", k + " badge: " + (quest[k] ? "unlocked" : "locked"));
+      }
     });
     const total = $('[data-role="quest-total"]');
     if (total) total.textContent = completedQuestCount() + "/5";
     const msg = $('[data-role="quest-msg"]');
     if (msg) {
       if (message) msg.textContent = message;
-      else if (completedQuestCount() === 5) msg.textContent = "All five solved. The simulation acknowledges your persistence. You may now brag in any lobby that is not legally binding.";
-      else msg.textContent = "Complete five enrichment activities. Unlock badges. Disappoint nobody—especially not the eigenvalues.";
+      else if (completedQuestCount() === 5) msg.textContent = "All five solved. The lab accepts your credentials. Please do not use them to certify rockets unsupervised.";
+      else msg.textContent = "Complete five missions. Collect badges. Make statistical chaos behave for exactly long enough to look professional.";
     }
   }
   function unlockQuest(key, message) {
@@ -134,7 +140,8 @@
     quest[key] = true;
     saveQuest();
     const count = completedQuestCount();
-    renderQuest(message || "Badge unlocked. The enrichment center is mildly proud.");
+    renderQuest(message || "Badge unlocked. The lab adds one shiny checkmark.");
+    labFxBadgeBurst(key);
     labFxQuestCelebration();
     labFxMilestoneUnlock(count);
   }
@@ -228,7 +235,7 @@
     var title = "", msg = "", emoji = "🎯", subtitle = "";
     if (questCount === 1) {
       title = "First Strike"; 
-      msg = "The Architect notices your persistence."; 
+      msg = "First badge banked. The lab opens the next lane.";
       emoji = "👁";
       subtitle = "1 of 5 Unlocked";
     } else if (questCount === 2) {
@@ -248,7 +255,7 @@
       subtitle = "4 of 5 Unlocked";
     } else if (questCount === 5) {
       title = "MASTER OF SYSTEMS";
-      msg = "You have conquered the Matrix of regret. All systems yield to you.";
+      msg = "All five missions cleared. The scoreboard has no more excuses.";
       emoji = "👑";
       subtitle = "5 of 5 Complete";
     }
@@ -303,6 +310,47 @@
       
       setTimeout(() => { try { o.stop(); ctx.close(); } catch (e) {} }, (duration + 0.3) * 1000);
     } catch (e) { /* audio unavailable */ }
+  }
+
+  function labFxBadgeBurst(key) {
+    const badge = document.querySelector('[data-badge="' + key + '"]');
+    if (!badge) return;
+    badge.classList.remove("lab-badge--pop");
+    void badge.offsetWidth;
+    badge.classList.add("lab-badge--pop");
+    setTimeout(function () { badge.classList.remove("lab-badge--pop"); }, 850);
+    if (!labFxJuiceOn() || !badge.getBoundingClientRect) return;
+    const rect = badge.getBoundingClientRect();
+    const burst = document.createElement("div");
+    burst.className = "lab-spark-burst";
+    burst.style.left = (rect.left + rect.width / 2) + "px";
+    burst.style.top = (rect.top + rect.height / 2) + "px";
+    const colors = ["#34d399", "#38bdf8", "#f59e0b", "#f43f5e", "#a78bfa"];
+    for (let i = 0; i < 18; i++) {
+      const spark = document.createElement("span");
+      const angle = (i / 18) * Math.PI * 2;
+      const dist = 42 + Math.random() * 38;
+      spark.style.setProperty("--spark-x", (Math.cos(angle) * dist).toFixed(1) + "px");
+      spark.style.setProperty("--spark-y", (Math.sin(angle) * dist).toFixed(1) + "px");
+      spark.style.setProperty("--spark-rot", (Math.random() * 180).toFixed(1) + "deg");
+      spark.style.setProperty("--spark-color", colors[i % colors.length]);
+      burst.appendChild(spark);
+    }
+    document.body.appendChild(burst);
+    setTimeout(function () { burst.remove(); }, 900);
+  }
+
+  function labFxClickRipple(target, ev) {
+    if (!target || !target.getBoundingClientRect) return;
+    const rect = target.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "lab-click-ripple";
+    const x = ev && typeof ev.clientX === "number" ? ev.clientX - rect.left : rect.width / 2;
+    const y = ev && typeof ev.clientY === "number" ? ev.clientY - rect.top : rect.height / 2;
+    ripple.style.setProperty("--ripple-x", x + "px");
+    ripple.style.setProperty("--ripple-y", y + "px");
+    target.appendChild(ripple);
+    setTimeout(function () { ripple.remove(); }, 620);
   }
 
   function labFxQuestCelebration() {
@@ -407,6 +455,12 @@
       var t = e.target;
       if (!t || !t.matches || !t.matches("input[type=\"range\"]")) return;
       if (t.closest && t.closest(".lab-experiment")) labFxBumpCombo(1);
+    }, true);
+    document.addEventListener("click", function (e) {
+      const t = e.target;
+      if (!t || !t.closest) return;
+      const hit = t.closest(".lab-btn, .lab-mission-card, .lab-hero__actions a");
+      if (hit) labFxClickRipple(hit, e);
     }, true);
   }
 
@@ -648,8 +702,8 @@
       if (refs.sweetTg) {
         refs.sweetTg.hidden = !inSweetZone;
         if (inSweetZone) {
-          refs.sweetTg.textContent = "You found the operating point. At p = " + p.toFixed(2) + " and N = " + n + ", naive multi-send hits " + (pNaive*100).toFixed(1) + "% reliability. This is the regime Raft, Cassandra, and Bitcoin confirmation depth all live in. Strict-chain manages " + (pStrict*100).toFixed(1) + "% -- which is why two-phase commit has a blocking problem and Paxos does not. Reload the Matrix all you want; this inequality still holds.";
-          unlockQuest("tg", "Consensus: you found a viable reality branch. The Architect sends regards.");
+          refs.sweetTg.textContent = "Operating point locked: p = " + p.toFixed(2) + ", N = " + n + ", multi-send lands " + (pNaive*100).toFixed(1) + "% reliability while strict-chain lands " + (pStrict*100).toFixed(1) + "%. Retry cannon wins.";
+          unlockQuest("tg", "Consensus: retry cannon calibrated.");
         }
       }
 
@@ -671,17 +725,17 @@
         refs.plot.classList.toggle("lab-plot--neon-sweet", inSweetZone && refs.neonplot.checked);
       }
 
-      // Insight — branches on phase-space zone, anchored to production systems.
+      // Insight — short arcade hints anchored to the current phase-space zone.
       let txt;
-      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. The postman is honest, sober, and on time. Both protocols win 100%. For science.";
-      else if (p > 0.84)         txt = "Loss this severe and surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet' and the simulation gets honest.)";
-      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation—like taking the blue pill and pretending handshakes do not exist. The interesting structure starts at N = 2.";
-      else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here but it is still a trap, and it shows up at the tails.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "p = 0.5. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries, same trick TCP uses on bad WiFi.";
-      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one. That is the math every blockchain confirmation depth and every database read quorum runs on.";
-      else if (delta > 0.6)      txt = "Delta > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
-      else if (delta > 0.3)      txt = "Delta > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better, same shape every retry-with-backoff and every blockchain confirmation depth uses.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p in (0,1) and N >= 2. Production distributed systems chose naive on purpose. The cake was also never on-chain.";
+      if (p === 0)               txt = "Perfect channel. Everyone wins. Suspiciously luxurious.";
+      else if (p > 0.84)         txt = "Red zone: the channel is mostly noise. Add sends or retreat.";
+      else if (n === 1)          txt = "N = 1 is single-shot mode. No retry combo yet.";
+      else if (p < 0.05)         txt = "Clean channel. Both protocols look brave because reality is being polite.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "Coin-flip channel. Multi-send wins by stacking chances.";
+      else if (p > 0.65)         txt = "Heavy loss. Repetition is the strategy now: more shots, more survival.";
+      else if (delta > 0.6)      txt = "Strict-chain is bleeding reliability. Another handshake is not a power-up.";
+      else if (delta > 0.3)      txt = "Caution has a price. Multi-send is pulling ahead.";
+      else                       txt = "Multi-send beats strict-chain whenever loss is real and N > 1. Small math, huge infrastructure energy.";
       refs.insight.textContent = txt;
 
       drawPlot(p, n);
@@ -1014,8 +1068,8 @@
       if (refs.sweetWm) {
         refs.sweetWm.hidden = !inSweetWm;
         if (inSweetWm) {
-          refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible. The cake remains non-admissible.";
-          unlockQuest("wm", "Watermark: court-grade signal. Still no cake.");
+          refs.sweetWm.textContent = "Signal locked: detection " + (det*100).toFixed(1) + "%, false alarms " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". The watermark survives the attack without shouting at normal users.";
+          unlockQuest("wm", "Watermark: signal locked.");
         }
       }
       const neonEnabled = !!(refs.wmNeon && refs.wmNeon.checked);
@@ -1026,16 +1080,16 @@
       prevEffectiveK = effectiveK;
 
       let txt;
-      if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much. This is not a failure; it is an enrichment opportunity.";
-      else if (det > 0.995)       txt = "Detection saturated. The verifier wins by a landslide. Court-credible regime: the lawyers have evidence; the thief has homework. Still no cake.";
+      if (eps < 0.04)             txt = "Too faint. The verifier is squinting.";
+      else if (det > 0.995)       txt = "Detection saturated. Great evidence; now check model utility.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "On the operating frontier: over 90% detection, under 10% false-positive. The production-credible regime—the one a real provenance dispute can defend without bending spoons.";
+                                  txt = "Operating frontier: strong detection, low false alarms. This is the green zone.";
       else if (det > 0.5 && k <= 4)
-                                  txt = "Small key, marginal signal. Try doubling k. The gain from k = " + k + " to " + (k*2) + " comes from sqrt(k) SNR amplification.";
+                                  txt = "Small key, medium signal. Add more cells for a louder team vote.";
       else if (det < 0.15 && sigma > 0.3)
-                                  txt = "Sigma at this level means the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink epsilon. At this point a determined fine-tune attack succeeds—and blames the oracle.";
-      else if (det < 0.2)         txt = "Watermark washed out. At this (epsilon, sigma) the attacker has effectively defeated detection. Raise epsilon or grow k. The simulation is disappointed but not surprised.";
-      else                        txt = "k = " + k + " amplifies SNR by sqrt(k) which is approximately " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with epsilon alone.";
+                                  txt = "Attack noise is winning. Grow k or raise epsilon before the mark dissolves.";
+      else if (det < 0.2)         txt = "Watermark washed out. Increase signal or spread it wider.";
+      else                        txt = "k = " + k + " spreads the proof across more weights. Wider signal, harder wipe.";
       refs.insight.textContent = txt;
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
@@ -1072,9 +1126,9 @@
 
   /* ============================================================================
      PUZZLE 3 · Triple Modular Redundancy
-     A live simulation of three independent channels + a majority voter, with
+     A live simulation of N independent channels + a majority voter, with
      correlation between channels controlled by a slider. The math is closed-
-     form: P(sys fail) = ρ·q + (1−ρ)·(3q²−2q³). The curve plot draws four
+     form: P(sys fail) = ρ·q + (1−ρ)·P(Binom(N,q) reaches majority). The curve plot draws four
      curves (ρ ∈ {0, 0.1, 0.5, 1}) plus the single-channel y=q line, with a
      marker at the current operating point.
      ============================================================================ */
@@ -1085,8 +1139,10 @@
     const refs = {
       q:               $('[data-role="q"]', root),
       rho:             $('[data-role="rho"]', root),
+      nChannels:       $('[data-role="n-channels"]', root),
       qVal:            $('[data-role="q-val"]', root),
       rhoVal:          $('[data-role="rho-val"]', root),
+      nChannelsVal:    $('[data-role="n-channels-val"]', root),
       sysVal:          $('[data-role="sys-val"]', root),
       singleVal:       $('[data-role="single-val"]', root),
       gainVal:         $('[data-role="gain-val"]', root),
@@ -1094,14 +1150,44 @@
       sweetTmr:        $('[data-role="sweet-spot-tmr"]', root),
       insight:         $('[data-role="insight-tmr"]', root),
       plot:            $('[data-role="plot-tmr"]', root),
-      cells1:          $('[data-cells="1"]', root),
-      cells2:          $('[data-cells="2"]', root),
-      cells3:          $('[data-cells="3"]', root),
       cellsSys:        $('[data-cells="sys"]', root),
       tmrStrip:        $('[data-role="tmr-strip"]', root),
       hypersim:        $('[data-role="tmr-hypersim"]', root),
       glow:            $('[data-role="tmr-glow"]', root),
     };
+
+    function tmrCells(idx) {
+      return $('[data-cells="' + idx + '"]', root);
+    }
+    function createTmrRow(idx) {
+      if (!refs.tmrStrip) return null;
+      const row = document.createElement("div");
+      row.className = "lab-tmr__row";
+      row.setAttribute("data-ch", String(idx));
+      const label = document.createElement("span");
+      label.className = "lab-tmr__row-label";
+      label.textContent = "CH " + idx;
+      const cells = document.createElement("div");
+      cells.className = "lab-tmr__cells";
+      cells.setAttribute("data-cells", String(idx));
+      row.appendChild(label);
+      row.appendChild(cells);
+      const sysRow = refs.cellsSys ? refs.cellsSys.parentElement : refs.tmrStrip.querySelector(".lab-tmr__row--sys");
+      if (sysRow) refs.tmrStrip.insertBefore(row, sysRow);
+      else refs.tmrStrip.appendChild(row);
+      return cells;
+    }
+    function ensureTmrRows(n) {
+      if (!refs.tmrStrip) return;
+      const count = Math.max(3, Math.min(9, n | 0));
+      for (let i = 1; i <= count; i++) {
+        if (!tmrCells(i)) createTmrRow(i);
+      }
+      $$('.lab-tmr__row[data-ch]', refs.tmrStrip).forEach((row) => {
+        const ch = parseInt(row.getAttribute("data-ch"), 10);
+        row.style.display = ch <= count ? "" : "none";
+      });
+    }
 
     function tmrEffectiveRho(rho) {
       const fastWindow = !!(refs.hypersim && refs.hypersim.checked);
@@ -1112,16 +1198,33 @@
       return Math.max(0, Math.min(1, effective));
     }
 
-    /* Closed-form system failure rate. */
-    function pSysFail(q, rho) {
-      const indep = 3*q*q*(1 - q) + q*q*q; // = 3q^2 - 2q^3
+    function comb(n, k) {
+      const kk = Math.min(k, n - k);
+      let out = 1;
+      for (let i = 1; i <= kk; i++) out = out * (n - i + 1) / i;
+      return out;
+    }
+
+    function independentMajorityFail(q, nChannels) {
+      const n = Math.max(3, Math.min(9, nChannels | 0));
+      const threshold = Math.ceil(n / 2);
+      let total = 0;
+      for (let failures = threshold; failures <= n; failures++) {
+        total += comb(n, failures) * Math.pow(q, failures) * Math.pow(1 - q, n - failures);
+      }
+      return total;
+    }
+
+    /* Mixture model: common-mode events fail all channels together; otherwise channels fail independently. */
+    function pSysFail(q, rho, nChannels) {
+      const indep = independentMajorityFail(q, nChannels);
       return rho*q + (1 - rho)*indep;
     }
 
     /* Break-even correlation: rho where gain = 10x (pSysFail = q/10).
        Solved analytically: rho*(q - indep) = q/10 - indep => rho = (q/10 - indep)/(q - indep). */
-    function rhoBreakeven(q) {
-      const indep = 3*q*q*(1 - q) + q*q*q;
+    function rhoBreakeven(q, nChannels) {
+      const indep = independentMajorityFail(q, nChannels);
       const target = q / 10;
       if (target < indep || Math.abs(q - indep) < 1e-10) return null;
       const rho = (target - indep) / (q - indep);
@@ -1140,12 +1243,13 @@
     function xFor(qq) { return M.l + (qq / Q_MAX) * innerW; }
     function yFor(p)  { return M.t + (1 - p / Y_MAX) * innerH; }
 
-    function drawPlot(qCur, rhoCur) {
+    function drawPlot(qCur, rhoCur, nChannels) {
+      const n = Math.max(3, Math.min(9, nChannels | 0));
       const plot = refs.plot;
       while (plot.firstChild) plot.removeChild(plot.firstChild);
 
       const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
-      title.textContent = "P(sys fail) vs q | ρ = " + rhoCur.toFixed(2);
+      title.textContent = "P(sys fail) vs q | N = " + n + " | ρ = " + rhoCur.toFixed(2);
 
       // Y gridlines + ticks
       [0, 0.10, 0.20, 0.30].forEach((v) => {
@@ -1192,7 +1296,7 @@
         let d = "";
         for (let i = 0; i <= STEPS; i++) {
           const qq = (i / STEPS) * Q_MAX;
-          const v = Math.min(pSysFail(qq, rho), Y_MAX);
+          const v = Math.min(pSysFail(qq, rho, n), Y_MAX);
           const x = xFor(qq), y = yFor(v);
           d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
         }
@@ -1203,7 +1307,7 @@
         }, plot);
         // ρ label at right edge
         const finalQ = Q_MAX;
-        const finalY = yFor(Math.min(pSysFail(finalQ, rho), Y_MAX));
+        const finalY = yFor(Math.min(pSysFail(finalQ, rho, n), Y_MAX));
         const t = svg("text", {
           x: M.l + innerW + 10, y: finalY + 4,
           class: "lab-plot__legend-value lab-plot__legend-value--wm" + (isCur ? " lab-plot__legend-value--wm-current" : ""),
@@ -1227,7 +1331,7 @@
       }, plot);
 
       // Marker dot at (q, p_sys)
-      const v = Math.min(pSysFail(qCur, rhoCur), Y_MAX);
+      const v = Math.min(pSysFail(qCur, rhoCur, n), Y_MAX);
       svg("circle", {
         cx: xFor(qCur), cy: yFor(v), r: 5,
         class: "lab-plot__marker-dot lab-plot__marker-dot--wm",
@@ -1238,9 +1342,10 @@
     const MAX_CELLS = 28;
     let simTimer = null;
     let tmrTickMs = 600;
-    let currentQ = 0.05, currentRho = 0;
+    let currentQ = 0.05, currentRho = 0, currentN = 3;
 
     function addCell(container, isFault) {
+      if (!container) return;
       const cell = document.createElement("span");
       cell.className = "lab-tmr__cell " + (isFault ? "lab-tmr__cell--fault" : "lab-tmr__cell--ok");
       container.appendChild(cell);
@@ -1249,24 +1354,20 @@
       }
     }
     function tick() {
-      // Common-mode event with probability ρ; if it hits, all 3 share one Bernoulli(q).
+      // Common-mode event with probability ρ; if it hits, all active channels share one Bernoulli(q).
       const rhoEff = tmrEffectiveRho(currentRho);
+      const channelCount = Math.max(3, Math.min(9, currentN | 0));
+      ensureTmrRows(channelCount);
       let fails;
       if (Math.random() < rhoEff) {
         const f = Math.random() < currentQ;
-        fails = [f, f, f];
+        fails = new Array(channelCount).fill(f);
       } else {
-        fails = [
-          Math.random() < currentQ,
-          Math.random() < currentQ,
-          Math.random() < currentQ,
-        ];
+        fails = Array.from({ length: channelCount }, () => Math.random() < currentQ);
       }
-      const numFail = (fails[0]?1:0) + (fails[1]?1:0) + (fails[2]?1:0);
-      const sysFail = numFail >= 2;
-      addCell(refs.cells1,   fails[0]);
-      addCell(refs.cells2,   fails[1]);
-      addCell(refs.cells3,   fails[2]);
+      const numFail = fails.reduce((sum, fail) => sum + (fail ? 1 : 0), 0);
+      const sysFail = numFail >= Math.ceil(channelCount / 2);
+      fails.forEach((fail, i) => addCell(tmrCells(i + 1), fail));
       addCell(refs.cellsSys, sysFail);
       // Briefly flash the SYS row when it fails
       if (sysFail) {
@@ -1305,16 +1406,19 @@
     });
 
     /* ---- Live update from sliders ---- */
-    let prev = { sys: 3*0.05*0.05 - 2*Math.pow(0.05,3), single: 0.05, gain: 0 };
+    let prev = { sys: independentMajorityFail(0.05, 3), single: 0.05, gain: 0 };
     function update() {
       const q   = parseFloat(refs.q.value);
       const rho = parseFloat(refs.rho.value);
-      currentQ = q; currentRho = rho;
+      const nChannels = refs.nChannels ? parseInt(refs.nChannels.value, 10) : 3;
+      currentQ = q; currentRho = rho; currentN = nChannels;
+      ensureTmrRows(nChannels);
       refs.qVal.textContent   = q.toFixed(3);
       refs.rhoVal.textContent = rho.toFixed(2);
+      if (refs.nChannelsVal) refs.nChannelsVal.textContent = nChannels;
 
       const rhoEff = tmrEffectiveRho(rho);
-      const pSys = pSysFail(q, rhoEff);
+      const pSys = pSysFail(q, rhoEff, nChannels);
       const gain = pSys > 0 ? q / pSys : 1;
 
       const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
@@ -1328,7 +1432,7 @@
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
       // Break-even correlation for 10x gain
-      const rhoBE = rhoBreakeven(q);
+      const rhoBE = rhoBreakeven(q, nChannels);
       if (refs.rhoBreakevenVal) {
         refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
@@ -1348,29 +1452,29 @@
       if (refs.sweetTmr) {
         refs.sweetTmr.hidden = !inSweetTmr;
         if (inSweetTmr) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and effective \u03c1 = " + rhoEff.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
-          unlockQuest("tmr", "TMR: redundancy that is not three copies of the same bug. Refreshing.");
+          refs.sweetTmr.textContent = "Safe envelope locked: q = " + q.toFixed(3) + ", N = " + nChannels + ", effective \u03c1 = " + rhoEff.toFixed(2) + ", gain " + gain.toFixed(1) + "x. Independent failures are doing the heavy lifting.";
+          unlockQuest("tmr", "Redundancy: voter survived the stress test.");
         }
       }
 
       // Override insight text when over break-even
       let txt;
       if (rhoBE === null) {
-        txt = "At this q, even perfect independence cannot reach a 10x gain. The best case is " + (q / pSysFail(q, 0)).toFixed(1) + "x, so the break-even readout is N/A rather than a fake threshold.";
+        txt = "At this q and N = " + nChannels + ", even perfect independence cannot reach 10x. Add channels or lower q.";
       } else if (overBreakeven) {
-        txt = "Warning: effective \u03c1 = " + rhoEff.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
+        txt = "Correlation crossed the 10x line. Redundancy is now buying less than promised.";
       } else if (rhoEff >= 0.95) {
-        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times—Agent Smith cubed, but in RTL. The Ariane 5 had redundant flight computers running the exact same inertial reference software. They both crashed in the same millisecond.";
+        txt = "Fully correlated failure. " + nChannels + " channels, one bad day.";
       } else if (rhoEff < 0.05) {
-        txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight. Pleasant. Unexciting. Correct.";
+        txt = "Clean independence. Majority voting is in bonus territory.";
       } else if (rhoEff < 0.5) {
-        txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than rho alone suggests. Common-cause failures are doing real damage.";
+        txt = "Some correlation, still useful. Keep it low.";
       } else {
-        txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor, not the roughly 1/(3q) you get under independence. Diverse-versions programming exists for exactly this reason.";
+        txt = "Correlation is eating the gain. Diversity matters more than adding identical channels.";
       }
       refs.insight.textContent = txt;
 
-      drawPlot(q, rhoEff);
+      drawPlot(q, rhoEff, nChannels);
     }
 
     // Randomize starting parameters on each refresh for replayability
@@ -1381,6 +1485,7 @@
 
     refs.q.addEventListener("input", update);
     refs.rho.addEventListener("input", update);
+    if (refs.nChannels) refs.nChannels.addEventListener("input", update);
     if (refs.hypersim) {
       refs.hypersim.addEventListener("change", function () {
         tmrTickMs = refs.hypersim.checked ? 200 : 600;
@@ -1645,7 +1750,7 @@
       else refs.trainBtn.textContent = "Train!";
       
       refs.trainBtn.classList.remove('is-running');
-      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New test chamber—sorry, <em>challenge</em>: <strong>" + activeLandscape.name + "</strong>.";
+      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New challenge: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
     }
     
@@ -1687,18 +1792,18 @@
       renderTrail();
       
       if (currentX < X_MIN || currentX > X_MAX) {
-        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold—there is no spoon, only NaN. Lower the learning rate.";
+        refs.insight.textContent = "Run exploded. Lower learning rate before the loss leaves the screen.";
         running = false;
       } else if (epoch > 500) {
-        refs.insight.textContent = "⏳ Training timed out (500 epochs). The Matrix reloaded the same epoch; try higher learning rate or momentum.";
+        refs.insight.textContent = "Timed out at 500 epochs. Add step size or momentum.";
         running = false;
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         if (Math.abs(currentX - TARGET_X) < 0.12) {
-          refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
-          unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
+          refs.insight.textContent = "Global minimum reached on " + activeLandscape.name + ". Clean landing.";
+          unlockQuest("gd", "Gradient descent: global minimum landed.");
           triggerCongrats(refs.plot, true);
         } else {
-           refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
+           refs.insight.textContent = "Stuck in a local minimum. Add momentum or reroll the landscape.";
         }
         running = false;
       }
@@ -1730,7 +1835,7 @@
         const span = refs.trainBtn.querySelector('.lab-btn__text');
         if (span) span.textContent = "Stop";
         else refs.trainBtn.textContent = "Stop";
-        refs.insight.textContent = "Training... (watch the loss bend reality in real time)";
+        refs.insight.textContent = "Training... watch the loss hunt for the basin.";
         doEpoch();
       }
     });
@@ -1891,7 +1996,7 @@
       const title = svg("text", {
         x: M.l, y: M.t - 12, class: "lab-plot__title",
       }, plot);
-      title.textContent = "Proof-of-Learning: find the Gold zone (still no cake)";
+      title.textContent = "Proof-of-Learning: find the Gold zone";
 
       // Y-axis gridlines
       [0, 2.5, 5, 7.5, 10].forEach((v) => {
@@ -2056,11 +2161,11 @@
         streak += 1;
         celebrate(refs.plot, !!(refs.polMega && refs.polMega.checked));
         labFxStreakPulse(refs.streakVal);
-        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08]." + (hardMode ? " Hard mode was on, so the detector was stricter." : "");
-        unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose... wisely.");
+        refs.insight.innerHTML = "<strong>Gold Proof unlocked.</strong> Credible training fingerprint. Keep this curve." + (hardMode ? " Hard mode was on, so the detector was stricter." : "");
+        unlockQuest("pol", "Proof-of-Learning: Gold Proof captured.");
       } else {
         streak = 0;
-        refs.insight.innerHTML = "No badge yet. The simulation suggests smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, ζ around 0.05. We will be monitoring your failure for science.";
+        refs.insight.innerHTML = "No badge yet. Aim for smoother descent and clearer distance from the fake flatline. Try alpha near 0.012, batch 128, noise 0.05.";
       }
       refs.streakVal.textContent = String(streak);
     }
@@ -2078,7 +2183,7 @@
       drawPlot();
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
-      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88). There is no spoon—only a loss curve that either trained or downloaded its personality.";
+      refs.insight.innerHTML = "Tune sliders, hit <strong>Train!</strong>, and build a loss curve the clone cannot fake. Goal: <strong>Gold Proof</strong>.";
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {
@@ -2116,7 +2221,7 @@
         running = true;
         refs.trainBtn.classList.add('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
-        refs.insight.textContent = "Running experiment. Trajectory smells like real training, or like someone chose the blue pill and a flat loss line.";
+        refs.insight.textContent = "Running experiment. The curve is auditioning for real training evidence.";
 
         const alpha = parseFloat(refs.lr.value);
         const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
