@@ -225,24 +225,86 @@
   }
   function labFxMilestoneUnlock(questCount) {
     if (questCount <= 0 || questCount > 5) return;
-    var msg = "";
-    var emoji = "🎯";
-    if (questCount === 1) { msg = "First unlock! The Architect notices."; emoji = "👁"; }
-    else if (questCount === 2) { msg = "2 of 5. You're learning."; emoji = "🧠"; }
-    else if (questCount === 3) { msg = "Halfway there!"; emoji = "🔥"; }
-    else if (questCount === 4) { msg = "One more..."; emoji = "⚡"; }
-    else if (questCount === 5) { msg = "ALL FIVE. You have conquered the Matrix of regret."; emoji = "👑"; }
+    var title = "", msg = "", emoji = "🎯", subtitle = "";
+    if (questCount === 1) {
+      title = "First Strike"; 
+      msg = "The Architect notices your persistence."; 
+      emoji = "👁";
+      subtitle = "1 of 5 Unlocked";
+    } else if (questCount === 2) {
+      title = "Building Momentum";
+      msg = "You're learning the language of matrices.";
+      emoji = "🧠";
+      subtitle = "2 of 5 Unlocked";
+    } else if (questCount === 3) {
+      title = "Halfway There";
+      msg = "The systems begin to sing in your hands.";
+      emoji = "🔥";
+      subtitle = "3 of 5 Unlocked";
+    } else if (questCount === 4) {
+      title = "One More Challenge";
+      msg = "The final quest awaits. You're close.";
+      emoji = "⚡";
+      subtitle = "4 of 5 Unlocked";
+    } else if (questCount === 5) {
+      title = "MASTER OF SYSTEMS";
+      msg = "You have conquered the Matrix of regret. All systems yield to you.";
+      emoji = "👑";
+      subtitle = "5 of 5 Complete";
+    }
     var toast = document.createElement("div");
-    toast.className = "lab-toast lab-toast--milestone";
-    toast.textContent = emoji + " " + msg;
+    toast.className = "lab-toast lab-toast--milestone lab-toast--m" + questCount;
+    var titleEl = document.createElement("div");
+    titleEl.className = "lab-toast__title";
+    titleEl.textContent = emoji + " " + title;
+    var msgEl = document.createElement("div");
+    msgEl.className = "lab-toast__message";
+    msgEl.textContent = msg;
+    var subEl = document.createElement("div");
+    subEl.className = "lab-toast__subtitle";
+    subEl.textContent = subtitle;
+    toast.appendChild(titleEl);
+    toast.appendChild(msgEl);
+    toast.appendChild(subEl);
     document.body.appendChild(toast);
-    setTimeout(function () { toast.remove(); }, 2800);
+    labFxMilestoneChime(questCount);
+    setTimeout(function () { toast.remove(); }, 3800);
     if (labFxJuiceOn()) {
-      labFxBuzz();
-      labFxBuzz();
-      labFxBuzz();
+      var times = [50, 100, 150][Math.min(2, questCount - 1)];
+      for (var i = 0; i < questCount; i++) {
+        setTimeout(function () { labFxBuzz(); }, i * times);
+      }
     }
   }
+  function labFxMilestoneChime(milestone) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      
+      // Escalating frequency based on milestone
+      const frequencies = [880, 990, 1100, 1210, 1320];
+      const startFreq = frequencies[Math.min(4, milestone - 1)];
+      const endFreq = startFreq * 0.75;
+      
+      o.frequency.setValueAtTime(startFreq, ctx.currentTime);
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.02);
+      
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start();
+      
+      // Longer sweep for higher milestones
+      const duration = 0.2 + (milestone * 0.05);
+      o.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + duration);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration + 0.2);
+      
+      setTimeout(() => { try { o.stop(); ctx.close(); } catch (e) {} }, (duration + 0.3) * 1000);
+    } catch (e) { /* audio unavailable */ }
+  }
+
   function labFxQuestCelebration() {
     var q = document.querySelector(".lab-quest");
     if (q) {
