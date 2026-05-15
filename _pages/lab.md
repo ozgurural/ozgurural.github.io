@@ -105,6 +105,14 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
         <span class="lab-experiment__metric-formula">naive ≥ 0.99</span>
       </div>
     </div>
+    <div class="lab-xp" aria-hidden="true" data-role="xp-gd">
+      <div class="lab-xp__fill" data-role="xp-gd-fill" style="width:0%"></div>
+    </div>
+    <div class="lab-xp__label" data-role="xp-gd-label">XP: <span data-role="xp-gd-val">0</span>/100</div>
+    <div class="lab-xp" aria-hidden="true" data-role="xp-tmr">
+      <div class="lab-xp__fill" data-role="xp-tmr-fill" style="width:0%"></div>
+    </div>
+    <div class="lab-xp__label" data-role="xp-tmr-label">XP: <span data-role="xp-tmr-val">0</span>/100</div>
 
     <p class="lab-experiment__insight" data-role="insight">Drag the sliders. Blue pill: pretty plots. Red pill: you still cannot get deterministic consensus over a lossy channel.</p>
     <p class="lab-experiment__sweet" data-role="sweet-spot-tg" hidden></p>
@@ -179,6 +187,11 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
     <div class="lab-experiment__visual">
       <div class="lab-wm__grid" data-role="grid" aria-hidden="true"></div>
       <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-wm" preserveAspectRatio="xMidYMid meet" role="img" aria-label="detection rate vs attacker noise"></svg>
+      <div class="lab-wm-legend" aria-hidden="true">
+        <span><span class="lab-wm-legend__swatch lab-wm-legend__swatch--key"></span> watermark key cell</span>
+        <span><span class="lab-wm-legend__swatch lab-wm-legend__swatch--value"></span> sampled weight</span>
+        <span><span class="lab-wm-legend__swatch lab-wm-legend__swatch--glitch"></span> ε above utility threshold</span>
+      </div>
     </div>
 
     <div class="lab-experiment__readout">
@@ -204,7 +217,12 @@ excerpt: "Five interactive experiments—now with extra sarcasm, fewer spoons, a
       </div>
     </div>
 
-    <p class="lab-experiment__insight" data-role="insight-wm">Drag the sliders. The grid is not a simulation of cake. It is merely weights pretending to be innocent.</p>
+    <div class="lab-xp" aria-hidden="true" data-role="xp-wm">
+      <div class="lab-xp__fill" data-role="xp-wm-fill" style="width:0%"></div>
+    </div>
+    <div class="lab-xp__label" data-role="xp-wm-label">XP: <span data-role="xp-wm-val">0</span>/100</div>
+
+    <p class="lab-experiment__insight" data-role="insight-wm">Drag the sliders.</p>
     <p class="lab-experiment__sweet" data-role="sweet-spot-wm" hidden></p>
   </div>
 
