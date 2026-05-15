@@ -78,6 +78,7 @@
     void el.offsetWidth;
     el.classList.add("is-updating");
   }
+
   /* ---------- global quest tracker ---------- */
   const QUEST_KEY = "lab.quest.v2";
   const QUEST_KEYS = ["tg", "wm", "pol", "tmr", "gd"];
@@ -134,83 +135,8 @@
     saveQuest();
     const count = completedQuestCount();
     renderQuest(message || "Badge unlocked. The enrichment center is mildly proud.");
-    // update badge gallery UI
-    try {
-      const badge = document.querySelector('[data-badge="' + key + '"]');
-      if (badge) {
-        badge.classList.remove('lab-badge--locked');
-        badge.classList.add('lab-badge--unlocked');
-      }
-    } catch (e) { /* noop */ }
     labFxQuestCelebration();
     labFxMilestoneUnlock(count);
-  }
-
-  function triggerCongrats(target, enabled, className) {
-    if (!target) return;
-    const pulseClass = className || "is-congrats";
-    target.classList.toggle(pulseClass, !!enabled);
-  }
-
-  // --- Confetti / XP helpers ---
-  function makeConfetti(parent, count) {
-    const wrap = document.createElement('div');
-    wrap.className = 'confetti-wrap';
-    parent.appendChild(wrap);
-    const colors = ['#f43f5e','#fb923c','#f59e0b','#10b981','#06b6d4','#7c3aed'];
-    for (let i = 0; i < count; i++) {
-      const piece = document.createElement('div');
-      piece.className = 'confetti-piece';
-      piece.style.background = colors[i % colors.length];
-      piece.style.left = (10 + Math.random() * 80) + '%';
-      piece.style.top = (10 + Math.random() * 20) + '%';
-      wrap.appendChild(piece);
-      const dx = (Math.random() - 0.5) * 600;
-      const dy = 300 + Math.random() * 300;
-      const rot = (Math.random() - 0.5) * 720;
-      piece.animate([
-        { transform: 'translateY(0px) rotate(0deg)', opacity: 1 },
-        { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity: 0 }
-      ], { duration: 1200 + Math.random() * 800, easing: 'cubic-bezier(.2,.8,.2,1)' });
-      setTimeout(() => piece.remove(), 2200);
-    }
-    setTimeout(() => wrap.remove(), 2500);
-  }
-
-  function playChime() {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = 'sine';
-      o.frequency.setValueAtTime(880, ctx.currentTime);
-      g.gain.setValueAtTime(0.0001, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.05, ctx.currentTime + 0.01);
-      o.connect(g); g.connect(ctx.destination);
-      o.start();
-      o.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.18);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.45);
-      setTimeout(() => { try { o.stop(); ctx.close(); } catch (e) {} }, 600);
-    } catch (e) { /* audio unavailable */ }
-  }
-
-  function awardXP(root, role, amount) {
-    const wrap = root.querySelector(`[data-role="${role}"]`);
-    const fill = root.querySelector(`[data-role="${role}-fill"]`);
-    const val = root.querySelector(`[data-role="${role}-val"]`);
-    if (!wrap || !fill || !val) return;
-    const cur = parseInt(val.textContent || '0', 10) || 0;
-    const next = Math.min(100, cur + amount);
-    val.textContent = next;
-    fill.style.width = next + '%';
-    if (next >= 100) {
-      makeConfetti(root, 24);
-      playChime();
-      // map XP role to quest key and unlock
-      const map = { 'xp-wm': 'wm', 'xp-tmr': 'tmr', 'xp-gd': 'gd' };
-      const key = map[role];
-      if (key) unlockQuest(key, null);
-    }
   }
 
   /* ---------- statistics primitives ---------- */
@@ -225,7 +151,6 @@
     return 0.5 * (1 + sign * y);
   }
 
-<<<<<<< HEAD
   /* one-sided Gaussian critical value z with Φ(z) = 1 − α (bisection on Φ) */
   function zForOneSidedAlpha(alpha) {
     var lo = 0, hi = 5, mid, i;
@@ -421,34 +346,6 @@
       if (!t || !t.matches || !t.matches("input[type=\"range\"]")) return;
       if (t.closest && t.closest(".lab-experiment")) labFxBumpCombo(1);
     }, true);
-=======
-  // Inverse standard normal CDF using a rational approximation.
-  function invPhi(p) {
-    if (p <= 0) return -Infinity;
-    if (p >= 1) return Infinity;
-    const a = [-3.969683028665376e+01, 2.209460984245205e+02, -2.759285104469687e+02, 1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00];
-    const b = [-5.447609879822406e+01, 1.615858368580409e+02, -1.556989798598866e+02, 6.680131188771972e+01, -1.328068155288572e+01];
-    const c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00, -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00];
-    const d = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00, 3.754408661907416e+00];
-    const plow = 0.02425;
-    const phigh = 1 - plow;
-
-    let q, r;
-    if (p < plow) {
-      q = Math.sqrt(-2 * Math.log(p));
-      return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
-             ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
-    }
-    if (p > phigh) {
-      q = Math.sqrt(-2 * Math.log(1 - p));
-      return -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
-              ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
-    }
-    q = p - 0.5;
-    r = q * q;
-    return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
-           (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
   }
 
   /* ============================================================================
@@ -753,11 +650,9 @@
       eps:        $('[data-role="eps"]', root),
       k:          $('[data-role="k"]', root),
       sigma:      $('[data-role="sigma"]', root),
-      alpha:      $('[data-role="alpha"]', root),
       epsVal:     $('[data-role="eps-val"]', root),
       kVal:       $('[data-role="k-val"]', root),
       sigmaVal:   $('[data-role="sigma-val"]', root),
-      alphaVal:   $('[data-role="alpha-val"]', root),
       grid:       $('[data-role="grid"]', root),
       plot:       $('[data-role="plot-wm"]', root),
       det:        $('[data-role="det-val"]', root),
@@ -774,19 +669,11 @@
 
     const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
 
-<<<<<<< HEAD
     /* per-cell detection probability; zcrit from nominal one-sided level α */
     function qDetect(eps, sigma, zcrit) {
       const sd = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
       const snr = eps / sd;
       return phi(snr - zcrit);
-=======
-    /* per-cell detection probability under perturbation eps + attack noise sigma */
-    function qDetect(eps, sigma, alpha) {
-      const sd = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
-      const snr = eps / sd;
-      return phi(snr - invPhi(1 - alpha));
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
     }
     /* aggregate detection over k cells, majority vote, normal approximation */
     function aggregateDetect(q, k) {
@@ -879,12 +766,7 @@
         const v = (raw - vmin) / range;
         const cell = document.createElement("span");
         cell.className = "lab-wm__cell";
-<<<<<<< HEAD
         cell.style.background = valueToColor(v, keySet.has(i), q, neonEnabled);
-=======
-        cell.style.background = valueToColor(v, keySet.has(i));
-        cell.textContent = raw.toFixed(1);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
         if (keySet.has(i)) cell.dataset.key = "1";
         refs.grid.appendChild(cell);
       });
@@ -902,13 +784,13 @@
     function xFor(s) { return M.l + (s / SIGMA_MAX) * innerW; }
     function yFor(p) { return M.t + (1 - p) * innerH; }
 
-    function drawPlot(eps, kCur, sigmaCur, alphaCur) {
+    function drawPlot(eps, kCur, sigmaCur) {
       const plot = refs.plot;
       while (plot.firstChild) plot.removeChild(plot.firstChild);
 
       // Title
       const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
-      title.textContent = "Detection rate vs attacker noise σ | ε = " + eps.toFixed(2) + " | α = " + alphaCur.toFixed(3);
+      title.textContent = "Detection rate vs attacker noise σ | ε = " + eps.toFixed(2);
 
       const zc = zForOneSidedAlpha(parseFloat(refs.alpha.value));
 
@@ -948,11 +830,7 @@
         let d = "";
         for (let i = 0; i <= SAMPLES; i++) {
           const sigma = (i / SAMPLES) * SIGMA_MAX;
-<<<<<<< HEAD
           const q = qDetect(eps, sigma, zc);
-=======
-          const q = qDetect(eps, sigma, alphaCur);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
           const det = aggregateDetect(q, k);
           const x = xFor(sigma),
             y = yFor(det);
@@ -966,13 +844,7 @@
           d: pathForK(k),
           class: "lab-plot__curve lab-plot__curve--wm",
         }, plot);
-<<<<<<< HEAD
         const finalQ = qDetect(eps, SIGMA_MAX, zc);
-=======
-        // Label at right edge
-        const finalSigma = SIGMA_MAX;
-        const finalQ = qDetect(eps, finalSigma, alphaCur);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
         const finalDet = aggregateDetect(finalQ, k);
         const t = svg("text", {
           x: M.l + innerW + 10,
@@ -1007,11 +879,7 @@
       }, plot);
 
       // Marker dot at (σ, detection_for_current_k)
-<<<<<<< HEAD
       const qCur = qDetect(eps, sigmaCur, zc);
-=======
-      const qCur = qDetect(eps, sigmaCur, alphaCur);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
       const detCur = aggregateDetect(qCur, kCur);
       svg("circle", {
         cx: xFor(sigmaCur), cy: yFor(detCur), r: 5,
@@ -1039,7 +907,6 @@
       const eps   = parseFloat(refs.eps.value);
       const k     = parseInt(refs.k.value, 10);
       const sigma = parseFloat(refs.sigma.value);
-<<<<<<< HEAD
       const alphaSig = parseFloat(refs.alpha.value);
       const zc = zForOneSidedAlpha(alphaSig);
       refs.epsVal.textContent   = eps.toFixed(2);
@@ -1056,19 +923,6 @@
       const q   = qDetect(eps, sigma, effectiveZc);
       const det = aggregateDetect(q, effectiveK);
       const fpr = aggregateDetect(alphaSig, effectiveK);
-=======
-      const alpha = parseFloat(refs.alpha.value);
-      refs.epsVal.textContent   = eps.toFixed(2);
-      refs.kVal.textContent     = k;
-      refs.sigmaVal.textContent = sigma.toFixed(2);
-      if (refs.alphaVal) refs.alphaVal.textContent = alpha.toFixed(3);
-
-      const sd  = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
-      const snr = eps / sd;
-      const q   = qDetect(eps, sigma, alpha);
-      const det = aggregateDetect(q, k);
-      const fpr = aggregateDetect(alpha, k);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
 
       const num1 = (v) => v.toFixed(2);
       const pctH = (v) => (v * 100).toFixed(1) + "%";
@@ -1096,19 +950,10 @@
       labFxApproachingZone(refs.k, inSweetWm ? 0 : kCloseness);
       
       if (refs.sweetWm) {
-        const was = !refs.sweetWm.hidden && refs.sweetWm.dataset._active === '1';
         refs.sweetWm.hidden = !inSweetWm;
-<<<<<<< HEAD
         if (inSweetWm) {
           refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible. The cake remains non-admissible.";
           unlockQuest("wm", "Watermark: court-grade signal. Still no cake.");
-=======
-        refs.sweetWm.dataset._active = inSweetWm ? '1' : '0';
-        if (inSweetWm && !was) {
-          refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible.";
-          // award XP for discovery
-          awardXP(root, 'xp-wm', 15);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
         }
       }
       const neonEnabled = !!(refs.wmNeon && refs.wmNeon.checked);
@@ -1134,7 +979,6 @@
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       if (eps > 0.25) refs.grid.classList.add('lab-wm__grid--glitch');
       else refs.grid.classList.remove('lab-wm__grid--glitch');
-<<<<<<< HEAD
       /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
       if (refs.wmNeon) refs.grid.classList.toggle("lab-wm__grid--neon", neonEnabled && q >= 0.08);
       if (shouldPulse) {
@@ -1145,10 +989,6 @@
         }, 360);
       }
       drawPlot(eps, k, sigma);
-=======
-      triggerCongrats(refs.grid, inSweetWm, 'is-congrats');
-      drawPlot(eps, k, sigma, alpha);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
     }
 
     // Randomize starting parameters on each refresh for replayability
@@ -1163,11 +1003,8 @@
     refs.k.addEventListener("input", update);
     refs.sigma.addEventListener("input", update);
     if (refs.alpha) refs.alpha.addEventListener("input", update);
-<<<<<<< HEAD
     if (refs.wmNeon) refs.wmNeon.addEventListener("change", update);
     if (refs.wmPop) refs.wmPop.addEventListener("change", update);
-=======
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
     update();
   }
 
@@ -1186,10 +1023,8 @@
     const refs = {
       q:               $('[data-role="q"]', root),
       rho:             $('[data-role="rho"]', root),
-      nChannels:       $('[data-role="n-channels"]', root),
       qVal:            $('[data-role="q-val"]', root),
       rhoVal:          $('[data-role="rho-val"]', root),
-      nChannelsVal:    $('[data-role="n-channels-val"]', root),
       sysVal:          $('[data-role="sys-val"]', root),
       singleVal:       $('[data-role="single-val"]', root),
       gainVal:         $('[data-role="gain-val"]', root),
@@ -1206,37 +1041,6 @@
       glow:            $('[data-role="tmr-glow"]', root),
     };
 
-    function createTmrRow(idx) {
-      if (!refs.tmrStrip) return null;
-      const row = document.createElement('div');
-      row.className = 'lab-tmr__row';
-      row.setAttribute('data-ch', String(idx));
-      const label = document.createElement('span');
-      label.className = 'lab-tmr__row-label';
-      label.textContent = 'CH ' + idx;
-      const cells = document.createElement('div');
-      cells.className = 'lab-tmr__cells';
-      cells.setAttribute('data-cells', String(idx));
-      row.appendChild(label);
-      row.appendChild(cells);
-      const sysRow = refs.tmrStrip.querySelector('.lab-tmr__row--sys');
-      if (sysRow) refs.tmrStrip.insertBefore(row, sysRow);
-      else refs.tmrStrip.appendChild(row);
-      return cells;
-    }
-
-    function ensureTmrRows(n) {
-      if (!refs.tmrStrip) return;
-      const maxN = Math.max(3, Math.min(9, n | 0));
-      for (let i = 1; i <= maxN; i++) {
-        if (!refs.tmrStrip.querySelector(`[data-cells="${i}"]`)) createTmrRow(i);
-      }
-      Array.from(refs.tmrStrip.querySelectorAll('[data-ch]')).forEach((r) => {
-        const ch = parseInt(r.getAttribute('data-ch'), 10);
-        r.style.display = (ch <= n) ? '' : 'none';
-      });
-    }
-
     function tmrEffectiveRho(rho) {
       const fastWindow = !!(refs.hypersim && refs.hypersim.checked);
       const diverseVoter = !!(refs.glow && refs.glow.checked);
@@ -1247,29 +1051,15 @@
     }
 
     /* Closed-form system failure rate. */
-    function comb(n, k) {
-      let out = 1;
-      for (let i = 1; i <= k; i++) out = out * (n - i + 1) / i;
-      return out;
-    }
-
-    function pSysFail(q, rho, nChannels) {
-      const n = nChannels || 3;
-      let indep = 0;
-      for (let failures = Math.ceil(n / 2); failures <= n; failures++) {
-        indep += comb(n, failures) * Math.pow(q, failures) * Math.pow(1 - q, n - failures);
-      }
+    function pSysFail(q, rho) {
+      const indep = 3*q*q*(1 - q) + q*q*q; // = 3q^2 - 2q^3
       return rho*q + (1 - rho)*indep;
     }
 
     /* Break-even correlation: rho where gain = 10x (pSysFail = q/10).
        Solved analytically: rho*(q - indep) = q/10 - indep => rho = (q/10 - indep)/(q - indep). */
-    function rhoBreakeven(q, nChannels) {
-      const n = nChannels || 3;
-      let indep = 0;
-      for (let failures = Math.ceil(n / 2); failures <= n; failures++) {
-        indep += comb(n, failures) * Math.pow(q, failures) * Math.pow(1 - q, n - failures);
-      }
+    function rhoBreakeven(q) {
+      const indep = 3*q*q*(1 - q) + q*q*q;
       const target = q / 10;
       if (target < indep || Math.abs(q - indep) < 1e-10) return null;
       const rho = (target - indep) / (q - indep);
@@ -1386,7 +1176,7 @@
     const MAX_CELLS = 28;
     let simTimer = null;
     let tmrTickMs = 600;
-    let currentQ = 0.05, currentRho = 0, currentN = 3;
+    let currentQ = 0.05, currentRho = 0;
 
     function addCell(container, isFault) {
       const cell = document.createElement("span");
@@ -1397,43 +1187,25 @@
       }
     }
     function tick() {
-      // Common-mode event with probability ρ; if it hits, all N share one Bernoulli(q).
+      // Common-mode event with probability ρ; if it hits, all 3 share one Bernoulli(q).
       const rhoEff = tmrEffectiveRho(currentRho);
-      const channelCount = currentN || 3;
       let fails;
       if (Math.random() < rhoEff) {
         const f = Math.random() < currentQ;
-        fails = new Array(channelCount).fill(f);
+        fails = [f, f, f];
       } else {
-        fails = Array.from({ length: channelCount }, () => Math.random() < currentQ);
+        fails = [
+          Math.random() < currentQ,
+          Math.random() < currentQ,
+          Math.random() < currentQ,
+        ];
       }
-      const numFail = fails.reduce((sum, fail) => sum + (fail ? 1 : 0), 0);
-      const sysFail = numFail >= Math.ceil(channelCount / 2);
-      // Ensure rows exist and populate
-      if (refs.tmrStrip) {
-        // create missing rows up to channelCount
-        for (let i = 1; i <= channelCount; i++) {
-          if (!refs.tmrStrip.querySelector(`[data-cells="${i}"]`)) {
-            const row = document.createElement('div');
-            row.className = 'lab-tmr__row';
-            row.setAttribute('data-ch', String(i));
-            const label = document.createElement('span');
-            label.className = 'lab-tmr__row-label';
-            label.textContent = 'CH ' + i;
-            const cells = document.createElement('div');
-            cells.className = 'lab-tmr__cells';
-            cells.setAttribute('data-cells', String(i));
-            const sysRow = refs.tmrStrip.querySelector('.lab-tmr__row--sys');
-            if (sysRow) refs.tmrStrip.insertBefore(row, sysRow);
-            else refs.tmrStrip.appendChild(row);
-          }
-        }
-      }
-      for (let i = 0; i < channelCount; i++) {
-        const container = refs.tmrStrip ? refs.tmrStrip.querySelector(`[data-cells="${i+1}"]`) : refs[`cells${i+1}`];
-        if (container) addCell(container, fails[i]);
-      }
-      if (refs.cellsSys) addCell(refs.cellsSys, sysFail);
+      const numFail = (fails[0]?1:0) + (fails[1]?1:0) + (fails[2]?1:0);
+      const sysFail = numFail >= 2;
+      addCell(refs.cells1,   fails[0]);
+      addCell(refs.cells2,   fails[1]);
+      addCell(refs.cells3,   fails[2]);
+      addCell(refs.cellsSys, sysFail);
       // Briefly flash the SYS row when it fails
       if (sysFail) {
         const sysRow = refs.cellsSys.parentElement;
@@ -1475,14 +1247,12 @@
     function update() {
       const q   = parseFloat(refs.q.value);
       const rho = parseFloat(refs.rho.value);
-      const nChannels = refs.nChannels ? parseInt(refs.nChannels.value, 10) : 3;
-      currentQ = q; currentRho = rho; currentN = nChannels;
+      currentQ = q; currentRho = rho;
       refs.qVal.textContent   = q.toFixed(3);
       refs.rhoVal.textContent = rho.toFixed(2);
-      if (refs.nChannelsVal) refs.nChannelsVal.textContent = nChannels;
 
       const rhoEff = tmrEffectiveRho(rho);
-      const pSys = pSysFail(q, rhoEff, nChannels);
+      const pSys = pSysFail(q, rhoEff);
       const gain = pSys > 0 ? q / pSys : 1;
 
       const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
@@ -1496,13 +1266,13 @@
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
       // Break-even correlation for 10x gain
-      const rhoBE = rhoBreakeven(q, nChannels);
+      const rhoBE = rhoBreakeven(q);
       if (refs.rhoBreakevenVal) {
         refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
 
       // Sweet spot: well inside the safe operating envelope + visual feedback
-      const inSweetTmr = rhoBE !== null && rhoEff < rhoBE * 0.5 && q < 0.10 && gain >= 10 && nChannels >= 5;
+      const inSweetTmr = rhoBE !== null && rhoEff < rhoBE * 0.5 && q < 0.10 && gain >= 10;
       const overBreakeven = rhoBE !== null && rhoEff > rhoBE && rhoBE < 0.99;
       
       // Slider glow feedback for TMR
@@ -1514,19 +1284,17 @@
       labFxApproachingZone(refs.rho, inSweetTmr ? 0 : rhoCloseness);
 
       if (refs.sweetTmr) {
-        const wasT = !refs.sweetTmr.hidden && refs.sweetTmr.dataset._active === '1';
         refs.sweetTmr.hidden = !inSweetTmr;
-        refs.sweetTmr.dataset._active = inSweetTmr ? '1' : '0';
-        if (inSweetTmr && !wasT) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5.";
-          awardXP(root, 'xp-tmr', 12);
+        if (inSweetTmr) {
+          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and effective \u03c1 = " + rhoEff.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
+          unlockQuest("tmr", "TMR: redundancy that is not three copies of the same bug. Refreshing.");
         }
       }
 
       // Override insight text when over break-even
       let txt;
       if (rhoBE === null) {
-        txt = "At this q, even perfect independence cannot reach a 10x gain. The best case is " + (q / pSysFail(q, 0, nChannels)).toFixed(1) + "x, so the break-even readout is N/A rather than a fake threshold.";
+        txt = "At this q, even perfect independence cannot reach a 10x gain. The best case is " + (q / pSysFail(q, 0)).toFixed(1) + "x, so the break-even readout is N/A rather than a fake threshold.";
       } else if (overBreakeven) {
         txt = "Warning: effective \u03c1 = " + rhoEff.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
       } else if (rhoEff >= 0.95) {
@@ -1551,7 +1319,6 @@
 
     refs.q.addEventListener("input", update);
     refs.rho.addEventListener("input", update);
-<<<<<<< HEAD
     if (refs.hypersim) {
       refs.hypersim.addEventListener("change", function () {
         tmrTickMs = refs.hypersim.checked ? 200 : 600;
@@ -1564,9 +1331,6 @@
         update();
       });
     }
-=======
-    if (refs.nChannels) refs.nChannels.addEventListener("input", update);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
     update();
     startSim();
   }
@@ -1580,7 +1344,6 @@
 
     const $gd = (role) => root.querySelector('[data-role="' + role + '"]');
     const refs = {
-<<<<<<< HEAD
       lr:        $gd("lr"),
       mom:       $gd("mom"),
       lrVal:     $gd("lr-val"),
@@ -1594,20 +1357,6 @@
       lossVal:   $gd("loss-val"),
       velVal:    $gd("vel-val"),
       insight:   $gd("insight-gd"),
-=======
-      lr:        document.querySelector('[data-role="lr"]', root) || root.querySelector('[data-role="lr"]'),
-      mom:       document.querySelector('[data-role="mom"]', root) || root.querySelector('[data-role="mom"]'),
-      noise:     document.querySelector('[data-role="noise"]', root) || root.querySelector('[data-role="noise"]'),
-      lrVal:     document.querySelector('[data-role="lr-val"]', root) || root.querySelector('[data-role="lr-val"]'),
-      momVal:    document.querySelector('[data-role="mom-val"]', root) || root.querySelector('[data-role="mom-val"]'),
-      noiseVal:  document.querySelector('[data-role="noise-val"]', root) || root.querySelector('[data-role="noise-val"]'),
-      trainBtn:  document.querySelector('[data-role="train-btn"]', root) || root.querySelector('[data-role="train-btn"]'),
-      plot:      document.querySelector('[data-role="plot-gd"]', root) || root.querySelector('[data-role="plot-gd"]'),
-      epochVal:  document.querySelector('[data-role="epoch-val"]', root) || root.querySelector('[data-role="epoch-val"]'),
-      lossVal:   document.querySelector('[data-role="loss-val"]', root) || root.querySelector('[data-role="loss-val"]'),
-      velVal:    document.querySelector('[data-role="vel-val"]', root) || root.querySelector('[data-role="vel-val"]'),
-      insight:   document.querySelector('[data-role="insight-gd"]', root) || root.querySelector('[data-role="insight-gd"]'),
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
     };
 
     const PW = 640, PH = 260;
@@ -1696,7 +1445,6 @@
       refs.plot.appendChild(path);
     }
     
-<<<<<<< HEAD
     if (!refs.lr || !refs.plot || !refs.trainBtn || !refs.insight) return;
 
     function applyRandomControls() {
@@ -1768,14 +1516,6 @@
       if (on && labFxJuiceOn()) labFxMiniConfetti(el, 30);
     }
 
-=======
-    if(!refs.lr) return;
-    
-    refs.lr.addEventListener("input", () => { refs.lrVal.textContent = parseFloat(refs.lr.value).toFixed(3); });
-    refs.mom.addEventListener("input", () => { refs.momVal.textContent = parseFloat(refs.mom.value).toFixed(2); });
-    if (refs.noise) refs.noise.addEventListener("input", () => { refs.noiseVal.textContent = parseFloat(refs.noise.value).toFixed(2); });
-    
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
     let animationId = null;
     let epochTimeoutId = null;
 
@@ -1870,18 +1610,12 @@
       if (!running) return;
       const lr = parseFloat(refs.lr.value);
       const mom = parseFloat(refs.mom.value);
-      const noise = refs.noise ? parseFloat(refs.noise.value) : 0;
       
-<<<<<<< HEAD
       const grad = df(currentX);
       const schedule = (refs.gdRainbow && refs.gdRainbow.checked)
         ? (1 + 0.16 * Math.sin(epoch * 0.18))
         : 1;
       velocity = mom * velocity - lr * grad * schedule;
-=======
-      const grad = df(currentX) + ((Math.random() * 2 - 1) * noise);
-      velocity = mom * velocity - lr * grad;
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
       currentX += velocity;
       epoch++;
       trail.push(currentX);
