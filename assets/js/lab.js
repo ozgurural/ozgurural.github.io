@@ -198,6 +198,10 @@
     if (next >= 100) {
       makeConfetti(root, 24);
       playChime();
+      // map XP role to quest key and unlock
+      const map = { 'xp-wm': 'wm', 'xp-tmr': 'tmr', 'xp-gd': 'gd' };
+      const key = map[role];
+      if (key) unlockQuest(key, null);
     }
   }
 
@@ -1194,6 +1198,37 @@
       glow:            $('[data-role="tmr-glow"]', root),
     };
 
+    function createTmrRow(idx) {
+      if (!refs.tmrStrip) return null;
+      const row = document.createElement('div');
+      row.className = 'lab-tmr__row';
+      row.setAttribute('data-ch', String(idx));
+      const label = document.createElement('span');
+      label.className = 'lab-tmr__row-label';
+      label.textContent = 'CH ' + idx;
+      const cells = document.createElement('div');
+      cells.className = 'lab-tmr__cells';
+      cells.setAttribute('data-cells', String(idx));
+      row.appendChild(label);
+      row.appendChild(cells);
+      const sysRow = refs.tmrStrip.querySelector('.lab-tmr__row--sys');
+      if (sysRow) refs.tmrStrip.insertBefore(row, sysRow);
+      else refs.tmrStrip.appendChild(row);
+      return cells;
+    }
+
+    function ensureTmrRows(n) {
+      if (!refs.tmrStrip) return;
+      const maxN = Math.max(3, Math.min(9, n | 0));
+      for (let i = 1; i <= maxN; i++) {
+        if (!refs.tmrStrip.querySelector(`[data-cells="${i}"]`)) createTmrRow(i);
+      }
+      Array.from(refs.tmrStrip.querySelectorAll('[data-ch]')).forEach((r) => {
+        const ch = parseInt(r.getAttribute('data-ch'), 10);
+        r.style.display = (ch <= n) ? '' : 'none';
+      });
+    }
+
     function tmrEffectiveRho(rho) {
       const fastWindow = !!(refs.hypersim && refs.hypersim.checked);
       const diverseVoter = !!(refs.glow && refs.glow.checked);
@@ -1342,12 +1377,8 @@
     /* ---- Live simulation: scrolling channel strip ---- */
     const MAX_CELLS = 28;
     let simTimer = null;
-<<<<<<< HEAD
     let tmrTickMs = 600;
-    let currentQ = 0.05, currentRho = 0;
-=======
     let currentQ = 0.05, currentRho = 0, currentN = 3;
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
 
     function addCell(container, isFault) {
       const cell = document.createElement("span");
@@ -1358,15 +1389,11 @@
       }
     }
     function tick() {
-      // Common-mode event with probability ρ; if it hits, all 3 share one Bernoulli(q).
+      // Common-mode event with probability ρ; if it hits, all N share one Bernoulli(q).
       const rhoEff = tmrEffectiveRho(currentRho);
-      let fails;
-<<<<<<< HEAD
-      if (Math.random() < rhoEff) {
-=======
       const channelCount = currentN || 3;
-      if (Math.random() < currentRho) {
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
+      let fails;
+      if (Math.random() < rhoEff) {
         const f = Math.random() < currentQ;
         fails = new Array(channelCount).fill(f);
       } else {
@@ -1374,10 +1401,31 @@
       }
       const numFail = fails.reduce((sum, fail) => sum + (fail ? 1 : 0), 0);
       const sysFail = numFail >= Math.ceil(channelCount / 2);
-      addCell(refs.cells1,   fails[0]);
-      addCell(refs.cells2,   fails[1]);
-      addCell(refs.cells3,   fails[2]);
-      addCell(refs.cellsSys, sysFail);
+      // Ensure rows exist and populate
+      if (refs.tmrStrip) {
+        // create missing rows up to channelCount
+        for (let i = 1; i <= channelCount; i++) {
+          if (!refs.tmrStrip.querySelector(`[data-cells="${i}"]`)) {
+            const row = document.createElement('div');
+            row.className = 'lab-tmr__row';
+            row.setAttribute('data-ch', String(i));
+            const label = document.createElement('span');
+            label.className = 'lab-tmr__row-label';
+            label.textContent = 'CH ' + i;
+            const cells = document.createElement('div');
+            cells.className = 'lab-tmr__cells';
+            cells.setAttribute('data-cells', String(i));
+            const sysRow = refs.tmrStrip.querySelector('.lab-tmr__row--sys');
+            if (sysRow) refs.tmrStrip.insertBefore(row, sysRow);
+            else refs.tmrStrip.appendChild(row);
+          }
+        }
+      }
+      for (let i = 0; i < channelCount; i++) {
+        const container = refs.tmrStrip ? refs.tmrStrip.querySelector(`[data-cells="${i+1}"]`) : refs[`cells${i+1}`];
+        if (container) addCell(container, fails[i]);
+      }
+      if (refs.cellsSys) addCell(refs.cellsSys, sysFail);
       // Briefly flash the SYS row when it fails
       if (sysFail) {
         const sysRow = refs.cellsSys.parentElement;
@@ -1425,12 +1473,8 @@
       refs.rhoVal.textContent = rho.toFixed(2);
       if (refs.nChannelsVal) refs.nChannelsVal.textContent = nChannels;
 
-<<<<<<< HEAD
       const rhoEff = tmrEffectiveRho(rho);
-      const pSys = pSysFail(q, rhoEff);
-=======
-      const pSys = pSysFail(q, rho, nChannels);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
+      const pSys = pSysFail(q, rhoEff, nChannels);
       const gain = pSys > 0 ? q / pSys : 1;
 
       const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
@@ -1449,9 +1493,8 @@
         refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
 
-<<<<<<< HEAD
       // Sweet spot: well inside the safe operating envelope + visual feedback
-      const inSweetTmr = rhoBE !== null && rhoEff < rhoBE * 0.5 && q < 0.10 && gain >= 10;
+      const inSweetTmr = rhoBE !== null && rhoEff < rhoBE * 0.5 && q < 0.10 && gain >= 10 && nChannels >= 5;
       const overBreakeven = rhoBE !== null && rhoEff > rhoBE && rhoBE < 0.99;
       
       // Slider glow feedback for TMR
@@ -1461,25 +1504,14 @@
       labFxSliderGlow(refs.rho, inSweetTmr ? 1 : rhoCloseness * 0.6);
       labFxApproachingZone(refs.q, inSweetTmr ? 0 : qCloseness);
       labFxApproachingZone(refs.rho, inSweetTmr ? 0 : rhoCloseness);
-=======
-      // Sweet spot: well inside the safe operating envelope
-      const inSweetTmr = rhoBE !== null && rho < rhoBE * 0.5 && q < 0.10 && gain >= 10 && nChannels >= 5;
-      const overBreakeven = rhoBE !== null && rho > rhoBE && rhoBE < 0.99;
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
 
       if (refs.sweetTmr) {
         const wasT = !refs.sweetTmr.hidden && refs.sweetTmr.dataset._active === '1';
         refs.sweetTmr.hidden = !inSweetTmr;
-<<<<<<< HEAD
-        if (inSweetTmr) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and effective \u03c1 = " + rhoEff.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
-          unlockQuest("tmr", "TMR: redundancy that is not three copies of the same bug. Refreshing.");
-=======
         refs.sweetTmr.dataset._active = inSweetTmr ? '1' : '0';
         if (inSweetTmr && !wasT) {
           refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and \u03c1 = " + rho.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5.";
           awardXP(root, 'xp-tmr', 12);
->>>>>>> 1450ea6 (lab: gamify experiments — XP bars, confetti, chimes, award XP on sweet spots)
         }
       }
 
