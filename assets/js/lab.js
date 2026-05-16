@@ -248,6 +248,40 @@
     el.classList.add("lab-experiment__metric--streak-hit");
   }
 
+  /* ---------- 5★ sweet-zone band painter ----------
+     Wraps a <input type="range"> in a track shell so we can paint the
+     small 5★ sweet zone behind the thumb. The band shows the value
+     range that the lab's scoring function rewards with 5 stars, so
+     the player has a visible target. min/max are read from the input. */
+  function paintSweetZone(input, sweetMin, sweetMax, label) {
+    if (!input || input.dataset.zoneBuilt) return;
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    if (!isFinite(min) || !isFinite(max) || max <= min) return;
+    const startPct = ((sweetMin - min) / (max - min)) * 100;
+    const endPct = ((sweetMax - min) / (max - min)) * 100;
+    if (endPct <= 0 || startPct >= 100) return;
+    // Build the shell: <span.track> <span.zone> <span.zone-label> </span>
+    const parent = input.parentNode;
+    const track = document.createElement("span");
+    track.className = "lab-control__track";
+    const zone = document.createElement("span");
+    zone.className = "lab-control__zone";
+    zone.setAttribute("data-active", "1");
+    zone.style.setProperty("--sweet-start", Math.max(0, startPct).toFixed(1) + "%");
+    zone.style.setProperty("--sweet-end", Math.min(100, endPct).toFixed(1) + "%");
+    if (label) {
+      const lbl = document.createElement("span");
+      lbl.className = "lab-control__zone-label";
+      lbl.textContent = label;
+      zone.appendChild(lbl);
+    }
+    parent.insertBefore(track, input);
+    track.appendChild(zone);
+    track.appendChild(input);
+    input.dataset.zoneBuilt = "1";
+  }
+
   /* ---------- Star rating widget (per-lab live scoring) ----------
      Renders 5 stars + a tier label. Score is in [0,5] and quantizes
      to whole stars. Each lab passes a tier name from its own scale. */
@@ -780,13 +814,15 @@
       else                       txt = "The smart strategy wins for any loss between 0 and 1. Real distributed systems picked it on purpose.";
       refs.insight.textContent = txt;
 
-      // Star grade: how close is the smart strategy to bulletproof?
+      // Star grade — small sweet spot.
+      // 5★ requires not just reliability but EFFICIENT reliability:
+      // ≥99.9% with a thrifty depth (N≤6). Brute force at N=10 gets 4★.
       let tgStars = 0, tgTier = "Wipeout";
-      if (pNaive >= 0.99)      { tgStars = 5; tgTier = "Frontier"; }
-      else if (pNaive >= 0.95) { tgStars = 4; tgTier = "Production"; }
-      else if (pNaive >= 0.85) { tgStars = 3; tgTier = "Solid"; }
-      else if (pNaive >= 0.70) { tgStars = 2; tgTier = "Workable"; }
-      else if (pNaive >= 0.50) { tgStars = 1; tgTier = "Sketchy"; }
+      if (pNaive >= 0.999 && n <= 6)      { tgStars = 5; tgTier = "Frontier"; }
+      else if (pNaive >= 0.99)            { tgStars = 4; tgTier = "Production"; }
+      else if (pNaive >= 0.95)            { tgStars = 3; tgTier = "Solid"; }
+      else if (pNaive >= 0.80)            { tgStars = 2; tgTier = "Workable"; }
+      else if (pNaive >= 0.55)            { tgStars = 1; tgTier = "Sketchy"; }
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
 
       drawPlot(p, n);
@@ -802,6 +838,10 @@
     refs.n.addEventListener("input", update);
     if (refs.turbo) refs.turbo.addEventListener("change", update);
     if (refs.neonplot) refs.neonplot.addEventListener("change", update);
+    // 5★ sweet zones: loss in [0.30, 0.55] (the regime where multi-send dominates)
+    // and depth in [4, 6] (efficient, not brute force).
+    paintSweetZone(refs.p, 0.30, 0.55, "5★ band");
+    paintSweetZone(refs.n, 4, 6, "5★ band");
     update();
     startAnim();
   }
@@ -1144,14 +1184,18 @@
       else                        txt = "More cells = stronger signal. Each doubling of k adds about √2 to your effective detection.";
       refs.insight.textContent = txt;
 
-      // Star grade: detection × low false-alarm × model still usable.
+      // Star grade — small sweet spot.
+      // 5★ requires all four to line up: very high detection, very low FPR,
+      // healthy SNR, AND the model is still usable (eps ≤ 0.18).
       let wmStars = 0, wmTier = "Wipeout";
-      const utilityOK = eps <= 0.30;
-      if (det >= 0.95 && fpr <= 0.05 && eps <= 0.20 && utilityOK) { wmStars = 5; wmTier = "Frontier"; }
-      else if (det >= 0.85 && fpr <= 0.10 && utilityOK)           { wmStars = 4; wmTier = "Production"; }
-      else if (det >= 0.65 && fpr <= 0.15 && utilityOK)           { wmStars = 3; wmTier = "Solid"; }
-      else if (det >= 0.40 && utilityOK)                           { wmStars = 2; wmTier = "Workable"; }
-      else if (det >= 0.15)                                        { wmStars = 1; wmTier = "Sketchy"; }
+      const utilityOK = eps <= 0.28;
+      if (det >= 0.97 && fpr <= 0.03 && eps <= 0.18 && snr >= 1.5)
+                                                                   { wmStars = 5; wmTier = "Frontier"; }
+      else if (det >= 0.90 && fpr <= 0.07 && eps <= 0.22 && snr >= 1.2)
+                                                                   { wmStars = 4; wmTier = "Production"; }
+      else if (det >= 0.70 && fpr <= 0.12 && utilityOK)            { wmStars = 3; wmTier = "Solid"; }
+      else if (det >= 0.45 && utilityOK)                           { wmStars = 2; wmTier = "Workable"; }
+      else if (det >= 0.18)                                        { wmStars = 1; wmTier = "Sketchy"; }
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
@@ -1181,6 +1225,11 @@
     if (refs.alpha) refs.alpha.addEventListener("input", update);
     if (refs.wmNeon) refs.wmNeon.addEventListener("change", update);
     if (refs.wmPop) refs.wmPop.addEventListener("change", update);
+    // 5★ sweet zones: ε in [0.13, 0.18] (strong signal, model still intact),
+    // k in [14, 22] (enough cells for sqrt(k) gain), σ in [0.04, 0.10] (attacker controlled).
+    paintSweetZone(refs.eps, 0.13, 0.18, "5★ ε");
+    paintSweetZone(refs.k, 14, 22, "5★ k");
+    paintSweetZone(refs.sigma, 0.04, 0.10, "5★ σ");
     update();
   }
 
@@ -1215,6 +1264,8 @@
       tmrStrip:        $('[data-role="tmr-strip"]', root),
       hypersim:        $('[data-role="tmr-hypersim"]', root),
       glow:            $('[data-role="tmr-glow"]', root),
+      nChannels:       $('[data-role="n-channels"]', root),
+      nChannelsVal:    $('[data-role="n-channels-val"]', root),
       starsTmr:        $('[data-role="stars-tmr"]', root),
     };
 
@@ -1227,16 +1278,36 @@
       return Math.max(0, Math.min(1, effective));
     }
 
-    /* Closed-form system failure rate. */
-    function pSysFail(q, rho) {
-      const indep = 3*q*q*(1 - q) + q*q*q; // = 3q^2 - 2q^3
-      return rho*q + (1 - rho)*indep;
+    /* Binomial coefficient C(n, k). Cached for the small N values we use. */
+    function binom(n, k) {
+      if (k < 0 || k > n) return 0;
+      if (k === 0 || k === n) return 1;
+      let r = 1;
+      for (let i = 1; i <= k; i++) r = r * (n - i + 1) / i;
+      return r;
+    }
+    /* Independent-failures system failure rate: majority-vote with N channels.
+       System fails iff ⌈N/2⌉ or more channels fail (each independently with rate q). */
+    function indepSysFail(q, N) {
+      const need = Math.ceil(N / 2);
+      let s = 0;
+      for (let k = need; k <= N; k++) {
+        s += binom(N, k) * Math.pow(q, k) * Math.pow(1 - q, N - k);
+      }
+      return s;
+    }
+    /* Closed-form system failure rate with common-cause correlation ρ.
+       With prob ρ, all channels fail together (rate q). With prob (1−ρ),
+       they fail independently. Generalised to any odd N. */
+    function pSysFail(q, rho, N) {
+      const n = (N | 0) || 3;
+      return rho * q + (1 - rho) * indepSysFail(q, n);
     }
 
-    /* Break-even correlation: rho where gain = 10x (pSysFail = q/10).
-       Solved analytically: rho*(q - indep) = q/10 - indep => rho = (q/10 - indep)/(q - indep). */
-    function rhoBreakeven(q) {
-      const indep = 3*q*q*(1 - q) + q*q*q;
+    /* Break-even correlation: ρ where reliability gain = 10x (pSysFail = q/10).
+       Solved analytically: ρ·(q − indep) = q/10 − indep. */
+    function rhoBreakeven(q, N) {
+      const indep = indepSysFail(q, (N | 0) || 3);
       const target = q / 10;
       if (target < indep || Math.abs(q - indep) < 1e-10) return null;
       const rho = (target - indep) / (q - indep);
@@ -1255,12 +1326,13 @@
     function xFor(qq) { return M.l + (qq / Q_MAX) * innerW; }
     function yFor(p)  { return M.t + (1 - p / Y_MAX) * innerH; }
 
-    function drawPlot(qCur, rhoCur) {
+    function drawPlot(qCur, rhoCur, NCur) {
       const plot = refs.plot;
       while (plot.firstChild) plot.removeChild(plot.firstChild);
+      const Nplot = NCur || 3;
 
       const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
-      title.textContent = "P(sys fail) vs q | ρ = " + rhoCur.toFixed(2);
+      title.textContent = "P(sys fail) vs q | N = " + Nplot + ", ρ = " + rhoCur.toFixed(2);
 
       // Y gridlines + ticks
       [0, 0.10, 0.20, 0.30].forEach((v) => {
@@ -1307,7 +1379,7 @@
         let d = "";
         for (let i = 0; i <= STEPS; i++) {
           const qq = (i / STEPS) * Q_MAX;
-          const v = Math.min(pSysFail(qq, rho), Y_MAX);
+          const v = Math.min(pSysFail(qq, rho, Nplot), Y_MAX);
           const x = xFor(qq), y = yFor(v);
           d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
         }
@@ -1318,7 +1390,7 @@
         }, plot);
         // ρ label at right edge
         const finalQ = Q_MAX;
-        const finalY = yFor(Math.min(pSysFail(finalQ, rho), Y_MAX));
+        const finalY = yFor(Math.min(pSysFail(finalQ, rho, Nplot), Y_MAX));
         const t = svg("text", {
           x: M.l + innerW + 10, y: finalY + 4,
           class: "lab-plot__legend-value lab-plot__legend-value--wm" + (isCur ? " lab-plot__legend-value--wm-current" : ""),
@@ -1342,7 +1414,7 @@
       }, plot);
 
       // Marker dot at (q, p_sys)
-      const v = Math.min(pSysFail(qCur, rhoCur), Y_MAX);
+      const v = Math.min(pSysFail(qCur, rhoCur, Nplot), Y_MAX);
       svg("circle", {
         cx: xFor(qCur), cy: yFor(v), r: 5,
         class: "lab-plot__marker-dot lab-plot__marker-dot--wm",
@@ -1353,7 +1425,7 @@
     const MAX_CELLS = 28;
     let simTimer = null;
     let tmrTickMs = 600;
-    let currentQ = 0.05, currentRho = 0;
+    let currentQ = 0.05, currentRho = 0, currentNChannels = 3;
 
     function addCell(container, isFault) {
       const cell = document.createElement("span");
@@ -1364,21 +1436,21 @@
       }
     }
     function tick() {
-      // Common-mode event with probability ρ; if it hits, all 3 share one Bernoulli(q).
+      // Sample the actual N channels (3, 5, 7, or 9). The on-screen strip shows
+      // the first 3 as a visual sample; the SYS row reflects majority vote
+      // over the full N. This way the slider truly changes the science.
+      const N = currentNChannels;
       const rhoEff = tmrEffectiveRho(currentRho);
-      let fails;
+      let fails = [];
       if (Math.random() < rhoEff) {
         const f = Math.random() < currentQ;
-        fails = [f, f, f];
+        for (let i = 0; i < N; i++) fails.push(f);
       } else {
-        fails = [
-          Math.random() < currentQ,
-          Math.random() < currentQ,
-          Math.random() < currentQ,
-        ];
+        for (let i = 0; i < N; i++) fails.push(Math.random() < currentQ);
       }
-      const numFail = (fails[0]?1:0) + (fails[1]?1:0) + (fails[2]?1:0);
-      const sysFail = numFail >= 2;
+      let numFail = 0;
+      for (let i = 0; i < N; i++) if (fails[i]) numFail++;
+      const sysFail = numFail >= Math.ceil(N / 2);
       addCell(refs.cells1,   fails[0]);
       addCell(refs.cells2,   fails[1]);
       addCell(refs.cells3,   fails[2]);
@@ -1424,12 +1496,14 @@
     function update() {
       const q   = parseFloat(refs.q.value);
       const rho = parseFloat(refs.rho.value);
-      currentQ = q; currentRho = rho;
+      const N = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
+      currentQ = q; currentRho = rho; currentNChannels = N;
       refs.qVal.textContent   = q.toFixed(3);
       refs.rhoVal.textContent = rho.toFixed(2);
+      if (refs.nChannelsVal) refs.nChannelsVal.textContent = String(N);
 
       const rhoEff = tmrEffectiveRho(rho);
-      const pSys = pSysFail(q, rhoEff);
+      const pSys = pSysFail(q, rhoEff, N);
       const gain = pSys > 0 ? q / pSys : 1;
 
       const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
@@ -1442,8 +1516,8 @@
       prev = { sys: pSys, single: q, gain: gain };
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
-      // Break-even correlation for 10x gain
-      const rhoBE = rhoBreakeven(q);
+      // Break-even correlation for 10x gain (depends on N)
+      const rhoBE = rhoBreakeven(q, N);
       if (refs.rhoBreakevenVal) {
         refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
@@ -1485,16 +1559,18 @@
       }
       refs.insight.textContent = txt;
 
-      // Star grade: reliability gain (single channel / TMR). Bigger = better.
+      // Star grade — small sweet spot.
+      // 5★ requires extreme reliability gain (≥250×). Available only with
+      // both low q AND low correlation AND enough channels.
       let tmrStars = 0, tmrTier = "Wipeout";
-      if (gain >= 100)      { tmrStars = 5; tmrTier = "Frontier"; }
-      else if (gain >= 30)  { tmrStars = 4; tmrTier = "Production"; }
-      else if (gain >= 10)  { tmrStars = 3; tmrTier = "Solid"; }
-      else if (gain >= 3)   { tmrStars = 2; tmrTier = "Workable"; }
-      else if (gain >= 1.2) { tmrStars = 1; tmrTier = "Sketchy"; }
+      if (gain >= 250)      { tmrStars = 5; tmrTier = "Frontier"; }
+      else if (gain >= 75)  { tmrStars = 4; tmrTier = "Production"; }
+      else if (gain >= 20)  { tmrStars = 3; tmrTier = "Solid"; }
+      else if (gain >= 5)   { tmrStars = 2; tmrTier = "Workable"; }
+      else if (gain >= 1.5) { tmrStars = 1; tmrTier = "Sketchy"; }
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
 
-      drawPlot(q, rhoEff);
+      drawPlot(q, rhoEff, N);
     }
 
     // Randomize starting parameters on each refresh for replayability
@@ -1505,6 +1581,11 @@
 
     refs.q.addEventListener("input", update);
     refs.rho.addEventListener("input", update);
+    if (refs.nChannels) refs.nChannels.addEventListener("input", update);
+    // 5★ sweet zones: q ≤ 0.025, ρ ≤ 0.05, N ≥ 5.
+    paintSweetZone(refs.q, 0.005, 0.025, "5★ q");
+    paintSweetZone(refs.rho, 0.00, 0.05, "5★ ρ");
+    if (refs.nChannels) paintSweetZone(refs.nChannels, 5, 9, "5★ N");
     if (refs.hypersim) {
       refs.hypersim.addEventListener("change", function () {
         tmrTickMs = refs.hypersim.checked ? 200 : 600;
@@ -1662,6 +1743,11 @@
     });
     if (refs.noise) refs.noise.addEventListener("input", function () { renderParticle(); });
     if (refs.gdRainbow) refs.gdRainbow.addEventListener("change", syncGdTrailStyle);
+    // 5★ sweet zones: α in [0.012, 0.022] (fast but stable),
+    // momentum in [0.55, 0.80] (carries through plateaus), noise minimal.
+    paintSweetZone(refs.lr, 0.012, 0.022, "5★ α");
+    paintSweetZone(refs.mom, 0.55, 0.80, "5★ β");
+    if (refs.noise) paintSweetZone(refs.noise, 0.0, 0.20, "5★ ζ");
 
     function gdEpochDelay() {
       return (refs.gdTurbo && refs.gdTurbo.checked) ? 11 : 30;
@@ -1822,18 +1908,19 @@
         setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
-        if (dist < 0.12) {
+        // Small sweet spot: only a tight landing in the global basin earns 5★.
+        if (dist < 0.06) {
           refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
           unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
           triggerCongrats(refs.plot, true);
           setStars(refs.starsGd, 5, "Frontier", { header: "Run grade" });
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
-           // Closer to global min = more stars even when stuck in a local valley.
+           // Distance from global min decides the partial credit.
            let gdS = 1, gdT = "Sketchy";
-           if (dist < 0.30)      { gdS = 4; gdT = "Production"; }
-           else if (dist < 0.60) { gdS = 3; gdT = "Solid"; }
-           else if (dist < 1.00) { gdS = 2; gdT = "Workable"; }
+           if (dist < 0.18)      { gdS = 4; gdT = "Production"; }
+           else if (dist < 0.40) { gdS = 3; gdT = "Solid"; }
+           else if (dist < 0.80) { gdS = 2; gdT = "Workable"; }
            setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
         }
         running = false;
@@ -2202,13 +2289,13 @@
       }
       refs.streakVal.textContent = String(streak);
 
-      // Star grade: 0–100 PoL score mapped to 0–5 stars.
+      // Star grade — small sweet spot. 5★ requires near-perfect fingerprint.
       let polStars = 0, polTier = "Wipeout";
-      if (score >= 92)      { polStars = 5; polTier = "Frontier"; }
-      else if (score >= 78) { polStars = 4; polTier = "Production"; }
-      else if (score >= 62) { polStars = 3; polTier = "Solid"; }
-      else if (score >= 45) { polStars = 2; polTier = "Workable"; }
-      else if (score >= 25) { polStars = 1; polTier = "Sketchy"; }
+      if (score >= 94)      { polStars = 5; polTier = "Frontier"; }
+      else if (score >= 82) { polStars = 4; polTier = "Production"; }
+      else if (score >= 68) { polStars = 3; polTier = "Solid"; }
+      else if (score >= 50) { polStars = 2; polTier = "Workable"; }
+      else if (score >= 30) { polStars = 1; polTier = "Sketchy"; }
       setStars(refs.starsPol, polStars, polTier, { header: "Run grade" });
     }
 
@@ -2280,6 +2367,11 @@
     refs.lr.addEventListener("input", updateSliderDisplay);
     refs.bs.addEventListener("input", updateSliderDisplay);
     refs.noise.addEventListener("input", updateSliderDisplay);
+    // 5★ sweet zones: α in [0.010, 0.016], B index in [4, 6] (=64..256),
+    // noise in [0.03, 0.07] (just enough to look real).
+    paintSweetZone(refs.lr, 0.010, 0.016, "5★ α");
+    paintSweetZone(refs.bs, 4, 6, "5★ B");
+    paintSweetZone(refs.noise, 0.03, 0.07, "5★ ζ");
 
     // Randomize starting parameters on each refresh for replayability
     const randAlpha = (0.008 + Math.random() * 0.010).toFixed(4);
