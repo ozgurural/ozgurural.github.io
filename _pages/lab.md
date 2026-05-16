@@ -1,18 +1,18 @@
 ---
 permalink: /lab/
 title: "Lab"
-excerpt: "Five interactive research games with sliders, badges, live plots, and just enough science to make the chaos useful."
+excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), learn how real systems break and stay alive."
 ---
 
 <section class="lab-hero" aria-label="Lab arcade intro">
   <span class="ep-eyebrow">Interactive research arcade</span>
-  <h2 class="lab-hero__title">Break the systems. Learn the trick.</h2>
+  <h2 class="lab-hero__title">Five science games. One star meter each.</h2>
   <p class="lab-hero__copy">
-    Five tiny games from my research world: distributed consensus, model watermarking, proof-of-learning, fault tolerance, and optimization. No textbook pilgrimage. Drag sliders, chase unlocks, and let the graphs complain when reality gets expensive.
+    Pick a lab. Drag the sliders. Watch the live grade go from <strong>Wipeout</strong> to <strong>Frontier</strong> — 5★ means the parameters you chose would survive in the real world. Everything else is the simulation politely telling you to try again.
   </p>
   <div class="lab-hero__actions" aria-label="Jump to experiments">
-    <a href="#lab-wm">Catch a stolen model</a>
-    <a href="#lab-pol">Forge-proof a training run</a>
+    <a href="#lab-wm">Catch a stolen AI model</a>
+    <a href="#lab-pol">Prove a training run is real</a>
     <a href="#lab-tmr">Crash-test redundancy</a>
   </div>
 </section>
@@ -46,7 +46,7 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
 </nav>
 
 <div class="lab-quest" role="region" aria-label="Lab mission progress">
-  <p class="lab-quest__msg" data-role="quest-msg">Complete five missions. Collect badges. Make statistical chaos behave for exactly long enough to look professional.</p>
+  <p class="lab-quest__msg" data-role="quest-msg">Five labs. Each one grades your run 1★–5★ live. Hit 5★ in any lab to unlock its badge below.</p>
   <ul class="lab-quest__list">
     <li class="lab-quest__item" data-quest-item="tg"><span class="lab-quest__name">Consensus</span> <span class="lab-quest__status" data-role="quest-tg">Locked</span></li>
     <li class="lab-quest__item" data-quest-item="wm"><span class="lab-quest__name">Watermark</span> <span class="lab-quest__status" data-role="quest-wm">Locked</span></li>
@@ -85,12 +85,12 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Consensus Casino</h2>
   <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
-  <p class="lab-card__lead">Packets vanish. Databases still pretend everyone agreed. Your job is to tune retries until probability looks suspiciously like truth.</p>
+  <p class="lab-card__lead">Two computers must agree, but the network keeps losing messages. Try two strategies and see which one wins more often.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Mission</span>
-    <strong>Beat the handshake.</strong>
-    <span>Push the multi-send strategy above 99% reliability while the strict protocol faceplants politely.</span>
-    <div class="lab-card__mission-pills"><span>move p</span><span>raise N</span><span>unlock consensus</span></div>
+    <span class="lab-card__mission-kicker">Goal</span>
+    <strong>Push reliability past 99%.</strong>
+    <span>Drag the loss slider and the depth slider. Earn 5★ when the smart strategy hits 99%.</span>
+    <div class="lab-card__mission-pills"><span>5★ ≥ 99%</span><span>4★ ≥ 95%</span><span>3★ ≥ 85%</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -129,6 +129,7 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
       <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot" preserveAspectRatio="xMidYMid meet" role="img" aria-label="win probability vs protocol depth"></svg>
     </div>
 
+    <div class="lab-experiment__scorebar" data-role="stars-tg" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--naive">
         <span class="lab-experiment__metric-label">Naive multi-send</span>
@@ -165,12 +166,12 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
   <span class="ep-eyebrow">ML security · Model provenance</span>
   <h2>Model Heist Detector</h2>
   <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
-  <p class="lab-card__lead">Someone fine-tuned your model and put a hoodie on it. Find a watermark strong enough to survive the disguise, but not so loud it ruins the model.</p>
+  <p class="lab-card__lead">Someone copied your AI model and tweaked it to hide the theft. Plant a hidden signature loud enough to catch the thief, quiet enough not to break the model.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Mission</span>
-    <strong>Catch the clone.</strong>
-    <span>Balance perturbation, key size, and attack noise until detection is high and false alarms stay boring.</span>
-    <div class="lab-card__mission-pills"><span>90%+ detection</span><span>low false alarms</span><span>no model damage</span></div>
+    <span class="lab-card__mission-kicker">Goal</span>
+    <strong>Catch the clone without crying wolf.</strong>
+    <span>Balance signal, key size, and attacker noise. 5★ when detection is loud and false alarms are not.</span>
+    <div class="lab-card__mission-pills"><span>5★ det≥95%, fpr≤5%</span><span>4★ det≥85%</span><span>3★ det≥65%</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -226,6 +227,7 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
       </div>
     </div>
 
+    <div class="lab-experiment__scorebar" data-role="stars-wm" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Detection rate</span>
@@ -263,12 +265,12 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
   <h2>Training Fingerprint</h2>
   <p class="lab-card__usecase">Used in <strong>Foundation model auditing</strong> · <strong>Competitive intelligence</strong> · <strong>Patent disputes</strong> · <strong>Minting training credentials</strong> · <strong>Open-source verification</strong></p>
-  <p class="lab-card__lead">Weights can be copied. The training journey is harder to fake. Build a loss curve that looks alive, not like a suspiciously convenient straight line.</p>
+  <p class="lab-card__lead">A trained model is easy to copy. The journey of learning that produced it is harder to fake. Tune the run so the loss curve looks alive, not like a straight line someone forged in a hurry.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Mission</span>
+    <span class="lab-card__mission-kicker">Goal</span>
     <strong>Earn Gold Proof.</strong>
-    <span>Tune learning rate, batch size, and noise until the training run has a credible fingerprint.</span>
-    <div class="lab-card__mission-pills"><span>score 88+</span><span>stable descent</span><span>spot the fake</span></div>
+    <span>Pick learning rate, batch, and noise. Hit Train. 5★ when the trajectory looks real and fast.</span>
+    <div class="lab-card__mission-pills"><span>5★ score ≥ 92</span><span>4★ ≥ 78</span><span>3★ ≥ 62</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -314,6 +316,7 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
       <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-pol" preserveAspectRatio="xMidYMid meet" role="img" aria-label="training loss trajectory"></svg>
     </div>
 
+    <div class="lab-experiment__scorebar" data-role="stars-pol" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Verification score</span>
@@ -365,12 +368,12 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>Redundancy Reactor</h2>
   <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
-  <p class="lab-card__lead">More computers help only when they fail differently. Turn correlation up and watch redundancy become a very expensive group hallucination.</p>
+  <p class="lab-card__lead">Three computers voting beats one — but only if they fail in different ways. Turn correlation up and three become a single expensive computer wearing a wig.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Mission</span>
-    <strong>Keep the voter alive.</strong>
-    <span>Find the safe envelope where majority voting gives real reliability instead of synchronized failure cosplay.</span>
-    <div class="lab-card__mission-pills"><span>lower q</span><span>control ρ</span><span>test N</span></div>
+    <span class="lab-card__mission-kicker">Goal</span>
+    <strong>Make redundancy actually redundant.</strong>
+    <span>Keep failure rate and correlation low. Aim for 100× reliability gain over a single channel.</span>
+    <div class="lab-card__mission-pills"><span>5★ gain ≥ 100×</span><span>4★ ≥ 30×</span><span>3★ ≥ 10×</span></div>
   </div>
 
   <div class="lab-tmr">
@@ -426,6 +429,7 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
 
     <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-tmr" preserveAspectRatio="xMidYMid meet" role="img" aria-label="system failure rate vs per-channel failure rate"></svg>
 
+    <div class="lab-experiment__scorebar" data-role="stars-tmr" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">System failure rate</span>
@@ -463,12 +467,12 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
   <span class="ep-eyebrow">Deep Learning · Optimization</span>
   <h2>Gradient Pinball</h2>
   <p class="lab-card__usecase">Used in <strong>Training LLMs</strong> · <strong>Backpropagation</strong> · <strong>Physics Simulations</strong></p>
-  <p class="lab-card__lead">Optimization is pinball with calculus. Too timid, you get stuck. Too spicy, the particle leaves the budget and possibly the building.</p>
+  <p class="lab-card__lead">AI models learn by rolling downhill on a loss landscape. Too cautious and they get stuck. Too aggressive and they fly off the map. Find the step size that lands in the deepest valley.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Mission</span>
-    <strong>Land in the global minimum.</strong>
-    <span>Pick learning rate and momentum, press Train, and try to land before the loss leaves the scoreboard.</span>
-    <div class="lab-card__mission-pills"><span>train</span><span>reroll</span><span>hit the basin</span></div>
+    <span class="lab-card__mission-kicker">Goal</span>
+    <strong>Drop the ball into the deepest valley.</strong>
+    <span>Pick learning rate and momentum. Hit Train. 5★ if you land in the global minimum.</span>
+    <div class="lab-card__mission-pills"><span>5★ global min</span><span>4★ close miss</span><span>3★ workable valley</span></div>
   </div>
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
@@ -516,6 +520,7 @@ excerpt: "Five interactive research games with sliders, badges, live plots, and 
       <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-gd" preserveAspectRatio="xMidYMid meet" role="img" aria-label="loss landscape"></svg>
     </div>
 
+    <div class="lab-experiment__scorebar" data-role="stars-gd" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Epochs</span>

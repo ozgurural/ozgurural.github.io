@@ -247,6 +247,65 @@
     void el.offsetWidth;
     el.classList.add("lab-experiment__metric--streak-hit");
   }
+
+  /* ---------- Star rating widget (per-lab live scoring) ----------
+     Renders 5 stars + a tier label. Score is in [0,5] and quantizes
+     to whole stars. Each lab passes a tier name from its own scale. */
+  const STAR_TIERS = [
+    "Wipeout",      // 0 — slider is in the unsafe band
+    "Sketchy",      // 1 — the math is barely tolerating you
+    "Workable",     // 2 — survives a demo, not a deployment
+    "Solid",        // 3 — a textbook would not flinch
+    "Production",   // 4 — real systems run here
+    "Frontier",     // 5 — the paper is half-written
+  ];
+  function setStars(host, score, customTier) {
+    if (!host) return;
+    const s = Math.max(0, Math.min(5, Number(score) || 0));
+    const full = Math.round(s);
+    const tier = customTier || STAR_TIERS[full];
+    if (!host.dataset.built) {
+      host.classList.add("lab-stars");
+      host.innerHTML = "";
+      const head = document.createElement("span");
+      head.className = "lab-stars__head";
+      head.textContent = "Run grade";
+      host.appendChild(head);
+      const pips = document.createElement("span");
+      pips.className = "lab-stars__pips";
+      for (let i = 0; i < 5; i++) {
+        const pip = document.createElement("span");
+        pip.className = "lab-stars__pip";
+        pip.setAttribute("aria-hidden", "true");
+        pip.innerHTML = '<svg viewBox="0 0 20 20"><path d="M10 1.5 12.59 7.36 18.9 8.06l-4.7 4.32 1.31 6.22L10 15.34 4.49 18.6l1.31-6.22-4.7-4.32 6.31-.7Z"/></svg>';
+        pips.appendChild(pip);
+      }
+      host.appendChild(pips);
+      const lbl = document.createElement("span");
+      lbl.className = "lab-stars__tier";
+      host.appendChild(lbl);
+      host.dataset.built = "1";
+    }
+    const pips = host.querySelectorAll(".lab-stars__pip");
+    for (let j = 0; j < pips.length; j++) {
+      pips[j].classList.toggle("is-full", j < full);
+    }
+    const lblEl = host.querySelector(".lab-stars__tier");
+    if (lblEl) {
+      lblEl.textContent = tier;
+      lblEl.setAttribute("data-tier", String(full));
+    }
+    host.setAttribute("data-stars", String(full));
+    host.setAttribute("aria-label", full + " of 5 stars — " + tier);
+    const prev = parseInt(host.dataset.prevStars || "-1", 10);
+    if (full > prev && prev >= 0) {
+      host.classList.remove("lab-stars--up");
+      void host.offsetWidth;
+      host.classList.add("lab-stars--up");
+    }
+    host.dataset.prevStars = String(full);
+  }
+
   function labFxMilestoneUnlock(questCount) {
     if (questCount <= 0 || questCount > 5) return;
     var title = "", msg = "", emoji = "🎯", subtitle = "";
@@ -457,6 +516,7 @@
       valley:   $('[data-role="valley"]', root),
       turbo:    $('[data-role="tg-turbo"]', root),
       neonplot: $('[data-role="tg-neonplot"]', root),
+      starsTg:  $('[data-role="stars-tg"]', root),
     };
 
     /* ---- Plot rendering ---- */
@@ -698,18 +758,27 @@
         refs.plot.classList.toggle("lab-plot--neon-sweet", inSweetZone && refs.neonplot.checked);
       }
 
-      // Insight — branches on phase-space zone, anchored to production systems.
+      // Insight — short, plain-English regime descriptions.
       let txt;
-      if (p === 0)               txt = "p = 0. Congratulations, you have invented postal mail. The postman is honest, sober, and on time. Both protocols win 100%. For science.";
-      else if (p > 0.84)         txt = "Loss this severe and surrender starts to look like the dominant strategy. Even naive multi-send falls below 1 in 100 wins. (TCP gives up around here too; this is when your phone says 'no internet' and the simulation gets honest.)";
-      else if (n === 1)          txt = "At N = 1 the protocols coincide: a single send, no confirmation—like taking the blue pill and pretending handshakes do not exist. The interesting structure starts at N = 2.";
-      else if (p < 0.05)         txt = "Low loss, both protocols win nearly always. Production-grade WAN. The trap is invisible here but it is still a trap, and it shows up at the tails.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "p = 0.5. Entropy maxes out; the channel becomes a coin flip. Naive still wins by accumulating tries, same trick TCP uses on bad WiFi.";
-      else if (p > 0.65)         txt = "At very high loss, naive multi-send pulls ahead by accumulating chances rather than depending on any one. That is the math every blockchain confirmation depth and every database read quorum runs on.";
-      else if (delta > 0.6)      txt = "Delta > 60%: strict chain is silently bleeding. The clever-engineer instinct says 'add another confirmation round.' The mathematics is unimpressed. (This is why 2PC has been the cautionary tale since the 1980s.)";
-      else if (delta > 0.3)      txt = "Delta > 30%: strict chain pays heavily for its caution. Naive multi-send is strictly better, same shape every retry-with-backoff and every blockchain confirmation depth uses.";
-      else                       txt = "Naive multi-send dominates strict-chain for any p in (0,1) and N >= 2. Production distributed systems chose naive on purpose. The cake was also never on-chain.";
+      if (p === 0)               txt = "Perfect network. Both protocols win every time. Reality is never this kind.";
+      else if (p > 0.84)         txt = "The network is mostly broken. Even the smart strategy loses more than it wins. This is what your phone calls 'no internet'.";
+      else if (n === 1)          txt = "With only one try, both strategies are the same. Slide N up to see the smart one pull ahead.";
+      else if (p < 0.05)         txt = "Almost no packets are lost. Both strategies look perfect — the difference shows up later when scale catches up.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "Half the messages get lost. The smart strategy still wins by trying many times — same trick your phone uses on weak WiFi.";
+      else if (p > 0.65)         txt = "When the network is this bad, repeating the message is the only thing that works. Blockchains and databases use this exact math.";
+      else if (delta > 0.6)      txt = "The strict strategy is bleeding hard. Every extra step makes it worse. Real systems learned this the painful way.";
+      else if (delta > 0.3)      txt = "The smart strategy is clearly ahead. This is the shape every retry-with-backoff has.";
+      else                       txt = "The smart strategy wins for any loss between 0 and 1. Real distributed systems picked it on purpose.";
       refs.insight.textContent = txt;
+
+      // Star grade: how close is the smart strategy to bulletproof?
+      let tgStars = 0, tgTier = "Wipeout";
+      if (pNaive >= 0.99)      { tgStars = 5; tgTier = "Frontier"; }
+      else if (pNaive >= 0.95) { tgStars = 4; tgTier = "Production"; }
+      else if (pNaive >= 0.85) { tgStars = 3; tgTier = "Solid"; }
+      else if (pNaive >= 0.70) { tgStars = 2; tgTier = "Workable"; }
+      else if (pNaive >= 0.50) { tgStars = 1; tgTier = "Sketchy"; }
+      setStars(refs.starsTg, tgStars, tgTier);
 
       drawPlot(p, n);
     }
@@ -754,6 +823,7 @@
       alphaVal:   $('[data-role="alpha-val"]', root),
       wmNeon:     $('[data-role="wm-neon"]', root),
       wmPop:      $('[data-role="wm-pop"]', root),
+      starsWm:    $('[data-role="stars-wm"]', root),
     };
 
     const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
@@ -1053,17 +1123,27 @@
       prevEffectiveK = effectiveK;
 
       let txt;
-      if (eps < 0.04)             txt = "Epsilon this small puts the perturbation below the model's own noise floor. Even the verifier with the key cannot do much. This is not a failure; it is an enrichment opportunity.";
-      else if (det > 0.995)       txt = "Detection saturated. The verifier wins by a landslide. Court-credible regime: the lawyers have evidence; the thief has homework. Still no cake.";
+      if (eps < 0.04)             txt = "Your signal is too quiet — it's lost in the model's own noise. Push ε up.";
+      else if (det > 0.995)       txt = "Detection is overwhelming. Court-credible: the thief left fingerprints in every weight.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "On the operating frontier: over 90% detection, under 10% false-positive. The production-credible regime—the one a real provenance dispute can defend without bending spoons.";
+                                  txt = "Sweet spot: >90% detection, <10% false alarms. This is the regime a real audit could defend.";
       else if (det > 0.5 && k <= 4)
-                                  txt = "Small key, marginal signal. Try doubling k. The gain from k = " + k + " to " + (k*2) + " comes from sqrt(k) SNR amplification.";
+                                  txt = "Signal is OK but the key is too small. Try doubling k — more cells means stronger evidence.";
       else if (det < 0.15 && sigma > 0.3)
-                                  txt = "Sigma at this level means the attacker has more noise budget than the watermark has signal. Time to grow k, or rethink epsilon. At this point a determined fine-tune attack succeeds—and blames the oracle.";
-      else if (det < 0.2)         txt = "Watermark washed out. At this (epsilon, sigma) the attacker has effectively defeated detection. Raise epsilon or grow k. The simulation is disappointed but not surprised.";
-      else                        txt = "k = " + k + " amplifies SNR by sqrt(k) which is approximately " + Math.sqrt(k).toFixed(2) + ". Detection scales with that, not with epsilon alone.";
+                                  txt = "The attacker is adding more noise than your watermark has signal. Raise ε or grow k.";
+      else if (det < 0.2)         txt = "Watermark washed out. Either turn up ε or use a much bigger key.";
+      else                        txt = "More cells = stronger signal. Each doubling of k adds about √2 to your effective detection.";
       refs.insight.textContent = txt;
+
+      // Star grade: detection × low false-alarm × model still usable.
+      let wmStars = 0, wmTier = "Wipeout";
+      const utilityOK = eps <= 0.30;
+      if (det >= 0.95 && fpr <= 0.05 && eps <= 0.20 && utilityOK) { wmStars = 5; wmTier = "Frontier"; }
+      else if (det >= 0.85 && fpr <= 0.10 && utilityOK)           { wmStars = 4; wmTier = "Production"; }
+      else if (det >= 0.65 && fpr <= 0.15 && utilityOK)           { wmStars = 3; wmTier = "Solid"; }
+      else if (det >= 0.40 && utilityOK)                           { wmStars = 2; wmTier = "Workable"; }
+      else if (det >= 0.15)                                        { wmStars = 1; wmTier = "Sketchy"; }
+      setStars(refs.starsWm, wmStars, wmTier);
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
@@ -1126,6 +1206,7 @@
       tmrStrip:        $('[data-role="tmr-strip"]', root),
       hypersim:        $('[data-role="tmr-hypersim"]', root),
       glow:            $('[data-role="tmr-glow"]', root),
+      starsTmr:        $('[data-role="stars-tmr"]', root),
     };
 
     function tmrEffectiveRho(rho) {
@@ -1378,22 +1459,31 @@
         }
       }
 
-      // Override insight text when over break-even
+      // Plain-English regime hints.
       let txt;
       if (rhoBE === null) {
-        txt = "At this q, even perfect independence cannot reach a 10x gain. The best case is " + (q / pSysFail(q, 0)).toFixed(1) + "x, so the break-even readout is N/A rather than a fake threshold.";
+        txt = "Single channels fail too often here. Even perfectly independent computers can't reach 10x reliability gain. Lower q first.";
       } else if (overBreakeven) {
-        txt = "Warning: effective \u03c1 = " + rhoEff.toFixed(2) + " exceeds the break-even threshold of " + rhoBE.toFixed(2) + " for this failure rate. TMR is now delivering less than 10x gain. The hardware cost is no longer justified by the reliability improvement. This is the regime the Ariane 5 lived in.";
+        txt = "\u26a0\ufe0f Correlation is past the safe line. The three computers are starting to fail together \u2014 paying for three, reliability barely beats one. Ariane 5 lived here.";
       } else if (rhoEff >= 0.95) {
-        txt = "Rho near 1: redundancy with full correlation is not redundancy, it is a single channel three times—Agent Smith cubed, but in RTL. The Ariane 5 had redundant flight computers running the exact same inertial reference software. They both crashed in the same millisecond.";
+        txt = "Three computers, but they all break the same way. This is the Ariane 5 story: identical software, identical bug, simultaneous crash.";
       } else if (rhoEff < 0.05) {
-        txt = "Independent faults. TMR delivers cubic reliability gain. This is the regime DO-178C lives in, the one your A320 cruises through every flight. Pleasant. Unexciting. Correct.";
+        txt = "Independent failures. Three computers ≈ cube the reliability. This is the regime your A320 flies in.";
       } else if (rhoEff < 0.5) {
-        txt = "Some correlation, some gain. The ratio of TMR to single-channel is shrinking faster than rho alone suggests. Common-cause failures are doing real damage.";
+        txt = "Some shared bugs. Gain is shrinking faster than the correlation slider suggests — common-cause failures bite hard.";
       } else {
-        txt = "Correlated faults eat the cubic gain. TMR still helps but only by a constant factor, not the roughly 1/(3q) you get under independence. Diverse-versions programming exists for exactly this reason.";
+        txt = "Correlation is eating the safety margin. TMR still helps, but not by much. Use diverse hardware or different software to break the pattern.";
       }
       refs.insight.textContent = txt;
+
+      // Star grade: reliability gain (single channel / TMR). Bigger = better.
+      let tmrStars = 0, tmrTier = "Wipeout";
+      if (gain >= 100)      { tmrStars = 5; tmrTier = "Frontier"; }
+      else if (gain >= 30)  { tmrStars = 4; tmrTier = "Production"; }
+      else if (gain >= 10)  { tmrStars = 3; tmrTier = "Solid"; }
+      else if (gain >= 3)   { tmrStars = 2; tmrTier = "Workable"; }
+      else if (gain >= 1.2) { tmrStars = 1; tmrTier = "Sketchy"; }
+      setStars(refs.starsTmr, tmrStars, tmrTier);
 
       drawPlot(q, rhoEff);
     }
@@ -1444,6 +1534,7 @@
       lossVal:   $gd("loss-val"),
       velVal:    $gd("vel-val"),
       insight:   $gd("insight-gd"),
+      starsGd:   $gd("stars-gd"),
     };
 
     const PW = 640, PH = 260;
@@ -1672,6 +1763,7 @@
       refs.trainBtn.classList.remove('is-running');
       refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New test chamber—sorry, <em>challenge</em>: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
+      setStars(refs.starsGd, 0, "Run not started");
     }
     
     function updateReadout() {
@@ -1714,16 +1806,26 @@
       if (currentX < X_MIN || currentX > X_MAX) {
         refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold—there is no spoon, only NaN. Lower the learning rate.";
         running = false;
+        setStars(refs.starsGd, 0, "Wipeout");
       } else if (epoch > 500) {
         refs.insight.textContent = "⏳ Training timed out (500 epochs). The Matrix reloaded the same epoch; try higher learning rate or momentum.";
         running = false;
+        setStars(refs.starsGd, 1, "Sketchy");
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
-        if (Math.abs(currentX - TARGET_X) < 0.12) {
+        const dist = Math.abs(currentX - TARGET_X);
+        if (dist < 0.12) {
           refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
           unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
           triggerCongrats(refs.plot, true);
+          setStars(refs.starsGd, 5, "Frontier");
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
+           // Closer to global min = more stars even when stuck in a local valley.
+           let gdS = 1, gdT = "Sketchy";
+           if (dist < 0.30)      { gdS = 4; gdT = "Production"; }
+           else if (dist < 0.60) { gdS = 3; gdT = "Solid"; }
+           else if (dist < 1.00) { gdS = 2; gdT = "Workable"; }
+           setStars(refs.starsGd, gdS, gdT);
         }
         running = false;
       }
@@ -1799,6 +1901,7 @@
       insight:  $('[data-role="insight-pol"]', root),
       polTurbo: $('[data-role="pol-turbo"]', root),
       polMega:  $('[data-role="pol-mega"]', root),
+      starsPol: $('[data-role="stars-pol"]', root),
     };
 
     if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs || !refs.noise) return;
@@ -2088,6 +2191,15 @@
         refs.insight.innerHTML = "No badge yet. The simulation suggests smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, ζ around 0.05. We will be monitoring your failure for science.";
       }
       refs.streakVal.textContent = String(streak);
+
+      // Star grade: 0–100 PoL score mapped to 0–5 stars.
+      let polStars = 0, polTier = "Wipeout";
+      if (score >= 92)      { polStars = 5; polTier = "Frontier"; }
+      else if (score >= 78) { polStars = 4; polTier = "Production"; }
+      else if (score >= 62) { polStars = 3; polTier = "Solid"; }
+      else if (score >= 45) { polStars = 2; polTier = "Workable"; }
+      else if (score >= 25) { polStars = 1; polTier = "Sketchy"; }
+      setStars(refs.starsPol, polStars, polTier);
     }
 
     function reset() {
@@ -2104,6 +2216,7 @@
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
       refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88). There is no spoon—only a loss curve that either trained or downloaded its personality.";
+      setStars(refs.starsPol, 0, "Run not started");
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {
