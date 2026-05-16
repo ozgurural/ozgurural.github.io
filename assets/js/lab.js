@@ -566,9 +566,7 @@
     if (!root) return;
 
     const refs = {
-      p:        $('[data-role="p"]', root),
       n:        $('[data-role="n"]', root),
-      pVal:     $('[data-role="p-val"]', root),
       nVal:     $('[data-role="n-val"]', root),
       pDisplay: $('[data-role="p-display"]', root),
       naive:    $('[data-role="naive-val"]', root),
@@ -579,10 +577,20 @@
       insight:  $('[data-role="insight"]', root),
       plot:     $('[data-role="plot"]', root),
       valley:   $('[data-role="valley"]', root),
-      turbo:    $('[data-role="tg-turbo"]', root),
-      neonplot: $('[data-role="tg-neonplot"]', root),
+      levels:   $('[data-role="tg-levels"]', root),
       starsTg:  $('[data-role="stars-tg"]', root),
     };
+    // Read the currently selected scenario's `p` (loss rate).
+    function tgCurrentP() {
+      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
+      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      return btn ? parseFloat(btn.dataset.p) : 0.40;
+    }
+    function tgCurrentScenarioName() {
+      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
+      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      return btn ? (btn.dataset.name || "scenario") : "scenario";
+    }
 
     /* ---- Plot rendering ---- */
     const PW = 640, PH = 260;
@@ -755,16 +763,13 @@
     /* ---- Live update with tweened readouts ---- */
     let prev = { naive: 1 - Math.pow(0.4, 3), strict: Math.pow(0.6, 3), delta: 0 };
     function update() {
-      const p = parseFloat(refs.p.value);
+      const p = tgCurrentP();
       const n = parseInt(refs.n.value, 10);
       currentP = p;
-      refs.pVal.textContent = p.toFixed(2);
       refs.nVal.textContent = n;
       refs.pDisplay.textContent = p.toFixed(2);
-      const turboMode = !!(refs.turbo && refs.turbo.checked);
-      const coordinationTax = !!(refs.neonplot && refs.neonplot.checked);
-      const effectiveP = clamp(p * (turboMode ? 0.88 : 1.0) + (coordinationTax ? 0.025 : 0), 0.001, 0.99);
-      const strictDepth = n + (coordinationTax ? 1 : 0);
+      const effectiveP = clamp(p, 0.001, 0.99);
+      const strictDepth = n;
       const pNaive  = 1 - Math.pow(effectiveP, n);
       const pStrict = Math.pow(1 - effectiveP, strictDepth);
       const delta   = pNaive - pStrict;
@@ -785,29 +790,24 @@
       else minN99 = Math.ceil(Math.log(0.01) / Math.log(effectiveP));
       refs.minNVal.textContent = isFinite(minN99) ? minN99 : "\u221e";
 
-      // Sweet spot detection + visual feedback
-      const inSweetZone = p >= 0.10 && p <= 0.75 && isFinite(minN99) && n >= minN99 + (coordinationTax ? 1 : 0);
-      
-      // Slider glow: how close are we to sweet zone?
-      const pCloseness = (p >= 0.10 && p <= 0.75) ? Math.min(1, Math.abs(effectiveP - 0.425) / 0.325 * 0.7) : 0; // closer to mid = better
+      // Sweet spot: hit 99% reliability with the minimum tries.
+      const inSweetZone = isFinite(minN99) && n >= minN99 && pNaive >= 0.99;
       const nCloseness = (n >= minN99 && n <= 10) ? Math.min(1, 1 - (n - minN99) / (10 - minN99) * 0.3) : 0;
-      labFxSliderGlow(refs.p, inSweetZone ? 1 : pCloseness * 0.5);
       labFxSliderGlow(refs.n, inSweetZone ? 1 : nCloseness * 0.5);
-      labFxApproachingZone(refs.p, inSweetZone ? 0 : pCloseness);
       labFxApproachingZone(refs.n, inSweetZone ? 0 : nCloseness);
       currentP = effectiveP;
-      
+
       if (refs.sweetTg) {
         refs.sweetTg.hidden = !inSweetZone;
         if (inSweetZone) {
-          refs.sweetTg.textContent = "You found the operating point. At p = " + p.toFixed(2) + " and N = " + n + ", naive multi-send hits " + (pNaive*100).toFixed(1) + "% reliability. This is the regime Raft, Cassandra, and Bitcoin confirmation depth all live in. Strict-chain manages " + (pStrict*100).toFixed(1) + "% -- which is why two-phase commit has a blocking problem and Paxos does not. Reload the Matrix all you want; this inequality still holds.";
-          unlockQuest("tg", "Consensus: you found a viable reality branch. The Architect sends regards.");
+          refs.sweetTg.textContent = "🎯 You cracked the " + tgCurrentScenarioName() + " scenario! At " + (p*100).toFixed(0) + "% signal loss, just " + n + " tries gets you " + (pNaive*100).toFixed(1) + "% reliability. This is the trick TCP uses every time your phone reconnects on bad WiFi.";
+          unlockQuest("tg", "Consensus: you beat the scenario.");
         }
       }
 
-      // Animation speed: faster in sweet zone; turbo shrinks baseline
-      const baseMs = turboMode ? 280 : 700;
-      const sweetMs = turboMode ? 180 : 500;
+      // Animation speed: faster in sweet zone
+      const baseMs = 700;
+      const sweetMs = 500;
       const newSpawnMs = inSweetZone ? sweetMs : baseMs;
       if (newSpawnMs !== spawnMs || inSweetZone !== lastSweetZone) {
         spawnMs = newSpawnMs;
@@ -818,9 +818,6 @@
       // Valley class for sweet zone styling
       if (refs.valley) {
         refs.valley.classList.toggle("lab-tg__valley--sweet", inSweetZone);
-      }
-      if (refs.plot && refs.neonplot) {
-        refs.plot.classList.toggle("lab-plot--neon-sweet", inSweetZone && refs.neonplot.checked);
       }
 
       // Insight — short, plain-English regime descriptions.
@@ -851,29 +848,19 @@
       drawPlot(p, n);
     }
 
-    // Randomize starting parameters on each refresh for replayability
-    const randP = (0.25 + Math.random() * 0.45).toFixed(2);
-    const randN = Math.floor(2 + Math.random() * 5);
-    refs.p.value = randP;
-    refs.n.value = randN;
-
-    // Aim → Fire → Score. Slider movement only updates the slider value
-    // display; the grade and metrics stay hidden until the player commits
-    // by pressing Run experiment. Re-arming a slider resets to pending.
+    // Aim → Fire → Score.
     refs.runBtn = $('[data-role="tg-run-btn"]', root);
     let tgRevealed = false;
     const tgHint = makeHintTracker(refs.insight, [
-      "If the signal is dropping a lot, try raising the number of tries.",
-      "Sweet spot: medium loss (around 0.4–0.5) and 4–6 tries beats brute force.",
-      "More tries always helps — but past 6, you're paying for diminishing returns.",
+      "If you keep missing 99%, try raising the number of tries.",
+      "Even at 65% signal loss, 7 tries gets you above 99%. The math is wild.",
+      "5★ means hitting 99% with the fewest tries possible for the scenario.",
     ]);
 
     function tgSliderDisplay() {
-      const p = parseFloat(refs.p.value);
       const n = parseInt(refs.n.value, 10);
-      refs.pVal.textContent = p.toFixed(2);
       refs.nVal.textContent = n;
-      refs.pDisplay.textContent = p.toFixed(2);
+      refs.pDisplay.textContent = tgCurrentP().toFixed(2);
     }
     function tgPendReadout(msg) {
       tgRevealed = false;
@@ -881,7 +868,7 @@
       refs.strict.textContent = "—";
       refs.delta.textContent = "—";
       refs.minNVal.textContent = "—";
-      refs.insight.textContent = msg || "Set the sliders. Hit Run experiment to see the grade.";
+      refs.insight.textContent = msg || "Pick a scenario, choose your strategy, then hit Run experiment.";
       if (refs.sweetTg) refs.sweetTg.hidden = true;
       setStars(refs.starsTg, 0, "Press Run to score", { header: "Run grade", pending: true });
       root.classList.add("lab-experiment--pending");
@@ -893,7 +880,6 @@
       refs.runBtn.classList.add("is-running");
       refs.runBtn.disabled = true;
       if (btnText) btnText.textContent = "Running…";
-      // brief experiment animation: messengers run hot during the reveal
       const prevSpawnMs = spawnMs;
       spawnMs = 220;
       restartAnim();
@@ -913,26 +899,31 @@
     function tgOnSlider() {
       tgSliderDisplay();
       if (tgRevealed) {
-        tgPendReadout("Slider moved. Hit Run experiment to score the new setup.");
+        tgPendReadout("New strategy. Hit Run experiment to see if you cracked it.");
       }
-      // Visuals still update (animation speed reflects current p) so
-      // the channel feels alive while the player is still aiming.
-      const p = parseFloat(refs.p.value);
-      currentP = p;
-      const turboMode = !!(refs.turbo && refs.turbo.checked);
-      const effectiveP = clamp(p * (turboMode ? 0.88 : 1.0), 0.001, 0.99);
-      currentP = effectiveP;
-      drawPlot(p, parseInt(refs.n.value, 10));
+      currentP = tgCurrentP();
+      drawPlot(currentP, parseInt(refs.n.value, 10));
     }
-    refs.p.addEventListener("input", tgOnSlider);
     refs.n.addEventListener("input", tgOnSlider);
-    if (refs.turbo) refs.turbo.addEventListener("change", tgOnSlider);
-    if (refs.neonplot) refs.neonplot.addEventListener("change", tgOnSlider);
+
+    // Level picker — clicking a scenario sets the active state and pends.
+    if (refs.levels) {
+      refs.levels.addEventListener("click", function (ev) {
+        const btn = ev.target.closest(".lab-level");
+        if (!btn || !refs.levels.contains(btn)) return;
+        refs.levels.querySelectorAll(".lab-level").forEach(function (b) {
+          b.classList.remove("lab-level--active");
+        });
+        btn.classList.add("lab-level--active");
+        tgOnSlider();
+      });
+    }
+
     if (refs.runBtn) refs.runBtn.addEventListener("click", tgCommitRun);
 
     tgSliderDisplay();
     tgPendReadout();
-    drawPlot(parseFloat(refs.p.value), parseInt(refs.n.value, 10));
+    drawPlot(tgCurrentP(), parseInt(refs.n.value, 10));
     startAnim();
   }
 
@@ -946,10 +937,8 @@
     const refs = {
       eps:        $('[data-role="eps"]', root),
       k:          $('[data-role="k"]', root),
-      sigma:      $('[data-role="sigma"]', root),
       epsVal:     $('[data-role="eps-val"]', root),
       kVal:       $('[data-role="k-val"]', root),
-      sigmaVal:   $('[data-role="sigma-val"]', root),
       grid:       $('[data-role="grid"]', root),
       plot:       $('[data-role="plot-wm"]', root),
       det:        $('[data-role="det-val"]', root),
@@ -958,12 +947,21 @@
       utilityVal: $('[data-role="utility-val"]', root),
       sweetWm:    $('[data-role="sweet-spot-wm"]', root),
       insight:    $('[data-role="insight-wm"]', root),
-      alpha:      $('[data-role="alpha"]', root),
-      alphaVal:   $('[data-role="alpha-val"]', root),
-      wmNeon:     $('[data-role="wm-neon"]', root),
-      wmPop:      $('[data-role="wm-pop"]', root),
+      levels:     $('[data-role="wm-levels"]', root),
       starsWm:    $('[data-role="stars-wm"]', root),
     };
+    // Thief noise comes from the active level. Detector strictness is fixed.
+    function wmCurrentSigma() {
+      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
+      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      return btn ? parseFloat(btn.dataset.sigma) : 0.15;
+    }
+    function wmCurrentThiefName() {
+      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
+      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      return btn ? (btn.dataset.name || "thief") : "thief";
+    }
+    const FIXED_ALPHA = 0.05;
 
     const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
 
@@ -1090,7 +1088,7 @@
       const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
       title.textContent = "Detection rate vs attacker noise σ | ε = " + eps.toFixed(2);
 
-      const zc = zForOneSidedAlpha(parseFloat(refs.alpha.value));
+      const zc = zForOneSidedAlpha(FIXED_ALPHA);
 
       // Y-axis gridlines/ticks
       [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
@@ -1204,20 +1202,16 @@
       const prevSw = prevSweetWm;
       const eps   = parseFloat(refs.eps.value);
       const k     = parseInt(refs.k.value, 10);
-      const sigma = parseFloat(refs.sigma.value);
-      const alphaSig = parseFloat(refs.alpha.value);
+      const sigma = wmCurrentSigma();
+      const alphaSig = FIXED_ALPHA;
       const zc = zForOneSidedAlpha(alphaSig);
       refs.epsVal.textContent   = eps.toFixed(2);
       refs.kVal.textContent     = k;
-      refs.sigmaVal.textContent = sigma.toFixed(2);
-      if (refs.alphaVal) refs.alphaVal.textContent = alphaSig.toFixed(3);
 
       const sd  = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
       const snr = eps / sd;
-      const detectorBoost = (refs.wmNeon && refs.wmNeon.checked) ? -0.10 : 0.08;
-      const effectiveZc = Math.max(0.01, zc + detectorBoost);
-      const validationBoost = (refs.wmPop && refs.wmPop.checked) ? 2 : 0;
-      const effectiveK = Math.min(64, k + validationBoost);
+      const effectiveZc = zc;
+      const effectiveK = k;
       const q   = qDetect(eps, sigma, effectiveZc);
       const det = aggregateDetect(q, effectiveK);
       const fpr = aggregateDetect(alphaSig, effectiveK);
@@ -1250,12 +1244,12 @@
       if (refs.sweetWm) {
         refs.sweetWm.hidden = !inSweetWm;
         if (inSweetWm) {
-          refs.sweetWm.textContent = "You found the publishable operating point. Detection " + (det*100).toFixed(1) + "%, false-positive rate " + (fpr*100).toFixed(2) + "%, SNR " + snr.toFixed(2) + ". This is the regime from the 2024 IEEE Access paper: k = " + k + " cells at \u03b5 = " + eps.toFixed(2) + " survives fine-tuning noise up to \u03c3 = " + sigma.toFixed(2) + " while keeping downstream accuracy intact. Court-admissible. The cake remains non-admissible.";
-          unlockQuest("wm", "Watermark: court-grade signal. Still no cake.");
+          refs.sweetWm.textContent = "\ud83c\udfaf You caught the " + wmCurrentThiefName() + "! Detection " + (det*100).toFixed(1) + "%, false alarms only " + (fpr*100).toFixed(2) + "%, model still intact. This is the regime real AI provenance disputes can defend.";
+          unlockQuest("wm", "Watermark: court-grade signal.");
         }
       }
-      const neonEnabled = !!(refs.wmNeon && refs.wmNeon.checked);
-      const shouldPulse = refs.wmPop && refs.wmPop.checked && wmUpdateSeq > 0 &&
+      const neonEnabled = false;
+      const shouldPulse = wmUpdateSeq > 0 &&
         wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, prevEffectiveK, det, fpr, inSweetWm, effectiveK);
       wmUpdateSeq++;
       prevSweetWm = inSweetWm;
@@ -1290,8 +1284,6 @@
       wmHint(wmStars);
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
-      /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
-      if (refs.wmNeon) refs.grid.classList.toggle("lab-wm__grid--neon", neonEnabled && q >= 0.08);
       if (shouldPulse) {
         refs.grid.classList.add("lab-wm__grid--pop");
         clearTimeout(wmPopTimer);
@@ -1302,32 +1294,20 @@
       drawPlot(eps, k, sigma);
     }
 
-    // Randomize starting parameters on each refresh for replayability
-    const randEps = (0.12 + Math.random() * 0.20).toFixed(2);
-    const randK = Math.floor(4 + Math.random() * 20);
-    const randSigma = (0.05 + Math.random() * 0.15).toFixed(2);
-    refs.eps.value = randEps;
-    refs.k.value = randK;
-    refs.sigma.value = randSigma;
-
-    // Aim → Fire → Score. Same commit pattern as Consensus.
+    // Aim → Fire → Score.
     refs.runBtn = $('[data-role="wm-run-btn"]', root);
     let wmRevealed = false;
     const wmHint = makeHintTracker(refs.insight, [
-      "If detection is low, try planting your mark in more places (raise k).",
-      "Sweet spot: a moderate signal (ε near 0.15) hidden in many spots (k around 14–22).",
-      "Going too bold (ε > 0.25) usually ruins the model. Stay subtle, plant widely.",
+      "If you can't catch the thief, plant more marks (raise k).",
+      "Sweet spot: a moderate signal (ε ~0.15) hidden in many spots (k ~16).",
+      "Going too bold (ε > 0.25) breaks the model. Stay subtle, plant widely.",
     ]);
 
     function wmSliderDisplay() {
       const eps = parseFloat(refs.eps.value);
       const k = parseInt(refs.k.value, 10);
-      const sigma = parseFloat(refs.sigma.value);
-      const a = parseFloat(refs.alpha.value);
       refs.epsVal.textContent = eps.toFixed(2);
       refs.kVal.textContent = k;
-      refs.sigmaVal.textContent = sigma.toFixed(2);
-      if (refs.alphaVal) refs.alphaVal.textContent = a.toFixed(3);
     }
     function wmPendReadout(msg) {
       wmRevealed = false;
@@ -1335,7 +1315,7 @@
       refs.det.textContent = "—";
       refs.fpr.textContent = "—";
       if (refs.utilityVal) refs.utilityVal.textContent = "—";
-      refs.insight.textContent = msg || "Set the sliders. Hit Run experiment to score the detector.";
+      refs.insight.textContent = msg || "Pick a thief, choose your strategy, then hit Run experiment.";
       if (refs.sweetWm) refs.sweetWm.hidden = true;
       setStars(refs.starsWm, 0, "Press Run to score", { header: "Run grade", pending: true });
       root.classList.add("lab-experiment--pending");
@@ -1347,7 +1327,6 @@
       refs.runBtn.classList.add("is-running");
       refs.runBtn.disabled = true;
       if (btnText) btnText.textContent = "Running…";
-      // Visual: flash the grid as if the verifier is scanning
       if (refs.grid) {
         refs.grid.classList.add("lab-wm__grid--pop");
         setTimeout(function () { if (refs.grid) refs.grid.classList.remove("lab-wm__grid--pop"); }, 360);
@@ -1364,16 +1343,21 @@
     }
     function wmOnSlider() {
       wmSliderDisplay();
-      if (wmRevealed) {
-        wmPendReadout("Slider moved. Hit Run experiment to re-score.");
-      }
+      if (wmRevealed) wmPendReadout("New strategy. Hit Run experiment to re-score.");
     }
     refs.eps.addEventListener("input", wmOnSlider);
     refs.k.addEventListener("input", wmOnSlider);
-    refs.sigma.addEventListener("input", wmOnSlider);
-    if (refs.alpha) refs.alpha.addEventListener("input", wmOnSlider);
-    if (refs.wmNeon) refs.wmNeon.addEventListener("change", wmOnSlider);
-    if (refs.wmPop) refs.wmPop.addEventListener("change", wmOnSlider);
+    if (refs.levels) {
+      refs.levels.addEventListener("click", function (ev) {
+        const btn = ev.target.closest(".lab-level");
+        if (!btn || !refs.levels.contains(btn)) return;
+        refs.levels.querySelectorAll(".lab-level").forEach(function (b) {
+          b.classList.remove("lab-level--active");
+        });
+        btn.classList.add("lab-level--active");
+        wmOnSlider();
+      });
+    }
     if (refs.runBtn) refs.runBtn.addEventListener("click", wmCommitRun);
 
     wmSliderDisplay();
@@ -1393,10 +1377,6 @@
     if (!root) return;
 
     const refs = {
-      q:               $('[data-role="q"]', root),
-      rho:             $('[data-role="rho"]', root),
-      qVal:            $('[data-role="q-val"]', root),
-      rhoVal:          $('[data-role="rho-val"]', root),
       sysVal:          $('[data-role="sys-val"]', root),
       singleVal:       $('[data-role="single-val"]', root),
       gainVal:         $('[data-role="gain-val"]', root),
@@ -1409,20 +1389,31 @@
       cells3:          $('[data-cells="3"]', root),
       cellsSys:        $('[data-cells="sys"]', root),
       tmrStrip:        $('[data-role="tmr-strip"]', root),
-      hypersim:        $('[data-role="tmr-hypersim"]', root),
-      glow:            $('[data-role="tmr-glow"]', root),
       nChannels:       $('[data-role="n-channels"]', root),
       nChannelsVal:    $('[data-role="n-channels-val"]', root),
+      levels:          $('[data-role="tmr-levels"]', root),
       starsTmr:        $('[data-role="stars-tmr"]', root),
     };
 
+    function tmrCurrentLevel() {
+      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
+      return active || (refs.levels && refs.levels.querySelector(".lab-level"));
+    }
+    function tmrCurrentQ() {
+      const btn = tmrCurrentLevel();
+      return btn ? parseFloat(btn.dataset.q) : 0.05;
+    }
+    function tmrCurrentRho() {
+      const btn = tmrCurrentLevel();
+      return btn ? parseFloat(btn.dataset.rho) : 0.05;
+    }
+    function tmrCurrentMissionName() {
+      const btn = tmrCurrentLevel();
+      return btn ? (btn.dataset.name || "mission") : "mission";
+    }
+
     function tmrEffectiveRho(rho) {
-      const fastWindow = !!(refs.hypersim && refs.hypersim.checked);
-      const diverseVoter = !!(refs.glow && refs.glow.checked);
-      let effective = rho;
-      if (fastWindow) effective *= 0.88;
-      if (diverseVoter) effective *= 0.65;
-      return Math.max(0, Math.min(1, effective));
+      return Math.max(0, Math.min(1, rho));
     }
 
     /* Binomial coefficient C(n, k). Cached for the small N values we use. */
@@ -1610,7 +1601,7 @@
           void sysRow.offsetWidth;
           sysRow.classList.add("is-flashing");
         }
-        if (refs.glow && refs.glow.checked && refs.tmrStrip) {
+        if (refs.tmrStrip) {
           refs.tmrStrip.classList.remove("lab-tmr-strip--pulse");
           void refs.tmrStrip.offsetWidth;
           refs.tmrStrip.classList.add("lab-tmr-strip--pulse");
@@ -1639,15 +1630,13 @@
       if (document.hidden) { stopSim(); } else if (tmrRevealed) { startSim(); }
     });
 
-    /* ---- Live update from sliders ---- */
+    /* ---- Live update ---- */
     let prev = { sys: 3*0.05*0.05 - 2*Math.pow(0.05,3), single: 0.05, gain: 0 };
     function update() {
-      const q   = parseFloat(refs.q.value);
-      const rho = parseFloat(refs.rho.value);
+      const q = tmrCurrentQ();
+      const rho = tmrCurrentRho();
       const N = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
       currentQ = q; currentRho = rho; currentNChannels = N;
-      refs.qVal.textContent   = q.toFixed(3);
-      refs.rhoVal.textContent = rho.toFixed(2);
       if (refs.nChannelsVal) refs.nChannelsVal.textContent = String(N);
 
       const rhoEff = tmrEffectiveRho(rho);
@@ -1670,23 +1659,15 @@
         refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
       }
 
-      // Sweet spot: well inside the safe operating envelope + visual feedback
-      const inSweetTmr = rhoBE !== null && rhoEff < rhoBE * 0.5 && q < 0.10 && gain >= 10;
+      // Sweet spot: real safety win on this mission.
+      const inSweetTmr = gain >= 100;
       const overBreakeven = rhoBE !== null && rhoEff > rhoBE && rhoBE < 0.99;
-      
-      // Slider glow feedback for TMR
-      const qCloseness = Math.max(0, 1 - Math.abs(q - 0.035) / 0.10); // 0.035 is good target
-      const rhoCloseness = rhoBE !== null ? Math.max(0, 1 - Math.abs(rhoEff - rhoBE * 0.3) / (rhoBE * 0.5)) : 0;
-      labFxSliderGlow(refs.q, inSweetTmr ? 1 : qCloseness * 0.6);
-      labFxSliderGlow(refs.rho, inSweetTmr ? 1 : rhoCloseness * 0.6);
-      labFxApproachingZone(refs.q, inSweetTmr ? 0 : qCloseness);
-      labFxApproachingZone(refs.rho, inSweetTmr ? 0 : rhoCloseness);
 
       if (refs.sweetTmr) {
         refs.sweetTmr.hidden = !inSweetTmr;
         if (inSweetTmr) {
-          refs.sweetTmr.textContent = "You found the safe operating envelope. At q = " + q.toFixed(3) + " and effective \u03c1 = " + rhoEff.toFixed(2) + ", TMR delivers " + gain.toFixed(1) + "x reliability gain. The break-even correlation for this failure rate is \u03c1 \u2248 " + rhoBE.toFixed(2) + ". Stay below it and three diverse computers are worth every euro. Cross it and you have an Ariane 5. For your safety, please assume the brace position for correlated bugs.";
-          unlockQuest("tmr", "TMR: redundancy that is not three copies of the same bug. Refreshing.");
+          refs.sweetTmr.textContent = "\ud83c\udfaf You safed the " + tmrCurrentMissionName() + " mission! " + N + " backup computers made it " + gain.toFixed(0) + "\u00d7 safer than just one. This is why your A320 cruises with three independent flight computers.";
+          unlockQuest("tmr", "TMR: redundancy done right.");
         }
       }
 
@@ -1739,11 +1720,7 @@
     ]);
 
     function tmrSliderDisplay() {
-      const q = parseFloat(refs.q.value);
-      const rho = parseFloat(refs.rho.value);
       const N = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
-      refs.qVal.textContent = q.toFixed(3);
-      refs.rhoVal.textContent = rho.toFixed(2);
       if (refs.nChannelsVal) refs.nChannelsVal.textContent = String(N);
     }
     function tmrPendReadout(msg) {
@@ -1752,7 +1729,7 @@
       refs.singleVal.textContent = "—";
       refs.gainVal.textContent = "—";
       if (refs.rhoBreakevenVal) refs.rhoBreakevenVal.textContent = "—";
-      refs.insight.textContent = msg || "Set the sliders. Hit Run experiment to play out the voting.";
+      refs.insight.textContent = msg || "Pick a mission, choose your strategy, then hit Run experiment.";
       if (refs.sweetTmr) refs.sweetTmr.hidden = true;
       setStars(refs.starsTmr, 0, "Press Run to score", { header: "Run grade", pending: true });
       root.classList.add("lab-experiment--pending");
@@ -1770,14 +1747,13 @@
       refs.runBtn.classList.add("is-running");
       refs.runBtn.disabled = true;
       if (btnText) btnText.textContent = "Running…";
-      // Lock in chosen params; clear strip; rapidly tick the simulation
-      currentQ = parseFloat(refs.q.value);
-      currentRho = parseFloat(refs.rho.value);
+      currentQ = tmrCurrentQ();
+      currentRho = tmrCurrentRho();
       currentNChannels = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
       tmrClearStrip();
-      restartSimInterval(80); // fast burst
+      restartSimInterval(80);
       setTimeout(function () {
-        tmrTickMs = refs.hypersim && refs.hypersim.checked ? 200 : 600;
+        tmrTickMs = 600;
         restartSimInterval(tmrTickMs);
         tmrRunning = false;
         refs.runBtn.classList.remove("is-running");
@@ -1792,27 +1768,27 @@
     function tmrOnSlider() {
       tmrSliderDisplay();
       if (tmrRevealed) {
-        tmrPendReadout("Slider moved. Hit Run experiment to re-score.");
+        tmrPendReadout("New strategy. Hit Run experiment to re-score.");
         stopSim();
         tmrClearStrip();
       }
     }
-    refs.q.addEventListener("input", tmrOnSlider);
-    refs.rho.addEventListener("input", tmrOnSlider);
     if (refs.nChannels) refs.nChannels.addEventListener("input", tmrOnSlider);
-    if (refs.hypersim) {
-      refs.hypersim.addEventListener("change", function () {
-        tmrTickMs = refs.hypersim.checked ? 200 : 600;
-        if (tmrRevealed) restartSimInterval(tmrTickMs);
+    if (refs.levels) {
+      refs.levels.addEventListener("click", function (ev) {
+        const btn = ev.target.closest(".lab-level");
+        if (!btn || !refs.levels.contains(btn)) return;
+        refs.levels.querySelectorAll(".lab-level").forEach(function (b) {
+          b.classList.remove("lab-level--active");
+        });
+        btn.classList.add("lab-level--active");
         tmrOnSlider();
       });
     }
-    if (refs.glow) refs.glow.addEventListener("change", tmrOnSlider);
     if (refs.runBtn) refs.runBtn.addEventListener("click", tmrCommitRun);
 
     tmrSliderDisplay();
     tmrPendReadout();
-    // Strip stays idle until first Run — no preview of failure rate.
     stopSim();
   }
 

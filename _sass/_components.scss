@@ -1333,6 +1333,73 @@ html[data-theme="dark"] .lab-plot__legend-value--strict { fill: #fbbf24; }
 }
 .lab-plot__legend-value--wm-current { fill: var(--ds-accent); font-weight: 700; }
 
+/* Level picker — the heart of the puzzle game. Each lab presents 4
+   scenarios the player picks ONE of (the fixed condition), then the
+   player figures out the best strategy. Big chunky game-y buttons. */
+.lab-levels {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.4rem;
+}
+.lab-levels__title {
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+}
+.lab-levels__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+.lab-level {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.7rem 0.85rem;
+  background: var(--ds-surface);
+  border: 2px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
+  font-family: var(--ds-font-sans);
+  color: var(--ds-body);
+  text-align: left;
+  transition: transform 0.12s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+.lab-level:hover {
+  border-color: var(--ds-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.18);
+}
+.lab-level:active { transform: translateY(0); }
+.lab-level__icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.lab-level__name {
+  font-family: var(--ds-font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ds-ink);
+}
+.lab-level__hint {
+  font-family: var(--ds-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--ds-muted);
+  text-transform: uppercase;
+}
+.lab-level--active {
+  border-color: var(--ds-accent);
+  background: linear-gradient(135deg, var(--ds-accent-soft), var(--ds-surface));
+  box-shadow: 0 0 0 1px var(--ds-accent), 0 4px 14px rgba(56, 189, 248, 0.25);
+}
+.lab-level--active .lab-level__name { color: var(--ds-accent-2, var(--ds-accent)); }
+
 /* ---- Pending experiment state (angry-bird "set then fire") ----
    While the player is still aiming, hide the numeric readout behind
    a dimmed veil so the grade only shows up after Run experiment.

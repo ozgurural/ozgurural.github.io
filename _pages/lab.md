@@ -95,26 +95,39 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
 
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
+      <div class="lab-levels" data-role="tg-levels" aria-label="Pick scenario">
+        <strong class="lab-levels__title">Pick the scenario</strong>
+        <div class="lab-levels__row">
+          <button type="button" class="lab-level" data-p="0.15" data-name="Home WiFi">
+            <span class="lab-level__icon">🏖️</span>
+            <span class="lab-level__name">Home WiFi</span>
+            <span class="lab-level__hint">15% drop</span>
+          </button>
+          <button type="button" class="lab-level lab-level--active" data-p="0.40" data-name="City cafe">
+            <span class="lab-level__icon">🏙️</span>
+            <span class="lab-level__name">City cafe</span>
+            <span class="lab-level__hint">40% drop</span>
+          </button>
+          <button type="button" class="lab-level" data-p="0.65" data-name="Subway">
+            <span class="lab-level__icon">🚇</span>
+            <span class="lab-level__name">Subway</span>
+            <span class="lab-level__hint">65% drop</span>
+          </button>
+          <button type="button" class="lab-level" data-p="0.85" data-name="Storm">
+            <span class="lab-level__icon">🌪️</span>
+            <span class="lab-level__name">Storm</span>
+            <span class="lab-level__hint">85% drop</span>
+          </button>
+        </div>
+      </div>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">How bad is the signal?</span>
-          <span class="lab-control__var">p</span>
-          <span class="lab-control__value" data-role="p-val">0.40</span>
-        </span>
-        <input type="range" min="0" max="0.85" step="0.01" value="0.40" data-role="p" aria-label="how bad is the signal">
-      </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">How many tries?</span>
+          <span class="lab-control__name">Your strategy: how many tries?</span>
           <span class="lab-control__var">N</span>
           <span class="lab-control__value" data-role="n-val">3</span>
         </span>
         <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="how many tries">
       </label>
-      <div class="lab-playset" aria-label="Two generals display options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-turbo" title="Reduces effective loss and speeds retry cadence"> Fast retry lane</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tg-neonplot" checked title="Adds coordination overhead and tightens the strict path"> Coordination tax</label>
-      </div>
       <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="tg-run-btn">
         <span class="lab-btn__text">Run experiment</span>
         <span class="lab-btn__bg"></span>
@@ -181,12 +194,34 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
 
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
-      <p class="lab-experiment__slider-guide">
-        Find the bright zone: enough signal to prove ownership, not enough to make the model act haunted.
-      </p>
+      <div class="lab-levels" data-role="wm-levels" aria-label="Pick the thief">
+        <strong class="lab-levels__title">Pick the thief</strong>
+        <div class="lab-levels__row">
+          <button type="button" class="lab-level" data-sigma="0.05" data-name="Casual">
+            <span class="lab-level__icon">🦮</span>
+            <span class="lab-level__name">Casual</span>
+            <span class="lab-level__hint">light tweaks</span>
+          </button>
+          <button type="button" class="lab-level lab-level--active" data-sigma="0.15" data-name="Pro thief">
+            <span class="lab-level__icon">🎭</span>
+            <span class="lab-level__name">Pro thief</span>
+            <span class="lab-level__hint">fine-tunes the model</span>
+          </button>
+          <button type="button" class="lab-level" data-sigma="0.25" data-name="Crafty">
+            <span class="lab-level__icon">🦹</span>
+            <span class="lab-level__name">Crafty</span>
+            <span class="lab-level__hint">scrubs hard</span>
+          </button>
+          <button type="button" class="lab-level" data-sigma="0.35" data-name="Mastermind">
+            <span class="lab-level__icon">🐉</span>
+            <span class="lab-level__name">Mastermind</span>
+            <span class="lab-level__hint">nation-state level</span>
+          </button>
+        </div>
+      </div>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">How bold is your signature?</span>
+          <span class="lab-control__name">Your strategy: how bold is your signature?</span>
           <span class="lab-control__var">ε</span>
           <span class="lab-control__value" data-role="eps-val">0.20</span>
         </span>
@@ -194,32 +229,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">How many hidden marks?</span>
+          <span class="lab-control__name">Your strategy: how many hidden marks?</span>
           <span class="lab-control__var">k</span>
           <span class="lab-control__value" data-role="k-val">8</span>
         </span>
         <input type="range" min="1" max="32" step="1" value="8" data-role="k" aria-label="how many hidden marks">
       </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">How sneaky is the thief?</span>
-          <span class="lab-control__var">σ</span>
-          <span class="lab-control__value" data-role="sigma-val">0.10</span>
-        </span>
-        <input type="range" min="0" max="0.40" step="0.01" value="0.10" data-role="sigma" aria-label="how sneaky is the thief">
-      </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Detector strictness</span>
-          <span class="lab-control__var">α</span>
-          <span class="lab-control__value" data-role="alpha-val">0.050</span>
-        </span>
-        <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="detector strictness">
-      </label>
-      <div class="lab-playset" aria-label="Watermark visualization tied to detector statistics">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked title="Lowers detector strictness so q and detection move with the signal."> High-contrast detector</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop" title="Adds a broader validation window, which changes effective k and the published regime."> Broader validation window</label>
-      </div>
       <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="wm-run-btn">
         <span class="lab-btn__text">Run experiment</span>
         <span class="lab-btn__bg"></span>
@@ -389,34 +404,39 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
 
   <div class="lab-tmr">
     <div class="lab-experiment__controls">
+      <div class="lab-levels" data-role="tmr-levels" aria-label="Pick the mission">
+        <strong class="lab-levels__title">Pick the mission</strong>
+        <div class="lab-levels__row">
+          <button type="button" class="lab-level" data-q="0.02" data-rho="0.00" data-name="Bank servers">
+            <span class="lab-level__icon">🏢</span>
+            <span class="lab-level__name">Bank servers</span>
+            <span class="lab-level__hint">indoor, calm</span>
+          </button>
+          <button type="button" class="lab-level lab-level--active" data-q="0.05" data-rho="0.05" data-name="Self-driving car">
+            <span class="lab-level__icon">🚗</span>
+            <span class="lab-level__name">Self-driving</span>
+            <span class="lab-level__hint">city traffic</span>
+          </button>
+          <button type="button" class="lab-level" data-q="0.08" data-rho="0.10" data-name="A320 cruise">
+            <span class="lab-level__icon">✈️</span>
+            <span class="lab-level__name">A320 cruise</span>
+            <span class="lab-level__hint">stormy day</span>
+          </button>
+          <button type="button" class="lab-level" data-q="0.12" data-rho="0.20" data-name="Mars rover">
+            <span class="lab-level__icon">🚀</span>
+            <span class="lab-level__name">Mars rover</span>
+            <span class="lab-level__hint">cosmic rays</span>
+          </button>
+        </div>
+      </div>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">How often each computer crashes</span>
-          <span class="lab-control__var">q</span>
-          <span class="lab-control__value" data-role="q-val">0.05</span>
-        </span>
-        <input type="range" min="0.005" max="0.30" step="0.005" value="0.05" data-role="q" aria-label="how often each computer crashes">
-      </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Do they crash together?</span>
-          <span class="lab-control__var">ρ</span>
-          <span class="lab-control__value" data-role="rho-val">0.00</span>
-        </span>
-        <input type="range" min="0" max="1" step="0.01" value="0.00" data-role="rho" aria-label="do they crash together">
-      </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">How many computers?</span>
+          <span class="lab-control__name">Your strategy: how many backup computers?</span>
           <span class="lab-control__var">N</span>
           <span class="lab-control__value" data-role="n-channels-val">3</span>
         </span>
         <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="how many computers">
       </label>
-      <div class="lab-playset" aria-label="TMR simulation options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-hypersim" title="Shortens the voting window and changes the sampling cadence"> Short voting window</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-glow" checked title="Reduces effective correlation with a diverse voter model"> Diverse voter row</label>
-      </div>
       <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="tmr-run-btn">
         <span class="lab-btn__text">Run experiment</span>
         <span class="lab-btn__bg"></span>
