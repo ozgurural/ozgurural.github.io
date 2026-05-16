@@ -100,10 +100,10 @@ excerpt: "Five interactive thought experiments from my research — distributed 
             <span class="lab-level__name">Subway</span>
             <span class="lab-level__hint">65% drop · need 95%</span>
           </button>
-          <button type="button" class="lab-level" data-p="0.85" data-goal="0.80" data-min-n="10" data-name="Storm">
+          <button type="button" class="lab-level" data-p="0.85" data-goal="0.70" data-min-n="8" data-name="Storm">
             <span class="lab-level__icon">🌪️</span>
             <span class="lab-level__name">Storm</span>
-            <span class="lab-level__hint">85% drop · need 80%</span>
+            <span class="lab-level__hint">85% drop · need 70%</span>
           </button>
         </div>
       </div>

@@ -851,7 +851,12 @@
       refs.insight.textContent = msg || "Pick a scenario, choose your strategy, then hit Run experiment.";
       if (refs.sweetTg) refs.sweetTg.hidden = true;
       setStars(refs.starsTg, 0, "Press Run to score", { header: "Run grade", pending: true });
-      setVerdict(refs.verdict, "—", msg || "Pick a scenario, choose retries, hit Run.", "pending");
+      const goalPct = (tgCurrentGoal() * 100).toFixed(1);
+      const scenario = tgCurrentScenarioName();
+      setVerdict(refs.verdict,
+        "🎯 Goal: " + goalPct + "% chance the message gets through",
+        msg || "Scenario: " + scenario + " · pick the number of retries · hit Run experiment.",
+        "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
@@ -1310,7 +1315,12 @@
       refs.insight.textContent = msg || "Pick a thief, choose your strategy, then hit Run experiment.";
       if (refs.sweetWm) refs.sweetWm.hidden = true;
       setStars(refs.starsWm, 0, "Press Run to score", { header: "Run grade", pending: true });
-      setVerdict(refs.verdict, "—", msg || "Pick a thief, set your strategy, hit Run.", "pending");
+      const goalPct = (wmCurrentGoalDet() * 100).toFixed(0);
+      const thief = wmCurrentThiefName();
+      setVerdict(refs.verdict,
+        "🎯 Goal: catch the " + thief + " with " + goalPct + "%+ confidence",
+        msg || "Tune signature strength (ε) and number of marks (k) · hit Run experiment.",
+        "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
@@ -1740,7 +1750,12 @@
       refs.insight.textContent = msg || "Pick a mission, choose your strategy, then hit Run experiment.";
       if (refs.sweetTmr) refs.sweetTmr.hidden = true;
       setStars(refs.starsTmr, 0, "Press Run to score", { header: "Run grade", pending: true });
-      setVerdict(refs.verdict, "—", msg || "Pick a mission, choose backup count, hit Run.", "pending");
+      const goalGain = tmrCurrentGoalGain();
+      const mission = tmrCurrentMissionName();
+      setVerdict(refs.verdict,
+        "🎯 Goal: make " + mission + " ≥ " + goalGain + "× safer than one computer",
+        msg || "Pick the number of backup computers · hit Run experiment.",
+        "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
@@ -2091,7 +2106,10 @@
       refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. Challenge: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
       setStars(refs.starsGd, 0, "Press Train to score", { header: "Run grade", pending: true });
-      setVerdict(refs.verdict, "—", "Challenge: " + activeLandscape.name + ". Pick step size + momentum, hit Train.", "pending");
+      setVerdict(refs.verdict,
+        "🎯 Goal: land the ball in the deepest valley",
+        "Challenge: " + activeLandscape.name + ". Pick step size and momentum · hit Train.",
+        "pending");
     }
     
     function updateReadout() {
@@ -2527,7 +2545,10 @@
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
       refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88).";
       setStars(refs.starsPol, 0, "Press Train to score", { header: "Run grade", pending: true });
-      setVerdict(refs.verdict, "—", "Set hyperparameters, hit Train, watch the curve.", "pending");
+      setVerdict(refs.verdict,
+        "🎯 Goal: earn Gold Proof (verification score ≥ 88)",
+        "Tune learning rate and batch size · hit Train · watch the loss curve.",
+        "pending");
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {

@@ -1471,33 +1471,11 @@ html[data-theme="dark"] .lab-experiment__verdict--fail .lab-experiment__verdict-
    While the player is still aiming, hide the numeric readout behind
    a dimmed veil so the grade only shows up after Run experiment.
    Metrics still occupy space (no layout shift); they just read "—". */
+/* Until the player clicks Run, the metrics are hidden completely —
+   so the numeric answer can't leak through a dimmed overlay. The
+   verdict banner above carries the goal and the post-run result. */
 .lab-experiment--pending .lab-experiment__readout {
-  opacity: 0.45;
-  filter: blur(0.6px) saturate(0.75);
-  transition: opacity 0.3s ease, filter 0.3s ease;
-  pointer-events: none;
-  position: relative;
-}
-.lab-experiment--pending .lab-experiment__readout::after {
-  content: "Press Run experiment to reveal the grade";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--ds-font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--ds-muted);
-  background: rgba(248, 250, 252, 0.45);
-  backdrop-filter: blur(1px);
-  pointer-events: none;
-  border-radius: var(--ds-radius-sm);
-}
-html[data-theme="dark"] .lab-experiment--pending .lab-experiment__readout::after {
-  background: rgba(15, 23, 42, 0.45);
-  color: var(--ds-soft);
+  display: none;
 }
 .lab-experiment--revealed .lab-experiment__readout {
   animation: lab-readout-reveal 0.5s ease-out both;
