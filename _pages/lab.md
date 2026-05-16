@@ -8,7 +8,7 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Interactive research arcade</span>
   <h2 class="lab-hero__title">Aim. Fire. Get graded.</h2>
   <p class="lab-hero__copy">
-    Five science games, played the same way: set your parameters, hit <strong>Run experiment</strong>, and let the simulation grade your run from <strong>Wipeout</strong> to <strong>Frontier</strong>. No hints on the dial — 5★ means you actually found the regime real systems run in.
+    Five tiny science games, played the same way: set your parameters, hit <strong>Run experiment</strong>, and the simulation grades your run from <strong>Oof</strong> 💥 to <strong>Legendary</strong> 🏆. No hints on the dial — 5★ means you actually nailed it.
   </p>
   <div class="lab-hero__actions" aria-label="Jump to experiments">
     <a href="#lab-wm">Catch a stolen AI model</a>
@@ -97,19 +97,19 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
     <div class="lab-experiment__controls">
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Loss rate</span>
+          <span class="lab-control__name">How bad is the signal?</span>
           <span class="lab-control__var">p</span>
           <span class="lab-control__value" data-role="p-val">0.40</span>
         </span>
-        <input type="range" min="0" max="0.85" step="0.01" value="0.40" data-role="p" aria-label="loss rate p">
+        <input type="range" min="0" max="0.85" step="0.01" value="0.40" data-role="p" aria-label="how bad is the signal">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Protocol depth</span>
+          <span class="lab-control__name">How many tries?</span>
           <span class="lab-control__var">N</span>
           <span class="lab-control__value" data-role="n-val">3</span>
         </span>
-        <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="protocol depth N">
+        <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="how many tries">
       </label>
       <div class="lab-playset" aria-label="Two generals display options">
         <label class="lab-playset__opt"><input type="checkbox" data-role="tg-turbo" title="Reduces effective loss and speeds retry cadence"> Fast retry lane</label>
@@ -136,24 +136,24 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
     <div class="lab-experiment__scorebar" data-role="stars-tg" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Naive multi-send</span>
+        <span class="lab-experiment__metric-label">Smart strategy</span>
         <span class="lab-experiment__metric-value" data-role="naive-val">—</span>
-        <span class="lab-experiment__metric-formula">P(win) = 1 − p<sup>N</sup></span>
+        <span class="lab-experiment__metric-formula">send many copies — need 1 to arrive</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Strict chain</span>
+        <span class="lab-experiment__metric-label">Strict strategy</span>
         <span class="lab-experiment__metric-value" data-role="strict-val">—</span>
-        <span class="lab-experiment__metric-formula">P(win) = (1 − p)<sup>N</sup></span>
+        <span class="lab-experiment__metric-formula">every message must arrive</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--delta">
-        <span class="lab-experiment__metric-label">Δ</span>
+        <span class="lab-experiment__metric-label">Smart vs strict</span>
         <span class="lab-experiment__metric-value" data-role="delta-val">—</span>
-        <span class="lab-experiment__metric-formula">in favour of naive</span>
+        <span class="lab-experiment__metric-formula">smart wins by this much</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--minN">
-        <span class="lab-experiment__metric-label">Min N for 99%</span>
+        <span class="lab-experiment__metric-label">Min tries for 99%</span>
         <span class="lab-experiment__metric-value" data-role="minN-val">—</span>
-        <span class="lab-experiment__metric-formula">naive ≥ 0.99</span>
+        <span class="lab-experiment__metric-formula">tries needed for 99%</span>
       </div>
     </div>
     <p class="lab-experiment__insight" data-role="insight">Drag the sliders. Pretty plots, ugly impossibility: deterministic consensus over lossy channels still does not exist.</p>
@@ -185,35 +185,35 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       </p>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Perturbation</span>
+          <span class="lab-control__name">How bold is your signature?</span>
           <span class="lab-control__var">ε</span>
           <span class="lab-control__value" data-role="eps-val">0.20</span>
         </span>
-        <input type="range" min="0.02" max="0.45" step="0.01" value="0.20" data-role="eps" aria-label="perturbation magnitude epsilon">
+        <input type="range" min="0.02" max="0.45" step="0.01" value="0.20" data-role="eps" aria-label="how bold is the watermark signature">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Key size</span>
+          <span class="lab-control__name">How many hidden marks?</span>
           <span class="lab-control__var">k</span>
           <span class="lab-control__value" data-role="k-val">8</span>
         </span>
-        <input type="range" min="1" max="32" step="1" value="8" data-role="k" aria-label="key size k">
+        <input type="range" min="1" max="32" step="1" value="8" data-role="k" aria-label="how many hidden marks">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Attack noise</span>
+          <span class="lab-control__name">How sneaky is the thief?</span>
           <span class="lab-control__var">σ</span>
           <span class="lab-control__value" data-role="sigma-val">0.10</span>
         </span>
-        <input type="range" min="0" max="0.40" step="0.01" value="0.10" data-role="sigma" aria-label="attack noise sigma">
+        <input type="range" min="0" max="0.40" step="0.01" value="0.10" data-role="sigma" aria-label="how sneaky is the thief">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Significance</span>
+          <span class="lab-control__name">Detector strictness</span>
           <span class="lab-control__var">α</span>
           <span class="lab-control__value" data-role="alpha-val">0.050</span>
         </span>
-        <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="significance level alpha">
+        <input type="range" min="0.001" max="0.10" step="0.001" value="0.050" data-role="alpha" aria-label="detector strictness">
       </label>
       <div class="lab-playset" aria-label="Watermark visualization tied to detector statistics">
         <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked title="Lowers detector strictness so q and detection move with the signal."> High-contrast detector</label>
@@ -248,14 +248,14 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
         <span class="lab-experiment__metric-formula">on plain noise</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--snr">
-        <span class="lab-experiment__metric-label">SNR (per cell)</span>
+        <span class="lab-experiment__metric-label">Signal per mark</span>
         <span class="lab-experiment__metric-value" data-role="snr-val">—</span>
-        <span class="lab-experiment__metric-formula">ε / √(σ²+σ₀²)</span>
+        <span class="lab-experiment__metric-formula">signal vs noise per mark</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--utility">
-        <span class="lab-experiment__metric-label">Utility margin</span>
+        <span class="lab-experiment__metric-label">Model still works?</span>
         <span class="lab-experiment__metric-value" data-role="utility-val">—</span>
-        <span class="lab-experiment__metric-formula">0.25 − ε</span>
+        <span class="lab-experiment__metric-formula">how safe for the model</span>
       </div>
     </div>
 
@@ -288,27 +288,27 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       </p>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Learning rate</span>
+          <span class="lab-control__name">Learning speed</span>
           <span class="lab-control__var">α</span>
           <span class="lab-control__value" data-role="pol-lr-val">0.01</span>
         </span>
-        <input type="range" min="0.001" max="0.05" step="0.001" value="0.01" data-role="pol-lr" aria-label="learning rate alpha">
+        <input type="range" min="0.001" max="0.05" step="0.001" value="0.01" data-role="pol-lr" aria-label="learning speed">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Batch size</span>
+          <span class="lab-control__name">Examples per step</span>
           <span class="lab-control__var">B</span>
           <span class="lab-control__value" data-role="pol-bs-val">32</span>
         </span>
-        <input type="range" min="1" max="8" step="1" value="3" data-role="pol-bs" aria-label="batch size index">
+        <input type="range" min="1" max="8" step="1" value="3" data-role="pol-bs" aria-label="examples per step">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Data noise</span>
+          <span class="lab-control__name">How messy is the data?</span>
           <span class="lab-control__var">ζ</span>
           <span class="lab-control__value" data-role="pol-noise-val">0.05</span>
         </span>
-        <input type="range" min="0.01" max="0.20" step="0.01" value="0.05" data-role="pol-noise" aria-label="data noise zeta">
+        <input type="range" min="0.01" max="0.20" step="0.01" value="0.05" data-role="pol-noise" aria-label="how messy is the data">
       </label>
       <div class="lab-playset" aria-label="Proof-of-Learning pacing">
         <label class="lab-playset__opt"><input type="checkbox" data-role="pol-turbo"> Hyper-training (faster epochs)</label>
@@ -344,7 +344,7 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       <div class="lab-experiment__metric lab-experiment__metric--breakeven">
         <span class="lab-experiment__metric-label">Current loss</span>
         <span class="lab-experiment__metric-value" data-role="pol-loss-val">—</span>
-        <span class="lab-experiment__metric-formula">f(θ)</span>
+        <span class="lab-experiment__metric-formula">how wrong the model is</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Epochs completed</span>
@@ -352,7 +352,7 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
         <span class="lab-experiment__metric-formula">training progress</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Trajectory uniqueness</span>
+        <span class="lab-experiment__metric-label">Unique fingerprint</span>
         <span class="lab-experiment__metric-value" data-role="pol-unique-val">—</span>
         <span class="lab-experiment__metric-formula">collision risk</span>
       </div>
@@ -388,27 +388,27 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
     <div class="lab-experiment__controls">
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Per-channel failure rate</span>
+          <span class="lab-control__name">How often each computer crashes</span>
           <span class="lab-control__var">q</span>
           <span class="lab-control__value" data-role="q-val">0.05</span>
         </span>
-        <input type="range" min="0.005" max="0.30" step="0.005" value="0.05" data-role="q" aria-label="per-channel failure rate q">
+        <input type="range" min="0.005" max="0.30" step="0.005" value="0.05" data-role="q" aria-label="how often each computer crashes">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Common-mode correlation</span>
+          <span class="lab-control__name">Do they crash together?</span>
           <span class="lab-control__var">ρ</span>
           <span class="lab-control__value" data-role="rho-val">0.00</span>
         </span>
-        <input type="range" min="0" max="1" step="0.01" value="0.00" data-role="rho" aria-label="common-mode correlation rho">
+        <input type="range" min="0" max="1" step="0.01" value="0.00" data-role="rho" aria-label="do they crash together">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Redundant Channels (N)</span>
+          <span class="lab-control__name">How many computers?</span>
           <span class="lab-control__var">N</span>
           <span class="lab-control__value" data-role="n-channels-val">3</span>
         </span>
-        <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="number of redundant channels">
+        <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="how many computers">
       </label>
       <div class="lab-playset" aria-label="TMR simulation options">
         <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-hypersim" title="Shortens the voting window and changes the sampling cadence"> Short voting window</label>
@@ -444,24 +444,24 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
     <div class="lab-experiment__scorebar" data-role="stars-tmr" aria-live="polite"></div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">System failure rate</span>
+        <span class="lab-experiment__metric-label">Whole system fails</span>
         <span class="lab-experiment__metric-value" data-role="sys-val">—</span>
-        <span class="lab-experiment__metric-formula">ρq + (1−ρ) majority tail</span>
+        <span class="lab-experiment__metric-formula">chance the whole system crashes</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Single channel</span>
+        <span class="lab-experiment__metric-label">If just one computer</span>
         <span class="lab-experiment__metric-value" data-role="single-val">—</span>
-        <span class="lab-experiment__metric-formula">P(fail) = q</span>
+        <span class="lab-experiment__metric-formula">if there was only one</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Reliability gain</span>
+        <span class="lab-experiment__metric-label">How much safer</span>
         <span class="lab-experiment__metric-value" data-role="gain-val">—</span>
-        <span class="lab-experiment__metric-formula">single ÷ TMR</span>
+        <span class="lab-experiment__metric-formula">how much safer than one</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--breakeven">
-        <span class="lab-experiment__metric-label">Break-even ρ</span>
+        <span class="lab-experiment__metric-label">Shared-fault danger line</span>
         <span class="lab-experiment__metric-value" data-role="rho-breakeven-val">—</span>
-        <span class="lab-experiment__metric-formula">gain = 10×</span>
+        <span class="lab-experiment__metric-formula">when shared bugs win</span>
       </div>
     </div>
 
@@ -490,11 +490,11 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
     <div class="lab-experiment__controls">
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Learning Rate</span>
+          <span class="lab-control__name">Step size</span>
           <span class="lab-control__var">α</span>
           <span class="lab-control__value" data-role="lr-val">0.02</span>
         </span>
-        <input type="range" min="0.001" max="0.10" step="0.001" value="0.02" data-role="lr" aria-label="learning rate">
+        <input type="range" min="0.001" max="0.10" step="0.001" value="0.02" data-role="lr" aria-label="step size">
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
@@ -506,11 +506,11 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       </label>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Batch Noise</span>
+          <span class="lab-control__name">Wobble</span>
           <span class="lab-control__var">ζ</span>
           <span class="lab-control__value" data-role="noise-val">0.00</span>
         </span>
-        <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="batch noise">
+        <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="wobble">
       </label>
       <div class="lab-playset" aria-label="Gradient descent display options">
         <label class="lab-playset__opt"><input type="checkbox" data-role="gd-turbo" title="Speeds the training cadence and shortens the delay between epochs"> Fast epochs</label>
@@ -542,12 +542,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       <div class="lab-experiment__metric lab-experiment__metric--strict">
         <span class="lab-experiment__metric-label">Loss</span>
         <span class="lab-experiment__metric-value" data-role="loss-val">0.00</span>
-        <span class="lab-experiment__metric-formula">f(x)</span>
+        <span class="lab-experiment__metric-formula">how wrong the model is</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--naive">
         <span class="lab-experiment__metric-label">Velocity</span>
         <span class="lab-experiment__metric-value" data-role="vel-val">0.00</span>
-        <span class="lab-experiment__metric-formula">Δx</span>
+        <span class="lab-experiment__metric-formula">how fast it's moving</span>
       </div>
     </div>
 

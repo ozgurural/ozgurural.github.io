@@ -286,12 +286,12 @@
      Renders 5 stars + a tier label. Score is in [0,5] and quantizes
      to whole stars. Each lab passes a tier name from its own scale. */
   const STAR_TIERS = [
-    "Wipeout",      // 0 — slider is in the unsafe band
-    "Sketchy",      // 1 — the math is barely tolerating you
-    "Workable",     // 2 — survives a demo, not a deployment
-    "Solid",        // 3 — a textbook would not flinch
-    "Production",   // 4 — real systems run here
-    "Frontier",     // 5 — the paper is half-written
+    "Oof 💥",       // 0 — way off
+    "Wobbly",       // 1 — barely working
+    "Decent 👍",    // 2 — getting there
+    "Sharp ✨",     // 3 — good run
+    "Slick 🎯",     // 4 — really good
+    "Legendary 🏆", // 5 — nailed it
   ];
   function setStars(host, score, customTier, opts) {
     if (!host) return;
@@ -817,12 +817,12 @@
       // Star grade — small sweet spot.
       // 5★ requires not just reliability but EFFICIENT reliability:
       // ≥99.9% with a thrifty depth (N≤6). Brute force at N=10 gets 4★.
-      let tgStars = 0, tgTier = "Wipeout";
-      if (pNaive >= 0.999 && n <= 6)      { tgStars = 5; tgTier = "Frontier"; }
-      else if (pNaive >= 0.99)            { tgStars = 4; tgTier = "Production"; }
-      else if (pNaive >= 0.95)            { tgStars = 3; tgTier = "Solid"; }
-      else if (pNaive >= 0.80)            { tgStars = 2; tgTier = "Workable"; }
-      else if (pNaive >= 0.55)            { tgStars = 1; tgTier = "Sketchy"; }
+      let tgStars = 0, tgTier = "Oof 💥";
+      if (pNaive >= 0.999 && n <= 6)      { tgStars = 5; tgTier = "Legendary 🏆"; }
+      else if (pNaive >= 0.99)            { tgStars = 4; tgTier = "Slick 🎯"; }
+      else if (pNaive >= 0.95)            { tgStars = 3; tgTier = "Sharp ✨"; }
+      else if (pNaive >= 0.80)            { tgStars = 2; tgTier = "Decent 👍"; }
+      else if (pNaive >= 0.55)            { tgStars = 1; tgTier = "Wobbly"; }
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
 
       drawPlot(p, n);
@@ -1249,15 +1249,15 @@
       // Star grade — small sweet spot.
       // 5★ requires all four to line up: very high detection, very low FPR,
       // healthy SNR, AND the model is still usable (eps ≤ 0.18).
-      let wmStars = 0, wmTier = "Wipeout";
+      let wmStars = 0, wmTier = "Oof 💥";
       const utilityOK = eps <= 0.28;
       if (det >= 0.97 && fpr <= 0.03 && eps <= 0.18 && snr >= 1.5)
-                                                                   { wmStars = 5; wmTier = "Frontier"; }
+                                                                   { wmStars = 5; wmTier = "Legendary 🏆"; }
       else if (det >= 0.90 && fpr <= 0.07 && eps <= 0.22 && snr >= 1.2)
-                                                                   { wmStars = 4; wmTier = "Production"; }
-      else if (det >= 0.70 && fpr <= 0.12 && utilityOK)            { wmStars = 3; wmTier = "Solid"; }
-      else if (det >= 0.45 && utilityOK)                           { wmStars = 2; wmTier = "Workable"; }
-      else if (det >= 0.18)                                        { wmStars = 1; wmTier = "Sketchy"; }
+                                                                   { wmStars = 4; wmTier = "Slick 🎯"; }
+      else if (det >= 0.70 && fpr <= 0.12 && utilityOK)            { wmStars = 3; wmTier = "Sharp ✨"; }
+      else if (det >= 0.45 && utilityOK)                           { wmStars = 2; wmTier = "Decent 👍"; }
+      else if (det >= 0.18)                                        { wmStars = 1; wmTier = "Wobbly"; }
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
@@ -1676,12 +1676,12 @@
       // Star grade — small sweet spot.
       // 5★ requires extreme reliability gain (≥250×). Available only with
       // both low q AND low correlation AND enough channels.
-      let tmrStars = 0, tmrTier = "Wipeout";
-      if (gain >= 250)      { tmrStars = 5; tmrTier = "Frontier"; }
-      else if (gain >= 75)  { tmrStars = 4; tmrTier = "Production"; }
-      else if (gain >= 20)  { tmrStars = 3; tmrTier = "Solid"; }
-      else if (gain >= 5)   { tmrStars = 2; tmrTier = "Workable"; }
-      else if (gain >= 1.5) { tmrStars = 1; tmrTier = "Sketchy"; }
+      let tmrStars = 0, tmrTier = "Oof 💥";
+      if (gain >= 250)      { tmrStars = 5; tmrTier = "Legendary 🏆"; }
+      else if (gain >= 75)  { tmrStars = 4; tmrTier = "Slick 🎯"; }
+      else if (gain >= 20)  { tmrStars = 3; tmrTier = "Sharp ✨"; }
+      else if (gain >= 5)   { tmrStars = 2; tmrTier = "Decent 👍"; }
+      else if (gain >= 1.5) { tmrStars = 1; tmrTier = "Wobbly"; }
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
 
       drawPlot(q, rhoEff, N);
@@ -2070,11 +2070,11 @@
       if (currentX < X_MIN || currentX > X_MAX) {
         refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold—there is no spoon, only NaN. Lower the learning rate.";
         running = false;
-        setStars(refs.starsGd, 0, "Wipeout", { header: "Run grade" });
+        setStars(refs.starsGd, 0, "Oof 💥", { header: "Run grade" });
       } else if (epoch > 500) {
         refs.insight.textContent = "⏳ Training timed out (500 epochs). The Matrix reloaded the same epoch; try higher learning rate or momentum.";
         running = false;
-        setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
+        setStars(refs.starsGd, 1, "Wobbly", { header: "Run grade" });
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
         // Small sweet spot: only a tight landing in the global basin earns 5★.
@@ -2082,14 +2082,14 @@
           refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
           unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
           triggerCongrats(refs.plot, true);
-          setStars(refs.starsGd, 5, "Frontier", { header: "Run grade" });
+          setStars(refs.starsGd, 5, "Legendary 🏆", { header: "Run grade" });
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
            // Distance from global min decides the partial credit.
-           let gdS = 1, gdT = "Sketchy";
-           if (dist < 0.18)      { gdS = 4; gdT = "Production"; }
-           else if (dist < 0.40) { gdS = 3; gdT = "Solid"; }
-           else if (dist < 0.80) { gdS = 2; gdT = "Workable"; }
+           let gdS = 1, gdT = "Wobbly";
+           if (dist < 0.18)      { gdS = 4; gdT = "Slick 🎯"; }
+           else if (dist < 0.40) { gdS = 3; gdT = "Sharp ✨"; }
+           else if (dist < 0.80) { gdS = 2; gdT = "Decent 👍"; }
            setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
         }
         running = false;
@@ -2459,12 +2459,12 @@
       refs.streakVal.textContent = String(streak);
 
       // Star grade — small sweet spot. 5★ requires near-perfect fingerprint.
-      let polStars = 0, polTier = "Wipeout";
-      if (score >= 94)      { polStars = 5; polTier = "Frontier"; }
-      else if (score >= 82) { polStars = 4; polTier = "Production"; }
-      else if (score >= 68) { polStars = 3; polTier = "Solid"; }
-      else if (score >= 50) { polStars = 2; polTier = "Workable"; }
-      else if (score >= 30) { polStars = 1; polTier = "Sketchy"; }
+      let polStars = 0, polTier = "Oof 💥";
+      if (score >= 94)      { polStars = 5; polTier = "Legendary 🏆"; }
+      else if (score >= 82) { polStars = 4; polTier = "Slick 🎯"; }
+      else if (score >= 68) { polStars = 3; polTier = "Sharp ✨"; }
+      else if (score >= 50) { polStars = 2; polTier = "Decent 👍"; }
+      else if (score >= 30) { polStars = 1; polTier = "Wobbly"; }
       setStars(refs.starsPol, polStars, polTier, { header: "Run grade" });
     }
 
