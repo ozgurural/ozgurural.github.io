@@ -248,6 +248,21 @@
     el.classList.add("lab-experiment__metric--streak-hit");
   }
 
+  /* ---------- Verdict banner ----------
+     Big headline result above the metrics. Replaces the player having
+     to read four numbers to figure out if they won. State is one of
+     "win" (beat the scenario), "miss" (close but didn't), "fail"
+     (way off), or "pending" (no run yet). */
+  function setVerdict(host, head, sub, state) {
+    if (!host) return;
+    const headEl = host.querySelector(".lab-experiment__verdict-head");
+    const subEl = host.querySelector(".lab-experiment__verdict-sub");
+    if (headEl) headEl.textContent = head;
+    if (subEl) subEl.textContent = sub || "";
+    host.classList.remove("lab-experiment__verdict--win", "lab-experiment__verdict--miss", "lab-experiment__verdict--fail", "lab-experiment__verdict--pending");
+    host.classList.add("lab-experiment__verdict--" + (state || "pending"));
+  }
+
   /* ---------- Progressive hint system ----------
      After a few runs that don't earn 4★+, the lab whispers a gentle
      hint near the lab's insight line. Doesn't spoil the 5★ zone —
@@ -571,13 +586,12 @@
       pDisplay: $('[data-role="p-display"]', root),
       naive:    $('[data-role="naive-val"]', root),
       strict:   $('[data-role="strict-val"]', root),
-      delta:    $('[data-role="delta-val"]', root),
-      minNVal:  $('[data-role="minN-val"]', root),
       sweetTg:  $('[data-role="sweet-spot-tg"]', root),
       insight:  $('[data-role="insight"]', root),
       plot:     $('[data-role="plot"]', root),
       valley:   $('[data-role="valley"]', root),
       levels:   $('[data-role="tg-levels"]', root),
+      verdict:  $('[data-role="verdict-tg"]', root),
       starsTg:  $('[data-role="stars-tg"]', root),
     };
     // Read the currently selected scenario.
@@ -771,7 +785,7 @@
     });
 
     /* ---- Live update with tweened readouts ---- */
-    let prev = { naive: 1 - Math.pow(0.4, 3), strict: Math.pow(0.6, 3), delta: 0 };
+    let prev = { naive: 1 - Math.pow(0.4, 3), strict: Math.pow(0.6, 3) };
     function update() {
       const p = tgCurrentP();
       const n = parseInt(refs.n.value, 10);
@@ -782,23 +796,19 @@
       const strictDepth = n;
       const pNaive  = 1 - Math.pow(effectiveP, n);
       const pStrict = Math.pow(1 - effectiveP, strictDepth);
-      const delta   = pNaive - pStrict;
 
       const pct = (v) => (v * 100).toFixed(1) + "%";
-      const sgn = (v) => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
       tweenNumber(refs.naive,  prev.naive,  pNaive,  260, pct);
       tweenNumber(refs.strict, prev.strict, pStrict, 260, pct);
-      tweenNumber(refs.delta,  prev.delta,  delta,   260, sgn);
-      prev = { naive: pNaive, strict: pStrict, delta: delta };
+      prev = { naive: pNaive, strict: pStrict };
 
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
-      // Minimum N for naive to hit 99% at current p
+      // Minimum N for naive to hit 99% at current p (used for sweet-spot detection only)
       let minN99;
       if (effectiveP <= 0) minN99 = 1;
       else if (effectiveP >= 0.99) minN99 = Infinity;
       else minN99 = Math.ceil(Math.log(0.01) / Math.log(effectiveP));
-      refs.minNVal.textContent = isFinite(minN99) ? minN99 : "\u221e";
 
       // Sweet spot: hit 99% reliability with the minimum tries.
       const inSweetZone = isFinite(minN99) && n >= minN99 && pNaive >= 0.99;
@@ -859,6 +869,20 @@
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
       tgHint(tgStars);
 
+      // Headline verdict.
+      const scenario = tgCurrentScenarioName();
+      const goalPct = (tgGoal * 100).toFixed(tgGoal >= 0.99 ? 1 : 0);
+      const yourPct = (pNaive * 100).toFixed(1);
+      if (tgStars === 5) {
+        setVerdict(refs.verdict, "✓ Beat " + scenario + " with the minimum retries", yourPct + "% reliability at " + n + " tries — target was " + goalPct + "%.", "win");
+      } else if (pNaive >= tgGoal) {
+        setVerdict(refs.verdict, "✓ Beat " + scenario + " (over-spent on retries)", yourPct + "% at " + n + " tries — " + tgMinN + " would have done it.", "win");
+      } else if (pNaive >= tgGoal * 0.65) {
+        setVerdict(refs.verdict, "✗ Short of target", "Got " + yourPct + "% — need " + goalPct + "%. Try more retries.", "miss");
+      } else {
+        setVerdict(refs.verdict, "✗ Way under", "Got " + yourPct + "% — need " + goalPct + "%.", "fail");
+      }
+
       drawPlot(p, n);
     }
 
@@ -880,11 +904,10 @@
       tgRevealed = false;
       refs.naive.textContent = "—";
       refs.strict.textContent = "—";
-      refs.delta.textContent = "—";
-      refs.minNVal.textContent = "—";
       refs.insight.textContent = msg || "Pick a scenario, choose your strategy, then hit Run experiment.";
       if (refs.sweetTg) refs.sweetTg.hidden = true;
       setStars(refs.starsTg, 0, "Press Run to score", { header: "Run grade", pending: true });
+      setVerdict(refs.verdict, "—", msg || "Pick a scenario, choose retries, hit Run.", "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
@@ -957,11 +980,10 @@
       plot:       $('[data-role="plot-wm"]', root),
       det:        $('[data-role="det-val"]', root),
       fpr:        $('[data-role="fpr-val"]', root),
-      snr:        $('[data-role="snr-val"]', root),
-      utilityVal: $('[data-role="utility-val"]', root),
       sweetWm:    $('[data-role="sweet-spot-wm"]', root),
       insight:    $('[data-role="insight-wm"]', root),
       levels:     $('[data-role="wm-levels"]', root),
+      verdict:    $('[data-role="verdict-wm"]', root),
       starsWm:    $('[data-role="stars-wm"]', root),
     };
     // Thief noise + per-scenario target both come from the active level.
@@ -1207,7 +1229,7 @@
     }
 
     /* ---- Live update with tweened readouts ---- */
-    let prev = { snr: 1.28, det: 0.32, fpr: 0 };
+    let prev = { det: 0.32, fpr: 0 };
     let prevSweetWm = false;
     let prevEffectiveK = null;
     function wmMetricsJumpWorthy(prevDet, prevFpr, prevSw, prevK, det, fpr, sweet, effectiveK) {
@@ -1241,30 +1263,16 @@
       // we keep displaying it for clarity, but the player can't lower it.
       const fpr = alphaSig;
 
-      const num1 = (v) => v.toFixed(2);
       const pctH = (v) => (v * 100).toFixed(1) + "%";
       const pctL = (v) => (v * 100).toFixed(2) + "%";
-      tweenNumber(refs.snr, prev.snr, snr, 240, num1);
       tweenNumber(refs.det, prev.det, det, 240, pctH);
       tweenNumber(refs.fpr, prev.fpr, fpr, 240, pctL);
-      prev = { snr: snr, det: det, fpr: fpr };
+      prev = { det: det, fpr: fpr };
 
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
-      // Utility margin: headroom below the accuracy-degradation threshold
-      const utilityMargin = 0.25 - eps;
-      if (refs.utilityVal) {
-        refs.utilityVal.textContent = (utilityMargin >= 0 ? "+" : "") + utilityMargin.toFixed(2);
-      }
-
       // Sweet spot: publishable operating point + visual feedback
-      const inSweetWm = det >= 0.90 && fpr <= 0.05 && eps <= 0.25 && snr >= 1.0;
-      const epsCloseness = Math.max(0, 1 - Math.abs(eps - 0.15) / 0.25); // 0.15 is optimal
-      const kCloseness = Math.max(0, 1 - Math.abs(k - 12) / 24); // 12 is around optimal
-      labFxSliderGlow(refs.eps, inSweetWm ? 1 : epsCloseness * 0.6);
-      labFxSliderGlow(refs.k, inSweetWm ? 1 : kCloseness * 0.6);
-      labFxApproachingZone(refs.eps, inSweetWm ? 0 : epsCloseness);
-      labFxApproachingZone(refs.k, inSweetWm ? 0 : kCloseness);
+      const inSweetWm = det >= 0.90 && eps <= 0.25;
       
       if (refs.sweetWm) {
         refs.sweetWm.hidden = !inSweetWm;
@@ -1308,6 +1316,23 @@
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
       wmHint(wmStars);
 
+      // Headline verdict.
+      const thiefName = wmCurrentThiefName();
+      const goalPct = (wmGoalDet * 100).toFixed(0);
+      const detPct = (det * 100).toFixed(1);
+      const modelOK = eps <= wmEpsMax + 0.04;
+      if (wmStars === 5) {
+        setVerdict(refs.verdict, "✓ Caught the " + thiefName + " — model intact", detPct + "% detection at ε = " + eps.toFixed(2) + ", k = " + k + ".", "win");
+      } else if (det >= wmGoalDet && !modelOK) {
+        setVerdict(refs.verdict, "⚠ Caught the " + thiefName + ", but the model is wrecked", "ε = " + eps.toFixed(2) + " is past the model's tolerance.", "miss");
+      } else if (det >= wmGoalDet) {
+        setVerdict(refs.verdict, "✓ Caught the " + thiefName, detPct + "% detection at ε = " + eps.toFixed(2) + ", k = " + k + " — target was " + goalPct + "%.", "win");
+      } else if (det >= wmGoalDet * 0.55) {
+        setVerdict(refs.verdict, "✗ Thief slipped past", "Got " + detPct + "% — need " + goalPct + "%. Try more hidden marks.", "miss");
+      } else {
+        setVerdict(refs.verdict, "✗ Watermark washed out", "Got " + detPct + "% — signal lost in the noise.", "fail");
+      }
+
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       if (shouldPulse) {
         refs.grid.classList.add("lab-wm__grid--pop");
@@ -1336,13 +1361,12 @@
     }
     function wmPendReadout(msg) {
       wmRevealed = false;
-      refs.snr.textContent = "—";
       refs.det.textContent = "—";
       refs.fpr.textContent = "—";
-      if (refs.utilityVal) refs.utilityVal.textContent = "—";
       refs.insight.textContent = msg || "Pick a thief, choose your strategy, then hit Run experiment.";
       if (refs.sweetWm) refs.sweetWm.hidden = true;
       setStars(refs.starsWm, 0, "Press Run to score", { header: "Run grade", pending: true });
+      setVerdict(refs.verdict, "—", msg || "Pick a thief, set your strategy, hit Run.", "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
@@ -1403,9 +1427,7 @@
 
     const refs = {
       sysVal:          $('[data-role="sys-val"]', root),
-      singleVal:       $('[data-role="single-val"]', root),
       gainVal:         $('[data-role="gain-val"]', root),
-      rhoBreakevenVal: $('[data-role="rho-breakeven-val"]', root),
       sweetTmr:        $('[data-role="sweet-spot-tmr"]', root),
       insight:         $('[data-role="insight-tmr"]', root),
       plot:            $('[data-role="plot-tmr"]', root),
@@ -1417,6 +1439,7 @@
       nChannels:       $('[data-role="n-channels"]', root),
       nChannelsVal:    $('[data-role="n-channels-val"]', root),
       levels:          $('[data-role="tmr-levels"]', root),
+      verdict:         $('[data-role="verdict-tmr"]', root),
       starsTmr:        $('[data-role="stars-tmr"]', root),
     };
 
@@ -1677,20 +1700,15 @@
       const gain = pSys > 0 ? q / pSys : 1;
 
       const pctH = (v) => (v * 100 < 1 ? (v * 100).toFixed(3) : (v * 100).toFixed(2)) + "%";
-      const pctS = (v) => (v * 100).toFixed(1) + "%";
       const xRaw = (v) => (v >= 100 ? Math.round(v) + "×" : v.toFixed(1) + "×");
 
-      tweenNumber(refs.sysVal,    prev.sys,    pSys,   240, pctH);
-      tweenNumber(refs.singleVal, prev.single, q,      240, pctS);
-      tweenNumber(refs.gainVal,   prev.gain,   gain,   260, xRaw);
+      tweenNumber(refs.sysVal, prev.sys,  pSys, 240, pctH);
+      tweenNumber(refs.gainVal, prev.gain, gain, 260, xRaw);
       prev = { sys: pSys, single: q, gain: gain };
       $$('.lab-experiment__metric', root).forEach(pulseRow);
 
-      // Break-even correlation for 10x gain (depends on N)
+      // Break-even correlation (used internally for the over-break-even check)
       const rhoBE = rhoBreakeven(q, N);
-      if (refs.rhoBreakevenVal) {
-        refs.rhoBreakevenVal.textContent = (rhoBE === null) ? "N/A" : rhoBE.toFixed(2);
-      }
 
       // Sweet spot: real safety win on this mission.
       const inSweetTmr = gain >= 100;
@@ -1735,6 +1753,19 @@
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
       tmrHint(tmrStars);
 
+      // Headline verdict.
+      const missionName = tmrCurrentMissionName();
+      const gainFmt = gain >= 100 ? Math.round(gain) + "×" : gain.toFixed(1) + "×";
+      if (tmrStars === 5) {
+        setVerdict(refs.verdict, "✓ " + missionName + " survives, minimum hardware", gainFmt + " safer than one computer with " + N + " backups.", "win");
+      } else if (gain >= tmrGoalGain) {
+        setVerdict(refs.verdict, "✓ " + missionName + " survives (over-spent on hardware)", gainFmt + " safer with " + N + " — " + tmrMinN + " would have done it.", "win");
+      } else if (gain >= tmrGoalGain * 0.35) {
+        setVerdict(refs.verdict, "✗ Short of the safety bar", gainFmt + " safer — need " + tmrGoalGain + "×. Try more backups.", "miss");
+      } else {
+        setVerdict(refs.verdict, "✗ Correlated failures are winning", gainFmt + " — voting can't fix shared bugs.", "fail");
+      }
+
       drawPlot(q, rhoEff, N);
     }
 
@@ -1761,12 +1792,11 @@
     function tmrPendReadout(msg) {
       tmrRevealed = false;
       refs.sysVal.textContent = "—";
-      refs.singleVal.textContent = "—";
       refs.gainVal.textContent = "—";
-      if (refs.rhoBreakevenVal) refs.rhoBreakevenVal.textContent = "—";
       refs.insight.textContent = msg || "Pick a mission, choose your strategy, then hit Run experiment.";
       if (refs.sweetTmr) refs.sweetTmr.hidden = true;
       setStars(refs.starsTmr, 0, "Press Run to score", { header: "Run grade", pending: true });
+      setVerdict(refs.verdict, "—", msg || "Pick a mission, choose backup count, hit Run.", "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
@@ -1842,13 +1872,11 @@
       momVal:    $gd("mom-val"),
       trainBtn:  $gd("train-btn"),
       plot:      $gd("plot-gd"),
-      noise:     $gd("noise"),
       gdTurbo:   $gd("gd-turbo"),
-      gdRainbow: $gd("gd-rainbow"),
       epochVal:  $gd("epoch-val"),
       lossVal:   $gd("loss-val"),
-      velVal:    $gd("vel-val"),
       insight:   $gd("insight-gd"),
+      verdict:   $gd("verdict-gd"),
       starsGd:   $gd("stars-gd"),
     };
 
@@ -2006,8 +2034,8 @@
       labFxSliderGlow(refs.mom, momCloseness * 0.7);
       labFxApproachingZone(refs.mom, momCloseness * 0.8);
     });
-    if (refs.noise) refs.noise.addEventListener("input", function () { renderParticle(); });
-    if (refs.gdRainbow) refs.gdRainbow.addEventListener("change", syncGdTrailStyle);
+    // (noise + adaptive-schedule controls dropped; the GD game is now
+    // about step size and momentum only — the textbook two knobs.)
 
     function gdEpochDelay() {
       return (refs.gdTurbo && refs.gdTurbo.checked) ? 11 : 30;
@@ -2116,40 +2144,29 @@
       else refs.trainBtn.textContent = "Train!";
       
       refs.trainBtn.classList.remove('is-running');
-      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New test chamber—sorry, <em>challenge</em>: <strong>" + activeLandscape.name + "</strong>.";
+      refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. Challenge: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
       setStars(refs.starsGd, 0, "Press Train to score", { header: "Run grade", pending: true });
+      setVerdict(refs.verdict, "—", "Challenge: " + activeLandscape.name + ". Pick step size + momentum, hit Train.", "pending");
     }
     
     function updateReadout() {
       refs.epochVal.textContent = epoch;
       refs.lossVal.textContent = f(currentX).toFixed(2);
-      refs.velVal.textContent = velocity.toFixed(3);
     }
-    
+
     function renderParticle() {
-      var jx = 0, jy = 0;
-      if (refs.noise) {
-        var nz = parseFloat(refs.noise.value) || 0;
-        if (nz > 0) {
-          jx = nz * 0.035 * Math.sin(epoch * 0.95);
-          jy = nz * 0.022 * Math.cos(epoch * 0.72);
-        }
-      }
-      particle.setAttribute("cx", xFor(currentX) + jx);
-      particle.setAttribute("cy", yFor(f(currentX)) + jy);
+      particle.setAttribute("cx", xFor(currentX));
+      particle.setAttribute("cy", yFor(f(currentX)));
     }
-    
+
     function doEpoch() {
       if (!running) return;
       const lr = parseFloat(refs.lr.value);
       const mom = parseFloat(refs.mom.value);
-      
+
       const grad = df(currentX);
-      const schedule = (refs.gdRainbow && refs.gdRainbow.checked)
-        ? (1 + 0.16 * Math.sin(epoch * 0.18))
-        : 1;
-      velocity = mom * velocity - lr * grad * schedule;
+      velocity = mom * velocity - lr * grad;
       currentX += velocity;
       epoch++;
       trail.push(currentX);
@@ -2160,26 +2177,28 @@
       
       if (currentX < X_MIN || currentX > X_MAX) {
         refs.insight.textContent = "💥 Exploding gradients! The ball flew off the map. Lower the step size.";
+        setVerdict(refs.verdict, "💥 Diverged", "Step size was too large — the optimizer left the map.", "fail");
         running = false;
         setStars(refs.starsGd, 0, "Off-target", { header: "Run grade" });
         gdHint(0);
       } else if (epoch > 500) {
         refs.insight.textContent = "⏳ The ball is crawling. Step size is too small — try raising it.";
+        setVerdict(refs.verdict, "⏳ Crawling", "500 epochs without convergence. Try a bigger step size.", "miss");
         running = false;
         setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
         gdHint(1);
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
-        // Small sweet spot: only a tight landing in the global basin earns 5★.
         if (dist < 0.06) {
           refs.insight.textContent = "🏆 Global minimum! The ball found the deepest valley.";
+          setVerdict(refs.verdict, "🏆 Landed in the global minimum", "Found the answer in " + epoch + " epochs.", "win");
           unlockQuest("gd", "Gradient descent: global minimum found.");
           triggerCongrats(refs.plot, true);
           setStars(refs.starsGd, 5, "Frontier 🏆", { header: "Run grade" });
           gdHint(5);
         } else {
            refs.insight.textContent = "🚧 Stuck in a side valley. Add momentum to roll over the small hill.";
-           // Distance from global min decides the partial credit.
+           setVerdict(refs.verdict, "🚧 Trapped in a local minimum", "Off by " + dist.toFixed(2) + " from the global answer. More momentum.", "miss");
            let gdS = 1, gdT = "Sketchy";
            if (dist < 0.18)      { gdS = 4; gdT = "Pro-grade"; }
            else if (dist < 0.40) { gdS = 3; gdT = "Sharp"; }
@@ -2246,26 +2265,21 @@
     const refs = {
       lr:       $('[data-role="pol-lr"]', root),
       bs:       $('[data-role="pol-bs"]', root),
-      noise:    $('[data-role="pol-noise"]', root),
       trainBtn: $('[data-role="pol-train-btn"]', root),
       lrVal:    $('[data-role="pol-lr-val"]', root),
       bsVal:    $('[data-role="pol-bs-val"]', root),
-      noiseVal: $('[data-role="pol-noise-val"]', root),
-      epochVal: $('[data-role="pol-epoch-val"]', root),
-      lossVal:  $('[data-role="pol-loss-val"]', root),
-      uniqueVal: $('[data-role="pol-unique-val"]', root),
-      fakeVal:  $('[data-role="pol-fake-val"]', root),
       scoreVal: $('[data-role="pol-score-val"]', root),
       badgeVal: $('[data-role="pol-badge-val"]', root),
-      streakVal: $('[data-role="pol-streak-val"]', root),
       plot:     $('[data-role="plot-pol"]', root),
       insight:  $('[data-role="insight-pol"]', root),
       polTurbo: $('[data-role="pol-turbo"]', root),
-      polMega:  $('[data-role="pol-mega"]', root),
+      verdict:  $('[data-role="verdict-pol"]', root),
       starsPol: $('[data-role="stars-pol"]', root),
     };
 
-    if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs || !refs.noise) return;
+    if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs) return;
+    // Data noise is fixed at a credible value; the player tunes lr + B only.
+    const FIXED_NOISE = 0.05;
 
     const polHint = makeHintTracker(refs.insight, [
       "If the score is low, the curve probably isn't dropping enough. Try a faster learning speed.",
@@ -2467,37 +2481,23 @@
     function updateSliderDisplay() {
       const lr = parseFloat(refs.lr.value);
       const bs = parseInt(refs.bs.value, 10);
-      const noise = parseFloat(refs.noise.value);
-      
+
       refs.lrVal.textContent = lr.toFixed(3);
       const bsIdx = clamp(bs - 1, 0, BATCH_SIZES.length - 1);
       refs.bsVal.textContent = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
-      refs.noiseVal.textContent = noise.toFixed(2);
-      
-      // Add slider glow feedback: optimal zone is α~0.012, B~128, ζ~0.05
+
+      // Slider glow only on the controls the player can move.
       const lrCloseness = Math.max(0, 1 - Math.abs(lr - 0.012) / 0.010);
       const bsCloseness = Math.max(0, 1 - Math.abs(bs - 128) / 100);
-      const noiseCloseness = Math.max(0, 1 - Math.abs(noise - 0.05) / 0.06);
-      
       labFxSliderGlow(refs.lr, lrCloseness * 0.7);
       labFxSliderGlow(refs.bs, bsCloseness * 0.7);
-      labFxSliderGlow(refs.noise, noiseCloseness * 0.7);
-      
       labFxApproachingZone(refs.lr, lrCloseness * 0.8);
       labFxApproachingZone(refs.bs, bsCloseness * 0.8);
-      labFxApproachingZone(refs.noise, noiseCloseness * 0.8);
     }
 
     function updateMetrics(epoch, loss) {
-      refs.epochVal.textContent = epoch;
-      refs.lossVal.textContent = loss.toFixed(3);
-
-      const uniqueness = clamp((FAKE_LINE - loss) / FAKE_LINE, 0, 1);
-      const uniquePercent = Math.round(uniqueness * 100);
-      refs.uniqueVal.textContent = uniquePercent + "% unique";
-
-      const isFake = epoch > 10 && uniqueness > 0.45;
-      refs.fakeVal.textContent = isFake ? "✓ Not plausible as fake" : "—";
+      // The simplified PoL lab no longer renders per-epoch live metrics
+      // beyond the loss curve itself — only the final verdict + score.
     }
 
     function evaluateRun(alpha, batchSize, noise) {
@@ -2525,39 +2525,39 @@
       const noiseFit = normBand(noise, 0.02, 0.08, 0.12);
       const paramFit = (lrFit + bsFit + noiseFit) / 3;
 
-      const hardMode = !!(refs.polMega && refs.polMega.checked);
       const score = Math.round(100 * (
         0.30 * monotonic +
         0.25 * smoothness +
         0.25 * distanceFromFake +
         0.20 * paramFit
-      ) * (hardMode ? 0.92 : 1));
+      ));
 
       let badge = "Needs more science";
-      const goldCutoff = hardMode ? 92 : 88;
-      const silverCutoff = hardMode ? 79 : 75;
-      const bronzeCutoff = hardMode ? 64 : 60;
+      const goldCutoff = 88;
+      const silverCutoff = 75;
+      const bronzeCutoff = 60;
       if (score >= goldCutoff) badge = "Gold Proof";
       else if (score >= silverCutoff) badge = "Silver Proof";
       else if (score >= bronzeCutoff) badge = "Bronze Proof";
 
       refs.scoreVal.textContent = String(score);
       refs.badgeVal.textContent = badge;
-      refs.fakeVal.textContent = (distanceFromFake > 0.45 && monotonic > 0.65)
-        ? "✓ Not plausible as fake"
-        : "⚠ Too easy to spoof";
 
       if (score >= goldCutoff) {
-        streak += 1;
-        celebrate(refs.plot, !!(refs.polMega && refs.polMega.checked));
-        labFxStreakPulse(refs.streakVal);
-        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the Oracle would approve. Hint zone: α in [0.008, 0.018], B in [64, 256], ζ in [0.02, 0.08]." + (hardMode ? " Hard mode was on, so the detector was stricter." : "");
-        unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose... wisely.");
+        celebrate(refs.plot, false);
+        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime — the audit holds. Hint zone for repeating it: α in [0.008, 0.018], B in [64, 256].";
+        setVerdict(refs.verdict, "🏆 Gold Proof", "Score " + score + ". Trajectory passes audit.", "win");
+        unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose wisely.");
+      } else if (score >= silverCutoff) {
+        refs.insight.innerHTML = "🥈 Silver Proof. The trajectory is credible but not airtight. Tighten α toward 0.012 or B toward 128.";
+        setVerdict(refs.verdict, "🥈 Silver Proof", "Score " + score + ". Borderline — auditor wants another look.", "miss");
+      } else if (score >= bronzeCutoff) {
+        refs.insight.innerHTML = "🥉 Bronze. The curve descends, but bumpily — a determined auditor would push back.";
+        setVerdict(refs.verdict, "🥉 Bronze Proof", "Score " + score + ". Descended, but the journey looks rough.", "miss");
       } else {
-        streak = 0;
-        refs.insight.innerHTML = "No badge yet. The simulation suggests smoother descent and stronger separation from the fake flatline. Try α near 0.012, B around 128, ζ around 0.05. We will be monitoring your failure for science.";
+        refs.insight.innerHTML = "Audit failed. Curve looks too flat or too noisy to be a real training run. Try α near 0.012, B around 128.";
+        setVerdict(refs.verdict, "✗ Audit failed", "Score " + score + ". Curve doesn't look like real training.", "fail");
       }
-      refs.streakVal.textContent = String(streak);
 
       // Star grade — small sweet spot. 5★ requires near-perfect fingerprint.
       let polStars = 0, polTier = "Off-target";
@@ -2578,13 +2578,12 @@
       updateMetrics(0, FAKE_LINE);
       refs.scoreVal.textContent = "0";
       refs.badgeVal.textContent = "—";
-      refs.streakVal.textContent = String(streak);
-      refs.fakeVal.textContent = "—";
       drawPlot();
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
-      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88). There is no spoon—only a loss curve that either trained or downloaded its personality.";
+      refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88).";
       setStars(refs.starsPol, 0, "Press Train to score", { header: "Run grade", pending: true });
+      setVerdict(refs.verdict, "—", "Set hyperparameters, hit Train, watch the curve.", "pending");
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {
@@ -2622,30 +2621,27 @@
         running = true;
         refs.trainBtn.classList.add('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
-        refs.insight.textContent = "Running experiment. Trajectory smells like real training, or like someone chose the blue pill and a flat loss line.";
+        refs.insight.textContent = "Running. Watching the loss curve unfold — is this a real training run or a fake?";
         setStars(refs.starsPol, 0, "Training…", { header: "Run grade", pending: true });
+        setVerdict(refs.verdict, "Training…", "Loss curve drawing live.", "pending");
 
         const alpha = parseFloat(refs.lr.value);
         const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
         const batchSize = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
-        const noise = parseFloat(refs.noise.value);
 
         trainingCurve = [];
-        doEpoch(0, alpha, batchSize, noise);
+        doEpoch(0, alpha, batchSize, FIXED_NOISE);
       }
     });
 
     refs.lr.addEventListener("input", updateSliderDisplay);
     refs.bs.addEventListener("input", updateSliderDisplay);
-    refs.noise.addEventListener("input", updateSliderDisplay);
 
     // Randomize starting parameters on each refresh for replayability
     const randAlpha = (0.008 + Math.random() * 0.010).toFixed(4);
     const randBatch = Math.floor(32 + Math.random() * 200);
-    const randNoise = (0.02 + Math.random() * 0.06).toFixed(3);
     refs.lr.value = randAlpha;
     refs.bs.value = randBatch;
-    refs.noise.value = randNoise;
 
     updateSliderDisplay();
     reset();

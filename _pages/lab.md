@@ -147,26 +147,20 @@ excerpt: "Five interactive thought experiments from my research — distributed 
     </div>
 
     <div class="lab-experiment__scorebar" data-role="stars-tg" aria-live="polite"></div>
+    <div class="lab-experiment__verdict" data-role="verdict-tg" aria-live="polite">
+      <span class="lab-experiment__verdict-head">—</span>
+      <span class="lab-experiment__verdict-sub">Pick a scenario, choose retries, hit Run.</span>
+    </div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Smart strategy</span>
+        <span class="lab-experiment__metric-label">Your reliability</span>
         <span class="lab-experiment__metric-value" data-role="naive-val">—</span>
-        <span class="lab-experiment__metric-formula">send many copies — need 1 to arrive</span>
+        <span class="lab-experiment__metric-formula">retries vs lossy channel</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Strict strategy</span>
+        <span class="lab-experiment__metric-label">If you required every retry to land</span>
         <span class="lab-experiment__metric-value" data-role="strict-val">—</span>
-        <span class="lab-experiment__metric-formula">every message must arrive</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--delta">
-        <span class="lab-experiment__metric-label">Smart vs strict</span>
-        <span class="lab-experiment__metric-value" data-role="delta-val">—</span>
-        <span class="lab-experiment__metric-formula">smart wins by this much</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--minN">
-        <span class="lab-experiment__metric-label">Min tries for 99%</span>
-        <span class="lab-experiment__metric-value" data-role="minN-val">—</span>
-        <span class="lab-experiment__metric-formula">tries needed for 99%</span>
+        <span class="lab-experiment__metric-formula">the unforgiving alternative</span>
       </div>
     </div>
     <p class="lab-experiment__insight" data-role="insight">Drag the sliders. Pretty plots, ugly impossibility: deterministic consensus over lossy channels still does not exist.</p>
@@ -252,26 +246,20 @@ excerpt: "Five interactive thought experiments from my research — distributed 
     </div>
 
     <div class="lab-experiment__scorebar" data-role="stars-wm" aria-live="polite"></div>
+    <div class="lab-experiment__verdict" data-role="verdict-wm" aria-live="polite">
+      <span class="lab-experiment__verdict-head">—</span>
+      <span class="lab-experiment__verdict-sub">Pick a thief, set your strategy, hit Run.</span>
+    </div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">Detection rate</span>
+        <span class="lab-experiment__metric-label">Caught the thief</span>
         <span class="lab-experiment__metric-value" data-role="det-val">—</span>
-        <span class="lab-experiment__metric-formula">verifier with key</span>
+        <span class="lab-experiment__metric-formula">verifier with the secret key</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--fpr">
-        <span class="lab-experiment__metric-label">False-positive rate</span>
+        <span class="lab-experiment__metric-label">False alarm rate</span>
         <span class="lab-experiment__metric-value" data-role="fpr-val">—</span>
-        <span class="lab-experiment__metric-formula">on plain noise</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--snr">
-        <span class="lab-experiment__metric-label">Signal per mark</span>
-        <span class="lab-experiment__metric-value" data-role="snr-val">—</span>
-        <span class="lab-experiment__metric-formula">signal vs noise per mark</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--utility">
-        <span class="lab-experiment__metric-label">Model still works?</span>
-        <span class="lab-experiment__metric-value" data-role="utility-val">—</span>
-        <span class="lab-experiment__metric-formula">how safe for the model</span>
+        <span class="lab-experiment__metric-formula">on an innocent model</span>
       </div>
     </div>
 
@@ -319,17 +307,8 @@ excerpt: "Five interactive thought experiments from my research — distributed 
         </span>
         <input type="range" min="1" max="8" step="1" value="3" data-role="pol-bs" aria-label="examples per step">
       </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">How messy is the data?</span>
-          <span class="lab-control__var">ζ</span>
-          <span class="lab-control__value" data-role="pol-noise-val">0.05</span>
-        </span>
-        <input type="range" min="0.01" max="0.20" step="0.01" value="0.05" data-role="pol-noise" aria-label="how messy is the data">
-      </label>
       <div class="lab-playset" aria-label="Proof-of-Learning pacing">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-turbo"> Hyper-training (faster epochs)</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-mega" title="Tightens the Gold cutoff and makes the score harder to earn"> Hard-mode validation</label>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-turbo"> Faster training</label>
       </div>
       <button class="lab-btn lab-btn--train" type="button" data-role="pol-train-btn">
         <span class="lab-btn__text">Train!</span>
@@ -342,41 +321,20 @@ excerpt: "Five interactive thought experiments from my research — distributed 
     </div>
 
     <div class="lab-experiment__scorebar" data-role="stars-pol" aria-live="polite"></div>
+    <div class="lab-experiment__verdict" data-role="verdict-pol" aria-live="polite">
+      <span class="lab-experiment__verdict-head">—</span>
+      <span class="lab-experiment__verdict-sub">Set hyperparameters, hit Train, watch the curve.</span>
+    </div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Verification score</span>
         <span class="lab-experiment__metric-value" data-role="pol-score-val">0</span>
-        <span class="lab-experiment__metric-formula">target: Gold ≥ 88</span>
+        <span class="lab-experiment__metric-formula">target: Gold ≥ 94</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
         <span class="lab-experiment__metric-label">Badge</span>
         <span class="lab-experiment__metric-value" data-role="pol-badge-val">—</span>
-        <span class="lab-experiment__metric-formula">Bronze / Silver / Gold</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Win streak</span>
-        <span class="lab-experiment__metric-value" data-role="pol-streak-val">0</span>
-        <span class="lab-experiment__metric-formula">consecutive Gold runs</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--breakeven">
-        <span class="lab-experiment__metric-label">Current loss</span>
-        <span class="lab-experiment__metric-value" data-role="pol-loss-val">—</span>
-        <span class="lab-experiment__metric-formula">how wrong the model is</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">Epochs completed</span>
-        <span class="lab-experiment__metric-value" data-role="pol-epoch-val">0</span>
-        <span class="lab-experiment__metric-formula">training progress</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Unique fingerprint</span>
-        <span class="lab-experiment__metric-value" data-role="pol-unique-val">—</span>
-        <span class="lab-experiment__metric-formula">collision risk</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Fake model detected?</span>
-        <span class="lab-experiment__metric-value" data-role="pol-fake-val">—</span>
-        <span class="lab-experiment__metric-formula">via trajectory</span>
+        <span class="lab-experiment__metric-formula">Bronze · Silver · Gold</span>
       </div>
     </div>
 
@@ -465,26 +423,20 @@ excerpt: "Five interactive thought experiments from my research — distributed 
     <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-tmr" preserveAspectRatio="xMidYMid meet" role="img" aria-label="system failure rate vs per-channel failure rate"></svg>
 
     <div class="lab-experiment__scorebar" data-role="stars-tmr" aria-live="polite"></div>
+    <div class="lab-experiment__verdict" data-role="verdict-tmr" aria-live="polite">
+      <span class="lab-experiment__verdict-head">—</span>
+      <span class="lab-experiment__verdict-sub">Pick a mission, choose backup count, hit Run.</span>
+    </div>
     <div class="lab-experiment__readout">
-      <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">Whole system fails</span>
-        <span class="lab-experiment__metric-value" data-role="sys-val">—</span>
-        <span class="lab-experiment__metric-formula">chance the whole system crashes</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">If just one computer</span>
-        <span class="lab-experiment__metric-value" data-role="single-val">—</span>
-        <span class="lab-experiment__metric-formula">if there was only one</span>
-      </div>
       <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">How much safer</span>
+        <span class="lab-experiment__metric-label">Safety multiplier</span>
         <span class="lab-experiment__metric-value" data-role="gain-val">—</span>
-        <span class="lab-experiment__metric-formula">how much safer than one</span>
+        <span class="lab-experiment__metric-formula">vs a single computer</span>
       </div>
-      <div class="lab-experiment__metric lab-experiment__metric--breakeven">
-        <span class="lab-experiment__metric-label">Shared-fault danger line</span>
-        <span class="lab-experiment__metric-value" data-role="rho-breakeven-val">—</span>
-        <span class="lab-experiment__metric-formula">when shared bugs win</span>
+      <div class="lab-experiment__metric lab-experiment__metric--detect">
+        <span class="lab-experiment__metric-label">Whole-system failure rate</span>
+        <span class="lab-experiment__metric-value" data-role="sys-val">—</span>
+        <span class="lab-experiment__metric-formula">after majority voting</span>
       </div>
     </div>
 
@@ -528,18 +480,8 @@ excerpt: "Five interactive thought experiments from my research — distributed 
         </span>
         <input type="range" min="0.00" max="0.99" step="0.01" value="0.00" data-role="mom" aria-label="momentum">
       </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Wobble</span>
-          <span class="lab-control__var">ζ</span>
-          <span class="lab-control__value" data-role="noise-val">0.00</span>
-        </span>
-        <input type="range" min="0.00" max="2.00" step="0.05" value="0.00" data-role="noise" aria-label="wobble">
-      </label>
       <div class="lab-playset" aria-label="Gradient descent display options">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-turbo" title="Speeds the training cadence and shortens the delay between epochs"> Fast epochs</label>
-        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-rainbow" checked title="Turns on an adaptive step schedule that changes the optimizer path"> Adaptive step schedule</label>
-        <span class="lab-playbar__hint lab-playbar__hint--wide">ζ changes the training path; these toggles alter the optimizer, not just the trail.</span>
+        <label class="lab-playset__opt"><input type="checkbox" data-role="gd-turbo" title="Speeds the training cadence"> Faster epochs</label>
       </div>
       <button class="lab-btn lab-btn--train" type="button" data-role="train-btn">
         <span class="lab-btn__text">Train!</span>
@@ -557,21 +499,20 @@ excerpt: "Five interactive thought experiments from my research — distributed 
     </div>
 
     <div class="lab-experiment__scorebar" data-role="stars-gd" aria-live="polite"></div>
+    <div class="lab-experiment__verdict" data-role="verdict-gd" aria-live="polite">
+      <span class="lab-experiment__verdict-head">—</span>
+      <span class="lab-experiment__verdict-sub">Pick step size and momentum, hit Train.</span>
+    </div>
     <div class="lab-experiment__readout">
+      <div class="lab-experiment__metric lab-experiment__metric--strict">
+        <span class="lab-experiment__metric-label">Final loss</span>
+        <span class="lab-experiment__metric-value" data-role="loss-val">—</span>
+        <span class="lab-experiment__metric-formula">lower = closer to the answer</span>
+      </div>
       <div class="lab-experiment__metric lab-experiment__metric--detect">
         <span class="lab-experiment__metric-label">Epochs</span>
         <span class="lab-experiment__metric-value" data-role="epoch-val">0</span>
-        <span class="lab-experiment__metric-formula">steps taken</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Loss</span>
-        <span class="lab-experiment__metric-value" data-role="loss-val">0.00</span>
-        <span class="lab-experiment__metric-formula">how wrong the model is</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Velocity</span>
-        <span class="lab-experiment__metric-value" data-role="vel-val">0.00</span>
-        <span class="lab-experiment__metric-formula">how fast it's moving</span>
+        <span class="lab-experiment__metric-formula">steps the ball took</span>
       </div>
     </div>
 

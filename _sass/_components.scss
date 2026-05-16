@@ -1400,6 +1400,73 @@ html[data-theme="dark"] .lab-plot__legend-value--strict { fill: #fbbf24; }
 }
 .lab-level--active .lab-level__name { color: var(--ds-accent-2, var(--ds-accent)); }
 
+/* Verdict banner — the headline result above the metrics grid.
+   Replaces the player having to read four numbers to know if they won.
+   Color shifts with state: green for a clean win, amber for a near
+   miss, red for a real failure, neutral while waiting for Run. */
+.lab-experiment__verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--ds-line);
+  border-left-width: 4px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.lab-experiment__verdict-head {
+  font-family: var(--ds-font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ds-ink);
+  line-height: 1.25;
+}
+.lab-experiment__verdict-sub {
+  font-family: var(--ds-font-sans);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--ds-muted);
+}
+.lab-experiment__verdict--win {
+  border-left-color: #10b981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), var(--ds-surface));
+}
+.lab-experiment__verdict--win .lab-experiment__verdict-head { color: #047857; }
+html[data-theme="dark"] .lab-experiment__verdict--win .lab-experiment__verdict-head { color: #6ee7b7; }
+.lab-experiment__verdict--miss {
+  border-left-color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), var(--ds-surface));
+}
+.lab-experiment__verdict--miss .lab-experiment__verdict-head { color: #b45309; }
+html[data-theme="dark"] .lab-experiment__verdict--miss .lab-experiment__verdict-head { color: #fbbf24; }
+.lab-experiment__verdict--fail {
+  border-left-color: #f43f5e;
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.08), var(--ds-surface));
+}
+.lab-experiment__verdict--fail .lab-experiment__verdict-head { color: #b91c1c; }
+html[data-theme="dark"] .lab-experiment__verdict--fail .lab-experiment__verdict-head { color: #fda4af; }
+.lab-experiment__verdict--pending {
+  border-left-color: var(--ds-line);
+  background: var(--ds-surface-elev);
+}
+.lab-experiment__verdict--pending .lab-experiment__verdict-head { color: var(--ds-muted); }
+
+/* On reveal, the verdict pops with a small bounce — feels like a
+   game show result card landing. */
+.lab-experiment--revealed .lab-experiment__verdict {
+  animation: lab-verdict-pop 0.55s cubic-bezier(0.34, 1.5, 0.64, 1) both;
+}
+@keyframes lab-verdict-pop {
+  0%   { transform: scale(0.96) translateY(4px); opacity: 0; }
+  60%  { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-experiment--revealed .lab-experiment__verdict { animation: none; }
+}
+
 /* ---- Pending experiment state (angry-bird "set then fire") ----
    While the player is still aiming, hide the numeric readout behind
    a dimmed veil so the grade only shows up after Run experiment.
