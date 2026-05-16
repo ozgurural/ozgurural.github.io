@@ -371,6 +371,145 @@
 /* --------------------------------------------------------------------------
    Lab — interactive thought experiments (/lab/)
    -------------------------------------------------------------------------- */
+.lab-hero {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 1.35rem;
+  padding: 1.35rem 1.45rem 1.5rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  background:
+    linear-gradient(135deg, rgba(14, 165, 233, 0.11), rgba(16, 185, 129, 0.07) 52%, rgba(244, 63, 94, 0.08)),
+    var(--ds-surface);
+  box-shadow: var(--ds-shadow-1);
+}
+.lab-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -42% 34%;
+  height: 8rem;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.16) 0 1px,
+    transparent 1px 14px
+  );
+  opacity: 0.22;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+.lab-hero__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--ds-font-display);
+  font-size: 3rem;
+  line-height: 1.02;
+  letter-spacing: 0;
+  margin: 0 0 0.8rem;
+  color: var(--ds-ink);
+  max-width: 14ch;
+}
+.lab-hero__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 66ch;
+  margin: 0;
+  font-size: 1.03rem;
+  line-height: 1.62;
+  color: var(--ds-body);
+}
+.lab-hero__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.lab-hero__actions a {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.48rem 0.8rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ds-ink) !important;
+  text-decoration: none !important;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.lab-hero__actions a:hover {
+  transform: translateY(-1px);
+  border-color: var(--ds-accent);
+  background: var(--ds-accent-soft);
+}
+.lab-mission-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.65rem;
+  margin: 0 0 1.2rem;
+}
+.lab-mission-card {
+  position: relative;
+  min-height: 7.6rem;
+  padding: 0.82rem 0.85rem 0.9rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface);
+  color: var(--ds-body) !important;
+  text-decoration: none !important;
+  box-shadow: var(--ds-shadow-1);
+  overflow: hidden;
+  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.lab-mission-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0ea5e9, #10b981, #f59e0b);
+  opacity: 0.72;
+}
+.lab-mission-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--ds-accent);
+  box-shadow: var(--ds-shadow-2);
+}
+.lab-mission-card__code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-bottom: 0.45rem;
+  border-radius: 50%;
+  background: var(--ds-surface-elev);
+  color: var(--ds-accent);
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.lab-mission-card strong {
+  display: block;
+  margin-bottom: 0.28rem;
+  font-family: var(--ds-font-display);
+  font-size: 0.98rem;
+  color: var(--ds-ink);
+}
+.lab-mission-card span:last-child {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ds-muted);
+}
+
 .lab-card {
   margin: 1.75rem 0 2.25rem;
   padding: 1.4rem 1.45rem 1.5rem;
@@ -422,6 +561,61 @@
   letter-spacing: -0.005em;
   color: var(--ds-ink);
   font-size: 0.84rem;
+}
+
+/* Mission block — the "Goal: X" callout under each lab's lead paragraph. */
+.lab-card__mission {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0.8rem 0 1rem;
+  padding: 0.2rem 0 0.2rem 0.85rem;
+  border-left: 3px solid var(--ds-accent);
+}
+.lab-card__mission-kicker {
+  font-family: var(--ds-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+}
+.lab-card__mission strong {
+  font-family: var(--ds-font-display);
+  font-size: 1.02rem;
+  color: var(--ds-ink);
+}
+.lab-card__mission > span:not(.lab-card__mission-kicker) {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--ds-body);
+}
+.lab-card__mission-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+.lab-card__mission-pills span {
+  padding: 0.22rem 0.5rem;
+  border: 1px solid var(--ds-line);
+  border-radius: 999px;
+  background: var(--ds-surface);
+  color: var(--ds-muted);
+  font-family: var(--ds-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Sweet-spot callout — only shown when the player hits the 5★ regime. */
+.lab-experiment__sweet {
+  margin: 0.4rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--ds-radius-sm);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(244, 63, 94, 0.08));
+  color: var(--ds-ink);
+  font-size: 0.93rem;
+  line-height: 1.55;
 }
 
 /* Buttons used inside lab widgets */
@@ -763,6 +957,11 @@
   color: var(--ds-soft);
   line-height: 1.35;
   max-width: 16rem;
+}
+.lab-playbar__hint--wide {
+  grid-column: 1 / -1;
+  margin: 0;
+  max-width: none;
 }
 .lab-playset {
   display: flex;
@@ -1751,6 +1950,11 @@ html[data-theme="dark"] .lab-probe__choice--wrong { background: rgba(252, 165, 1
 }
 
 @media (max-width: 720px) {
+  .lab-hero { padding: 1.1rem 1rem 1.2rem; }
+  .lab-hero__title { font-size: 2rem; max-width: 11ch; }
+  .lab-hero__copy { font-size: 0.98rem; }
+  .lab-mission-deck { grid-template-columns: 1fr; }
+  .lab-mission-card { min-height: auto; }
   .lab-card { padding: 1.1rem 1rem 1.2rem; }
   .lab-experiment__visual > .lab-wm__grid { max-width: 240px; margin: 0 auto; }
   .lab-tg__field { grid-template-columns: 70px 1fr 70px; height: 64px; }
@@ -1899,8 +2103,31 @@ button:focus-visible {
   pointer-events: none;
 }
 
-/* ---- Badge styles ---- */
-.lab-badges__list { display:flex; gap:0.6rem; }
+/* ---- Badge gallery ---- */
+.lab-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin: 0 0 1.1rem;
+  padding: 0.75rem 0.95rem;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--ds-font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+}
+.lab-badges strong {
+  color: var(--ds-ink);
+  font-family: var(--ds-font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.lab-badges__list { display:flex; gap:0.6rem; flex-wrap: wrap; }
 .lab-badge { padding:0.25rem 0.6rem; border-radius:999px; font-size:0.8rem; background:rgba(255,255,255,0.03); color:var(--ds-text-subtle); border:1px solid rgba(255,255,255,0.02); }
 .lab-badge--locked { opacity:0.6; filter:grayscale(0.6); }
 .lab-badge--unlocked { background:linear-gradient(90deg,#34d399,#06b6d4); color:#021; border-color:transparent; box-shadow:0 6px 18px rgba(6,182,212,0.12); transform:translateY(-2px); }
