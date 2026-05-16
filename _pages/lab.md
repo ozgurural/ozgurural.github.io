@@ -68,19 +68,6 @@ excerpt: "Five interactive thought experiments from my research — distributed 
   </div>
 </div>
 
-<div class="lab-playbar" id="lab-playbar" role="region" aria-label="Playground feedback and motion">
-  <div class="lab-playbar__cluster">
-    <span class="lab-playbar__kicker">Arcade layer</span>
-    <label class="lab-playset__opt"><input type="checkbox" data-role="lab-juice" checked> Juice mode <span class="lab-playbar__hint">faster pulses, bigger wins</span></label>
-    <label class="lab-playset__opt"><input type="checkbox" data-role="lab-haptic"> Haptic wins <span class="lab-playbar__hint">mobile buzz</span></label>
-  </div>
-  <div class="lab-playbar__cluster lab-playbar__cluster--score">
-    <span class="lab-playbar__kicker">Combo</span>
-    <span class="lab-playbar__combo" aria-live="polite"><span data-role="lab-combo-val">0</span></span>
-    <span class="lab-playbar__hint">move any slider to build it</span>
-  </div>
-</div>
-
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Consensus Casino</h2>

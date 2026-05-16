@@ -194,36 +194,12 @@
   let labFxCombo = 0;
   let labFxComboTimer = null;
 
-  function labFxJuiceOn() {
-    return document.documentElement.classList.contains("lab-juice-mode");
-  }
-  function labFxHapticOn() {
-    const h = document.querySelector('[data-role="lab-haptic"]');
-    return !!(h && h.checked);
-  }
-  function labFxBumpCombo(delta) {
-    var d = delta == null ? 1 : delta;
-    labFxCombo += d;
-    var el = document.querySelector('[data-role="lab-combo-val"]');
-    if (el) {
-      el.textContent = String(labFxCombo);
-      el.parentElement.classList.remove("lab-playbar__combo--pulse");
-      void el.parentElement.offsetWidth;
-      el.parentElement.classList.add("lab-playbar__combo--pulse");
-      // Milestone bumps: 10, 25, 50 get extra celebration
-      var milestones = [10, 25, 50, 100];
-      if (milestones.indexOf(labFxCombo) !== -1 && labFxJuiceOn()) {
-        labFxBuzz();
-        labFxBuzz();
-      }
-    }
-    if (labFxComboTimer) clearTimeout(labFxComboTimer);
-    labFxComboTimer = setTimeout(function () {
-      labFxCombo = Math.max(0, labFxCombo - 1);
-      var c = document.querySelector('[data-role="lab-combo-val"]');
-      if (c) c.textContent = String(labFxCombo);
-    }, 3200);
-  }
+  // Confetti/celebration on actual game wins is purposeful feedback, so
+  // it stays enabled. The "juice mode" and "haptic" user toggles are
+  // gone — they were just gating the celebration with extra clicks.
+  function labFxJuiceOn() { return true; }
+  function labFxHapticOn() { return false; }
+  function labFxBumpCombo() { /* no-op since the combo counter UI was removed */ }
   function labFxSliderGlow(slider, intensity) {
     if (!slider) return;
     if (intensity > 0.7) {
@@ -538,40 +514,8 @@
     requestAnimationFrame(tick);
   }
 
-  function initLabPlaybar() {
-    if (!document.getElementById("lab-playbar")) return;
-    var juice = document.querySelector('[data-role="lab-juice"]');
-    var hapt = document.querySelector('[data-role="lab-haptic"]');
-    function syncJuice() {
-      document.documentElement.classList.toggle("lab-juice-mode", !!(juice && juice.checked));
-      try {
-        if (juice) safeStorageSet(FX_LS_JUICE, juice.checked ? "1" : "0");
-      } catch (e) { /* noop */ }
-    }
-    function syncHapt() {
-      try {
-        if (hapt) safeStorageSet(FX_LS_HAPTIC, hapt.checked ? "1" : "0");
-      } catch (e) { /* noop */ }
-    }
-    try {
-      if (juice) {
-        var sj = safeStorageGet(FX_LS_JUICE);
-        if (sj !== null) juice.checked = sj === "1";
-      }
-      if (hapt) {
-        var sh = safeStorageGet(FX_LS_HAPTIC);
-        if (sh !== null) hapt.checked = sh === "1";
-      }
-    } catch (e) { /* noop */ }
-    syncJuice();
-    if (juice) juice.addEventListener("change", syncJuice);
-    if (hapt) hapt.addEventListener("change", syncHapt);
-    document.addEventListener("input", function (e) {
-      var t = e.target;
-      if (!t || !t.matches || !t.matches("input[type=\"range\"]")) return;
-      if (t.closest && t.closest(".lab-experiment")) labFxBumpCombo(1);
-    }, true);
-  }
+  // The arcade playbar (Juice/Haptic toggles + Combo counter) was
+  // decoration that distracted from the actual learning. Removed.
 
   /* ============================================================================
      PUZZLE 1 · Two Generals' Lab
@@ -2651,7 +2595,6 @@
   function boot() {
     loadQuest();
     renderQuest();
-    initLabPlaybar();
     if(typeof initTwoGeneralsLab === "function") initTwoGeneralsLab();
     if(typeof initVerifierLab === "function") initVerifierLab();
     if(typeof initWatermarkLab === "function") initWatermarkLab();
