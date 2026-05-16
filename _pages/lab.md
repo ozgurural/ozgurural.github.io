@@ -6,9 +6,9 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
 
 <section class="lab-hero" aria-label="Lab arcade intro">
   <span class="ep-eyebrow">Interactive research arcade</span>
-  <h2 class="lab-hero__title">Five science games. One star meter each.</h2>
+  <h2 class="lab-hero__title">Aim. Fire. Get graded.</h2>
   <p class="lab-hero__copy">
-    Pick a lab. Drag the sliders. Watch the live grade go from <strong>Wipeout</strong> to <strong>Frontier</strong> — 5★ means the parameters you chose would survive in the real world. Everything else is the simulation politely telling you to try again.
+    Five science games, played the same way: set your parameters, hit <strong>Run experiment</strong>, and let the simulation grade your run from <strong>Wipeout</strong> to <strong>Frontier</strong>. No hints on the dial — 5★ means you actually found the regime real systems run in.
   </p>
   <div class="lab-hero__actions" aria-label="Jump to experiments">
     <a href="#lab-wm">Catch a stolen AI model</a>
@@ -115,6 +115,10 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
         <label class="lab-playset__opt"><input type="checkbox" data-role="tg-turbo" title="Reduces effective loss and speeds retry cadence"> Fast retry lane</label>
         <label class="lab-playset__opt"><input type="checkbox" data-role="tg-neonplot" checked title="Adds coordination overhead and tightens the strict path"> Coordination tax</label>
       </div>
+      <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="tg-run-btn">
+        <span class="lab-btn__text">Run experiment</span>
+        <span class="lab-btn__bg"></span>
+      </button>
     </div>
 
     <div class="lab-experiment__visual">
@@ -215,6 +219,10 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
         <label class="lab-playset__opt"><input type="checkbox" data-role="wm-neon" checked title="Lowers detector strictness so q and detection move with the signal."> High-contrast detector</label>
         <label class="lab-playset__opt"><input type="checkbox" data-role="wm-pop" title="Adds a broader validation window, which changes effective k and the published regime."> Broader validation window</label>
       </div>
+      <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="wm-run-btn">
+        <span class="lab-btn__text">Run experiment</span>
+        <span class="lab-btn__bg"></span>
+      </button>
     </div>
 
     <div class="lab-experiment__visual">
@@ -406,6 +414,10 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
         <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-hypersim" title="Shortens the voting window and changes the sampling cadence"> Short voting window</label>
         <label class="lab-playset__opt"><input type="checkbox" data-role="tmr-glow" checked title="Reduces effective correlation with a diverse voter model"> Diverse voter row</label>
       </div>
+      <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="tmr-run-btn">
+        <span class="lab-btn__text">Run experiment</span>
+        <span class="lab-btn__bg"></span>
+      </button>
     </div>
 
     <div class="lab-tmr__strip" aria-hidden="true" data-role="tmr-strip">

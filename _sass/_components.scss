@@ -1134,6 +1134,68 @@ html[data-theme="dark"] .lab-plot__legend-value--strict { fill: #fbbf24; }
 }
 .lab-plot__legend-value--wm-current { fill: var(--ds-accent); font-weight: 700; }
 
+/* ---- Pending experiment state (angry-bird "set then fire") ----
+   While the player is still aiming, hide the numeric readout behind
+   a dimmed veil so the grade only shows up after Run experiment.
+   Metrics still occupy space (no layout shift); they just read "—". */
+.lab-experiment--pending .lab-experiment__readout {
+  opacity: 0.45;
+  filter: blur(0.6px) saturate(0.75);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  pointer-events: none;
+  position: relative;
+}
+.lab-experiment--pending .lab-experiment__readout::after {
+  content: "Press Run experiment to reveal the grade";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  background: rgba(248, 250, 252, 0.45);
+  backdrop-filter: blur(1px);
+  pointer-events: none;
+  border-radius: var(--ds-radius-sm);
+}
+html[data-theme="dark"] .lab-experiment--pending .lab-experiment__readout::after {
+  background: rgba(15, 23, 42, 0.45);
+  color: var(--ds-soft);
+}
+.lab-experiment--revealed .lab-experiment__readout {
+  animation: lab-readout-reveal 0.5s ease-out both;
+}
+@keyframes lab-readout-reveal {
+  from { opacity: 0; transform: translateY(4px); filter: blur(2px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-experiment--revealed .lab-experiment__readout { animation: none; }
+  .lab-experiment--pending .lab-experiment__readout { transition: none; }
+}
+
+/* "Run experiment" button — same colour family as Train, plus a tiny
+   chevron-style accent to differentiate from Train. */
+.lab-btn--run {
+  grid-column: 1 / -1;
+  margin-top: 0.2rem;
+}
+.lab-btn--run.is-running .lab-btn__bg {
+  background: linear-gradient(135deg, #f59e0b, #f43f5e);
+  animation: lab-run-pulse 0.55s ease-in-out infinite alternate;
+}
+@keyframes lab-run-pulse {
+  from { opacity: 0.88; }
+  to   { opacity: 1.0; box-shadow: 0 0 18px rgba(245, 158, 11, 0.45); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-btn--run.is-running .lab-btn__bg { animation: none; }
+}
+
 /* ---- Star scoreboard (per-experiment grade) ----
    Live 0–5 star rating with tier label. Sits above the metric grid
    so users see at a glance how their current parameters score. */

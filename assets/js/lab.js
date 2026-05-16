@@ -834,15 +834,77 @@
     refs.p.value = randP;
     refs.n.value = randN;
 
-    refs.p.addEventListener("input", update);
-    refs.n.addEventListener("input", update);
-    if (refs.turbo) refs.turbo.addEventListener("change", update);
-    if (refs.neonplot) refs.neonplot.addEventListener("change", update);
-    // 5★ sweet zones: loss in [0.30, 0.55] (the regime where multi-send dominates)
-    // and depth in [4, 6] (efficient, not brute force).
-    paintSweetZone(refs.p, 0.30, 0.55, "5★ band");
-    paintSweetZone(refs.n, 4, 6, "5★ band");
-    update();
+    // Aim → Fire → Score. Slider movement only updates the slider value
+    // display; the grade and metrics stay hidden until the player commits
+    // by pressing Run experiment. Re-arming a slider resets to pending.
+    refs.runBtn = $('[data-role="tg-run-btn"]', root);
+    let tgRevealed = false;
+
+    function tgSliderDisplay() {
+      const p = parseFloat(refs.p.value);
+      const n = parseInt(refs.n.value, 10);
+      refs.pVal.textContent = p.toFixed(2);
+      refs.nVal.textContent = n;
+      refs.pDisplay.textContent = p.toFixed(2);
+    }
+    function tgPendReadout(msg) {
+      tgRevealed = false;
+      refs.naive.textContent = "—";
+      refs.strict.textContent = "—";
+      refs.delta.textContent = "—";
+      refs.minNVal.textContent = "—";
+      refs.insight.textContent = msg || "Set the sliders. Hit Run experiment to see the grade.";
+      if (refs.sweetTg) refs.sweetTg.hidden = true;
+      setStars(refs.starsTg, 0, "Press Run to score", { header: "Run grade", pending: true });
+      root.classList.add("lab-experiment--pending");
+      root.classList.remove("lab-experiment--revealed");
+    }
+    function tgCommitRun() {
+      if (!refs.runBtn) return;
+      const btnText = refs.runBtn.querySelector('.lab-btn__text');
+      refs.runBtn.classList.add("is-running");
+      refs.runBtn.disabled = true;
+      if (btnText) btnText.textContent = "Running…";
+      // brief experiment animation: messengers run hot during the reveal
+      const prevSpawnMs = spawnMs;
+      spawnMs = 220;
+      restartAnim();
+      setTimeout(function () {
+        spawnMs = prevSpawnMs;
+        restartAnim();
+        refs.runBtn.classList.remove("is-running");
+        refs.runBtn.disabled = false;
+        if (btnText) btnText.textContent = "Run again";
+        tgRevealed = true;
+        root.classList.remove("lab-experiment--pending");
+        root.classList.add("lab-experiment--revealed");
+        update();
+      }, 1100);
+    }
+
+    function tgOnSlider() {
+      tgSliderDisplay();
+      if (tgRevealed) {
+        tgPendReadout("Slider moved. Hit Run experiment to score the new setup.");
+      }
+      // Visuals still update (animation speed reflects current p) so
+      // the channel feels alive while the player is still aiming.
+      const p = parseFloat(refs.p.value);
+      currentP = p;
+      const turboMode = !!(refs.turbo && refs.turbo.checked);
+      const effectiveP = clamp(p * (turboMode ? 0.88 : 1.0), 0.001, 0.99);
+      currentP = effectiveP;
+      drawPlot(p, parseInt(refs.n.value, 10));
+    }
+    refs.p.addEventListener("input", tgOnSlider);
+    refs.n.addEventListener("input", tgOnSlider);
+    if (refs.turbo) refs.turbo.addEventListener("change", tgOnSlider);
+    if (refs.neonplot) refs.neonplot.addEventListener("change", tgOnSlider);
+    if (refs.runBtn) refs.runBtn.addEventListener("click", tgCommitRun);
+
+    tgSliderDisplay();
+    tgPendReadout();
+    drawPlot(parseFloat(refs.p.value), parseInt(refs.n.value, 10));
     startAnim();
   }
 
@@ -1219,18 +1281,69 @@
     refs.k.value = randK;
     refs.sigma.value = randSigma;
 
-    refs.eps.addEventListener("input", update);
-    refs.k.addEventListener("input", update);
-    refs.sigma.addEventListener("input", update);
-    if (refs.alpha) refs.alpha.addEventListener("input", update);
-    if (refs.wmNeon) refs.wmNeon.addEventListener("change", update);
-    if (refs.wmPop) refs.wmPop.addEventListener("change", update);
-    // 5★ sweet zones: ε in [0.13, 0.18] (strong signal, model still intact),
-    // k in [14, 22] (enough cells for sqrt(k) gain), σ in [0.04, 0.10] (attacker controlled).
-    paintSweetZone(refs.eps, 0.13, 0.18, "5★ ε");
-    paintSweetZone(refs.k, 14, 22, "5★ k");
-    paintSweetZone(refs.sigma, 0.04, 0.10, "5★ σ");
-    update();
+    // Aim → Fire → Score. Same commit pattern as Consensus.
+    refs.runBtn = $('[data-role="wm-run-btn"]', root);
+    let wmRevealed = false;
+
+    function wmSliderDisplay() {
+      const eps = parseFloat(refs.eps.value);
+      const k = parseInt(refs.k.value, 10);
+      const sigma = parseFloat(refs.sigma.value);
+      const a = parseFloat(refs.alpha.value);
+      refs.epsVal.textContent = eps.toFixed(2);
+      refs.kVal.textContent = k;
+      refs.sigmaVal.textContent = sigma.toFixed(2);
+      if (refs.alphaVal) refs.alphaVal.textContent = a.toFixed(3);
+    }
+    function wmPendReadout(msg) {
+      wmRevealed = false;
+      refs.snr.textContent = "—";
+      refs.det.textContent = "—";
+      refs.fpr.textContent = "—";
+      if (refs.utilityVal) refs.utilityVal.textContent = "—";
+      refs.insight.textContent = msg || "Set the sliders. Hit Run experiment to score the detector.";
+      if (refs.sweetWm) refs.sweetWm.hidden = true;
+      setStars(refs.starsWm, 0, "Press Run to score", { header: "Run grade", pending: true });
+      root.classList.add("lab-experiment--pending");
+      root.classList.remove("lab-experiment--revealed");
+    }
+    function wmCommitRun() {
+      if (!refs.runBtn) return;
+      const btnText = refs.runBtn.querySelector('.lab-btn__text');
+      refs.runBtn.classList.add("is-running");
+      refs.runBtn.disabled = true;
+      if (btnText) btnText.textContent = "Running…";
+      // Visual: flash the grid as if the verifier is scanning
+      if (refs.grid) {
+        refs.grid.classList.add("lab-wm__grid--pop");
+        setTimeout(function () { if (refs.grid) refs.grid.classList.remove("lab-wm__grid--pop"); }, 360);
+      }
+      setTimeout(function () {
+        refs.runBtn.classList.remove("is-running");
+        refs.runBtn.disabled = false;
+        if (btnText) btnText.textContent = "Run again";
+        wmRevealed = true;
+        root.classList.remove("lab-experiment--pending");
+        root.classList.add("lab-experiment--revealed");
+        update();
+      }, 1100);
+    }
+    function wmOnSlider() {
+      wmSliderDisplay();
+      if (wmRevealed) {
+        wmPendReadout("Slider moved. Hit Run experiment to re-score.");
+      }
+    }
+    refs.eps.addEventListener("input", wmOnSlider);
+    refs.k.addEventListener("input", wmOnSlider);
+    refs.sigma.addEventListener("input", wmOnSlider);
+    if (refs.alpha) refs.alpha.addEventListener("input", wmOnSlider);
+    if (refs.wmNeon) refs.wmNeon.addEventListener("change", wmOnSlider);
+    if (refs.wmPop) refs.wmPop.addEventListener("change", wmOnSlider);
+    if (refs.runBtn) refs.runBtn.addEventListener("click", wmCommitRun);
+
+    wmSliderDisplay();
+    wmPendReadout();
   }
 
   /* ============================================================================
@@ -1478,9 +1591,10 @@
       simTimer = setInterval(tick, tmrTickMs);
       tick();
     }
-    function restartSimInterval() {
+    function restartSimInterval(customMs) {
       if (simTimer) { clearInterval(simTimer); simTimer = null; }
-      simTimer = setInterval(tick, tmrTickMs);
+      const ms = (typeof customMs === "number") ? customMs : tmrTickMs;
+      simTimer = setInterval(tick, ms);
       tick();
     }
     function stopSim() {
@@ -1488,7 +1602,7 @@
     }
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) { stopSim(); } else { startSim(); }
+      if (document.hidden) { stopSim(); } else if (tmrRevealed) { startSim(); }
     });
 
     /* ---- Live update from sliders ---- */
@@ -1579,27 +1693,87 @@
     refs.q.value = randQ;
     refs.rho.value = randRho;
 
-    refs.q.addEventListener("input", update);
-    refs.rho.addEventListener("input", update);
-    if (refs.nChannels) refs.nChannels.addEventListener("input", update);
-    // 5★ sweet zones: q ≤ 0.025, ρ ≤ 0.05, N ≥ 5.
-    paintSweetZone(refs.q, 0.005, 0.025, "5★ q");
-    paintSweetZone(refs.rho, 0.00, 0.05, "5★ ρ");
-    if (refs.nChannels) paintSweetZone(refs.nChannels, 5, 9, "5★ N");
+    // Aim → Fire → Score. Same commit pattern.
+    refs.runBtn = $('[data-role="tmr-run-btn"]', root);
+    let tmrRevealed = false;
+    let tmrRunning = false;
+
+    function tmrSliderDisplay() {
+      const q = parseFloat(refs.q.value);
+      const rho = parseFloat(refs.rho.value);
+      const N = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
+      refs.qVal.textContent = q.toFixed(3);
+      refs.rhoVal.textContent = rho.toFixed(2);
+      if (refs.nChannelsVal) refs.nChannelsVal.textContent = String(N);
+    }
+    function tmrPendReadout(msg) {
+      tmrRevealed = false;
+      refs.sysVal.textContent = "—";
+      refs.singleVal.textContent = "—";
+      refs.gainVal.textContent = "—";
+      if (refs.rhoBreakevenVal) refs.rhoBreakevenVal.textContent = "—";
+      refs.insight.textContent = msg || "Set the sliders. Hit Run experiment to play out the voting.";
+      if (refs.sweetTmr) refs.sweetTmr.hidden = true;
+      setStars(refs.starsTmr, 0, "Press Run to score", { header: "Run grade", pending: true });
+      root.classList.add("lab-experiment--pending");
+      root.classList.remove("lab-experiment--revealed");
+    }
+    function tmrClearStrip() {
+      [refs.cells1, refs.cells2, refs.cells3, refs.cellsSys].forEach(function (c) {
+        if (c) while (c.firstChild) c.removeChild(c.firstChild);
+      });
+    }
+    function tmrCommitRun() {
+      if (!refs.runBtn || tmrRunning) return;
+      tmrRunning = true;
+      const btnText = refs.runBtn.querySelector('.lab-btn__text');
+      refs.runBtn.classList.add("is-running");
+      refs.runBtn.disabled = true;
+      if (btnText) btnText.textContent = "Running…";
+      // Lock in chosen params; clear strip; rapidly tick the simulation
+      currentQ = parseFloat(refs.q.value);
+      currentRho = parseFloat(refs.rho.value);
+      currentNChannels = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
+      tmrClearStrip();
+      restartSimInterval(80); // fast burst
+      setTimeout(function () {
+        tmrTickMs = refs.hypersim && refs.hypersim.checked ? 200 : 600;
+        restartSimInterval(tmrTickMs);
+        tmrRunning = false;
+        refs.runBtn.classList.remove("is-running");
+        refs.runBtn.disabled = false;
+        if (btnText) btnText.textContent = "Run again";
+        tmrRevealed = true;
+        root.classList.remove("lab-experiment--pending");
+        root.classList.add("lab-experiment--revealed");
+        update();
+      }, 1400);
+    }
+    function tmrOnSlider() {
+      tmrSliderDisplay();
+      if (tmrRevealed) {
+        tmrPendReadout("Slider moved. Hit Run experiment to re-score.");
+        stopSim();
+        tmrClearStrip();
+      }
+    }
+    refs.q.addEventListener("input", tmrOnSlider);
+    refs.rho.addEventListener("input", tmrOnSlider);
+    if (refs.nChannels) refs.nChannels.addEventListener("input", tmrOnSlider);
     if (refs.hypersim) {
       refs.hypersim.addEventListener("change", function () {
         tmrTickMs = refs.hypersim.checked ? 200 : 600;
-        restartSimInterval();
-        update();
+        if (tmrRevealed) restartSimInterval(tmrTickMs);
+        tmrOnSlider();
       });
     }
-    if (refs.glow) {
-      refs.glow.addEventListener("change", function () {
-        update();
-      });
-    }
-    update();
-    startSim();
+    if (refs.glow) refs.glow.addEventListener("change", tmrOnSlider);
+    if (refs.runBtn) refs.runBtn.addEventListener("click", tmrCommitRun);
+
+    tmrSliderDisplay();
+    tmrPendReadout();
+    // Strip stays idle until first Run — no preview of failure rate.
+    stopSim();
   }
 
   /* ============================================================================
@@ -1743,11 +1917,6 @@
     });
     if (refs.noise) refs.noise.addEventListener("input", function () { renderParticle(); });
     if (refs.gdRainbow) refs.gdRainbow.addEventListener("change", syncGdTrailStyle);
-    // 5★ sweet zones: α in [0.012, 0.022] (fast but stable),
-    // momentum in [0.55, 0.80] (carries through plateaus), noise minimal.
-    paintSweetZone(refs.lr, 0.012, 0.022, "5★ α");
-    paintSweetZone(refs.mom, 0.55, 0.80, "5★ β");
-    if (refs.noise) paintSweetZone(refs.noise, 0.0, 0.20, "5★ ζ");
 
     function gdEpochDelay() {
       return (refs.gdTurbo && refs.gdTurbo.checked) ? 11 : 30;
@@ -2367,11 +2536,6 @@
     refs.lr.addEventListener("input", updateSliderDisplay);
     refs.bs.addEventListener("input", updateSliderDisplay);
     refs.noise.addEventListener("input", updateSliderDisplay);
-    // 5★ sweet zones: α in [0.010, 0.016], B index in [4, 6] (=64..256),
-    // noise in [0.03, 0.07] (just enough to look real).
-    paintSweetZone(refs.lr, 0.010, 0.016, "5★ α");
-    paintSweetZone(refs.bs, 4, 6, "5★ B");
-    paintSweetZone(refs.noise, 0.03, 0.07, "5★ ζ");
 
     // Randomize starting parameters on each refresh for replayability
     const randAlpha = (0.008 + Math.random() * 0.010).toFixed(4);
