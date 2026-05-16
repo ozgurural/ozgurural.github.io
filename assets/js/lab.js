@@ -259,51 +259,60 @@
     "Production",   // 4 — real systems run here
     "Frontier",     // 5 — the paper is half-written
   ];
-  function setStars(host, score, customTier) {
+  function setStars(host, score, customTier, opts) {
     if (!host) return;
+    opts = opts || {};
+    const header = opts.header || "Live score";
+    const pending = !!opts.pending;
     const s = Math.max(0, Math.min(5, Number(score) || 0));
-    const full = Math.round(s);
+    const full = pending ? 0 : Math.round(s);
     const tier = customTier || STAR_TIERS[full];
     if (!host.dataset.built) {
       host.classList.add("lab-stars");
       host.innerHTML = "";
-      const head = document.createElement("span");
-      head.className = "lab-stars__head";
-      head.textContent = "Run grade";
-      host.appendChild(head);
-      const pips = document.createElement("span");
-      pips.className = "lab-stars__pips";
+      const headEl = document.createElement("span");
+      headEl.className = "lab-stars__head";
+      host.appendChild(headEl);
+      const pipsEl = document.createElement("span");
+      pipsEl.className = "lab-stars__pips";
       for (let i = 0; i < 5; i++) {
         const pip = document.createElement("span");
         pip.className = "lab-stars__pip";
         pip.setAttribute("aria-hidden", "true");
         pip.innerHTML = '<svg viewBox="0 0 20 20"><path d="M10 1.5 12.59 7.36 18.9 8.06l-4.7 4.32 1.31 6.22L10 15.34 4.49 18.6l1.31-6.22-4.7-4.32 6.31-.7Z"/></svg>';
-        pips.appendChild(pip);
+        pipsEl.appendChild(pip);
       }
-      host.appendChild(pips);
+      host.appendChild(pipsEl);
       const lbl = document.createElement("span");
       lbl.className = "lab-stars__tier";
       host.appendChild(lbl);
       host.dataset.built = "1";
     }
+    const headEl = host.querySelector(".lab-stars__head");
+    if (headEl) headEl.textContent = header;
+    host.classList.toggle("lab-stars--pending", pending);
     const pips = host.querySelectorAll(".lab-stars__pip");
     for (let j = 0; j < pips.length; j++) {
-      pips[j].classList.toggle("is-full", j < full);
+      pips[j].classList.toggle("is-full", !pending && j < full);
     }
     const lblEl = host.querySelector(".lab-stars__tier");
     if (lblEl) {
       lblEl.textContent = tier;
-      lblEl.setAttribute("data-tier", String(full));
+      lblEl.setAttribute("data-tier", pending ? "pending" : String(full));
     }
-    host.setAttribute("data-stars", String(full));
-    host.setAttribute("aria-label", full + " of 5 stars — " + tier);
-    const prev = parseInt(host.dataset.prevStars || "-1", 10);
-    if (full > prev && prev >= 0) {
-      host.classList.remove("lab-stars--up");
-      void host.offsetWidth;
-      host.classList.add("lab-stars--up");
+    host.setAttribute("data-stars", pending ? "pending" : String(full));
+    host.setAttribute("aria-label", pending ? tier : (full + " of 5 stars — " + tier));
+    if (!pending) {
+      const prev = parseInt(host.dataset.prevStars || "-1", 10);
+      if (full > prev && prev >= 0) {
+        host.classList.remove("lab-stars--up");
+        void host.offsetWidth;
+        host.classList.add("lab-stars--up");
+      }
+      host.dataset.prevStars = String(full);
+    } else {
+      host.dataset.prevStars = "-1";
     }
-    host.dataset.prevStars = String(full);
   }
 
   function labFxMilestoneUnlock(questCount) {
@@ -778,7 +787,7 @@
       else if (pNaive >= 0.85) { tgStars = 3; tgTier = "Solid"; }
       else if (pNaive >= 0.70) { tgStars = 2; tgTier = "Workable"; }
       else if (pNaive >= 0.50) { tgStars = 1; tgTier = "Sketchy"; }
-      setStars(refs.starsTg, tgStars, tgTier);
+      setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
 
       drawPlot(p, n);
     }
@@ -1143,7 +1152,7 @@
       else if (det >= 0.65 && fpr <= 0.15 && utilityOK)           { wmStars = 3; wmTier = "Solid"; }
       else if (det >= 0.40 && utilityOK)                           { wmStars = 2; wmTier = "Workable"; }
       else if (det >= 0.15)                                        { wmStars = 1; wmTier = "Sketchy"; }
-      setStars(refs.starsWm, wmStars, wmTier);
+      setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
@@ -1483,7 +1492,7 @@
       else if (gain >= 10)  { tmrStars = 3; tmrTier = "Solid"; }
       else if (gain >= 3)   { tmrStars = 2; tmrTier = "Workable"; }
       else if (gain >= 1.2) { tmrStars = 1; tmrTier = "Sketchy"; }
-      setStars(refs.starsTmr, tmrStars, tmrTier);
+      setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
 
       drawPlot(q, rhoEff);
     }
@@ -1763,7 +1772,7 @@
       refs.trainBtn.classList.remove('is-running');
       refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. New test chamber—sorry, <em>challenge</em>: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
-      setStars(refs.starsGd, 0, "Run not started");
+      setStars(refs.starsGd, 0, "Press Train to score", { header: "Run grade", pending: true });
     }
     
     function updateReadout() {
@@ -1806,18 +1815,18 @@
       if (currentX < X_MIN || currentX > X_MAX) {
         refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold—there is no spoon, only NaN. Lower the learning rate.";
         running = false;
-        setStars(refs.starsGd, 0, "Wipeout");
+        setStars(refs.starsGd, 0, "Wipeout", { header: "Run grade" });
       } else if (epoch > 500) {
         refs.insight.textContent = "⏳ Training timed out (500 epochs). The Matrix reloaded the same epoch; try higher learning rate or momentum.";
         running = false;
-        setStars(refs.starsGd, 1, "Sketchy");
+        setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
         if (dist < 0.12) {
           refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
           unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
           triggerCongrats(refs.plot, true);
-          setStars(refs.starsGd, 5, "Frontier");
+          setStars(refs.starsGd, 5, "Frontier", { header: "Run grade" });
         } else {
            refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
            // Closer to global min = more stars even when stuck in a local valley.
@@ -1825,7 +1834,7 @@
            if (dist < 0.30)      { gdS = 4; gdT = "Production"; }
            else if (dist < 0.60) { gdS = 3; gdT = "Solid"; }
            else if (dist < 1.00) { gdS = 2; gdT = "Workable"; }
-           setStars(refs.starsGd, gdS, gdT);
+           setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
         }
         running = false;
       }
@@ -1858,6 +1867,7 @@
         if (span) span.textContent = "Stop";
         else refs.trainBtn.textContent = "Stop";
         refs.insight.textContent = "Training... (watch the loss bend reality in real time)";
+        setStars(refs.starsGd, 0, "Training…", { header: "Run grade", pending: true });
         doEpoch();
       }
     });
@@ -2199,7 +2209,7 @@
       else if (score >= 62) { polStars = 3; polTier = "Solid"; }
       else if (score >= 45) { polStars = 2; polTier = "Workable"; }
       else if (score >= 25) { polStars = 1; polTier = "Sketchy"; }
-      setStars(refs.starsPol, polStars, polTier);
+      setStars(refs.starsPol, polStars, polTier, { header: "Run grade" });
     }
 
     function reset() {
@@ -2216,7 +2226,7 @@
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
       refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88). There is no spoon—only a loss curve that either trained or downloaded its personality.";
-      setStars(refs.starsPol, 0, "Run not started");
+      setStars(refs.starsPol, 0, "Press Train to score", { header: "Run grade", pending: true });
     }
 
     function doEpoch(epoch, alpha, batchSize, noise) {
@@ -2255,6 +2265,7 @@
         refs.trainBtn.classList.add('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
         refs.insight.textContent = "Running experiment. Trajectory smells like real training, or like someone chose the blue pill and a flat loss line.";
+        setStars(refs.starsPol, 0, "Training…", { header: "Run grade", pending: true });
 
         const alpha = parseFloat(refs.lr.value);
         const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);

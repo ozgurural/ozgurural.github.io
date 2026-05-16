@@ -1082,6 +1082,27 @@ html[data-theme="dark"] .lab-stars__tier[data-tier="3"] { color: #6ee7b7; }
 html[data-theme="dark"] .lab-stars__tier[data-tier="4"] { color: #7dd3fc; }
 html[data-theme="dark"] .lab-stars__tier[data-tier="5"] { color: #fcd34d; }
 
+/* Pending state — run-button labs before their first run.
+   Empty stars + monospace placeholder ("Press Train to score").
+   Visually says "I'm waiting" rather than "you failed". */
+.lab-stars--pending .lab-stars__pip svg path {
+  fill: transparent;
+  stroke: var(--ds-line);
+  stroke-width: 1.1;
+  opacity: 0.55;
+}
+.lab-stars--pending .lab-stars__tier {
+  background: var(--ds-surface-elev);
+  border-color: var(--ds-line);
+  color: var(--ds-muted);
+  font-family: var(--ds-font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+html[data-theme="dark"] .lab-stars--pending .lab-stars__tier { color: var(--ds-soft); }
+
 /* On rank-up, do a single satisfying pop. No infinite shake. */
 .lab-stars.lab-stars--up .lab-stars__pip.is-full:last-of-type {
   animation: lab-star-pop 0.45s ease-out;
