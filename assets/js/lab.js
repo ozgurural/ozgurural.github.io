@@ -580,15 +580,25 @@
       levels:   $('[data-role="tg-levels"]', root),
       starsTg:  $('[data-role="stars-tg"]', root),
     };
-    // Read the currently selected scenario's `p` (loss rate).
-    function tgCurrentP() {
+    // Read the currently selected scenario.
+    function tgCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
-      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      return active || (refs.levels && refs.levels.querySelector(".lab-level"));
+    }
+    function tgCurrentP() {
+      const btn = tgCurrentLevel();
       return btn ? parseFloat(btn.dataset.p) : 0.40;
     }
+    function tgCurrentGoal() {
+      const btn = tgCurrentLevel();
+      return btn ? parseFloat(btn.dataset.goal) : 0.99;
+    }
+    function tgCurrentMinN() {
+      const btn = tgCurrentLevel();
+      return btn ? parseInt(btn.dataset.minN, 10) : 6;
+    }
     function tgCurrentScenarioName() {
-      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
-      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      const btn = tgCurrentLevel();
       return btn ? (btn.dataset.name || "scenario") : "scenario";
     }
 
@@ -833,15 +843,17 @@
       else                       txt = "The smart strategy wins for any loss between 0 and 1. Real distributed systems picked it on purpose.";
       refs.insight.textContent = txt;
 
-      // Star grade — small sweet spot.
-      // 5★ requires not just reliability but EFFICIENT reliability:
-      // ≥99.9% with a thrifty depth (N≤6). Brute force at N=10 gets 4★.
+      // Star grade — per-scenario. 5★ only at the minimum N that beats
+      // the scenario's target. Brute force still earns 3★. Failures step
+      // down gracefully.
+      const tgGoal = tgCurrentGoal();
+      const tgMinN = tgCurrentMinN();
       let tgStars = 0, tgTier = "Oof 💥";
-      if (pNaive >= 0.999 && n <= 6)      { tgStars = 5; tgTier = "Legendary 🏆"; }
-      else if (pNaive >= 0.99)            { tgStars = 4; tgTier = "Slick 🎯"; }
-      else if (pNaive >= 0.95)            { tgStars = 3; tgTier = "Sharp ✨"; }
-      else if (pNaive >= 0.80)            { tgStars = 2; tgTier = "Decent 👍"; }
-      else if (pNaive >= 0.55)            { tgStars = 1; tgTier = "Wobbly"; }
+      if (pNaive >= tgGoal && n <= tgMinN)        { tgStars = 5; tgTier = "Legendary 🏆"; }
+      else if (pNaive >= tgGoal && n <= tgMinN+2) { tgStars = 4; tgTier = "Slick 🎯"; }
+      else if (pNaive >= tgGoal)                  { tgStars = 3; tgTier = "Sharp ✨"; }
+      else if (pNaive >= tgGoal * 0.90)           { tgStars = 2; tgTier = "Decent 👍"; }
+      else if (pNaive >= tgGoal * 0.65)           { tgStars = 1; tgTier = "Wobbly"; }
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
       tgHint(tgStars);
 
@@ -950,15 +962,25 @@
       levels:     $('[data-role="wm-levels"]', root),
       starsWm:    $('[data-role="stars-wm"]', root),
     };
-    // Thief noise comes from the active level. Detector strictness is fixed.
-    function wmCurrentSigma() {
+    // Thief noise + per-scenario target both come from the active level.
+    function wmCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
-      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      return active || (refs.levels && refs.levels.querySelector(".lab-level"));
+    }
+    function wmCurrentSigma() {
+      const btn = wmCurrentLevel();
       return btn ? parseFloat(btn.dataset.sigma) : 0.15;
     }
+    function wmCurrentGoalDet() {
+      const btn = wmCurrentLevel();
+      return btn ? parseFloat(btn.dataset.goalDet) : 0.90;
+    }
+    function wmCurrentEpsMax() {
+      const btn = wmCurrentLevel();
+      return btn ? parseFloat(btn.dataset.epsMax) : 0.18;
+    }
     function wmCurrentThiefName() {
-      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
-      const btn = active || (refs.levels && refs.levels.querySelector(".lab-level"));
+      const btn = wmCurrentLevel();
       return btn ? (btn.dataset.name || "thief") : "thief";
     }
     const FIXED_ALPHA = 0.05;
@@ -971,13 +993,16 @@
       const snr = eps / sd;
       return phi(snr - zcrit);
     }
-    /* aggregate detection over k cells, majority vote, normal approximation */
-    function aggregateDetect(q, k) {
-      // P(X >= ceil(k/2)) where X ~ Binom(k, q). Normal approx with cc.
-      const mu = k * q;
-      const sd = Math.sqrt(k * q * (1 - q) + 1e-9);
-      const thresh = Math.ceil(k / 2) - 0.5;  // continuity correction
-      return 1 - phi((thresh - mu) / sd);
+    /* Aggregate detection — proper z-test on the sum of k cells. This is
+       the textbook way to detect weak signals across many measurements:
+       the test statistic has SNR √k times the per-cell SNR. False alarms
+       stay at α; detection climbs with √k. (The earlier majority-vote
+       version was wrong for sub-50% per-cell signals — increasing k
+       didn't help.) */
+    function aggregateDetectZ(eps, sigma, k, zcrit) {
+      const sd = Math.sqrt(sigma*sigma + SIGMA0*SIGMA0);
+      const snr = eps / sd;
+      return phi(snr * Math.sqrt(k) - zcrit);
     }
 
     /* ---- Live grid: 8x8, key cells perturbed ---- */
@@ -1126,8 +1151,7 @@
         let d = "";
         for (let i = 0; i <= SAMPLES; i++) {
           const sigma = (i / SAMPLES) * SIGMA_MAX;
-          const q = qDetect(eps, sigma, zc);
-          const det = aggregateDetect(q, k);
+          const det = aggregateDetectZ(eps, sigma, k, zc);
           const x = xFor(sigma),
             y = yFor(det);
           d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
@@ -1140,8 +1164,7 @@
           d: pathForK(k),
           class: "lab-plot__curve lab-plot__curve--wm",
         }, plot);
-        const finalQ = qDetect(eps, SIGMA_MAX, zc);
-        const finalDet = aggregateDetect(finalQ, k);
+        const finalDet = aggregateDetectZ(eps, SIGMA_MAX, k, zc);
         const t = svg("text", {
           x: M.l + innerW + 10,
           y: yFor(finalDet) + 4,
@@ -1153,8 +1176,7 @@
         d: pathForK(kCur),
         class: "lab-plot__curve lab-plot__curve--wm lab-plot__curve--wm-current",
       }, plot);
-      const curFinalQ = qDetect(eps, SIGMA_MAX, zc);
-      const curFinalDet = aggregateDetect(curFinalQ, kCur);
+      const curFinalDet = aggregateDetectZ(eps, SIGMA_MAX, kCur, zc);
       const curLabel = svg(
         "text",
         {
@@ -1175,8 +1197,7 @@
       }, plot);
 
       // Marker dot at (σ, detection_for_current_k)
-      const qCur = qDetect(eps, sigmaCur, zc);
-      const detCur = aggregateDetect(qCur, kCur);
+      const detCur = aggregateDetectZ(eps, sigmaCur, kCur, zc);
       svg("circle", {
         cx: xFor(sigmaCur), cy: yFor(detCur), r: 5,
         class: "lab-plot__marker-dot lab-plot__marker-dot--wm",
@@ -1213,8 +1234,10 @@
       const effectiveZc = zc;
       const effectiveK = k;
       const q   = qDetect(eps, sigma, effectiveZc);
-      const det = aggregateDetect(q, effectiveK);
-      const fpr = aggregateDetect(alphaSig, effectiveK);
+      const det = aggregateDetectZ(eps, sigma, effectiveK, zc);
+      // False-positive rate is α by construction in a z-test (constant);
+      // we keep displaying it for clarity, but the player can't lower it.
+      const fpr = alphaSig;
 
       const num1 = (v) => v.toFixed(2);
       const pctH = (v) => (v * 100).toFixed(1) + "%";
@@ -1268,18 +1291,18 @@
       else                        txt = "More cells = stronger signal. Each doubling of k adds about √2 to your effective detection.";
       refs.insight.textContent = txt;
 
-      // Star grade — small sweet spot.
-      // 5★ requires all four to line up: very high detection, very low FPR,
-      // healthy SNR, AND the model is still usable (eps ≤ 0.18).
+      // Star grade — per-thief. Each thief has its own target detection
+      // rate and signature budget. 5★ = beat the target AND keep the
+      // model intact (ε under the scenario's budget). Bigger ε wrecks
+      // the model, so this is a real trade-off.
+      const wmGoalDet = wmCurrentGoalDet();
+      const wmEpsMax = wmCurrentEpsMax();
       let wmStars = 0, wmTier = "Oof 💥";
-      const utilityOK = eps <= 0.28;
-      if (det >= 0.97 && fpr <= 0.03 && eps <= 0.18 && snr >= 1.5)
-                                                                   { wmStars = 5; wmTier = "Legendary 🏆"; }
-      else if (det >= 0.90 && fpr <= 0.07 && eps <= 0.22 && snr >= 1.2)
-                                                                   { wmStars = 4; wmTier = "Slick 🎯"; }
-      else if (det >= 0.70 && fpr <= 0.12 && utilityOK)            { wmStars = 3; wmTier = "Sharp ✨"; }
-      else if (det >= 0.45 && utilityOK)                           { wmStars = 2; wmTier = "Decent 👍"; }
-      else if (det >= 0.18)                                        { wmStars = 1; wmTier = "Wobbly"; }
+      if (det >= wmGoalDet && fpr <= 0.05 && eps <= wmEpsMax)          { wmStars = 5; wmTier = "Legendary 🏆"; }
+      else if (det >= wmGoalDet && fpr <= 0.10 && eps <= wmEpsMax+0.04){ wmStars = 4; wmTier = "Slick 🎯"; }
+      else if (det >= wmGoalDet * 0.80 && eps <= 0.30)                 { wmStars = 3; wmTier = "Sharp ✨"; }
+      else if (det >= wmGoalDet * 0.55 && eps <= 0.40)                 { wmStars = 2; wmTier = "Decent 👍"; }
+      else if (det >= wmGoalDet * 0.30)                                { wmStars = 1; wmTier = "Wobbly"; }
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
       wmHint(wmStars);
 
@@ -1406,6 +1429,14 @@
     function tmrCurrentRho() {
       const btn = tmrCurrentLevel();
       return btn ? parseFloat(btn.dataset.rho) : 0.05;
+    }
+    function tmrCurrentGoalGain() {
+      const btn = tmrCurrentLevel();
+      return btn ? parseFloat(btn.dataset.goalGain) : 15;
+    }
+    function tmrCurrentMinN() {
+      const btn = tmrCurrentLevel();
+      return btn ? parseInt(btn.dataset.minN, 10) : 5;
     }
     function tmrCurrentMissionName() {
       const btn = tmrCurrentLevel();
@@ -1688,15 +1719,17 @@
       }
       refs.insight.textContent = txt;
 
-      // Star grade — small sweet spot.
-      // 5★ requires extreme reliability gain (≥250×). Available only with
-      // both low q AND low correlation AND enough channels.
+      // Star grade — per-mission. Each scenario has its own gain target
+      // because correlation caps how much TMR can ever help. 5★ = beat
+      // the target AND with the minimum number of computers that does it.
+      const tmrGoalGain = tmrCurrentGoalGain();
+      const tmrMinN = tmrCurrentMinN();
       let tmrStars = 0, tmrTier = "Oof 💥";
-      if (gain >= 250)      { tmrStars = 5; tmrTier = "Legendary 🏆"; }
-      else if (gain >= 75)  { tmrStars = 4; tmrTier = "Slick 🎯"; }
-      else if (gain >= 20)  { tmrStars = 3; tmrTier = "Sharp ✨"; }
-      else if (gain >= 5)   { tmrStars = 2; tmrTier = "Decent 👍"; }
-      else if (gain >= 1.5) { tmrStars = 1; tmrTier = "Wobbly"; }
+      if (gain >= tmrGoalGain && N <= tmrMinN)        { tmrStars = 5; tmrTier = "Legendary 🏆"; }
+      else if (gain >= tmrGoalGain)                    { tmrStars = 4; tmrTier = "Slick 🎯"; }
+      else if (gain >= tmrGoalGain * 0.65)             { tmrStars = 3; tmrTier = "Sharp ✨"; }
+      else if (gain >= tmrGoalGain * 0.35)             { tmrStars = 2; tmrTier = "Decent 👍"; }
+      else if (gain >= 1.5)                            { tmrStars = 1; tmrTier = "Wobbly"; }
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
       tmrHint(tmrStars);
 

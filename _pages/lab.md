@@ -98,25 +98,25 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       <div class="lab-levels" data-role="tg-levels" aria-label="Pick scenario">
         <strong class="lab-levels__title">Pick the scenario</strong>
         <div class="lab-levels__row">
-          <button type="button" class="lab-level" data-p="0.15" data-name="Home WiFi">
+          <button type="button" class="lab-level" data-p="0.15" data-goal="0.999" data-min-n="4" data-name="Home WiFi">
             <span class="lab-level__icon">🏖️</span>
             <span class="lab-level__name">Home WiFi</span>
-            <span class="lab-level__hint">15% drop</span>
+            <span class="lab-level__hint">15% drop · need 99.9%</span>
           </button>
-          <button type="button" class="lab-level lab-level--active" data-p="0.40" data-name="City cafe">
+          <button type="button" class="lab-level lab-level--active" data-p="0.40" data-goal="0.99" data-min-n="6" data-name="City cafe">
             <span class="lab-level__icon">🏙️</span>
             <span class="lab-level__name">City cafe</span>
-            <span class="lab-level__hint">40% drop</span>
+            <span class="lab-level__hint">40% drop · need 99%</span>
           </button>
-          <button type="button" class="lab-level" data-p="0.65" data-name="Subway">
+          <button type="button" class="lab-level" data-p="0.65" data-goal="0.95" data-min-n="7" data-name="Subway">
             <span class="lab-level__icon">🚇</span>
             <span class="lab-level__name">Subway</span>
-            <span class="lab-level__hint">65% drop</span>
+            <span class="lab-level__hint">65% drop · need 95%</span>
           </button>
-          <button type="button" class="lab-level" data-p="0.85" data-name="Storm">
+          <button type="button" class="lab-level" data-p="0.85" data-goal="0.80" data-min-n="10" data-name="Storm">
             <span class="lab-level__icon">🌪️</span>
             <span class="lab-level__name">Storm</span>
-            <span class="lab-level__hint">85% drop</span>
+            <span class="lab-level__hint">85% drop · need 80%</span>
           </button>
         </div>
       </div>
@@ -197,25 +197,25 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       <div class="lab-levels" data-role="wm-levels" aria-label="Pick the thief">
         <strong class="lab-levels__title">Pick the thief</strong>
         <div class="lab-levels__row">
-          <button type="button" class="lab-level" data-sigma="0.05" data-name="Casual">
+          <button type="button" class="lab-level" data-sigma="0.05" data-goal-det="0.97" data-eps-max="0.15" data-name="Casual">
             <span class="lab-level__icon">🦮</span>
             <span class="lab-level__name">Casual</span>
-            <span class="lab-level__hint">light tweaks</span>
+            <span class="lab-level__hint">light tweaks · need 97% catch</span>
           </button>
-          <button type="button" class="lab-level lab-level--active" data-sigma="0.15" data-name="Pro thief">
+          <button type="button" class="lab-level lab-level--active" data-sigma="0.15" data-goal-det="0.90" data-eps-max="0.18" data-name="Pro thief">
             <span class="lab-level__icon">🎭</span>
             <span class="lab-level__name">Pro thief</span>
-            <span class="lab-level__hint">fine-tunes the model</span>
+            <span class="lab-level__hint">fine-tunes · need 90% catch</span>
           </button>
-          <button type="button" class="lab-level" data-sigma="0.25" data-name="Crafty">
+          <button type="button" class="lab-level" data-sigma="0.25" data-goal-det="0.80" data-eps-max="0.20" data-name="Crafty">
             <span class="lab-level__icon">🦹</span>
             <span class="lab-level__name">Crafty</span>
-            <span class="lab-level__hint">scrubs hard</span>
+            <span class="lab-level__hint">scrubs hard · need 80% catch</span>
           </button>
-          <button type="button" class="lab-level" data-sigma="0.35" data-name="Mastermind">
+          <button type="button" class="lab-level" data-sigma="0.35" data-goal-det="0.65" data-eps-max="0.25" data-name="Mastermind">
             <span class="lab-level__icon">🐉</span>
             <span class="lab-level__name">Mastermind</span>
-            <span class="lab-level__hint">nation-state level</span>
+            <span class="lab-level__hint">nation-state · need 65% catch</span>
           </button>
         </div>
       </div>
@@ -407,25 +407,25 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
       <div class="lab-levels" data-role="tmr-levels" aria-label="Pick the mission">
         <strong class="lab-levels__title">Pick the mission</strong>
         <div class="lab-levels__row">
-          <button type="button" class="lab-level" data-q="0.02" data-rho="0.00" data-name="Bank servers">
+          <button type="button" class="lab-level" data-q="0.02" data-rho="0.00" data-goal-gain="200" data-min-n="5" data-name="Bank servers">
             <span class="lab-level__icon">🏢</span>
             <span class="lab-level__name">Bank servers</span>
-            <span class="lab-level__hint">indoor, calm</span>
+            <span class="lab-level__hint">need 200× safer</span>
           </button>
-          <button type="button" class="lab-level lab-level--active" data-q="0.05" data-rho="0.05" data-name="Self-driving car">
+          <button type="button" class="lab-level lab-level--active" data-q="0.05" data-rho="0.05" data-goal-gain="13" data-min-n="5" data-name="Self-driving car">
             <span class="lab-level__icon">🚗</span>
             <span class="lab-level__name">Self-driving</span>
-            <span class="lab-level__hint">city traffic</span>
+            <span class="lab-level__hint">need 13× safer</span>
           </button>
-          <button type="button" class="lab-level" data-q="0.08" data-rho="0.10" data-name="A320 cruise">
+          <button type="button" class="lab-level" data-q="0.08" data-rho="0.10" data-goal-gain="7" data-min-n="7" data-name="A320 cruise">
             <span class="lab-level__icon">✈️</span>
             <span class="lab-level__name">A320 cruise</span>
-            <span class="lab-level__hint">stormy day</span>
+            <span class="lab-level__hint">need 7× safer</span>
           </button>
-          <button type="button" class="lab-level" data-q="0.12" data-rho="0.20" data-name="Mars rover">
+          <button type="button" class="lab-level" data-q="0.12" data-rho="0.20" data-goal-gain="4" data-min-n="7" data-name="Mars rover">
             <span class="lab-level__icon">🚀</span>
             <span class="lab-level__name">Mars rover</span>
-            <span class="lab-level__hint">cosmic rays</span>
+            <span class="lab-level__hint">need 4× safer</span>
           </button>
         </div>
       </div>
