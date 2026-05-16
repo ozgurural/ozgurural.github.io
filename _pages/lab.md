@@ -85,11 +85,11 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Consensus Casino</h2>
   <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
-  <p class="lab-card__lead">Two computers must agree, but the network keeps losing messages. Try two strategies and see which one wins more often.</p>
+  <p class="lab-card__lead">🤝 Two friends are texting to meet up. The cell tower keeps dropping their messages. One strategy: send once and hope. Another: send the message over and over. One of them actually works — and it's the one your phone uses every day.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Goal</span>
-    <strong>Push reliability past 99%.</strong>
-    <span>Drag the loss slider and the depth slider. Earn 5★ when the smart strategy hits 99%.</span>
+    <span class="lab-card__mission-kicker">Your job</span>
+    <strong>Push their chance of meeting past 99%.</strong>
+    <span>Turn up how bad the signal is, and how many times they retry. Hit Run and see if they actually make it to dinner.</span>
     <div class="lab-card__mission-pills"><span>5★ ≥ 99%</span><span>4★ ≥ 95%</span><span>3★ ≥ 85%</span></div>
   </div>
 
@@ -161,8 +161,9 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   </div>
 
   <details class="lab-reveal">
-    <summary>Behind the game</summary>
-    <p>Strict handshakes need every message to survive, so loss compounds. Multi-send only needs one copy to arrive, so reliability climbs fast. That is the practical trick behind retries, confirmations, and quorum systems.</p>
+    <summary>🧠 What did you just learn?</summary>
+    <p><strong>Retrying beats coordinating.</strong> If your strategy needs <em>every</em> step to succeed, even tiny losses compound — three 90% steps in a row only succeed 73% of the time. But if you only need <em>one</em> of many copies to arrive, your odds climb fast. This is the trick behind TCP retries, blockchain confirmation depth, and how Cassandra and DynamoDB stay alive when networks misbehave.</p>
+    <p><strong>The famous impossibility:</strong> there's a 1975 result called the <em>Two Generals problem</em> — two armies on opposite hills can never be 100% sure they agree on an attack time over a lossy channel, no matter how many messages they send. You can only get <em>arbitrarily close</em> to certainty by trying more times. Which is exactly what every modern distributed system actually does.</p>
   </details>
 </section>
 
@@ -170,12 +171,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">ML security · Model provenance</span>
   <h2>Model Heist Detector</h2>
   <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
-  <p class="lab-card__lead">Someone copied your AI model and tweaked it to hide the theft. Plant a hidden signature loud enough to catch the thief, quiet enough not to break the model.</p>
+  <p class="lab-card__lead">🕵️ Someone stole your AI and tried to disguise it. Lucky you — before publishing, you hid a secret pattern in the weights. Now: is the signature still readable through the disguise? Make it too quiet and you lose the thief. Make it too loud and the AI gets weird.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Goal</span>
-    <strong>Catch the clone without crying wolf.</strong>
-    <span>Balance signal, key size, and attacker noise. 5★ when detection is loud and false alarms are not.</span>
-    <div class="lab-card__mission-pills"><span>5★ det≥95%, fpr≤5%</span><span>4★ det≥85%</span><span>3★ det≥65%</span></div>
+    <span class="lab-card__mission-kicker">Your job</span>
+    <strong>Catch the thief without ruining the model.</strong>
+    <span>Tune how bold the signature is, where you hide it, and how sneaky the thief gets. Hit Run and see if you'd win in court.</span>
+    <div class="lab-card__mission-pills"><span>5★ catch≥97%, false alarms≤3%</span><span>4★ catch≥90%</span><span>3★ catch≥70%</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -264,8 +265,9 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   </div>
 
   <details class="lab-reveal">
-    <summary>Behind the game</summary>
-    <p>A watermark is a faint statistical signature spread across many weights. One mark is easy to erase; many tiny marks become detectable together. The challenge is staying visible to the verifier and invisible to normal users.</p>
+    <summary>🧠 What did you just learn?</summary>
+    <p><strong>Tiny secrets in many places beat one big secret.</strong> An AI model has hundreds of millions of internal numbers. A watermark is a faint statistical pattern spread across many of them — each individual mark is way too small to notice, but together they form a signature only you can recognize.</p>
+    <p>This is how labs at OpenAI, Google, and Anthropic plan to prove "yes, that model is ours" if it gets leaked. The same trick is used to find AI-generated text, mark images from specific cameras, and prove which lab produced a research paper. The harder the thief tries to erase one mark, the more visible the others become.</p>
   </details>
 </section>
 
@@ -273,12 +275,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
   <h2>Training Fingerprint</h2>
   <p class="lab-card__usecase">Used in <strong>Foundation model auditing</strong> · <strong>Competitive intelligence</strong> · <strong>Patent disputes</strong> · <strong>Minting training credentials</strong> · <strong>Open-source verification</strong></p>
-  <p class="lab-card__lead">A trained model is easy to copy. The journey of learning that produced it is harder to fake. Tune the run so the loss curve looks alive, not like a straight line someone forged in a hurry.</p>
+  <p class="lab-card__lead">🔬 Anyone can download an AI and claim they trained it. The real proof is in the journey: a genuine training run leaves a fingerprint — a wiggly curve that's hard to fake. Run it once and see if your trajectory would survive an audit.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Goal</span>
+    <span class="lab-card__mission-kicker">Your job</span>
     <strong>Earn Gold Proof.</strong>
-    <span>Pick learning rate, batch, and noise. Hit Train. 5★ when the trajectory looks real and fast.</span>
-    <div class="lab-card__mission-pills"><span>5★ score ≥ 92</span><span>4★ ≥ 78</span><span>3★ ≥ 62</span></div>
+    <span>Pick learning speed, examples per step, and data messiness. Hit Train. 5★ when the fingerprint looks real.</span>
+    <div class="lab-card__mission-pills"><span>5★ score ≥ 94</span><span>4★ ≥ 82</span><span>3★ ≥ 68</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -367,8 +369,9 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   </div>
 
   <details class="lab-reveal">
-    <summary>Behind the game</summary>
-    <p>Proof-of-Learning records the training trajectory. A copied model may have the final weights, but not the messy path that produced them. That path becomes evidence.</p>
+    <summary>🧠 What did you just learn?</summary>
+    <p><strong>The journey is harder to fake than the destination.</strong> The final weights of a trained AI are just a giant list of numbers — copy-pasteable in seconds. But the <em>path</em> the loss took during training? It's noisy, bumpy, has little flat spots when learning stalls, sudden drops when it finds a shortcut. That fingerprint is almost impossible to forge after the fact.</p>
+    <p>This is called <em>Proof-of-Learning</em>, and it matters for: patent disputes ("did you really invent this?"), competitive intelligence ("did they actually train, or did they distill ours?"), and verifying open-source claims. Same idea as a digital signature, but for the training process instead of the model.</p>
   </details>
 </section>
 
@@ -376,12 +379,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>Redundancy Reactor</h2>
   <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
-  <p class="lab-card__lead">Three computers voting beats one — but only if they fail in different ways. Turn correlation up and three become a single expensive computer wearing a wig.</p>
+  <p class="lab-card__lead">✈️ Your A320 has three flight computers. If one crashes, the other two outvote it and the plane keeps flying. But if all three share the same bug? They all crash together. The trick is keeping them genuinely different — three Macs in a coat doesn't count.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Goal</span>
-    <strong>Make redundancy actually redundant.</strong>
-    <span>Keep failure rate and correlation low. Aim for 100× reliability gain over a single channel.</span>
-    <div class="lab-card__mission-pills"><span>5★ gain ≥ 100×</span><span>4★ ≥ 30×</span><span>3★ ≥ 10×</span></div>
+    <span class="lab-card__mission-kicker">Your job</span>
+    <strong>Make three computers way safer than one.</strong>
+    <span>Pick the crash rate, how alike they are, and how many computers you bolt in. Run and see how many times safer the system became.</span>
+    <div class="lab-card__mission-pills"><span>5★ ≥ 250× safer</span><span>4★ ≥ 75× safer</span><span>3★ ≥ 20× safer</span></div>
   </div>
 
   <div class="lab-tmr">
@@ -422,19 +425,19 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
 
     <div class="lab-tmr__strip" aria-hidden="true" data-role="tmr-strip">
       <div class="lab-tmr__row" data-ch="1">
-        <span class="lab-tmr__row-label">CH 1</span>
+        <span class="lab-tmr__row-label">💻 #1</span>
         <div class="lab-tmr__cells" data-cells="1"></div>
       </div>
       <div class="lab-tmr__row" data-ch="2">
-        <span class="lab-tmr__row-label">CH 2</span>
+        <span class="lab-tmr__row-label">💻 #2</span>
         <div class="lab-tmr__cells" data-cells="2"></div>
       </div>
       <div class="lab-tmr__row" data-ch="3">
-        <span class="lab-tmr__row-label">CH 3</span>
+        <span class="lab-tmr__row-label">💻 #3</span>
         <div class="lab-tmr__cells" data-cells="3"></div>
       </div>
       <div class="lab-tmr__row lab-tmr__row--sys">
-        <span class="lab-tmr__row-label">SYS</span>
+        <span class="lab-tmr__row-label">✈️ Plane</span>
         <div class="lab-tmr__cells" data-cells="sys"></div>
       </div>
     </div>
@@ -470,8 +473,9 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   </div>
 
   <details class="lab-reveal">
-    <summary>Behind the game</summary>
-    <p>Redundancy works when failures are independent. Correlated bugs, shared assumptions, and common-mode events destroy the upgrade. The slider marked ρ is where the nice safety story starts sweating.</p>
+    <summary>🧠 What did you just learn?</summary>
+    <p><strong>Three of the same thing is still one thing.</strong> Backup computers only protect you if they fail in different ways. Three identical computers running the same software will hit the same bug at the same moment — and then majority voting gives the wrong answer with confidence.</p>
+    <p>This is what crashed the first Ariane 5 rocket in 1996: it had redundant flight computers, but they all ran the same code, so they all overflowed the same variable at the same instant. To get real safety, planes use computers from <em>different vendors</em>, written by <em>different teams</em>, in <em>different programming languages</em>. Same idea protects nuclear reactors, Mars rovers, and the secure chip in your phone.</p>
   </details>
 </section>
 
@@ -479,12 +483,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Deep Learning · Optimization</span>
   <h2>Gradient Pinball</h2>
   <p class="lab-card__usecase">Used in <strong>Training LLMs</strong> · <strong>Backpropagation</strong> · <strong>Physics Simulations</strong></p>
-  <p class="lab-card__lead">AI models learn by rolling downhill on a loss landscape. Too cautious and they get stuck. Too aggressive and they fly off the map. Find the step size that lands in the deepest valley.</p>
+  <p class="lab-card__lead">⛰️ Training an AI is like rolling a ball down a hilly landscape. The deepest valley is the answer. Too cautious — the ball gets stuck on a small hill and never reaches the real bottom. Too aggressive — it flies off the map entirely. There's a sweet step size.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Goal</span>
-    <strong>Drop the ball into the deepest valley.</strong>
-    <span>Pick learning rate and momentum. Hit Train. 5★ if you land in the global minimum.</span>
-    <div class="lab-card__mission-pills"><span>5★ global min</span><span>4★ close miss</span><span>3★ workable valley</span></div>
+    <span class="lab-card__mission-kicker">Your job</span>
+    <strong>Land the ball in the deepest valley.</strong>
+    <span>Pick step size and momentum. Hit Train. 5★ when the ball settles exactly at the global minimum.</span>
+    <div class="lab-card__mission-pills"><span>5★ global minimum</span><span>4★ very close</span><span>3★ stuck in a side valley</span></div>
   </div>
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
@@ -555,8 +559,9 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   </div>
 
   <details class="lab-reveal">
-    <summary>Behind the game</summary>
-    <p>Gradient descent moves downhill. Learning rate controls step size; momentum carries speed from previous steps. Good training is not magic. It is avoiding both boredom and explosion.</p>
+    <summary>🧠 What did you just learn?</summary>
+    <p><strong>Learning is rolling downhill.</strong> Every modern AI — GPT, image generators, the search ranking on your phone — learns by repeatedly nudging its parameters in whichever direction makes the loss smaller. That's literally rolling a ball downhill on a high-dimensional landscape. Step size matters: too small and you crawl forever, too big and you bounce out of the valley you wanted.</p>
+    <p><strong>Momentum is the killer feature.</strong> It lets the ball carry forward through small ridges that would otherwise trap it. This idea — invented for physics simulations in the 1960s — is why training a large model in 2026 finishes in days instead of years. Same algorithm in your phone's autocorrect, your camera's autofocus, and every AI lab on Earth.</p>
   </details>
 </section>
 

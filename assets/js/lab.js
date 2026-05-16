@@ -248,6 +248,28 @@
     el.classList.add("lab-experiment__metric--streak-hit");
   }
 
+  /* ---------- Progressive hint system ----------
+     After a few runs that don't earn 4★+, the lab whispers a gentle
+     hint near the lab's insight line. Doesn't spoil the 5★ zone —
+     just nudges the player in the right direction so they don't
+     give up. Per-lab attempt counters live in closures. */
+  function makeHintTracker(insightEl, hints) {
+    let attempts = 0;
+    let bestStars = 0;
+    return function recordRun(stars) {
+      attempts++;
+      if (stars > bestStars) bestStars = stars;
+      if (bestStars >= 4) return; // doing fine; no hints
+      const idx = Math.min(hints.length - 1, Math.max(0, attempts - 3));
+      if (attempts >= 3 && hints[idx]) {
+        const hintLine = "<br><span class=\"lab-experiment__hint\">💡 " + hints[idx] + "</span>";
+        if (insightEl && insightEl.innerHTML.indexOf("lab-experiment__hint") === -1) {
+          insightEl.innerHTML = insightEl.innerHTML + hintLine;
+        }
+      }
+    };
+  }
+
   /* ---------- 5★ sweet-zone band painter ----------
      Wraps a <input type="range"> in a track shell so we can paint the
      small 5★ sweet zone behind the thumb. The band shows the value
@@ -824,6 +846,7 @@
       else if (pNaive >= 0.80)            { tgStars = 2; tgTier = "Decent 👍"; }
       else if (pNaive >= 0.55)            { tgStars = 1; tgTier = "Wobbly"; }
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
+      tgHint(tgStars);
 
       drawPlot(p, n);
     }
@@ -839,6 +862,11 @@
     // by pressing Run experiment. Re-arming a slider resets to pending.
     refs.runBtn = $('[data-role="tg-run-btn"]', root);
     let tgRevealed = false;
+    const tgHint = makeHintTracker(refs.insight, [
+      "If the signal is dropping a lot, try raising the number of tries.",
+      "Sweet spot: medium loss (around 0.4–0.5) and 4–6 tries beats brute force.",
+      "More tries always helps — but past 6, you're paying for diminishing returns.",
+    ]);
 
     function tgSliderDisplay() {
       const p = parseFloat(refs.p.value);
@@ -1259,6 +1287,7 @@
       else if (det >= 0.45 && utilityOK)                           { wmStars = 2; wmTier = "Decent 👍"; }
       else if (det >= 0.18)                                        { wmStars = 1; wmTier = "Wobbly"; }
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
+      wmHint(wmStars);
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       /* Extra glow only when neon mode is on and q shows non-trivial per-cell power. */
@@ -1284,6 +1313,11 @@
     // Aim → Fire → Score. Same commit pattern as Consensus.
     refs.runBtn = $('[data-role="wm-run-btn"]', root);
     let wmRevealed = false;
+    const wmHint = makeHintTracker(refs.insight, [
+      "If detection is low, try planting your mark in more places (raise k).",
+      "Sweet spot: a moderate signal (ε near 0.15) hidden in many spots (k around 14–22).",
+      "Going too bold (ε > 0.25) usually ruins the model. Stay subtle, plant widely.",
+    ]);
 
     function wmSliderDisplay() {
       const eps = parseFloat(refs.eps.value);
@@ -1683,6 +1717,7 @@
       else if (gain >= 5)   { tmrStars = 2; tmrTier = "Decent 👍"; }
       else if (gain >= 1.5) { tmrStars = 1; tmrTier = "Wobbly"; }
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
+      tmrHint(tmrStars);
 
       drawPlot(q, rhoEff, N);
     }
@@ -1697,6 +1732,11 @@
     refs.runBtn = $('[data-role="tmr-run-btn"]', root);
     let tmrRevealed = false;
     let tmrRunning = false;
+    const tmrHint = makeHintTracker(refs.insight, [
+      "The big one is correlation — if computers crash together, more of them doesn't help.",
+      "Sweet spot: low crash rate AND low correlation. 5+ computers is great if they're independent.",
+      "Three identical computers fail together. Real safety needs different vendors and different code.",
+    ]);
 
     function tmrSliderDisplay() {
       const q = parseFloat(refs.q.value);
@@ -1801,6 +1841,12 @@
       starsGd:   $gd("stars-gd"),
     };
 
+    const gdHint = makeHintTracker(refs.insight, [
+      "If the ball gets stuck early, raise the step size — it's too cautious.",
+      "Sweet spot: step size around 0.015–0.020, momentum around 0.6 carries the ball through small hills.",
+      "Adding momentum is like rolling on ice — the ball glides over local traps to find the deeper valley.",
+    ]);
+
     const PW = 640, PH = 260;
     const M = { l: 40, r: 40, t: 20, b: 20 };
     const innerW = PW - M.l - M.r;
@@ -1879,12 +1925,46 @@
         const y = f(x);
         d += (i === 0 ? "M" : "L") + xFor(x).toFixed(1) + " " + yFor(y).toFixed(1) + " ";
       }
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const path = document.createElementNS(SVG, "path");
       path.setAttribute("d", d);
       path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#94a3b8"); // theme muted text color
+      path.setAttribute("stroke", "#94a3b8");
       path.setAttribute("stroke-width", "2");
       refs.plot.appendChild(path);
+
+      // Label valleys so the player can see where the goal is.
+      // We sample local minima of f over the visible range. The deepest
+      // one gets the 🏆 flag; any other dips get a 🚧 "trap" label.
+      const samples = [];
+      for (let i = 1; i < 200; i++) {
+        const x = X_MIN + (X_MAX - X_MIN) * (i / 200);
+        samples.push({ x: x, y: f(x) });
+      }
+      const localMins = [];
+      for (let i = 1; i < samples.length - 1; i++) {
+        if (samples[i].y < samples[i - 1].y && samples[i].y < samples[i + 1].y) {
+          localMins.push(samples[i]);
+        }
+      }
+      if (!localMins.length) return;
+      const globalMin = localMins.reduce((a, b) => a.y < b.y ? a : b);
+      localMins.forEach((m) => {
+        const isGlobal = m === globalMin;
+        const label = svg("text", {
+          x: xFor(m.x),
+          y: yFor(m.y) + 22,
+          "text-anchor": "middle",
+          class: "lab-plot__valley-label" + (isGlobal ? " lab-plot__valley-label--goal" : ""),
+        }, refs.plot);
+        label.textContent = isGlobal ? "🏆 the answer" : "🚧 trap valley";
+        // tiny arrow from label up to the valley point
+        const arrow = svg("line", {
+          x1: xFor(m.x), x2: xFor(m.x),
+          y1: yFor(m.y) + 9, y2: yFor(m.y) + 4,
+          stroke: isGlobal ? "#f59e0b" : "#94a3b8",
+          "stroke-width": "2",
+        }, refs.plot);
+      });
     }
     
     if (!refs.lr || !refs.plot || !refs.trainBtn || !refs.insight) return;
@@ -2068,29 +2148,33 @@
       renderTrail();
       
       if (currentX < X_MIN || currentX > X_MAX) {
-        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the manifold—there is no spoon, only NaN. Lower the learning rate.";
+        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the map. Lower the step size.";
         running = false;
         setStars(refs.starsGd, 0, "Oof 💥", { header: "Run grade" });
+        gdHint(0);
       } else if (epoch > 500) {
-        refs.insight.textContent = "⏳ Training timed out (500 epochs). The Matrix reloaded the same epoch; try higher learning rate or momentum.";
+        refs.insight.textContent = "⏳ The ball is crawling. Step size is too small — try raising it.";
         running = false;
         setStars(refs.starsGd, 1, "Wobbly", { header: "Run grade" });
+        gdHint(1);
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
         // Small sweet spot: only a tight landing in the global basin earns 5★.
         if (dist < 0.06) {
-          refs.insight.textContent = "⭐ Global minimum reached on " + activeLandscape.name + ". Congratulations: you followed the white rabbit to the bottom of the bowl.";
-          unlockQuest("gd", "Gradient descent: global minimum. There was a spoon all along—it was just a basin.");
+          refs.insight.textContent = "🏆 Global minimum! The ball found the deepest valley.";
+          unlockQuest("gd", "Gradient descent: global minimum found.");
           triggerCongrats(refs.plot, true);
           setStars(refs.starsGd, 5, "Legendary 🏆", { header: "Run grade" });
+          gdHint(5);
         } else {
-           refs.insight.textContent = "💀 Stuck in a local minimum. Déjà vu: gradient zeroed out in the saddle point of despair. Increase momentum.";
+           refs.insight.textContent = "🚧 Stuck in a side valley. Add momentum to roll over the small hill.";
            // Distance from global min decides the partial credit.
            let gdS = 1, gdT = "Wobbly";
            if (dist < 0.18)      { gdS = 4; gdT = "Slick 🎯"; }
            else if (dist < 0.40) { gdS = 3; gdT = "Sharp ✨"; }
            else if (dist < 0.80) { gdS = 2; gdT = "Decent 👍"; }
            setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
+           gdHint(gdS);
         }
         running = false;
       }
@@ -2171,6 +2255,12 @@
     };
 
     if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs || !refs.noise) return;
+
+    const polHint = makeHintTracker(refs.insight, [
+      "If the score is low, the curve probably isn't dropping enough. Try a faster learning speed.",
+      "Sweet spot: learning around 0.012, around 128 examples per step, noise around 0.05.",
+      "Too noisy and the curve looks fake (over-jittery). Too smooth and it looks downloaded. Aim for natural wiggles.",
+    ]);
 
     const BATCH_SIZES = [8, 16, 32, 64, 128, 256, 512, 1024];
     const MAX_EPOCHS = 100;
@@ -2466,6 +2556,7 @@
       else if (score >= 50) { polStars = 2; polTier = "Decent 👍"; }
       else if (score >= 30) { polStars = 1; polTier = "Wobbly"; }
       setStars(refs.starsPol, polStars, polTier, { header: "Run grade" });
+      polHint(polStars);
     }
 
     function reset() {

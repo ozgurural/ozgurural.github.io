@@ -1368,10 +1368,53 @@ html[data-theme="dark"] .lab-experiment--pending .lab-experiment__readout::after
 .lab-experiment--revealed .lab-experiment__readout {
   animation: lab-readout-reveal 0.5s ease-out both;
 }
+.lab-experiment--revealed .lab-experiment__scorebar {
+  animation: lab-scorebar-pop 0.7s cubic-bezier(0.34, 1.6, 0.64, 1) both;
+}
 @keyframes lab-readout-reveal {
   from { opacity: 0; transform: translateY(4px); filter: blur(2px); }
   to   { opacity: 1; transform: none; filter: blur(0); }
 }
+@keyframes lab-scorebar-pop {
+  0%   { transform: scale(0.92); opacity: 0; }
+  60%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Progressive hint — appears under the insight line after a few
+   unsuccessful runs. Friendly, gentle, never spoils the 5★ zone. */
+.lab-experiment__hint {
+  display: inline-block;
+  margin-top: 0.4rem;
+  padding: 0.45rem 0.7rem;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.10), rgba(168, 85, 247, 0.08));
+  border-left: 2px solid var(--ds-accent);
+  border-radius: 0 var(--ds-radius-sm) var(--ds-radius-sm) 0;
+  color: var(--ds-body);
+  font-size: 0.88rem;
+  font-style: normal;
+  line-height: 1.5;
+  animation: lab-hint-in 0.6s ease-out both;
+}
+@keyframes lab-hint-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Valley labels on the Gradient Pinball curve — make the goal visible. */
+.lab-plot__valley-label {
+  font-family: var(--ds-font-mono);
+  font-size: 10px;
+  fill: var(--ds-muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.lab-plot__valley-label--goal {
+  fill: #b45309;
+  font-size: 11px;
+  font-weight: 700;
+}
+html[data-theme="dark"] .lab-plot__valley-label--goal { fill: #fbbf24; }
 @media (prefers-reduced-motion: reduce) {
   .lab-experiment--revealed .lab-experiment__readout { animation: none; }
   .lab-experiment--pending .lab-experiment__readout { transition: none; }
