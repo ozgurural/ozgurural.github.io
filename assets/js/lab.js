@@ -308,12 +308,12 @@
      Renders 5 stars + a tier label. Score is in [0,5] and quantizes
      to whole stars. Each lab passes a tier name from its own scale. */
   const STAR_TIERS = [
-    "Oof 💥",       // 0 — way off
-    "Wobbly",       // 1 — barely working
-    "Decent 👍",    // 2 — getting there
-    "Sharp ✨",     // 3 — good run
-    "Slick 🎯",     // 4 — really good
-    "Legendary 🏆", // 5 — nailed it
+    "Off-target",   // 0 — way off
+    "Sketchy",      // 1 — barely working
+    "Workable",     // 2 — getting there
+    "Sharp",        // 3 — good run
+    "Pro-grade",    // 4 — really good
+    "Frontier 🏆",  // 5 — nailed it
   ];
   function setStars(host, score, customTier, opts) {
     if (!host) return;
@@ -830,17 +830,19 @@
         refs.valley.classList.toggle("lab-tg__valley--sweet", inSweetZone);
       }
 
-      // Insight — short, plain-English regime descriptions.
+      // Regime annotations — pitched at someone who'll appreciate the
+      // production parallels (TCP, quorum systems, blockchain depth)
+      // without needing them spelled out.
       let txt;
-      if (p === 0)               txt = "Perfect network. Both protocols win every time. Reality is never this kind.";
-      else if (p > 0.84)         txt = "The network is mostly broken. Even the smart strategy loses more than it wins. This is what your phone calls 'no internet'.";
-      else if (n === 1)          txt = "With only one try, both strategies are the same. Slide N up to see the smart one pull ahead.";
-      else if (p < 0.05)         txt = "Almost no packets are lost. Both strategies look perfect — the difference shows up later when scale catches up.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "Half the messages get lost. The smart strategy still wins by trying many times — same trick your phone uses on weak WiFi.";
-      else if (p > 0.65)         txt = "When the network is this bad, repeating the message is the only thing that works. Blockchains and databases use this exact math.";
-      else if (delta > 0.6)      txt = "The strict strategy is bleeding hard. Every extra step makes it worse. Real systems learned this the painful way.";
-      else if (delta > 0.3)      txt = "The smart strategy is clearly ahead. This is the shape every retry-with-backoff has.";
-      else                       txt = "The smart strategy wins for any loss between 0 and 1. Real distributed systems picked it on purpose.";
+      if (p === 0)               txt = "Perfect channel. Both protocols are tautologically correct. Reality, you may have noticed, is not a perfect channel.";
+      else if (p > 0.84)         txt = "At this loss rate even retry-heavy strategies bleed. Useful regime — this is the math behind your phone's 'no service' fallback and the reason TCP has a give-up timer.";
+      else if (n === 1)          txt = "N=1 makes both strategies coincide. The interesting structure starts at N≥2, where retries compound favorably and chains compound the opposite direction.";
+      else if (p < 0.05)         txt = "Production-grade WAN territory. Both protocols look perfect — until you're at scale and the tails matter. This is where two-phase commit looks attractive and then ruins your Monday.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "Channel entropy maxed. Retry still wins by accumulating tries — same trick TCP uses on weak Wi-Fi, same reason Bitcoin needs confirmation depth.";
+      else if (p > 0.65)         txt = "High-loss regime. Naive multi-send dominates because one success suffices; chain protocols lose multiplicatively. Every quorum system and every retry-with-backoff lives on this inequality.";
+      else if (delta > 0.6)      txt = "Chain strategy is hemorrhaging. The instinct to 'just add another confirmation step' makes it worse — this is the cautionary tale that gave us Paxos.";
+      else if (delta > 0.3)      txt = "Retry-with-backoff territory. Same shape as TCP, blockchain confirmation depth, and read-quorum tuning. Distributed systems chose this side on purpose.";
+      else                       txt = "Naive multi-send dominates strict-chain for every p ∈ (0, 1) and N ≥ 2. The asymmetry is structural, not incidental.";
       refs.insight.textContent = txt;
 
       // Star grade — per-scenario. 5★ only at the minimum N that beats
@@ -848,12 +850,12 @@
       // down gracefully.
       const tgGoal = tgCurrentGoal();
       const tgMinN = tgCurrentMinN();
-      let tgStars = 0, tgTier = "Oof 💥";
-      if (pNaive >= tgGoal && n <= tgMinN)        { tgStars = 5; tgTier = "Legendary 🏆"; }
-      else if (pNaive >= tgGoal && n <= tgMinN+2) { tgStars = 4; tgTier = "Slick 🎯"; }
-      else if (pNaive >= tgGoal)                  { tgStars = 3; tgTier = "Sharp ✨"; }
-      else if (pNaive >= tgGoal * 0.90)           { tgStars = 2; tgTier = "Decent 👍"; }
-      else if (pNaive >= tgGoal * 0.65)           { tgStars = 1; tgTier = "Wobbly"; }
+      let tgStars = 0, tgTier = "Off-target";
+      if (pNaive >= tgGoal && n <= tgMinN)        { tgStars = 5; tgTier = "Frontier 🏆"; }
+      else if (pNaive >= tgGoal && n <= tgMinN+2) { tgStars = 4; tgTier = "Pro-grade"; }
+      else if (pNaive >= tgGoal)                  { tgStars = 3; tgTier = "Sharp"; }
+      else if (pNaive >= tgGoal * 0.90)           { tgStars = 2; tgTier = "Workable"; }
+      else if (pNaive >= tgGoal * 0.65)           { tgStars = 1; tgTier = "Sketchy"; }
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
       tgHint(tgStars);
 
@@ -1279,16 +1281,16 @@
       prevEffectiveK = effectiveK;
 
       let txt;
-      if (eps < 0.04)             txt = "Your signal is too quiet — it's lost in the model's own noise. Push ε up.";
-      else if (det > 0.995)       txt = "Detection is overwhelming. Court-credible: the thief left fingerprints in every weight.";
+      if (eps < 0.04)             txt = "Signal under the model's own noise floor — you're trying to recover information that statistically doesn't exist. Push ε.";
+      else if (det > 0.995)       txt = "Detection saturated. The thief's disguise is academic at this point — court-admissible, paper-publishable, and a strictly dominant strategy.";
       else if (det > 0.9 && fpr < 0.1)
-                                  txt = "Sweet spot: >90% detection, <10% false alarms. This is the regime a real audit could defend.";
+                                  txt = "Operating frontier: >90% detection at <10% false-alarm. The regime a real provenance dispute could survive cross-examination in.";
       else if (det > 0.5 && k <= 4)
-                                  txt = "Signal is OK but the key is too small. Try doubling k — more cells means stronger evidence.";
+                                  txt = "Signal is fine; aggregation is weak. Detection scales with √k — going from k=4 to k=16 doubles your effective SNR.";
       else if (det < 0.15 && sigma > 0.3)
-                                  txt = "The attacker is adding more noise than your watermark has signal. Raise ε or grow k.";
-      else if (det < 0.2)         txt = "Watermark washed out. Either turn up ε or use a much bigger key.";
-      else                        txt = "More cells = stronger signal. Each doubling of k adds about √2 to your effective detection.";
+                                  txt = "The thief's noise budget exceeds your signal budget. At this σ either widen ε (and risk the model) or grow k aggressively.";
+      else if (det < 0.2)         txt = "Watermark is in the noise. Either raise ε past the model's tolerance or spread the signal across many more cells.";
+      else                        txt = "Detection scales as Φ(SNR·√k − z_α). Doubling k buys you about √2 in z-score — usually cheaper than pushing ε.";
       refs.insight.textContent = txt;
 
       // Star grade — per-thief. Each thief has its own target detection
@@ -1297,12 +1299,12 @@
       // the model, so this is a real trade-off.
       const wmGoalDet = wmCurrentGoalDet();
       const wmEpsMax = wmCurrentEpsMax();
-      let wmStars = 0, wmTier = "Oof 💥";
-      if (det >= wmGoalDet && fpr <= 0.05 && eps <= wmEpsMax)          { wmStars = 5; wmTier = "Legendary 🏆"; }
-      else if (det >= wmGoalDet && fpr <= 0.10 && eps <= wmEpsMax+0.04){ wmStars = 4; wmTier = "Slick 🎯"; }
-      else if (det >= wmGoalDet * 0.80 && eps <= 0.30)                 { wmStars = 3; wmTier = "Sharp ✨"; }
-      else if (det >= wmGoalDet * 0.55 && eps <= 0.40)                 { wmStars = 2; wmTier = "Decent 👍"; }
-      else if (det >= wmGoalDet * 0.30)                                { wmStars = 1; wmTier = "Wobbly"; }
+      let wmStars = 0, wmTier = "Off-target";
+      if (det >= wmGoalDet && fpr <= 0.05 && eps <= wmEpsMax)          { wmStars = 5; wmTier = "Frontier 🏆"; }
+      else if (det >= wmGoalDet && fpr <= 0.10 && eps <= wmEpsMax+0.04){ wmStars = 4; wmTier = "Pro-grade"; }
+      else if (det >= wmGoalDet * 0.80 && eps <= 0.30)                 { wmStars = 3; wmTier = "Sharp"; }
+      else if (det >= wmGoalDet * 0.55 && eps <= 0.40)                 { wmStars = 2; wmTier = "Workable"; }
+      else if (det >= wmGoalDet * 0.30)                                { wmStars = 1; wmTier = "Sketchy"; }
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
       wmHint(wmStars);
 
@@ -1705,17 +1707,17 @@
       // Plain-English regime hints.
       let txt;
       if (rhoBE === null) {
-        txt = "Single channels fail too often here. Even perfectly independent computers can't reach 10x reliability gain. Lower q first.";
+        txt = "Per-channel rate too high — even perfect independence can't hit a 10× multiplier here. Replication isn't the right tool at this q; you need a better channel before you stack them.";
       } else if (overBreakeven) {
-        txt = "\u26a0\ufe0f Correlation is past the safe line. The three computers are starting to fail together \u2014 paying for three, reliability barely beats one. Ariane 5 lived here.";
+        txt = "\u26a0\ufe0f Effective correlation exceeds the break-even line \u2014 you're paying for N channels and getting less than 10\u00d7 gain. This is the regime that crashed Ariane 5 (identical IRS code, identical overflow, near-simultaneous reset).";
       } else if (rhoEff >= 0.95) {
-        txt = "Three computers, but they all break the same way. This is the Ariane 5 story: identical software, identical bug, simultaneous crash.";
+        txt = "ρ ≈ 1 turns N-modular redundancy into one channel wearing a wig. Same software, same input, same failure — voting buys you nothing.";
       } else if (rhoEff < 0.05) {
-        txt = "Independent failures. Three computers ≈ cube the reliability. This is the regime your A320 flies in.";
+        txt = "Near-independent failures. Reliability gain scales roughly as 1/(N·q^⌈N/2⌉) — this is the regime DO-178C signs off, the one your A320 cruises through every flight.";
       } else if (rhoEff < 0.5) {
-        txt = "Some shared bugs. Gain is shrinking faster than the correlation slider suggests — common-cause failures bite hard.";
+        txt = "Mixed-mode failure. Common-cause events are taking a real bite out of the cubic gain. Diverse-versions programming exists for exactly this regime.";
       } else {
-        txt = "Correlation is eating the safety margin. TMR still helps, but not by much. Use diverse hardware or different software to break the pattern.";
+        txt = "Correlation is now the dominant term. The (1−ρ) factor is shrinking faster than the binomial tail can compensate. Diversify the channels or accept the ceiling.";
       }
       refs.insight.textContent = txt;
 
@@ -1724,12 +1726,12 @@
       // the target AND with the minimum number of computers that does it.
       const tmrGoalGain = tmrCurrentGoalGain();
       const tmrMinN = tmrCurrentMinN();
-      let tmrStars = 0, tmrTier = "Oof 💥";
-      if (gain >= tmrGoalGain && N <= tmrMinN)        { tmrStars = 5; tmrTier = "Legendary 🏆"; }
-      else if (gain >= tmrGoalGain)                    { tmrStars = 4; tmrTier = "Slick 🎯"; }
-      else if (gain >= tmrGoalGain * 0.65)             { tmrStars = 3; tmrTier = "Sharp ✨"; }
-      else if (gain >= tmrGoalGain * 0.35)             { tmrStars = 2; tmrTier = "Decent 👍"; }
-      else if (gain >= 1.5)                            { tmrStars = 1; tmrTier = "Wobbly"; }
+      let tmrStars = 0, tmrTier = "Off-target";
+      if (gain >= tmrGoalGain && N <= tmrMinN)        { tmrStars = 5; tmrTier = "Frontier 🏆"; }
+      else if (gain >= tmrGoalGain)                    { tmrStars = 4; tmrTier = "Pro-grade"; }
+      else if (gain >= tmrGoalGain * 0.65)             { tmrStars = 3; tmrTier = "Sharp"; }
+      else if (gain >= tmrGoalGain * 0.35)             { tmrStars = 2; tmrTier = "Workable"; }
+      else if (gain >= 1.5)                            { tmrStars = 1; tmrTier = "Sketchy"; }
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
       tmrHint(tmrStars);
 
@@ -2159,12 +2161,12 @@
       if (currentX < X_MIN || currentX > X_MAX) {
         refs.insight.textContent = "💥 Exploding gradients! The ball flew off the map. Lower the step size.";
         running = false;
-        setStars(refs.starsGd, 0, "Oof 💥", { header: "Run grade" });
+        setStars(refs.starsGd, 0, "Off-target", { header: "Run grade" });
         gdHint(0);
       } else if (epoch > 500) {
         refs.insight.textContent = "⏳ The ball is crawling. Step size is too small — try raising it.";
         running = false;
-        setStars(refs.starsGd, 1, "Wobbly", { header: "Run grade" });
+        setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
         gdHint(1);
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
@@ -2173,15 +2175,15 @@
           refs.insight.textContent = "🏆 Global minimum! The ball found the deepest valley.";
           unlockQuest("gd", "Gradient descent: global minimum found.");
           triggerCongrats(refs.plot, true);
-          setStars(refs.starsGd, 5, "Legendary 🏆", { header: "Run grade" });
+          setStars(refs.starsGd, 5, "Frontier 🏆", { header: "Run grade" });
           gdHint(5);
         } else {
            refs.insight.textContent = "🚧 Stuck in a side valley. Add momentum to roll over the small hill.";
            // Distance from global min decides the partial credit.
-           let gdS = 1, gdT = "Wobbly";
-           if (dist < 0.18)      { gdS = 4; gdT = "Slick 🎯"; }
-           else if (dist < 0.40) { gdS = 3; gdT = "Sharp ✨"; }
-           else if (dist < 0.80) { gdS = 2; gdT = "Decent 👍"; }
+           let gdS = 1, gdT = "Sketchy";
+           if (dist < 0.18)      { gdS = 4; gdT = "Pro-grade"; }
+           else if (dist < 0.40) { gdS = 3; gdT = "Sharp"; }
+           else if (dist < 0.80) { gdS = 2; gdT = "Workable"; }
            setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
            gdHint(gdS);
         }
@@ -2558,12 +2560,12 @@
       refs.streakVal.textContent = String(streak);
 
       // Star grade — small sweet spot. 5★ requires near-perfect fingerprint.
-      let polStars = 0, polTier = "Oof 💥";
-      if (score >= 94)      { polStars = 5; polTier = "Legendary 🏆"; }
-      else if (score >= 82) { polStars = 4; polTier = "Slick 🎯"; }
-      else if (score >= 68) { polStars = 3; polTier = "Sharp ✨"; }
-      else if (score >= 50) { polStars = 2; polTier = "Decent 👍"; }
-      else if (score >= 30) { polStars = 1; polTier = "Wobbly"; }
+      let polStars = 0, polTier = "Off-target";
+      if (score >= 94)      { polStars = 5; polTier = "Frontier 🏆"; }
+      else if (score >= 82) { polStars = 4; polTier = "Pro-grade"; }
+      else if (score >= 68) { polStars = 3; polTier = "Sharp"; }
+      else if (score >= 50) { polStars = 2; polTier = "Workable"; }
+      else if (score >= 30) { polStars = 1; polTier = "Sketchy"; }
       setStars(refs.starsPol, polStars, polTier, { header: "Run grade" });
       polHint(polStars);
     }

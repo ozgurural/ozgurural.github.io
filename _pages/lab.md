@@ -1,14 +1,14 @@
 ---
 permalink: /lab/
 title: "Lab"
-excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), learn how real systems break and stay alive."
+excerpt: "Five interactive thought experiments from my research — distributed systems, ML security, fault tolerance, optimization. Pick a real scenario, set your strategy, and let the math grade your aim."
 ---
 
 <section class="lab-hero" aria-label="Lab arcade intro">
   <span class="ep-eyebrow">Interactive research arcade</span>
   <h2 class="lab-hero__title">Aim. Fire. Get graded.</h2>
   <p class="lab-hero__copy">
-    Five tiny science games, played the same way: set your parameters, hit <strong>Run experiment</strong>, and the simulation grades your run from <strong>Oof</strong> 💥 to <strong>Legendary</strong> 🏆. No hints on the dial — 5★ means you actually nailed it.
+    Five interactive thought experiments from my research — distributed consensus, model watermarking, proof-of-learning, fault tolerance, optimization. Each one drops you into a real scenario, lets you set the strategy, and grades your run from <strong>Off-target</strong> to <strong>Frontier</strong>. No spoilers on the dial; 5★ means you'd survive in production.
   </p>
   <div class="lab-hero__actions" aria-label="Jump to experiments">
     <a href="#lab-wm">Catch a stolen AI model</a>
@@ -46,7 +46,7 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
 </nav>
 
 <div class="lab-quest" role="region" aria-label="Lab mission progress">
-  <p class="lab-quest__msg" data-role="quest-msg">Five labs. Each one grades your run 1★–5★ live. Hit 5★ in any lab to unlock its badge below.</p>
+  <p class="lab-quest__msg" data-role="quest-msg">Five labs, each a scenario with a measurable goal. 5★ means you found the minimum play that beats it — unlocks the badge.</p>
   <ul class="lab-quest__list">
     <li class="lab-quest__item" data-quest-item="tg"><span class="lab-quest__name">Consensus</span> <span class="lab-quest__status" data-role="quest-tg">Locked</span></li>
     <li class="lab-quest__item" data-quest-item="wm"><span class="lab-quest__name">Watermark</span> <span class="lab-quest__status" data-role="quest-wm">Locked</span></li>
@@ -85,12 +85,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Consensus Casino</h2>
   <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
-  <p class="lab-card__lead">🤝 Two friends are texting to meet up. The cell tower keeps dropping their messages. One strategy: send once and hope. Another: send the message over and over. One of them actually works — and it's the one your phone uses every day.</p>
+  <p class="lab-card__lead">🤝 Two friends are texting to meet up; the cell tower keeps eating their messages. Two strategies on the table — send once and pray, or just keep retrying until something lands. One of those is, mathematically, the entire reason TCP works.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your job</span>
-    <strong>Push their chance of meeting past 99%.</strong>
-    <span>Turn up how bad the signal is, and how many times they retry. Hit Run and see if they actually make it to dinner.</span>
-    <div class="lab-card__mission-pills"><span>5★ ≥ 99%</span><span>4★ ≥ 95%</span><span>3★ ≥ 85%</span></div>
+    <span class="lab-card__mission-kicker">Your move</span>
+    <strong>Pick the scenario; find the minimum retries that beat the bar.</strong>
+    <span>Each scenario sets its own reliability target — 99.9% on home WiFi, 80% in a hurricane. 5★ is the fewest tries that gets you there.</span>
+    <div class="lab-card__mission-pills"><span>5★ minimum tries</span><span>4★ wasteful win</span><span>3★ close miss</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -184,12 +184,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">ML security · Model provenance</span>
   <h2>Model Heist Detector</h2>
   <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
-  <p class="lab-card__lead">🕵️ Someone stole your AI and tried to disguise it. Lucky you — before publishing, you hid a secret pattern in the weights. Now: is the signature still readable through the disguise? Make it too quiet and you lose the thief. Make it too loud and the AI gets weird.</p>
+  <p class="lab-card__lead">🕵️ Someone leaked your AI and ran it through a disguise. Before publishing, you'd spread a faint statistical signature across thousands of weights — too small for any one to notice, but together a fingerprint only you can read. The thief tries to scrub it. You have to read it anyway.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your job</span>
-    <strong>Catch the thief without ruining the model.</strong>
-    <span>Tune how bold the signature is, where you hide it, and how sneaky the thief gets. Hit Run and see if you'd win in court.</span>
-    <div class="lab-card__mission-pills"><span>5★ catch≥97%, false alarms≤3%</span><span>4★ catch≥90%</span><span>3★ catch≥70%</span></div>
+    <span class="lab-card__mission-kicker">Your move</span>
+    <strong>Catch the thief without breaking the model.</strong>
+    <span>Each thief level adds more noise. Tune signature strength and number of marks. Push ε too far and the model behaves oddly; under-shoot k and the signal drowns in the noise floor.</span>
+    <div class="lab-card__mission-pills"><span>5★ beat the catch target</span><span>4★ catch with collateral</span><span>3★ partial detection</span></div>
   </div>
 
   <div class="lab-experiment__panel">
@@ -290,11 +290,11 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
   <h2>Training Fingerprint</h2>
   <p class="lab-card__usecase">Used in <strong>Foundation model auditing</strong> · <strong>Competitive intelligence</strong> · <strong>Patent disputes</strong> · <strong>Minting training credentials</strong> · <strong>Open-source verification</strong></p>
-  <p class="lab-card__lead">🔬 Anyone can download an AI and claim they trained it. The real proof is in the journey: a genuine training run leaves a fingerprint — a wiggly curve that's hard to fake. Run it once and see if your trajectory would survive an audit.</p>
+  <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it. The proof is in the journey — a real training run leaves a noisy, monotone-ish loss curve that's almost impossible to forge after the fact. Tune your hyperparameters and see if the trajectory would survive an audit.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your job</span>
+    <span class="lab-card__mission-kicker">Your move</span>
     <strong>Earn Gold Proof.</strong>
-    <span>Pick learning speed, examples per step, and data messiness. Hit Train. 5★ when the fingerprint looks real.</span>
+    <span>Pick learning rate, batch size, and data noise. Hit Train. The detector scores you on monotonicity, smoothness, distance from the fake-flat baseline, and how close your hyperparameters are to a credible regime.</span>
     <div class="lab-card__mission-pills"><span>5★ score ≥ 94</span><span>4★ ≥ 82</span><span>3★ ≥ 68</span></div>
   </div>
 
@@ -394,12 +394,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>Redundancy Reactor</h2>
   <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
-  <p class="lab-card__lead">✈️ Your A320 has three flight computers. If one crashes, the other two outvote it and the plane keeps flying. But if all three share the same bug? They all crash together. The trick is keeping them genuinely different — three Macs in a coat doesn't count.</p>
+  <p class="lab-card__lead">✈️ Your A320 has three flight computers and a majority voter; one fails, the other two outvote it. But "three computers" is only "three independent failure paths" if they fail differently. Identical software hits the same overflow at the same millisecond — see: Ariane 5, 1996.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your job</span>
-    <strong>Make three computers way safer than one.</strong>
-    <span>Pick the crash rate, how alike they are, and how many computers you bolt in. Run and see how many times safer the system became.</span>
-    <div class="lab-card__mission-pills"><span>5★ ≥ 250× safer</span><span>4★ ≥ 75× safer</span><span>3★ ≥ 20× safer</span></div>
+    <span class="lab-card__mission-kicker">Your move</span>
+    <strong>Pick the mission; pick the minimum N that beats the safety target.</strong>
+    <span>Each mission carries its own correlation (ρ) and per-channel failure rate (q). 5★ means hitting the safety multiplier with the fewest backups — overspending earns 4★.</span>
+    <div class="lab-card__mission-pills"><span>5★ minimum N</span><span>4★ overspent win</span><span>3★ close miss</span></div>
   </div>
 
   <div class="lab-tmr">
@@ -503,12 +503,12 @@ excerpt: "Five tiny science games. Drag sliders, earn stars (1–5 per lab), lea
   <span class="ep-eyebrow">Deep Learning · Optimization</span>
   <h2>Gradient Pinball</h2>
   <p class="lab-card__usecase">Used in <strong>Training LLMs</strong> · <strong>Backpropagation</strong> · <strong>Physics Simulations</strong></p>
-  <p class="lab-card__lead">⛰️ Training an AI is like rolling a ball down a hilly landscape. The deepest valley is the answer. Too cautious — the ball gets stuck on a small hill and never reaches the real bottom. Too aggressive — it flies off the map entirely. There's a sweet step size.</p>
+  <p class="lab-card__lead">⛰️ Every modern model — GPT, Stable Diffusion, your phone's autocorrect — learns by rolling a ball down a high-dimensional loss landscape. The deepest valley is the answer; the smaller dips are decoys. Too cautious and you settle for a decoy; too aggressive and the ball leaves the map.</p>
   <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your job</span>
-    <strong>Land the ball in the deepest valley.</strong>
-    <span>Pick step size and momentum. Hit Train. 5★ when the ball settles exactly at the global minimum.</span>
-    <div class="lab-card__mission-pills"><span>5★ global minimum</span><span>4★ very close</span><span>3★ stuck in a side valley</span></div>
+    <span class="lab-card__mission-kicker">Your move</span>
+    <strong>Land the optimizer in the global minimum.</strong>
+    <span>Pick step size and momentum, then Train. Momentum carries you through small hills the way physics carries a ball through ridges. 5★ only when you land in the real valley, not a saddle.</span>
+    <div class="lab-card__mission-pills"><span>5★ global minimum</span><span>4★ close miss</span><span>3★ stuck in a side valley</span></div>
   </div>
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
