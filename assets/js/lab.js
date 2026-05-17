@@ -1868,12 +1868,6 @@
       drawPlot(q, rhoEff, N);
     }
 
-    // Randomize starting parameters on each refresh for replayability
-    const randQ = (0.02 + Math.random() * 0.12).toFixed(3);
-    const randRho = (Math.random() * 0.3).toFixed(2);
-    refs.q.value = randQ;
-    refs.rho.value = randRho;
-
     // Aim → Fire → Score. Same commit pattern.
     refs.runBtn = $('[data-role="tmr-run-btn"]', root);
     let tmrRevealed = false;
