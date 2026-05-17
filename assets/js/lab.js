@@ -149,7 +149,7 @@
     if (msg) {
       if (message) msg.textContent = message;
       else if (completedQuestCount() === 5) msg.textContent = "All five solved. The simulation acknowledges your persistence. You may now brag in any lobby that is not legally binding.";
-      else msg.textContent = "Complete five enrichment activities. Unlock badges. Disappoint nobody—especially not the eigenvalues.";
+      else msg.textContent = "Complete five enrichment activities. Unlock badges. Disappoint nobody, especially not the eigenvalues.";
     }
   }
   function unlockQuest(key, message) {
@@ -378,7 +378,7 @@
       lblEl.setAttribute("data-tier", pending ? "pending" : String(full));
     }
     host.setAttribute("data-stars", pending ? "pending" : String(full));
-    host.setAttribute("aria-label", pending ? tier : (full + " of 5 stars — " + tier));
+    host.setAttribute("aria-label", pending ? tier : (full + " of 5 stars, " + tier));
     if (!pending) {
       const prev = parseInt(host.dataset.prevStars || "-1", 10);
       if (full > prev && prev >= 0) {
@@ -870,12 +870,12 @@
       // without needing them spelled out.
       let txt;
       if (p === 0)               txt = "Perfect channel. Both protocols are tautologically correct. Reality, you may have noticed, is not a perfect channel.";
-      else if (p > 0.84)         txt = "At this loss rate even retry-heavy strategies bleed. Useful regime — this is the math behind your phone's 'no service' fallback and the reason TCP has a give-up timer.";
+      else if (p > 0.84)         txt = "At this loss rate even retry-heavy strategies bleed. Useful regime: this is the math behind your phone's 'no service' fallback and the reason TCP has a give-up timer.";
       else if (n === 1)          txt = "N=1 makes both strategies coincide. The interesting structure starts at N≥2, where retries compound favorably and chains compound the opposite direction.";
-      else if (p < 0.05)         txt = "Production-grade WAN territory. Both protocols look perfect — until you're at scale and the tails matter. This is where two-phase commit looks attractive and then ruins your Monday.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "Channel entropy maxed. Retry still wins by accumulating tries — same trick TCP uses on weak Wi-Fi, same reason Bitcoin needs confirmation depth.";
+      else if (p < 0.05)         txt = "Production-grade WAN territory. Both protocols look perfect, until you're at scale and the tails matter. This is where two-phase commit looks attractive and then ruins your Monday.";
+      else if (Math.abs(p - 0.5) < 0.005) txt = "Channel entropy maxed. Retry still wins by accumulating tries: same trick TCP uses on weak Wi-Fi, same reason Bitcoin needs confirmation depth.";
       else if (p > 0.65)         txt = "High-loss regime. Naive multi-send dominates because one success suffices; chain protocols lose multiplicatively. Every quorum system and every retry-with-backoff lives on this inequality.";
-      else if (delta > 0.6)      txt = "Chain strategy is hemorrhaging. The instinct to 'just add another confirmation step' makes it worse — this is the cautionary tale that gave us Paxos.";
+      else if (delta > 0.6)      txt = "Chain strategy is hemorrhaging. The instinct to 'just add another confirmation step' makes it worse: this is the cautionary tale that gave us Paxos.";
       else if (delta > 0.3)      txt = "Retry-with-backoff territory. Same shape as TCP, blockchain confirmation depth, and read-quorum tuning. Distributed systems chose this side on purpose.";
       else                       txt = "Naive multi-send dominates strict-chain for every p ∈ (0, 1) and N ≥ 2. The asymmetry is structural, not incidental.";
       refs.insight.textContent = txt;
@@ -927,8 +927,8 @@
     }
     function tgPendReadout(msg) {
       tgRevealed = false;
-      refs.naive.textContent = "—";
-      refs.strict.textContent = "—";
+      refs.naive.textContent = "…";
+      refs.strict.textContent = "…";
       refs.insight.textContent = msg || "Pick a scenario, choose your strategy, then hit Run experiment.";
       if (refs.sweetTg) refs.sweetTg.hidden = true;
       setStars(refs.starsTg, 0, "Press Run to score", { header: "Run grade", pending: true });
@@ -1054,7 +1054,7 @@
       if (stars === 5 && eps >= 0.16 && k <= 12) return {
         id: "wm-brander", icon: "🎨", name: "The Brander",
         state: "win",
-        sub: "Bold and focused — your signature survived the disguise intact. {detPct}% confidence.",
+        sub: "Bold and focused; your signature survived the disguise intact. {detPct}% confidence.",
       };
       if (stars === 5) return {
         id: "wm-engineer", icon: "📐", name: "The Engineer",
@@ -1087,7 +1087,7 @@
       return {
         id: "wm-attempt", icon: "🌫️", name: "The Vanishing",
         state: "miss",
-        sub: "Got {detPct}% — needed {goalPct}%. The signal walked into the noise and didn't come back.",
+        sub: "Got {detPct}%, needed {goalPct}%. The signal walked into the noise and didn't come back.",
       };
     }
 
@@ -1371,16 +1371,16 @@
       prevEffectiveK = effectiveK;
 
       let txt;
-      if (eps < 0.04)             txt = "Signal under the model's own noise floor — you're trying to recover information that statistically doesn't exist. Push ε.";
-      else if (det > 0.995)       txt = "Detection saturated. The thief's disguise is academic at this point — court-admissible, paper-publishable, and a strictly dominant strategy.";
+      if (eps < 0.04)             txt = "Signal under the model's own noise floor. You're trying to recover information that statistically doesn't exist. Push ε.";
+      else if (det > 0.995)       txt = "Detection saturated. The thief's disguise is academic at this point: court-admissible, paper-publishable, and a strictly dominant strategy.";
       else if (det > 0.9 && fpr < 0.1)
                                   txt = "Operating frontier: >90% detection at <10% false-alarm. The regime a real provenance dispute could survive cross-examination in.";
       else if (det > 0.5 && k <= 4)
-                                  txt = "Signal is fine; aggregation is weak. Detection scales with √k — going from k=4 to k=16 doubles your effective SNR.";
+                                  txt = "Signal is fine; aggregation is weak. Detection scales with √k. Going from k=4 to k=16 doubles your effective SNR.";
       else if (det < 0.15 && sigma > 0.3)
                                   txt = "The thief's noise budget exceeds your signal budget. At this σ either widen ε (and risk the model) or grow k aggressively.";
       else if (det < 0.2)         txt = "Watermark is in the noise. Either raise ε past the model's tolerance or spread the signal across many more cells.";
-      else                        txt = "Detection scales as Φ(SNR·√k − z_α). Doubling k buys you about √2 in z-score — usually cheaper than pushing ε.";
+      else                        txt = "Detection scales as Φ(SNR·√k − z_α). Doubling k buys you about √2 in z-score, usually cheaper than pushing ε.";
       refs.insight.textContent = txt;
 
       // Star grade — per-thief. Each thief has its own target detection
@@ -1442,8 +1442,8 @@
     }
     function wmPendReadout(msg) {
       wmRevealed = false;
-      refs.det.textContent = "—";
-      refs.fpr.textContent = "—";
+      refs.det.textContent = "…";
+      refs.fpr.textContent = "…";
       refs.insight.textContent = msg || "Pick a thief, choose your strategy, then hit Run experiment.";
       if (refs.sweetWm) refs.sweetWm.hidden = true;
       setStars(refs.starsWm, 0, "Press Run to score", { header: "Run grade", pending: true });
@@ -1812,13 +1812,13 @@
       // Plain-English regime hints.
       let txt;
       if (rhoBE === null) {
-        txt = "Per-channel rate too high — even perfect independence can't hit a 10× multiplier here. Replication isn't the right tool at this q; you need a better channel before you stack them.";
+        txt = "Per-channel rate too high. Even perfect independence can't hit a 10× multiplier here. Replication isn't the right tool at this q; you need a better channel before you stack them.";
       } else if (overBreakeven) {
         txt = "\u26a0\ufe0f Effective correlation exceeds the break-even line \u2014 you're paying for N channels and getting less than 10\u00d7 gain. This is the regime that crashed Ariane 5 (identical IRS code, identical overflow, near-simultaneous reset).";
       } else if (rhoEff >= 0.95) {
-        txt = "ρ ≈ 1 turns N-modular redundancy into one channel wearing a wig. Same software, same input, same failure — voting buys you nothing.";
+        txt = "ρ ≈ 1 turns N-modular redundancy into one channel wearing a wig. Same software, same input, same failure: voting buys you nothing.";
       } else if (rhoEff < 0.05) {
-        txt = "Near-independent failures. Reliability gain scales roughly as 1/(N·q^⌈N/2⌉) — this is the regime DO-178C signs off, the one your A320 cruises through every flight.";
+        txt = "Near-independent failures. Reliability gain scales roughly as 1/(N·q^⌈N/2⌉): the regime DO-178C signs off, the one your A320 cruises through every flight.";
       } else if (rhoEff < 0.5) {
         txt = "Mixed-mode failure. Common-cause events are taking a real bite out of the cubic gain. Diverse-versions programming exists for exactly this regime.";
       } else {
@@ -1851,12 +1851,12 @@
       } else if (gain >= tmrGoalGain) {
         setVerdict(refs.verdict,
           "✓ " + missionName + " survives (overspent on hardware)",
-          gainFmt + " safer with " + N + " — but " + tmrMinN + " would have done it. The CFO has questions.",
+          gainFmt + " safer with " + N + ", but " + tmrMinN + " would have done it. The CFO has questions.",
           "win");
       } else if (gain >= tmrGoalGain * 0.35) {
         setVerdict(refs.verdict,
           "✗ Below the safety bar",
-          gainFmt + " safer — needed " + tmrGoalGain + "×. Try more backups.",
+          gainFmt + " safer, needed " + tmrGoalGain + "×. Try more backups.",
           "miss");
       } else {
         setVerdict(refs.verdict,
@@ -1879,7 +1879,7 @@
     let tmrRevealed = false;
     let tmrRunning = false;
     const tmrHint = makeHintTracker(refs.insight, [
-      "The big one is correlation — if computers crash together, more of them doesn't help.",
+      "The big one is correlation. If computers crash together, more of them doesn't help.",
       "Sweet spot: low crash rate AND low correlation. 5+ computers is great if they're independent.",
       "Three identical computers fail together. Real safety needs different vendors and different code.",
     ]);
@@ -1890,8 +1890,8 @@
     }
     function tmrPendReadout(msg) {
       tmrRevealed = false;
-      refs.sysVal.textContent = "—";
-      refs.gainVal.textContent = "—";
+      refs.sysVal.textContent = "…";
+      refs.gainVal.textContent = "…";
       refs.insight.textContent = msg || "Pick a mission, choose your strategy, then hit Run experiment.";
       if (refs.sweetTmr) refs.sweetTmr.hidden = true;
       setStars(refs.starsTmr, 0, "Press Run to score", { header: "Run grade", pending: true });
@@ -1985,9 +1985,9 @@
     };
 
     const gdHint = makeHintTracker(refs.insight, [
-      "If the ball gets stuck early, raise the step size — it's too cautious.",
+      "If the ball gets stuck early, raise the step size; it's too cautious.",
       "Sweet spot: step size around 0.015–0.020, momentum around 0.6 carries the ball through small hills.",
-      "Adding momentum is like rolling on ice — the ball glides over local traps to find the deeper valley.",
+      "Adding momentum is like rolling on ice: the ball glides over local traps to find the deeper valley.",
     ]);
 
     const PW = 640, PH = 260;
@@ -2286,7 +2286,7 @@
         refs.insight.textContent = "💥 Exploding gradients! The ball flew off the map.";
         setVerdict(refs.verdict,
           "💥 Diverged",
-          "Step size too large — the optimizer left the landscape entirely. There is no spoon, only NaN.",
+          "Step size too large; the optimizer left the landscape entirely. There is no spoon, only NaN.",
           "fail");
         running = false;
         setStars(refs.starsGd, 0, "Off-target", { header: "Run grade" });
@@ -2664,7 +2664,7 @@
 
       if (score >= goldCutoff) {
         celebrate(refs.plot, false);
-        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime — the audit holds. The Oracle is mildly proud.";
+        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime; the audit holds. The Oracle is mildly proud.";
         setVerdict(refs.verdict,
           "🏆 Gold Proof",
           "Score " + score + ". Trajectory passes audit. There is no spoon, only a credible loss curve.",
@@ -2674,7 +2674,7 @@
         refs.insight.innerHTML = "🥈 Silver Proof. The trajectory is plausible but not airtight. The auditor will want another look.";
         setVerdict(refs.verdict,
           "🥈 Silver Proof",
-          "Score " + score + ". Borderline — try α near 0.012 and B around 128.",
+          "Score " + score + ". Borderline; try α near 0.012 and B around 128.",
           "miss");
       } else if (score >= bronzeCutoff) {
         refs.insight.innerHTML = "🥉 Bronze. The curve descends, but bumpily. A determined auditor pushes back.";
@@ -2708,7 +2708,7 @@
       trainingCurve = [];
       updateMetrics(0, FAKE_LINE);
       refs.scoreVal.textContent = "0";
-      refs.badgeVal.textContent = "—";
+      refs.badgeVal.textContent = "…";
       drawPlot();
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
@@ -2755,7 +2755,7 @@
         running = true;
         refs.trainBtn.classList.add('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
-        refs.insight.textContent = "Running. Watching the loss curve unfold — is this a real training run or a fake?";
+        refs.insight.textContent = "Running. Watching the loss curve unfold. Is this a real training run or a fake?";
         setStars(refs.starsPol, 0, "Training…", { header: "Run grade", pending: true });
         setVerdict(refs.verdict, "Training…", "Loss curve drawing live.", "pending");
 

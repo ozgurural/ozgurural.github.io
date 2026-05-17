@@ -8,7 +8,7 @@ redirect_from:
   - /blog.html
 ---
 
-<p class="ep-lead">Technical writing on machine-learning security, proof-of-learning, distributed systems, and the engineering of high-reliability software — written for ML researchers, senior engineers, and technical leaders. For longer-form parables on the same ideas see the <a href="/essays/">Essays</a>; for a quick overview see the <a href="/lab/">Lab</a>.</p>
+<p class="ep-lead">Technical writing on machine-learning security, proof-of-learning, distributed systems, and the engineering of high-reliability software, written for ML researchers, senior engineers, and technical leaders. For longer-form parables on the same ideas see the <a href="/essays/">Essays</a>; for a quick overview see the <a href="/lab/">Lab</a>.</p>
 
 {% include base_path %}
 {% for post in site.categories.technical %}

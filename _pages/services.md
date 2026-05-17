@@ -10,7 +10,7 @@ title: "Professional Service"
 <ul class="ep-cards">
   <li>
     <div class="meta">Program Committee · 2026</div>
-    <h3 class="title"><a href="https://nlpaics2026.gplsi.es/">NLPAICS 2026 — University of Alicante</a></h3>
+    <h3 class="title"><a href="https://nlpaics2026.gplsi.es/">NLPAICS 2026, University of Alicante</a></h3>
     <p class="desc">2nd Workshop on NLP Applied to Information and Cyber Security. Reviewing submissions on NLP for threat intelligence, abuse detection, and defensive cyber.</p>
   </li>
   <li>
