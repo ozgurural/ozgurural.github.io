@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "Dr. Ozgur Ural"
-excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML. Senior software engineer / tech lead. Looking for AI research scientist roles."
+excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Senior software engineer."
 author_profile: true
 redirect_from:
   - /about/
@@ -35,14 +35,14 @@ redirect_from:
 </script>
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">Ph.D. in Machine Learning · Senior Software Engineer · Targeting AI Research Scientist roles</span>
-  <h1 class="ep-hero__title">Doing <span class="accent">machine learning research</span> with the engineering discipline of software that <span class="accent">cannot fail</span>.</h1>
+  <span class="ep-eyebrow">Machine Learning · Software Engineering · Distributed Systems</span>
+  <h1 class="ep-hero__title">I do <span class="accent">machine learning research</span> and write software that <span class="accent">cannot fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>. My doctoral work is in machine learning, with published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em>. Four IEEE Access papers (2023 to 2025); Ph.D. dissertation, ERAU 2025. <strong>I currently work as a senior software engineer / tech lead</strong>, writing the kind of production C++ that has to be right the first time. I'm looking to move into research scientist work at an AI lab, broadly across machine learning, with prior work in trustworthy ML and ML security, and interest in pushing further into evaluation, alignment, robustness, and the parts of AI where rigorous engineering is part of the research.
+    I'm <strong>Dr. Ozgur Ural</strong>. My doctoral work is in machine learning: published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em>. Four IEEE Access papers (2023 to 2025); Ph.D. dissertation, ERAU 2025. By day I'm a senior software engineer building production systems where bugs aren't allowed to exist. The parts of AI I keep returning to are the ones where the math has to survive contact with adversaries and reality.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span><strong>Now:</strong> Senior Software Engineer / Tech Lead, Leiden NL. &nbsp;<strong>Looking for:</strong> research scientist roles at AI labs, broadly across machine learning.</span>
+    <span>Currently in Leiden, Netherlands. Writing, building, publishing.</span>
   </p>
 </section>
 
@@ -105,16 +105,6 @@ redirect_from:
   </li>
 </ol>
 
-## Why I'm a fit for an AI research scientist role
+## Contact
 
-A short pitch, since "Ph.D. researcher applying from industry" deserves a clear case:
-
-- **Real research record, not a side hobby.** Four IEEE Access papers (2023, 2024, 2025), a Ph.D. dissertation that proposes and implements a new defence against proof-of-learning spoofing, peer-review and program-committee service. The publication count is small by university-lab standards, but every paper is first-author, peer-reviewed, and ships working code.
-- **Engineering discipline is an unfair advantage.** I spend my day writing the kind of production C++ that has to behave correctly the first time and every time after. That discipline (code that compiles, runs, and survives review under pressure) is what a lot of ML research code is missing, and what teams at AI labs increasingly need.
-- **I can make hard ideas legible.** The <a href="/lab/">Lab</a> turns my research areas into five playable demos a non-expert can solve in three minutes; the <a href="/essays/">Essays</a> turn the same ideas into parables. Communication isn't separate from the research; it's part of how good research scales.
-
-I'm interested in research scientist work broadly across machine learning, including evaluation, alignment, robustness, agentic systems, applied ML safety, and the parts of ML research where rigorous engineering practice matters as much as the math.
-
-## Get in touch
-
-Hiring for research scientist roles? Want to collaborate on a paper? Booking conference talks? Reach me at [drozgurural@gmail.com](mailto:drozgurural@gmail.com), or via [CV (PDF)](/Ozgur_Ural_PhD_Resume.pdf), [Google Scholar](https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate), [ORCID](http://orcid.org/0000-0003-1329-4303).
+[drozgurural@gmail.com](mailto:drozgurural@gmail.com)

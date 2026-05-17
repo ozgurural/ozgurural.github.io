@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "Dr. Ozgur Ural — Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on proof-of-learning, model watermarking, and blockchain-enhanced ML. Senior software engineer / tech lead. Looking for AI research scientist roles, broadly across machine learning."
+description              : &description "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on proof-of-learning, model watermarking, and blockchain-enhanced ML. Senior software engineer. Writing about machine learning, distributed systems, and high-reliability software."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -26,7 +26,7 @@ author:
   avatar           : "ozgururalpp.jpg"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "Ph.D. in Machine Learning (ERAU 2025) · Senior software engineer / tech lead · Targeting AI research scientist roles"
+  bio              : "Ph.D. in Machine Learning (ERAU 2025) · Senior software engineer · Researcher in trustworthy ML"
   location         : "Leiden, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"
@@ -145,7 +145,7 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 : "ozgururalpp.jpg"  # Social media default site image
-og_description           : "Dr. Ozgur Ural — Ph.D. in Machine Learning (ERAU 2025), 4× IEEE Access papers on proof-of-learning, model watermarking, and blockchain-enhanced ML. Senior software engineer / tech lead. Looking for AI research scientist roles, broadly across machine learning."
+og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on proof-of-learning, model watermarking, and blockchain-enhanced ML. Senior software engineer."
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
