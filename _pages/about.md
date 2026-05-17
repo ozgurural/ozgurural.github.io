@@ -46,9 +46,7 @@ redirect_from:
   </p>
   <div class="ep-hero__cta">
     <a href="/Ozgur_Ural_PhD_Resume.pdf">Download CV (PDF)</a>
-    <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>
     <a href="/lab/">Interactive Lab</a>
-    <a href="mailto:drozgurural@gmail.com">Email me</a>
   </div>
 </section>
 
