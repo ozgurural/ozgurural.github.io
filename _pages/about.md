@@ -44,10 +44,6 @@ redirect_from:
     <span class="ep-status-dot" aria-hidden="true"></span>
     <span><strong>Now:</strong> Senior Software Engineer / Tech Lead, Leiden NL. &nbsp;<strong>Looking for:</strong> research scientist roles at AI labs &mdash; broadly across machine learning.</span>
   </p>
-  <div class="ep-hero__cta">
-    <a href="/Ozgur_Ural_PhD_Resume.pdf">Download CV (PDF)</a>
-    <a href="/lab/">Interactive Lab</a>
-  </div>
 </section>
 
 <ul class="ep-stats">
