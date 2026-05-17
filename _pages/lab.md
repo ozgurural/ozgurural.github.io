@@ -8,7 +8,7 @@ excerpt: "Five interactive thought experiments from my research — distributed 
   <span class="ep-eyebrow">Interactive research arcade</span>
   <h2 class="lab-hero__title">Aim. Fire. Get graded.</h2>
   <p class="lab-hero__copy">
-    Five interactive thought experiments from my research — distributed consensus, model watermarking, proof-of-learning, fault tolerance, optimization. Each one drops you into a real scenario, lets you set the strategy, and grades your run from <strong>Off-target</strong> to <strong>Frontier</strong>. No spoilers on the dial; 5★ means you'd survive in production.
+    Five test chambers from my research — distributed consensus, AI watermarks, training-run forensics, fault tolerance, optimization. Each one drops you into a real scenario; you pick the strategy, the simulation grades the result from <strong>Off-target</strong> to <strong>Frontier 🏆</strong>. The dial does not flatter. The cake, as always, is a lie. 5★ means you'd survive in production.
   </p>
   <div class="lab-hero__actions" aria-label="Jump to experiments">
     <a href="#lab-wm">Catch a stolen AI model</a>
@@ -71,8 +71,7 @@ excerpt: "Five interactive thought experiments from my research — distributed 
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Distributed systems · Consensus</span>
   <h2>Consensus Casino</h2>
-  <p class="lab-card__usecase">Used in <strong>Blockchain consensus</strong> · <strong>Spanner / Raft / etcd</strong> · <strong>Cassandra &amp; DynamoDB</strong> · <strong>Microservice retries</strong> · <strong>TCP</strong></p>
-  <p class="lab-card__lead">🤝 Two friends are texting to meet up; the cell tower keeps eating their messages. Two strategies on the table — send once and pray, or just keep retrying until something lands. One of those is, mathematically, the entire reason TCP works.</p>
+  <p class="lab-card__lead">🤝 Two friends are texting to meet up; the cell tower keeps eating their messages. Two strategies on the table — send once and pray, or just keep retrying until something lands. One of those is, mathematically, the entire reason your phone reconnects on weak Wi-Fi.</p>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Pick the scenario; find the minimum retries that beat the bar.</strong>
@@ -164,8 +163,7 @@ excerpt: "Five interactive thought experiments from my research — distributed 
 <section class="lab-card lab-experiment" id="lab-wm">
   <span class="ep-eyebrow">ML security · Model provenance</span>
   <h2>Model Heist Detector</h2>
-  <p class="lab-card__usecase">Used in <strong>OpenAI / Anthropic IP defence</strong> · <strong>HuggingFace gated weights</strong> · <strong>Banking model auditing</strong></p>
-  <p class="lab-card__lead">🕵️ Someone leaked your AI and ran it through a disguise. Before publishing, you'd spread a faint statistical signature across thousands of weights — too small for any one to notice, but together a fingerprint only you can read. The thief tries to scrub it. You have to read it anyway.</p>
+  <p class="lab-card__lead">🕵️ Someone leaked your AI and ran it through a disguise. Before publishing, you'd spread a faint statistical signature across thousands of weights — too small to notice individually, together a fingerprint only you can read. The thief tries to scrub it. You have to read it through the noise anyway.</p>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Catch the thief without breaking the model.</strong>
@@ -264,8 +262,7 @@ excerpt: "Five interactive thought experiments from my research — distributed 
 <section class="lab-card lab-experiment" id="lab-pol">
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
   <h2>Training Fingerprint</h2>
-  <p class="lab-card__usecase">Used in <strong>Foundation model auditing</strong> · <strong>Competitive intelligence</strong> · <strong>Patent disputes</strong> · <strong>Minting training credentials</strong> · <strong>Open-source verification</strong></p>
-  <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it. The proof is in the journey — a real training run leaves a noisy, monotone-ish loss curve that's almost impossible to forge after the fact. Tune your hyperparameters and see if the trajectory would survive an audit.</p>
+  <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it. The proof is in the journey — a real training run leaves a wobbly, monotone-ish loss curve that's almost impossible to forge after the fact. Tune the run; see if the trajectory would survive an audit. (The auditor is unforgiving but fair. Mostly fair.)</p>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Earn Gold Proof.</strong>
@@ -338,8 +335,7 @@ excerpt: "Five interactive thought experiments from my research — distributed 
 <section class="lab-card lab-experiment" id="lab-tmr">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>Redundancy Reactor</h2>
-  <p class="lab-card__usecase">Used in <strong>A320 fly-by-wire</strong> · <strong>Boeing 787</strong> · <strong>Apollo Guidance Computer</strong> · <strong>Mars rovers</strong> · <strong>your phone's secure enclave</strong></p>
-  <p class="lab-card__lead">✈️ Your A320 has three flight computers and a majority voter; one fails, the other two outvote it. But "three computers" is only "three independent failure paths" if they fail differently. Identical software hits the same overflow at the same millisecond — see: Ariane 5, 1996.</p>
+  <p class="lab-card__lead">✈️ Your A320 has three flight computers and a majority voter — one fails, the other two outvote it. But "three computers" is only "three independent failure paths" if they fail differently. Identical software hits the same overflow at the same millisecond. (Ariane 5, 1996. The rocket disagreed with reality and disassembled itself 39 seconds in.)</p>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Pick the mission; pick the minimum N that beats the safety target.</strong>
@@ -441,8 +437,7 @@ excerpt: "Five interactive thought experiments from my research — distributed 
 <section class="lab-card lab-experiment" id="lab-gd">
   <span class="ep-eyebrow">Deep Learning · Optimization</span>
   <h2>Gradient Pinball</h2>
-  <p class="lab-card__usecase">Used in <strong>Training LLMs</strong> · <strong>Backpropagation</strong> · <strong>Physics Simulations</strong></p>
-  <p class="lab-card__lead">⛰️ Every modern model — GPT, Stable Diffusion, your phone's autocorrect — learns by rolling a ball down a high-dimensional loss landscape. The deepest valley is the answer; the smaller dips are decoys. Too cautious and you settle for a decoy; too aggressive and the ball leaves the map.</p>
+  <p class="lab-card__lead">⛰️ Every modern model — GPT, Stable Diffusion, your phone's autocorrect — learns by rolling a ball down a high-dimensional loss landscape. The deepest valley is the answer; the smaller dips are traps. Too cautious and you settle in a side valley convinced you've won; too aggressive and the ball leaves the landscape entirely. There is no spoon — only a basin.</p>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Land the optimizer in the global minimum.</strong>

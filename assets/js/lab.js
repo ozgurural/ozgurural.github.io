@@ -813,18 +813,30 @@
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
       tgHint(tgStars);
 
-      // Headline verdict.
+      // Headline verdict with a little voice. Pleasant. Unexciting. Correct.
       const scenario = tgCurrentScenarioName();
       const goalPct = (tgGoal * 100).toFixed(tgGoal >= 0.99 ? 1 : 0);
       const yourPct = (pNaive * 100).toFixed(1);
       if (tgStars === 5) {
-        setVerdict(refs.verdict, "✓ Beat " + scenario + " with the minimum retries", yourPct + "% reliability at " + n + " tries — target was " + goalPct + "%.", "win");
+        setVerdict(refs.verdict,
+          "🏆 " + scenario + " survived, minimum retries",
+          yourPct + "% reliability at " + n + " tries (target " + goalPct + "%). The friends ate. The Architect approves.",
+          "win");
       } else if (pNaive >= tgGoal) {
-        setVerdict(refs.verdict, "✓ Beat " + scenario + " (over-spent on retries)", yourPct + "% at " + n + " tries — " + tgMinN + " would have done it.", "win");
+        setVerdict(refs.verdict,
+          "✓ " + scenario + " survived (overspent on retries)",
+          yourPct + "% at " + n + " tries — but " + tgMinN + " would have done it. Engineering is also about not being wasteful.",
+          "win");
       } else if (pNaive >= tgGoal * 0.65) {
-        setVerdict(refs.verdict, "✗ Short of target", "Got " + yourPct + "% — need " + goalPct + "%. Try more retries.", "miss");
+        setVerdict(refs.verdict,
+          "✗ Short of target",
+          "Got " + yourPct + "% — need " + goalPct + "%. The friends ate alone. Try more retries.",
+          "miss");
       } else {
-        setVerdict(refs.verdict, "✗ Way under", "Got " + yourPct + "% — need " + goalPct + "%.", "fail");
+        setVerdict(refs.verdict,
+          "💥 The friends never made it",
+          "Got " + yourPct + "% — needed " + goalPct + "%. Two-phase commit could not save you.",
+          "fail");
       }
 
       drawPlot(p, n);
@@ -1265,21 +1277,36 @@
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
       wmHint(wmStars);
 
-      // Headline verdict.
+      // Headline verdict with character.
       const thiefName = wmCurrentThiefName();
       const goalPct = (wmGoalDet * 100).toFixed(0);
       const detPct = (det * 100).toFixed(1);
       const modelOK = eps <= wmEpsMax + 0.04;
       if (wmStars === 5) {
-        setVerdict(refs.verdict, "✓ Caught the " + thiefName + " — model intact", detPct + "% detection at ε = " + eps.toFixed(2) + ", k = " + k + ".", "win");
+        setVerdict(refs.verdict,
+          "🏆 Caught the " + thiefName + " — model still works",
+          detPct + "% confidence at ε = " + eps.toFixed(2) + ", k = " + k + ". Court-admissible. Cake remains a lie.",
+          "win");
       } else if (det >= wmGoalDet && !modelOK) {
-        setVerdict(refs.verdict, "⚠ Caught the " + thiefName + ", but the model is wrecked", "ε = " + eps.toFixed(2) + " is past the model's tolerance.", "miss");
+        setVerdict(refs.verdict,
+          "⚠ Caught them, but you wrecked the model",
+          "ε = " + eps.toFixed(2) + " is past the model's tolerance. You won the case and lost the patient.",
+          "miss");
       } else if (det >= wmGoalDet) {
-        setVerdict(refs.verdict, "✓ Caught the " + thiefName, detPct + "% detection at ε = " + eps.toFixed(2) + ", k = " + k + " — target was " + goalPct + "%.", "win");
+        setVerdict(refs.verdict,
+          "✓ Caught the " + thiefName,
+          detPct + "% confidence — target was " + goalPct + "%. The thief's lawyers are sweating.",
+          "win");
       } else if (det >= wmGoalDet * 0.55) {
-        setVerdict(refs.verdict, "✗ Thief slipped past", "Got " + detPct + "% — need " + goalPct + "%. Try more hidden marks.", "miss");
+        setVerdict(refs.verdict,
+          "✗ The " + thiefName + " slipped past",
+          "Got " + detPct + "% — needed " + goalPct + "%. Spread your signature across more marks.",
+          "miss");
       } else {
-        setVerdict(refs.verdict, "✗ Watermark washed out", "Got " + detPct + "% — signal lost in the noise.", "fail");
+        setVerdict(refs.verdict,
+          "💀 Watermark washed out",
+          "Got " + detPct + "%. The signal is in the noise. Somewhere. Probably.",
+          "fail");
       }
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
@@ -1707,17 +1734,29 @@
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
       tmrHint(tmrStars);
 
-      // Headline verdict.
+      // Headline verdict with character.
       const missionName = tmrCurrentMissionName();
       const gainFmt = gain >= 100 ? Math.round(gain) + "×" : gain.toFixed(1) + "×";
       if (tmrStars === 5) {
-        setVerdict(refs.verdict, "✓ " + missionName + " survives, minimum hardware", gainFmt + " safer than one computer with " + N + " backups.", "win");
+        setVerdict(refs.verdict,
+          "🏆 " + missionName + " survives with minimum hardware",
+          gainFmt + " safer than one computer, with only " + N + " backups. DO-178C signs off; the auditor goes home.",
+          "win");
       } else if (gain >= tmrGoalGain) {
-        setVerdict(refs.verdict, "✓ " + missionName + " survives (over-spent on hardware)", gainFmt + " safer with " + N + " — " + tmrMinN + " would have done it.", "win");
+        setVerdict(refs.verdict,
+          "✓ " + missionName + " survives (overspent on hardware)",
+          gainFmt + " safer with " + N + " — but " + tmrMinN + " would have done it. The CFO has questions.",
+          "win");
       } else if (gain >= tmrGoalGain * 0.35) {
-        setVerdict(refs.verdict, "✗ Short of the safety bar", gainFmt + " safer — need " + tmrGoalGain + "×. Try more backups.", "miss");
+        setVerdict(refs.verdict,
+          "✗ Below the safety bar",
+          gainFmt + " safer — needed " + tmrGoalGain + "×. Try more backups.",
+          "miss");
       } else {
-        setVerdict(refs.verdict, "✗ Correlated failures are winning", gainFmt + " — voting can't fix shared bugs.", "fail");
+        setVerdict(refs.verdict,
+          "💥 Correlated failures are winning",
+          gainFmt + ". The computers are voting unanimously for the wrong answer. (Ariane 5 also did this.)",
+          "fail");
       }
 
       drawPlot(q, rhoEff, N);
@@ -2138,29 +2177,41 @@
       renderTrail();
       
       if (currentX < X_MIN || currentX > X_MAX) {
-        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the map. Lower the step size.";
-        setVerdict(refs.verdict, "💥 Diverged", "Step size was too large — the optimizer left the map.", "fail");
+        refs.insight.textContent = "💥 Exploding gradients! The ball flew off the map.";
+        setVerdict(refs.verdict,
+          "💥 Diverged",
+          "Step size too large — the optimizer left the landscape entirely. There is no spoon, only NaN.",
+          "fail");
         running = false;
         setStars(refs.starsGd, 0, "Off-target", { header: "Run grade" });
         gdHint(0);
       } else if (epoch > 500) {
-        refs.insight.textContent = "⏳ The ball is crawling. Step size is too small — try raising it.";
-        setVerdict(refs.verdict, "⏳ Crawling", "500 epochs without convergence. Try a bigger step size.", "miss");
+        refs.insight.textContent = "⏳ The ball is crawling. Step size is too small.";
+        setVerdict(refs.verdict,
+          "⏳ Still crawling at epoch 500",
+          "Step size is too small. Try raising it. The simulation has other patients to see.",
+          "miss");
         running = false;
         setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
         gdHint(1);
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
         if (dist < 0.06) {
-          refs.insight.textContent = "🏆 Global minimum! The ball found the deepest valley.";
-          setVerdict(refs.verdict, "🏆 Landed in the global minimum", "Found the answer in " + epoch + " epochs.", "win");
+          refs.insight.textContent = "🏆 Global minimum reached. The ball found the deepest valley.";
+          setVerdict(refs.verdict,
+            "🏆 Landed in the global minimum",
+            "Found the answer in " + epoch + " epochs. This was a triumph.",
+            "win");
           unlockQuest("gd", "Gradient descent: global minimum found.");
           triggerCongrats(refs.plot, true);
           setStars(refs.starsGd, 5, "Frontier 🏆", { header: "Run grade" });
           gdHint(5);
         } else {
            refs.insight.textContent = "🚧 Stuck in a side valley. Add momentum to roll over the small hill.";
-           setVerdict(refs.verdict, "🚧 Trapped in a local minimum", "Off by " + dist.toFixed(2) + " from the global answer. More momentum.", "miss");
+           setVerdict(refs.verdict,
+             "🚧 Trapped in a side valley",
+             "Off by " + dist.toFixed(2) + " from the real answer. The ball is convinced it won. Add momentum.",
+             "miss");
            let gdS = 1, gdT = "Sketchy";
            if (dist < 0.18)      { gdS = 4; gdT = "Pro-grade"; }
            else if (dist < 0.40) { gdS = 3; gdT = "Sharp"; }
@@ -2507,18 +2558,30 @@
 
       if (score >= goldCutoff) {
         celebrate(refs.plot, false);
-        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime — the audit holds. Hint zone for repeating it: α in [0.008, 0.018], B in [64, 256].";
-        setVerdict(refs.verdict, "🏆 Gold Proof", "Score " + score + ". Trajectory passes audit.", "win");
+        refs.insight.innerHTML = "🏆 <strong>Gold Proof unlocked.</strong> Credible training regime — the audit holds. The Oracle is mildly proud.";
+        setVerdict(refs.verdict,
+          "🏆 Gold Proof",
+          "Score " + score + ". Trajectory passes audit. There is no spoon, only a credible loss curve.",
+          "win");
         unlockQuest("pol", "Proof-of-Learning: Gold Proof. You chose wisely.");
       } else if (score >= silverCutoff) {
-        refs.insight.innerHTML = "🥈 Silver Proof. The trajectory is credible but not airtight. Tighten α toward 0.012 or B toward 128.";
-        setVerdict(refs.verdict, "🥈 Silver Proof", "Score " + score + ". Borderline — auditor wants another look.", "miss");
+        refs.insight.innerHTML = "🥈 Silver Proof. The trajectory is plausible but not airtight. The auditor will want another look.";
+        setVerdict(refs.verdict,
+          "🥈 Silver Proof",
+          "Score " + score + ". Borderline — try α near 0.012 and B around 128.",
+          "miss");
       } else if (score >= bronzeCutoff) {
-        refs.insight.innerHTML = "🥉 Bronze. The curve descends, but bumpily — a determined auditor would push back.";
-        setVerdict(refs.verdict, "🥉 Bronze Proof", "Score " + score + ". Descended, but the journey looks rough.", "miss");
+        refs.insight.innerHTML = "🥉 Bronze. The curve descends, but bumpily. A determined auditor pushes back.";
+        setVerdict(refs.verdict,
+          "🥉 Bronze Proof",
+          "Score " + score + ". You trained something. Just not convincingly.",
+          "miss");
       } else {
-        refs.insight.innerHTML = "Audit failed. Curve looks too flat or too noisy to be a real training run. Try α near 0.012, B around 128.";
-        setVerdict(refs.verdict, "✗ Audit failed", "Score " + score + ". Curve doesn't look like real training.", "fail");
+        refs.insight.innerHTML = "Audit failed. Curve looks too flat or too noisy to be a real training run.";
+        setVerdict(refs.verdict,
+          "💀 Audit failed",
+          "Score " + score + ". This is the loss curve of a model that was downloaded, not trained.",
+          "fail");
       }
 
       // Star grade — small sweet spot. 5★ requires near-perfect fingerprint.
