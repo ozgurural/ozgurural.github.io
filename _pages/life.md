@@ -5,7 +5,7 @@ author_profile: true
 layout: archive
 ---
 
-<p class="ep-lead">Notes on leadership, engineering culture, and resilience — drawn from a decade of building teams, navigating academia, and shipping mission-critical systems.</p>
+<p class="ep-lead">Shorter notes — leadership, engineering culture, the academia-to-industry transition, the things a decade of shipping mission-critical software has taught me. Written more loosely than the <a href="/blog/">technical posts</a>.</p>
 
 {% include base_path %}
 {% for post in site.categories.life %}

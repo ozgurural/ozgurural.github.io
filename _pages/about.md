@@ -1,23 +1,55 @@
 ---
 permalink: /
 title: "Dr. Ozgur Ural"
-excerpt: "Senior Software Engineer & Researcher · Ph.D. in Secure & Distributed Machine Learning · Tech Lead at Avion Full Flight Simulators."
+excerpt: "AI / ML Security Researcher · Ph.D. (ERAU 2025) on proof-of-learning and model watermarking · Tech Lead at Avion Full Flight Simulators."
 author_profile: true
 redirect_from:
   - /about/
   - /about.html
 ---
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Dr. Ozgur Ural",
+  "honorificPrefix": "Dr.",
+  "jobTitle": "AI / ML Security Researcher",
+  "url": "https://ozgurural.github.io",
+  "image": "https://ozgurural.github.io/images/ozgururalpp.jpg",
+  "email": "drozgurural@gmail.com",
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "Embry-Riddle Aeronautical University", "url": "https://erau.edu" },
+    { "@type": "CollegeOrUniversity", "name": "Middle East Technical University", "url": "https://metu.edu.tr" }
+  ],
+  "worksFor": { "@type": "Organization", "name": "Avion Full Flight Simulators", "url": "https://www.aviongroup.aero/" },
+  "knowsAbout": ["Machine Learning Security", "Proof-of-Learning", "Model Watermarking", "Adversarial Machine Learning", "Distributed Systems", "Blockchain", "Aerospace Software", "Real-time Systems"],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=lYx8fqsAAAAJ",
+    "https://orcid.org/0000-0003-1329-4303",
+    "https://www.researchgate.net/profile/Ozgur-Ural",
+    "https://twitter.com/ozgurural",
+    "https://github.com/ozgurural"
+  ]
+}
+</script>
+
 <section class="ep-hero">
-  <span class="ep-eyebrow">Ph.D. · ML Security · Distributed Systems · Aerospace</span>
-  <h1 class="ep-hero__title">Building <span class="accent">secure, distributed machine learning</span> for systems that cannot fail.</h1>
+  <span class="ep-eyebrow">AI / ML Security Researcher · Ph.D. · Distributed Systems</span>
+  <h1 class="ep-hero__title">Making <span class="accent">machine learning verifiable</span> for systems that cannot fail.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong> — a senior engineer and researcher operating at the intersection of artificial intelligence, distributed systems, and cybersecurity. My work spans peer-reviewed research on <em>proof-of-learning</em> and <em>model watermarking</em>, real-time C++ kernels powering FAA Level-D flight simulators, and cloud-native services in production. I help teams move trustworthy AI from paper to runtime.
+    I'm <strong>Dr. Ozgur Ural</strong>. My research sits at the intersection of <em>AI security</em>, <em>distributed systems</em>, and <em>cyber-physical reliability</em> — four IEEE Access papers on <em>proof-of-learning</em> and <em>model watermarking</em>, a Ph.D. dissertation defending ML training integrity against spoofing attacks, and a day job writing the real-time C++ kernel behind FAA Level-D flight simulators. I'm interested in the parts of AI where the math has to survive contact with adversaries and reality.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Currently in Leiden, Netherlands &nbsp;·&nbsp; open to research collaboration and technical advisory.</span>
+    <span><strong>Open to research scientist roles</strong> at AI labs working on safety, alignment, evaluation, or trustworthy ML &nbsp;·&nbsp; Leiden, Netherlands.</span>
   </p>
+  <div class="ep-hero__cta">
+    <a href="/Ozgur_Ural_PhD_Resume.pdf">Download CV (PDF)</a>
+    <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>
+    <a href="/lab/">Interactive Lab</a>
+    <a href="mailto:drozgurural@gmail.com">Email me</a>
+  </div>
 </section>
 
 <ul class="ep-stats">
@@ -27,28 +59,28 @@ redirect_from:
   <li><span class="num">PC</span><span class="label">NLPAICS 2026</span></li>
 </ul>
 
-## Focus areas
+## Research focus
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">AI / ML Security</span>
-    <h3>Trustworthy machine learning</h3>
-    <p>Proof-of-Learning protocols, feature-based model watermarking, adversarial robustness, blockchain-enhanced ML — published in IEEE Access.</p>
+    <span class="ep-pillar__tag">Trustworthy ML</span>
+    <h3>Proof-of-Learning &amp; watermarking</h3>
+    <p>Defending ML training integrity against spoofing attacks. Feature-based model watermarking integrated with proof-of-learning — IEEE Access 2024, 2025. Ph.D. dissertation, ERAU 2025.</p>
+  </li>
+  <li class="ep-pillar">
+    <span class="ep-pillar__tag">Adversarial ML</span>
+    <h3>Robustness &amp; verification</h3>
+    <p>Adversarial examples that subvert PoL verification, defenses against spoofing, and the broader question of when a model's claimed provenance can be trusted at all.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Distributed Systems</span>
-    <h3>Production-grade architecture</h3>
-    <p>Cloud-native services in Scala, TypeScript, and gRPC. Designing for scale, resilience, and verifiability across heterogeneous workloads.</p>
+    <h3>Verifiable distributed ML</h3>
+    <p>Blockchain-enhanced ML (IEEE Access 2023 survey), cloud-native services in Scala / TypeScript / gRPC, and the design of distributed protocols whose outputs can be audited.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">High-Reliability</span>
-    <h3>Aerospace simulation</h3>
-    <p>Real-time C++ kernels behind FAA Level-D Full Flight Simulators at Avion FFS — software where downtime is unacceptable.</p>
-  </li>
-  <li class="ep-pillar">
-    <span class="ep-pillar__tag">Leadership</span>
-    <h3>Cross-functional direction</h3>
-    <p>A decade leading engineers, mentoring researchers, translating principled research into production-ready systems.</p>
+    <span class="ep-pillar__tag">High-Reliability Systems</span>
+    <h3>Aerospace real-time software</h3>
+    <p>Real-time C++ kernels behind FAA Level-D Full Flight Simulators at Avion FFS — production engineering for software where downtime is not an option.</p>
   </li>
 </ul>
 
@@ -79,4 +111,6 @@ redirect_from:
 
 ## Get in touch
 
-For research collaboration, technical advisory, or speaking engagements, please reach me at [drozgurural@gmail.com](mailto:drozgurural@gmail.com).
+I'm <strong>actively interviewing for research scientist roles</strong> at AI labs working on safety, alignment, evaluation, trustworthy ML, or related areas. I'm also open to research collaboration, technical advisory, and conference talks.
+
+Reach me at [drozgurural@gmail.com](mailto:drozgurural@gmail.com) · [CV (PDF)](/Ozgur_Ural_PhD_Resume.pdf) · [Google Scholar](https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate) · [ORCID](http://orcid.org/0000-0003-1329-4303).

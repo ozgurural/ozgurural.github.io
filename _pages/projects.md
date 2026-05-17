@@ -1,9 +1,17 @@
 ---
 permalink: /projects/
-title: "Open Source"
+title: "Projects"
 ---
 
-<p class="ep-lead">Selected open-source work spanning Ph.D. research code, C++ systems primitives, and clinical tooling. Each project links to its repository and accompanying writeup.</p>
+<p class="ep-lead">Selected work — Ph.D. research code, interactive demos, C++ systems primitives, clinical tooling. Each project links to its repository and writeup. The <a href="/lab/"><strong>Interactive Lab</strong></a> contains five playable demos for the same research areas.</p>
+
+<ul class="ep-cards">
+  <li>
+    <div class="meta">Interactive · 5 demos</div>
+    <h3 class="title"><a href="/lab/">The Lab — playable research</a></h3>
+    <p class="desc">Five interactive experiments — distributed consensus, model watermarking, proof-of-learning, fault tolerance, gradient descent. Each is a real puzzle with a clear win condition. Built to make the concepts of my research legible to non-experts in three minutes.</p>
+  </li>
+</ul>
 
 ## Research
 

@@ -3,31 +3,26 @@ permalink: /services/
 title: "Professional Service"
 ---
 
-<p class="ep-lead">Active in the research community across security, privacy, distributed systems, and intelligent infrastructure. See my <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a> profile for the live publication record.</p>
+<p class="ep-lead">Peer review and program-committee work across machine-learning security, privacy, distributed systems, and applied cyber-security. Full publication record on <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>.</p>
 
-## Service Roles
+## Service roles
 
 <ul class="ep-cards">
   <li>
     <div class="meta">Program Committee · 2026</div>
     <h3 class="title"><a href="https://nlpaics2026.gplsi.es/">NLPAICS 2026 — University of Alicante</a></h3>
-    <p class="desc">2nd Workshop on NLP Applied to Information and Cyber Security. Reviewing submissions on NLP techniques for threat intelligence, abuse detection, and defensive cyber.</p>
+    <p class="desc">2nd Workshop on NLP Applied to Information and Cyber Security. Reviewing submissions on NLP for threat intelligence, abuse detection, and defensive cyber.</p>
   </li>
   <li>
-    <div class="meta">Journal Referee</div>
-    <h3 class="title">IEEE Access · TÜBİTAK JECS · Arabian J. of Sci. &amp; Eng.</h3>
-    <p class="desc">Peer review across security, privacy, distributed systems, and intelligent infrastructure. Multi-year reviewer for IEEE Access in particular.</p>
+    <div class="meta">Journal Referee · multi-year</div>
+    <h3 class="title">IEEE Access · TÜBİTAK Journal of Electrical &amp; Computer Science · Arabian J. of Science &amp; Engineering</h3>
+    <p class="desc">Manuscript review across ML security, privacy, distributed systems, and intelligent infrastructure. Frequent reviewer for IEEE Access in the secure-ML track.</p>
   </li>
   <li>
     <div class="meta">Conference Reviewer</div>
     <h3 class="title">IEEE conferences &amp; symposia</h3>
-    <p class="desc">Reviewing in computer security, data privacy, machine learning, distributed systems, and blockchain.</p>
-  </li>
-  <li>
-    <div class="meta">Session Chair</div>
-    <h3 class="title">Open to invitations</h3>
-    <p class="desc">Available to chair sessions aligned with my research expertise — secure ML, distributed verification, applied cybersecurity.</p>
+    <p class="desc">Computer security, data privacy, machine learning, distributed systems, blockchain.</p>
   </li>
 </ul>
 
-For service invitations or collaborations, please <a href="mailto:drozgurural@gmail.com">email me</a>.
+For service invitations, collaborations, or talks: <a href="mailto:drozgurural@gmail.com">drozgurural@gmail.com</a>.
