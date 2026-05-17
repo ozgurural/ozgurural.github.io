@@ -1477,9 +1477,23 @@
         update();
       }, 1100);
     }
+    // Repaint the plot + grid from the current slider / scenario state.
+    // The dramatic reveal still happens in the verdict / readout / star
+    // bar; the visualisation is the "slingshot view" the player uses to
+    // plan their shot.
+    function wmRepaintVisual() {
+      const eps = parseFloat(refs.eps.value);
+      const k = parseInt(refs.k.value, 10);
+      const sigma = wmCurrentSigma();
+      const zc = zForOneSidedAlpha(FIXED_ALPHA);
+      const q = qDetect(eps, sigma, zc);
+      try { buildGrid(eps, k, sigma, q, false); } catch (e) {}
+      try { drawPlot(eps, k, sigma); } catch (e) {}
+    }
     function wmOnSlider() {
       wmSliderDisplay();
       if (wmRevealed) wmPendReadout("New strategy. Hit Run experiment to re-score.");
+      wmRepaintVisual();
     }
     refs.eps.addEventListener("input", wmOnSlider);
     refs.k.addEventListener("input", wmOnSlider);
@@ -1498,6 +1512,7 @@
 
     wmSliderDisplay();
     wmPendReadout();
+    wmRepaintVisual();
     renderEndingsTally(refs.endingsTally, "wm-", WM_ENDINGS_TOTAL);
   }
 
@@ -1929,6 +1944,16 @@
         update();
       }, 1400);
     }
+    // Repaint the curve plot from current scenario + slider state. The
+    // channel strip stays paused (it would otherwise animate failure
+    // events and visually leak the q value).
+    function tmrRepaintVisual() {
+      const q = tmrCurrentQ();
+      const rho = tmrCurrentRho();
+      const rhoEff = tmrEffectiveRho(rho);
+      const N = refs.nChannels ? (parseInt(refs.nChannels.value, 10) || 3) : 3;
+      try { drawPlot(q, rhoEff, N); } catch (e) {}
+    }
     function tmrOnSlider() {
       tmrSliderDisplay();
       if (tmrRevealed) {
@@ -1936,6 +1961,7 @@
         stopSim();
         tmrClearStrip();
       }
+      tmrRepaintVisual();
     }
     if (refs.nChannels) refs.nChannels.addEventListener("input", tmrOnSlider);
     if (refs.levels) {
@@ -1953,6 +1979,7 @@
 
     tmrSliderDisplay();
     tmrPendReadout();
+    tmrRepaintVisual();
     stopSim();
   }
 
