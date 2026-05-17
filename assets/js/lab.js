@@ -821,6 +821,7 @@
       const strictDepth = n;
       const pNaive  = 1 - Math.pow(effectiveP, n);
       const pStrict = Math.pow(1 - effectiveP, strictDepth);
+      const delta   = pNaive - pStrict; // used in regime annotations below
 
       const pct = (v) => (v * 100).toFixed(1) + "%";
       tweenNumber(refs.naive,  prev.naive,  pNaive,  260, pct);
