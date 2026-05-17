@@ -14,7 +14,7 @@ redirect_from:
   "@type": "Person",
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
-  "jobTitle": "AI / ML Security Researcher",
+  "jobTitle": "Tech Lead, Real-Time Aerospace Software · Ph.D. in ML Security",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.jpg",
   "email": "drozgurural@gmail.com",
@@ -35,14 +35,14 @@ redirect_from:
 </script>
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">AI / ML Security Researcher · Ph.D. · Distributed Systems</span>
-  <h1 class="ep-hero__title">Making <span class="accent">machine learning verifiable</span> for systems that cannot fail.</h1>
+  <span class="ep-eyebrow">Ph.D. in ML Security · Real-Time Aerospace Engineer · Targeting AI Safety Research</span>
+  <h1 class="ep-hero__title">Where <span class="accent">machine learning</span> meets software that <span class="accent">cannot fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>. My research sits at the intersection of <em>AI security</em>, <em>distributed systems</em>, and <em>cyber-physical reliability</em> — four IEEE Access papers on <em>proof-of-learning</em> and <em>model watermarking</em>, a Ph.D. dissertation defending ML training integrity against spoofing attacks, and a day job writing the real-time C++ kernel behind FAA Level-D flight simulators. I'm interested in the parts of AI where the math has to survive contact with adversaries and reality.
+    I'm <strong>Dr. Ozgur Ural</strong>. My doctoral research is on defending machine learning against spoofing and adversarial attacks — <em>proof-of-learning</em>, <em>model watermarking</em>, <em>blockchain-enhanced ML</em>. Four IEEE Access papers (2023–2025); Ph.D. dissertation, ERAU 2025. <strong>By day I'm a senior software engineer / tech lead at Avion Full Flight Simulators</strong>, writing real-time C++ for FAA Level-D flight simulators — software where bugs aren't allowed to exist. I'm now looking to move into AI safety research, where both halves of that background — adversarial ML and high-reliability engineering — are exactly the same problem.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span><strong>Open to research scientist roles</strong> at AI labs working on safety, alignment, evaluation, or trustworthy ML &nbsp;·&nbsp; Leiden, Netherlands.</span>
+    <span><strong>Now:</strong> Tech Lead at Avion FFS (Leiden, NL), real-time C++ for Level-D flight simulators. &nbsp;<strong>Looking for:</strong> research scientist roles in AI safety, alignment, evaluation, or trustworthy ML.</span>
   </p>
   <div class="ep-hero__cta">
     <a href="/Ozgur_Ural_PhD_Resume.pdf">Download CV (PDF)</a>
@@ -109,8 +109,14 @@ redirect_from:
   </li>
 </ol>
 
+## Why I'm a fit for AI safety research
+
+A short pitch, since "PhD researcher applying from industry" deserves a clear case:
+
+- **The research is in scope.** Proof-of-learning, watermarking, adversarial robustness — these are AI safety problems by another name. Four IEEE Access papers (2023–2025) and a Ph.D. dissertation that builds a defence against PoL spoofing.
+- **The engineering is the unfair advantage.** I write production C++ for Level-D flight simulators every day — software that has to behave correctly in the worst case, run in real time, and survive certification. That's the engineering discipline most AI research code doesn't have, and it's increasingly what alignment / evaluation work needs.
+- **I write to make hard ideas legible.** The <a href="/lab/">Lab</a> turns my research into five playable demos a non-expert can solve in three minutes; the <a href="/essays/">Essays</a> turn the same ideas into parables. Communication isn't separate from the research; for safety work it's part of the job.
+
 ## Get in touch
 
-I'm <strong>actively interviewing for research scientist roles</strong> at AI labs working on safety, alignment, evaluation, trustworthy ML, or related areas. I'm also open to research collaboration, technical advisory, and conference talks.
-
-Reach me at [drozgurural@gmail.com](mailto:drozgurural@gmail.com) · [CV (PDF)](/Ozgur_Ural_PhD_Resume.pdf) · [Google Scholar](https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate) · [ORCID](http://orcid.org/0000-0003-1329-4303).
+Hiring for research scientist roles? Want to collaborate on a paper? Booking conference talks? Reach me at [drozgurural@gmail.com](mailto:drozgurural@gmail.com) · [CV (PDF)](/Ozgur_Ural_PhD_Resume.pdf) · [Google Scholar](https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate) · [ORCID](http://orcid.org/0000-0003-1329-4303).

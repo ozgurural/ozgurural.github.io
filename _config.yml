@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "Dr. Ozgur Ural — AI / ML Security Researcher (Ph.D., ERAU 2025). Author of four IEEE Access papers on proof-of-learning, model watermarking, blockchain-enhanced ML. Open to research scientist roles."
+description              : &description "Dr. Ozgur Ural — Ph.D. in ML Security (ERAU 2025). Four IEEE Access papers on proof-of-learning, model watermarking, blockchain-enhanced ML. Senior SWE / Tech Lead at Avion Full Flight Simulators. Looking for AI safety research scientist roles."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -26,7 +26,7 @@ author:
   avatar           : "ozgururalpp.jpg"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "AI / ML Security Researcher · Ph.D. (ERAU 2025) · Proof-of-Learning, Model Watermarking · Open to research scientist roles"
+  bio              : "Ph.D. in ML Security (ERAU 2025) · Tech Lead at Avion FFS · Targeting AI safety research roles"
   location         : "Leiden, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"
@@ -145,7 +145,7 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 : "ozgururalpp.jpg"  # Social media default site image
-og_description           : "Dr. Ozgur Ural — AI / ML Security Researcher · Ph.D. (ERAU 2025) · 4× IEEE Access papers on proof-of-learning, model watermarking, blockchain-enhanced ML. Open to research scientist roles at AI labs."
+og_description           : "Dr. Ozgur Ural — Ph.D. in ML Security (ERAU 2025), 4× IEEE Access papers on proof-of-learning and model watermarking. Senior real-time engineer at Avion FFS, looking for AI safety research scientist roles."
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
