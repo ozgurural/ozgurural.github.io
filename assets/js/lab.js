@@ -566,8 +566,59 @@
       valley:   $('[data-role="valley"]', root),
       levels:   $('[data-role="tg-levels"]', root),
       verdict:  $('[data-role="verdict-tg"]', root),
+      endingsTally: $('[data-role="endings-tg"]', root),
       starsTg:  $('[data-role="stars-tg"]', root),
     };
+    // Seven named endings — Stanley Parable style. Same math under the
+    // hood; different choices of N (relative to the scenario's minimum)
+    // land you in different stories. Storm unlocks a special path.
+    const TG_ENDINGS_TOTAL = 7;
+    function tgClassifyEnding(n, minN, pNaive, goal, stars, scenarioName) {
+      const beat = pNaive >= goal;
+      // N=1 lands in the prayer ending regardless of whether you somehow won.
+      if (n <= 1 && !beat) return {
+        id: "tg-prayer", icon: "🙏", name: "The Single Shot",
+        state: "fail",
+        sub: "You sent one message and hoped the universe was kind. The universe was unmoved.",
+      };
+      // Special ending for beating the hardest scenario clean.
+      if (stars === 5 && scenarioName === "Storm") return {
+        id: "tg-storm", icon: "🌪️", name: "The Storm Survivor",
+        state: "win",
+        sub: "You routed messages through a hurricane on the minimum retries. Unreasonable composure under entropy.",
+      };
+      // 5★ — exact minimum N for the scenario.
+      if (stars === 5) return {
+        id: "tg-minimalist", icon: "📏", name: "The Minimalist",
+        state: "win",
+        sub: "Found the exact number of retries. Pleasant. Unexciting. Correct.",
+      };
+      // 4★ — beat the goal with a small safety margin.
+      if (beat && n <= minN + 2) return {
+        id: "tg-insurance", icon: "🛡️", name: "The Insurance Buyer",
+        state: "win",
+        sub: "One or two extra tries, just in case. Engineering wisdom: redundancy is cheap and the universe is not.",
+      };
+      // Beat the goal but way overspent.
+      if (beat) return {
+        id: "tg-bureaucrat", icon: "👔", name: "The Bureaucrat",
+        state: "win",
+        sub: "Far more retries than needed. Everyone arrived. The CFO has questions and the network has a headache.",
+      };
+      // Tantalizingly close — within 15% of the goal.
+      if (pNaive >= goal * 0.85) return {
+        id: "tg-cliff", icon: "🤏", name: "The Cliff",
+        state: "miss",
+        sub: "So close you can hear the dinner reservation expiring. One more try might have done it.",
+      };
+      // Way under.
+      return {
+        id: "tg-dreamer", icon: "💔", name: "The Dreamer",
+        state: "fail",
+        sub: "The messages dissolved into the channel. Two-phase commit could not save you.",
+      };
+    }
+
     // Read the currently selected scenario.
     function tgCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
@@ -843,31 +894,19 @@
       setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
       tgHint(tgStars);
 
-      // Headline verdict with a little voice. Pleasant. Unexciting. Correct.
+      // Stanley-Parable ending classification.
       const scenario = tgCurrentScenarioName();
       const goalPct = (tgGoal * 100).toFixed(tgGoal >= 0.99 ? 1 : 0);
       const yourPct = (pNaive * 100).toFixed(1);
-      if (tgStars === 5) {
-        setVerdict(refs.verdict,
-          "🏆 " + scenario + " survived, minimum retries",
-          yourPct + "% reliability at " + n + " tries (target " + goalPct + "%). The friends ate. The Architect approves.",
-          "win");
-      } else if (pNaive >= tgGoal) {
-        setVerdict(refs.verdict,
-          "✓ " + scenario + " survived (overspent on retries)",
-          yourPct + "% at " + n + " tries — but " + tgMinN + " would have done it. Engineering is also about not being wasteful.",
-          "win");
-      } else if (pNaive >= tgGoal * 0.65) {
-        setVerdict(refs.verdict,
-          "✗ Short of target",
-          "Got " + yourPct + "% — need " + goalPct + "%. The friends ate alone. Try more retries.",
-          "miss");
-      } else {
-        setVerdict(refs.verdict,
-          "💥 The friends never made it",
-          "Got " + yourPct + "% — needed " + goalPct + "%. Two-phase commit could not save you.",
-          "fail");
-      }
+      const ending = tgClassifyEnding(n, tgMinN, pNaive, tgGoal, tgStars, scenario);
+      const newlyUnlocked = recordEnding(ending.id);
+      const newTag = newlyUnlocked ? " · NEW ENDING" : "";
+      const stats = " (" + yourPct + "% at " + n + " " + (n === 1 ? "try" : "tries") + ", target " + goalPct + "%)";
+      setVerdict(refs.verdict,
+        ending.icon + " " + ending.name + " ending" + newTag,
+        ending.sub + " " + stats,
+        ending.state);
+      renderEndingsTally(refs.endingsTally, "tg-", TG_ENDINGS_TOTAL);
 
       drawPlot(p, n);
     }
@@ -952,6 +991,7 @@
     tgSliderDisplay();
     tgPendReadout();
     drawPlot(tgCurrentP(), parseInt(refs.n.value, 10));
+    renderEndingsTally(refs.endingsTally, "tg-", TG_ENDINGS_TOTAL);
     startAnim();
   }
 

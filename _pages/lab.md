@@ -132,7 +132,10 @@ excerpt: "Five interactive thought experiments from my research — distributed 
       <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot" preserveAspectRatio="xMidYMid meet" role="img" aria-label="win probability vs protocol depth"></svg>
     </div>
 
-    <div class="lab-experiment__scorebar" data-role="stars-tg" aria-live="polite"></div>
+    <div class="lab-experiment__scoreline">
+      <div class="lab-experiment__scorebar" data-role="stars-tg" aria-live="polite"></div>
+      <span class="lab-endings" data-role="endings-tg" title="Every Run lands you in a named ending. Find them all."></span>
+    </div>
     <div class="lab-experiment__verdict" data-role="verdict-tg" aria-live="polite">
       <span class="lab-experiment__verdict-head">—</span>
       <span class="lab-experiment__verdict-sub">Pick a scenario, choose retries, hit Run.</span>
