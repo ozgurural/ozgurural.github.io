@@ -224,6 +224,36 @@
     el.classList.add("lab-experiment__metric--streak-hit");
   }
 
+  /* ---------- Stanley-Parable-style "endings" ----------
+     Every Run lands you in a named ending. Multiple 5★ paths exist
+     per lab, plus a handful of named failure modes. Unlocks persist
+     in localStorage so the player can collect them across visits. */
+  const ENDINGS_KEY = "lab.endings.v1";
+  function loadEndings() {
+    try { return JSON.parse(safeStorageGet(ENDINGS_KEY) || "{}"); }
+    catch (e) { return {}; }
+  }
+  function recordEnding(id) {
+    const e = loadEndings();
+    const newly = !e[id];
+    if (newly) {
+      e[id] = { at: Date.now() };
+      safeStorageSet(ENDINGS_KEY, JSON.stringify(e));
+    }
+    return newly;
+  }
+  function countEndings(prefix, total) {
+    const e = loadEndings();
+    const got = Object.keys(e).filter((k) => k.indexOf(prefix) === 0).length;
+    return { got: got, total: total };
+  }
+  function renderEndingsTally(host, prefix, total) {
+    if (!host) return;
+    const c = countEndings(prefix, total);
+    host.textContent = "Endings " + c.got + " / " + total;
+    host.classList.toggle("lab-endings--mastered", c.got >= total);
+  }
+
   /* ---------- Verdict banner ----------
      Big headline result above the metrics. Replaces the player having
      to read four numbers to figure out if they won. State is one of
@@ -945,6 +975,7 @@
       insight:    $('[data-role="insight-wm"]', root),
       levels:     $('[data-role="wm-levels"]', root),
       verdict:    $('[data-role="verdict-wm"]', root),
+      endingsTally: $('[data-role="endings-wm"]', root),
       starsWm:    $('[data-role="stars-wm"]', root),
     };
     // Thief noise + per-scenario target both come from the active level.
@@ -969,6 +1000,56 @@
       return btn ? (btn.dataset.name || "thief") : "thief";
     }
     const FIXED_ALPHA = 0.05;
+
+    // Eight named endings. Three 5★ paths, one 4★, four failure modes.
+    // Collect them all across thieves to "master" the watermark lab.
+    const WM_ENDINGS_TOTAL = 8;
+    function wmClassifyEnding(eps, k, det, goalDet, epsMax, stars, modelOK) {
+      // 5★ paths — three substantively different ways to catch the thief
+      if (stars === 5 && eps <= 0.12 && k >= 18) return {
+        id: "wm-ninja", icon: "🥷", name: "The Ninja",
+        state: "win",
+        sub: "Caught the {thiefName} with marks so subtle they couldn't scrub what they didn't see. {detPct}% confidence.",
+      };
+      if (stars === 5 && eps >= 0.16 && k <= 12) return {
+        id: "wm-brander", icon: "🎨", name: "The Brander",
+        state: "win",
+        sub: "Bold and focused — your signature survived the disguise intact. {detPct}% confidence.",
+      };
+      if (stars === 5) return {
+        id: "wm-engineer", icon: "📐", name: "The Engineer",
+        state: "win",
+        sub: "The textbook play. {detPct}% confidence at moderate ε and k. Quietly perfect.",
+      };
+      // 4★ — beat the goal but wasn't optimal
+      if (stars === 4) return {
+        id: "wm-defender", icon: "🛡️", name: "The Defender",
+        state: "win",
+        sub: "Caught them with hardware to spare. Slightly inelegant. {detPct}% confidence.",
+      };
+      // Failure modes (named)
+      if (det >= goalDet && !modelOK) return {
+        id: "wm-showoff", icon: "🤡", name: "The Showoff",
+        state: "miss",
+        sub: "Caught them. Wrecked the model. You won the case and lost the patient.",
+      };
+      if (eps <= 0.06) return {
+        id: "wm-whisper", icon: "👻", name: "The Whisper",
+        state: "fail",
+        sub: "Your signature was so subtle it convinced even itself it didn't exist. {detPct}% confidence.",
+      };
+      if (k <= 3) return {
+        id: "wm-loner", icon: "😴", name: "The Loner",
+        state: "fail",
+        sub: "Few marks, one chance. The {thiefName} laughs. {detPct}% confidence.",
+      };
+      // Catch-all: a respectable attempt that didn't quite land
+      return {
+        id: "wm-attempt", icon: "🌫️", name: "The Vanishing",
+        state: "miss",
+        sub: "Got {detPct}% — needed {goalPct}%. The signal walked into the noise and didn't come back.",
+      };
+    }
 
     const SIGMA0 = 0.12;       // baseline measurement noise (fixed)
 
@@ -1277,37 +1358,21 @@
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
       wmHint(wmStars);
 
-      // Headline verdict with character.
+      // Stanley-Parable endings — every Run lands in one of these.
+      // Three distinct 5★ paths (Ninja, Brander, Engineer) + named
+      // failure modes. Player can collect them all across thieves.
       const thiefName = wmCurrentThiefName();
       const goalPct = (wmGoalDet * 100).toFixed(0);
       const detPct = (det * 100).toFixed(1);
       const modelOK = eps <= wmEpsMax + 0.04;
-      if (wmStars === 5) {
-        setVerdict(refs.verdict,
-          "🏆 Caught the " + thiefName + " — model still works",
-          detPct + "% confidence at ε = " + eps.toFixed(2) + ", k = " + k + ". Court-admissible. Cake remains a lie.",
-          "win");
-      } else if (det >= wmGoalDet && !modelOK) {
-        setVerdict(refs.verdict,
-          "⚠ Caught them, but you wrecked the model",
-          "ε = " + eps.toFixed(2) + " is past the model's tolerance. You won the case and lost the patient.",
-          "miss");
-      } else if (det >= wmGoalDet) {
-        setVerdict(refs.verdict,
-          "✓ Caught the " + thiefName,
-          detPct + "% confidence — target was " + goalPct + "%. The thief's lawyers are sweating.",
-          "win");
-      } else if (det >= wmGoalDet * 0.55) {
-        setVerdict(refs.verdict,
-          "✗ The " + thiefName + " slipped past",
-          "Got " + detPct + "% — needed " + goalPct + "%. Spread your signature across more marks.",
-          "miss");
-      } else {
-        setVerdict(refs.verdict,
-          "💀 Watermark washed out",
-          "Got " + detPct + "%. The signal is in the noise. Somewhere. Probably.",
-          "fail");
-      }
+      const ending = wmClassifyEnding(eps, k, det, wmGoalDet, wmEpsMax, wmStars, modelOK);
+      const newlyUnlocked = recordEnding(ending.id);
+      const newTag = newlyUnlocked ? " · NEW ENDING" : "";
+      setVerdict(refs.verdict,
+        ending.icon + " " + ending.name + " ending" + newTag,
+        ending.sub.replace("{detPct}", detPct).replace("{goalPct}", goalPct).replace("{thiefName}", thiefName),
+        ending.state);
+      renderEndingsTally(refs.endingsTally, "wm-", WM_ENDINGS_TOTAL);
 
       buildGrid(eps, effectiveK, sigma, q, neonEnabled);
       if (shouldPulse) {
@@ -1392,6 +1457,7 @@
 
     wmSliderDisplay();
     wmPendReadout();
+    renderEndingsTally(refs.endingsTally, "wm-", WM_ENDINGS_TOTAL);
   }
 
   /* ============================================================================

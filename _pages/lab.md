@@ -230,7 +230,10 @@ excerpt: "Five interactive thought experiments from my research — distributed 
       </div>
     </div>
 
-    <div class="lab-experiment__scorebar" data-role="stars-wm" aria-live="polite"></div>
+    <div class="lab-experiment__scoreline">
+      <div class="lab-experiment__scorebar" data-role="stars-wm" aria-live="polite"></div>
+      <span class="lab-endings" data-role="endings-wm" title="Each Run lands you in a named ending. Find them all."></span>
+    </div>
     <div class="lab-experiment__verdict" data-role="verdict-wm" aria-live="polite">
       <span class="lab-experiment__verdict-head">—</span>
       <span class="lab-experiment__verdict-sub">Pick a thief, set your strategy, hit Run.</span>

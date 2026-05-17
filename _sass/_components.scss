@@ -1400,6 +1400,41 @@ html[data-theme="dark"] .lab-plot__legend-value--strict { fill: #fbbf24; }
 }
 .lab-level--active .lab-level__name { color: var(--ds-accent-2, var(--ds-accent)); }
 
+/* Endings tally — Stanley-Parable-style "endings collected" counter
+   that sits next to the star bar. Goes gold when all are unlocked. */
+.lab-experiment__scoreline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.lab-experiment__scoreline > .lab-stars { margin-bottom: 0; flex: 1 1 auto; min-width: 220px; }
+.lab-endings {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--ds-line);
+  border-radius: 999px;
+  background: var(--ds-surface);
+  font-family: var(--ds-font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  cursor: default;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+.lab-endings--mastered {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(244, 63, 94, 0.12));
+  color: #b45309;
+  border-color: rgba(245, 158, 11, 0.55);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+  font-weight: 700;
+}
+html[data-theme="dark"] .lab-endings--mastered { color: #fbbf24; }
+
 /* Verdict banner — the headline result above the metrics grid.
    Replaces the player having to read four numbers to know if they won.
    Color shifts with state: green for a clean win, amber for a near
