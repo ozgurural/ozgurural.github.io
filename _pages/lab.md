@@ -138,12 +138,12 @@ header:
     <div class="lab-experiment__visual">
       <div class="lab-chain" aria-hidden="true" data-role="chain">
         <div class="lab-chain__row lab-chain__row--honest">
-          <span class="lab-chain__label" data-role="chain-honest-label">⛏️ Your chain</span>
+          <span class="lab-chain__label" data-role="chain-honest-label">⛏️ Network</span>
           <span class="lab-chain__blocks" data-role="chain-honest"></span>
           <span class="lab-chain__count" data-role="chain-honest-count">0</span>
         </div>
         <div class="lab-chain__row lab-chain__row--attacker" data-role="chain-attacker-row" hidden>
-          <span class="lab-chain__label" data-role="chain-attacker-label">🦹 Attacker</span>
+          <span class="lab-chain__label" data-role="chain-attacker-label">🦹 Attacker fork</span>
           <span class="lab-chain__blocks" data-role="chain-attacker"></span>
           <span class="lab-chain__count" data-role="chain-attacker-count">0</span>
         </div>

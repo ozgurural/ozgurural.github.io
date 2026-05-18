@@ -837,7 +837,7 @@
         levelsTitle: "Pick your rig (and your electric bill)",
         missionHead: "Pick the cheapest rig that statistically lands the target. Anything else is electricity bills with extra steps.",
         missionSub: "Each rig has a target block count. The slider sets your patience. 5★ for the leanest hash buying exactly enough time — anything else is wasted joules or unfinished work. The thermodynamic god does not negotiate.",
-        honestLabel: "⛏️ Network chain · 🟢 = you found it",
+        honestLabel: "⛏️ Network",
         attackerVisible: false,
         caption: "⛏️ ten minutes per block · q = your share · 🟢 yours · ⚪ another lucky miner",
         scenarios: [
@@ -854,8 +854,8 @@
         levelsTitle: "Pick the merchant you'd like to disappoint",
         missionHead: "Find the smallest hashrate share that gives you a coin-flip-or-better. Heisenberg the protocol — or get orphaned.",
         missionSub: "Each merchant requires a different number of confirmations before shipping. 5★ at the minimum q where attack probability ≥ 50%. Rented hashrate burns money and leaves a trail; overshoot and you're not stealthy, you're a Coindesk headline.",
-        honestLabel: "📰 Public chain (honest miners)",
-        attackerLabel: "🦹 Your private fork",
+        honestLabel: "📰 Honest chain",
+        attackerLabel: "🦹 Your fork",
         attackerVisible: true,
         caption: "🦹 publish payment → secretly mine alt chain → broadcast longer chain → say my name",
         scenarios: [
@@ -872,8 +872,8 @@
         levelsTitle: "Pick the adversary at your door",
         missionHead: "Pick the smallest number of confirmations that keeps double-spend probability below the safety bar. Tread lightly.",
         missionSub: "Each attacker controls a different share of network hashrate. 5★ for the safety bar at the fewest blocks of waiting. Customers are impatient; the math is unforgiving; the merchant who waits forever is just a Black Mirror episode in three acts.",
-        honestLabel: "📰 Public chain (your payment)",
-        attackerLabel: "🦹 Attacker's secret fork",
+        honestLabel: "📰 Your payment",
+        attackerLabel: "🦹 Attacker fork",
         attackerVisible: true,
         caption: "🛡️ each conf ≈ 10 min · waiting longer squares the attacker's odds · espresso cools faster than chains reorg",
         scenarios: [
