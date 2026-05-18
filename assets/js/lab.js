@@ -3528,10 +3528,173 @@
     if(typeof initProofOfLearningLab === "function") initProofOfLearningLab();
     if(typeof initTMRLab === "function") initTMRLab();
     if(typeof initGradientDescentLab === "function") initGradientDescentLab();
+    if(typeof initBlockRaceQuickplay === "function") initBlockRaceQuickplay();
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
+  }
+
+  /* ============================================================================
+     Block Race · Quickplay
+     ============================================================================
+     The simplified default UI on top of the Block Race card. Visitors land,
+     see one story, drag one slider, get one big answer. The full 3-mode
+     simulator is collapsed below in a <details>. */
+  function initBlockRaceQuickplay() {
+    const root = document.querySelector('[data-role="tg-quickplay"]');
+    if (!root) return;
+    const refs = {
+      attackers:    root.querySelector('[data-role="quick-attackers"]'),
+      zSlider:      root.querySelector('[data-role="quick-z"]'),
+      zVal:         root.querySelector('[data-role="quick-z-val"]'),
+      time:         root.querySelector('[data-role="quick-time"]'),
+      verdict:      root.querySelector('[data-role="quick-verdict-root"]'),
+      emoji:        root.querySelector('[data-role="quick-emoji"]'),
+      prob:         root.querySelector('[data-role="quick-prob"]'),
+      label:        root.querySelector('[data-role="quick-label"]'),
+      detail:       root.querySelector('[data-role="quick-detail"]'),
+      shareBtn:     root.querySelector('[data-role="quick-share"]'),
+      openAdv:      root.querySelector('[data-role="quick-open-advanced"]'),
+      advanced:     document.querySelector('[data-role="tg-advanced"]'),
+      modeTabs:     document.querySelector('[data-role="tg-mode-tabs"]'),
+      levelsRow:    document.querySelector('[data-role="tg-levels-row"]'),
+      labN:         document.querySelector('[data-role="n"]'),
+    };
+
+    // Re-use the same nakamoto formula that lives inside initTwoGeneralsLab,
+    // but that one isn't exported. Recompute inline — identical to §11.
+    function nakamoto(q, z) {
+      if (q <= 0) return 0;
+      if (q >= 0.5) return 1;
+      if (z <= 0) return 1;
+      const p = 1 - q;
+      const lam = z * (q / p);
+      let sum = 1;
+      let pmf = Math.exp(-lam);
+      for (let k = 0; k <= z; k++) {
+        if (k > 0) pmf *= lam / k;
+        const ratio = Math.pow(q / p, z - k);
+        sum -= pmf * (1 - ratio);
+      }
+      return Math.max(0, Math.min(1, sum));
+    }
+
+    let currentQ   = 0.25;
+    let currentIdx = 1;
+    let currentName = "Mining pool";
+
+    function fmtTime(z) {
+      const m = z * 10;
+      if (m < 60) return m + " min";
+      if (m === 60) return "1 hour";
+      if (m < 120) return "~1 hour";
+      const h = m / 60;
+      if (h === Math.round(h)) return h + " hours";
+      return h.toFixed(1) + " hours";
+    }
+    function fmtProb(p) {
+      if (p < 0.0001) return p.toExponential(1);
+      if (p < 0.01)   return (p * 100).toFixed(3) + "%";
+      if (p < 0.1)    return (p * 100).toFixed(2) + "%";
+      return (p * 100).toFixed(1) + "%";
+    }
+    // Plain-English verdict bands. Tier governs the verdict border colour too.
+    function verdictFor(p) {
+      if (p < 0.0001) return { emoji: "🛡️", tier: "safe",   label: "Practically impossible.",        detail: "Fortress-grade. Sleep well — the math says no one's reversing this.", };
+      if (p < 0.001)  return { emoji: "✅", tier: "safe",   label: "Practically safe.",               detail: "Exchange-grade confidence. This is what professional custody uses.", };
+      if (p < 0.01)   return { emoji: "✅", tier: "ok",     label: "Reasonably safe.",                detail: "Classic 6-confirmation regime. Comfortable for most retail purchases.", };
+      if (p < 0.05)   return { emoji: "⚠️", tier: "warn",   label: "Risky for big-ticket items.",     detail: "Fine for a coffee. Don't ship a Lambo. Saul says wait longer.", };
+      if (p < 0.20)   return { emoji: "🚨", tier: "warn",   label: "Don't ship yet.",                 detail: "Hank Schrader is taking notes. One more block of patience could save the deal.", };
+      return            { emoji: "💀", tier: "danger", label: "Reckless.",                       detail: "The double-spend math is laughing in 256-bit hex. Coffee-shop reflex on a treasury.", };
+    }
+
+    function update() {
+      const z = parseInt(refs.zSlider.value, 10);
+      const p = nakamoto(currentQ, z);
+      refs.zVal.textContent = z;
+      refs.time.textContent = fmtTime(z);
+      const v = verdictFor(p);
+      refs.emoji.textContent = v.emoji;
+      refs.prob.textContent = fmtProb(p);
+      refs.label.textContent = v.label;
+      refs.detail.textContent = "Against a " + currentName + " (" + Math.round(currentQ * 100) + "% network hashrate), waiting " + z + " confirmation" + (z === 1 ? "" : "s") + " (≈ " + fmtTime(z) + ") leaves " + fmtProb(p) + " probability of reversal. " + v.detail;
+      refs.verdict.classList.remove(
+        "lab-quickplay__verdict--safe",
+        "lab-quickplay__verdict--ok",
+        "lab-quickplay__verdict--warn",
+        "lab-quickplay__verdict--danger"
+      );
+      refs.verdict.classList.add("lab-quickplay__verdict--" + v.tier);
+    }
+
+    if (refs.attackers) {
+      refs.attackers.addEventListener("click", function (ev) {
+        const btn = ev.target.closest("button[data-q]");
+        if (!btn) return;
+        refs.attackers.querySelectorAll("button").forEach(function (b) {
+          b.classList.remove("lab-quickplay__attacker--active");
+          b.setAttribute("aria-checked", "false");
+        });
+        btn.classList.add("lab-quickplay__attacker--active");
+        btn.setAttribute("aria-checked", "true");
+        currentQ   = parseFloat(btn.dataset.q);
+        currentIdx = parseInt(btn.dataset.idx, 10);
+        currentName = btn.dataset.name || "adversary";
+        update();
+      });
+    }
+    refs.zSlider.addEventListener("input", update);
+
+    // Share: build the URL directly using LabShare, with defend-mode params
+    // that match this run. Mobile gets native share; desktop falls back to
+    // clipboard copy + status feedback on the button.
+    if (refs.shareBtn) {
+      refs.shareBtn.addEventListener("click", function () {
+        const z = parseInt(refs.zSlider.value, 10);
+        const p = nakamoto(currentQ, z);
+        const params = { mode: "defend", s: currentIdx, n: z };
+        const url = LabShare.buildUrl("tg", params);
+        const text = "🛡️ Block Race — waited " + z + " confirmation" + (z === 1 ? "" : "s") + " vs a " + currentName + " (" + Math.round(currentQ * 100) + "%). " + fmtProb(p) + " chance of reversal. Bitcoin consensus, playable.";
+        const native = LabShare.tryNative({ title: "Lab · Block Race", text: text, url: url });
+        if (native) return;
+        const orig = refs.shareBtn.querySelector("span:last-child");
+        const origText = orig ? orig.textContent : "Share this run";
+        LabShare.copyLink(url).then(function (ok) {
+          if (orig) orig.textContent = ok ? "✓ Link copied — paste anywhere" : "✗ Copy failed";
+          setTimeout(function () { if (orig) orig.textContent = origText; }, 2200);
+        });
+      });
+    }
+
+    // Open the full simulator + sync defend-mode state to match quickplay
+    if (refs.openAdv) {
+      refs.openAdv.addEventListener("click", function () {
+        if (!refs.advanced) return;
+        refs.advanced.open = true;
+        const defendTab = refs.modeTabs && refs.modeTabs.querySelector('[data-mode="defend"]');
+        if (defendTab && !defendTab.classList.contains("lab-mode-tab--active")) {
+          defendTab.click();
+        }
+        // After mode tab click, scenarios are re-rendered. Apply the
+        // matching attacker scenario + slider after a microtask.
+        setTimeout(function () {
+          const levels = refs.levelsRow ? refs.levelsRow.querySelectorAll(".lab-level") : [];
+          if (levels[currentIdx]) levels[currentIdx].click();
+          const z = parseInt(refs.zSlider.value, 10);
+          if (refs.labN) {
+            refs.labN.value = String(z);
+            refs.labN.dispatchEvent(new Event("input"));
+          }
+          // Scroll the advanced summary into view so the user sees it expand
+          if (typeof refs.advanced.scrollIntoView === "function") {
+            refs.advanced.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 60);
+      });
+    }
+
+    update();
   }
 })();

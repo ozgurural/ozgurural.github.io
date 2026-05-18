@@ -86,7 +86,54 @@ header:
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Blockchain · Nakamoto consensus</span>
   <h2>Block Race</h2>
-  <p class="lab-card__lead">⛏️ Bitcoin's entire security argument fits on a napkin Satoshi never published: longest chain wins, honest hashrate outpaces malicious, attack probability decays exponentially in z. The rest is theatre. Three roles, one protocol — <strong>mine honestly</strong>, <strong>attempt a heist</strong>, or <strong>hold the line</strong>. The math is whitepaper §11; the bad decisions are entirely yours. There is no spoon. There is only Poisson.</p>
+
+  <!-- ★ Quickplay: one question, one slider, one answer ★ -->
+  <div class="lab-quickplay" data-role="tg-quickplay">
+    <p class="lab-quickplay__story">
+      💰 Someone's paying you <strong>$10,000 in Bitcoin</strong>. They might try to <strong>reverse the transaction</strong> after you ship the goods. How long should you wait?
+    </p>
+
+    <div class="lab-quickplay__attackers" data-role="quick-attackers" role="radiogroup" aria-label="Pick the threat">
+      <span class="lab-quickplay__attackers-label">Adversary:</span>
+      <button type="button" role="radio" data-q="0.10" data-idx="0" data-name="Solo rogue">🦹 Solo · 10%</button>
+      <button type="button" role="radio" data-q="0.25" data-idx="1" data-name="Mining pool" class="lab-quickplay__attacker--active" aria-checked="true">🏭 Pool · 25%</button>
+      <button type="button" role="radio" data-q="0.35" data-idx="2" data-name="Hash cartel">⚔️ Cartel · 35%</button>
+      <button type="button" role="radio" data-q="0.40" data-idx="3" data-name="51% threat">👑 51% · 40%</button>
+    </div>
+
+    <label class="lab-quickplay__slider-wrap">
+      <span class="lab-quickplay__slider-label">
+        Wait <strong data-role="quick-z-val">6</strong> confirmations
+        <span class="lab-quickplay__slider-hint">≈ <span data-role="quick-time">1 hour</span> · each block takes about 10 min</span>
+      </span>
+      <input type="range" min="1" max="20" step="1" value="6" data-role="quick-z" aria-label="confirmations to wait" class="lab-quickplay__slider">
+    </label>
+
+    <div class="lab-quickplay__verdict" data-role="quick-verdict-root">
+      <span class="lab-quickplay__emoji" data-role="quick-emoji">✅</span>
+      <div class="lab-quickplay__verdict-body">
+        <span class="lab-quickplay__prob" data-role="quick-prob">0.85%</span>
+        <span class="lab-quickplay__label" data-role="quick-label">chance the payment reverses.</span>
+        <span class="lab-quickplay__detail" data-role="quick-detail">…</span>
+      </div>
+    </div>
+
+    <div class="lab-quickplay__actions">
+      <button type="button" class="lab-quickplay__action lab-quickplay__action--primary" data-role="quick-share">
+        <span class="lab-quickplay__action-icon">🔗</span>
+        <span>Share this run</span>
+      </button>
+      <button type="button" class="lab-quickplay__action" data-role="quick-open-advanced">
+        <span class="lab-quickplay__action-icon">🎮</span>
+        <span>Try the attacker's side · mine blocks · see the math</span>
+      </button>
+    </div>
+  </div>
+
+  <details class="lab-advanced" data-role="tg-advanced">
+    <summary><span class="lab-advanced__icon">🔬</span> Open the full simulator (three roles · chain race · scoring · 14 named endings)</summary>
+
+    <p class="lab-card__lead lab-card__lead--demoted">⛏️ Bitcoin's entire security argument fits on a napkin Satoshi never published: longest chain wins, honest hashrate outpaces malicious, attack probability decays exponentially in z. Three roles, one protocol — <strong>mine honestly</strong>, <strong>attempt a heist</strong>, or <strong>hold the line</strong>. The math is whitepaper §11; the bad decisions are entirely yours.</p>
 
   <div class="lab-mode-tabs" data-role="tg-mode-tabs" role="tablist" aria-label="Pick your role">
     <button type="button" class="lab-mode-tab lab-mode-tab--active" data-mode="mine" role="tab" aria-selected="true">
@@ -176,6 +223,7 @@ header:
     <p class="lab-experiment__insight" data-role="insight">Pick a rig and a mining window. Hashrate share decides how often you win the next block; variance decides how lumpy your weeks feel.</p>
     <p class="lab-experiment__sweet" data-role="sweet-spot-tg" hidden></p>
   </div>
+  </details>
 
   <details class="lab-reveal">
     <summary>🧠 What did you just learn? (also: is this a Black Mirror episode?)</summary>

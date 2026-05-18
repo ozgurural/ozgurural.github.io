@@ -788,6 +788,216 @@
   100% { right: 55%;   opacity: 0; transform: translateY(-50%) scale(0.3); }
 }
 
+/* ---- Block Race: simplified quickplay (top of card) ----
+   The default visitor experience. One story, one slider, one answer.
+   The full 3-mode simulator is collapsed in a <details> below. */
+.lab-quickplay {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  background: linear-gradient(155deg, var(--ds-accent-soft), var(--ds-surface-elev));
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  margin-bottom: 1.1rem;
+}
+.lab-quickplay__story {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--ds-ink);
+}
+.lab-quickplay__story strong { color: var(--ds-ink); }
+.lab-quickplay__attackers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+}
+.lab-quickplay__attackers-label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  margin-right: 0.25rem;
+}
+.lab-quickplay__attackers button {
+  padding: 0.42rem 0.75rem;
+  background: var(--ds-surface);
+  border: 1.5px solid var(--ds-line);
+  border-radius: 99px;
+  font-family: var(--ds-font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ds-body);
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.lab-quickplay__attackers button:hover {
+  border-color: var(--ds-accent);
+  transform: translateY(-1px);
+}
+.lab-quickplay__attacker--active {
+  background: var(--ds-accent) !important;
+  border-color: var(--ds-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.30);
+}
+.lab-quickplay__slider-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.lab-quickplay__slider-label {
+  font-family: var(--ds-font-sans);
+  font-size: 1rem;
+  color: var(--ds-body);
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+.lab-quickplay__slider-label strong {
+  font-family: var(--ds-font-display);
+  font-size: 1.45rem;
+  color: var(--ds-accent-2, var(--ds-accent));
+  font-variant-numeric: tabular-nums;
+  min-width: 1.4em;
+  text-align: right;
+}
+.lab-quickplay__slider-hint {
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--ds-muted);
+}
+.lab-quickplay__slider {
+  width: 100%;
+  accent-color: var(--ds-accent);
+}
+.lab-quickplay__verdict {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.15rem;
+  background: var(--ds-surface);
+  border: 2px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.lab-quickplay__verdict--safe   { border-color: #10b981; box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.18); }
+.lab-quickplay__verdict--ok     { border-color: #38bdf8; box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.18); }
+.lab-quickplay__verdict--warn   { border-color: #f59e0b; box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.22); }
+.lab-quickplay__verdict--danger { border-color: #ef4444; box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.22); }
+.lab-quickplay__emoji {
+  font-size: 2.6rem;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+.lab-quickplay__verdict-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  min-width: 0;
+}
+.lab-quickplay__prob {
+  font-family: var(--ds-font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--ds-ink);
+  font-variant-numeric: tabular-nums;
+}
+.lab-quickplay__label {
+  font-family: var(--ds-font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ds-ink);
+}
+.lab-quickplay__detail {
+  font-family: var(--ds-font-sans);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ds-muted);
+  margin-top: 0.2rem;
+}
+.lab-quickplay__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.lab-quickplay__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  background: var(--ds-surface);
+  border: 1.5px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--ds-font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ds-body);
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+.lab-quickplay__action:hover {
+  border-color: var(--ds-accent);
+  background: var(--ds-surface-elev);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(56, 189, 248, 0.16);
+}
+.lab-quickplay__action--primary {
+  background: var(--ds-accent);
+  border-color: var(--ds-accent);
+  color: #fff;
+}
+.lab-quickplay__action--primary:hover {
+  background: var(--ds-accent-2, var(--ds-accent));
+  color: #fff;
+}
+.lab-quickplay__action-icon { font-size: 1rem; line-height: 1; }
+
+/* The full simulator is collapsed by default in a <details>. */
+.lab-advanced {
+  margin: 0.8rem 0 1rem;
+  padding: 0;
+  background: transparent;
+  border: 1px dashed var(--ds-line-soft);
+  border-radius: var(--ds-radius);
+}
+.lab-advanced[open] {
+  border-style: solid;
+  border-color: var(--ds-line);
+  padding: 0.4rem 1rem 1rem;
+}
+.lab-advanced > summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-family: var(--ds-font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ds-body);
+  list-style: none;
+  user-select: none;
+}
+.lab-advanced > summary::-webkit-details-marker { display: none; }
+.lab-advanced > summary::before {
+  content: "▸ ";
+  color: var(--ds-accent);
+  margin-right: 0.2rem;
+}
+.lab-advanced[open] > summary::before { content: "▾ "; }
+.lab-advanced > summary:hover { color: var(--ds-ink); }
+.lab-advanced__icon { margin-right: 0.3rem; }
+.lab-card__lead--demoted {
+  font-size: 0.95rem;
+  color: var(--ds-muted);
+  margin-top: 0.5rem;
+}
+
 /* ---- Block Race: mode tabs (Mine / Attack / Defend) ---- */
 .lab-mode-tabs {
   display: grid;
