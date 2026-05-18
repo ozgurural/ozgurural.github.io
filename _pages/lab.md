@@ -72,17 +72,6 @@ header:
   <p class="lab-quest__total" aria-live="polite"><span data-role="quest-total">0/5</span> missions</p>
 </div>
 
-<div class="lab-badges" id="lab-badges" aria-live="polite" role="region" aria-label="Badge gallery">
-  <strong>Badges</strong>
-  <div class="lab-badges__list">
-    <div class="lab-badge lab-badge--locked" data-badge="tg">Block Race</div>
-    <div class="lab-badge lab-badge--locked" data-badge="wm">Watermark</div>
-    <div class="lab-badge lab-badge--locked" data-badge="tmr">TMR</div>
-    <div class="lab-badge lab-badge--locked" data-badge="pol">Proof-of-Learning</div>
-    <div class="lab-badge lab-badge--locked" data-badge="gd">Gradient</div>
-  </div>
-</div>
-
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Blockchain · Nakamoto consensus</span>
   <h2>Block Race</h2>
