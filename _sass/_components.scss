@@ -788,6 +788,262 @@
   100% { right: 55%;   opacity: 0; transform: translateY(-50%) scale(0.3); }
 }
 
+/* ---- Block Race: mode tabs (Mine / Attack / Defend) ---- */
+.lab-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  margin: 0.4rem 0 0.9rem;
+  padding: 0.35rem;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+}
+.lab-mode-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding: 0.55rem 0.8rem;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
+  font-family: var(--ds-font-sans);
+  color: var(--ds-body);
+  text-align: left;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+.lab-mode-tab:hover {
+  background: var(--ds-surface);
+  border-color: var(--ds-line-soft);
+  transform: translateY(-1px);
+}
+.lab-mode-tab__icon { font-size: 1.35rem; line-height: 1; }
+.lab-mode-tab__name {
+  font-family: var(--ds-font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ds-ink);
+}
+.lab-mode-tab__hint {
+  font-family: var(--ds-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: var(--ds-muted);
+  text-transform: uppercase;
+}
+.lab-mode-tab--active {
+  background: linear-gradient(135deg, var(--ds-accent-soft), var(--ds-surface));
+  border-color: var(--ds-accent);
+  box-shadow: 0 0 0 1px var(--ds-accent), 0 4px 14px rgba(56, 189, 248, 0.22);
+}
+.lab-mode-tab--active .lab-mode-tab__name { color: var(--ds-accent-2, var(--ds-accent)); }
+
+/* ---- Block Race: dual-chain visualisation ---- */
+.lab-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.7rem 0.85rem 0.85rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  background: var(--ds-surface-elev);
+  margin: 0 0 1rem;
+}
+.lab-chain__row {
+  display: grid;
+  grid-template-columns: 170px 1fr 60px;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+.lab-chain__row--honest .lab-chain__label  { color: var(--ds-ink); }
+.lab-chain__row--attacker .lab-chain__label { color: #f97316; }
+.lab-chain__label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  white-space: nowrap;
+}
+.lab-chain__blocks {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  min-height: 30px;
+  padding: 2px 0;
+}
+.lab-chain__count {
+  font-family: var(--ds-font-mono);
+  font-size: 0.78rem;
+  color: var(--ds-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.lab-chain__block {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  color: var(--ds-muted);
+  animation: lab-chain-pop 0.32s ease-out;
+  flex: 0 0 auto;
+}
+.lab-chain__block--yours {
+  background: linear-gradient(135deg, #10b98133, #10b98119);
+  border-color: #10b981;
+  color: #10b981;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35);
+}
+.lab-chain__block--other {
+  background: var(--ds-surface);
+  border-color: var(--ds-line-soft);
+  color: var(--ds-soft);
+}
+.lab-chain__block--honest {
+  background: linear-gradient(135deg, #38bdf833, #38bdf819);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.30);
+}
+.lab-chain__block--attacker {
+  background: linear-gradient(135deg, #f9731633, #f9731619);
+  border-color: #f97316;
+  color: #f97316;
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.30);
+}
+.lab-chain__caption {
+  font-family: var(--ds-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  color: var(--ds-soft);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+@keyframes lab-chain-pop {
+  0%   { opacity: 0; transform: translateY(-3px) scale(0.85); }
+  60%  { opacity: 1; transform: translateY(0)    scale(1.04); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ---- Block Race: target line on plots (P-threshold, target-block, etc) ---- */
+.lab-plot__target-line {
+  fill: none;
+  stroke: #f59e0b;
+  stroke-width: 1.4;
+  stroke-dasharray: 5 3;
+  opacity: 0.65;
+}
+
+/* ---- Shareable runs: button + popover ----
+   Each lab card ends with a "Share this run" affordance. The popover
+   shows a preview of the share text and three actions (copy / X /
+   LinkedIn) plus a close button. On mobile, navigator.share opens the
+   native sheet instead of the popover. */
+.lab-share {
+  position: relative;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--ds-line-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+.lab-share__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface);
+  color: var(--ds-body);
+  font-family: var(--ds-font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+.lab-share__btn:hover {
+  border-color: var(--ds-accent);
+  background: var(--ds-surface-elev);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(56, 189, 248, 0.16);
+}
+.lab-share__btn:active { transform: translateY(0); }
+.lab-share__btn-icon { font-size: 1rem; line-height: 1; }
+.lab-share__btn[aria-expanded="true"] {
+  background: var(--ds-accent-soft);
+  border-color: var(--ds-accent);
+  color: var(--ds-ink);
+}
+.lab-share__popover {
+  width: 100%;
+  max-width: 560px;
+  padding: 0.85rem 0.95rem 0.95rem;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  box-shadow: 0 8px 24px rgba(2, 8, 23, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.lab-share__popover[hidden] { display: none; }
+.lab-share__preview {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--ds-ink);
+  padding: 0.55rem 0.7rem;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line-soft);
+  border-radius: var(--ds-radius-sm);
+}
+.lab-share__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.lab-share__actions button {
+  padding: 0.42rem 0.75rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface);
+  color: var(--ds-body);
+  font-family: var(--ds-font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.lab-share__actions button:hover {
+  border-color: var(--ds-accent);
+  background: var(--ds-surface-elev);
+  transform: translateY(-1px);
+}
+.lab-share__actions button[data-share="x"] { font-weight: 700; }
+.lab-share__actions button[data-share="close"] {
+  margin-left: auto;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
 /* ---- Watermark grid (one realisation, theme-aware) ---- */
 .lab-wm__grid {
   display: grid;
@@ -2147,8 +2403,11 @@ html[data-theme="dark"] .lab-probe__choice--wrong { background: rgba(252, 165, 1
   .lab-mission-card { min-height: auto; }
   .lab-card { padding: 1.1rem 1rem 1.2rem; }
   .lab-experiment__visual > .lab-wm__grid { max-width: 240px; margin: 0 auto; }
-  .lab-tg__field { grid-template-columns: 70px 1fr 70px; height: 64px; }
-  .lab-tg__valley-label { font-size: 0.6rem; letter-spacing: 0.06em; }
+  .lab-mode-tabs { grid-template-columns: 1fr; }
+  .lab-mode-tab { padding: 0.45rem 0.7rem; }
+  .lab-chain__row { grid-template-columns: 120px 1fr 44px; }
+  .lab-chain__label { font-size: 0.6rem; letter-spacing: 0.04em; }
+  .lab-chain__block { min-width: 26px; height: 24px; font-size: 0.6rem; padding: 0 4px; }
   .lab-experiment__readout { grid-template-columns: 1fr 1fr; }
   .lab-experiment__metric-value { font-size: 1.35rem; }
   .lab-probes { padding: 1.15rem 1.05rem 1.25rem; }

@@ -41,7 +41,9 @@
         "color:#94a3b8;font-style:italic;"
       ];
       console.log.apply(console, sig);
-      console.log("%cΦ(x) is Abramowitz–Stegun 26.2.17—real math, not a spoon. There is also no cake in this console. If you read code while drinking coffee, congratulations: you are statistically rare. drozgurural@gmail.com", "color:#64748b;");
+      console.log("%cΦ(x) is Abramowitz–Stegun 26.2.17 — real math, not a spoon. There is no cake in this console either. If you read source while drinking coffee: statistically rare, qualifying for a leaderboard nobody maintains.", "color:#64748b;");
+      console.log("%cNakamoto §11 lives at MODES.attack — try nakamoto(0.1, 6) and check Satoshi's table. Wubba lubba dub dub. Tread lightly. drozgurural@gmail.com", "color:#64748b;font-style:italic;");
+      console.log("%c💊 you took the orange pill. welcome to the desert of the mempool.", "color:#f59e0b;font-weight:600;");
     }
   } catch (e) { /* noop */ }
 
@@ -186,6 +188,173 @@
       else hi = mid;
     }
     return hi;
+  }
+
+  /* ---------- Shareable runs (URL state + share popover) ----------
+     Every lab encodes its current scenario and slider into the URL so a
+     friend who opens the link lands on the exact same run. After Run
+     commits, we replaceState the URL with `?lab=<key>&...#lab-<key>`. On
+     init, each lab parses the URL and replays the state. The share button
+     opens native share on mobile, or a copy/X/LinkedIn popover on desktop. */
+  const LabShare = {
+    SITE: "https://ozgurural.github.io",
+    // Pretty per-lab share slugs. The stub pages at these paths emit the right
+    // og:image meta and immediately redirect to /lab/?lab=<key>... so unfurlers
+    // see the per-lab social card while humans land on the actual run.
+    SLUGS: {
+      tg:  "block-race",
+      wm:  "model-heist",
+      pol: "training-fingerprint",
+      tmr: "redundancy-reactor",
+      gd:  "gradient-pinball",
+    },
+    siteOrigin() {
+      const loc = window.location;
+      return (loc.origin && loc.origin !== "null") ? loc.origin : LabShare.SITE;
+    },
+    parse() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has("lab")) return null;
+        const out = {};
+        for (const [k, v] of params) out[k] = v;
+        return out;
+      } catch (e) { return null; }
+    },
+    _serialize(labKey, paramsObj) {
+      const sp = new URLSearchParams();
+      sp.set("lab", labKey);
+      Object.keys(paramsObj || {}).forEach((k) => {
+        const v = paramsObj[k];
+        if (v == null || v === "") return;
+        sp.set(k, String(v));
+      });
+      return sp.toString();
+    },
+    write(labKey, paramsObj) {
+      // History writes stay on the canonical /lab/ page; we don't want to
+      // redirect the player off the page they're playing on.
+      try {
+        const qs = LabShare._serialize(labKey, paramsObj);
+        const url = window.location.pathname + "?" + qs + "#lab-" + labKey;
+        window.history.replaceState(null, "", url);
+      } catch (e) { /* noop */ }
+    },
+    buildUrl(labKey, paramsObj) {
+      // The shared URL points at /lab/<slug>/ — those stub pages carry the
+      // correct og:image for unfurlers and then redirect to the real lab.
+      const qs = LabShare._serialize(labKey, paramsObj);
+      const slug = LabShare.SLUGS[labKey];
+      if (slug) {
+        return LabShare.siteOrigin() + "/lab/" + slug + "/?" + qs + "#lab-" + labKey;
+      }
+      return LabShare.siteOrigin() + "/lab/?" + qs + "#lab-" + labKey;
+    },
+    tryNative(opts) {
+      // Returns true if a native share dialog was opened.
+      if (typeof navigator !== "undefined" && navigator.share) {
+        try {
+          navigator.share({ title: opts.title || "Lab", text: opts.text || "", url: opts.url });
+          return true;
+        } catch (e) { /* user dismissed */ }
+      }
+      return false;
+    },
+    copyLink(url) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(url).then(() => true).catch(() => false);
+      }
+      // Fallback for older browsers
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return Promise.resolve(ok);
+      } catch (e) { return Promise.resolve(false); }
+    },
+    twitterIntent(text, url, hashtags) {
+      const u = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) +
+                "&url=" + encodeURIComponent(url) +
+                (hashtags ? "&hashtags=" + encodeURIComponent(hashtags) : "");
+      window.open(u, "_blank", "noopener,noreferrer,width=600,height=420");
+    },
+    linkedinIntent(url) {
+      const u = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
+      window.open(u, "_blank", "noopener,noreferrer,width=600,height=520");
+    },
+  };
+
+  /* Generic share-button wiring. Each lab passes a `getState()` that
+     returns { params, text, hashtags } describing the current run, and a
+     pair of DOM nodes (button + popover). */
+  function wireShareButton(opts) {
+    const btn = opts.btn;
+    const pop = opts.popover;
+    const preview = opts.preview;
+    const labKey = opts.labKey;
+    if (!btn || !pop) return;
+
+    function close() { pop.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+    function open() {
+      const s = opts.getState();
+      const url = LabShare.buildUrl(labKey, s.params);
+      if (preview) preview.textContent = s.text;
+      pop.hidden = false;
+      pop.dataset.url = url;
+      pop.dataset.text = s.text;
+      pop.dataset.hashtags = s.hashtags || "";
+      btn.setAttribute("aria-expanded", "true");
+    }
+
+    btn.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      const s = opts.getState();
+      const url = LabShare.buildUrl(labKey, s.params);
+      // Mobile: native share sheet. Otherwise: open the desktop popover.
+      const nativeOpened = LabShare.tryNative({ title: "Lab · " + (s.title || labKey), text: s.text, url: url });
+      if (!nativeOpened) {
+        if (pop.hidden) open();
+        else close();
+      }
+    });
+
+    pop.addEventListener("click", function (ev) {
+      const tgt = ev.target.closest("[data-share]");
+      if (!tgt) return;
+      const action = tgt.dataset.share;
+      const url = pop.dataset.url;
+      const text = pop.dataset.text;
+      const hashtags = pop.dataset.hashtags;
+      if (action === "copy") {
+        LabShare.copyLink(url).then(function (ok) {
+          const orig = tgt.dataset.origLabel || tgt.textContent;
+          tgt.dataset.origLabel = orig;
+          tgt.textContent = ok ? "✓ Link copied" : "✗ Copy failed";
+          setTimeout(function () { tgt.textContent = orig; }, 1800);
+        });
+      } else if (action === "x") {
+        LabShare.twitterIntent(text, url, hashtags);
+      } else if (action === "li") {
+        LabShare.linkedinIntent(url);
+      } else if (action === "close") {
+        close();
+      }
+    });
+
+    // Click outside the popover closes it (but not when clicking the trigger).
+    document.addEventListener("click", function (ev) {
+      if (pop.hidden) return;
+      if (pop.contains(ev.target) || ev.target === btn || btn.contains(ev.target)) return;
+      close();
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && !pop.hidden) close();
+    });
   }
 
   /* ---------- global “arcade” feedback (combo, juice, haptics) ---------- */
@@ -548,452 +717,796 @@
   // decoration that distracted from the actual learning. Removed.
 
   /* ============================================================================
-     PUZZLE 1 · Two Generals' Lab
-     ============================================================================ */
+     PUZZLE 1 · Block Race (Nakamoto consensus)
+     ============================================================================
+     Three modes share the same card:
+        Mine    — Poisson block discovery at hashrate q over window N.
+        Attack  — Nakamoto whitepaper §11 double-spend probability.
+        Defend  — Same Nakamoto formula, optimized from the merchant's side.
+     The math is Satoshi's. The UX makes it playable. */
   function initTwoGeneralsLab() {
     const root = document.getElementById("lab-tg");
     if (!root) return;
 
     const refs = {
-      n:        $('[data-role="n"]', root),
-      nVal:     $('[data-role="n-val"]', root),
-      pDisplay: $('[data-role="p-display"]', root),
-      naive:    $('[data-role="naive-val"]', root),
-      strict:   $('[data-role="strict-val"]', root),
-      sweetTg:  $('[data-role="sweet-spot-tg"]', root),
-      insight:  $('[data-role="insight"]', root),
-      plot:     $('[data-role="plot"]', root),
-      valley:   $('[data-role="valley"]', root),
-      levels:   $('[data-role="tg-levels"]', root),
-      verdict:  $('[data-role="verdict-tg"]', root),
-      endingsTally: $('[data-role="endings-tg"]', root),
-      starsTg:  $('[data-role="stars-tg"]', root),
+      n:                  $('[data-role="n"]', root),
+      nVal:               $('[data-role="n-val"]', root),
+      sliderLabel:        $('[data-role="tg-slider-label"]', root),
+      sliderVar:          $('[data-role="tg-slider-var"]', root),
+      levelsTitle:        $('[data-role="tg-levels-title"]', root),
+      levelsRow:          $('[data-role="tg-levels-row"]', root),
+      missionHead:        $('[data-role="tg-mission-head"]', root),
+      missionSub:         $('[data-role="tg-mission-sub"]', root),
+      modeTabs:           $('[data-role="tg-mode-tabs"]', root),
+      runBtn:             $('[data-role="tg-run-btn"]', root),
+      naive:              $('[data-role="naive-val"]', root),
+      strict:             $('[data-role="strict-val"]', root),
+      metricALabel:       $('[data-role="metric-a-label"]', root),
+      metricAFormula:     $('[data-role="metric-a-formula"]', root),
+      metricBLabel:       $('[data-role="metric-b-label"]', root),
+      metricBFormula:     $('[data-role="metric-b-formula"]', root),
+      chainHonest:        $('[data-role="chain-honest"]', root),
+      chainAttacker:      $('[data-role="chain-attacker"]', root),
+      chainAttackerRow:   $('[data-role="chain-attacker-row"]', root),
+      chainHonestLabel:   $('[data-role="chain-honest-label"]', root),
+      chainAttackerLabel: $('[data-role="chain-attacker-label"]', root),
+      chainHonestCount:   $('[data-role="chain-honest-count"]', root),
+      chainAttackerCount: $('[data-role="chain-attacker-count"]', root),
+      chainCaption:       $('[data-role="chain-caption"]', root),
+      plot:               $('[data-role="plot"]', root),
+      insight:            $('[data-role="insight"]', root),
+      sweetTg:            $('[data-role="sweet-spot-tg"]', root),
+      verdict:            $('[data-role="verdict-tg"]', root),
+      endingsTally:       $('[data-role="endings-tg"]', root),
+      starsTg:            $('[data-role="stars-tg"]', root),
+      shareBtn:           $('[data-role="tg-share-btn"]', root),
+      sharePopover:       $('[data-role="tg-share-popover"]', root),
+      shareText:          $('[data-role="tg-share-text"]', root),
     };
-    // Seven named endings — Stanley Parable style. Same math under the
-    // hood; different choices of N (relative to the scenario's minimum)
-    // land you in different stories. Storm unlocks a special path.
-    const TG_ENDINGS_TOTAL = 7;
-    function tgClassifyEnding(n, minN, pNaive, goal, stars, scenarioName) {
-      const beat = pNaive >= goal;
-      // N=1 lands in the prayer ending regardless of whether you somehow won.
-      if (n <= 1 && !beat) return {
-        id: "tg-prayer", icon: "🙏", name: "The Single Shot",
-        state: "fail",
-        sub: "You sent one message and hoped the universe was kind. The universe was unmoved.",
-      };
-      // Special ending for beating the hardest scenario clean.
-      if (stars === 5 && scenarioName === "Storm") return {
-        id: "tg-storm", icon: "🌪️", name: "The Storm Survivor",
-        state: "win",
-        sub: "You routed messages through a hurricane on the minimum retries. Unreasonable composure under entropy.",
-      };
-      // 5★ — exact minimum N for the scenario.
-      if (stars === 5) return {
-        id: "tg-minimalist", icon: "📏", name: "The Minimalist",
-        state: "win",
-        sub: "Found the exact number of retries. Pleasant. Unexciting. Correct.",
-      };
-      // 4★ — beat the goal with a small safety margin.
-      if (beat && n <= minN + 2) return {
-        id: "tg-insurance", icon: "🛡️", name: "The Insurance Buyer",
-        state: "win",
-        sub: "One or two extra tries, just in case. Engineering wisdom: redundancy is cheap and the universe is not.",
-      };
-      // Beat the goal but way overspent.
-      if (beat) return {
-        id: "tg-bureaucrat", icon: "👔", name: "The Bureaucrat",
-        state: "win",
-        sub: "Far more retries than needed. Everyone arrived. The CFO has questions and the network has a headache.",
-      };
-      // Tantalizingly close — within 15% of the goal.
-      if (pNaive >= goal * 0.85) return {
-        id: "tg-cliff", icon: "🤏", name: "The Cliff",
-        state: "miss",
-        sub: "So close you can hear the dinner reservation expiring. One more try might have done it.",
-      };
-      // Way under.
-      return {
-        id: "tg-dreamer", icon: "💔", name: "The Dreamer",
-        state: "fail",
-        sub: "The messages dissolved into the channel. Two-phase commit could not save you.",
-      };
+
+    // Last-computed run results, used by both URL writeback and share text.
+    let lastStars = 0;
+    let lastVal = 0;
+    /* ---- Math primitives ---- */
+
+    // Poisson PMF P(K=k | λ).
+    function poissonPMF(k, lam) {
+      if (lam <= 0) return k === 0 ? 1 : 0;
+      let p = Math.exp(-lam);
+      for (let i = 1; i <= k; i++) p *= lam / i;
+      return p;
+    }
+    function poissonCDF(k, lam) {
+      let s = 0;
+      for (let i = 0; i <= k; i++) s += poissonPMF(i, lam);
+      return s;
+    }
+    function poissonSurvival(kStrict, lam) { /* P(X ≥ kStrict) */
+      if (kStrict <= 0) return 1;
+      return 1 - poissonCDF(kStrict - 1, lam);
     }
 
-    // Read the currently selected scenario.
-    function tgCurrentLevel() {
-      const active = refs.levels && refs.levels.querySelector(".lab-level--active");
-      return active || (refs.levels && refs.levels.querySelector(".lab-level"));
-    }
-    function tgCurrentP() {
-      const btn = tgCurrentLevel();
-      return btn ? parseFloat(btn.dataset.p) : 0.40;
-    }
-    function tgCurrentGoal() {
-      const btn = tgCurrentLevel();
-      return btn ? parseFloat(btn.dataset.goal) : 0.99;
-    }
-    function tgCurrentMinN() {
-      const btn = tgCurrentLevel();
-      return btn ? parseInt(btn.dataset.minN, 10) : 6;
-    }
-    function tgCurrentScenarioName() {
-      const btn = tgCurrentLevel();
-      return btn ? (btn.dataset.name || "scenario") : "scenario";
+    // Nakamoto Bitcoin whitepaper §11. P(attacker eventually catches up
+    // after the honest chain has z confirmations, given attacker share q).
+    function nakamoto(q, z) {
+      if (q <= 0) return 0;
+      if (q >= 0.5) return 1;
+      if (z <= 0) return 1;
+      const p = 1 - q;
+      const lam = z * (q / p);
+      let sum = 1;
+      let pmf = Math.exp(-lam);
+      for (let k = 0; k <= z; k++) {
+        if (k > 0) pmf *= lam / k;
+        const ratio = Math.pow(q / p, z - k);
+        sum -= pmf * (1 - ratio);
+      }
+      return Math.max(0, Math.min(1, sum));
     }
 
-    /* ---- Plot rendering ---- */
+    // Smallest q ∈ (0, 0.499] such that nakamoto(q, z) ≥ pTarget. Bisection;
+    // P(q, z) is monotonic in q so this is well-behaved.
+    function minQForP(z, pTarget) {
+      let lo = 0.001, hi = 0.499;
+      if (nakamoto(hi, z) < pTarget) return hi;
+      for (let i = 0; i < 40; i++) {
+        const mid = (lo + hi) / 2;
+        if (nakamoto(mid, z) >= pTarget) hi = mid;
+        else lo = mid;
+      }
+      return hi;
+    }
+    // Smallest z ∈ [1, maxZ] such that nakamoto(q, z) ≤ pTarget. P is
+    // monotone decreasing in z for fixed q < 0.5.
+    function minZForP(q, pTarget, maxZ) {
+      for (let z = 1; z <= maxZ; z++) {
+        if (nakamoto(q, z) <= pTarget) return z;
+      }
+      return maxZ;
+    }
+
+    /* ---- Modes config ----
+       Each mode is its own little puzzle but shares the card UI. Scenarios
+       are filled in by JS; min-thresholds for attack/defend are derived
+       from the Nakamoto formula so 5★ targets always match the math. */
+    const MODES = {
+      mine: {
+        sliderMin: 1, sliderMax: 200, sliderStep: 1, sliderDefault: 60,
+        sliderLabel: "Your strategy: blocks of mining time?",
+        sliderVar: "N",
+        levelsTitle: "Pick your rig (and your electric bill)",
+        missionHead: "Pick the cheapest rig that statistically lands the target. Anything else is electricity bills with extra steps.",
+        missionSub: "Each rig has a target block count. The slider sets your patience. 5★ for the leanest hash buying exactly enough time — anything else is wasted joules or unfinished work. The thermodynamic god does not negotiate.",
+        honestLabel: "⛏️ Network chain · 🟢 = you found it",
+        attackerVisible: false,
+        caption: "⛏️ ten minutes per block · q = your share · 🟢 yours · ⚪ another lucky miner",
+        scenarios: [
+          { q: 0.005, target: 1, minN: 200, name: "Hobby ASIC",  icon: "🖥️" },
+          { q: 0.020, target: 2, minN: 100, name: "Garage farm", icon: "🏭" },
+          { q: 0.050, target: 4, minN:  80, name: "Pool member", icon: "🏢" },
+          { q: 0.150, target: 9, minN:  60, name: "Hash cartel", icon: "🐋" },
+        ],
+      },
+      attack: {
+        sliderMin: 1, sliderMax: 49, sliderStep: 1, sliderDefault: 25,
+        sliderLabel: "Your strategy: hashrate share to rent?",
+        sliderVar: "q",
+        levelsTitle: "Pick the merchant you'd like to disappoint",
+        missionHead: "Find the smallest hashrate share that gives you a coin-flip-or-better. Heisenberg the protocol — or get orphaned.",
+        missionSub: "Each merchant requires a different number of confirmations before shipping. 5★ at the minimum q where attack probability ≥ 50%. Rented hashrate burns money and leaves a trail; overshoot and you're not stealthy, you're a Coindesk headline.",
+        honestLabel: "📰 Public chain (honest miners)",
+        attackerLabel: "🦹 Your private fork",
+        attackerVisible: true,
+        caption: "🦹 publish payment → secretly mine alt chain → broadcast longer chain → say my name",
+        scenarios: [
+          { z:  1, pTarget: 0.50, name: "Coffee shop",     icon: "🛒" },
+          { z:  3, pTarget: 0.50, name: "Online retailer", icon: "🛍️" },
+          { z:  6, pTarget: 0.50, name: "Crypto exchange", icon: "💰" },
+          { z: 12, pTarget: 0.50, name: "OTC desk",        icon: "🏛️" },
+        ],
+      },
+      defend: {
+        sliderMin: 1, sliderMax: 24, sliderStep: 1, sliderDefault: 6,
+        sliderLabel: "Your strategy: confirmations to wait?",
+        sliderVar: "z",
+        levelsTitle: "Pick the adversary at your door",
+        missionHead: "Pick the smallest number of confirmations that keeps double-spend probability below the safety bar. Tread lightly.",
+        missionSub: "Each attacker controls a different share of network hashrate. 5★ for the safety bar at the fewest blocks of waiting. Customers are impatient; the math is unforgiving; the merchant who waits forever is just a Black Mirror episode in three acts.",
+        honestLabel: "📰 Public chain (your payment)",
+        attackerLabel: "🦹 Attacker's secret fork",
+        attackerVisible: true,
+        caption: "🛡️ each conf ≈ 10 min · waiting longer squares the attacker's odds · espresso cools faster than chains reorg",
+        scenarios: [
+          { q: 0.10, pTarget: 0.001, name: "Solo rogue",   icon: "🦹" },
+          { q: 0.25, pTarget: 0.01,  name: "Mining pool",  icon: "🏭" },
+          { q: 0.35, pTarget: 0.05,  name: "Hash cartel",  icon: "⚔️" },
+          { q: 0.40, pTarget: 0.15,  name: "51% wannabe",  icon: "👑" },
+        ],
+      },
+    };
+
+    // Precompute Nakamoto-derived thresholds. These are what 5★ rewards.
+    MODES.attack.scenarios.forEach(s => { s.minQ = minQForP(s.z, s.pTarget); });
+    MODES.defend.scenarios.forEach(s => { s.minZ = minZForP(s.q, s.pTarget, 60); });
+
+    let currentMode = "mine";
+    let currentIdx = 0;
+    let revealed = false;
+    let prev = { a: 0, b: 0 };
+
+    /* ---- Scenario rendering ---- */
+    function levelHint(mode, s) {
+      if (mode === "mine") {
+        return (s.q * 100).toFixed(1) + "% share · target " + s.target + (s.target === 1 ? " block" : " blocks");
+      } else if (mode === "attack") {
+        return s.z + (s.z === 1 ? " conf · need q ≥ " : " confs · need q ≥ ") + Math.ceil(s.minQ * 100) + "%";
+      } else {
+        return (s.q * 100).toFixed(0) + "% attacker · target P ≤ " + (s.pTarget * 100).toFixed(s.pTarget < 0.01 ? 2 : 1) + "%";
+      }
+    }
+    function renderScenarios() {
+      const mode = MODES[currentMode];
+      refs.levelsTitle.textContent = mode.levelsTitle;
+      refs.missionHead.textContent = mode.missionHead;
+      refs.missionSub.textContent = mode.missionSub;
+      refs.sliderLabel.textContent = mode.sliderLabel;
+      refs.sliderVar.textContent = mode.sliderVar;
+      refs.n.min = mode.sliderMin;
+      refs.n.max = mode.sliderMax;
+      refs.n.step = mode.sliderStep;
+      refs.n.value = mode.sliderDefault;
+      refs.chainHonestLabel.textContent = mode.honestLabel;
+      if (mode.attackerLabel) refs.chainAttackerLabel.textContent = mode.attackerLabel;
+      refs.chainAttackerRow.hidden = !mode.attackerVisible;
+      refs.chainCaption.textContent = mode.caption;
+
+      refs.levelsRow.innerHTML = "";
+      mode.scenarios.forEach((s, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "lab-level" + (i === currentIdx ? " lab-level--active" : "");
+        btn.dataset.idx = i;
+        const icon = document.createElement("span");
+        icon.className = "lab-level__icon";
+        icon.textContent = s.icon;
+        const name = document.createElement("span");
+        name.className = "lab-level__name";
+        name.textContent = s.name;
+        const hint = document.createElement("span");
+        hint.className = "lab-level__hint";
+        hint.textContent = levelHint(currentMode, s);
+        btn.appendChild(icon);
+        btn.appendChild(name);
+        btn.appendChild(hint);
+        refs.levelsRow.appendChild(btn);
+      });
+      updateSliderDisplay();
+    }
+    function updateSliderDisplay() {
+      const slider = parseFloat(refs.n.value);
+      refs.nVal.textContent = currentMode === "attack" ? (slider + "%") : slider;
+    }
+
+    /* ---- Plot ---- */
     const PW = 640, PH = 260;
     const M = { l: 52, r: 110, t: 28, b: 40 };
     const innerW = PW - M.l - M.r;
     const innerH = PH - M.t - M.b;
-    const N_MIN = 1, N_MAX = 10;
-
-    function xFor(n) { return M.l + ((n - N_MIN) / (N_MAX - N_MIN)) * innerW; }
-    function yFor(p) { return M.t + (1 - p) * innerH; }
-
-    function pathFor(fn) {
-      let d = "";
-      for (let n = N_MIN; n <= N_MAX; n++) {
-        const x = xFor(n), y = yFor(fn(n));
-        d += (n === N_MIN ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
-      }
-      return d.trim();
-    }
-
-    function drawPlot(p, n) {
+    function clearPlot() {
       const plot = refs.plot;
       while (plot.firstChild) plot.removeChild(plot.firstChild);
+    }
+    function drawPlot() {
+      clearPlot();
+      if (currentMode === "mine") drawMinePlot();
+      else if (currentMode === "attack") drawAttackPlot();
+      else drawDefendPlot();
+    }
+    function drawMinePlot() {
+      const plot = refs.plot;
+      const sc = MODES.mine.scenarios[currentIdx];
+      const q = sc.q;
+      const N = parseInt(refs.n.value, 10);
+      const Nmax = MODES.mine.sliderMax;
+      const Ymax = Math.max(sc.target * 2, q * Nmax * 1.15, 1);
+      const xFor = nn => M.l + (nn / Nmax) * innerW;
+      const yFor = yy => M.t + (1 - yy / Ymax) * innerH;
 
-      // Title
-      const title = svg("text", {
-        x: M.l, y: M.t - 12, class: "lab-plot__title",
+      const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
+      title.textContent = "Expected blocks vs window N | q = " + (q * 100).toFixed(1) + "%, target = " + sc.target;
+
+      [0, 0.25, 0.5, 0.75, 1].forEach(f => {
+        const yy = f * Ymax;
+        svg("line", { x1: M.l, x2: M.l + innerW, y1: yFor(yy), y2: yFor(yy), class: "lab-plot__grid" }, plot);
+        const t = svg("text", { x: M.l - 8, y: yFor(yy) + 4, class: "lab-plot__tick lab-plot__tick--y" }, plot);
+        t.textContent = yy.toFixed(yy < 10 ? 1 : 0);
+      });
+      const step = Math.ceil(Nmax / 5);
+      for (let i = 0; i <= Nmax; i += step) {
+        const t = svg("text", { x: xFor(i), y: yFor(0) + 18, class: "lab-plot__tick lab-plot__tick--x" }, plot);
+        t.textContent = i;
+      }
+      const xlabel = svg("text", { x: M.l + innerW / 2, y: PH - 8, class: "lab-plot__axis-label" }, plot);
+      xlabel.textContent = "N (blocks of window)";
+
+      // Target horizontal line
+      svg("line", {
+        x1: M.l, x2: M.l + innerW, y1: yFor(sc.target), y2: yFor(sc.target),
+        class: "lab-plot__target-line",
       }, plot);
-      title.textContent = "P(win) vs protocol depth N | p = " + p.toFixed(2);
+      const tlbl = svg("text", { x: M.l + 6, y: yFor(sc.target) - 5, class: "lab-plot__legend-label lab-plot__legend-label--strict" }, plot);
+      tlbl.textContent = "target = " + sc.target;
 
-      // Y-axis gridlines + labels (0%, 25%, 50%, 75%, 100%)
-      [0, 0.25, 0.5, 0.75, 1].forEach((v) => {
-        svg("line", {
-          x1: M.l, x2: M.l + innerW,
-          y1: yFor(v), y2: yFor(v),
-          class: "lab-plot__grid",
-        }, plot);
-        const t = svg("text", {
-          x: M.l - 8, y: yFor(v) + 4,
-          class: "lab-plot__tick lab-plot__tick--y",
-        }, plot);
+      // E[X] curve
+      let dE = "";
+      for (let i = 0; i <= 100; i++) {
+        const nn = (i / 100) * Nmax;
+        const yy = q * nn;
+        dE += (i === 0 ? "M" : "L") + xFor(nn).toFixed(1) + " " + yFor(yy).toFixed(1) + " ";
+      }
+      svg("path", { d: dE.trim(), class: "lab-plot__curve lab-plot__curve--naive" }, plot);
+
+      // 90% band (mean ± 1.28·sqrt(λ))
+      let dHi = "", dLo = "";
+      for (let i = 0; i <= 100; i++) {
+        const nn = (i / 100) * Nmax;
+        const lam = q * nn;
+        const sd = Math.sqrt(lam);
+        const hi = lam + 1.28 * sd;
+        const lo = Math.max(0, lam - 1.28 * sd);
+        dHi += (i === 0 ? "M" : "L") + xFor(nn).toFixed(1) + " " + yFor(hi).toFixed(1) + " ";
+        dLo += (i === 0 ? "M" : "L") + xFor(nn).toFixed(1) + " " + yFor(lo).toFixed(1) + " ";
+      }
+      svg("path", { d: dHi.trim(), class: "lab-plot__curve lab-plot__curve--strict" }, plot);
+      svg("path", { d: dLo.trim(), class: "lab-plot__curve lab-plot__curve--strict" }, plot);
+
+      const lam = q * N;
+      svg("line", { x1: xFor(N), x2: xFor(N), y1: yFor(0), y2: yFor(Ymax), class: "lab-plot__marker-x" }, plot);
+      svg("circle", { cx: xFor(N), cy: yFor(lam), r: 4.5, class: "lab-plot__marker-dot lab-plot__marker-dot--naive" }, plot);
+
+      const lx = M.l + innerW + 14;
+      const tn = svg("text", { x: lx, y: yFor(lam) - 5, class: "lab-plot__legend-label lab-plot__legend-label--naive" }, plot);
+      tn.textContent = "E[blocks]";
+      const tv = svg("text", { x: lx, y: yFor(lam) + 12, class: "lab-plot__legend-value lab-plot__legend-value--naive" }, plot);
+      tv.textContent = lam.toFixed(2);
+    }
+    function drawAttackPlot() {
+      const plot = refs.plot;
+      const sc = MODES.attack.scenarios[currentIdx];
+      const z = sc.z;
+      const qCur = parseInt(refs.n.value, 10) / 100;
+      const QMAX = 0.5;
+      const xFor = qq => M.l + (qq / QMAX) * innerW;
+      const yFor = p  => M.t + (1 - p) * innerH;
+
+      const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
+      title.textContent = "P(attack succeeds) vs your hashrate q | z = " + z + " confirmations";
+
+      [0, 0.25, 0.5, 0.75, 1].forEach(v => {
+        svg("line", { x1: M.l, x2: M.l + innerW, y1: yFor(v), y2: yFor(v), class: "lab-plot__grid" }, plot);
+        const t = svg("text", { x: M.l - 8, y: yFor(v) + 4, class: "lab-plot__tick lab-plot__tick--y" }, plot);
         t.textContent = (v * 100).toFixed(0) + "%";
       });
+      [0, 0.1, 0.2, 0.3, 0.4, 0.5].forEach(qq => {
+        const t = svg("text", { x: xFor(qq), y: yFor(0) + 18, class: "lab-plot__tick lab-plot__tick--x" }, plot);
+        t.textContent = (qq * 100).toFixed(0) + "%";
+      });
+      const xlabel = svg("text", { x: M.l + innerW / 2, y: PH - 8, class: "lab-plot__axis-label" }, plot);
+      xlabel.textContent = "q (your hashrate share)";
 
-      // X-axis ticks
-      for (let i = N_MIN; i <= N_MAX; i++) {
-        svg("line", {
-          x1: xFor(i), x2: xFor(i),
-          y1: yFor(0), y2: yFor(0) + 4,
-          class: "lab-plot__tick-mark",
-        }, plot);
-        if (i === N_MIN || i === N_MAX || i % 2 === 0) {
-          const t = svg("text", {
-            x: xFor(i), y: yFor(0) + 18,
-            class: "lab-plot__tick lab-plot__tick--x",
-          }, plot);
-          t.textContent = i;
+      // 50% target line
+      svg("line", { x1: M.l, x2: M.l + innerW, y1: yFor(sc.pTarget), y2: yFor(sc.pTarget), class: "lab-plot__target-line" }, plot);
+      const tlbl = svg("text", { x: M.l + 6, y: yFor(sc.pTarget) - 5, class: "lab-plot__legend-label lab-plot__legend-label--strict" }, plot);
+      tlbl.textContent = "target = " + (sc.pTarget * 100).toFixed(0) + "% success";
+
+      let d = "";
+      for (let i = 0; i <= 100; i++) {
+        const qq = (i / 100) * (QMAX - 0.001);
+        const p = nakamoto(qq, z);
+        d += (i === 0 ? "M" : "L") + xFor(qq).toFixed(1) + " " + yFor(p).toFixed(1) + " ";
+      }
+      svg("path", { d: d.trim(), class: "lab-plot__curve lab-plot__curve--naive" }, plot);
+
+      const p = nakamoto(qCur, z);
+      svg("line", { x1: xFor(qCur), x2: xFor(qCur), y1: yFor(0), y2: yFor(1), class: "lab-plot__marker-x" }, plot);
+      svg("circle", { cx: xFor(qCur), cy: yFor(p), r: 4.5, class: "lab-plot__marker-dot lab-plot__marker-dot--naive" }, plot);
+
+      const lx = M.l + innerW + 14;
+      const tn = svg("text", { x: lx, y: yFor(p) - 5, class: "lab-plot__legend-label lab-plot__legend-label--naive" }, plot);
+      tn.textContent = "P(success)";
+      const tv = svg("text", { x: lx, y: yFor(p) + 12, class: "lab-plot__legend-value lab-plot__legend-value--naive" }, plot);
+      tv.textContent = (p * 100).toFixed(1) + "%";
+    }
+    function drawDefendPlot() {
+      const plot = refs.plot;
+      const sc = MODES.defend.scenarios[currentIdx];
+      const q = sc.q;
+      const zCur = parseInt(refs.n.value, 10);
+      const Zmax = MODES.defend.sliderMax;
+      const xFor = zz => M.l + (zz / Zmax) * innerW;
+      const yFor = p  => M.t + (1 - p) * innerH;
+
+      const title = svg("text", { x: M.l, y: M.t - 12, class: "lab-plot__title" }, plot);
+      title.textContent = "P(attack succeeds) vs confirmations z | q = " + (q * 100).toFixed(0) + "%";
+
+      [0, 0.25, 0.5, 0.75, 1].forEach(v => {
+        svg("line", { x1: M.l, x2: M.l + innerW, y1: yFor(v), y2: yFor(v), class: "lab-plot__grid" }, plot);
+        const t = svg("text", { x: M.l - 8, y: yFor(v) + 4, class: "lab-plot__tick lab-plot__tick--y" }, plot);
+        t.textContent = (v * 100).toFixed(0) + "%";
+      });
+      for (let i = 0; i <= Zmax; i += 4) {
+        const t = svg("text", { x: xFor(i), y: yFor(0) + 18, class: "lab-plot__tick lab-plot__tick--x" }, plot);
+        t.textContent = i;
+      }
+      const xlabel = svg("text", { x: M.l + innerW / 2, y: PH - 8, class: "lab-plot__axis-label" }, plot);
+      xlabel.textContent = "z (confirmations)";
+
+      // Target line: P ≤ sc.pTarget is the safe zone, below this dashed line.
+      svg("line", { x1: M.l, x2: M.l + innerW, y1: yFor(sc.pTarget), y2: yFor(sc.pTarget), class: "lab-plot__target-line" }, plot);
+      const targetLabel = sc.pTarget < 0.01
+        ? (sc.pTarget * 100).toFixed(2) + "%"
+        : (sc.pTarget * 100).toFixed(1) + "%";
+      const tlbl = svg("text", { x: M.l + 6, y: yFor(sc.pTarget) - 5, class: "lab-plot__legend-label lab-plot__legend-label--strict" }, plot);
+      tlbl.textContent = "safe ≤ " + targetLabel;
+
+      let d = "";
+      for (let i = 1; i <= Zmax; i++) {
+        const p = nakamoto(q, i);
+        d += (i === 1 ? "M" : "L") + xFor(i).toFixed(1) + " " + yFor(p).toFixed(1) + " ";
+      }
+      svg("path", { d: d.trim(), class: "lab-plot__curve lab-plot__curve--naive" }, plot);
+
+      const p = nakamoto(q, zCur);
+      svg("line", { x1: xFor(zCur), x2: xFor(zCur), y1: yFor(0), y2: yFor(1), class: "lab-plot__marker-x" }, plot);
+      svg("circle", { cx: xFor(zCur), cy: yFor(p), r: 4.5, class: "lab-plot__marker-dot lab-plot__marker-dot--naive" }, plot);
+
+      const lx = M.l + innerW + 14;
+      const tn = svg("text", { x: lx, y: yFor(p) - 5, class: "lab-plot__legend-label lab-plot__legend-label--naive" }, plot);
+      tn.textContent = "P(attack)";
+      const tv = svg("text", { x: lx, y: yFor(p) + 12, class: "lab-plot__legend-value lab-plot__legend-value--naive" }, plot);
+      tv.textContent = p < 0.0001 ? p.toExponential(1) : (p * 100).toFixed(p < 0.01 ? 3 : 2) + "%";
+    }
+
+    /* ---- Chain race animation ---- */
+    let chainTimer = null;
+    let chainState = { honest: 0, attacker: 0 };
+    const CHAIN_VISIBLE = 12;
+    function stopChainAnim() {
+      if (chainTimer) { clearInterval(chainTimer); chainTimer = null; }
+    }
+    function clearChain() {
+      if (refs.chainHonest) refs.chainHonest.innerHTML = "";
+      if (refs.chainAttacker) refs.chainAttacker.innerHTML = "";
+      chainState = { honest: 0, attacker: 0 };
+      if (refs.chainHonestCount) refs.chainHonestCount.textContent = "0";
+      if (refs.chainAttackerCount) refs.chainAttackerCount.textContent = "0";
+    }
+    function pushBlock(row, label, classMod) {
+      if (!row) return;
+      const b = document.createElement("span");
+      b.className = "lab-chain__block" + (classMod ? " lab-chain__block--" + classMod : "");
+      b.textContent = label;
+      if (row.children.length >= CHAIN_VISIBLE) row.removeChild(row.firstChild);
+      row.appendChild(b);
+    }
+    function chainStep() {
+      const mode = MODES[currentMode];
+      const sc = mode.scenarios[currentIdx];
+      if (currentMode === "mine") {
+        chainState.honest++;
+        const yours = Math.random() < sc.q;
+        pushBlock(refs.chainHonest, "#" + chainState.honest, yours ? "yours" : "other");
+        refs.chainHonestCount.textContent = chainState.honest;
+      } else {
+        let q;
+        if (currentMode === "attack") q = parseInt(refs.n.value, 10) / 100;
+        else q = sc.q;
+        // Per tick: one block found. P(found by honest) = 1 - q.
+        if (Math.random() < (1 - q)) {
+          chainState.honest++;
+          pushBlock(refs.chainHonest, "#" + chainState.honest, "honest");
+          refs.chainHonestCount.textContent = chainState.honest;
+        } else {
+          chainState.attacker++;
+          pushBlock(refs.chainAttacker, "#" + chainState.attacker, "attacker");
+          refs.chainAttackerCount.textContent = chainState.attacker;
         }
       }
-      const xlabel = svg("text", {
-        x: M.l + innerW / 2, y: PH - 8,
-        class: "lab-plot__axis-label",
-      }, plot);
-      xlabel.textContent = "N (messages)";
-
-      // Curves
-      svg("path", {
-        d: pathFor((nn) => 1 - Math.pow(p, nn)),
-        class: "lab-plot__curve lab-plot__curve--naive",
-      }, plot);
-      svg("path", {
-        d: pathFor((nn) => Math.pow(1 - p, nn)),
-        class: "lab-plot__curve lab-plot__curve--strict",
-      }, plot);
-
-      // Vertical marker at current N
-      svg("line", {
-        x1: xFor(n), x2: xFor(n),
-        y1: yFor(0), y2: yFor(1),
-        class: "lab-plot__marker-x",
-      }, plot);
-
-      // Markers + value labels at current N
-      const yN = 1 - Math.pow(p, n);
-      const yS = Math.pow(1 - p, n);
-      svg("circle", {
-        cx: xFor(n), cy: yFor(yN), r: 4.5,
-        class: "lab-plot__marker-dot lab-plot__marker-dot--naive",
-      }, plot);
-      svg("circle", {
-        cx: xFor(n), cy: yFor(yS), r: 4.5,
-        class: "lab-plot__marker-dot lab-plot__marker-dot--strict",
-      }, plot);
-
-      // Legend (right side)
-      const lx = M.l + innerW + 14;
-      const lyN = yFor(yN);
-      const lyS = yFor(yS);
-      const placeLegend = (cy, lbl, val, modifier) => {
-        const tn = svg("text", {
-          x: lx, y: cy - 5,
-          class: "lab-plot__legend-label lab-plot__legend-label--" + modifier,
-        }, plot);
-        tn.textContent = lbl;
-        const tv = svg("text", {
-          x: lx, y: cy + 12,
-          class: "lab-plot__legend-value lab-plot__legend-value--" + modifier,
-        }, plot);
-        tv.textContent = (val * 100).toFixed(1) + "%";
-      };
-      // Avoid label overlap when curves cross close together
-      const minGap = 24;
-      let yNa = lyN, yStrict = lyS;
-      if (Math.abs(yNa - yStrict) < minGap) {
-        const mid = (yNa + yStrict) / 2;
-        if (yNa < yStrict) { yNa = mid - minGap/2; yStrict = mid + minGap/2; }
-        else               { yNa = mid + minGap/2; yStrict = mid - minGap/2; }
-      }
-      placeLegend(yNa, "naive", yN, "naive");
-      placeLegend(yStrict, "strict", yS, "strict");
     }
-
-    /* ---- Animation strip: continuous messengers at current p ---- */
-    let currentP = 0.40;
-    const ANIM_MS = 1400;
-    let spawnMs = 700;
-    let lastSweetZone = false;
-    let animTimer = null;
-    function stopAnim() {
-      if (animTimer) { clearInterval(animTimer); animTimer = null; }
-    }
-    function spawnDot() {
-      if (!refs.valley.isConnected) return;
-      const dir = Math.random() < 0.5 ? "ab" : "ba";
-      const lost = Math.random() < currentP;
-      const dot = document.createElement("span");
-      dot.className = "lab-tg__dot lab-tg__dot--" + dir + (lost ? " lab-tg__dot--lost" : "");
-      dot.style.animationDuration = ANIM_MS + "ms";
-      refs.valley.appendChild(dot);
-      setTimeout(() => dot.remove(), ANIM_MS + 60);
-      // Lost messengers leave a small puff of dust at their last known position.
-      if (lost) {
-        setTimeout(() => {
-          if (!refs.valley.isConnected) return;
-          const puff = document.createElement("span");
-          puff.className = "lab-tg__puff";
-          puff.style.left = "50%";
-          refs.valley.appendChild(puff);
-          setTimeout(() => puff.remove(), 700);
-        }, ANIM_MS * 0.55);
-      }
-    }
-    function startAnim() {
-      if (animTimer) return;
-      animTimer = setInterval(spawnDot, spawnMs);
-      spawnDot();
-    }
-    function restartAnim() {
-      stopAnim();
-      animTimer = setInterval(spawnDot, spawnMs);
-      // Spawn one immediately so slider changes register visually
-      // without waiting for the next interval tick.
-      spawnDot();
+    function startChainAnim(intervalMs) {
+      stopChainAnim();
+      clearChain();
+      const ms = intervalMs || (currentMode === "mine" ? 700 : 600);
+      chainTimer = setInterval(chainStep, ms);
+      chainStep();
     }
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) { stopAnim(); } else { startAnim(); }
+      if (document.hidden) stopChainAnim();
+      else startChainAnim();
     });
 
-    /* ---- Live update with tweened readouts ---- */
-    let prev = { naive: 1 - Math.pow(0.4, 3), strict: Math.pow(0.6, 3) };
+    /* ---- Endings ---- */
+    // 14 named endings spread across the three modes. tg-attack-storm and
+    // tg-defend-sentinel are the "hardest scenario, 5★" specials.
+    const TG_ENDINGS_TOTAL = 14;
+    function classifyEnding(mode, sc, slider, stars, val) {
+      if (mode === "mine") {
+        if (stars === 5)  return { id: "tg-mine-pro",    icon: "🎯", name: "The Foreman",      state: "win",  sub: "Heisenberg-grade rig sizing. You bought exactly the hashrate the goal needed and stopped at exactly the right block. Tight, tight, tight." };
+        if (stars === 4)  return { id: "tg-mine-safe",   icon: "💼", name: "The Overcapper",   state: "win",  sub: "Hit the target with hashrate-time to spare. The electric bill arrived in a U-Haul; the CFO has requested a meeting." };
+        if (stars >= 2)   return { id: "tg-mine-grind",  icon: "⛏️", name: "The Grinder",      state: "miss", sub: "Your expectation curve and your target are not in the same multiverse. Try Rick's portal gun — or buy more rig." };
+        return            { id: "tg-mine-prayer", icon: "🙏", name: "The Solo Miner", state: "fail", sub: "One ASIC against 600 exahash. Pure aspiration — Poisson is unmoved, and your RTX 3090 is now an artisanal space heater." };
+      }
+      if (mode === "attack") {
+        if (stars === 5 && sc.z >= 12) return { id: "tg-attack-storm", icon: "👑", name: "The Heist of Heists", state: "win", sub: "Double-spend on an OTC desk at twelve confirmations. Either you are Heisenberg, or you are a misprint in the multiverse. Either way: say my name." };
+        if (stars === 5)  return { id: "tg-attack-min",   icon: "🥷", name: "The Minimal Heist",  state: "win",  sub: "Smallest hashrate that gives you a coin-flip-or-better. Anything less leaves money on the table; anything more is a Coindesk headline. Better Call Saul — but he's already on a yacht." };
+        if (stars === 4)  return { id: "tg-attack-over",  icon: "💸", name: "The Big Spender",    state: "win",  sub: "You beat the merchant but lit hashrate on fire. The DEA, the FBI, and three block explorers are now writing chapters about you." };
+        if (stars >= 2)   return { id: "tg-attack-cliff", icon: "🤏", name: "The Cliff",          state: "miss", sub: "So close to Heisenberg, so far from Mr. White. A few more % of hashrate and the napkin math flips. Tread lightly." };
+        return            { id: "tg-attack-flea",  icon: "🪰", name: "The Flea",   state: "fail", sub: "At this share you're not a threat — you're a feature request. The longest-chain rule politely orphans you and keeps marching." };
+      }
+      // defend
+      if (stars === 5 && sc.q >= 0.40) return { id: "tg-defend-sentinel", icon: "🌪️", name: "The Sentinel", state: "win", sub: "You stared down 40% network hashrate on the minimum required confirmations. Section 11 of the whitepaper just signed your visitor badge." };
+      if (stars === 5)  return { id: "tg-defend-min",    icon: "🛡️", name: "The Patient Merchant", state: "win",  sub: "Exact-minimum confirmations to clear the safety bar. Satoshi's ghost just gave you the orange-pill nod." };
+      if (stars === 4)  return { id: "tg-defend-safe",   icon: "🦺", name: "Belt and Suspenders",  state: "win",  sub: "Safer than you needed to be. Your customers grew old; their grandchildren wrote angry letters; the goods still haven't shipped." };
+      if (stars >= 2)   return { id: "tg-defend-cliff",  icon: "🤏", name: "The Cliff",            state: "miss", sub: "Just under the safety bar. One more block of patience and you'd have been fine. The attacker bought a Lambo with your inventory." };
+      return            { id: "tg-defend-prayer", icon: "🙏", name: "Coffee-Shop Reflex", state: "fail", sub: "Accepting on too few confirmations against a real adversary. The block explorer is laughing in 256-bit hex; Hank Schrader is taking notes." };
+    }
+
+    function sweetText(mode, sc, slider, val) {
+      if (mode === "mine") {
+        return "🎯 You sized the " + sc.name + " perfectly. " + (sc.q * 100).toFixed(1) + "% hashrate × " + slider + " blocks = " + (sc.q * slider).toFixed(2) + " expected, right at target " + sc.target + ". Tight, tight, tight.";
+      } else if (mode === "attack") {
+        return "🎯 Minimum hashrate to heist the " + sc.name + ". At q=" + slider + "% against z=" + sc.z + " confirmations, Nakamoto §11 gives you " + (val * 100).toFixed(1) + "% success. Barely worth attempting — and that's precisely why the attack works. Better Call Saul, but he's already retired.";
+      } else {
+        const targetTxt = sc.pTarget < 0.01 ? (sc.pTarget * 100).toFixed(2) + "%" : (sc.pTarget * 100).toFixed(1) + "%";
+        return "🎯 Optimal defence vs " + sc.name + ". At q=" + (sc.q * 100).toFixed(0) + "%, waiting " + slider + " confirmations drops attack probability under " + targetTxt + ". Each extra block roughly squares their odds against you. Satoshi's ghost approves.";
+      }
+    }
+
+    /* ---- Update ---- */
     function update() {
-      const p = tgCurrentP();
-      const n = parseInt(refs.n.value, 10);
-      currentP = p;
-      refs.nVal.textContent = n;
-      refs.pDisplay.textContent = p.toFixed(2);
-      const effectiveP = clamp(p, 0.001, 0.99);
-      const strictDepth = n;
-      const pNaive  = 1 - Math.pow(effectiveP, n);
-      const pStrict = Math.pow(1 - effectiveP, strictDepth);
-      const delta   = pNaive - pStrict; // used in regime annotations below
+      const mode = MODES[currentMode];
+      const sc = mode.scenarios[currentIdx];
+      const slider = parseFloat(refs.n.value);
+      updateSliderDisplay();
 
-      const pct = (v) => (v * 100).toFixed(1) + "%";
-      tweenNumber(refs.naive,  prev.naive,  pNaive,  260, pct);
-      tweenNumber(refs.strict, prev.strict, pStrict, 260, pct);
-      prev = { naive: pNaive, strict: pStrict };
+      let stars = 0, tier = "Off-target";
+      let valA = 0, valB = 0;
+      let fmtA = String, fmtB = String;
+      let labelA = "", labelB = "", formulaA = "", formulaB = "";
+      let sweet = false, insight = "";
 
+      if (currentMode === "mine") {
+        const q = sc.q;
+        const N = slider;
+        const lam = q * N;
+        const probHit = poissonSurvival(sc.target, lam);
+        valA = lam;
+        valB = probHit;
+        fmtA = v => v.toFixed(2) + " blk";
+        fmtB = v => (v * 100).toFixed(1) + "%";
+        labelA = "Expected blocks (E[X])";
+        formulaA = "λ = q × N = " + (q * 100).toFixed(1) + "% × " + N;
+        labelB = "P(hit target ≥ " + sc.target + ")";
+        formulaB = "Poisson tail · variance is real";
+
+        const minN = sc.minN;
+        if (lam >= sc.target && N >= Math.floor(minN * 0.95) && N <= Math.ceil(minN * 1.10)) { stars = 5; tier = "Frontier 🏆"; sweet = true; }
+        else if (lam >= sc.target && N <= minN * 1.5) { stars = 4; tier = "Pro-grade"; }
+        else if (lam >= sc.target)                    { stars = 3; tier = "Sharp"; }
+        else if (lam >= sc.target * 0.6)              { stars = 2; tier = "Workable"; }
+        else if (lam >= sc.target * 0.3)              { stars = 1; tier = "Sketchy"; }
+
+        if (N < 5)                            insight = "Tiny window — Poisson variance dominates. Even Rick can't portal-gun out of statistical noise this short.";
+        else if (lam < sc.target * 0.5)       insight = "Below half-target. Either bigger rig or longer window. You're not in the empire business yet — you're in the dabble business.";
+        else if (lam < sc.target)             insight = "Almost. Each extra block of window adds " + (q * 100).toFixed(2) + "% to E[X]. The short run has the dignity of a Black Mirror cold open.";
+        else if (N > minN * 2)                insight = "You'd hit it easily, but the electric bill arrived gift-wrapped. The break-even rig is leaner. Welcome to the desert of the real.";
+        else                                  insight = "Hashrate × time = yield. Pools exist because solo variance is brutal — co-op is just better-Calling-Saul on probability.";
+      }
+      else if (currentMode === "attack") {
+        const z = sc.z;
+        const q = slider / 100;
+        const p = nakamoto(q, z);
+        const minQ = sc.minQ;
+        valA = p; valB = z;
+        fmtA = v => (v * 100).toFixed(2) + "%";
+        fmtB = v => v + (v === 1 ? " conf" : " confs");
+        labelA = "P(attack succeeds)";
+        formulaA = "Nakamoto §11 at q=" + (q * 100).toFixed(0) + "%, z=" + z;
+        labelB = "Merchant requires";
+        formulaB = "longest-chain wins";
+
+        const overshoot = q - minQ;
+        if (p >= sc.pTarget && Math.abs(overshoot) < 0.025) { stars = 5; tier = "Frontier 🏆"; sweet = true; }
+        else if (p >= sc.pTarget && overshoot < 0.06)       { stars = 4; tier = "Pro-grade"; }
+        else if (p >= sc.pTarget)                           { stars = 3; tier = "Sharp"; }
+        else if (p >= sc.pTarget * 0.5)                     { stars = 2; tier = "Workable"; }
+        else if (p >= sc.pTarget * 0.2)                     { stars = 1; tier = "Sketchy"; }
+
+        if (q < 0.05)              insight = "Under 5% of network hash — you're a Mr. Meeseeks tasked with overtaking Bitcoin. Existence will become pain quickly.";
+        else if (q < minQ - 0.08)  insight = "Way under threshold. Public chain pulls away like a freight train; your private fork is a unicycle in a different multiverse.";
+        else if (q < minQ)         insight = "Just under coin-flip. P(success) climbs steeply near the threshold — a few more % flips the table. Tread lightly.";
+        else if (overshoot < 0.05) insight = "Coin-flip territory. You'd pull it off slightly more than half the time. Better than the multiverse mean — worse than Heisenberg-clean.";
+        else if (overshoot < 0.15) insight = "Overspent on hashrate. The DEA, the FBI, and three block explorers are already writing chapters about you.";
+        else                       insight = "Wildly overkill. At this share you may as well stop sneaking and just declare yourself the network. Heisenberg-the-protocol, hold the door.";
+      }
+      else {
+        const q = sc.q;
+        const z = slider;
+        const p = nakamoto(q, z);
+        const minZ = sc.minZ;
+        valA = p; valB = z;
+        fmtA = v => (v < 0.0001 ? v.toExponential(1) : (v * 100).toFixed(v < 0.01 ? 3 : 2) + "%");
+        fmtB = v => v + (v === 1 ? " block" : " blocks");
+        labelA = "P(attacker reverses payment)";
+        formulaA = "Nakamoto §11 at q=" + (q * 100).toFixed(0) + "%, z=" + z;
+        labelB = "You waited";
+        formulaB = "~10 minutes per block";
+
+        if (p <= sc.pTarget && z <= minZ)        { stars = 5; tier = "Frontier 🏆"; sweet = true; }
+        else if (p <= sc.pTarget && z <= minZ+3) { stars = 4; tier = "Pro-grade"; }
+        else if (p <= sc.pTarget)                { stars = 3; tier = "Sharp"; }
+        else if (p <= Math.max(sc.pTarget * 4, 0.02)) { stars = 2; tier = "Workable"; }
+        else if (p <= Math.max(sc.pTarget * 16, 0.10)) { stars = 1; tier = "Sketchy"; }
+
+        if (z === 1)            insight = "One conf is the coffee-shop reflex — fine for $5 sandwiches, terminal for $50K transfers. Hank Schrader is taking notes.";
+        else if (z < minZ - 2)  insight = "Way under safety. Your customer would reverse this transaction before the espresso went cold. Saul has been retained.";
+        else if (z < minZ)      insight = "Close, but the math still favours the attacker. Each extra confirmation roughly squares their odds — 'tread lightly' is in Satoshi's whitepaper, just hidden in LaTeX.";
+        else if (z <= minZ + 2) insight = "Right at the safety bar. The classic '6 confirmations' rule is exactly this calculation at q=10% — there is no spoon, only Poisson.";
+        else if (z > minZ + 8)  insight = "Overcautious. Your customers' grandchildren have aged out of the original purchase decision. Patience is virtue; paralysis is a Black Mirror episode.";
+        else                    insight = "Comfortably safe. Each extra block makes the heist exponentially less attractive — exactly the property Nakamoto put on the napkin.";
+      }
+
+      tweenNumber(refs.naive, prev.a, valA, 260, fmtA);
+      tweenNumber(refs.strict, prev.b, valB, 260, fmtB);
+      prev = { a: valA, b: valB };
       $$('.lab-experiment__metric', root).forEach(pulseRow);
+      refs.metricALabel.textContent = labelA;
+      refs.metricAFormula.textContent = formulaA;
+      refs.metricBLabel.textContent = labelB;
+      refs.metricBFormula.textContent = formulaB;
 
-      // Minimum N for naive to hit 99% at current p (used for sweet-spot detection only)
-      let minN99;
-      if (effectiveP <= 0) minN99 = 1;
-      else if (effectiveP >= 0.99) minN99 = Infinity;
-      else minN99 = Math.ceil(Math.log(0.01) / Math.log(effectiveP));
+      setStars(refs.starsTg, stars, tier, { header: "Live score" });
+      lastStars = stars;
+      lastVal = valA;
 
-      // Sweet spot: hit 99% reliability with the minimum tries.
-      const inSweetZone = isFinite(minN99) && n >= minN99 && pNaive >= 0.99;
-      const nCloseness = (n >= minN99 && n <= 10) ? Math.min(1, 1 - (n - minN99) / (10 - minN99) * 0.3) : 0;
-      labFxSliderGlow(refs.n, inSweetZone ? 1 : nCloseness * 0.5);
-      labFxApproachingZone(refs.n, inSweetZone ? 0 : nCloseness);
-      currentP = effectiveP;
-
-      if (refs.sweetTg) {
-        refs.sweetTg.hidden = !inSweetZone;
-        if (inSweetZone) {
-          refs.sweetTg.textContent = "🎯 You cracked the " + tgCurrentScenarioName() + " scenario! At " + (p*100).toFixed(0) + "% signal loss, just " + n + " tries gets you " + (pNaive*100).toFixed(1) + "% reliability. This is the trick TCP uses every time your phone reconnects on bad WiFi.";
-          unlockQuest("tg", "Consensus: you beat the scenario.");
-        }
-      }
-
-      // Animation speed: faster in sweet zone
-      const baseMs = 700;
-      const sweetMs = 500;
-      const newSpawnMs = inSweetZone ? sweetMs : baseMs;
-      if (newSpawnMs !== spawnMs || inSweetZone !== lastSweetZone) {
-        spawnMs = newSpawnMs;
-        restartAnim();
-      }
-      lastSweetZone = inSweetZone;
-
-      // Valley class for sweet zone styling
-      if (refs.valley) {
-        refs.valley.classList.toggle("lab-tg__valley--sweet", inSweetZone);
-      }
-
-      // Regime annotations — pitched at someone who'll appreciate the
-      // production parallels (TCP, quorum systems, blockchain depth)
-      // without needing them spelled out.
-      let txt;
-      if (p === 0)               txt = "Perfect channel. Both protocols are tautologically correct. Reality, you may have noticed, is not a perfect channel.";
-      else if (p > 0.84)         txt = "At this loss rate even retry-heavy strategies bleed. Useful regime: this is the math behind your phone's 'no service' fallback and the reason TCP has a give-up timer.";
-      else if (n === 1)          txt = "N=1 makes both strategies coincide. The interesting structure starts at N≥2, where retries compound favorably and chains compound the opposite direction.";
-      else if (p < 0.05)         txt = "Production-grade WAN territory. Both protocols look perfect, until you're at scale and the tails matter. This is where two-phase commit looks attractive and then ruins your Monday.";
-      else if (Math.abs(p - 0.5) < 0.005) txt = "Channel entropy maxed. Retry still wins by accumulating tries: same trick TCP uses on weak Wi-Fi, same reason Bitcoin needs confirmation depth.";
-      else if (p > 0.65)         txt = "High-loss regime. Naive multi-send dominates because one success suffices; chain protocols lose multiplicatively. Every quorum system and every retry-with-backoff lives on this inequality.";
-      else if (delta > 0.6)      txt = "Chain strategy is hemorrhaging. The instinct to 'just add another confirmation step' makes it worse: this is the cautionary tale that gave us Paxos.";
-      else if (delta > 0.3)      txt = "Retry-with-backoff territory. Same shape as TCP, blockchain confirmation depth, and read-quorum tuning. Distributed systems chose this side on purpose.";
-      else                       txt = "Naive multi-send dominates strict-chain for every p ∈ (0, 1) and N ≥ 2. The asymmetry is structural, not incidental.";
-      refs.insight.textContent = txt;
-
-      // Star grade — per-scenario. 5★ only at the minimum N that beats
-      // the scenario's target. Brute force still earns 3★. Failures step
-      // down gracefully.
-      const tgGoal = tgCurrentGoal();
-      const tgMinN = tgCurrentMinN();
-      let tgStars = 0, tgTier = "Off-target";
-      if (pNaive >= tgGoal && n <= tgMinN)        { tgStars = 5; tgTier = "Frontier 🏆"; }
-      else if (pNaive >= tgGoal && n <= tgMinN+2) { tgStars = 4; tgTier = "Pro-grade"; }
-      else if (pNaive >= tgGoal)                  { tgStars = 3; tgTier = "Sharp"; }
-      else if (pNaive >= tgGoal * 0.90)           { tgStars = 2; tgTier = "Workable"; }
-      else if (pNaive >= tgGoal * 0.65)           { tgStars = 1; tgTier = "Sketchy"; }
-      setStars(refs.starsTg, tgStars, tgTier, { header: "Live score" });
-      tgHint(tgStars);
-
-      // Stanley-Parable ending classification.
-      const scenario = tgCurrentScenarioName();
-      const goalPct = (tgGoal * 100).toFixed(tgGoal >= 0.99 ? 1 : 0);
-      const yourPct = (pNaive * 100).toFixed(1);
-      const ending = tgClassifyEnding(n, tgMinN, pNaive, tgGoal, tgStars, scenario);
-      const newlyUnlocked = recordEnding(ending.id);
-      const newTag = newlyUnlocked ? " · NEW ENDING" : "";
-      const stats = " (" + yourPct + "% at " + n + " " + (n === 1 ? "try" : "tries") + ", target " + goalPct + "%)";
+      const ending = classifyEnding(currentMode, sc, slider, stars, valA);
+      const newly = recordEnding(ending.id);
       setVerdict(refs.verdict,
-        ending.icon + " " + ending.name + " ending" + newTag,
-        ending.sub + " " + stats,
+        ending.icon + " " + ending.name + " ending" + (newly ? " · NEW ENDING" : ""),
+        ending.sub,
         ending.state);
       renderEndingsTally(refs.endingsTally, "tg-", TG_ENDINGS_TOTAL);
 
-      drawPlot(p, n);
+      if (refs.sweetTg) {
+        refs.sweetTg.hidden = !sweet;
+        if (sweet) {
+          refs.sweetTg.textContent = sweetText(currentMode, sc, slider, valA);
+          unlockQuest("tg", "Block Race: you found the threshold.");
+        }
+      }
+      refs.insight.textContent = insight;
+      labFxSliderGlow(refs.n, sweet ? 1 : 0);
+      drawPlot();
     }
 
-    // Aim → Fire → Score.
-    refs.runBtn = $('[data-role="tg-run-btn"]', root);
-    let tgRevealed = false;
-    const tgHint = makeHintTracker(refs.insight, [
-      "If you keep missing 99%, try raising the number of tries.",
-      "Even at 65% signal loss, 7 tries gets you above 99%. The math is wild.",
-      "5★ means hitting 99% with the fewest tries possible for the scenario.",
-    ]);
-
-    function tgSliderDisplay() {
-      const n = parseInt(refs.n.value, 10);
-      refs.nVal.textContent = n;
-      refs.pDisplay.textContent = tgCurrentP().toFixed(2);
-    }
-    function tgPendReadout(msg) {
-      tgRevealed = false;
+    /* ---- Pending / run orchestration ---- */
+    function pend(msg) {
+      revealed = false;
       refs.naive.textContent = "…";
       refs.strict.textContent = "…";
-      refs.insight.textContent = msg || "Pick a scenario, choose your strategy, then hit Run experiment.";
       if (refs.sweetTg) refs.sweetTg.hidden = true;
+      refs.insight.textContent = msg || "Pick a role, choose your strategy, then hit Run experiment.";
       setStars(refs.starsTg, 0, "Press Run to score", { header: "Run grade", pending: true });
-      const goalPct = (tgCurrentGoal() * 100).toFixed(1);
-      const scenario = tgCurrentScenarioName();
-      setVerdict(refs.verdict,
-        "🎯 Goal: " + goalPct + "% chance the message gets through",
-        msg || "Scenario: " + scenario + " · pick the number of retries · hit Run experiment.",
-        "pending");
+      const head = currentMode === "mine" ? "⛏️ Goal: yeah Mr. White — yeah, hash!" :
+                   currentMode === "attack" ? "🦹 Goal: orphan the public chain, say my name" :
+                                              "🛡️ Goal: hold the line, tread lightly";
+      setVerdict(refs.verdict, head, msg || "Pick scenario · choose the slider · hit Run experiment.", "pending");
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
-    function tgCommitRun() {
+    function commitRun() {
       if (!refs.runBtn) return;
       const btnText = refs.runBtn.querySelector('.lab-btn__text');
       refs.runBtn.classList.add("is-running");
       refs.runBtn.disabled = true;
       if (btnText) btnText.textContent = "Running…";
-      const prevSpawnMs = spawnMs;
-      spawnMs = 220;
-      restartAnim();
+      // Speed up the chain animation during the run, then revert.
+      const fastMs = 180;
+      const baseMs = currentMode === "mine" ? 700 : 600;
+      startChainAnim(fastMs);
       setTimeout(function () {
-        spawnMs = prevSpawnMs;
-        restartAnim();
+        startChainAnim(baseMs);
         refs.runBtn.classList.remove("is-running");
         refs.runBtn.disabled = false;
         if (btnText) btnText.textContent = "Run again";
-        tgRevealed = true;
+        revealed = true;
         root.classList.remove("lab-experiment--pending");
         root.classList.add("lab-experiment--revealed");
         update();
+        // Persist the run to the URL so a "Share this run" link replays it.
+        if (typeof pushShareUrl === "function") pushShareUrl();
       }, 1100);
     }
 
-    function tgOnSlider() {
-      tgSliderDisplay();
-      if (tgRevealed) {
-        tgPendReadout("New strategy. Hit Run experiment to see if you cracked it.");
-      }
-      currentP = tgCurrentP();
-      drawPlot(currentP, parseInt(refs.n.value, 10));
-    }
-    refs.n.addEventListener("input", tgOnSlider);
-
-    // Level picker — clicking a scenario sets the active state and pends.
-    if (refs.levels) {
-      refs.levels.addEventListener("click", function (ev) {
-        const btn = ev.target.closest(".lab-level");
-        if (!btn || !refs.levels.contains(btn)) return;
-        refs.levels.querySelectorAll(".lab-level").forEach(function (b) {
-          b.classList.remove("lab-level--active");
+    /* ---- Event wiring ---- */
+    if (refs.modeTabs) {
+      refs.modeTabs.addEventListener("click", function (ev) {
+        const btn = ev.target.closest(".lab-mode-tab");
+        if (!btn || !refs.modeTabs.contains(btn)) return;
+        const mode = btn.dataset.mode;
+        if (!MODES[mode] || mode === currentMode) return;
+        currentMode = mode;
+        currentIdx = 0;
+        refs.modeTabs.querySelectorAll(".lab-mode-tab").forEach(b => {
+          const on = b === btn;
+          b.classList.toggle("lab-mode-tab--active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
         });
-        btn.classList.add("lab-level--active");
-        tgOnSlider();
+        renderScenarios();
+        pend("New role. Pick a scenario, set your slider, hit Run.");
+        drawPlot();
+        startChainAnim();
       });
     }
 
-    if (refs.runBtn) refs.runBtn.addEventListener("click", tgCommitRun);
+    if (refs.levelsRow) {
+      refs.levelsRow.addEventListener("click", function (ev) {
+        const btn = ev.target.closest(".lab-level");
+        if (!btn || !refs.levelsRow.contains(btn)) return;
+        const idx = parseInt(btn.dataset.idx, 10);
+        if (!isFinite(idx)) return;
+        currentIdx = idx;
+        refs.levelsRow.querySelectorAll(".lab-level").forEach(b => b.classList.remove("lab-level--active"));
+        btn.classList.add("lab-level--active");
+        if (revealed) pend("New scenario. Hit Run experiment.");
+        drawPlot();
+      });
+    }
 
-    tgSliderDisplay();
-    tgPendReadout();
-    drawPlot(tgCurrentP(), parseInt(refs.n.value, 10));
+    refs.n.addEventListener("input", function () {
+      updateSliderDisplay();
+      if (revealed) pend("New strategy. Hit Run experiment to see if you cracked it.");
+      drawPlot();
+    });
+
+    if (refs.runBtn) refs.runBtn.addEventListener("click", commitRun);
+
+    /* ---- Share: URL state + popover ---- */
+    function buildShareState() {
+      const sc = MODES[currentMode].scenarios[currentIdx];
+      const slider = parseInt(refs.n.value, 10);
+      const params = { mode: currentMode, s: currentIdx, n: slider };
+      if (revealed) params.r = lastStars;
+
+      const stars = revealed ? lastStars : 0;
+      const starsPrefix = revealed ? stars + "★ — " : "";
+      let text;
+      if (currentMode === "mine") {
+        const detail = revealed
+          ? " · E[blocks]=" + (sc.q * slider).toFixed(2) + " vs target " + sc.target
+          : " · q=" + (sc.q * 100).toFixed(1) + "%, N=" + slider;
+        text = starsPrefix + "⛏️ Block Race — mining " + sc.name + detail + ". Bitcoin consensus, playable.";
+      } else if (currentMode === "attack") {
+        const detail = revealed
+          ? " · P(success)=" + (lastVal * 100).toFixed(1) + "%"
+          : "";
+        text = starsPrefix + "🦹 Block Race — double-spend on " + sc.name + " (q=" + slider + "%, z=" + sc.z + ")" + detail + ". Nakamoto §11 made playable.";
+      } else {
+        const detail = revealed
+          ? " · P(attack)=" + (lastVal < 0.0001 ? lastVal.toExponential(1) : (lastVal * 100).toFixed(3) + "%")
+          : "";
+        text = starsPrefix + "🛡️ Block Race — defending vs " + sc.name + " (z=" + slider + ")" + detail + ". Hold the line.";
+      }
+      return { params: params, text: text, hashtags: "Bitcoin,Nakamoto", title: "Block Race" };
+    }
+    function pushShareUrl() {
+      LabShare.write("tg", buildShareState().params);
+    }
+    function applyShareState(s) {
+      if (!s) return;
+      // Switch mode if it differs.
+      if (s.mode && MODES[s.mode] && s.mode !== currentMode) {
+        const tab = refs.modeTabs && refs.modeTabs.querySelector('[data-mode="' + s.mode + '"]');
+        if (tab) tab.click();
+      }
+      // Scenario index. Read after a microtask so the mode click's re-render lands first.
+      setTimeout(function () {
+        const idx = parseInt(s.s, 10);
+        if (isFinite(idx) && idx >= 0) {
+          const btns = refs.levelsRow.querySelectorAll(".lab-level");
+          if (btns[idx]) btns[idx].click();
+        }
+        const nVal = parseInt(s.n, 10);
+        if (isFinite(nVal)) {
+          refs.n.value = String(nVal);
+          updateSliderDisplay();
+          drawPlot();
+        }
+        // Auto-commit so the shared URL lands on the actual result, not pending.
+        setTimeout(function () { if (refs.runBtn) refs.runBtn.click(); }, 240);
+      }, 30);
+    }
+    wireShareButton({
+      labKey: "tg",
+      btn: refs.shareBtn,
+      popover: refs.sharePopover,
+      preview: refs.shareText,
+      getState: buildShareState,
+    });
+
+    /* ---- Init ---- */
+    renderScenarios();
+    pend();
+    drawPlot();
     renderEndingsTally(refs.endingsTally, "tg-", TG_ENDINGS_TOTAL);
-    startAnim();
+    startChainAnim();
+
+    // Replay state from the URL if a friend shared this run.
+    const sharedState = LabShare.parse();
+    if (sharedState && sharedState.lab === "tg") {
+      applyShareState(sharedState);
+    }
   }
 
   /* ============================================================================
@@ -1018,7 +1531,12 @@
       verdict:    $('[data-role="verdict-wm"]', root),
       endingsTally: $('[data-role="endings-wm"]', root),
       starsWm:    $('[data-role="stars-wm"]', root),
+      shareBtn:     $('[data-role="wm-share-btn"]', root),
+      sharePopover: $('[data-role="wm-share-popover"]', root),
+      shareText:    $('[data-role="wm-share-text"]', root),
     };
+    let wmLastStars = 0;
+    let wmLastDet = 0;
     // Thief noise + per-scenario target both come from the active level.
     function wmCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
@@ -1397,6 +1915,8 @@
       else if (det >= wmGoalDet * 0.55 && eps <= 0.40)                 { wmStars = 2; wmTier = "Workable"; }
       else if (det >= wmGoalDet * 0.30)                                { wmStars = 1; wmTier = "Sketchy"; }
       setStars(refs.starsWm, wmStars, wmTier, { header: "Live score" });
+      wmLastStars = wmStars;
+      wmLastDet = det;
       wmHint(wmStars);
 
       // Stanley-Parable endings — every Run lands in one of these.
@@ -1475,6 +1995,7 @@
         root.classList.remove("lab-experiment--pending");
         root.classList.add("lab-experiment--revealed");
         update();
+        if (typeof wmPushShareUrl === "function") wmPushShareUrl();
       }, 1100);
     }
     // Repaint the plot + grid from the current slider / scenario state.
@@ -1510,10 +2031,58 @@
     }
     if (refs.runBtn) refs.runBtn.addEventListener("click", wmCommitRun);
 
+    /* ---- Share: URL state + popover ---- */
+    function wmCurrentIdx() {
+      const btns = refs.levels ? refs.levels.querySelectorAll(".lab-level") : [];
+      for (let i = 0; i < btns.length; i++) {
+        if (btns[i].classList.contains("lab-level--active")) return i;
+      }
+      return 0;
+    }
+    function wmBuildShareState() {
+      const sc = wmCurrentLevel();
+      const name = (sc && sc.dataset.name) ? sc.dataset.name : "thief";
+      const eps = parseFloat(refs.eps.value);
+      const k = parseInt(refs.k.value, 10);
+      const idx = wmCurrentIdx();
+      const params = { t: idx, eps: eps.toFixed(3), k: k };
+      if (wmRevealed) params.r = wmLastStars;
+      const starsPrefix = wmRevealed ? wmLastStars + "★ — " : "";
+      const detail = wmRevealed ? " · detection=" + (wmLastDet * 100).toFixed(1) + "%" : "";
+      const text = starsPrefix + "🕵️ Model Heist Detector — caught the " + name + " (ε=" + eps.toFixed(2) + ", k=" + k + ")" + detail + ". AI watermarks, playable.";
+      return { params: params, text: text, hashtags: "AIsecurity,Watermark", title: "Model Heist Detector" };
+    }
+    function wmPushShareUrl() { LabShare.write("wm", wmBuildShareState().params); }
+    function wmApplyShareState(s) {
+      if (!s) return;
+      setTimeout(function () {
+        const idx = parseInt(s.t, 10);
+        if (isFinite(idx) && refs.levels) {
+          const btns = refs.levels.querySelectorAll(".lab-level");
+          if (btns[idx]) btns[idx].click();
+        }
+        const eps = parseFloat(s.eps);
+        if (isFinite(eps)) { refs.eps.value = eps; refs.eps.dispatchEvent(new Event("input")); }
+        const k = parseInt(s.k, 10);
+        if (isFinite(k))   { refs.k.value = k;     refs.k.dispatchEvent(new Event("input")); }
+        setTimeout(function () { if (refs.runBtn) refs.runBtn.click(); }, 220);
+      }, 30);
+    }
+    wireShareButton({
+      labKey: "wm",
+      btn: refs.shareBtn,
+      popover: refs.sharePopover,
+      preview: refs.shareText,
+      getState: wmBuildShareState,
+    });
+
     wmSliderDisplay();
     wmPendReadout();
     wmRepaintVisual();
     renderEndingsTally(refs.endingsTally, "wm-", WM_ENDINGS_TOTAL);
+
+    const sharedStateWm = LabShare.parse();
+    if (sharedStateWm && sharedStateWm.lab === "wm") wmApplyShareState(sharedStateWm);
   }
 
   /* ============================================================================
@@ -1544,7 +2113,12 @@
       levels:          $('[data-role="tmr-levels"]', root),
       verdict:         $('[data-role="verdict-tmr"]', root),
       starsTmr:        $('[data-role="stars-tmr"]', root),
+      shareBtn:        $('[data-role="tmr-share-btn"]', root),
+      sharePopover:    $('[data-role="tmr-share-popover"]', root),
+      shareText:       $('[data-role="tmr-share-text"]', root),
     };
+    let tmrLastStars = 0;
+    let tmrLastGain  = 0;
 
     function tmrCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
@@ -1854,6 +2428,8 @@
       else if (gain >= tmrGoalGain * 0.35)             { tmrStars = 2; tmrTier = "Workable"; }
       else if (gain >= 1.5)                            { tmrStars = 1; tmrTier = "Sketchy"; }
       setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
+      tmrLastStars = tmrStars;
+      tmrLastGain  = gain;
       tmrHint(tmrStars);
 
       // Headline verdict with character.
@@ -1942,6 +2518,7 @@
         root.classList.remove("lab-experiment--pending");
         root.classList.add("lab-experiment--revealed");
         update();
+        if (typeof tmrPushShareUrl === "function") tmrPushShareUrl();
       }, 1400);
     }
     // Repaint the curve plot from current scenario + slider state. The
@@ -1977,10 +2554,58 @@
     }
     if (refs.runBtn) refs.runBtn.addEventListener("click", tmrCommitRun);
 
+    /* ---- Share: URL state + popover ---- */
+    function tmrCurrentIdx() {
+      const btns = refs.levels ? refs.levels.querySelectorAll(".lab-level") : [];
+      for (let i = 0; i < btns.length; i++) {
+        if (btns[i].classList.contains("lab-level--active")) return i;
+      }
+      return 0;
+    }
+    function tmrBuildShareState() {
+      const sc = tmrCurrentLevel();
+      const name = (sc && sc.dataset.name) ? sc.dataset.name : "mission";
+      const N = refs.nChannels ? parseInt(refs.nChannels.value, 10) : 3;
+      const idx = tmrCurrentIdx();
+      const params = { m: idx, n: N };
+      if (tmrRevealed) params.r = tmrLastStars;
+      const starsPrefix = tmrRevealed ? tmrLastStars + "★ — " : "";
+      const detail = tmrRevealed ? " · safety multiplier " + (tmrLastGain >= 100 ? Math.round(tmrLastGain) + "×" : tmrLastGain.toFixed(1) + "×") : "";
+      const text = starsPrefix + "✈️ Redundancy Reactor — defended " + name + " with N=" + N + " channels" + detail + ". Fault tolerance, playable.";
+      return { params: params, text: text, hashtags: "FaultTolerance,Avionics", title: "Redundancy Reactor" };
+    }
+    function tmrPushShareUrl() { LabShare.write("tmr", tmrBuildShareState().params); }
+    function tmrApplyShareState(s) {
+      if (!s) return;
+      setTimeout(function () {
+        const idx = parseInt(s.m, 10);
+        if (isFinite(idx) && refs.levels) {
+          const btns = refs.levels.querySelectorAll(".lab-level");
+          if (btns[idx]) btns[idx].click();
+        }
+        const N = parseInt(s.n, 10);
+        if (isFinite(N) && refs.nChannels) {
+          refs.nChannels.value = N;
+          refs.nChannels.dispatchEvent(new Event("input"));
+        }
+        setTimeout(function () { if (refs.runBtn) refs.runBtn.click(); }, 220);
+      }, 30);
+    }
+    wireShareButton({
+      labKey: "tmr",
+      btn: refs.shareBtn,
+      popover: refs.sharePopover,
+      preview: refs.shareText,
+      getState: tmrBuildShareState,
+    });
+
     tmrSliderDisplay();
     tmrPendReadout();
     tmrRepaintVisual();
     stopSim();
+
+    const sharedStateTmr = LabShare.parse();
+    if (sharedStateTmr && sharedStateTmr.lab === "tmr") tmrApplyShareState(sharedStateTmr);
   }
 
   /* ============================================================================
@@ -2004,7 +2629,12 @@
       insight:   $gd("insight-gd"),
       verdict:   $gd("verdict-gd"),
       starsGd:   $gd("stars-gd"),
+      shareBtn:     $gd("gd-share-btn"),
+      sharePopover: $gd("gd-share-popover"),
+      shareText:    $gd("gd-share-text"),
     };
+    let gdLastStars = 0;
+    let gdLastLoss = 0;
 
     const gdHint = makeHintTracker(refs.insight, [
       "If the ball gets stuck early, raise the step size; it's too cautious.",
@@ -2312,7 +2942,10 @@
           "fail");
         running = false;
         setStars(refs.starsGd, 0, "Off-target", { header: "Run grade" });
+        gdLastStars = 0;
+        gdLastLoss = loss;
         gdHint(0);
+        if (typeof gdPushShareUrl === "function") gdPushShareUrl();
       } else if (epoch > 500) {
         refs.insight.textContent = "⏳ The ball is crawling. Step size is too small.";
         setVerdict(refs.verdict,
@@ -2321,7 +2954,10 @@
           "miss");
         running = false;
         setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
+        gdLastStars = 1;
+        gdLastLoss = loss;
         gdHint(1);
+        if (typeof gdPushShareUrl === "function") gdPushShareUrl();
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
         const dist = Math.abs(currentX - TARGET_X);
         if (dist < 0.06) {
@@ -2333,6 +2969,8 @@
           unlockQuest("gd", "Gradient descent: global minimum found.");
           triggerCongrats(refs.plot, true);
           setStars(refs.starsGd, 5, "Frontier 🏆", { header: "Run grade" });
+          gdLastStars = 5;
+          gdLastLoss = loss;
           gdHint(5);
         } else {
            refs.insight.textContent = "🚧 Stuck in a side valley. Add momentum to roll over the small hill.";
@@ -2345,9 +2983,12 @@
            else if (dist < 0.40) { gdS = 3; gdT = "Sharp"; }
            else if (dist < 0.80) { gdS = 2; gdT = "Workable"; }
            setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
+           gdLastStars = gdS;
+           gdLastLoss = loss;
            gdHint(gdS);
         }
         running = false;
+        if (typeof gdPushShareUrl === "function") gdPushShareUrl();
       }
       
       if (running) {
@@ -2393,7 +3034,40 @@
       initPlot();
     });
 
+    /* ---- Share: URL state + popover ---- */
+    function gdBuildShareState() {
+      const lr = parseFloat(refs.lr.value);
+      const mom = parseFloat(refs.mom.value);
+      const params = { lr: lr.toFixed(4), mom: mom.toFixed(3) };
+      if (gdLastStars > 0) params.r = gdLastStars;
+      const starsPrefix = gdLastStars > 0 ? gdLastStars + "★ — " : "";
+      const detail = gdLastStars > 0 ? " · loss " + gdLastLoss.toFixed(3) : "";
+      const text = starsPrefix + "⛰️ Gradient Pinball — α=" + lr.toFixed(3) + ", β=" + mom.toFixed(2) + detail + ". Optimization landscapes, playable.";
+      return { params: params, text: text, hashtags: "DeepLearning,Optimization", title: "Gradient Pinball" };
+    }
+    function gdPushShareUrl() { LabShare.write("gd", gdBuildShareState().params); }
+    function gdApplyShareState(s) {
+      if (!s) return;
+      setTimeout(function () {
+        const lr = parseFloat(s.lr);
+        const mom = parseFloat(s.mom);
+        if (isFinite(lr))  { refs.lr.value = lr;   refs.lr.dispatchEvent(new Event("input")); }
+        if (isFinite(mom)) { refs.mom.value = mom; refs.mom.dispatchEvent(new Event("input")); }
+        setTimeout(function () { if (refs.trainBtn) refs.trainBtn.click(); }, 220);
+      }, 30);
+    }
+    wireShareButton({
+      labKey: "gd",
+      btn: refs.shareBtn,
+      popover: refs.sharePopover,
+      preview: refs.shareText,
+      getState: gdBuildShareState,
+    });
+
     initPlot();
+
+    const sharedStateGd = LabShare.parse();
+    if (sharedStateGd && sharedStateGd.lab === "gd") gdApplyShareState(sharedStateGd);
   }
 
   /* ============================================================================
@@ -2416,7 +3090,12 @@
       polTurbo: $('[data-role="pol-turbo"]', root),
       verdict:  $('[data-role="verdict-pol"]', root),
       starsPol: $('[data-role="stars-pol"]', root),
+      shareBtn:     $('[data-role="pol-share-btn"]', root),
+      sharePopover: $('[data-role="pol-share-popover"]', root),
+      shareText:    $('[data-role="pol-share-text"]', root),
     };
+    let polLastStars = 0;
+    let polLastScore = 0;
 
     if (!refs.plot || !refs.trainBtn || !refs.lr || !refs.bs) return;
     // Data noise is fixed at a credible value; the player tunes lr + B only.
@@ -2720,7 +3399,10 @@
       else if (score >= 50) { polStars = 2; polTier = "Workable"; }
       else if (score >= 30) { polStars = 1; polTier = "Sketchy"; }
       setStars(refs.starsPol, polStars, polTier, { header: "Run grade" });
+      polLastStars = polStars;
+      polLastScore = score;
       polHint(polStars);
+      if (typeof polPushShareUrl === "function") polPushShareUrl();
     }
 
     function reset() {
@@ -2799,8 +3481,41 @@
     refs.lr.value = randAlpha;
     refs.bs.value = randBatch;
 
+    /* ---- Share: URL state + popover ---- */
+    function polBuildShareState() {
+      const lr = parseFloat(refs.lr.value);
+      const bsIdx = parseInt(refs.bs.value, 10);
+      const params = { lr: lr.toFixed(4), bs: bsIdx };
+      if (polLastStars > 0) params.r = polLastStars;
+      const starsPrefix = polLastStars > 0 ? polLastStars + "★ — " : "";
+      const detail = polLastStars > 0 ? " · score " + Math.round(polLastScore) : "";
+      const text = starsPrefix + "🔬 Training Fingerprint — α=" + lr.toFixed(3) + ", batch=" + BATCH_SIZES[bsIdx] + detail + ". Proof-of-Learning, playable.";
+      return { params: params, text: text, hashtags: "ProofOfLearning,MLsecurity", title: "Training Fingerprint" };
+    }
+    function polPushShareUrl() { LabShare.write("pol", polBuildShareState().params); }
+    function polApplyShareState(s) {
+      if (!s) return;
+      setTimeout(function () {
+        const lr = parseFloat(s.lr);
+        const bsIdx = parseInt(s.bs, 10);
+        if (isFinite(lr))    { refs.lr.value = lr;    refs.lr.dispatchEvent(new Event("input")); }
+        if (isFinite(bsIdx)) { refs.bs.value = bsIdx; refs.bs.dispatchEvent(new Event("input")); }
+        setTimeout(function () { if (refs.trainBtn) refs.trainBtn.click(); }, 220);
+      }, 30);
+    }
+    wireShareButton({
+      labKey: "pol",
+      btn: refs.shareBtn,
+      popover: refs.sharePopover,
+      preview: refs.shareText,
+      getState: polBuildShareState,
+    });
+
     updateSliderDisplay();
     reset();
+
+    const sharedStatePol = LabShare.parse();
+    if (sharedStatePol && sharedStatePol.lab === "pol") polApplyShareState(sharedStatePol);
   }
 
   /* ----------------------------------------------------------------- bootstrap */

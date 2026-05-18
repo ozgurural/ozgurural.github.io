@@ -1,18 +1,33 @@
 ---
 permalink: /lab/
-title: "Lab"
-excerpt: "Five interactive thought experiments from my research: distributed systems, ML security, fault tolerance, optimization. Pick a real scenario, set your strategy, and let the math grade your aim."
+title: "Lab — five playable thought experiments"
+description: "Block Race · Model Heist Detector · Training Fingerprint · Redundancy Reactor · Gradient Pinball. Real research math, made playable. Each run is shareable."
+excerpt: "Five interactive thought experiments from my research: Bitcoin consensus, ML security, fault tolerance, optimization. Pick a real scenario, set your strategy, and let the math grade your aim."
+header:
+  image: /images/lab-og/og-lab.png
+  og_image: /images/lab-og/og-lab.png
+  twitter_image: /images/lab-og/og-lab.png
 ---
+
+<!-- Per-lab og:image overrides. When a friend shares a link like /lab/?lab=tg#lab-tg
+     the unfurler still sees this single og:image, but the deep-link drops them into
+     the Block Race section with the player's exact run replayed. -->
+<meta property="og:image" content="https://ozgurural.github.io/images/lab-og/og-lab.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://ozgurural.github.io/images/lab-og/og-lab.png" />
+
 
 <section class="lab-hero" aria-label="Lab arcade intro">
   <span class="ep-eyebrow">Interactive research arcade</span>
   <h2 class="lab-hero__title">Aim. Fire. Get graded.</h2>
   <p class="lab-hero__copy">
-    Five test chambers from my research: distributed consensus, AI watermarks, training-run forensics, fault tolerance, optimization. Each one drops you into a real scenario; you pick the strategy, the simulation grades the result from <strong>Off-target</strong> to <strong>Frontier 🏆</strong>. The dial does not flatter. The cake, as always, is a lie. 5★ means you'd survive in production.
+    Five test chambers from my research: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization. Each one drops you into a real scenario; you pick the strategy, the simulation grades the result from <strong>Off-target</strong> to <strong>Frontier 🏆</strong>. The dial does not flatter. The cake, as always, is a lie. 5★ means you'd survive in production.
   </p>
   <div class="lab-hero__actions" aria-label="Jump to experiments">
+    <a href="#lab-tg">Mine, attack, defend Bitcoin</a>
     <a href="#lab-wm">Catch a stolen AI model</a>
-    <a href="#lab-pol">Prove a training run is real</a>
     <a href="#lab-tmr">Crash-test redundancy</a>
   </div>
 </section>
@@ -20,8 +35,8 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
 <nav class="lab-mission-deck" aria-label="Lab mission deck">
   <a class="lab-mission-card" href="#lab-tg">
     <span class="lab-mission-card__code">01</span>
-    <strong>Consensus Casino</strong>
-    <span>Make unreliable messages behave like infrastructure.</span>
+    <strong>Block Race</strong>
+    <span>Mine Bitcoin, attempt a double-spend, or defend a payment.</span>
   </a>
   <a class="lab-mission-card" href="#lab-wm">
     <span class="lab-mission-card__code">02</span>
@@ -48,7 +63,7 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
 <div class="lab-quest" role="region" aria-label="Lab mission progress">
   <p class="lab-quest__msg" data-role="quest-msg">Five labs, each a scenario with a measurable goal. 5★ means you found the minimum play that beats it. Unlocks the badge.</p>
   <ul class="lab-quest__list">
-    <li class="lab-quest__item" data-quest-item="tg"><span class="lab-quest__name">Consensus</span> <span class="lab-quest__status" data-role="quest-tg">Locked</span></li>
+    <li class="lab-quest__item" data-quest-item="tg"><span class="lab-quest__name">Block Race</span> <span class="lab-quest__status" data-role="quest-tg">Locked</span></li>
     <li class="lab-quest__item" data-quest-item="wm"><span class="lab-quest__name">Watermark</span> <span class="lab-quest__status" data-role="quest-wm">Locked</span></li>
     <li class="lab-quest__item" data-quest-item="tmr"><span class="lab-quest__name">TMR</span> <span class="lab-quest__status" data-role="quest-tmr">Locked</span></li>
     <li class="lab-quest__item" data-quest-item="pol"><span class="lab-quest__name">Proof-of-Learning</span> <span class="lab-quest__status" data-role="quest-pol">Locked</span></li>
@@ -60,7 +75,7 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
 <div class="lab-badges" id="lab-badges" aria-live="polite" role="region" aria-label="Badge gallery">
   <strong>Badges</strong>
   <div class="lab-badges__list">
-    <div class="lab-badge lab-badge--locked" data-badge="tg">Consensus</div>
+    <div class="lab-badge lab-badge--locked" data-badge="tg">Block Race</div>
     <div class="lab-badge lab-badge--locked" data-badge="wm">Watermark</div>
     <div class="lab-badge lab-badge--locked" data-badge="tmr">TMR</div>
     <div class="lab-badge lab-badge--locked" data-badge="pol">Proof-of-Learning</div>
@@ -69,50 +84,50 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
 </div>
 
 <section class="lab-card lab-experiment" id="lab-tg">
-  <span class="ep-eyebrow">Distributed systems · Consensus</span>
-  <h2>Consensus Casino</h2>
-  <p class="lab-card__lead">🤝 Two friends are texting to meet up; the cell tower keeps eating their messages. Two strategies on the table: send once and pray, or just keep retrying until something lands. One of those is, mathematically, the entire reason your phone reconnects on weak Wi-Fi.</p>
-  <div class="lab-card__mission">
+  <span class="ep-eyebrow">Blockchain · Nakamoto consensus</span>
+  <h2>Block Race</h2>
+  <p class="lab-card__lead">⛏️ Bitcoin's entire security argument fits on a napkin Satoshi never published: longest chain wins, honest hashrate outpaces malicious, attack probability decays exponentially in z. The rest is theatre. Three roles, one protocol — <strong>mine honestly</strong>, <strong>attempt a heist</strong>, or <strong>hold the line</strong>. The math is whitepaper §11; the bad decisions are entirely yours. There is no spoon. There is only Poisson.</p>
+
+  <div class="lab-mode-tabs" data-role="tg-mode-tabs" role="tablist" aria-label="Pick your role">
+    <button type="button" class="lab-mode-tab lab-mode-tab--active" data-mode="mine" role="tab" aria-selected="true">
+      <span class="lab-mode-tab__icon">⛏️</span>
+      <span class="lab-mode-tab__name">Mine</span>
+      <span class="lab-mode-tab__hint">Yeah Mr. White — yeah, hash!</span>
+    </button>
+    <button type="button" class="lab-mode-tab" data-mode="attack" role="tab" aria-selected="false">
+      <span class="lab-mode-tab__icon">🦹</span>
+      <span class="lab-mode-tab__name">Attack</span>
+      <span class="lab-mode-tab__hint">I am the one who orphans.</span>
+    </button>
+    <button type="button" class="lab-mode-tab" data-mode="defend" role="tab" aria-selected="false">
+      <span class="lab-mode-tab__icon">🛡️</span>
+      <span class="lab-mode-tab__name">Defend</span>
+      <span class="lab-mode-tab__hint">Tread lightly. Accept patiently.</span>
+    </button>
+  </div>
+
+  <div class="lab-card__mission" data-role="tg-mission">
     <span class="lab-card__mission-kicker">Your move</span>
-    <strong>Pick the scenario; find the minimum retries that beat the bar.</strong>
-    <span>Each scenario sets its own reliability target: 99.9% on home WiFi, 70% in a hurricane. 5★ is the fewest tries that gets you there.</span>
-    <div class="lab-card__mission-pills"><span>5★ minimum tries</span><span>4★ wasteful win</span><span>3★ close miss</span></div>
+    <strong data-role="tg-mission-head">Pick a rig, mine for a span, hit the expected block yield.</strong>
+    <span data-role="tg-mission-sub">Each tier sets a target block count over a fixed window. 5★ means you found at least the expected number with the smallest rig that can hit it.</span>
+    <div class="lab-card__mission-pills"><span>5★ Heisenberg-grade</span><span>4★ Mr. White budget</span><span>3★ Pinkman bracket</span></div>
   </div>
 
   <div class="lab-experiment__panel">
     <div class="lab-experiment__controls">
       <div class="lab-levels" data-role="tg-levels" aria-label="Pick scenario">
-        <strong class="lab-levels__title">Pick the scenario</strong>
-        <div class="lab-levels__row">
-          <button type="button" class="lab-level" data-p="0.15" data-goal="0.999" data-min-n="4" data-name="Home WiFi">
-            <span class="lab-level__icon">🏖️</span>
-            <span class="lab-level__name">Home WiFi</span>
-            <span class="lab-level__hint">15% drop · need 99.9%</span>
-          </button>
-          <button type="button" class="lab-level lab-level--active" data-p="0.40" data-goal="0.99" data-min-n="6" data-name="City cafe">
-            <span class="lab-level__icon">🏙️</span>
-            <span class="lab-level__name">City cafe</span>
-            <span class="lab-level__hint">40% drop · need 99%</span>
-          </button>
-          <button type="button" class="lab-level" data-p="0.65" data-goal="0.95" data-min-n="7" data-name="Subway">
-            <span class="lab-level__icon">🚇</span>
-            <span class="lab-level__name">Subway</span>
-            <span class="lab-level__hint">65% drop · need 95%</span>
-          </button>
-          <button type="button" class="lab-level" data-p="0.85" data-goal="0.70" data-min-n="8" data-name="Storm">
-            <span class="lab-level__icon">🌪️</span>
-            <span class="lab-level__name">Storm</span>
-            <span class="lab-level__hint">85% drop · need 70%</span>
-          </button>
+        <strong class="lab-levels__title" data-role="tg-levels-title">Pick your rig</strong>
+        <div class="lab-levels__row" data-role="tg-levels-row">
+          <!-- populated by JS for the current mode -->
         </div>
       </div>
       <label class="lab-control">
         <span class="lab-control__row">
-          <span class="lab-control__name">Your strategy: how many tries?</span>
-          <span class="lab-control__var">N</span>
-          <span class="lab-control__value" data-role="n-val">3</span>
+          <span class="lab-control__name" data-role="tg-slider-label">Your strategy: blocks to mine?</span>
+          <span class="lab-control__var" data-role="tg-slider-var">N</span>
+          <span class="lab-control__value" data-role="n-val">24</span>
         </span>
-        <input type="range" min="1" max="10" step="1" value="3" data-role="n" aria-label="how many tries">
+        <input type="range" min="1" max="48" step="1" value="24" data-role="n" aria-label="strategy slider">
       </label>
       <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="tg-run-btn">
         <span class="lab-btn__text">Run experiment</span>
@@ -121,15 +136,21 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
     </div>
 
     <div class="lab-experiment__visual">
-      <div class="lab-tg__field" aria-hidden="true">
-        <div class="lab-tg__army lab-tg__army--a"><div class="lab-tg__flag">A</div></div>
-        <div class="lab-tg__valley" data-role="valley">
-          <span class="lab-tg__valley-label">channel · loss <span data-role="p-display">0.40</span></span>
+      <div class="lab-chain" aria-hidden="true" data-role="chain">
+        <div class="lab-chain__row lab-chain__row--honest">
+          <span class="lab-chain__label" data-role="chain-honest-label">⛏️ Your chain</span>
+          <span class="lab-chain__blocks" data-role="chain-honest"></span>
+          <span class="lab-chain__count" data-role="chain-honest-count">0</span>
         </div>
-        <div class="lab-tg__army lab-tg__army--b"><div class="lab-tg__flag">B</div></div>
+        <div class="lab-chain__row lab-chain__row--attacker" data-role="chain-attacker-row" hidden>
+          <span class="lab-chain__label" data-role="chain-attacker-label">🦹 Attacker</span>
+          <span class="lab-chain__blocks" data-role="chain-attacker"></span>
+          <span class="lab-chain__count" data-role="chain-attacker-count">0</span>
+        </div>
+        <span class="lab-chain__caption" data-role="chain-caption">⛏️ each block ≈ 10 minutes · hashrate share = chance of finding the next one</span>
       </div>
 
-      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot" preserveAspectRatio="xMidYMid meet" role="img" aria-label="win probability vs protocol depth"></svg>
+      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot" preserveAspectRatio="xMidYMid meet" role="img" aria-label="block race probability curve"></svg>
     </div>
 
     <div class="lab-experiment__scoreline">
@@ -138,29 +159,46 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
     </div>
     <div class="lab-experiment__verdict" data-role="verdict-tg" aria-live="polite">
       <span class="lab-experiment__verdict-head">…</span>
-      <span class="lab-experiment__verdict-sub">Pick a scenario, choose retries, hit Run.</span>
+      <span class="lab-experiment__verdict-sub">Pick a role, choose your strategy, hit Run.</span>
     </div>
     <div class="lab-experiment__readout">
       <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Your reliability</span>
+        <span class="lab-experiment__metric-label" data-role="metric-a-label">Expected blocks</span>
         <span class="lab-experiment__metric-value" data-role="naive-val">…</span>
-        <span class="lab-experiment__metric-formula">retries vs lossy channel</span>
+        <span class="lab-experiment__metric-formula" data-role="metric-a-formula">your hashrate × window</span>
       </div>
       <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">If you required every retry to land</span>
+        <span class="lab-experiment__metric-label" data-role="metric-b-label">90th-percentile yield</span>
         <span class="lab-experiment__metric-value" data-role="strict-val">…</span>
-        <span class="lab-experiment__metric-formula">the unforgiving alternative</span>
+        <span class="lab-experiment__metric-formula" data-role="metric-b-formula">variance is real, plan for it</span>
       </div>
     </div>
-    <p class="lab-experiment__insight" data-role="insight">Drag the sliders. Pretty plots, ugly impossibility: deterministic consensus over lossy channels still does not exist.</p>
+    <p class="lab-experiment__insight" data-role="insight">Pick a rig and a mining window. Hashrate share decides how often you win the next block; variance decides how lumpy your weeks feel.</p>
     <p class="lab-experiment__sweet" data-role="sweet-spot-tg" hidden></p>
   </div>
 
   <details class="lab-reveal">
-    <summary>🧠 What did you just learn?</summary>
-    <p><strong>Retrying beats coordinating.</strong> If your strategy needs <em>every</em> step to succeed, even tiny losses compound. Three 90% steps in a row only succeed 73% of the time. But if you only need <em>one</em> of many copies to arrive, your odds climb fast. This is the trick behind TCP retries, blockchain confirmation depth, and how Cassandra and DynamoDB stay alive when networks misbehave.</p>
-    <p><strong>The famous impossibility:</strong> there's a 1975 result called the <em>Two Generals problem</em>. Two armies on opposite hills can never be 100% sure they agree on an attack time over a lossy channel, no matter how many messages they send. You can only get <em>arbitrarily close</em> to certainty by trying more times. Which is exactly what every modern distributed system actually does.</p>
+    <summary>🧠 What did you just learn? (also: is this a Black Mirror episode?)</summary>
+    <p><strong>Nakamoto consensus is a foot race, not a vote.</strong> Every ~10 minutes, every miner is racing to solve a hash puzzle. Whoever wins extends the chain. Your chance of winning the next block equals your share of total hashrate. Over many blocks, your yield converges to that share — but any individual week can be wildly lucky or unlucky (Poisson variance, λ = q·N). Pools exist because solo variance is brutal. Heisenberg's uncertainty principle has nothing on the variance of one ASIC.</p>
+    <p><strong>The double-spend math.</strong> If an attacker controls fraction q of the network and the honest chain is z blocks ahead, the chance they ever catch up is, per Satoshi's whitepaper §11, <em>1 − Σ Poisson(k; zq/p)·(1−(q/p)<sup>z−k</sup>)</em>. At q = 30%, six confirmations cuts attack probability to ~17.7%. At q = 10%, the same six confirmations cuts it to 0.024%. That's the entire reason exchanges wait six blocks. There is no spoon. There is only Poisson.</p>
+    <p><strong>Defense is exponential.</strong> Each extra confirmation costs you one block-time (~10 minutes) and roughly squares the attacker's odds against you. The longer you wait, the more impossible the heist becomes — which is why patient merchants never get robbed, and impatient ones get to star in their own Black Mirror episode. Tread lightly. Better Call Saul. Wubba lubba dub dub.</p>
   </details>
+
+  <div class="lab-share" data-role="tg-share-root">
+    <button type="button" class="lab-share__btn" data-role="tg-share-btn" aria-haspopup="dialog" aria-expanded="false">
+      <span class="lab-share__btn-icon">🔗</span>
+      <span class="lab-share__btn-text">Share this run</span>
+    </button>
+    <div class="lab-share__popover" data-role="tg-share-popover" role="dialog" aria-label="Share this run" hidden>
+      <p class="lab-share__preview" data-role="tg-share-text">5★ — Block Race · share text appears here</p>
+      <div class="lab-share__actions">
+        <button type="button" data-share="copy">📋 Copy link</button>
+        <button type="button" data-share="x">𝕏 Tweet</button>
+        <button type="button" data-share="li">in LinkedIn</button>
+        <button type="button" data-share="close" aria-label="Close share">✕</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="lab-card lab-experiment" id="lab-wm">
@@ -263,6 +301,22 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
     <p><strong>Tiny secrets in many places beat one big secret.</strong> An AI model has hundreds of millions of internal numbers. A watermark is a faint statistical pattern spread across many of them. Each individual mark is way too small to notice, but together they form a signature only you can recognize.</p>
     <p>This is how labs at OpenAI, Google, and Anthropic plan to prove "yes, that model is ours" if it gets leaked. The same trick is used to find AI-generated text, mark images from specific cameras, and prove which lab produced a research paper. The harder the thief tries to erase one mark, the more visible the others become.</p>
   </details>
+
+  <div class="lab-share" data-role="wm-share-root">
+    <button type="button" class="lab-share__btn" data-role="wm-share-btn" aria-haspopup="dialog" aria-expanded="false">
+      <span class="lab-share__btn-icon">🔗</span>
+      <span class="lab-share__btn-text">Share this run</span>
+    </button>
+    <div class="lab-share__popover" data-role="wm-share-popover" role="dialog" aria-label="Share this run" hidden>
+      <p class="lab-share__preview" data-role="wm-share-text">5★ — Model Heist Detector · share text appears here</p>
+      <div class="lab-share__actions">
+        <button type="button" data-share="copy">📋 Copy link</button>
+        <button type="button" data-share="x">𝕏 Tweet</button>
+        <button type="button" data-share="li">in LinkedIn</button>
+        <button type="button" data-share="close" aria-label="Close share">✕</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="lab-card lab-experiment" id="lab-pol">
@@ -336,6 +390,22 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
     <p><strong>The journey is harder to fake than the destination.</strong> The final weights of a trained AI are just a giant list of numbers, copy-pasteable in seconds. But the <em>path</em> the loss took during training? It's noisy, bumpy, has little flat spots when learning stalls, sudden drops when it finds a shortcut. That fingerprint is almost impossible to forge after the fact.</p>
     <p>This is called <em>Proof-of-Learning</em>, and it matters for: patent disputes ("did you really invent this?"), competitive intelligence ("did they actually train, or did they distill ours?"), and verifying open-source claims. Same idea as a digital signature, but for the training process instead of the model.</p>
   </details>
+
+  <div class="lab-share" data-role="pol-share-root">
+    <button type="button" class="lab-share__btn" data-role="pol-share-btn" aria-haspopup="dialog" aria-expanded="false">
+      <span class="lab-share__btn-icon">🔗</span>
+      <span class="lab-share__btn-text">Share this run</span>
+    </button>
+    <div class="lab-share__popover" data-role="pol-share-popover" role="dialog" aria-label="Share this run" hidden>
+      <p class="lab-share__preview" data-role="pol-share-text">5★ — Training Fingerprint · share text appears here</p>
+      <div class="lab-share__actions">
+        <button type="button" data-share="copy">📋 Copy link</button>
+        <button type="button" data-share="x">𝕏 Tweet</button>
+        <button type="button" data-share="li">in LinkedIn</button>
+        <button type="button" data-share="close" aria-label="Close share">✕</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="lab-card lab-experiment" id="lab-tmr">
@@ -438,6 +508,22 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
     <p><strong>Three of the same thing is still one thing.</strong> Backup computers only protect you if they fail in different ways. Three identical computers running the same software will hit the same bug at the same moment, and then majority voting gives the wrong answer with confidence.</p>
     <p>This is what crashed the first Ariane 5 rocket in 1996: it had redundant flight computers, but they all ran the same code, so they all overflowed the same variable at the same instant. To get real safety, planes use computers from <em>different vendors</em>, written by <em>different teams</em>, in <em>different programming languages</em>. Same idea protects nuclear reactors, Mars rovers, and the secure chip in your phone.</p>
   </details>
+
+  <div class="lab-share" data-role="tmr-share-root">
+    <button type="button" class="lab-share__btn" data-role="tmr-share-btn" aria-haspopup="dialog" aria-expanded="false">
+      <span class="lab-share__btn-icon">🔗</span>
+      <span class="lab-share__btn-text">Share this run</span>
+    </button>
+    <div class="lab-share__popover" data-role="tmr-share-popover" role="dialog" aria-label="Share this run" hidden>
+      <p class="lab-share__preview" data-role="tmr-share-text">5★ — Redundancy Reactor · share text appears here</p>
+      <div class="lab-share__actions">
+        <button type="button" data-share="copy">📋 Copy link</button>
+        <button type="button" data-share="x">𝕏 Tweet</button>
+        <button type="button" data-share="li">in LinkedIn</button>
+        <button type="button" data-share="close" aria-label="Close share">✕</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="lab-card lab-experiment" id="lab-gd">
@@ -512,6 +598,22 @@ excerpt: "Five interactive thought experiments from my research: distributed sys
     <p><strong>Learning is rolling downhill.</strong> Every modern AI (GPT, image generators, the search ranking on your phone) learns by repeatedly nudging its parameters in whichever direction makes the loss smaller. That's literally rolling a ball downhill on a high-dimensional landscape. Step size matters: too small and you crawl forever, too big and you bounce out of the valley you wanted.</p>
     <p><strong>Momentum is the killer feature.</strong> It lets the ball carry forward through small ridges that would otherwise trap it. This idea, invented for physics simulations in the 1960s, is why training a large model in 2026 finishes in days instead of years. Same algorithm in your phone's autocorrect, your camera's autofocus, and every AI lab on Earth.</p>
   </details>
+
+  <div class="lab-share" data-role="gd-share-root">
+    <button type="button" class="lab-share__btn" data-role="gd-share-btn" aria-haspopup="dialog" aria-expanded="false">
+      <span class="lab-share__btn-icon">🔗</span>
+      <span class="lab-share__btn-text">Share this run</span>
+    </button>
+    <div class="lab-share__popover" data-role="gd-share-popover" role="dialog" aria-label="Share this run" hidden>
+      <p class="lab-share__preview" data-role="gd-share-text">5★ — Gradient Pinball · share text appears here</p>
+      <div class="lab-share__actions">
+        <button type="button" data-share="copy">📋 Copy link</button>
+        <button type="button" data-share="x">𝕏 Tweet</button>
+        <button type="button" data-share="li">in LinkedIn</button>
+        <button type="button" data-share="close" aria-label="Close share">✕</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="lab-footer">
