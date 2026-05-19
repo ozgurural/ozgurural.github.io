@@ -63,9 +63,21 @@ If you build systems where heavy machinery, complex architecture, and regulatory
 * **Build instructor tools like mission control.** Fast feedback beats flashy interfaces. The most important feature remains the rewind button.
 * **Understand the infrastructure you are building.** We tell EASA and the FAA we are building a training device to make better pilots. But by demanding such extreme fidelity, are they actually forcing us to build the exact data pipelines that will one day train autonomous replacements? 
 
+## The Obvious Objection
+
+"Regulators will never let an unverified AI fly passengers." That objection is correct today, and irrelevant tomorrow. Three things are converging.
+
+**One.** Aviation regulators are already drafting AI-specific certification frameworks. EASA's AI Roadmap and the FAA's emerging machine-learning safety guidance are funded work products, not whiteboard sessions.
+
+**Two.** Cargo precedes passenger by five to seven years in every aviation precedent. The autonomous Caravan flying packages tonight is the operational test bed for the autonomous passenger jet a decade from now.
+
+**Three.** The simulator is not just the training environment. It is the verification environment. The same certified physics that trained the AI is the only thing that can audit it. Regulators do not need to trust the neural network. They need to trust the simulator. And they already do.
+
 ## The Reality Check
 
-If you think this is purely theoretical, look at the defense and cargo sectors. DARPA and autonomous aviation startups are already bridging the Sim-to-Real gap, plugging Reinforcement Learning agents directly into high-fidelity flight physics engines. The military is already compiling these datasets. The autonomous cargo startups are already doing it. 
+If you think this is purely theoretical, look at what is already flying. Xwing has flown autonomous Cessna 208 Caravans on FAA Part 135 cargo routes with safety pilots in the seat, an autonomy stack partially trained against high-fidelity flight simulators. Reliable Robotics is walking the same regulatory path with the same airframe. Wisk Aero, the Boeing-backed autonomous eVTOL program, runs thousands of simulated approaches against the same physics models its real aircraft will fly. DARPA's CODE and ALIAS programs have been plugging reinforcement learning into flight-physics engines for years.
+
+Here is a prediction: within ten years, an autonomous cargo aircraft trained primarily in a Level D simulator will be FAA-certified for routine commercial operations. The flight itself will be a footnote. The simulator infrastructure that made it possible will already be a decade old.
 
 The only thing standing between this technology and a commercial A320 is the regulatory paperwork. The data pipeline is already built.
 
