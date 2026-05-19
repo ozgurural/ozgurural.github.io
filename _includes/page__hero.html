@@ -2,6 +2,8 @@
 
 {% if page.header.image contains "://" %}
   {% capture img_path %}{{ page.header.image }}{% endcapture %}
+{% elsif page.header.image | slice: 0 == "/" %}
+  {% capture img_path %}{{ page.header.image | prepend: base_path }}{% endcapture %}
 {% else %}
   {% capture img_path %}{{ page.header.image | prepend: "/images/" | prepend: base_path }}{% endcapture %}
 {% endif %}
@@ -14,6 +16,8 @@
 
 {% if page.header.overlay_image contains "://" %}
   {% capture overlay_img_path %}{{ page.header.overlay_image }}{% endcapture %}
+{% elsif page.header.overlay_image | slice: 0 == "/" %}
+  {% capture overlay_img_path %}{{ page.header.overlay_image | prepend: base_path }}{% endcapture %}
 {% elsif page.header.overlay_image %}
   {% capture overlay_img_path %}{{ page.header.overlay_image | prepend: "/images/" | prepend: base_path }}{% endcapture %}
 {% endif %}
