@@ -1,11 +1,11 @@
 ---
-title: "The EASA and FAA Certified Digital Twin: Are We Building the AI Proving Ground?"
+title: "Flight Simulators Are Becoming the AI Proving Ground"
 date: 2026-05-19
 permalink: /posts/2026/05/avion-level-d-ffs/
 redirect_from:
   - /posts/2025/09/avion-level-d-ffs/
-description: "A Level D flight simulator is a tightly certified digital twin. I have been at Avion since 2023 engineering these systems. The question is whether this deterministic architecture is already becoming the training ground for autonomous AI."
-excerpt: "A Level D flight simulator is a tightly certified digital twin. I have been at Avion since 2023 engineering these systems. The question is whether this deterministic architecture is already becoming the training ground for autonomous AI."
+description: "What if flight simulators are the AI proving ground nobody is talking about? Three years inside Avion."
+excerpt: "What if flight simulators are the AI proving ground nobody is talking about? Three years inside Avion."
 categories: technical
 tags:
   - aviation
@@ -44,7 +44,7 @@ The whiteboards are never empty. The coffee is always warmer than the hydraulic 
 
 Aviation regulators operate on extended timelines where a decade is considered a rapid transition. They currently view AI as a predictive maintenance tool or a biometric dashboard. This view might be completely underestimating the underlying data architecture.
 
-For a Reinforcement Learning agent, there is absolutely zero mathematical difference between a high-fidelity data stream from a real Airbus A320 and a tightly certified digital twin. The simulation serves as the absolute ground truth.
+For a Reinforcement Learning agent, the gap between a high-fidelity data stream from a real Airbus A320 and a tightly certified digital twin collapses to nearly zero. The simulation is, for training purposes, indistinguishable from the ground truth.
 
 While the commercial aerospace industry focuses entirely on building human training tools, we have to ask if we are inadvertently laying the exact hardware and software foundations required for autonomous systems. Look at the architecture, and ask yourself if these three realities are already quietly rewriting the sector's future:
 
