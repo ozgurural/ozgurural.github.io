@@ -15,7 +15,7 @@ Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, 
 
 ## Morning Run-Up
 
-Daytona Beach may be famous for NASCAR and spring breakers, but my calendar reads more like the Level-D simulator test cards I drafted at [Avion Full Flight Simulators](/posts/2025/09/avion-level-d-ffs/). A typical weekday now unfolds in arcs instead of tidy half-hour boxes:
+Daytona Beach may be famous for NASCAR and spring breakers, but my calendar reads more like the Level-D simulator test cards I drafted at [Avion Full Flight Simulators](/posts/2026/05/avion-level-d-ffs/). A typical weekday now unfolds in arcs instead of tidy half-hour boxes:
 
 1. **First-light warm-up.** Sunrise miles along the Halifax River clear out the humidity, cue up podcast snippets on distributed learning, and, if I’m lucky, deliver an opening joke for the next conference talk. Running in Florida heat is the closest I get to simulating a thermal chamber without filing paperwork.
 2. **Systems go/no-go.** By 7:30 a.m. I am in the Cybersecurity & Assured Systems lab coaxing GPU clusters awake, replaying telemetry the way I once replayed avionics data streams. The same bounded-queue backpressure tricks that kept Avion dashboards responsive now keep my Prometheus alerts from screaming when a model checkpoint stalls.
