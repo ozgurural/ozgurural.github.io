@@ -54,15 +54,6 @@ While the commercial aerospace industry focuses entirely on building human train
 
 **3. The Determinism Trap.** Regulators will naturally demand proofs of determinism that Deep Learning inherently resists. They will drown the first autonomous flight applications in paperwork, terrified of a black-box model controlling a passenger aircraft. But eventually, the statistical success will become undeniable. When a neural network can theoretically land a crippled airliner in a crosswind 10,000 times in a row within this simulation without a single failure state, how long until someone brings that data to the regulators?
 
-## Architectural Rules for the Transition
-
-If you build systems where heavy machinery, complex architecture, and regulatory bureaucracy collide, here are four rules that survive the pressure test:
-
-* **Treat every sensor as guilty until proven innocent.** Build redundancy from day one. If your data pipeline stutters, any future AI trains on garbage, and your expensive simulator becomes warehouse decoration.
-* **Automate the certification math.** Regulators love repeatability. If you hand them a perfectly formatted automated test report, they rarely ask about the underlying implementation.
-* **Build instructor tools like mission control.** Fast feedback beats flashy interfaces. The most important feature remains the rewind button.
-* **Understand the infrastructure you are building.** We tell EASA and the FAA we are building a training device to make better pilots. But by demanding such extreme fidelity, are they actually forcing us to build the exact data pipelines that will one day train autonomous replacements? 
-
 ## The Obvious Objection
 
 "Regulators will never let an unverified AI fly passengers." That objection is correct today, and irrelevant tomorrow. Three things are converging.
