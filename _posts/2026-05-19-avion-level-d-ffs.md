@@ -16,13 +16,13 @@ tags:
 
 A Level D flight simulator is a federally certified lie.
 
-Bolted to the ground. Costs tens of millions of dollars. Designed to fool airline pilots through engine failures that never happen, fog-blind landings that never happen, hydraulic system collapses that never happen. After two hours inside, a pilot can earn the legal right to fly a 737 they have never actually flown. The FAA signs off in writing.
+Bolted to the ground. Costs tens of millions of dollars. Designed to fool airline pilots through engine failures that never happen, fog-blind landings that never happen, hydraulic system collapses that never happen. After two hours inside, a pilot can earn the legal right to fly an A320 that they have never actually flown. The FAA signs off in writing.
 
 I have been at [Avion](https://www.aviongroup.aero) since 2023, building these. The strange part is what comes next. The same machinery built to fool human pilots is becoming the training ground for the AI that will eventually replace them.
 
 ## What "Level D" Actually Means
 
-Regulators certify four tiers of flight simulator. Level A is essentially a video game. Level D is the top. To earn that letter, the device has to do four impossible things at once:
+Regulators certify four tiers of flight simulators. Level A is essentially a video game. Level D is the top. To earn that letter, the device has to do four impossible things at once:
 
 1. Match the real aircraft's controls so closely that a panicked pilot yanking the yoke past the stops feels exactly the resistance they would feel in the real cockpit.
 2. Project a wraparound view of the world that is real enough, and fast enough, that the pilot's inner ear and inner skeptic both stay quiet.
@@ -37,7 +37,7 @@ Three things, relentlessly.
 
 **The data plumbing.** A Level D simulator generates roughly 50 gigabytes of sensor data every second. That data has to be captured, archived, and streamed to the instructor's station without missing a beat. If the data path stutters, the simulator stutters, and a training session worth thousands of dollars goes in the trash.
 
-**The flight model.** Inside the box runs a digital copy of the aircraft's physics, accurate enough to fool a test pilot with thousands of hours in the real machine. We iterate this model nightly, comparing it against certification data, and either it matches the real aircraft or it does not ship. There is no version of "we will patch it in the field." The field is a flight deck.
+**The flight model.** Inside the box, a digital copy of the aircraft's physics runs, accurate enough to fool a test pilot with thousands of hours in the real machine. We iterate this model nightly, comparing it against certification data, and either it matches the real aircraft, or it does not ship. There is no version of "we will patch it in the field." The field is a flight deck.
 
 **The instructor's chair.** The instructor needs a control panel that lets them break the simulator in interesting ways: fail an engine here, drop hydraulics there, blind the windscreen with fog at the exact moment the pilot is committed to land. They need to scrub time backward and forward, like watching a Netflix episode of *How Not to Land an Airplane*. The most useful object in the building is the rewind button. Pilots learn more from thirty seconds of replay than from thirty minutes of lecture.
 
@@ -45,11 +45,11 @@ The whiteboards are never empty. The coffee is always warmer than the hydraulic 
 
 ## The Hyperreal Sky: Simulators as AI Proving Grounds
 
-Aviation regulators—bless their conservative hearts—believe the current paradigm will last forever. The FAA and EASA operate on a timeline where a decade is considered a "rapid transition." They look at AI as a neat trick for predictive maintenance or perhaps a fancy biometric dashboard for the instructor. 
+Aviation regulators—bless their conservative hearts—believe the current paradigm will last forever. The FAA and EASA operate on a timeline where a decade is considered a "rapid transition." They see AI as a neat trick for predictive maintenance or, perhaps, a fancy biometric dashboard for the instructor. 
 
 This is a spectacular miscalculation. 
 
-There is a philosophical concept that a perfect simulation eventually becomes indistinguishable from reality itself. In Level D aerospace engineering, this isn't abstract theory; it's a technical specification. For a Reinforcement Learning agent, there is absolutely zero mathematical difference between a 50 GB/s data stream from a real Boeing 737 and a perfectly modeled digital twin. The simulation *is* the reality.
+There is a philosophical concept that a perfect simulation eventually becomes indistinguishable from reality itself. In Level D aerospace engineering, this isn't abstract theory; it's a technical specification. For a Reinforcement Learning agent, there is absolutely zero mathematical difference between a 50 GB/s data stream from a real Airbus A320 and a perfectly modeled digital twin. The simulation *is* the reality.
 
 The aerospace industry thinks it is building better training tools for humans. What we are actually building is the world's most expensive, perfectly physically-grounded training environment for the autonomous systems that will eventually replace them. 
 
@@ -59,7 +59,7 @@ Three realities are quietly rewriting the sector:
 
 **2. The Biometric Baseline.** We are capturing every micro-correction a human pilot makes when an engine flames out. We map their eye movements against the instrument scan. We record the exact moment human panic introduces a 300-millisecond lag in rudder response. The AI doesn't just learn how to fly the plane; it learns all the specific mathematical boundaries of human failure. 
 
-**3. The Determinism Trap.** Regulators will fight the AI transition, naturally. They will demand mathematical proofs of determinism that Deep Learning inherently resists. They will drown the first autonomous flight applications in paperwork, terrified of a black-box model controlling a 70-ton aircraft. But eventually, the math will become undeniable. When a neural network can land a crippled airliner in a crosswind 10,000 times in a row without breaking a digital sweat, the regulatory red tape will suddenly look less like a safety net and more like an archaic liability.
+**3. The Determinism Trap.** Regulators will naturally fight the AI transition. They will demand mathematical proofs of determinism that Deep Learning inherently resists. They will drown the first autonomous flight applications in paperwork, terrified of a black-box model controlling a 70-ton aircraft. But eventually, the math will become undeniable. When a neural network can land a crippled airliner in a crosswind 10,000 times in a row without breaking a digital sweat, the regulatory red tape will suddenly look less like a safety net and more like an archaic liability.
 
 ## What I Tell Anyone Building This Stuff
 
@@ -79,4 +79,4 @@ Until that handover finishes, I will keep the whiteboard ready and the coffee wa
 1. [Avion Group](https://www.aviongroup.aero), where I have been building Level D simulators since 2023
 2. [FAA Notice 8900.491: Simulator Qualification Guidance](https://www.faa.gov/documentLibrary/media/Notice/N8900_491.pdf)
 3. [ICAO Doc 9625: Manual of Criteria for the Qualification of Flight Simulation Training Devices](https://store.icao.int/en/manual-of-criteria-for-the-qualification-of-flight-simulation-training-devices-doc-9625)
-4. [Airbus](https://www.airbus.com) and [Boeing](https://www.boeing.com), the aircraft manufacturers whose machines we are certified to imitate
+4. [Airbus](https://www.airbus.com), the aircraft manufacturer whose machines we are certified to imitate
