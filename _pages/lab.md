@@ -3,15 +3,11 @@ permalink: /lab/
 title: "Lab — five playable thought experiments"
 description: "Block Race · Model Heist Detector · Training Fingerprint · Redundancy Reactor · Gradient Pinball. Real research math, made playable. Each run is shareable."
 excerpt: "Five interactive thought experiments from my research: Bitcoin consensus, ML security, fault tolerance, optimization. Pick a real scenario, set your strategy, and let the math grade your aim."
-header:
-  image: /images/lab-og/og-lab.png
-  og_image: /images/lab-og/og-lab.png
-  twitter_image: /images/lab-og/og-lab.png
 ---
 
-<!-- Per-lab og:image overrides. When a friend shares a link like /lab/?lab=tg#lab-tg
-     the unfurler still sees this single og:image, but the deep-link drops them into
-     the Block Race section with the player's exact run replayed. -->
+<!-- Social card meta tags (og + Twitter). We DON'T set header.image in the
+     front-matter because Minimal Mistakes renders that as a giant page
+     banner; the og:image below is for unfurling on X / LinkedIn only. -->
 <meta property="og:image" content="https://ozgurural.github.io/images/lab-og/og-lab.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -657,4 +653,4 @@ header:
   <p>We hope you enjoyed this mandatory voluntary science. A sharper experiment, a parameter you'd like exposed, a probe you want added? <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=lab-feedback&amp;title=Lab+feedback">Open an issue</a> or <a href="mailto:drozgurural@gmail.com">email me</a>. The stack thanks you for participating.</p>
 </section>
 
-<script src="{{ '/assets/js/lab.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/lab.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
