@@ -1,6 +1,6 @@
 ---
 permalink: /lab/training-fingerprint/
-title: "Training Fingerprint — Proof-of-Learning, playable"
+title: "Proof-of-Learning (SecurePoL) — Playable Thought Experiment"
 description: "Earn Gold Proof. The journey is harder to fake than the destination."
 excerpt: "Prove a model was trained, not downloaded. The loss-curve fingerprint is almost impossible to forge after the fact."
 header:
@@ -26,4 +26,4 @@ sitemap: false
 })();
 </script>
 
-Loading [Training Fingerprint](/lab/?lab=pol#lab-pol)…
+Loading [Proof-of-Learning (SecurePoL)](/lab/?lab=pol#lab-pol)…

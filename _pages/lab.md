@@ -1,7 +1,7 @@
 ---
 permalink: /lab/
 title: "Lab — five playable thought experiments"
-description: "Block Race · Model Heist Detector · Training Fingerprint · Redundancy Reactor · Gradient Pinball. Real research math, made playable. Each run is shareable."
+description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball. Real research math, made playable. Each run is shareable."
 excerpt: "Five interactive thought experiments from my research: Bitcoin consensus, ML security, fault tolerance, optimization. Pick a real scenario, set your strategy, and let the math grade your aim."
 ---
 
@@ -41,7 +41,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
   </a>
   <a class="lab-mission-card" href="#lab-pol">
     <span class="lab-mission-card__code">03</span>
-    <strong>Training Fingerprint</strong>
+    <strong>Proof-of-Learning (SecurePoL)</strong>
     <span>Prove the model actually trained.</span>
   </a>
   <a class="lab-mission-card" href="#lab-tmr">
@@ -71,6 +71,10 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
 <section class="lab-card lab-experiment" id="lab-tg">
   <span class="ep-eyebrow">Blockchain · Nakamoto consensus</span>
   <h2>Block Race</h2>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>Based on the Satoshi consensus protocol. For a review of blockchain integration in AI, see the author's survey: <a href="/publication/2023-ieee-access-survey">"Blockchain-Enhanced Machine Learning"</a> (IEEE Access 2023).</span>
+  </div>
 
   <!-- ★ Quickplay: one question, one slider, one answer ★ -->
   <div class="lab-quickplay" data-role="tg-quickplay">
@@ -165,6 +169,20 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
         <span class="lab-btn__text">Run experiment</span>
         <span class="lab-btn__bg"></span>
       </button>
+      
+      <!-- Active Game Controls -->
+      <div class="lab-tg-action-panel" data-role="tg-action-panel" style="display: none; margin-top: 1rem; padding: 0.75rem; background: var(--ds-surface-elev); border: 1px dashed var(--ds-line); border-radius: var(--ds-radius-sm); text-align: center;">
+        <div data-role="tg-game-timer" style="font-family: var(--ds-font-mono); font-size: 1.1rem; color: var(--ds-accent); margin-bottom: 0.5rem; font-weight: bold;">Time remaining: 12s</div>
+        <button class="lab-btn lab-btn--action" type="button" data-role="tg-action-btn" style="width: 100%; max-width: 320px; font-weight: 600; padding: 0.5rem; border: 1px solid var(--ds-accent);">
+          <span class="lab-btn__text">Mash to Hash!</span>
+        </button>
+        <div class="lab-patience-bar-wrap" data-role="tg-patience-wrap" style="display: none; margin-top: 0.75rem;">
+          <span style="font-size: 0.8rem; color: var(--ds-muted); display: block; margin-bottom: 0.25rem; font-family: var(--ds-font-mono);">Customer Patience</span>
+          <div style="background: rgba(0,0,0,0.15); height: 8px; border-radius: 4px; overflow: hidden; width: 100%; max-width: 320px; margin: 0 auto;">
+            <div data-role="tg-patience-fill" style="background: var(--ds-accent-2); width: 100%; height: 100%; transition: width 0.1s linear;"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="lab-experiment__visual">
@@ -215,6 +233,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
     <p><strong>Nakamoto consensus is a foot race, not a vote.</strong> Every ~10 minutes, every miner is racing to solve a hash puzzle. Whoever wins extends the chain. Your chance of winning the next block equals your share of total hashrate. Over many blocks, your yield converges to that share — but any individual week can be wildly lucky or unlucky (Poisson variance, λ = q·N). Pools exist because solo variance is brutal. Heisenberg's uncertainty principle has nothing on the variance of one ASIC.</p>
     <p><strong>The double-spend math.</strong> If an attacker controls fraction q of the network and the honest chain is z blocks ahead, the chance they ever catch up is, per Satoshi's whitepaper §11, <em>1 − Σ Poisson(k; zq/p)·(1−(q/p)<sup>z−k</sup>)</em>. At q = 30%, six confirmations cuts attack probability to ~17.7%. At q = 10%, the same six confirmations cuts it to 0.024%. That's the entire reason exchanges wait six blocks. There is no spoon. There is only Poisson.</p>
     <p><strong>Defense is exponential.</strong> Each extra confirmation costs you one block-time (~10 minutes) and roughly squares the attacker's odds against you. The longer you wait, the more impossible the heist becomes — which is why patient merchants never get robbed, and impatient ones get to star in their own Black Mirror episode. Tread lightly. Better Call Saul. Wubba lubba dub dub.</p>
+    <p><strong>Scientific Context:</strong> Blockchain networks provide decentralized consensus mechanisms. To explore the broader integration of blockchain mechanisms to secure distributed machine learning pipelines, read the author's comprehensive survey: <a href="/publication/2023-ieee-access-survey">"Blockchain-Enhanced Machine Learning"</a> (IEEE Access 2023).</p>
   </details>
 
   <div class="lab-share" data-role="tg-share-root">
@@ -238,6 +257,10 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
   <span class="ep-eyebrow">ML security · Model provenance</span>
   <h2>Model Heist Detector</h2>
   <p class="lab-card__lead">🕵️ Someone leaked your AI and ran it through a disguise. Before publishing, you'd spread a faint statistical signature across thousands of weights, too small to notice individually but together a fingerprint only you can read. The thief tries to scrub it. You have to read it through the noise anyway.</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>Implements robust statistical watermarking. See the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</span>
+  </div>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Catch the thief without breaking the model.</strong>
@@ -292,6 +315,12 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
         <span class="lab-btn__text">Run experiment</span>
         <span class="lab-btn__bg"></span>
       </button>
+      
+      <!-- Active Game Controls -->
+      <div class="lab-wm-action-panel" data-role="wm-action-panel" style="display: none; margin-top: 1rem; padding: 0.75rem; background: var(--ds-surface-elev); border: 1px dashed var(--ds-line); border-radius: var(--ds-radius-sm); text-align: center;">
+        <div data-role="wm-game-timer" style="font-family: var(--ds-font-mono); font-size: 1.1rem; color: var(--ds-accent); margin-bottom: 0.25rem; font-weight: bold;">Scrubbing Storm: 8.0s</div>
+        <div style="font-size: 0.76rem; color: var(--ds-muted); line-height: 1.35; font-family: var(--ds-font-mono);">Hover / Drag over key cells (orange) to SHIELD them from the tuning storm!</div>
+      </div>
     </div>
 
     <div class="lab-experiment__visual">
@@ -333,6 +362,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
     <summary>🧠 What did you just learn?</summary>
     <p><strong>Tiny secrets in many places beat one big secret.</strong> An AI model has hundreds of millions of internal numbers. A watermark is a faint statistical pattern spread across many of them. Each individual mark is way too small to notice, but together they form a signature only you can recognize.</p>
     <p>This is how labs at OpenAI, Google, and Anthropic plan to prove "yes, that model is ours" if it gets leaked. The same trick is used to find AI-generated text, mark images from specific cameras, and prove which lab produced a research paper. The harder the thief tries to erase one mark, the more visible the others become.</p>
+    <p><strong>Scientific Context:</strong> This simulation implements features similar to the watermark detection schemes analyzed in the author's paper, where aggregate detection over $k$ weights is modeled using a Gaussian Z-test. Read the details in the IEEE Access paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</p>
   </details>
 
   <div class="lab-share" data-role="wm-share-root">
@@ -354,8 +384,12 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
 
 <section class="lab-card lab-experiment" id="lab-pol">
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
-  <h2>Training Fingerprint</h2>
+  <h2>Proof-of-Learning (SecurePoL)</h2>
   <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it. The proof is in the journey: a real training run leaves a wobbly, monotone-ish loss curve that's almost impossible to forge after the fact. Tune the run; see if the trajectory would survive an audit. (The auditor is unforgiving but fair. Mostly fair.)</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>Implements loss curve auditing and proof verification. See the author's paper: <a href="/publication/2025-secureproofoflearning">"SecurePoL: Integration of Watermarking With Proof-of-Learning"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</span>
+  </div>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Earn Gold Proof.</strong>
@@ -391,6 +425,12 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
         <span class="lab-btn__text">Train!</span>
         <span class="lab-btn__bg"></span>
       </button>
+      
+      <!-- Active Game Controls -->
+      <div class="lab-pol-action-panel" data-role="pol-action-panel" style="display: none; margin-top: 1rem; text-align: center; padding: 0.75rem; border-radius: var(--ds-radius-sm); border: 1px solid var(--ds-accent);">
+        <div data-role="pol-event-title" style="font-weight: bold; color: var(--ds-accent); font-size: 1.05rem; text-transform: uppercase; font-family: var(--ds-font-mono);">System Stable</div>
+        <div data-role="pol-event-desc" style="font-size: 0.78rem; color: var(--ds-muted); margin-top: 0.25rem; line-height: 1.35; font-family: var(--ds-font-mono);">Training in progress. Adjust sliders live to steer the curve in the green corridor!</div>
+      </div>
     </div>
 
     <div class="lab-experiment__visual">
@@ -422,6 +462,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
     <summary>🧠 What did you just learn?</summary>
     <p><strong>The journey is harder to fake than the destination.</strong> The final weights of a trained AI are just a giant list of numbers, copy-pasteable in seconds. But the <em>path</em> the loss took during training? It's noisy, bumpy, has little flat spots when learning stalls, sudden drops when it finds a shortcut. That fingerprint is almost impossible to forge after the fact.</p>
     <p>This is called <em>Proof-of-Learning</em>, and it matters for: patent disputes ("did you really invent this?"), competitive intelligence ("did they actually train, or did they distill ours?"), and verifying open-source claims. Same idea as a digital signature, but for the training process instead of the model.</p>
+    <p><strong>Scientific Context:</strong> In a real training run, verification relies on checking the monotonicity, smoothness, and hyperparameter consistency of the logged epoch states. Spoofing attacks can be detected by coupling these logs with model watermarks, as proposed in the author's paper: <a href="/publication/2025-secureproofoflearning">"SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks"</a> (IEEE Access 2025) and detailed in his <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</p>
   </details>
 
   <div class="lab-share" data-role="pol-share-root">
@@ -430,7 +471,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
       <span class="lab-share__btn-text">Share this run</span>
     </button>
     <div class="lab-share__popover" data-role="pol-share-popover" role="dialog" aria-label="Share this run" hidden>
-      <p class="lab-share__preview" data-role="pol-share-text">5★ — Training Fingerprint · share text appears here</p>
+      <p class="lab-share__preview" data-role="pol-share-text">5★ — Proof-of-Learning (SecurePoL) · share text appears here</p>
       <div class="lab-share__actions">
         <button type="button" data-share="copy">📋 Copy link</button>
         <button type="button" data-share="x">𝕏 Tweet</button>
@@ -445,6 +486,10 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>Redundancy Reactor</h2>
   <p class="lab-card__lead">✈️ Your A320 has three flight computers and a majority voter. One fails, the other two outvote it. But "three computers" is only "three independent failure paths" if they fail differently. Identical software hits the same overflow at the same millisecond. (Ariane 5, 1996. The rocket disagreed with reality and disassembled itself 39 seconds in.)</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>Based on Triple Modular Redundancy (TMR). Inspired by real-time safety-critical aerospace and flight simulator architecture developed by the author.</span>
+  </div>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Pick the mission; pick the minimum N that beats the safety target.</strong>
@@ -491,6 +536,17 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
         <span class="lab-btn__text">Run experiment</span>
         <span class="lab-btn__bg"></span>
       </button>
+      
+      <!-- Active Game Controls -->
+      <div class="lab-tmr-action-panel" data-role="tmr-action-panel" style="display: none; margin-top: 1rem; padding: 0.75rem; background: var(--ds-surface-elev); border: 1px dashed var(--ds-line); border-radius: var(--ds-radius-sm); text-align: center;">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; max-width: 360px; margin: 0 auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div data-role="tmr-game-timer" style="font-family: var(--ds-font-mono); font-size: 1rem; color: var(--ds-accent); font-weight: bold;">Telemetry Time: 15s</div>
+            <div style="font-family: var(--ds-font-mono); font-weight: bold; font-size: 0.95rem;">Integrity: <span data-role="tmr-health" style="color: #10b981;">100%</span></div>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--ds-muted); line-height: 1.35; font-family: var(--ds-font-mono);">Click computer labels below to <strong>MUTE</strong> failing channels before they hijack the majority vote!</div>
+        </div>
+      </div>
     </div>
 
     <div class="lab-tmr__strip" aria-hidden="true" data-role="tmr-strip">
@@ -540,6 +596,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
     <summary>🧠 What did you just learn?</summary>
     <p><strong>Three of the same thing is still one thing.</strong> Backup computers only protect you if they fail in different ways. Three identical computers running the same software will hit the same bug at the same moment, and then majority voting gives the wrong answer with confidence.</p>
     <p>This is what crashed the first Ariane 5 rocket in 1996: it had redundant flight computers, but they all ran the same code, so they all overflowed the same variable at the same instant. To get real safety, planes use computers from <em>different vendors</em>, written by <em>different teams</em>, in <em>different programming languages</em>. Same idea protects nuclear reactors, Mars rovers, and the secure chip in your phone.</p>
+    <p><strong>Scientific Context:</strong> Triple Modular Redundancy (TMR) is a foundational pattern in high-availability and safety-critical computing. This model shows how correlated failures (common-mode faults) degrade reliability. Similar redundancy and low-latency safety-critical mechanisms are essential in real-time avionics software and flight simulator data pipelines developed by the author.</p>
   </details>
 
   <div class="lab-share" data-role="tmr-share-root">
@@ -563,6 +620,10 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
   <span class="ep-eyebrow">Deep Learning · Optimization</span>
   <h2>Gradient Pinball</h2>
   <p class="lab-card__lead">⛰️ Every modern model (GPT, Stable Diffusion, your phone's autocorrect) learns by rolling a ball down a high-dimensional loss landscape. The deepest valley is the answer; the smaller dips are traps. Too cautious and you settle in a side valley convinced you've won; too aggressive and the ball leaves the landscape entirely. There is no spoon, only a basin.</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>Interactive optimization landscape visualizer. Represents the core mathematical optimization mechanism of the deep neural networks studied in the author's machine learning research.</span>
+  </div>
   <div class="lab-card__mission">
     <span class="lab-card__mission-kicker">Your move</span>
     <strong>Land the optimizer in the global minimum.</strong>
@@ -599,6 +660,17 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
         <span class="lab-btn__bg"></span>
       </button>
       <p class="lab-playbar__hint lab-playbar__hint--wide" data-role="gd-challenge-meta">Challenge: loading...</p>
+      
+      <!-- Active Game Controls -->
+      <div class="lab-gd-action-panel" data-role="gd-action-panel" style="display: none; margin-top: 1rem; padding: 0.75rem; background: var(--ds-surface-elev); border: 1px dashed var(--ds-line); border-radius: var(--ds-radius-sm); text-align: center;">
+        <span style="font-size: 0.74rem; color: var(--ds-muted); display: block; margin-bottom: 0.5rem; font-family: var(--ds-font-mono);">STEER THE PARTICLE LIVE:</span>
+        <div style="display: flex; gap: 0.25rem; justify-content: center; flex-wrap: wrap;">
+          <button class="lab-btn lab-btn--ghost" type="button" data-role="gd-boost" style="padding: 0.35rem 0.65rem; font-size: 0.74rem; font-family: var(--ds-font-mono); margin: 0;">🚀 Boost</button>
+          <button class="lab-btn lab-btn--ghost" type="button" data-role="gd-brake" style="padding: 0.35rem 0.65rem; font-size: 0.74rem; font-family: var(--ds-font-mono); margin: 0;">🛑 Brake</button>
+          <button class="lab-btn lab-btn--ghost" type="button" data-role="gd-nudge-l" style="padding: 0.35rem 0.65rem; font-size: 0.74rem; font-family: var(--ds-font-mono); margin: 0;">⬅️ Nudge L</button>
+          <button class="lab-btn lab-btn--ghost" type="button" data-role="gd-nudge-r" style="padding: 0.35rem 0.65rem; font-size: 0.74rem; font-family: var(--ds-font-mono); margin: 0;">➡️ Nudge R</button>
+        </div>
+      </div>
     </div>
 
     <div class="lab-experiment__visual">
@@ -630,6 +702,7 @@ excerpt: "Five interactive thought experiments from my research: Bitcoin consens
     <summary>🧠 What did you just learn?</summary>
     <p><strong>Learning is rolling downhill.</strong> Every modern AI (GPT, image generators, the search ranking on your phone) learns by repeatedly nudging its parameters in whichever direction makes the loss smaller. That's literally rolling a ball downhill on a high-dimensional landscape. Step size matters: too small and you crawl forever, too big and you bounce out of the valley you wanted.</p>
     <p><strong>Momentum is the killer feature.</strong> It lets the ball carry forward through small ridges that would otherwise trap it. This idea, invented for physics simulations in the 1960s, is why training a large model in 2026 finishes in days instead of years. Same algorithm in your phone's autocorrect, your camera's autofocus, and every AI lab on Earth.</p>
+    <p><strong>Scientific Context:</strong> High-dimensional optimization landscapes govern the training dynamics of deep neural networks. Understanding how learning rates and momentum values navigate local minima and saddle points is essential for designing secure training frameworks like those in the author's machine learning security research.</p>
   </details>
 
   <div class="lab-share" data-role="gd-share-root">

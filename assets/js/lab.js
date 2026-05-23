@@ -762,6 +762,11 @@
       shareBtn:           $('[data-role="tg-share-btn"]', root),
       sharePopover:       $('[data-role="tg-share-popover"]', root),
       shareText:          $('[data-role="tg-share-text"]', root),
+      tgPanel:            $('[data-role="tg-action-panel"]', root),
+      tgActionBtn:        $('[data-role="tg-action-btn"]', root),
+      tgTimer:            $('[data-role="tg-game-timer"]', root),
+      tgPatienceWrap:     $('[data-role="tg-patience-wrap"]', root),
+      tgPatienceFill:     $('[data-role="tg-patience-fill"]', root),
     };
 
     // Last-computed run results, used by both URL writeback and share text.
@@ -1365,28 +1370,250 @@
       root.classList.add("lab-experiment--pending");
       root.classList.remove("lab-experiment--revealed");
     }
+    let gameTimerId = null;
+    let gameTime = 0;
+    let currentBoost = 0;
+    let gameRunning = false;
+
+    function applyCustomResults(stars, customVal) {
+      update(); // run mathematical baseline updates
+      let tier = "Off-target";
+      if (stars === 5) tier = "Frontier 🏆";
+      else if (stars === 4) tier = "Pro-grade";
+      else if (stars === 3) tier = "Sharp";
+      else if (stars === 2) tier = "Workable";
+      else if (stars === 1) tier = "Sketchy";
+      else if (stars === 0) tier = "Off-target";
+
+      setStars(refs.starsTg, stars, tier, { header: "Live score" });
+      lastStars = stars;
+
+      const sc = MODES[currentMode].scenarios[currentIdx];
+      const slider = parseInt(refs.n.value, 10);
+      const ending = classifyEnding(currentMode, sc, slider, stars, customVal);
+      const newly = recordEnding(ending.id);
+      setVerdict(refs.verdict,
+        ending.icon + " " + ending.name + " ending" + (newly ? " · NEW ENDING" : ""),
+        ending.sub,
+        ending.state);
+      renderEndingsTally(refs.endingsTally, "tg-", TG_ENDINGS_TOTAL);
+
+      if (refs.sweetTg) {
+        const sweet = (stars === 5);
+        refs.sweetTg.hidden = !sweet;
+        if (sweet) {
+          refs.sweetTg.textContent = sweetText(currentMode, sc, slider, customVal);
+          unlockQuest("tg", "Block Race: you found the threshold.");
+        }
+      }
+    }
+
     function commitRun() {
-      if (!refs.runBtn) return;
-      const btnText = refs.runBtn.querySelector('.lab-btn__text');
-      refs.runBtn.classList.add("is-running");
-      refs.runBtn.disabled = true;
-      if (btnText) btnText.textContent = "Running…";
-      // Speed up the chain animation during the run, then revert.
-      const fastMs = 180;
-      const baseMs = currentMode === "mine" ? 700 : 600;
-      startChainAnim(fastMs);
-      setTimeout(function () {
-        startChainAnim(baseMs);
+      if (!refs.runBtn || gameRunning) return;
+      gameRunning = true;
+      revealed = false;
+      stopChainAnim();
+      clearChain();
+
+      const sc = MODES[currentMode].scenarios[currentIdx];
+      const slider = parseInt(refs.n.value, 10);
+
+      // Disable normal sliders
+      refs.n.disabled = true;
+      if (refs.modeTabs) refs.modeTabs.style.pointerEvents = "none";
+      if (refs.levelsRow) refs.levelsRow.style.pointerEvents = "none";
+
+      // Show action panel
+      if (refs.tgPanel) {
+        refs.tgPanel.style.display = "block";
+        refs.tgTimer.textContent = "Time remaining: 12.0s";
+        refs.tgPatienceWrap.style.display = currentMode === "defend" ? "block" : "none";
+        if (currentMode === "mine") {
+          refs.tgActionBtn.querySelector('.lab-btn__text').textContent = "Mash to Hash!";
+          refs.tgActionBtn.disabled = false;
+        } else if (currentMode === "attack") {
+          refs.tgActionBtn.querySelector('.lab-btn__text').textContent = "Mining private chain...";
+          refs.tgActionBtn.disabled = true;
+        } else if (currentMode === "defend") {
+          refs.tgActionBtn.querySelector('.lab-btn__text').textContent = "Accept & Ship Cargo";
+          refs.tgActionBtn.disabled = false;
+        }
+      }
+
+      refs.runBtn.style.display = "none";
+
+      gameTime = 12.0;
+      let patience = 1.0;
+      let honestCount = 0;
+      let attackerCount = 0;
+      let forkReleased = false;
+      let acceptedPayment = false;
+      currentBoost = 0;
+
+      const handleActionClick = () => {
+        if (currentMode === "mine") {
+          currentBoost = Math.min(0.20, currentBoost + 0.03);
+          refs.tgActionBtn.style.transform = "scale(0.96)";
+          setTimeout(() => { refs.tgActionBtn.style.transform = ""; }, 60);
+        } else if (currentMode === "attack") {
+          if (attackerCount > honestCount) {
+            forkReleased = true;
+            endGame(true);
+          }
+        } else if (currentMode === "defend") {
+          acceptedPayment = true;
+          endGame(true);
+        }
+      };
+
+      refs.tgActionBtn.onclick = handleActionClick;
+
+      const handleKeyDown = (e) => {
+        if (e.code === "Space") {
+          e.preventDefault();
+          handleActionClick();
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+
+      let tickCounter = 0;
+      gameTimerId = setInterval(() => {
+        gameTime -= 0.1;
+        if (gameTime <= 0) {
+          gameTime = 0;
+          endGame(false);
+          return;
+        }
+
+        refs.tgTimer.textContent = "Time remaining: " + gameTime.toFixed(1) + "s";
+
+        if (currentMode === "mine") {
+          currentBoost = Math.max(0, currentBoost - 0.003);
+          const boostPct = Math.round(currentBoost * 100);
+          refs.tgActionBtn.querySelector('.lab-btn__text').textContent = "MASH TO HASH! (Boost: +" + boostPct + "%)";
+        }
+
+        if (currentMode === "defend") {
+          patience -= 0.008;
+          if (patience <= 0) {
+            patience = 0;
+            endGame(false);
+            return;
+          }
+          refs.tgPatienceFill.style.width = (patience * 100) + "%";
+        }
+
+        tickCounter++;
+        if (tickCounter % 4 === 0) {
+          if (currentMode === "mine") {
+            honestCount++;
+            const q = sc.q + currentBoost;
+            const yours = Math.random() < q;
+            if (yours) attackerCount++;
+            pushBlock(refs.chainHonest, "#" + honestCount, yours ? "yours" : "other");
+            refs.chainHonestCount.textContent = honestCount;
+          } else if (currentMode === "attack") {
+            const q = slider / 100;
+            if (Math.random() < (1 - q)) {
+              honestCount++;
+              pushBlock(refs.chainHonest, "#" + honestCount, "honest");
+              refs.chainHonestCount.textContent = honestCount;
+            } else {
+              attackerCount++;
+              pushBlock(refs.chainAttacker, "#" + attackerCount, "attacker");
+              refs.chainAttackerCount.textContent = attackerCount;
+            }
+
+            if (attackerCount > honestCount) {
+              refs.tgActionBtn.disabled = false;
+              refs.tgActionBtn.querySelector('.lab-btn__text').textContent = "⚡ RELEASE FORK! ⚡";
+              refs.tgActionBtn.style.borderColor = "var(--ds-accent-2)";
+            } else {
+              refs.tgActionBtn.disabled = true;
+              refs.tgActionBtn.querySelector('.lab-btn__text').textContent = "Mining private chain...";
+              refs.tgActionBtn.style.borderColor = "";
+            }
+
+            if (honestCount - attackerCount >= 8) {
+              endGame(false);
+            }
+          } else if (currentMode === "defend") {
+            const q = sc.q;
+            if (Math.random() < (1 - q)) {
+              honestCount++;
+              pushBlock(refs.chainHonest, "#" + honestCount, "honest");
+              refs.chainHonestCount.textContent = honestCount;
+            } else {
+              attackerCount++;
+            }
+            // Update live threat indicator
+            const threat = nakamoto(sc.q, honestCount);
+            refs.naive.textContent = (threat * 100).toFixed(1) + "%";
+            refs.strict.textContent = honestCount + " blk";
+          }
+        }
+      }, 100);
+
+      function endGame(actionTriggered) {
+        clearInterval(gameTimerId);
+        window.removeEventListener("keydown", handleKeyDown);
+        gameRunning = false;
+
+        refs.n.disabled = false;
+        if (refs.modeTabs) refs.modeTabs.style.pointerEvents = "";
+        if (refs.levelsRow) refs.levelsRow.style.pointerEvents = "";
+
+        if (refs.tgPanel) refs.tgPanel.style.display = "none";
+        refs.runBtn.style.display = "block";
         refs.runBtn.classList.remove("is-running");
         refs.runBtn.disabled = false;
-        if (btnText) btnText.textContent = "Run again";
+        
         revealed = true;
         root.classList.remove("lab-experiment--pending");
         root.classList.add("lab-experiment--revealed");
-        update();
-        // Persist the run to the URL so a "Share this run" link replays it.
-        if (typeof pushShareUrl === "function") pushShareUrl();
-      }, 1100);
+
+        let stars = 1;
+        let customVal = 0;
+
+        if (currentMode === "mine") {
+          const targetMet = attackerCount >= sc.target;
+          if (targetMet) {
+            stars = slider <= sc.minN ? 5 : 4;
+          } else {
+            stars = attackerCount >= sc.target * 0.7 ? 3 : (attackerCount > 0 ? 2 : 1);
+          }
+          customVal = attackerCount;
+        } else if (currentMode === "attack") {
+          if (forkReleased) {
+            stars = slider <= (sc.minQ * 100) ? 5 : 4;
+          } else {
+            stars = attackerCount >= honestCount * 0.7 ? 3 : (attackerCount > 0 ? 2 : 1);
+          }
+          customVal = attackerCount;
+        } else if (currentMode === "defend") {
+          if (acceptedPayment) {
+            const doubleSpent = attackerCount >= honestCount;
+            if (doubleSpent) {
+              stars = 0;
+            } else {
+              if (honestCount >= slider) {
+                stars = sc.q >= 0.40 ? 5 : 5;
+              } else if (honestCount > slider + 4) {
+                stars = 4;
+              } else {
+                stars = 3;
+              }
+            }
+            customVal = doubleSpent ? 1 : 0;
+          } else {
+            stars = 1;
+            customVal = 1;
+          }
+        }
+
+        applyCustomResults(stars, customVal);
+        startChainAnim();
+      }
     }
 
     /* ---- Event wiring ---- */
@@ -1534,9 +1761,15 @@
       shareBtn:     $('[data-role="wm-share-btn"]', root),
       sharePopover: $('[data-role="wm-share-popover"]', root),
       shareText:    $('[data-role="wm-share-text"]', root),
+      wmPanel:      $('[data-role="wm-action-panel"]', root),
+      wmTimer:      $('[data-role="wm-game-timer"]', root),
     };
     let wmLastStars = 0;
     let wmLastDet = 0;
+    let wmStormTimer = null;
+    let wmStormActive = false;
+    const wmShieldedSet = new Set();
+    const wmEpsCells = new Array(GRID_CELLS).fill(0);
     // Thief noise + per-scenario target both come from the active level.
     function wmCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
@@ -1842,11 +2075,11 @@
       if ((prevFpr <= 0.05 && fpr > 0.05) || (prevFpr > 0.05 && fpr <= 0.05)) return true;
       return false;
     }
-    function update() {
+    function update(customEps) {
       const prevDet = prev.det;
       const prevFpr = prev.fpr;
       const prevSw = prevSweetWm;
-      const eps   = parseFloat(refs.eps.value);
+      const eps   = (typeof customEps === "number") ? customEps : parseFloat(refs.eps.value);
       const k     = parseInt(refs.k.value, 10);
       const sigma = wmCurrentSigma();
       const alphaSig = FIXED_ALPHA;
@@ -1978,25 +2211,158 @@
       root.classList.remove("lab-experiment--revealed");
     }
     function wmCommitRun() {
-      if (!refs.runBtn) return;
+      if (!refs.runBtn || wmStormActive) return;
+      
       const btnText = refs.runBtn.querySelector('.lab-btn__text');
       refs.runBtn.classList.add("is-running");
       refs.runBtn.disabled = true;
-      if (btnText) btnText.textContent = "Running…";
-      if (refs.grid) {
-        refs.grid.classList.add("lab-wm__grid--pop");
-        setTimeout(function () { if (refs.grid) refs.grid.classList.remove("lab-wm__grid--pop"); }, 360);
+      if (btnText) btnText.textContent = "Defending…";
+
+      // Disable inputs
+      refs.eps.disabled = true;
+      refs.k.disabled = true;
+      if (refs.levels) {
+        refs.levels.querySelectorAll(".lab-level").forEach(btn => btn.disabled = true);
       }
-      setTimeout(function () {
-        refs.runBtn.classList.remove("is-running");
-        refs.runBtn.disabled = false;
-        if (btnText) btnText.textContent = "Run again";
-        wmRevealed = true;
-        root.classList.remove("lab-experiment--pending");
-        root.classList.add("lab-experiment--revealed");
-        update();
-        if (typeof wmPushShareUrl === "function") wmPushShareUrl();
-      }, 1100);
+
+      // Show action panel
+      if (refs.wmPanel) refs.wmPanel.style.display = "block";
+
+      wmStormActive = true;
+      wmShieldedSet.clear();
+
+      const eps = parseFloat(refs.eps.value);
+      const k = parseInt(refs.k.value, 10);
+      const sigma = wmCurrentSigma();
+      const zc = zForOneSidedAlpha(FIXED_ALPHA);
+      const keyCells = pickKey(k);
+      const keySet = new Set(keyCells);
+
+      // Initialize cell epsilons: key cells start at full epsilon
+      for (let i = 0; i < GRID_CELLS; i++) {
+        wmEpsCells[i] = keySet.has(i) ? eps : 0;
+      }
+
+      // Initial grid build so we can interact with cells
+      const qInitial = qDetect(eps, sigma, zc);
+      buildGrid(eps, k, sigma, qInitial, false);
+
+      // Add interactivity to the cells
+      const cells = refs.grid.querySelectorAll(".lab-wm__cell");
+      cells.forEach((cell, idx) => {
+        const onInteract = (e) => {
+          if (!wmStormActive) return;
+          if (cell.dataset.key === "1") {
+            cell.classList.add("is-shielded");
+            wmShieldedSet.add(idx);
+            wmEpsCells[idx] = eps; // restore/maintain signal strength
+          }
+        };
+
+        cell.addEventListener("mouseenter", onInteract);
+        cell.addEventListener("mousedown", onInteract);
+        cell.addEventListener("touchmove", (e) => {
+          if (!wmStormActive) return;
+          const touch = e.touches[0];
+          const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+          if (elem && elem.classList.contains("lab-wm__cell") && elem.dataset.key === "1") {
+            elem.classList.add("is-shielded");
+            const cellIdx = Array.from(cells).indexOf(elem);
+            if (cellIdx !== -1) {
+              wmShieldedSet.add(cellIdx);
+              wmEpsCells[cellIdx] = eps;
+            }
+          }
+        });
+      });
+
+      let timeLeft = 8000; // 8 seconds
+      const tickInterval = 100; // 100ms ticks
+
+      if (wmStormTimer) clearInterval(wmStormTimer);
+      wmStormTimer = setInterval(() => {
+        timeLeft -= tickInterval;
+        if (timeLeft <= 0) {
+          timeLeft = 0;
+          clearInterval(wmStormTimer);
+          wmStormTimer = null;
+          wmStormActive = false;
+
+          // Hide panel
+          if (refs.wmPanel) refs.wmPanel.style.display = "none";
+
+          // Re-enable inputs
+          refs.eps.disabled = false;
+          refs.k.disabled = false;
+          if (refs.levels) {
+            refs.levels.querySelectorAll(".lab-level").forEach(btn => btn.disabled = false);
+          }
+
+          // Complete the run
+          refs.runBtn.classList.remove("is-running");
+          refs.runBtn.disabled = false;
+          if (btnText) btnText.textContent = "Run again";
+          wmRevealed = true;
+          root.classList.remove("lab-experiment--pending");
+          root.classList.add("lab-experiment--revealed");
+
+          // Calculate average epsilon
+          let sumEps = 0;
+          keyCells.forEach(idx => {
+            sumEps += wmEpsCells[idx];
+          });
+          const effectiveEps = sumEps / k;
+
+          // Call modified update that accepts effectiveEps
+          update(effectiveEps);
+          if (typeof wmPushShareUrl === "function") wmPushShareUrl();
+          return;
+        }
+
+        if (refs.wmTimer) {
+          refs.wmTimer.textContent = "Scrubbing Storm: " + (timeLeft / 1000).toFixed(1) + "s";
+        }
+
+        // Decay unshielded key cells
+        for (let i = 0; i < GRID_CELLS; i++) {
+          if (keySet.has(i)) {
+            if (wmShieldedSet.has(i)) {
+              wmEpsCells[i] = eps; // remain at max
+            } else {
+              // Decay cell epsilon: lose signal over time
+              wmEpsCells[i] = Math.max(0, wmEpsCells[i] - eps * (tickInterval / 8000));
+            }
+          }
+        }
+
+        // Live render: update the background colors in place!
+        const baseNoise = rngBase();
+        const vmin = 0, vmax = 1.3;
+        const range = vmax - vmin;
+
+        cells.forEach((cell, idx) => {
+          let cellVal = baseNoise[idx];
+          if (keySet.has(idx)) {
+            cellVal += wmEpsCells[idx];
+          }
+          if (!wmShieldedSet.has(idx)) {
+            cellVal += (Math.random() * 2 - 1) * sigma * 1.5;
+          } else {
+            cellVal += (Math.random() * 2 - 1) * sigma * 0.3;
+          }
+          const v = Math.max(0, Math.min(1, (cellVal - vmin) / range));
+          
+          const qLive = qDetect(wmEpsCells[idx] || 0, sigma, zc);
+          cell.style.background = valueToColor(v, keySet.has(idx), qLive, false);
+          
+          if (wmShieldedSet.has(idx)) {
+            cell.classList.add("is-shielded");
+          } else {
+            cell.classList.remove("is-shielded");
+          }
+        });
+
+      }, tickInterval);
     }
     // Repaint the plot + grid from the current slider / scenario state.
     // The dramatic reveal still happens in the verdict / readout / star
@@ -2116,9 +2482,36 @@
       shareBtn:        $('[data-role="tmr-share-btn"]', root),
       sharePopover:    $('[data-role="tmr-share-popover"]', root),
       shareText:       $('[data-role="tmr-share-text"]', root),
+      tmrPanel:        $('[data-role="tmr-action-panel"]', root),
+      tmrTimer:        $('[data-role="tmr-game-timer"]', root),
+      tmrHealth:       $('[data-role="tmr-health"]', root),
     };
     let tmrLastStars = 0;
     let tmrLastGain  = 0;
+    let tmrStormActive = false;
+    let tmrHealth = 100;
+    let tmrTimeLeft = 15;
+    const tmrMutedChannels = new Set();
+    const tmrStuckFaults = [false, false, false];
+
+    // Row click listeners to mute channels
+    const rows = root.querySelectorAll(".lab-tmr__row");
+    rows.forEach(row => {
+      const chId = row.dataset.ch;
+      if (chId) {
+        row.addEventListener("click", () => {
+          if (!tmrStormActive) return;
+          const idx = parseInt(chId, 10) - 1;
+          if (tmrMutedChannels.has(idx)) {
+            tmrMutedChannels.delete(idx);
+            row.classList.remove("is-muted");
+          } else {
+            tmrMutedChannels.add(idx);
+            row.classList.add("is-muted");
+          }
+        });
+      }
+    });
 
     function tmrCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
@@ -2307,25 +2700,108 @@
       }
     }
     function tick() {
-      // Sample the actual N channels (3, 5, 7, or 9). The on-screen strip shows
-      // the first 3 as a visual sample; the SYS row reflects majority vote
-      // over the full N. This way the slider truly changes the science.
       const N = currentNChannels;
+      const q = currentQ;
       const rhoEff = tmrEffectiveRho(currentRho);
-      let fails = [];
-      if (Math.random() < rhoEff) {
-        const f = Math.random() < currentQ;
-        for (let i = 0; i < N; i++) fails.push(f);
-      } else {
-        for (let i = 0; i < N; i++) fails.push(Math.random() < currentQ);
+
+      // Randomly trigger stuck faults on visible channels
+      if (tmrStormActive) {
+        if (Math.random() < 0.18) {
+          const candidates = [];
+          for (let i = 0; i < 3; i++) {
+            if (!tmrStuckFaults[i] && !tmrMutedChannels.has(i)) candidates.push(i);
+          }
+          if (candidates.length > 0) {
+            const pick = candidates[Math.floor(Math.random() * candidates.length)];
+            tmrStuckFaults[pick] = true;
+          }
+        }
       }
-      let numFail = 0;
-      for (let i = 0; i < N; i++) if (fails[i]) numFail++;
-      const sysFail = numFail >= Math.ceil(N / 2);
-      addCell(refs.cells1,   fails[0]);
-      addCell(refs.cells2,   fails[1]);
-      addCell(refs.cells3,   fails[2]);
+
+      let fails = [];
+      const commonCause = Math.random() < rhoEff;
+
+      // Determine fails for N channels (3 visible + N-3 invisible channels)
+      for (let i = 0; i < N; i++) {
+        let isFault = false;
+        if (i < 3) {
+          if (tmrStuckFaults[i]) {
+            isFault = true;
+          } else {
+            isFault = commonCause ? (Math.random() < 0.8) : (Math.random() < q);
+          }
+        } else {
+          isFault = commonCause ? (Math.random() < 0.8) : (Math.random() < q);
+        }
+        fails.push(isFault);
+      }
+
+      // Perform voting count
+      let activeCount = 0;
+      let activeFaults = 0;
+      for (let i = 0; i < N; i++) {
+        if (i < 3 && tmrMutedChannels.has(i)) {
+          continue;
+        }
+        activeCount++;
+        if (fails[i]) {
+          activeFaults++;
+        }
+      }
+
+      // Voter output: fails if faults are >= majority of active channels
+      const sysFail = activeCount > 0 ? (activeFaults >= Math.ceil(activeCount / 2)) : true;
+
+      // Add cells to scrolling strips
+      addCell(refs.cells1, tmrMutedChannels.has(0) ? false : fails[0]);
+      addCell(refs.cells2, tmrMutedChannels.has(1) ? false : fails[1]);
+      addCell(refs.cells3, tmrMutedChannels.has(2) ? false : fails[2]);
       addCell(refs.cellsSys, sysFail);
+
+      // Dynamic styling of rows based on active faults/stuck faults to warn the player
+      for (let i = 0; i < 3; i++) {
+        const rowEl = root.querySelector(`.lab-tmr__row[data-ch="${i+1}"]`);
+        if (rowEl) {
+          if (tmrStuckFaults[i] && !tmrMutedChannels.has(i)) {
+            rowEl.style.borderLeft = "4px solid #ef4444";
+          } else {
+            rowEl.style.borderLeft = "none";
+          }
+        }
+      }
+
+      if (tmrStormActive) {
+        // Redundancy penalty: if activeCount < Math.ceil(N / 2), we lose majority redundancy
+        const minRequired = Math.ceil(N / 2);
+        if (activeCount < minRequired) {
+          tmrHealth = Math.max(0, tmrHealth - 15);
+          refs.insight.innerHTML = `<span style="color:#ef4444; font-weight:bold;">⚠️ REDUNDANCY LOST! Muted too many channels (Active: ${activeCount}/${N}).</span>`;
+        } else if (sysFail) {
+          tmrHealth = Math.max(0, tmrHealth - 12);
+          refs.insight.innerHTML = `<span style="color:#ef4444; font-weight:bold;">⚠️ MAJORITY HIJACKED! Failing channels bypassed voter.</span>`;
+        } else {
+          refs.insight.innerHTML = "Telemetry normal. Identify and mute drifting/corrupt channels (red rows).";
+        }
+
+        // Update health text
+        if (refs.tmrHealth) {
+          refs.tmrHealth.textContent = tmrHealth + "%";
+          if (tmrHealth >= 70) {
+            refs.tmrHealth.style.color = "#10b981";
+          } else if (tmrHealth >= 40) {
+            refs.tmrHealth.style.color = "#f59e0b";
+          } else {
+            refs.tmrHealth.style.color = "#ef4444";
+          }
+        }
+
+        // Early termination if crashed
+        if (tmrHealth <= 0) {
+          tmrEndGame(false);
+          return;
+        }
+      }
+
       // Briefly flash the SYS row when it fails
       if (sysFail) {
         const sysRow = refs.cellsSys.parentElement;
@@ -2495,31 +2971,158 @@
         if (c) while (c.firstChild) c.removeChild(c.firstChild);
       });
     }
+    function tmrEndGame(success) {
+      stopSim();
+      tmrStormActive = false;
+
+      // Re-enable inputs
+      if (refs.nChannels) refs.nChannels.disabled = false;
+      if (refs.levels) {
+        refs.levels.querySelectorAll(".lab-level").forEach(btn => btn.disabled = false);
+      }
+
+      // Hide panel
+      if (refs.tmrPanel) refs.tmrPanel.style.display = "none";
+
+      tmrRunning = false;
+      refs.runBtn.classList.remove("is-running");
+      refs.runBtn.disabled = false;
+      refs.runBtn.querySelector('.lab-btn__text').textContent = "Run again";
+      tmrRevealed = true;
+      root.classList.remove("lab-experiment--pending");
+      root.classList.add("lab-experiment--revealed");
+
+      // Reset row styles
+      for (let i = 1; i <= 3; i++) {
+        const rowEl = root.querySelector(`.lab-tmr__row[data-ch="${i}"]`);
+        if (rowEl) rowEl.style.borderLeft = "none";
+      }
+
+      if (!success || tmrHealth <= 0) {
+        // System crashed!
+        const missionName = tmrCurrentMissionName();
+        setVerdict(refs.verdict,
+          "💥 " + missionName + " crashed",
+          "System integrity reached 0%. Failing computers hijacked majority voter or redundancy was completely lost.",
+          "fail");
+        setStars(refs.starsTmr, 1, "Crashed 💥", { header: "Run grade" });
+        tmrLastStars = 1;
+        tmrLastGain = 0;
+        refs.gainVal.textContent = "0.0×";
+      } else {
+        // Mission survived! Calculate gain and update stars based on survivability and N.
+        update(); // Call standard update to get scientific curve and baseline metrics
+
+        // Adjust rating based on surviving health
+        const N = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
+        const minN = tmrCurrentMinN();
+        const goalGain = tmrCurrentGoalGain();
+        const finalGain = tmrLastGain; // set by update()
+
+        let tmrStars = 0, tmrTier = "Off-target";
+        if (tmrHealth >= 80 && N <= minN && finalGain >= goalGain) {
+          tmrStars = 5;
+          tmrTier = "Frontier 🏆";
+        } else if (tmrHealth >= 70 && finalGain >= goalGain) {
+          tmrStars = 4;
+          tmrTier = "Pro-grade";
+        } else if (tmrHealth >= 50) {
+          tmrStars = 3;
+          tmrTier = "Sharp";
+        } else {
+          tmrStars = 2;
+          tmrTier = "Workable";
+        }
+
+        setStars(refs.starsTmr, tmrStars, tmrTier, { header: "Live score" });
+        tmrLastStars = tmrStars;
+
+        const gainFmt = finalGain >= 100 ? Math.round(finalGain) + "×" : finalGain.toFixed(1) + "×";
+        if (tmrStars === 5) {
+          setVerdict(refs.verdict,
+            "🏆 " + tmrCurrentMissionName() + " survived flawlessly",
+            gainFmt + " safer with " + N + " backups (Surviving Health: " + tmrHealth + "%). CFO is happy.",
+            "win");
+        } else if (tmrStars === 4) {
+          setVerdict(refs.verdict,
+            "✓ " + tmrCurrentMissionName() + " survived (inefficient hardware)",
+            gainFmt + " safer with " + N + " backups (Surviving Health: " + tmrHealth + "%). CFO asks questions.",
+            "win");
+        } else {
+          setVerdict(refs.verdict,
+            "✗ Survived with severe degradation",
+            "Reliability multiplier: " + gainFmt + " (Surviving Health: " + tmrHealth + "%). System barely made it home.",
+            "miss");
+        }
+      }
+      
+      if (typeof tmrPushShareUrl === "function") tmrPushShareUrl();
+    }
+
     function tmrCommitRun() {
       if (!refs.runBtn || tmrRunning) return;
       tmrRunning = true;
       const btnText = refs.runBtn.querySelector('.lab-btn__text');
       refs.runBtn.classList.add("is-running");
       refs.runBtn.disabled = true;
-      if (btnText) btnText.textContent = "Running…";
+      if (btnText) btnText.textContent = "Defending…";
+
+      // Disable inputs
+      if (refs.nChannels) refs.nChannels.disabled = true;
+      if (refs.levels) {
+        refs.levels.querySelectorAll(".lab-level").forEach(btn => btn.disabled = true);
+      }
+
+      // Show panel
+      if (refs.tmrPanel) refs.tmrPanel.style.display = "block";
+
+      // Reset game variables
+      tmrStormActive = true;
+      tmrHealth = 100;
+      tmrTimeLeft = 15.0;
+      tmrMutedChannels.clear();
+      tmrStuckFaults.fill(false);
+
+      if (refs.tmrHealth) {
+        refs.tmrHealth.textContent = "100%";
+        refs.tmrHealth.style.color = "#10b981";
+      }
+      if (refs.tmrTimer) {
+        refs.tmrTimer.textContent = "Telemetry Time: 15.0s";
+      }
+
+      // Reset row styles
+      const rows = root.querySelectorAll(".lab-tmr__row");
+      rows.forEach(row => {
+        row.classList.remove("is-muted");
+        row.style.borderLeft = "none";
+      });
+
       currentQ = tmrCurrentQ();
       currentRho = tmrCurrentRho();
       currentNChannels = refs.nChannels ? Math.max(3, parseInt(refs.nChannels.value, 10) | 0) : 3;
+
       tmrClearStrip();
-      restartSimInterval(80);
-      setTimeout(function () {
-        tmrTickMs = 600;
-        restartSimInterval(tmrTickMs);
-        tmrRunning = false;
-        refs.runBtn.classList.remove("is-running");
-        refs.runBtn.disabled = false;
-        if (btnText) btnText.textContent = "Run again";
-        tmrRevealed = true;
-        root.classList.remove("lab-experiment--pending");
-        root.classList.add("lab-experiment--revealed");
-        update();
-        if (typeof tmrPushShareUrl === "function") tmrPushShareUrl();
-      }, 1400);
+
+      // We run ticks at 500ms intervals
+      tmrTickMs = 500;
+      restartSimInterval(tmrTickMs);
+
+      // Countdown loop
+      let simCountdown = setInterval(() => {
+        if (!tmrStormActive) {
+          clearInterval(simCountdown);
+          return;
+        }
+        tmrTimeLeft = Math.max(0, tmrTimeLeft - 0.5);
+        if (refs.tmrTimer) {
+          refs.tmrTimer.textContent = "Telemetry Time: " + tmrTimeLeft.toFixed(1) + "s";
+        }
+        if (tmrTimeLeft <= 0) {
+          clearInterval(simCountdown);
+          tmrEndGame(true);
+        }
+      }, 500);
     }
     // Repaint the curve plot from current scenario + slider state. The
     // channel strip stays paused (it would otherwise animate failure
@@ -2632,6 +3235,11 @@
       shareBtn:     $gd("gd-share-btn"),
       sharePopover: $gd("gd-share-popover"),
       shareText:    $gd("gd-share-text"),
+      gdPanel:      $gd("gd-action-panel"),
+      boost:        $gd("gd-boost"),
+      brake:        $gd("gd-brake"),
+      nudgeL:       $gd("gd-nudge-l"),
+      nudgeR:       $gd("gd-nudge-r"),
     };
     let gdLastStars = 0;
     let gdLastLoss = 0;
@@ -2899,6 +3507,7 @@
       if (span) span.textContent = "Train!";
       else refs.trainBtn.textContent = "Train!";
       
+      if (refs.gdPanel) refs.gdPanel.style.display = "none";
       refs.trainBtn.classList.remove('is-running');
       refs.insight.innerHTML = "Set parameters and hit <strong>Train</strong>. Challenge: <strong>" + activeLandscape.name + "</strong>.";
       triggerCongrats(refs.plot, false);
@@ -2943,7 +3552,7 @@
         running = false;
         setStars(refs.starsGd, 0, "Off-target", { header: "Run grade" });
         gdLastStars = 0;
-        gdLastLoss = loss;
+        gdLastLoss = f(currentX);
         gdHint(0);
         if (typeof gdPushShareUrl === "function") gdPushShareUrl();
       } else if (epoch > 500) {
@@ -2955,7 +3564,7 @@
         running = false;
         setStars(refs.starsGd, 1, "Sketchy", { header: "Run grade" });
         gdLastStars = 1;
-        gdLastLoss = loss;
+        gdLastLoss = f(currentX);
         gdHint(1);
         if (typeof gdPushShareUrl === "function") gdPushShareUrl();
       } else if (Math.abs(velocity) < 1e-4 && Math.abs(grad) < 1e-3) {
@@ -2970,7 +3579,7 @@
           triggerCongrats(refs.plot, true);
           setStars(refs.starsGd, 5, "Frontier 🏆", { header: "Run grade" });
           gdLastStars = 5;
-          gdLastLoss = loss;
+          gdLastLoss = f(currentX);
           gdHint(5);
         } else {
            refs.insight.textContent = "🚧 Stuck in a side valley. Add momentum to roll over the small hill.";
@@ -2984,7 +3593,7 @@
            else if (dist < 0.80) { gdS = 2; gdT = "Workable"; }
            setStars(refs.starsGd, gdS, gdT, { header: "Run grade" });
            gdLastStars = gdS;
-           gdLastLoss = loss;
+           gdLastLoss = f(currentX);
            gdHint(gdS);
         }
         running = false;
@@ -3000,6 +3609,7 @@
           }, gdEpochDelay());
         });
       } else {
+        if (refs.gdPanel) refs.gdPanel.style.display = "none";
         const span = refs.trainBtn.querySelector('.lab-btn__text');
         if (span) span.textContent = "Reset";
         else refs.trainBtn.textContent = "Reset";
@@ -3018,8 +3628,33 @@
         const span = refs.trainBtn.querySelector('.lab-btn__text');
         if (span) span.textContent = "Stop";
         else refs.trainBtn.textContent = "Stop";
+        if (refs.gdPanel) refs.gdPanel.style.display = "block";
         refs.insight.textContent = "Training... (watch the loss bend reality in real time)";
         setStars(refs.starsGd, 0, "Training…", { header: "Run grade", pending: true });
+        
+        // Wire up active physics controls
+        if (refs.boost) refs.boost.onclick = () => {
+          if (!running) return;
+          const dir = Math.sign(velocity) || (df(currentX) < 0 ? 1 : -1);
+          velocity += dir * 0.14;
+          refs.insight.textContent = "🚀 Live Boost applied!";
+        };
+        if (refs.brake) refs.brake.onclick = () => {
+          if (!running) return;
+          velocity *= 0.12;
+          refs.insight.textContent = "🛑 Live Brake applied!";
+        };
+        if (refs.nudgeL) refs.nudgeL.onclick = () => {
+          if (!running) return;
+          velocity -= 0.08;
+          refs.insight.textContent = "⬅️ Live Nudge Left applied!";
+        };
+        if (refs.nudgeR) refs.nudgeR.onclick = () => {
+          if (!running) return;
+          velocity += 0.08;
+          refs.insight.textContent = "➡️ Live Nudge Right applied!";
+        };
+
         doEpoch();
       }
     });
@@ -3093,6 +3728,9 @@
       shareBtn:     $('[data-role="pol-share-btn"]', root),
       sharePopover: $('[data-role="pol-share-popover"]', root),
       shareText:    $('[data-role="pol-share-text"]', root),
+      polPanel:      $('[data-role="pol-action-panel"]', root),
+      polEventTitle: $('[data-role="pol-event-title"]', root),
+      polEventDesc:  $('[data-role="pol-event-desc"]', root),
     };
     let polLastStars = 0;
     let polLastScore = 0;
@@ -3414,6 +4052,7 @@
       refs.scoreVal.textContent = "0";
       refs.badgeVal.textContent = "…";
       drawPlot();
+      if (refs.polPanel) refs.polPanel.style.display = "none";
       refs.trainBtn.classList.remove('is-running');
       refs.trainBtn.querySelector('.lab-btn__text').textContent = "Train!";
       refs.insight.innerHTML = "Adjust sliders and hit <strong>Train!</strong>. Goal: <strong>Gold Proof</strong> (score ≥ 88).";
@@ -3424,25 +4063,90 @@
         "pending");
     }
 
-    function doEpoch(epoch, alpha, batchSize, noise) {
+    function doEpoch(epoch, noise) {
       if (!running) return;
 
-      const loss = computeLoss(epoch, alpha, batchSize, noise);
+      // Read sliders live!
+      const alpha = parseFloat(refs.lr.value);
+      const bsValSlider = parseInt(refs.bs.value, 10);
+      const bsIdx = clamp(bsValSlider - 1, 0, BATCH_SIZES.length - 1);
+      const batchSize = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
+
+      updateSliderDisplay();
+
+      // Trigger events
+      let eventTitle = "System Stable";
+      let eventDesc = "Training in progress. Adjust sliders live to steer the curve!";
+      let eventColor = "var(--ds-accent)";
+      let eventPlateau = false;
+      let eventPenalty = 0;
+      let eventNoise = 0;
+
+      if (epoch >= 20 && epoch <= 35) {
+        if (alpha < 0.02) {
+          eventTitle = "⚠️ Plateau Alert!";
+          eventDesc = "Learning stalled. Increase learning speed (α >= 0.020) to break out!";
+          eventColor = "#f59e0b";
+          eventPlateau = true;
+        } else {
+          eventTitle = "✅ Plateau Broken";
+          eventDesc = "Perfect learning rate. Moving forward.";
+          eventColor = "#10b981";
+        }
+      } else if (epoch >= 45 && epoch <= 60) {
+        if (alpha > 0.005) {
+          eventTitle = "⚠️ Divergence Warning!";
+          eventDesc = "Weights exploding! Decrease learning speed (α <= 0.005) to stabilize!";
+          eventColor = "#ef4444";
+          eventPenalty = (epoch - 45) * 0.28;
+        } else {
+          eventTitle = "✅ System Stabilized";
+          eventDesc = "Optimizer converged. Back on track.";
+          eventColor = "#10b981";
+        }
+      } else if (epoch >= 70 && epoch <= 85) {
+        if (batchSize < 256) {
+          eventTitle = "⚠️ Gradient Jitter!";
+          eventDesc = "Noise spike detected! Increase examples per step (B >= 256) to smooth wiggles.";
+          eventColor = "#f59e0b";
+          eventNoise = 1.6 * (Math.random() - 0.5);
+        } else {
+          eventTitle = "✅ Noise Filtered";
+          eventDesc = "Batch size is sufficient to smooth out gradients.";
+          eventColor = "#10b981";
+        }
+      }
+
+      if (refs.polEventTitle) {
+        refs.polEventTitle.textContent = eventTitle;
+        refs.polEventTitle.style.color = eventColor;
+      }
+      if (refs.polEventDesc) {
+        refs.polEventDesc.textContent = eventDesc;
+      }
+
+      // Compute loss with dynamic events
+      let loss = computeLoss(epoch, alpha, batchSize, noise);
+      if (eventPlateau) {
+        loss = Math.max(loss, 3.8);
+      }
+      loss = clamp(loss + eventPenalty + eventNoise, 0.12, 10);
+
       trainingCurve.push({ epoch, loss });
-      updateMetrics(epoch, loss);
       drawPlot();
 
       if (epoch < MAX_EPOCHS) {
         animationId = requestAnimationFrame(function () {
           animationId = null;
-          var ms = refs.polTurbo && refs.polTurbo.checked ? 11 : 36;
+          var ms = refs.polTurbo && refs.polTurbo.checked ? 30 : 120;
           polEpochTid = setTimeout(function () {
             polEpochTid = null;
-            doEpoch(epoch + 1, alpha, batchSize, noise);
+            doEpoch(epoch + 1, noise);
           }, ms);
         });
       } else {
         running = false;
+        if (refs.polPanel) refs.polPanel.style.display = "none";
         refs.trainBtn.classList.remove('is-running');
         refs.trainBtn.querySelector('.lab-btn__text').textContent = "Reset";
         evaluateRun(alpha, batchSize, noise);
@@ -3458,17 +4162,14 @@
       } else {
         running = true;
         refs.trainBtn.classList.add('is-running');
-        refs.trainBtn.querySelector('.lab-btn__text').textContent = "Training...";
-        refs.insight.textContent = "Running. Watching the loss curve unfold. Is this a real training run or a fake?";
+        refs.trainBtn.querySelector('.lab-btn__text').textContent = "Stop";
+        if (refs.polPanel) refs.polPanel.style.display = "block";
+        refs.insight.textContent = "Adjust sliders live to navigate plateau, divergence, and noise spike events!";
         setStars(refs.starsPol, 0, "Training…", { header: "Run grade", pending: true });
         setVerdict(refs.verdict, "Training…", "Loss curve drawing live.", "pending");
 
-        const alpha = parseFloat(refs.lr.value);
-        const bsIdx = clamp(parseInt(refs.bs.value, 10) - 1, 0, BATCH_SIZES.length - 1);
-        const batchSize = BATCH_SIZES[Math.min(bsIdx, BATCH_SIZES.length - 1)];
-
         trainingCurve = [];
-        doEpoch(0, alpha, batchSize, FIXED_NOISE);
+        doEpoch(0, FIXED_NOISE);
       }
     });
 
@@ -3477,7 +4178,7 @@
 
     // Randomize starting parameters on each refresh for replayability
     const randAlpha = (0.008 + Math.random() * 0.010).toFixed(4);
-    const randBatch = Math.floor(32 + Math.random() * 200);
+    const randBatch = Math.floor(1 + Math.random() * 8);
     refs.lr.value = randAlpha;
     refs.bs.value = randBatch;
 
@@ -3489,8 +4190,8 @@
       if (polLastStars > 0) params.r = polLastStars;
       const starsPrefix = polLastStars > 0 ? polLastStars + "★ — " : "";
       const detail = polLastStars > 0 ? " · score " + Math.round(polLastScore) : "";
-      const text = starsPrefix + "🔬 Training Fingerprint — α=" + lr.toFixed(3) + ", batch=" + BATCH_SIZES[bsIdx] + detail + ". Proof-of-Learning, playable.";
-      return { params: params, text: text, hashtags: "ProofOfLearning,MLsecurity", title: "Training Fingerprint" };
+      const text = starsPrefix + "🔬 Proof-of-Learning (SecurePoL) — α=" + lr.toFixed(3) + ", batch=" + BATCH_SIZES[bsIdx] + detail + ". Proof-of-Learning, playable.";
+      return { params: params, text: text, hashtags: "ProofOfLearning,MLsecurity", title: "Proof-of-Learning (SecurePoL)" };
     }
     function polPushShareUrl() { LabShare.write("pol", polBuildShareState().params); }
     function polApplyShareState(s) {
@@ -3520,11 +4221,47 @@
 
   /* ----------------------------------------------------------------- bootstrap */
   function boot() {
+    // Inject dynamic styles for interactive components
+    const style = document.createElement("style");
+    style.textContent = `
+      .lab-tmr__row {
+        cursor: pointer;
+        transition: opacity 0.2s ease, background 0.2s ease;
+      }
+      .lab-tmr__row:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .lab-tmr__row.is-muted {
+        opacity: 0.35;
+        background: rgba(239, 68, 68, 0.04);
+      }
+      .lab-tmr__row-label {
+        position: relative;
+      }
+      .lab-tmr__row.is-muted .lab-tmr__row-label::after {
+        content: " (MUTED)";
+        color: #ef4444;
+        font-size: 0.62rem;
+        font-weight: bold;
+        position: absolute;
+        right: -45px;
+        top: 0;
+      }
+      .lab-wm__cell {
+        cursor: crosshair;
+      }
+      .lab-wm__cell.is-shielded {
+        outline: 2px solid #10b981 !important;
+        outline-offset: -2px;
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.85) !important;
+      }
+    `;
+    document.head.appendChild(style);
+
     loadQuest();
     renderQuest();
     if(typeof initTwoGeneralsLab === "function") initTwoGeneralsLab();
     if(typeof initVerifierLab === "function") initVerifierLab();
-    if(typeof initWatermarkLab === "function") initWatermarkLab();
     if(typeof initProofOfLearningLab === "function") initProofOfLearningLab();
     if(typeof initTMRLab === "function") initTMRLab();
     if(typeof initGradientDescentLab === "function") initGradientDescentLab();

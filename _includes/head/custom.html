@@ -2,6 +2,20 @@
 
 <!-- start custom head snippets -->
 
+<script>
+  (function() {
+    var theme = localStorage.getItem("theme") || "system";
+    if (theme === "system") {
+      theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    if (theme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+  })();
+</script>
+
 <!-- Support for Academicons -->
 <link rel="stylesheet" href="{{ base_path }}/assets/css/academicons.css"/>
 

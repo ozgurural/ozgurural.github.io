@@ -149,9 +149,15 @@ og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type                   : Person
+  name                   : "Dr. Ozgur Ural"
+  links:
+    - https://scholar.google.com/citations?user=lYx8fqsAAAAJ
+    - http://orcid.org/0000-0003-1329-4303
+    - https://www.researchgate.net/profile/Ozgur-Ural
+    - https://twitter.com/ozgurural
+    - https://github.com/ozgurural
+    - https://www.linkedin.com/in/uralozgur
 
 
 # Analytics

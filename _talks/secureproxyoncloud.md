@@ -3,9 +3,9 @@ title: "Secure Proxy on Cloud Paper Demonstration"
 collection: talks
 type: "Paper Demonstration"
 permalink: /talks/secure-proxy-on-cloud
-venue: "Venue or Conference Name"
+venue: "YouTube Demonstration"
 date: 2016-06-01
-location: "Online or Physical Location"
+location: "Online"
 ---
 
 [This demonstration](https://www.youtube.com/watch?v=wZyKvOQauiY&t=33s) was about my paper titled "Secure Proxy on Cloud".
