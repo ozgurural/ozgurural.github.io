@@ -1769,7 +1769,7 @@
     let wmStormTimer = null;
     let wmStormActive = false;
     const wmShieldedSet = new Set();
-    const wmEpsCells = new Array(GRID_CELLS).fill(0);
+    const wmEpsCells = new Array(64).fill(0);
     // Thief noise + per-scenario target both come from the active level.
     function wmCurrentLevel() {
       const active = refs.levels && refs.levels.querySelector(".lab-level--active");
