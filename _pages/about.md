@@ -49,8 +49,8 @@ redirect_from:
 <ul class="ep-stats">
   <li><span class="num">11+</span><span class="label">Years engineering</span></li>
   <li><span class="num">Ph.D.</span><span class="label">ERAU · 2025</span></li>
-  <li><span class="num">4</span><span class="label">IEEE Access papers</span></li>
-  <li><span class="num">PC</span><span class="label">NLPAICS 2026</span></li>
+  <li><span class="num">Architect</span><span class="label">Distributed Systems</span></li>
+  <li><span class="num">Scale</span><span class="label">Mission-critical code</span></li>
 </ul>
 
 ## Systems Architecture & Core Domains
