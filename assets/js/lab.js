@@ -1188,7 +1188,7 @@
 
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) stopChainAnim();
-      else startChainAnim();
+      else if (!gameRunning) startChainAnim();
     });
 
     /* ---- Endings ---- */
@@ -1412,6 +1412,10 @@
       if (!refs.runBtn || gameRunning) return;
       gameRunning = true;
       revealed = false;
+      if (gameTimerId) {
+        clearInterval(gameTimerId);
+        gameTimerId = null;
+      }
       stopChainAnim();
       clearChain();
 
@@ -2493,6 +2497,7 @@
     let tmrTimeLeft = 15;
     const tmrMutedChannels = new Set();
     const tmrStuckFaults = [false, false, false];
+    let tmrCountdownTimer = null;
 
     // Row click listeners to mute channels
     const rows = root.querySelectorAll(".lab-tmr__row");
@@ -2836,7 +2841,7 @@
     }
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) { stopSim(); } else if (tmrRevealed) { startSim(); }
+      if (document.hidden) { stopSim(); } else if (tmrRunning) { startSim(); }
     });
 
     /* ---- Live update ---- */
@@ -2974,6 +2979,10 @@
     function tmrEndGame(success) {
       stopSim();
       tmrStormActive = false;
+      if (tmrCountdownTimer) {
+        clearInterval(tmrCountdownTimer);
+        tmrCountdownTimer = null;
+      }
 
       // Re-enable inputs
       if (refs.nChannels) refs.nChannels.disabled = false;
@@ -3083,6 +3092,11 @@
       tmrMutedChannels.clear();
       tmrStuckFaults.fill(false);
 
+      if (tmrCountdownTimer) {
+        clearInterval(tmrCountdownTimer);
+        tmrCountdownTimer = null;
+      }
+
       if (refs.tmrHealth) {
         refs.tmrHealth.textContent = "100%";
         refs.tmrHealth.style.color = "#10b981";
@@ -3109,9 +3123,10 @@
       restartSimInterval(tmrTickMs);
 
       // Countdown loop
-      let simCountdown = setInterval(() => {
+      tmrCountdownTimer = setInterval(() => {
         if (!tmrStormActive) {
-          clearInterval(simCountdown);
+          clearInterval(tmrCountdownTimer);
+          tmrCountdownTimer = null;
           return;
         }
         tmrTimeLeft = Math.max(0, tmrTimeLeft - 0.5);
@@ -3119,7 +3134,8 @@
           refs.tmrTimer.textContent = "Telemetry Time: " + tmrTimeLeft.toFixed(1) + "s";
         }
         if (tmrTimeLeft <= 0) {
-          clearInterval(simCountdown);
+          clearInterval(tmrCountdownTimer);
+          tmrCountdownTimer = null;
           tmrEndGame(true);
         }
       }, 500);
