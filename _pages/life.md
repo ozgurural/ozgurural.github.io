@@ -4,8 +4,7 @@ title: "Perspectives & Leadership"
 author_profile: true
 layout: archive
 ---
-
-<p class="ep-lead">Shorter notes on leadership, engineering culture, the academia-to-industry transition, and the things a decade of shipping mission-critical software has taught me. Written more loosely than the <a href="/blog/">technical posts</a>.</p>
+<p class="ep-lead">Essays and notes on system architecture, driving technical excellence, the academia-to-industry transition, and what over a decade of shipping mission-critical software has taught me about building resilient systems. Written more loosely than the <a href="/blog/">technical posts</a>.</p>
 
 {% include base_path %}
 {% for post in site.categories.life %}

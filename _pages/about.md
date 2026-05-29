@@ -35,14 +35,14 @@ redirect_from:
 </script>
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">Machine Learning · Software Engineering · Distributed Systems</span>
-  <h1 class="ep-hero__title">I do <span class="accent">machine learning research</span> and write software that <span class="accent">cannot fail</span>.</h1>
+  <span class="ep-eyebrow">Systems Architecture · Technical Excellence · Machine Learning</span>
+  <h1 class="ep-hero__title">I design secure <span class="accent">ML architectures</span> and build distributed systems that <span class="accent">cannot fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>. My doctoral work is in machine learning: published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em>. Four IEEE Access papers (2023 to 2025); Ph.D. dissertation, ERAU 2025. By day I'm a senior software engineer building production systems where bugs aren't allowed to exist. The parts of AI I keep returning to are the ones where the math has to survive contact with adversaries and reality.
+    I'm <strong>Dr. Ozgur Ural</strong>. With over a decade of engineering experience and a Ph.D. in Machine Learning (conferred at ERAU, 2025), I bridge the gap between rigorous academic research and production reality. As a Senior Software Engineer, I focus on architecting fault-tolerant distributed systems, driving technical standards, and delivering enterprise platforms where failure is not an option. My doctoral work and published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em> (four IEEE Access papers, 2023–2025) ground my approach to securing AI infrastructures.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Currently in Leiden, Netherlands. Writing, building, publishing.</span>
+    <span>Currently in Leiden, Netherlands. Building, architecting, publishing.</span>
   </p>
 </section>
 
@@ -53,30 +53,30 @@ redirect_from:
   <li><span class="num">PC</span><span class="label">NLPAICS 2026</span></li>
 </ul>
 
-## Research focus
+## Systems Architecture & Core Domains
 
-<p class="ep-pillars__note">Published research is concentrated in <em>trustworthy ML</em>: the question of when a model can actually be trusted, and how to prove it. Broader interests stretch across machine learning: evaluation, robustness, alignment, agent verification, and the engineering practices that make ML research reproducible and reliable.</p>
+<p class="ep-pillars__note">My work focuses on the intersection of deep technical expertise and organizational scale: driving architectural decisions, setting technical standards, and ensuring that complex systems—from mission-critical C++ to cloud-native microservices—remain robust under extreme conditions.</p>
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Trustworthy ML</span>
-    <h3>Proof-of-Learning &amp; watermarking</h3>
-    <p>Defending ML training integrity against spoofing attacks. Feature-based model watermarking integrated with proof-of-learning. IEEE Access 2024, 2025. Ph.D. dissertation, ERAU 2025.</p>
+    <span class="ep-pillar__tag">Systems Architecture</span>
+    <h3>Technical Excellence</h3>
+    <p>Designing real-time, mission-critical systems. Bringing rigorous engineering discipline to ML pipelines and establishing architectural patterns that elevate the entire engineering organization through scalable code and resilient design.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Adversarial &amp; Robust ML</span>
+    <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
+    <h3>Enterprise infrastructure</h3>
+    <p>Architecting scalable cloud-native services (Scala, TypeScript, gRPC) and designing robust distributed protocols whose outputs and state can be audited end-to-end without compromising latency.</p>
+  </li>
+  <li class="ep-pillar">
+    <span class="ep-pillar__tag">Trustworthy ML & Security</span>
+    <h3>Securing AI pipelines</h3>
+    <p>Deep domain expertise in defending ML training integrity against spoofing attacks. My Ph.D. and IEEE-published research focus on feature-based model watermarking and proof-of-learning verification.</p>
+  </li>
+  <li class="ep-pillar">
+    <span class="ep-pillar__tag">Adversarial Robustness</span>
     <h3>When models can be trusted</h3>
-    <p>Adversarial examples, provenance verification, defences against spoofing. The broader question of when a model's claimed identity and behaviour can be trusted at all.</p>
-  </li>
-  <li class="ep-pillar">
-    <span class="ep-pillar__tag">Distributed &amp; Verifiable Systems</span>
-    <h3>Auditable ML pipelines</h3>
-    <p>Blockchain-enhanced ML (IEEE Access 2023 survey), cloud-native services in Scala / TypeScript / gRPC, and the design of distributed protocols whose outputs can be audited end-to-end.</p>
-  </li>
-  <li class="ep-pillar">
-    <span class="ep-pillar__tag">Engineering for ML</span>
-    <h3>Research code that works in production</h3>
-    <p>Real-time, mission-critical C++ in environments where bugs are not tolerated. The engineering discipline that ML research code mostly lacks, and that AI labs increasingly need.</p>
+    <p>Bridging research and production by ensuring models survive contact with adversaries. Evaluating provenance verification, adversarial examples, and the limits of claimed model identities.</p>
   </li>
 </ul>
 
@@ -93,7 +93,11 @@ redirect_from:
   </li>
   <li>
     <span class="when">Aug 2025</span>
-    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. <a href="https://commons.erau.edu/edt/905/">Dissertation</a>.</span>
+    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. Advisor: Dr. Kenji Yoshigoe. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+  </li>
+  <li>
+    <span class="when">Jul 2025</span>
+    <span class="what">Successfully defended Ph.D. dissertation.</span>
   </li>
   <li>
     <span class="when">Nov 2024</span>
@@ -103,8 +107,37 @@ redirect_from:
     <span class="when">Dec 2023</span>
     <span class="what">Published the survey <em>Blockchain-Enhanced Machine Learning</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10366252">Read paper</a>.</span>
   </li>
+  <li>
+    <span class="when">May 2021</span>
+    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
+  </li>
 </ol>
 
-## Contact
+## Selected Work
 
-[drozgurural@gmail.com](mailto:drozgurural@gmail.com)
+<ul class="ep-cards">
+  <li>
+    <div class="meta">2025 · IEEE Access</div>
+    <h3 class="title"><a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
+    <p class="desc">Defends proof-of-learning protocols against spoofing by integrating feature-based model watermarking with verification.</p>
+  </li>
+  <li>
+    <div class="meta">2025 · ERAU Dissertation</div>
+    <h3 class="title"><a href="https://commons.erau.edu/edt/905/">Enhancing Proof-of-Learning Security Against Spoofing Attacks</a></h3>
+    <p class="desc">Doctoral thesis formalizing watermark-augmented PoL, threat models, and empirical robustness analysis.</p>
+  </li>
+  <li>
+    <div class="meta">2024 · IEEE Access</div>
+    <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10741282">Feature-Based Model Watermarking for PoL</a></h3>
+    <p class="desc">First-author paper introducing the watermarking-based defense layer for proof-of-learning systems.</p>
+  </li>
+  <li>
+    <div class="meta">2023 · IEEE Access · Survey</div>
+    <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10366252">Survey on Blockchain-Enhanced Machine Learning</a></h3>
+    <p class="desc">Comprehensive survey of the design space at the intersection of distributed ledgers and learning systems.</p>
+  </li>
+</ul>
+
+## Get in touch
+
+For research collaboration, technical advisory, or speaking engagements, reach out by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [projects](/projects/), and [technical writing](/blog/).

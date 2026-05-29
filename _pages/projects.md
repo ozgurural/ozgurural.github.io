@@ -33,27 +33,27 @@ title: "Projects"
   </li>
 </ul>
 
-## Engineering &amp; Tooling
+## Systems Architecture & Engineering
 
 <ul class="ep-cards">
   <li>
-    <div class="meta">Python · PyQt5 · Health Tech</div>
-    <h3 class="title"><a href="/blog/pyqt5_image_measurer">EKG Image Measurement Tool</a></h3>
-    <p class="desc">Specialized desktop tool for cardiology professionals: measure distances on EKG reports with real-world scale calibration. Built and field-tested with clinicians.</p>
-  </li>
-  <li>
-    <div class="meta">C++ · Systems Primitives</div>
+    <div class="meta">C++ · High-Performance Systems</div>
     <h3 class="title"><a href="/blog/advanced-task-and-packet-management-in-cpp">Advanced Task &amp; Packet Management in C++</a></h3>
-    <p class="desc">High-performance task scheduling and network packet management primitives. Patterns I've used in production simulation backends.</p>
+    <p class="desc">Architectural primitives designed for high-performance task scheduling and network packet management. Built to support low-latency requirements in production simulation backends.</p>
   </li>
   <li>
-    <div class="meta">C++ · IPC</div>
+    <div class="meta">C++ · IPC Architecture</div>
     <h3 class="title"><a href="/blog/interprocess-and-intraprocess-messaging-in-cpp">Inter- &amp; Intra-Process Messaging in C++</a></h3>
-    <p class="desc">Robust messaging patterns for IPC and intra-process communication, suitable for low-latency real-time systems.</p>
+    <p class="desc">Scalable messaging architectures for IPC and intra-process communication, establishing patterns for real-time systems where failure isolation and microsecond latency are critical.</p>
   </li>
   <li>
-    <div class="meta">Visualization</div>
+    <div class="meta">Python · PyQt5 · Clinical Tooling</div>
+    <h3 class="title"><a href="/blog/pyqt5_image_measurer">EKG Image Measurement Tool</a></h3>
+    <p class="desc">Specialized desktop utility for cardiology professionals. Built and field-tested with clinicians to provide reliable, real-world scale calibration for EKG diagnostics.</p>
+  </li>
+  <li>
+    <div class="meta">Data Visualization</div>
     <h3 class="title"><a href="/blog/championshipvisualizer">Championship Visualizer</a></h3>
-    <p class="desc">Small data-storytelling project visualizing championship data. Exploratory work in interactive viz.</p>
+    <p class="desc">Exploratory work in interactive data visualization and storytelling, processing large-scale championship datasets.</p>
   </li>
 </ul>

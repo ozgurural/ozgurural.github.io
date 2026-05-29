@@ -228,12 +228,15 @@
   position: absolute;
   left: 6px;
   top: 8px;
-  bottom: 6px;
+  bottom: 0;
+  height: 100%;
   width: 1px;
   background: var(--ds-line);
+  z-index: 1;
 }
 .ep-timeline > li {
   position: relative;
+  z-index: 2;
   padding: 0.1rem 0 0.9rem 1.7rem;
   font-size: 0.985rem;
   line-height: 1.6;
