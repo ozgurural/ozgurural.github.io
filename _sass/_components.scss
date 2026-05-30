@@ -194,11 +194,17 @@
    -------------------------------------------------------------------------- */
 .ep-pillars {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
   margin: 1.5rem 0 2.25rem;
   padding: 0;
   list-style: none;
+}
+@media (min-width: 600px) {
+  .ep-pillars { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 960px) {
+  .ep-pillars { grid-template-columns: repeat(4, 1fr); }
 }
 .ep-pillar {
   padding: 1.15rem 1.2rem 1.3rem;
