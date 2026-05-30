@@ -3,10 +3,6 @@ permalink: /lab/training-fingerprint/
 title: "Proof-of-Learning (SecurePoL) — Playable Thought Experiment"
 description: "Earn Gold Proof. The journey is harder to fake than the destination."
 excerpt: "Prove a model was trained, not downloaded. The loss-curve fingerprint is almost impossible to forge after the fact."
-header:
-  image: /images/lab-og/og-pol.png
-  og_image: /images/lab-og/og-pol.png
-  twitter_image: /images/lab-og/og-pol.png
 sitemap: true
 ---
 

@@ -3,10 +3,6 @@ permalink: /lab/redundancy-reactor/
 title: "Redundancy Reactor — Triple-modular redundancy, playable"
 description: "Three of the same thing is still one thing. Pick the right N before the rocket disagrees with reality."
 excerpt: "Triple-modular redundancy, correlation that bites, and the Ariane-5 story explained as a slider."
-header:
-  image: /images/lab-og/og-tmr.png
-  og_image: /images/lab-og/og-tmr.png
-  twitter_image: /images/lab-og/og-tmr.png
 sitemap: true
 ---
 

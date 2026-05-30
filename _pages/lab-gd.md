@@ -3,10 +3,6 @@ permalink: /lab/gradient-pinball/
 title: "Gradient Pinball — Optimization, playable"
 description: "Land the optimizer in the global minimum. Step size, momentum, the occasional saddle."
 excerpt: "Roll a ball down a high-dimensional loss landscape. Sweet spot or side valley — the math has opinions."
-header:
-  image: /images/lab-og/og-gd.png
-  og_image: /images/lab-og/og-gd.png
-  twitter_image: /images/lab-og/og-gd.png
 sitemap: true
 ---
 

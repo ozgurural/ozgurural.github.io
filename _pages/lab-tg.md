@@ -3,10 +3,6 @@ permalink: /lab/block-race/
 title: "Block Race — Bitcoin consensus, playable"
 description: "Mine. Attack. Defend. The math is whitepaper §11 — try a double-spend or hold the line."
 excerpt: "Mine, attack, or defend Bitcoin. The math is Nakamoto's whitepaper §11."
-header:
-  image: /images/lab-og/og-tg.png
-  og_image: /images/lab-og/og-tg.png
-  twitter_image: /images/lab-og/og-tg.png
 sitemap: true
 ---
 

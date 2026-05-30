@@ -3,10 +3,6 @@ permalink: /lab/model-heist/
 title: "Model Heist Detector — AI watermarks, playable"
 description: "Catch the thief without breaking the model. AI provenance, made tactile."
 excerpt: "Spread a faint statistical signature across thousands of weights and read it back through the noise."
-header:
-  image: /images/lab-og/og-wm.png
-  og_image: /images/lab-og/og-wm.png
-  twitter_image: /images/lab-og/og-wm.png
 sitemap: true
 ---
 
