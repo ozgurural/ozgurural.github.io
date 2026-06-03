@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Dr. Ozgur Ural"
+title: "Research & Engineering"
 excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Senior software engineer."
 author_profile: true
 redirect_from:
@@ -96,8 +96,24 @@ redirect_from:
     <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. Advisor: Dr. Kenji Yoshigoe. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
   </li>
   <li>
-    <span class="when">Jul 2025</span>
-    <span class="what">Successfully defended Ph.D. dissertation.</span>
+    <span class="when">Oct 2023</span>
+    <span class="what">Joined <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a> as Senior Software Engineer. Architecting real-time simulation platforms and cloud-native infrastructure for Level D flight simulators.</span>
+  </li>
+  <li>
+    <span class="when">2021–2025</span>
+    <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Four IEEE Access publications on proof-of-learning and model watermarking.</span>
+  </li>
+  <li>
+    <span class="when">2020–2021</span>
+    <span class="what">Software Team Lead at <a href="https://havelsan.com.tr/en">Havelsan</a>. Led a 14-engineer team delivering the <em>Havelsan DLP</em> data leakage prevention product for defence and government clients.</span>
+  </li>
+  <li>
+    <span class="when">2019–2020</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Contributed to the architecture of the mission-control and ground-control systems for the <em>Kargu</em> autonomous tactical UAV and <em>Togan</em> reconnaissance UAV.</span>
+  </li>
+  <li>
+    <span class="when">2014–2019</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Led design and architecture of the Secure Web Gateway, enterprise Patch Manager, and the Chromium-based Dragon browser.</span>
   </li>
   <li>
     <span class="when">Nov 2024</span>
