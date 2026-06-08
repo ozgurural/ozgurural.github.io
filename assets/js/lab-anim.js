@@ -596,10 +596,15 @@
     stage.appendChild(svg);
     this.svg = svg;
 
-    // html / katex overlay (front)
+    // html / katex overlay (front) — a fixed logical W×H box that is SCALED to
+    // fit the stage, so text (captions, equations) scales with the visuals
+    // exactly like a video frame instead of staying a fixed rem size.
     var ov = document.createElement("div");
     ov.className = "labf__overlay";
     ov.setAttribute("aria-hidden", "true");
+    ov.style.width = this.W + "px";
+    ov.style.height = this.H + "px";
+    ov.style.transformOrigin = "0 0";
     stage.appendChild(ov);
     this.overlay = ov;
 
@@ -703,6 +708,8 @@
     this.canvasEl.width = Math.round(rect.width * dpr);
     this.canvasEl.height = Math.round(rect.width * dpr * this.H / this.W);
     this.canvasEl.style.height = (rect.width * this.H / this.W) + "px";
+    // scale the logical overlay box to fit the stage (text scales with visuals)
+    if (this.overlay) this.overlay.style.transform = "scale(" + this._scale + ")";
     this._dpr = dpr;
   };
 

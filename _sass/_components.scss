@@ -3158,8 +3158,7 @@ button:focus-visible {
 }
 
 .labf__canvas,
-.labf__svg,
-.labf__overlay {
+.labf__svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -3167,7 +3166,8 @@ button:focus-visible {
 }
 .labf__canvas { z-index: 1; }
 .labf__svg    { z-index: 2; overflow: visible; }
-.labf__overlay{ z-index: 3; pointer-events: none; }
+/* fixed logical box; JS sets width/height (= W×H) and a scale() to fit the stage */
+.labf__overlay{ position: absolute; top: 0; left: 0; z-index: 3; pointer-events: none; }
 
 .labf__texlayer {
   position: absolute;
@@ -3197,7 +3197,7 @@ button:focus-visible {
 
 .labf__caption {
   font-family: var(--ds-font-sans);
-  font-size: clamp(0.86rem, 1.7vw, 1.04rem);
+  font-size: 1.04rem; /* fixed at the 960px logical reference; the overlay scales it */
   font-weight: 500;
   color: #cdd9ef;
   max-width: 30ch;
@@ -3213,7 +3213,7 @@ button:focus-visible {
 .labf__scenetitle {
   font-family: var(--ds-font-display);
   font-weight: 700;
-  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-size: 1.9rem; /* fixed at the 960px logical reference; the overlay scales it */
   letter-spacing: -0.02em;
   color: #ffffff;
   white-space: normal;
@@ -3372,11 +3372,11 @@ button:focus-visible {
 .labf__scrub:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 2px; }
 
 @media (max-width: 640px) {
-  .labf__caption { font-size: 0.8rem; }
+  /* overlay text now scales with the stage via the logical-box transform,
+     so do NOT shrink fonts here (it would double-scale). Only the chrome and
+     transport — which live outside the scaled overlay — need tightening. */
   .labf__chrome { top: 0.6rem; left: 0.7rem; right: 0.7rem; }
   .labf__time { min-width: 56px; font-size: 0.6rem; }
-  .labf__tex .katex { font-size: 0.96em; }
-  .labf__scenetitle { font-size: clamp(1rem, 5vw, 1.5rem); }
   .labf__transport { gap: 0.45rem; padding: 0.5rem 0.6rem; }
 }
 

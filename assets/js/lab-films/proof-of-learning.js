@@ -55,6 +55,7 @@
     var film = window.LabAnim.create("#pol-film", { width: 960, height: 540 });
     hook(film); pathPoint(film); proofObj(film); replay(film); asymmetry(film); securepol(film); signature(film);
     film.build();
+    if (window.__LABDEBUG) window.__polFilm = film;
   }
 
   /* ============== 1 — HOOK : a stolen snapshot ============== */

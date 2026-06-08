@@ -57,6 +57,7 @@
     var film = window.LabAnim.create("#mh-film", { width: 960, height: 540 });
     hook(film); fragile(film); spread(film); ztest(film); roc(film); scrub(film); stakes(film);
     film.build();
+    if (window.__LABDEBUG) window.__mhFilm = film;
   }
 
   /* a tiny node-graph drawer (used in hook & stakes) */

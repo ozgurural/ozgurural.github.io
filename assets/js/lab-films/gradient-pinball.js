@@ -90,6 +90,7 @@
     sceneSaddles(film);
 
     film.build();
+    if (window.__LABDEBUG) window.__gdFilm = film;
   }
 
   /* small reusable lower-third caption */
@@ -188,7 +189,7 @@
         ctx.beginPath(); ctx.arc(pb0[0], pb0[1], 9, 0, 7); ctx.fill();
       });
 
-      var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "clamp(1.3rem,4.4vw,2.1rem)", color: "#ffffff" });
+      var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "2.4rem", color: "#ffffff" });
       s.write(title, { at: 0.4, dur: 1.6 });
       s.fadeOut(title, { at: 5.0, dur: 1.0 });
 

@@ -46,6 +46,7 @@
     var film = window.LabAnim.create("#tmr-film", { width: 960, height: 540 });
     hook(film); mechanism(film); superlinear(film); correlation(film); ariane(film); diversity(film);
     film.build();
+    if (window.__LABDEBUG) window.__tmrFilm = film;
   }
 
   /* TMR schematic: 3 channels -> voter. states = [ 'ok'|'bad' x3 ], voterState */
