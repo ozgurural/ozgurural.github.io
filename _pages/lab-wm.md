@@ -1,8 +1,8 @@
 ---
 permalink: /lab/model-heist/
-title: "Model Heist Detector — AI watermarks, playable"
-description: "Catch the thief without breaking the model. AI provenance, made tactile."
-excerpt: "Spread a faint statistical signature across thousands of weights and read it back through the noise."
+title: "Model Heist Detector — AI watermarks, animated"
+description: "How a watermark too faint to see in any single weight becomes a courtroom-grade signature across thousands of them. A cinematic, PhD-level Z-test explainer."
+excerpt: "Spread a faint statistical signature across k weights, read it back through fine-tuning noise with a matched filter, and watch detection power rise as √k."
 sitemap: true
 ---
 
@@ -11,130 +11,41 @@ sitemap: true
 <section class="lab-card lab-experiment" id="lab-wm" style="margin-top: 0;">
   <span class="ep-eyebrow">ML security · Model provenance</span>
   <h2>Model Heist Detector</h2>
-  <p class="lab-card__lead">🕵️ Someone leaked your AI and ran it through a disguise. Before publishing, you'd spread a faint statistical signature across thousands of weights, too small to notice individually but together a fingerprint only you can read. The thief tries to scrub it. You have to read it through the noise anyway.</p>
+  <p class="lab-card__lead">🕵️ Someone leaks your AI and fine-tunes it just enough to look different. Before you ever published, you spread a faint statistical signature across thousands of weights — each mark too small to notice, but together a fingerprint only you can read. This animation shows why that works: one big mark is fragile, but <strong>k tiny correlated marks</strong> read back through a matched filter give detection power that climbs as <strong>√k</strong> — invisible in any one weight, undeniable across all of them.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Implements robust statistical watermarking. See the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</span>
-  </div>
-  <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your move</span>
-    <strong>Catch the thief without breaking the model.</strong>
-    <span>Each thief level adds more noise. Tune signature strength and number of marks. Push ε too far and the model behaves oddly; under-shoot k and the signal drowns in the noise floor.</span>
-    <div class="lab-card__mission-pills"><span>5★ beat the catch target</span><span>4★ catch with collateral</span><span>3★ partial detection</span></div>
+    <span>Implements robust statistical watermarking, modelled as an aggregate Gaussian Z-test over k weights. See the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</span>
   </div>
 
-  <div class="lab-experiment__panel">
-    <div class="lab-experiment__controls">
-      <div class="lab-levels" data-role="wm-levels" aria-label="Pick the thief">
-        <strong class="lab-levels__title">Pick the thief</strong>
-        <div class="lab-levels__row">
-          <button type="button" class="lab-level" data-sigma="0.05" data-goal-det="0.97" data-eps-max="0.15" data-name="Casual">
-            <span class="lab-level__icon">🦮</span>
-            <span class="lab-level__name">Casual</span>
-            <span class="lab-level__hint">light tweaks · need 97% catch</span>
-          </button>
-          <button type="button" class="lab-level lab-level--active" data-sigma="0.15" data-goal-det="0.90" data-eps-max="0.18" data-name="Pro thief">
-            <span class="lab-level__icon">🎭</span>
-            <span class="lab-level__name">Pro thief</span>
-            <span class="lab-level__hint">fine-tunes · need 90% catch</span>
-          </button>
-          <button type="button" class="lab-level" data-sigma="0.25" data-goal-det="0.80" data-eps-max="0.20" data-name="Crafty">
-            <span class="lab-level__icon">🦹</span>
-            <span class="lab-level__name">Crafty</span>
-            <span class="lab-level__hint">scrubs hard · need 80% catch</span>
-          </button>
-          <button type="button" class="lab-level" data-sigma="0.35" data-goal-det="0.65" data-eps-max="0.25" data-name="Mastermind">
-            <span class="lab-level__icon">🐉</span>
-            <span class="lab-level__name">Mastermind</span>
-            <span class="lab-level__hint">nation-state · need 65% catch</span>
-          </button>
-        </div>
-      </div>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Your strategy: how bold is your signature?</span>
-          <span class="lab-control__var">ε</span>
-          <span class="lab-control__value" data-role="eps-val">0.20</span>
-        </span>
-        <input type="range" min="0.02" max="0.45" step="0.01" value="0.20" data-role="eps" aria-label="how bold is the watermark signature">
-      </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Your strategy: how many hidden marks?</span>
-          <span class="lab-control__var">k</span>
-          <span class="lab-control__value" data-role="k-val">8</span>
-        </span>
-        <input type="range" min="1" max="32" step="1" value="8" data-role="k" aria-label="how many hidden marks">
-      </label>
-      <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="wm-run-btn">
-        <span class="lab-btn__text">Run experiment</span>
-        <span class="lab-btn__bg"></span>
-      </button>
-      
-      <!-- Active Game Controls -->
-      <div class="lab-action-panel" data-role="wm-action-panel">
-        <div class="lab-action-panel__timer" data-role="wm-game-timer">Scrubbing Storm: 8.0s</div>
-        <div class="lab-action-panel__hint">Hover / Drag over key cells (orange) to SHIELD them from the tuning storm!</div>
-      </div>
-    </div>
-
-    <div class="lab-experiment__visual">
-      <div class="lab-wm__grid" data-role="grid" aria-hidden="true"></div>
-      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-wm" preserveAspectRatio="xMidYMid meet" role="img" aria-label="detection rate vs attacker noise"></svg>
-      <div class="lab-wm-legend" aria-hidden="true">
-        <span><span class="lab-wm-legend__swatch lab-wm-legend__swatch--key"></span> watermark key cell</span>
-        <span><span class="lab-wm-legend__swatch lab-wm-legend__swatch--value"></span> sampled weight</span>
-        <span><span class="lab-wm-legend__swatch lab-wm-legend__swatch--glitch"></span> ε above utility threshold</span>
-      </div>
-    </div>
-
-    <div class="lab-experiment__scoreline">
-      <div class="lab-experiment__scorebar" data-role="stars-wm" aria-live="polite"></div>
-      <span class="lab-endings" data-role="endings-wm" title="Each Run lands you in a named ending. Find them all."></span>
-    </div>
-    <div class="lab-experiment__verdict" data-role="verdict-wm" aria-live="polite">
-      <span class="lab-experiment__verdict-head">…</span>
-      <span class="lab-experiment__verdict-sub">Pick a thief, set your strategy, hit Run.</span>
-    </div>
-    <div class="lab-experiment__readout">
-      <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">Caught the thief</span>
-        <span class="lab-experiment__metric-value" data-role="det-val">…</span>
-        <span class="lab-experiment__metric-formula">verifier with the secret key</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--fpr">
-        <span class="lab-experiment__metric-label">False alarm rate</span>
-        <span class="lab-experiment__metric-value" data-role="fpr-val">…</span>
-        <span class="lab-experiment__metric-formula">on an innocent model</span>
-      </div>
-    </div>
-
-    <p class="lab-experiment__insight" data-role="insight-wm">Drag the sliders.</p>
-    <p class="lab-experiment__sweet" data-role="sweet-spot-wm" hidden></p>
+  <div class="lab-film">
+    <div class="lab-film__frame" id="mh-film" role="img" aria-label="Animated explainer: statistical model watermarking detected by a Gaussian Z-test"></div>
   </div>
 
-  <details class="lab-reveal">
+  <p class="lab-film__legend" aria-hidden="true">
+    <span><i style="background:#38bdf8"></i> owner signal</span>
+    <span><i style="background:#94a3b8"></i> fine-tuning noise</span>
+    <span><i style="background:#fb7185"></i> thief / scrub</span>
+    <span><i style="background:#fbbf24"></i> effect size d</span>
+  </p>
+
+  <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
-    <p><strong>Tiny secrets in many places beat one big secret.</strong> An AI model has hundreds of millions of internal numbers. A watermark is a faint statistical pattern spread across many of them. Each individual mark is way too small to notice, but together they form a signature only you can recognize.</p>
-    <p>This is how labs at OpenAI, Google, and Anthropic plan to prove "yes, that model is ours" if it gets leaked. The same trick is used to find AI-generated text, mark images from specific cameras, and prove which lab produced a research paper. The harder the thief tries to erase one mark, the more visible the others become.</p>
-    <p><strong>Scientific Context:</strong> This simulation implements features similar to the watermark detection schemes analyzed in the author's paper, where aggregate detection over $k$ weights is modeled using a Gaussian Z-test. Read the details in the IEEE Access paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</p>
+    <p><strong>Tiny secrets in many places beat one big secret.</strong> A model has hundreds of millions of internal numbers. Stamping one large value into a single weight fails twice — it's conspicuous (a thief finds and erases it) and it's large (it dents accuracy). Instead, the owner shifts the weights along a <em>secret unit pattern</em> w across k coordinates, each by a tiny ε that's invisible against the noise floor.</p>
+    <p><strong>Detection is a matched filter — a one-sided Z-test.</strong> The verifier correlates the leaked weights against the secret pattern, <em>S = ⟨w, θ̂ − θ<sub>ref</sub>⟩</em>. The aligned marks add coherently to amplitude √k·ε, while the fine-tuning noise projects to a flat σ (because ‖w‖ = 1). Normalised, the statistic is N(0,1) for an innocent model and N(d,1) for a watermarked one, with effect size <em>d = √k·ε/σ</em>. Detection power is Φ(d − z<sub>α</sub>) at false-positive rate α.</p>
+    <p><strong>The √k decouples stealth from certainty.</strong> Per weight, ε/σ ≪ 1 — utility-preserving and undetectable. But the aggregate d = √k·ε/σ crosses any threshold for large enough k, so the ROC curve snaps to the perfect corner (AUC = Φ(d/√2)) just by adding marks. You buy confidence with breadth, not loudness.</p>
+    <p><strong>The scrubbing paradox.</strong> To erase a spread mark the thief must perturb all k coordinates at once — and because <em>w is secret</em>, he can't aim his utility budget at it: ‖δ‖ ≤ ρ ⇒ |ΔS| = |⟨w, δ⟩| ≤ ρ. Scrubbing blindly wrecks the model's usefulness long before it removes the signature, and the matched filter just re-weights the survivors. The very constraint that keeps the stolen model useful is what makes the watermark un-removable.</p>
+    <p><strong>Scientific Context:</strong> This is how labs plan to prove "that model is ours" after a leak, and the same statistics underlie AI-text detection and camera provenance. The Z-test formulation and its coupling to Proof-of-Learning are detailed in the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</p>
   </details>
 
-  <div class="lab-share" data-role="wm-share-root">
-    <button type="button" class="lab-share__btn" data-role="wm-share-btn" aria-haspopup="dialog" aria-expanded="false">
-      <span class="lab-share__btn-icon">🔗</span>
-      <span class="lab-share__btn-text">Share this run</span>
-    </button>
-    <div class="lab-share__popover" data-role="wm-share-popover" role="dialog" aria-label="Share this run" hidden>
-      <p class="lab-share__preview" data-role="wm-share-text">5★ — Model Heist Detector · share text appears here</p>
-      <div class="lab-share__actions">
-        <button type="button" data-share="copy">📋 Copy link</button>
-        <button type="button" data-share="x">𝕏 Tweet</button>
-        <button type="button" data-share="li">in LinkedIn</button>
-        <button type="button" data-share="close" aria-label="Close share">✕</button>
-      </div>
+  <details class="lab-reveal">
+    <summary>📐 The math, precisely</summary>
+    <div class="lab-math" data-role="mh-appendix">
+      <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
-  </div>
+  </details>
 </section>
 
-<script src="{{ '/assets/js/lab.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/lab-films/model-heist.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

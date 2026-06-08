@@ -1,8 +1,8 @@
 ---
 permalink: /lab/training-fingerprint/
-title: "Proof-of-Learning (SecurePoL) — Playable Thought Experiment"
-description: "Earn Gold Proof. The journey is harder to fake than the destination."
-excerpt: "Prove a model was trained, not downloaded. The loss-curve fingerprint is almost impossible to forge after the fact."
+title: "Proof-of-Learning (SecurePoL) — animated"
+description: "Final weights are a snapshot anyone can copy — but the path that produced them is a one-way function of compute. A cinematic, PhD-level explainer of Proof-of-Learning."
+excerpt: "Prove a model was trained, not downloaded. The loss-curve trajectory is cheap to produce honestly and expensive to forge — and SecurePoL binds it to a watermark."
 sitemap: true
 ---
 
@@ -11,101 +11,41 @@ sitemap: true
 <section class="lab-card lab-experiment" id="lab-pol" style="margin-top: 0;">
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
   <h2>Proof-of-Learning (SecurePoL)</h2>
-  <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it. The proof is in the journey: a real training run leaves a wobbly, monotone-ish loss curve that's almost impossible to forge after the fact. Tune the run and see if the trajectory would survive an audit.</p>
+  <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it — the final weights are just a tensor of numbers, copyable in milliseconds. The proof is in the <strong>journey</strong>: a real training run leaves a checkpoint trajectory that took a full run to generate and is expensive to forge. This animation builds the idea from the ground up — why the path beats the point, how a verifier spot-checks it cheaply, the prover/adversary cost asymmetry, and how the author's <strong>SecurePoL</strong> seals the remaining crack with a watermark.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Implements loss curve auditing and proof verification. See the author's paper: <a href="/publication/2025-secureproofoflearning">"SecurePoL: Integration of Watermarking With Proof-of-Learning"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</span>
-  </div>
-  <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your move</span>
-    <strong>Earn Gold Proof.</strong>
-    <span>Pick learning rate, batch size, and data noise. Hit Train. The detector scores you on monotonicity, smoothness, distance from the fake-flat baseline, and how close your hyperparameters are to a credible regime.</span>
-    <div class="lab-card__mission-pills"><span>5★ score ≥ 94</span><span>4★ ≥ 82</span><span>3★ ≥ 68</span></div>
+    <span>Proof-of-Learning (Jia et al., IEEE S&amp;P 2021); watermark coupling in the author's <a href="/publication/2025-secureproofoflearning">"SecurePoL"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</span>
   </div>
 
-  <div class="lab-experiment__panel">
-    <div class="lab-experiment__controls">
-      <p class="lab-experiment__slider-guide">
-        Gold lives near α 0.008 to 0.018, batch 64 to 256, and noise 0.02 to 0.08. The lab will not admit this was helpful.
-      </p>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Learning speed</span>
-          <span class="lab-control__var">α</span>
-          <span class="lab-control__value" data-role="pol-lr-val">0.01</span>
-        </span>
-        <input type="range" min="0.001" max="0.05" step="0.001" value="0.01" data-role="pol-lr" aria-label="learning speed">
-      </label>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Examples per step</span>
-          <span class="lab-control__var">B</span>
-          <span class="lab-control__value" data-role="pol-bs-val">32</span>
-        </span>
-        <input type="range" min="1" max="8" step="1" value="3" data-role="pol-bs" aria-label="examples per step">
-      </label>
-      <div class="lab-playset" aria-label="Proof-of-Learning pacing">
-        <label class="lab-playset__opt"><input type="checkbox" data-role="pol-turbo"> Faster training</label>
-      </div>
-      <button class="lab-btn lab-btn--train" type="button" data-role="pol-train-btn">
-        <span class="lab-btn__text">Train!</span>
-        <span class="lab-btn__bg"></span>
-      </button>
-      
-      <!-- Active Game Controls -->
-      <div class="lab-action-panel" data-role="pol-action-panel" style="border: 1px solid var(--ds-accent);">
-        <div class="lab-action-panel__event-title" data-role="pol-event-title">System Stable</div>
-        <div class="lab-action-panel__event-desc" data-role="pol-event-desc">Training in progress. Adjust sliders live to steer the curve in the green corridor!</div>
-      </div>
-    </div>
-
-    <div class="lab-experiment__visual">
-      <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-pol" preserveAspectRatio="xMidYMid meet" role="img" aria-label="training loss trajectory"></svg>
-    </div>
-
-    <div class="lab-experiment__scorebar" data-role="stars-pol" aria-live="polite"></div>
-    <div class="lab-experiment__verdict" data-role="verdict-pol" aria-live="polite">
-      <span class="lab-experiment__verdict-head">…</span>
-      <span class="lab-experiment__verdict-sub">Set hyperparameters, hit Train, watch the curve.</span>
-    </div>
-    <div class="lab-experiment__readout">
-      <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">Verification score</span>
-        <span class="lab-experiment__metric-value" data-role="pol-score-val">0</span>
-        <span class="lab-experiment__metric-formula">target: Gold ≥ 94</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--strict">
-        <span class="lab-experiment__metric-label">Badge</span>
-        <span class="lab-experiment__metric-value" data-role="pol-badge-val">…</span>
-        <span class="lab-experiment__metric-formula">Bronze · Silver · Gold</span>
-      </div>
-    </div>
-
-    <p class="lab-experiment__insight" data-role="insight-pol">Adjust sliders and hit Train. Real training should descend with controlled noise — not flatline like a suspiciously convenient forgery.</p>
+  <div class="lab-film">
+    <div class="lab-film__frame" id="pol-film" role="img" aria-label="Animated explainer: Proof-of-Learning, trajectory verification, and SecurePoL"></div>
   </div>
 
-  <details class="lab-reveal">
+  <p class="lab-film__legend" aria-hidden="true">
+    <span><i style="background:#38bdf8"></i> legitimate / trajectory</span>
+    <span><i style="background:#fbbf24"></i> checkpoint · δ-ball</span>
+    <span><i style="background:#fb7185"></i> adversary / spoof</span>
+    <span><i style="background:#d4af37"></i> watermark</span>
+  </p>
+
+  <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
-    <p><strong>The journey is harder to fake than the destination.</strong> The final weights of a trained AI are just a giant list of numbers, copy-pasteable in seconds. But the <em>path</em> the loss took during training? It's noisy, bumpy, has little flat spots when learning stalls, sudden drops when it finds a shortcut. That fingerprint is almost impossible to forge after the fact.</p>
-    <p>This is called <em>Proof-of-Learning</em>, and it matters for: patent disputes ("did you really invent this?"), competitive intelligence ("did they actually train, or did they distill ours?"), and verifying open-source claims. Same idea as a digital signature, but for the training process instead of the model.</p>
-    <p><strong>Scientific Context:</strong> In a real training run, verification relies on checking the monotonicity, smoothness, and hyperparameter consistency of the logged epoch states. Spoofing attacks can be detected by coupling these logs with model watermarks, as proposed in the author's paper: <a href="/publication/2025-secureproofoflearning">"SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks"</a> (IEEE Access 2025) and detailed in his <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</p>
+    <p><strong>The journey is harder to fake than the destination.</strong> A model's final weights are trivially copyable, so ownership can't rest on them. But the <em>path</em> the optimizer took — the sequence of checkpoints W₀…W_T with the exact data batches and hyperparameters that drove each step — took a full training run to produce. Proof-of-Learning records that transcript: <em>P(f) = (W, I, H, A)</em> — checkpoints, batch indices, batch signatures, and auxiliary info.</p>
+    <p><strong>Verification is cheap because it spot-checks.</strong> Re-running the whole training would cost as much as training. Instead the verifier exploits a structural fact: honest gradient steps are small, so a forger taking shortcuts must hide a few oversized jumps. It sorts updates by magnitude, replays only the top-Q segments per epoch, and checks each recomputed checkpoint lands within a slack ball δ (which absorbs floating-point, hardware, and optimizer nondeterminism). A spoofed jump can't fit inside δ.</p>
+    <p><strong>Security is a cost asymmetry — a goal, not a theorem.</strong> Honest proving costs one training run; forging means inverting SGD against randomly sampled checkpoints. Because the entropy of the process grows roughly linearly in the number of steps T, the space of consistent paths grows exponentially. The relation <em>E[C_A] ≥ E[C_T]</em> is a <em>design property</em> (Jia et al., 2021) — and later work (Zhang et al. 2022; Fang et al. 2023) showed plain PoL can be spoofed, which is exactly the gap the author's work closes.</p>
+    <p><strong>SecurePoL seals it with a watermark.</strong> Verification becomes a logical AND: a checkpoint must be trajectory-consistent (<em>d₂ ≤ δ</em>) <em>and</em> carry the secret feature watermark (<em>W(f) = σ</em>). A fabricated transcript can mimic the loss curve, but it can't carry a mark it never trained to embed — so spoofing collapses back to doing the real training.</p>
+    <p><strong>Scientific Context:</strong> The genuine loss trajectory descends <em>in expectation</em> (SGD is non-monotone) with heavy-tailed step sizes — a high-entropy fingerprint of compute expended. The trajectory-plus-watermark construction is detailed in the author's <a href="/publication/2025-secureproofoflearning">"SecurePoL"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</p>
   </details>
 
-  <div class="lab-share" data-role="pol-share-root">
-    <button type="button" class="lab-share__btn" data-role="pol-share-btn" aria-haspopup="dialog" aria-expanded="false">
-      <span class="lab-share__btn-icon">🔗</span>
-      <span class="lab-share__btn-text">Share this run</span>
-    </button>
-    <div class="lab-share__popover" data-role="pol-share-popover" role="dialog" aria-label="Share this run" hidden>
-      <p class="lab-share__preview" data-role="pol-share-text">5★ — Proof-of-Learning (SecurePoL) · share text appears here</p>
-      <div class="lab-share__actions">
-        <button type="button" data-share="copy">📋 Copy link</button>
-        <button type="button" data-share="x">𝕏 Tweet</button>
-        <button type="button" data-share="li">in LinkedIn</button>
-        <button type="button" data-share="close" aria-label="Close share">✕</button>
-      </div>
+  <details class="lab-reveal">
+    <summary>📐 The math, precisely</summary>
+    <div class="lab-math" data-role="pol-appendix">
+      <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
-  </div>
+  </details>
 </section>
 
-<script src="{{ '/assets/js/lab.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/lab-films/proof-of-learning.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

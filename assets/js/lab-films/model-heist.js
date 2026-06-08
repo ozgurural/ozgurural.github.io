@@ -1,0 +1,364 @@
+/* =============================================================================
+   model-heist.js — cinematic explainer: statistical model watermarking.
+
+   Seven scenes, math verified (Gaussian Z-test over k correlated marks):
+     1. hook          The stolen model        (prove provenance through noise)
+     2. fragile-mark  One big mark is fragile  (loud signal, easy to scrub)
+     3. spread        Spread it thin over k    (matched filter, √k gain)
+     4. ztest         Detection is a Z-test    (N(0,1) vs N(d,1); the hero)
+     5. roc           Robustness via k         (ROC inflates; AUC=Φ(d/√2))
+     6. scrub-paradox The scrubbing paradox    (kill it ⇒ wreck utility)
+     7. stakes        Courtroom-grade          (Power=Φ(√k·ε/σ − z_α))
+
+   Referee corrections applied:
+     • ONE convention: unit-norm matched filter w (‖w‖=1) ⇒ signal amplitude
+       √k·ε, noise std σ (flat), so d = √k·ε/σ. No mixing with the all-ones sum.
+     • The confidence chip is driven by Power = Φ(d − z_α), NOT 1−α.
+     • AUC = Φ(d/√2) stated exactly.
+     • The scrub-paradox’s √k cost holds because w is SECRET (the thief cannot
+       align his budget δ with w); |ΔS| = |⟨w,δ⟩| ≤ ‖δ‖ ≤ ρ. Stated on stage.
+     • Assumptions (white noise, σ known, clean reference, single test) in appendix.
+   ============================================================================= */
+(function () {
+  "use strict";
+
+  function boot() {
+    if (!window.LabAnim) return setTimeout(boot, 60);
+    if (!document.getElementById("mh-film")) return;
+    if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
+    build(); appendix();
+  }
+
+  var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
+  var CY = "#38bdf8", GRN = "#34d399", AMB = "#fbbf24", RED = "#fb7185", GREY = "#94a3b8", GOLD = "#d4af37";
+  var Z_ALPHA = 1.645; // one-sided α = 5%
+
+  function erf(x) {
+    var t = 1 / (1 + 0.3275911 * Math.abs(x));
+    var y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+    return x >= 0 ? y : -y;
+  }
+  function Phi(x) { return 0.5 * (1 + erf(x / Math.SQRT2)); }
+  function phi(x) { return Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI); }
+
+  function lower(s, html, at, o) {
+    o = o || {};
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size });
+    s.write(c, { at: at, dur: o.dur || 0.9 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
+    return c;
+  }
+  function bar(ctx, h, x, y, w, hh, color, alpha) {
+    ctx.globalAlpha = alpha; ctx.fillStyle = h.rgba(color, 0.7); ctx.fillRect(x, y, w, hh);
+    ctx.globalAlpha = 1;
+  }
+
+  function build() {
+    var film = window.LabAnim.create("#mh-film", { width: 960, height: 540 });
+    hook(film); fragile(film); spread(film); ztest(film); roc(film); scrub(film); stakes(film);
+    film.build();
+    window.__mhFilm = film;
+  }
+
+  /* a tiny node-graph drawer (used in hook & stakes) */
+  function graph(ctx, h, cx, cy, color, alpha, seed, jitter) {
+    var layers = [3, 4, 4, 2], gxs = [-60, -20, 20, 60], i, j, prevPts = null;
+    ctx.globalAlpha = alpha;
+    for (i = 0; i < layers.length; i++) {
+      var pts = [], n = layers[i];
+      for (j = 0; j < n; j++) {
+        var yy = cy + (j - (n - 1) / 2) * 26 + (jitter ? Math.sin((seed + i * 3 + j) * 9) * jitter : 0);
+        pts.push([cx + gxs[i], yy]);
+      }
+      if (prevPts) for (var a = 0; a < prevPts.length; a++) for (var b = 0; b < pts.length; b++) {
+        ctx.strokeStyle = h.rgba(color, 0.16); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(prevPts[a][0], prevPts[a][1]); ctx.lineTo(pts[b][0], pts[b][1]); ctx.stroke();
+      }
+      for (j = 0; j < pts.length; j++) { ctx.beginPath(); ctx.arc(pts[j][0], pts[j][1], 4, 0, 7); ctx.fillStyle = h.rgba(color, 0.95); ctx.fill(); }
+      prevPts = pts;
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ===================== 1 — HOOK ===================== */
+  function hook(film) {
+    film.scene("The stolen model", 14, function (s) {
+      s.canvas(function (lt, ctx, h) {
+        graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
+        // noise spray in the middle
+        if (lt > 1.5) {
+          var nn = 40, i;
+          for (i = 0; i < nn; i++) {
+            var px = 430 + (Math.sin(i * 12.9 + 1) * 0.5 + 0.5) * 120;
+            var py = 210 + (Math.sin(i * 7.7 + 3) * 0.5 + 0.5) * 130;
+            ctx.globalAlpha = (0.2 + 0.6 * ((Math.sin(lt * 3 + i) * 0.5 + 0.5))) * clamp01((lt - 1.5) / 1.5);
+            ctx.fillStyle = "#e8eef9"; ctx.beginPath(); ctx.arc(px, py, 1.5, 0, 7); ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+        }
+        var jit = clamp01((lt - 2) / 2) * 4;
+        graph(ctx, h, 690, 270, RED, clamp01((lt - 1.5) / 1.2), 5, jit);
+        // labels
+        ctx.font = "600 12px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("YOUR MODEL  θ", 218, 360);
+        ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
+        ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillText("fine-tuning noise", 452, 200);
+      });
+      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#fff" });
+      s.write(title, { at: 0.6, dur: 1.4 });
+      lower(s, "A model you trained for months leaks. A competitor fine-tunes it just enough to look different and calls it theirs. The weights are a moving target — so how do you prove provenance?", 4.4, { maxWidth: "66%", out: 13.2 });
+    }, { subtitle: "Ownership must survive transformation — not live in raw weights." });
+  }
+
+  /* ================= 2 — FRAGILE MARK ================= */
+  function fragile(film) {
+    film.scene("One big mark is fragile", 16, function (s) {
+      var n = 30, x0 = 150, bw = 16, gap = 8, baseY = 330, idx = 15;
+      s.canvas(function (lt, ctx, h) {
+        var scrub = clamp01((lt - 4.5) / 2.0);     // brush knocks the tall bar down
+        var i;
+        for (i = 0; i < n; i++) {
+          var x = x0 + i * (bw + gap);
+          var hgt = 14 + (Math.sin(i * 2.3) * 0.5 + 0.5) * 10;
+          if (i === idx) {
+            var tall = (1 - scrub) * 150 + 16;
+            bar(ctx, h, x, baseY - tall, bw, tall, scrub > 0.6 ? RED : CY, 1);
+          } else bar(ctx, h, x, baseY - hgt, bw, hgt, GREY, 0.8);
+        }
+        // brush sweep
+        if (lt > 3.5 && lt < 7) {
+          var bx = lerp(x0 + idx * (bw + gap) - 40, x0 + idx * (bw + gap) + 30, clamp01((lt - 3.5) / 3));
+          ctx.fillStyle = h.rgba(RED, 0.5); ctx.fillRect(bx, baseY - 180, 26, 200);
+          ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.95);
+          ctx.fillText("SCRUB", bx - 6, baseY - 190);
+        }
+        // utility meter (right)
+        var um = lt < 4.5 ? 0.7 : 0.7 - 0.55 * (1 - scrub); // tall bar => low utility, recovers as scrubbed
+        var mx = 760, my = 200, mh = 150;
+        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1; ctx.strokeRect(mx, my, 26, mh);
+        var fillH = mh * um, col = um < 0.4 ? RED : GRN;
+        ctx.fillStyle = h.rgba(col, 0.7); ctx.fillRect(mx, my + mh - fillH, 26, fillH);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
+        ctx.fillText("utility", mx - 2, my - 8);
+      });
+      var eq = s.tex2("\\tfrac{\\varepsilon_{\\text{big}}}{\\sigma}\\ \\text{large} \\Rightarrow \\text{visible \\& brittle}", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
+      s.fadeIn(eq, { at: 1.0, dur: 0.8 });
+      lower(s, "The naive fix — stamp one big value into a single weight — fails twice: it’s conspicuous, so a thief finds and erases it; and it’s large, so it dents the model’s accuracy. You can’t hide a loud signal in a quiet place.", 8.2, { maxWidth: "72%" });
+    }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
+  }
+
+  /* ================= 3 — SPREAD ================= */
+  function spread(film) {
+    film.scene("Spread it thin across k weights", 18, function (s) {
+      var n = 30, x0 = 130, bw = 16, gap = 9, baseY = 330, K = 24;
+      var marked = []; for (var m = 0; m < n; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
+      s.canvas(function (lt, ctx, h) {
+        var spreadP = clamp01((lt - 1.0) / 2.5); // mass redistributes
+        var i;
+        for (i = 0; i < n; i++) {
+          var x = x0 + i * (bw + gap);
+          var base = 14 + (Math.sin(i * 2.3) * 0.5 + 0.5) * 8;
+          var isMark = marked.indexOf(i) >= 0;
+          var delta = isMark ? spreadP * 9 : 0;
+          bar(ctx, h, x, baseY - base - delta, bw, base + delta, GREY, 0.75);
+          if (isMark && delta > 0) bar(ctx, h, x, baseY - base - delta, bw, delta, CY, clamp01(spreadP));
+        }
+        // dashed pattern envelope w over the marked tips
+        if (spreadP > 0.4) {
+          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * spreadP); ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          marked.forEach(function (mi, q) { var x = x0 + mi * (bw + gap) + bw / 2; var y = baseY - (14 + (Math.sin(mi * 2.3) * 0.5 + 0.5) * 8) - spreadP * 9 - 4; if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
+          ctx.stroke(); ctx.setLineDash([]);
+        }
+        // SNR readout d = sqrt(k) eps/sigma as k fills in
+        var kNow = Math.floor(clamp01((lt - 3.5) / 6) * K);
+        var d = Math.sqrt(kNow) * 0.32;
+        ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.95);
+        ctx.fillText("k = " + kNow + "   d = √k·ε/σ = " + d.toFixed(2), 560, 180);
+        // a little sqrt(k) curve for d
+        var px0 = 560, py0 = 360, pw = 320, ph = 130;
+        ctx.strokeStyle = h.rgba("#9fb2d4", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
+        ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.4; ctx.beginPath();
+        for (var kk = 0; kk <= kNow; kk++) { var xx = px0 + pw * kk / K, yy = py0 - (Math.sqrt(kk) * 0.32 / (Math.sqrt(K) * 0.32)) * ph; if (kk === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
+        ctx.stroke();
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.8);
+        ctx.fillText("aggregate SNR  d", px0, py0 - ph - 8);
+      });
+      var eq = s.tex2("S=\\langle w,\\ \\hat\\theta-\\theta_{\\text{ref}}\\rangle,\\ \\ \\|w\\|=1 \\;\\Rightarrow\\; d=\\tfrac{\\sqrt{k}\\,\\varepsilon}{\\sigma}", { px: 480, py: 104, size: "1rem", color: "#e8eef9" });
+      s.write(eq, { at: 1.0, dur: 1.4 });
+      lower(s, "Spread the same intent across k weights as a secret unit pattern — each nudge invisible against the noise floor. A matched filter correlates against the pattern: the <em>k aligned marks add coherently</em>, while independent noise adds only in quadrature. Net SNR grows as √k.", 9.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
+  }
+
+  /* ================= 4 — Z-TEST (hero) ================= */
+  function ztest(film) {
+    film.scene("Detection is a Z-test", 20, function (s) {
+      var co = film.coords({ xRange: [-3.4, 6.4], yRange: [0, 0.46], pad: { left: 70, right: 60, top: 150, bottom: 130 } });
+      function dOf(lt) { return lerp(0.4, 3.4, clamp01((lt - 1.5) / 12)); } // k rising over the scene
+      s.canvas(function (lt, ctx, h) {
+        var d = dOf(lt), xa = co.x(Z_ALPHA);
+        function curve(mu, color, fillCol) {
+          ctx.beginPath();
+          var first = true, x;
+          for (x = co.xmin; x <= co.xmax; x += 0.06) { var px = co.x(x), py = co.y(phi(x - mu)); if (first) { ctx.moveTo(px, py); first = false; } else ctx.lineTo(px, py); }
+          ctx.lineTo(co.x(co.xmax), co.y(0)); ctx.lineTo(co.x(co.xmin), co.y(0)); ctx.closePath();
+          ctx.fillStyle = h.rgba(fillCol, 0.10); ctx.fill();
+          ctx.beginPath(); first = true;
+          for (x = co.xmin; x <= co.xmax; x += 0.06) { var px2 = co.x(x), py2 = co.y(phi(x - mu)); if (first) { ctx.moveTo(px2, py2); first = false; } else ctx.lineTo(px2, py2); }
+          ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = 2.4; ctx.stroke();
+        }
+        // shaded α (gray, right of threshold under H0) and power (cyan, right of threshold under H1)
+        function fillRight(mu, color, alpha) {
+          ctx.beginPath(); var first = true, x;
+          for (x = Z_ALPHA; x <= co.xmax; x += 0.05) { var px = co.x(x), py = co.y(phi(x - mu)); if (first) { ctx.moveTo(px, co.y(0)); ctx.lineTo(px, py); first = false; } else ctx.lineTo(px, py); }
+          ctx.lineTo(co.x(co.xmax), co.y(0)); ctx.closePath(); ctx.fillStyle = h.rgba(color, alpha); ctx.fill();
+        }
+        fillRight(0, RED, 0.30);
+        fillRight(d, CY, 0.40);
+        curve(0, GREY, GREY);
+        curve(d, CY, CY);
+        // threshold line
+        ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 1.6; ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(xa, co.y(0)); ctx.lineTo(xa, co.y(0.44)); ctx.stroke(); ctx.setLineDash([]);
+        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("z_α", xa + 4, co.y(0.43));
+        // caliper for d
+        ctx.strokeStyle = h.rgba(AMB, 0.9); ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(co.x(0), co.y(0.40)); ctx.lineTo(co.x(d), co.y(0.40)); ctx.stroke();
+        ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
+        ctx.fillText("d = " + d.toFixed(2), co.x(d / 2) - 18, co.y(0.41) - 6);
+        // power readout
+        var power = Phi(d - Z_ALPHA);
+        ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 14px 'JetBrains Mono',monospace";
+        ctx.fillText("Power = Φ(d − z_α) = " + (power * 100).toFixed(1) + "%", 600, 150);
+        // labels
+        ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(GREY, 0.9); ctx.fillText("H₀ innocent  N(0,1)", co.x(-2.6), co.y(0.30));
+        ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("H₁ marked  N(d,1)", co.x(d + 0.3), co.y(0.34));
+      });
+      var e1 = s.tex2("Z=\\tfrac{S}{\\sigma}\\sim N(0,1)\\,|H_0,\\quad N(d,1)\\,|H_1", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
+      s.write(e1, { at: 0.8, dur: 1.2 });
+      lower(s, "This is exactly a one-sided Gaussian Z-test. Under the null — an innocent model — the statistic is standard normal; under the watermark it’s the same bell shifted right by the effect size d. Fix α, set the threshold z<sub>α</sub>, and power is Φ(d − z<sub>α</sub>).", 9.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Provenance collapses to one number: the shift d." });
+  }
+
+  /* ================= 5 — ROC ================= */
+  function roc(film) {
+    film.scene("Robustness is bought with k", 18, function (s) {
+      var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
+      var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
+      s.draw(ax, { at: 0.4, dur: 0.8 });
+      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.7rem", color: "#9fb2d4" });
+      var ylab = s.caption("true-positive rate", { coords: co, x: -0.04, y: 1.13, anchor: "left", size: "0.7rem", color: "#9fb2d4" });
+      s.fadeIn(xlab, { at: 0.8, dur: 0.5 }); s.fadeIn(ylab, { at: 0.8, dur: 0.5 });
+      // diagonal
+      var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
+      s.draw(diag, { at: 1.0, dur: 0.8 });
+      function rocCurve(d, color, at, label) {
+        var pts = [], tt;
+        for (tt = 5; tt >= -5; tt -= 0.1) { var fpr = Phi(-tt), tpr = Phi(d - tt); pts.push([fpr, tpr]); }
+        var pl = s.poly(pts, { coords: co, color: color, width: 3 });
+        s.draw(pl, { at: at, dur: 1.6 });
+        var auc = Phi(d / Math.SQRT2);
+        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: Phi(d - 0.2) - 0.06, anchor: "left", size: "0.72rem", color: color });
+        s.fadeIn(lbl, { at: at + 1.4, dur: 0.5 });
+      }
+      rocCurve(0.6, "#7dd3fc", 2.0, "small k");
+      rocCurve(1.6, CY, 3.6, "more k");
+      rocCurve(3.2, GRN, 5.2, "large k");
+
+      // stealth meter (right) — epsilon/sigma pinned low while d climbs
+      var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
+      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:#fbbf24'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: "#e8eef9" });
+      s.fadeIn(sm, { at: 7.0, dur: 0.6 }); s.fadeIn(dm, { at: 7.6, dur: 0.6 });
+      var aucEq = s.tex2("\\text{AUC}=\\Phi\\!\\big(d/\\sqrt{2}\\big)", { px: 760, py: 350, size: "1rem", color: AMB });
+      s.fadeIn(aucEq, { at: 8.4, dur: 0.7 });
+
+      lower(s, "Each weight stays far below the detectability floor — invisible, utility-preserving — yet because d scales with √k, the ROC curve snaps toward the perfect corner just by adding marks. You buy certainty with <em>breadth</em>, not loudness.", 10.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Stealth per weight and aggregate confidence — √k decouples them." });
+  }
+
+  /* ================= 6 — SCRUB PARADOX ================= */
+  function scrub(film) {
+    film.scene("The scrubbing paradox", 14, function (s) {
+      var n = 24, x0 = 150, bw = 18, gap = 8, baseY = 320;
+      s.canvas(function (lt, ctx, h) {
+        var attack = clamp01((lt - 2) / 4);
+        var i, killed = Math.floor(attack * 8);
+        for (i = 0; i < n; i++) {
+          var x = x0 + i * (bw + gap);
+          var base = 16, mark = 12;
+          var isKilled = i < killed;
+          var glow = isKilled ? 0 : (1 + attack * 0.5); // survivors brighten
+          bar(ctx, h, x, baseY - base, bw, base, GREY, 0.6);
+          if (!isKilled) bar(ctx, h, x, baseY - base - mark * glow, bw, mark * glow, CY, clamp01(0.7 + attack * 0.3));
+          else { ctx.fillStyle = h.rgba(RED, 0.4); ctx.fillRect(x, baseY - base, bw, base); }
+        }
+        // utility plunge + budget gauge
+        var util = 0.75 - attack * 0.6, bx = 720, by = 180, bh = 150;
+        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.strokeRect(bx, by, 26, bh);
+        ctx.fillStyle = h.rgba(util < 0.4 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9); ctx.fillText("utility", bx - 2, by - 8);
+        // owner Z needle barely dips
+        var z = 4.2 - attack * 0.5;
+        ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 13px 'JetBrains Mono',monospace";
+        ctx.fillText("owner Z = " + z.toFixed(1) + "  ≫ z_α", 600, 150);
+      });
+      var eq = s.tex2("\\|\\delta\\|\\le\\rho \\;\\Rightarrow\\; |\\Delta S|=|\\langle w,\\delta\\rangle|\\le\\rho", { px: 480, py: 110, size: "1rem", color: AMB });
+      s.write(eq, { at: 1.0, dur: 1.2 });
+      lower(s, "The thief is trapped by the same geometry. Because <em>w is secret</em>, he can’t aim his budget at it — scrubbing blindly across all k coordinates wrecks utility long before it erases the mark, and the matched filter just re-weights the survivors.", 7.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
+  }
+
+  /* ================= 7 — STAKES ================= */
+  function stakes(film) {
+    film.scene("A courtroom-grade signature", 12, function (s) {
+      s.canvas(function (lt, ctx, h) {
+        graph(ctx, h, 250, 280, CY, 1, 9, 0);
+        // gold pattern overlay glints
+        var i; ctx.globalAlpha = 0.8;
+        for (i = 0; i < 8; i++) { var a = lt * 1.5 + i; ctx.fillStyle = h.rgba(GOLD, 0.5 + 0.5 * Math.sin(a)); ctx.beginPath(); ctx.arc(210 + i * 12, 250 + (i % 3) * 22, 2.5, 0, 7); ctx.fill(); }
+        ctx.globalAlpha = 1;
+      });
+      var d3 = Math.sqrt(100) * 0.45; // k=100
+      var power = Phi(d3 - Z_ALPHA);
+      var eq = s.tex2("\\text{Power} = \\Phi\\!\\Big(\\tfrac{\\sqrt{k}\\,\\varepsilon}{\\sigma} - z_\\alpha\\Big)", { px: 560, py: 220, size: "1.4rem", color: AMB });
+      s.write(eq, { at: 0.8, dur: 1.6 });
+      var chip = s.caption("detection power → <strong style='color:#fff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1rem", color: GRN });
+      s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });
+      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
+      s.write(tag, { at: 4.4, dur: 1.4 });
+      var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 472, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      s.fadeIn(cite, { at: 6.0, dur: 0.8 });
+    }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
+  }
+
+  /* ====================== appendix ====================== */
+  function appendix() {
+    var host = document.querySelector('[data-role="mh-appendix"]');
+    if (!host || !window.katex) return;
+    var blocks = [
+      ["Matched filter", "S=\\langle w,\\ \\hat\\theta-\\theta_{\\text{ref}}\\rangle,\\quad \\|w\\|=1",
+        "The owner shifts the weights along a secret unit pattern w; the verifier correlates the leaked weights against w. This is the Neyman–Pearson optimal linear detector for a known signal in white Gaussian noise."],
+      ["Effect size", "d = \\frac{\\sqrt{k}\\,\\varepsilon}{\\sigma}",
+        "Signal projects coherently to amplitude \\(\\sqrt{k}\\,\\varepsilon\\); the noise projection \\(w^\\top n\\sim N(0,\\sigma^2)\\) stays flat because \\(\\|w\\|=1\\). The √k is the crux: robustness is bought by spreading, not deepening."],
+      ["Power", "\\text{Power}=\\Phi(d-z_\\alpha),\\quad \\text{AUC}=\\Phi(d/\\sqrt2)",
+        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z>z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) (invisible) while \\(d\\gg1\\) (certain)."],
+      ["Why it survives", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
+        "A utility-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) can remove at most \\(\\rho\\) of the statistic — and because w is <em>secret</em>, the thief cannot align δ with it. Assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
+    ];
+    var html = '<div class="lab-math__grid">';
+    blocks.forEach(function (b) {
+      html += '<div class="lab-math__item"><div class="lab-math__name">' + b[0] + '</div><div class="lab-math__eq">' +
+        window.katex.renderToString(b[1], { throwOnError: false, displayMode: true }) + '</div><p class="lab-math__note">' + b[2] + '</p></div>';
+    });
+    html += '</div><p class="lab-math__refs">Neyman–Pearson lemma · Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024.</p>';
+    host.innerHTML = html;
+    host.querySelectorAll(".lab-math__note").forEach(function (el) {
+      el.innerHTML = el.innerHTML.replace(/\\\((.+?)\\\)/g, function (_, t) { try { return window.katex.renderToString(t, { throwOnError: false }); } catch (e) { return t; } });
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();

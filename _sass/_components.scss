@@ -3117,3 +3117,301 @@ button:focus-visible {
   line-height: 1.35;
   font-family: var(--ds-font-mono);
 }
+
+/* ==========================================================================
+   LAB FILM — cinematic, manim-style explainer player (.labf*)
+   The stage is ALWAYS dark (a cinema), independent of the site theme.
+   Driven by /assets/js/lab-anim.js. One visual language across all five films.
+   ========================================================================== */
+.lab-film {
+  margin: 1.5rem 0 2rem;
+}
+.lab-film__frame {
+  position: relative;
+  border-radius: 18px;
+  padding: 0;
+  background: #070b16;
+  border: 1px solid rgba(120, 145, 190, 0.22);
+  box-shadow:
+    0 30px 80px -30px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(56, 189, 248, 0.06) inset,
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  overflow: hidden;
+}
+
+.labf { position: relative; }
+
+.labf__stage {
+  position: relative;
+  width: 100%;
+  background:
+    radial-gradient(120% 90% at 50% -10%, #122036 0%, #0b1322 45%, #070b16 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+.labf__stage::after { /* gentle cinematic vignette */
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 120% at 50% 45%, transparent 55%, rgba(0,0,0,0.45) 100%);
+  z-index: 4;
+}
+
+.labf__canvas,
+.labf__svg,
+.labf__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.labf__canvas { z-index: 1; }
+.labf__svg    { z-index: 2; overflow: visible; }
+.labf__overlay{ z-index: 3; pointer-events: none; }
+
+.labf__texlayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* an absolutely positioned overlay node; JS sets left/top (%) + transform */
+.labf__node {
+  position: absolute;
+  transform-origin: center center;
+  will-change: transform, opacity, clip-path;
+  color: #eaf0fb;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* KaTeX inherits currentColor — light on the dark stage */
+.labf__tex .katex { color: #eaf0fb; font-size: 1.16em; }
+.labf__rawtex {
+  font-family: var(--ds-font-mono);
+  color: #cfe0ff;
+  background: rgba(56,189,248,0.08);
+  padding: 0.1em 0.4em; border-radius: 6px;
+}
+
+.labf__caption {
+  font-family: var(--ds-font-sans);
+  font-size: clamp(0.86rem, 1.7vw, 1.04rem);
+  font-weight: 500;
+  color: #cdd9ef;
+  max-width: 30ch;
+  white-space: normal;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.6);
+}
+.labf__caption strong { color: #ffffff; font-weight: 700; }
+.labf__caption em {
+  font-style: normal;
+  color: #7dd3fc;
+}
+
+.labf__scenetitle {
+  font-family: var(--ds-font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  white-space: normal;
+  text-shadow: 0 2px 22px rgba(0,0,0,0.55);
+}
+.labf__value {
+  font-family: var(--ds-font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #fbbf24;
+}
+
+/* top-left chrome: chapter + short subtitle */
+.labf__chrome {
+  position: absolute;
+  top: 0.85rem; left: 1.05rem; right: 1.05rem;
+  z-index: 5;
+  display: flex; flex-direction: column; gap: 0.15rem;
+  pointer-events: none;
+}
+.labf__chapter {
+  font-family: var(--ds-font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6f86ac;
+}
+.labf__subtitle {
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  color: #9fb2d4;
+}
+
+/* big play / replay poster */
+.labf__poster {
+  position: absolute; inset: 0;
+  z-index: 6;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.6rem;
+  background: rgba(7, 11, 22, 0.35);
+  backdrop-filter: blur(2px);
+  border: 0; cursor: pointer;
+  color: #eaf0fb;
+  transition: opacity 0.3s ease;
+}
+.labf__poster.is-hidden { opacity: 0; pointer-events: none; }
+.labf__poster-icon {
+  width: 76px; height: 76px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-size: 1.7rem;
+  color: #07101f;
+  background: linear-gradient(180deg, #7dd3fc, #38bdf8);
+  box-shadow: 0 12px 40px -8px rgba(56,189,248,0.6), 0 0 0 1px rgba(255,255,255,0.25) inset;
+  transition: transform 0.2s ease;
+}
+.labf__poster:hover .labf__poster-icon { transform: scale(1.06); }
+.labf__poster-label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #cbd9f1;
+}
+
+/* transport bar (below the stage, on the dark frame) */
+.labf__transport {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.6rem 0.9rem 0.7rem;
+  background: linear-gradient(180deg, rgba(11,18,33,0.0), rgba(8,12,22,0.9) 40%);
+}
+.labf__btn {
+  flex: 0 0 auto;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: 9px;
+  border: 1px solid rgba(120,145,190,0.25);
+  background: rgba(20,30,50,0.7);
+  color: #dce7fb;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+.labf__btn:hover { background: rgba(40,58,92,0.85); border-color: rgba(56,189,248,0.5); }
+.labf__btn:active { transform: scale(0.94); }
+.labf__btn--ghost { color: #9fb2d4; }
+
+.labf__scrub {
+  position: relative;
+  flex: 1 1 auto;
+  height: 22px;
+  display: flex; align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+.labf__scrub::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  height: 4px; transform: translateY(-50%);
+  border-radius: 999px;
+  background: rgba(120,145,190,0.22);
+}
+.labf__scrub-fill {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  height: 4px; width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22d3ee, #38bdf8);
+  box-shadow: 0 0 10px rgba(56,189,248,0.5);
+}
+.labf__scrub-head {
+  position: absolute; top: 50%; left: 0%;
+  width: 13px; height: 13px; margin-left: -6px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #eaf6ff;
+  box-shadow: 0 0 0 3px rgba(56,189,248,0.35), 0 2px 6px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+.labf__scrub-dots { position: absolute; inset: 0; pointer-events: none; }
+.labf__dot {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  width: 9px; height: 9px; padding: 0;
+  border-radius: 50%;
+  border: 2px solid #0b1322;
+  background: #4d6488;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.labf__dot:hover { transform: translate(-50%, -50%) scale(1.35); background: #7dd3fc; }
+.labf__dot.is-active { background: #38bdf8; box-shadow: 0 0 8px rgba(56,189,248,0.7); }
+
+.labf__time {
+  flex: 0 0 auto;
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  color: #8aa0c4;
+  font-variant-numeric: tabular-nums;
+  min-width: 78px; text-align: right;
+}
+
+/* caption strip + takeaways framing for the film page */
+.lab-film__legend {
+  display: flex; flex-wrap: wrap; gap: 0.35rem 1rem;
+  margin: 0.7rem 0 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem; color: var(--ds-muted);
+}
+.lab-film__legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.lab-film__legend i {
+  width: 12px; height: 3px; border-radius: 2px; display: inline-block;
+}
+
+@media (max-width: 640px) {
+  .labf__caption { font-size: 0.8rem; }
+  .labf__chrome { top: 0.6rem; left: 0.7rem; right: 0.7rem; }
+  .labf__time { min-width: 64px; font-size: 0.62rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .labf__node { will-change: auto; }
+}
+
+/* Rigorous math appendix (inside the second reveal on film pages) */
+.lab-math__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.lab-math__item {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--ds-line);
+  border-left: 3px solid var(--ds-accent);
+  border-radius: 0 var(--ds-radius-sm) var(--ds-radius-sm) 0;
+  background: var(--ds-surface-elev);
+}
+.lab-math__name {
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+  margin-bottom: 0.5rem;
+}
+.lab-math__eq {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0 0.4rem;
+}
+.lab-math__eq .katex { font-size: 1.04em; }
+.lab-math__note {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ds-muted);
+  margin: 0.35rem 0 0;
+}
+.lab-math__note em { color: var(--ds-ink); font-style: normal; font-weight: 600; }
+.lab-math__refs {
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  color: var(--ds-soft);
+  margin: 0.4rem 0 0;
+}

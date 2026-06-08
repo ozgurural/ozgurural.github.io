@@ -1,8 +1,8 @@
 ---
 permalink: /lab/redundancy-reactor/
-title: "Redundancy Reactor — Triple-modular redundancy, playable"
-description: "Three of the same thing is still one thing. Pick the right N before the rocket disagrees with reality."
-excerpt: "Triple-modular redundancy, correlation that bites, and the Ariane-5 story explained as a slider."
+title: "Redundancy Reactor — fault tolerance, animated"
+description: "Majority voting buys superlinear safety — until correlation installs a floor you can't vote past. A cinematic, PhD-level explainer ending in the Ariane 5 disaster."
+excerpt: "Triple-modular redundancy, the binomial-tail gain, the correlation floor ρq, and why Ariane 5 self-destructed with three computers that all agreed."
 sitemap: true
 ---
 
@@ -11,135 +11,42 @@ sitemap: true
 <section class="lab-card lab-experiment" id="lab-tmr" style="margin-top: 0;">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
   <h2>Redundancy Reactor</h2>
-  <p class="lab-card__lead">✈️ Your A320 has three flight computers and a majority voter. One fails, the other two outvote it. But "three computers" is only "three independent failure paths" if they fail differently. Identical software hits the same overflow at the same millisecond. (Ariane 5, 1996. The rocket disagreed with reality and disassembled itself 39 seconds in.)</p>
+  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong> — superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. This animation derives the binomial-tail gain, then shows how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat — the exact mechanism that destroyed Ariane 5 in 1996.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Based on Triple Modular Redundancy (TMR). Inspired by real-time safety-critical aerospace and flight simulator architecture developed by the author.</span>
-  </div>
-  <div class="lab-card__mission">
-    <span class="lab-card__mission-kicker">Your move</span>
-    <strong>Pick the mission; pick the minimum N that beats the safety target.</strong>
-    <span>Each mission carries its own correlation (ρ) and per-channel failure rate (q). 5★ means hitting the safety multiplier with the fewest backups; overspending earns 4★.</span>
-    <div class="lab-card__mission-pills"><span>5★ minimum N</span><span>4★ overspent win</span><span>3★ close miss</span></div>
+    <span>Triple Modular Redundancy with common-cause (β-factor) failure. The Ariane 5 Flight 501 case follows the ESA Inquiry Board report; the redundancy patterns mirror real-time safety-critical avionics architecture developed by the author.</span>
   </div>
 
-  <div class="lab-tmr">
-    <div class="lab-experiment__controls">
-      <div class="lab-levels" data-role="tmr-levels" aria-label="Pick the mission">
-        <strong class="lab-levels__title">Pick the mission</strong>
-        <div class="lab-levels__row">
-          <button type="button" class="lab-level" data-q="0.02" data-rho="0.00" data-goal-gain="200" data-min-n="5" data-name="Bank servers">
-            <span class="lab-level__icon">🏢</span>
-            <span class="lab-level__name">Bank servers</span>
-            <span class="lab-level__hint">need 200× safer</span>
-          </button>
-          <button type="button" class="lab-level lab-level--active" data-q="0.05" data-rho="0.05" data-goal-gain="13" data-min-n="5" data-name="Self-driving car">
-            <span class="lab-level__icon">🚗</span>
-            <span class="lab-level__name">Self-driving</span>
-            <span class="lab-level__hint">need 13× safer</span>
-          </button>
-          <button type="button" class="lab-level" data-q="0.08" data-rho="0.10" data-goal-gain="7" data-min-n="7" data-name="A320 cruise">
-            <span class="lab-level__icon">✈️</span>
-            <span class="lab-level__name">A320 cruise</span>
-            <span class="lab-level__hint">need 7× safer</span>
-          </button>
-          <button type="button" class="lab-level" data-q="0.12" data-rho="0.20" data-goal-gain="4" data-min-n="7" data-name="Mars rover">
-            <span class="lab-level__icon">🚀</span>
-            <span class="lab-level__name">Mars rover</span>
-            <span class="lab-level__hint">need 4× safer</span>
-          </button>
-        </div>
-      </div>
-      <label class="lab-control">
-        <span class="lab-control__row">
-          <span class="lab-control__name">Your strategy: how many backup computers?</span>
-          <span class="lab-control__var">N</span>
-          <span class="lab-control__value" data-role="n-channels-val">3</span>
-        </span>
-        <input type="range" min="3" max="9" step="2" value="3" data-role="n-channels" aria-label="how many computers">
-      </label>
-      <button class="lab-btn lab-btn--train lab-btn--run" type="button" data-role="tmr-run-btn">
-        <span class="lab-btn__text">Run experiment</span>
-        <span class="lab-btn__bg"></span>
-      </button>
-      
-      <!-- Active Game Controls -->
-      <div class="lab-action-panel" data-role="tmr-action-panel">
-        <div class="lab-action-panel__row">
-          <div class="lab-action-panel__row-top">
-            <div class="lab-action-panel__timer" data-role="tmr-game-timer">Telemetry Time: 15s</div>
-            <div class="lab-action-panel__health">Integrity: <span class="lab-action-panel__health-val" data-role="tmr-health">100%</span></div>
-          </div>
-          <div class="lab-action-panel__hint">Click computer labels below to <strong>MUTE</strong> failing channels before they hijack the majority vote!</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="lab-tmr__strip" aria-hidden="true" data-role="tmr-strip">
-      <div class="lab-tmr__row" data-ch="1">
-        <span class="lab-tmr__row-label">💻 #1</span>
-        <div class="lab-tmr__cells" data-cells="1"></div>
-      </div>
-      <div class="lab-tmr__row" data-ch="2">
-        <span class="lab-tmr__row-label">💻 #2</span>
-        <div class="lab-tmr__cells" data-cells="2"></div>
-      </div>
-      <div class="lab-tmr__row" data-ch="3">
-        <span class="lab-tmr__row-label">💻 #3</span>
-        <div class="lab-tmr__cells" data-cells="3"></div>
-      </div>
-      <div class="lab-tmr__row lab-tmr__row--sys">
-        <span class="lab-tmr__row-label">✈️ Plane</span>
-        <div class="lab-tmr__cells" data-cells="sys"></div>
-      </div>
-    </div>
-
-    <svg class="lab-plot" viewBox="0 0 640 260" data-role="plot-tmr" preserveAspectRatio="xMidYMid meet" role="img" aria-label="system failure rate vs per-channel failure rate"></svg>
-
-    <div class="lab-experiment__scorebar" data-role="stars-tmr" aria-live="polite"></div>
-    <div class="lab-experiment__verdict" data-role="verdict-tmr" aria-live="polite">
-      <span class="lab-experiment__verdict-head">…</span>
-      <span class="lab-experiment__verdict-sub">Pick a mission, choose backup count, hit Run.</span>
-    </div>
-    <div class="lab-experiment__readout">
-      <div class="lab-experiment__metric lab-experiment__metric--naive">
-        <span class="lab-experiment__metric-label">Safety multiplier</span>
-        <span class="lab-experiment__metric-value" data-role="gain-val">…</span>
-        <span class="lab-experiment__metric-formula">vs a single computer</span>
-      </div>
-      <div class="lab-experiment__metric lab-experiment__metric--detect">
-        <span class="lab-experiment__metric-label">Whole-system failure rate</span>
-        <span class="lab-experiment__metric-value" data-role="sys-val">…</span>
-        <span class="lab-experiment__metric-formula">after majority voting</span>
-      </div>
-    </div>
-
-    <p class="lab-experiment__insight" data-role="insight-tmr">Drag the sliders. The strip is live and the curves are closed-form.</p>
-    <p class="lab-experiment__sweet" data-role="sweet-spot-tmr" hidden></p>
+  <div class="lab-film">
+    <div class="lab-film__frame" id="tmr-film" role="img" aria-label="Animated explainer: triple modular redundancy, correlated failure, and the Ariane 5 disaster"></div>
   </div>
 
-  <details class="lab-reveal">
+  <p class="lab-film__legend" aria-hidden="true">
+    <span><i style="background:#36d6e7"></i> healthy channel / gain</span>
+    <span><i style="background:#f0a000"></i> voter · threshold</span>
+    <span><i style="background:#fb7185"></i> failure · correlation floor</span>
+    <span><i style="background:#ec4899"></i> N=5 curve</span>
+  </p>
+
+  <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
-    <p><strong>Three of the same thing is still one thing.</strong> Backup computers only protect you if they fail in different ways. Three identical computers running the same software will hit the same bug at the same moment, and then majority voting gives the wrong answer with confidence.</p>
-    <p>This is what crashed the first Ariane 5 rocket in 1996: it had redundant flight computers, but they all ran the same code, so they all overflowed the same variable at the same instant. To get real safety, planes use computers from <em>different vendors</em>, written by <em>different teams</em>, in <em>different programming languages</em>. Same idea protects nuclear reactors, Mars rovers, and the secure chip in your phone.</p>
-    <p><strong>Scientific Context:</strong> Triple Modular Redundancy (TMR) is a foundational pattern in high-availability and safety-critical computing. This model shows how correlated failures (common-mode faults) degrade reliability. Similar redundancy and low-latency safety-critical mechanisms are essential in real-time avionics software and flight simulator data pipelines developed by the author.</p>
+    <p><strong>Majority voting converts "any failure" into "a coordinated majority of failures."</strong> With N = 2m+1 channels and a voter, the system fails only when a strict majority fails. For i.i.d. channels failing with probability q, that's the upper tail of a binomial — for triple redundancy, <em>P = 3q²(1−q) + q³</em>.</p>
+    <p><strong>Independent redundancy is superlinear.</strong> For small q the tail is dominated by its lowest-order term, so <em>P = Θ(q<sup>m+1</sup>)</em>: adding channels doesn't subtract a constant from your risk, it raises q to a higher power. On a log-log plot the slope literally steepens. The TMR safety multiplier is <em>1/(3q − 2q²)</em>, which tends to 1/(3q) as q → 0 — about 33× at q = 0.01. (This unbounded gain is an independent-model idealization.)</p>
+    <p><strong>Correlation installs a floor you can't vote past.</strong> Let the channels share a cause. A common-mode fraction ρ splits failures into an independent part the voter fixes and a correlated part it cannot — every channel agrees on the same wrong answer. To first order <em>P<sub>sys</sub> ≈ (1−ρ)P<sub>ind</sub> + ρq ≥ ρq</em>, and that ρq term <em>doesn't depend on N</em>. So for q &lt; ½, as N → ∞ the system rate tends to ρq and the safety multiplier saturates at <strong>1/ρ</strong>. You can pour in infinite redundancy and asymptotically gain nothing.</p>
+    <p><strong>Ariane 5, 4 June 1996.</strong> Two inertial reference units ran identical hardware and identical software in parallel. An unprotected 64-bit→16-bit conversion of the horizontal-bias variable overflowed, because the new rocket flew faster than the Ariane-4 assumptions baked into the code. The backup unit failed first, the active one ~72 ms later — the same Operand Error — and the redundancy voted unanimously to shut down. With identical software ρ ≈ 1, so P<sub>sys</sub> ≈ q and N was irrelevant; the vehicle self-destructed ~39 s after ignition, ~4 km up.</p>
+    <p><strong>The cure is diversity, not count.</strong> You can't vote your way out of a shared mistake — you have to engineer the mistakes to be different. Different teams, languages, and vendors drive ρ toward zero, sink the floor, and only then make extra channels pay off. The valuable quantity was never N; it was the independence ρ that makes those channels worth counting. The same lesson governs nuclear interlocks, Mars rovers, and the secure element in your phone.</p>
+    <p><strong>Scientific Context:</strong> Common-mode failure is the dominant limit on high-availability systems. Low-latency, diverse-redundancy mechanisms of this kind are essential in the real-time avionics and flight-simulator data pipelines developed by the author.</p>
   </details>
 
-  <div class="lab-share" data-role="tmr-share-root">
-    <button type="button" class="lab-share__btn" data-role="tmr-share-btn" aria-haspopup="dialog" aria-expanded="false">
-      <span class="lab-share__btn-icon">🔗</span>
-      <span class="lab-share__btn-text">Share this run</span>
-    </button>
-    <div class="lab-share__popover" data-role="tmr-share-popover" role="dialog" aria-label="Share this run" hidden>
-      <p class="lab-share__preview" data-role="tmr-share-text">5★ — Redundancy Reactor · share text appears here</p>
-      <div class="lab-share__actions">
-        <button type="button" data-share="copy">📋 Copy link</button>
-        <button type="button" data-share="x">𝕏 Tweet</button>
-        <button type="button" data-share="li">in LinkedIn</button>
-        <button type="button" data-share="close" aria-label="Close share">✕</button>
-      </div>
+  <details class="lab-reveal">
+    <summary>📐 The math, precisely</summary>
+    <div class="lab-math" data-role="tmr-appendix">
+      <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
-  </div>
+  </details>
 </section>
 
-<script src="{{ '/assets/js/lab.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/lab-films/redundancy-reactor.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
