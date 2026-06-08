@@ -18,7 +18,7 @@ sitemap: true
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="gd-film" role="img" aria-label="Animated explainer: gradient descent, momentum, and saddle points on a loss landscape"></div>
+    <div class="lab-film__frame" id="gd-film" role="group" aria-label="Animated explainer: gradient descent, momentum, and saddle points on a loss landscape"></div>
   </div>
 
   <p class="lab-film__legend" aria-hidden="true">

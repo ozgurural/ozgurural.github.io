@@ -18,7 +18,7 @@ sitemap: true
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="br-film" role="img" aria-label="Animated explainer: Bitcoin double-spend probability, gambler's ruin, and Satoshi's §11 calculation"></div>
+    <div class="lab-film__frame" id="br-film" role="group" aria-label="Animated explainer: Bitcoin double-spend probability, gambler's ruin, and Satoshi's §11 calculation"></div>
   </div>
 
   <p class="lab-film__legend" aria-hidden="true">

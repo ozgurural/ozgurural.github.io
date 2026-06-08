@@ -18,7 +18,7 @@ sitemap: true
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="mh-film" role="img" aria-label="Animated explainer: statistical model watermarking detected by a Gaussian Z-test"></div>
+    <div class="lab-film__frame" id="mh-film" role="group" aria-label="Animated explainer: statistical model watermarking detected by a Gaussian Z-test"></div>
   </div>
 
   <p class="lab-film__legend" aria-hidden="true">

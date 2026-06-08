@@ -18,7 +18,7 @@ sitemap: true
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="pol-film" role="img" aria-label="Animated explainer: Proof-of-Learning, trajectory verification, and SecurePoL"></div>
+    <div class="lab-film__frame" id="pol-film" role="group" aria-label="Animated explainer: Proof-of-Learning, trajectory verification, and SecurePoL"></div>
   </div>
 
   <p class="lab-film__legend" aria-hidden="true">

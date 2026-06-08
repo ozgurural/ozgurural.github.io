@@ -90,7 +90,6 @@
     sceneSaddles(film);
 
     film.build();
-    window.__gdFilm = film; // debug handle
   }
 
   /* small reusable lower-third caption */

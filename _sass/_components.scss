@@ -3340,7 +3340,10 @@ button:focus-visible {
   pointer-events: auto;
   transition: background 0.15s ease, transform 0.15s ease;
 }
+/* enlarge the touch/click target without changing the visual size */
+.labf__dot::after { content: ""; position: absolute; inset: -10px; border-radius: 50%; }
 .labf__dot:hover { transform: translate(-50%, -50%) scale(1.35); background: #7dd3fc; }
+.labf__dot:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 3px; }
 .labf__dot.is-active { background: #38bdf8; box-shadow: 0 0 8px rgba(56,189,248,0.7); }
 
 .labf__time {
@@ -3364,10 +3367,17 @@ button:focus-visible {
   width: 12px; height: 3px; border-radius: 2px; display: inline-block;
 }
 
+/* keyboard focus visibility on the transport controls + scrub */
+.labf__btn:focus-visible,
+.labf__scrub:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 2px; }
+
 @media (max-width: 640px) {
   .labf__caption { font-size: 0.8rem; }
   .labf__chrome { top: 0.6rem; left: 0.7rem; right: 0.7rem; }
-  .labf__time { min-width: 64px; font-size: 0.62rem; }
+  .labf__time { min-width: 56px; font-size: 0.6rem; }
+  .labf__tex .katex { font-size: 0.96em; }
+  .labf__scenetitle { font-size: clamp(1rem, 5vw, 1.5rem); }
+  .labf__transport { gap: 0.45rem; padding: 0.5rem 0.6rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

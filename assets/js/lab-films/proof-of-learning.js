@@ -54,7 +54,7 @@
   function build() {
     var film = window.LabAnim.create("#pol-film", { width: 960, height: 540 });
     hook(film); pathPoint(film); proofObj(film); replay(film); asymmetry(film); securepol(film); signature(film);
-    film.build(); window.__polFilm = film;
+    film.build();
   }
 
   /* ============== 1 — HOOK : a stolen snapshot ============== */

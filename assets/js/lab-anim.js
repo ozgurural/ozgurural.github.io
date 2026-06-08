@@ -559,6 +559,9 @@
     this.reduced = global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this._built = false;
     this._scale = 1;
+    this._userPaused = false;   // the user explicitly paused/scrubbed → no auto-resume
+    this._autoResume = false;   // the system paused it (tab hidden / off-screen) → may resume
+    this._inView = false;
     this._buildDOM();
   }
 
@@ -576,9 +579,10 @@
     c.appendChild(stage);
     this.stage = stage;
 
-    // canvas (back)
+    // canvas (back) — decorative; the textual content lives in the page reveals
     var cv = document.createElement("canvas");
     cv.className = "labf__canvas";
+    cv.setAttribute("aria-hidden", "true");
     stage.appendChild(cv);
     this.canvasEl = cv;
     this.ctx = cv.getContext("2d");
@@ -588,18 +592,21 @@
     svg.setAttribute("class", "labf__svg");
     svg.setAttribute("viewBox", "0 0 " + this.W + " " + this.H);
     svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svg.setAttribute("aria-hidden", "true");
     stage.appendChild(svg);
     this.svg = svg;
 
     // html / katex overlay (front)
     var ov = document.createElement("div");
     ov.className = "labf__overlay";
+    ov.setAttribute("aria-hidden", "true");
     stage.appendChild(ov);
     this.overlay = ov;
 
     // scene-name + subtitle chrome
     var chrome = document.createElement("div");
     chrome.className = "labf__chrome";
+    chrome.setAttribute("aria-hidden", "true");
     chrome.innerHTML =
       '<span class="labf__chapter" data-role="chapter"></span>' +
       '<span class="labf__subtitle" data-role="subtitle"></span>';
@@ -616,14 +623,15 @@
     stage.appendChild(poster);
     this.poster = poster;
     var self = this;
-    poster.addEventListener("click", function () { self.restart(); });
+    poster.addEventListener("click", function () { self._userPaused = false; self.restart(); });
 
     // transport
     var tr = document.createElement("div");
     tr.className = "labf__transport";
     tr.innerHTML =
-      '<button type="button" class="labf__btn" data-role="play" aria-label="Play / pause">▶</button>' +
-      '<div class="labf__scrub" data-role="scrub" role="slider" aria-label="Timeline" tabindex="0">' +
+      '<button type="button" class="labf__btn" data-role="play" aria-label="Play">▶</button>' +
+      '<div class="labf__scrub" data-role="scrub" role="slider" aria-label="Timeline" tabindex="0" ' +
+        'aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00" aria-orientation="horizontal">' +
         '<div class="labf__scrub-fill" data-role="fill"></div>' +
         '<div class="labf__scrub-dots" data-role="dots"></div>' +
         '<div class="labf__scrub-head" data-role="head"></div>' +
@@ -640,11 +648,18 @@
     this.timeEl = tr.querySelector('[data-role="time"]');
     this.replayBtn = tr.querySelector('[data-role="replay"]');
 
-    this.playBtn.addEventListener("click", function () { self.toggle(); });
-    this.replayBtn.addEventListener("click", function () { self.restart(); });
+    this.playBtn.addEventListener("click", function () { self._userPaused = self.playing; self.toggle(); });
+    this.replayBtn.addEventListener("click", function () { self._userPaused = false; self.restart(); });
     this._wireScrub();
 
     global.addEventListener("resize", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
+
+    // Pause when the tab is hidden; auto-resume only if the system paused it
+    // (not the user) and the film is back in view.
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) { if (self.playing) { self.pause(); self._autoResume = true; } }
+      else if (self._autoResume && !self._userPaused && self._inView) { self._autoResume = false; self.play(); }
+    });
   };
 
   Film.prototype._wireScrub = function () {
@@ -663,9 +678,9 @@
     this.scrub.addEventListener("touchmove", function (e) { if (dragging) setFromEvent(e); }, { passive: true });
     this.scrub.addEventListener("touchend", function () { dragging = false; });
     this.scrub.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowRight") { self.pause(); self.seek(Math.min(self.duration, self.t + 1)); e.preventDefault(); }
-      else if (e.key === "ArrowLeft") { self.pause(); self.seek(Math.max(0, self.t - 1)); e.preventDefault(); }
-      else if (e.key === " " || e.key === "Enter") { self.toggle(); e.preventDefault(); }
+      if (e.key === "ArrowRight") { self._userPaused = true; self.pause(); self.seek(Math.min(self.duration, self.t + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { self._userPaused = true; self.pause(); self.seek(Math.max(0, self.t - 1)); e.preventDefault(); }
+      else if (e.key === " " || e.key === "Enter") { self._userPaused = self.playing; self.toggle(); e.preventDefault(); }
     });
   };
 
@@ -735,20 +750,29 @@
       d.addEventListener("click", function (e) {
         e.stopPropagation();
         var i = +d.getAttribute("data-i");
-        self.pause(); self.seek(self.scenes[i].start + 0.001);
+        self._userPaused = true; self.pause(); self.seek(self.scenes[i].start + 0.001);
       });
     });
     this.seek(0);
-    // autoplay when scrolled into view (unless reduced motion)
     if (!this.reduced && "IntersectionObserver" in global) {
+      // Autoplay on first view; pause when scrolled away to save CPU; resume only
+      // if the system (not the user) paused it.
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          if (en.isIntersecting && !self._everPlayed) { self.play(); }
+          self._inView = en.isIntersecting;
+          if (en.isIntersecting) {
+            if (!self._userPaused && (!self._everPlayed || self._autoResume)) { self._autoResume = false; self.play(); }
+          } else if (self.playing) {
+            self.pause(); self._autoResume = true;
+          }
         });
-      }, { threshold: 0.45 });
+      }, { threshold: 0.4 });
       io.observe(this.stage);
     } else if (this.reduced) {
-      this.seek(this.duration - 0.01); // show final composed state
+      // Reduced motion: no autoplay. Park on a representative first-scene frame
+      // and keep the Play affordance so motion stays strictly user-initiated.
+      this.seek(this.scenes.length ? this.scenes[0].dur * 0.55 : 0);
+      this.poster.classList.remove("is-hidden");
     }
     return this;
   };
@@ -800,6 +824,9 @@
     this.scrubFill.style.width = (frac * 100) + "%";
     this.scrubHead.style.left = (frac * 100) + "%";
     this.timeEl.textContent = fmtTime(t) + " / " + fmtTime(this.duration);
+    this.scrub.setAttribute("aria-valuemax", Math.round(this.duration));
+    this.scrub.setAttribute("aria-valuenow", Math.round(t));
+    this.scrub.setAttribute("aria-valuetext", fmtTime(t) + " of " + fmtTime(this.duration) + " — " + (as.name || ""));
     Array.prototype.forEach.call(this.scrubDots.children, function (d, k) {
       d.classList.toggle("is-active", k === ai);
     });

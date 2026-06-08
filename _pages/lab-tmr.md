@@ -18,7 +18,7 @@ sitemap: true
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="tmr-film" role="img" aria-label="Animated explainer: triple modular redundancy, correlated failure, and the Ariane 5 disaster"></div>
+    <div class="lab-film__frame" id="tmr-film" role="group" aria-label="Animated explainer: triple modular redundancy, correlated failure, and the Ariane 5 disaster"></div>
   </div>
 
   <p class="lab-film__legend" aria-hidden="true">

@@ -68,7 +68,6 @@
     var film = window.LabAnim.create("#br-film", { width: 960, height: 540 });
     hook(film); bernoulli(film); ruin(film); poisson(film); consequence(film); stakes(film);
     film.build();
-    window.__brFilm = film;
   }
 
   /* ===================== 1 — HOOK : two chains ===================== */
