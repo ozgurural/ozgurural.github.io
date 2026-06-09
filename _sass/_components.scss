@@ -3425,3 +3425,41 @@ button:focus-visible {
   color: var(--ds-soft);
   margin: 0.4rem 0 0;
 }
+
+/* --------------------------------------------------------------------------
+   Lab explainer pages: drop the author sidebar on wide screens so the
+   cinematic films use the full content width (they're focused, full-page
+   explainers; author identity stays in the masthead). Scoped via :has() to
+   pages that contain a film section (.lab-experiment) — never the rest of
+   the site. Mobile already stacks the sidebar, so this only affects ≥1024px.
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 1024px) {
+  #main:has(.lab-experiment) > .sidebar { display: none !important; }
+  #main:has(.lab-experiment) > .page {
+    float: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    clear: both;
+  }
+  /* Editorial layout: the card becomes a plain container; prose keeps a
+     readable measure while the film and its legend run wide. */
+  .lab-card.lab-experiment {
+    max-width: none;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .lab-card.lab-experiment > .ep-eyebrow,
+  .lab-card.lab-experiment > h2,
+  .lab-card.lab-experiment > .lab-card__lead,
+  .lab-card.lab-experiment > .lab-card__usecase,
+  .lab-card.lab-experiment > .lab-card__mission,
+  .lab-card.lab-experiment > .lab-reveal,
+  .lab-card.lab-experiment > .lab-share { max-width: 820px; }
+  .lab-card.lab-experiment > .lab-film,
+  .lab-card.lab-experiment > .lab-film__legend { max-width: 1180px; }
+}
