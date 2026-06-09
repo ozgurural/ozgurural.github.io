@@ -80,20 +80,28 @@ redirect_from:
   </li>
 </ul>
 
-## Recent
+## Timeline
 
 <ol class="ep-timeline">
-  <li>
-    <span class="when">Dec 2025</span>
-    <span class="what">Joined the Program Committee for the <em>2nd Workshop on NLP Applied to Information and Cyber Security</em> (NLPAICS 2026), University of Alicante. <a href="https://nlpaics2026.gplsi.es/">Conference</a>.</span>
-  </li>
   <li>
     <span class="when">Dec 2025</span>
     <span class="what">Published <em>SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/document/11293969">Read paper</a>.</span>
   </li>
   <li>
+    <span class="when">Dec 2025</span>
+    <span class="what">Joined the Program Committee for the <em>2nd Workshop on NLP Applied to Information and Cyber Security</em> (NLPAICS 2026), University of Alicante. <a href="https://nlpaics2026.gplsi.es/">Conference</a>.</span>
+  </li>
+  <li>
     <span class="when">Aug 2025</span>
     <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. Advisor: Dr. Kenji Yoshigoe. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+  </li>
+  <li>
+    <span class="when">Nov 2024</span>
+    <span class="what">First-author paper <em>Feature-Based Model Watermarking for PoL</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10741282">Read paper</a>.</span>
+  </li>
+  <li>
+    <span class="when">Dec 2023</span>
+    <span class="what">Published the survey <em>Blockchain-Enhanced Machine Learning</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10366252">Read paper</a>.</span>
   </li>
   <li>
     <span class="when">Oct 2023</span>
@@ -102,6 +110,10 @@ redirect_from:
   <li>
     <span class="when">2021–2025</span>
     <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Four IEEE Access publications on proof-of-learning and model watermarking.</span>
+  </li>
+  <li>
+    <span class="when">May 2021</span>
+    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
   </li>
   <li>
     <span class="when">2020–2021</span>
@@ -114,18 +126,6 @@ redirect_from:
   <li>
     <span class="when">2014–2019</span>
     <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Led design and architecture of the Secure Web Gateway, enterprise Patch Manager, and the Chromium-based Dragon browser.</span>
-  </li>
-  <li>
-    <span class="when">Nov 2024</span>
-    <span class="what">First-author paper <em>Feature-Based Model Watermarking for PoL</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10741282">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">Dec 2023</span>
-    <span class="what">Published the survey <em>Blockchain-Enhanced Machine Learning</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10366252">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">May 2021</span>
-    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
   </li>
 </ol>
 
