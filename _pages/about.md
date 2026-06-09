@@ -96,6 +96,10 @@ redirect_from:
     <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. Advisor: Dr. Kenji Yoshigoe. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
   </li>
   <li>
+    <span class="when">2021–2025</span>
+    <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Four IEEE Access publications on proof-of-learning and model watermarking.</span>
+  </li>
+  <li>
     <span class="when">Nov 2024</span>
     <span class="what">First-author paper <em>Feature-Based Model Watermarking for PoL</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10741282">Read paper</a>.</span>
   </li>
@@ -106,10 +110,6 @@ redirect_from:
   <li>
     <span class="when">Oct 2023</span>
     <span class="what">Joined <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a> as Senior Software Engineer. Architecting real-time simulation platforms and cloud-native infrastructure for Level D flight simulators.</span>
-  </li>
-  <li>
-    <span class="when">2021–2025</span>
-    <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Four IEEE Access publications on proof-of-learning and model watermarking.</span>
   </li>
   <li>
     <span class="when">May 2021</span>
