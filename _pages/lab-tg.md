@@ -4,13 +4,14 @@ title: "Block Race — Nakamoto consensus, animated"
 description: "Why '6 confirmations' is a probability, not a promise. A cinematic, PhD-level walk through the double-spend math of Bitcoin's whitepaper §11."
 excerpt: "Consensus is a race, not a vote. Watch the gambler's-ruin core, Satoshi's Poisson head-start, and why the attacker's size — not your patience — sets your risk."
 sitemap: true
+header:
+  og_image: "lab-og/og-tg.png"
 ---
 
-<a href="/lab/" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; text-decoration: none; font-weight: 600;"><span>←</span> Back to Research Lab</a>
+<a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-tg" style="margin-top: 0;">
   <span class="ep-eyebrow">Blockchain · Nakamoto consensus</span>
-  <h2>Block Race</h2>
   <p class="lab-card__lead">⛏️ Bitcoin's entire security argument is a foot race. Every ten minutes, every miner races to extend the chain; honest nodes always trust the longest one. To reverse a payment, an attacker must secretly outrun the whole network — and the probability they ever succeed decays <strong>exponentially</strong> in the number of confirmations you wait. This animation derives that probability from the ground up: the gambler's ruin, Satoshi's Poisson head-start, and the punchline that "<em>6 confirmations</em>" hides an assumption about <em>who you're racing</em>.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>

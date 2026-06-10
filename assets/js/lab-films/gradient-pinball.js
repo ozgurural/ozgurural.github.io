@@ -98,7 +98,7 @@
     opts = opts || {};
     var c = s.caption(html, {
       px: opts.px || 46, py: opts.py || 486, anchor: "bottom-left",
-      align: "left", maxWidth: opts.maxWidth || "60%", size: opts.size
+      align: "left", maxWidth: opts.maxWidth || "60%", size: opts.size, panel: true
     });
     s.write(c, { at: at, dur: opts.dur || 0.9 });
     if (opts.out) s.fadeOut(c, { at: opts.out, dur: 0.5 });
@@ -251,7 +251,7 @@
       // the rule, typeset
       var eq = s.tex2("\\theta_{t+1} = \\theta_t - \\alpha\\,\\nabla L(\\theta_t)", { px: 480, py: 84, size: "1.2rem", color: "#fbbf24" });
       s.write(eq, { at: 0.6, dur: 1.4 });
-      var perp = s.tex2("\\nabla L \\perp \\text{level set}", { px: 480, py: 126, size: "0.95rem", color: "#9fb2d4" });
+      var perp = s.tex2("\\nabla L \\perp \\text{level set}", { px: 480, py: 132, display: false, size: "0.95rem", color: "#9fb2d4" });
       s.fadeIn(perp, { at: 2.6, dur: 0.8 });
 
       lower(s, "Measure the slope, step against it, repeat. The gradient is always perpendicular to the level sets, so each step is the locally greediest move toward lower loss.", 10.8, { maxWidth: "66%" });
@@ -347,7 +347,7 @@
       var hball = s.dot({ coords: co, x: hb[0][0], y: hb[0][1], r: 8, color: "#fbbf24", glow: 10 });
       s.fadeIn(hball, { at: 9.1, dur: 0.3 });
       s.moveAlong(hball, pathOf(hb), { coords: co, at: 9.2, dur: 4.0, ease: window.LabAnim.ease.smooth });
-      var hbTag = s.caption("momentum · ~√κ steps", { coords: co, x: 0.4, y: -1.9, anchor: "left", size: "0.82rem", color: "#fbbf24" });
+      var hbTag = s.caption("momentum · ~√κ steps", { coords: co, x: 0.4, y: -1.4, anchor: "left", size: "0.82rem", color: "#fbbf24" });
       s.fadeIn(hbTag, { at: 10.4, dur: 0.6 });
 
       var eq = s.tex2("v_{t+1}=\\beta\\,v_t+\\nabla L(\\theta_t)\\,,\\quad \\theta_{t+1}=\\theta_t-\\alpha\\,v_{t+1}", { px: 480, py: 64, size: "1.05rem", color: "#e8eef9" });
@@ -385,7 +385,7 @@
       s.fadeIn(xlab, { at: 1.2, dur: 0.6 });
 
       // punchline callout
-      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#fff'>100× fewer steps</strong>", { px: 740, py: 150, size: "0.95rem", color: "#fbbf24" });
+      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#fff'>100× fewer steps</strong>", { px: 740, py: 196, size: "0.95rem", color: "#fbbf24" });
       s.fadeIn(call, { at: 6.4, dur: 0.8 }); s.pulse(call, { at: 7.2, dur: 0.8, amp: 0.12 });
 
       lower(s, "The payoff is exact, not hand-wavy: optimally-tuned heavy-ball replaces κ with √κ — the same square-root law as Nesterov acceleration. A valley 1000× longer than wide: ~1000 steps becomes ~30.", 9.0, { maxWidth: "84%", px: 70 });
@@ -475,7 +475,7 @@
         s.fadeIn(d, { at: 4.8 + i * 0.18, dur: 0.4 });
       });
       var xl = s.caption("loss  ε  →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.72rem", color: "#9fb2d4" });
-      var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.02, y: 1.12, anchor: "left", size: "0.7rem", color: "#9fb2d4" });
+      var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.02, y: 1.05, anchor: "left", size: "0.7rem", color: "#9fb2d4" });
       s.fadeIn(xl, { at: 3.0, dur: 0.6 }); s.fadeIn(yl, { at: 3.0, dur: 0.6 });
       var minLbl = s.caption("minima<br>(α≈0)", { coords: co, x: 0.06, y: 0.18, anchor: "left", size: "0.66rem", color: "#34d399" });
       var sadLbl = s.caption("saddles<br>(α↑)", { coords: co, x: 0.66, y: 0.66, anchor: "left", size: "0.66rem", color: "#a78bfa" });

@@ -34,7 +34,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.write(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
@@ -126,7 +126,7 @@
       });
       var e1 = s.tex2("P_{\\text{ind}} = \\sum_{i=m+1}^{N}\\binom{N}{i}q^{i}(1-q)^{N-i}", { px: 480, py: 96, size: "0.98rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.4 });
-      var e2 = s.tex2("N=3:\\ P_{\\text{ind}} = 3q^{2}(1-q) + q^{3}", { px: 480, py: 138, size: "0.92rem", color: AMB });
+      var e2 = s.tex2("N=3:\\ P_{\\text{ind}} = 3q^{2}(1-q) + q^{3}", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 8.0, dur: 0.8 });
       lower(s, "The system fails only when a <em>strict majority</em> fails — more than N/2 channels. Counting i.i.d. failures gives the upper tail of a binomial: for triple redundancy, three ways to lose two plus one way to lose all three.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });

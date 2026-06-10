@@ -401,7 +401,9 @@
   };
 
   Scene.prototype.caption = function (htmlStr, o) {
-    return this._html("labf__caption", htmlStr, o);
+    // panel: true renders the caption as a lower-third subtitle bar so it
+    // stays readable when it slides over axis labels / chart furniture.
+    return this._html("labf__caption" + (o && o.panel ? " labf__lower" : ""), htmlStr, o);
   };
   Scene.prototype.title = function (htmlStr, o) {
     return this._html("labf__scenetitle", htmlStr, o);
@@ -935,9 +937,12 @@
 
   /* ============================ factory ============================ */
   var LabAnim = {
+    films: [],
     create: function (container, opts) {
       if (typeof container === "string") container = document.querySelector(container);
-      return new Film(container, opts);
+      var film = new Film(container, opts);
+      LabAnim.films.push(film);
+      return film;
     },
     palette: PAL,
     ease: Ease,

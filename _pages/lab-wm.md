@@ -4,13 +4,14 @@ title: "Model Heist Detector — AI watermarks, animated"
 description: "How a watermark too faint to see in any single weight becomes a courtroom-grade signature across thousands of them. A cinematic, PhD-level Z-test explainer."
 excerpt: "Spread a faint statistical signature across k weights, read it back through fine-tuning noise with a matched filter, and watch detection power rise as √k."
 sitemap: true
+header:
+  og_image: "lab-og/og-wm.png"
 ---
 
-<a href="/lab/" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; text-decoration: none; font-weight: 600;"><span>←</span> Back to Research Lab</a>
+<a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-wm" style="margin-top: 0;">
   <span class="ep-eyebrow">ML security · Model provenance</span>
-  <h2>Model Heist Detector</h2>
   <p class="lab-card__lead">🕵️ Someone leaks your AI and fine-tunes it just enough to look different. Before you ever published, you spread a faint statistical signature across thousands of weights — each mark too small to notice, but together a fingerprint only you can read. This animation shows why that works: one big mark is fragile, but <strong>k tiny correlated marks</strong> read back through a matched filter give detection power that climbs as <strong>√k</strong> — invisible in any one weight, undeniable across all of them.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>

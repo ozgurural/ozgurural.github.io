@@ -1,26 +1,22 @@
 ---
 permalink: /lab/
-title: "Research Lab — five animated explainers"
+title: "Research Lab"
 description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball. Real research math, animated from the equation up."
 excerpt: "Five cinematic explainers from my research: Bitcoin consensus, ML security, fault tolerance, optimization. Each animates the real mathematics — derived, not hand-waved."
+header:
+  og_image: "lab-og/og-lab.png"
 ---
-
-<!-- Social card meta tags (og + Twitter). We DON'T set header.image in the
-     front-matter because Minimal Mistakes renders that as a giant page
-     banner; the og:image below is for unfurling on X / LinkedIn only. -->
-<meta property="og:image" content="https://ozgurural.github.io/images/lab-og/og-lab.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://ozgurural.github.io/images/lab-og/og-lab.png" />
-
 
 <section class="lab-hero" aria-label="Research lab intro">
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Five cinematic explainers drawn from my research: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization. Each animates the real result from the equation up — built for a curious, technical reader, neither dumbed down nor hand-waved. Every formula is exactly as it appears in the papers.
+    Five cinematic explainers built from my published research and the systems I engineer: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization. Each one animates the real result from the equation up — written for a technical reader, neither dumbed down nor hand-waved. Every formula is exactly as it appears in the papers, including the approximations the papers themselves admit to.
   </p>
+  <div class="lab-hero__actions">
+    <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>
+    <a href="/publications/">Read the papers behind the films</a>
+  </div>
 </section>
 
 <nav class="lab-mission-deck" aria-label="Lab mission deck">

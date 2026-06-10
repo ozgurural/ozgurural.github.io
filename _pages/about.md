@@ -36,7 +36,7 @@ redirect_from:
 
 <section class="ep-hero">
   <span class="ep-eyebrow">Systems Architecture · Technical Excellence · Machine Learning</span>
-  <h1 class="ep-hero__title">I design secure <span class="accent">ML architectures</span> and build distributed systems that <span class="accent">cannot fail</span>.</h1>
+  <h1 class="ep-hero__title">I design secure <span class="accent">ML architectures</span> and distributed systems that <span class="accent">stay correct when things fail</span>.</h1>
   <p class="ep-hero__lede">
     I'm <strong>Dr. Ozgur Ural</strong>. With over a decade of engineering experience and a Ph.D. in Machine Learning (conferred at ERAU, 2025), I bridge the gap between rigorous academic research and production reality. As a Senior Software Engineer, I focus on architecting fault-tolerant distributed systems, driving technical standards, and delivering enterprise platforms where failure is not an option. My doctoral work and published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em> (four IEEE Access papers, 2023–2025) ground my approach to securing AI infrastructures.
   </p>
@@ -48,9 +48,9 @@ redirect_from:
 
 <ul class="ep-stats">
   <li><span class="num">11+</span><span class="label">Years engineering</span></li>
-  <li><span class="num">Ph.D.</span><span class="label">ERAU · 2025</span></li>
-  <li><span class="num">Systems</span><span class="label">Distributed & Cloud</span></li>
-  <li><span class="num">Focus</span><span class="label">Mission-critical code</span></li>
+  <li><span class="num">Ph.D.</span><span class="label">Machine Learning · 2025</span></li>
+  <li><span class="num">4</span><span class="label">IEEE Access papers</span></li>
+  <li><span class="num">14</span><span class="label">Engineers led as Team Lead</span></li>
 </ul>
 
 ## Systems Architecture & Core Domains

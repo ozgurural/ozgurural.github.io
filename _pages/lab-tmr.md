@@ -4,13 +4,14 @@ title: "Redundancy Reactor — fault tolerance, animated"
 description: "Majority voting buys superlinear safety — until correlation installs a floor you can't vote past. A cinematic, PhD-level explainer ending in the Ariane 5 disaster."
 excerpt: "Triple-modular redundancy, the binomial-tail gain, the correlation floor ρq, and why Ariane 5 self-destructed with three computers that all agreed."
 sitemap: true
+header:
+  og_image: "lab-og/og-tmr.png"
 ---
 
-<a href="/lab/" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; text-decoration: none; font-weight: 600;"><span>←</span> Back to Research Lab</a>
+<a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-tmr" style="margin-top: 0;">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
-  <h2>Redundancy Reactor</h2>
   <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong> — superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. This animation derives the binomial-tail gain, then shows how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat — the exact mechanism that destroyed Ariane 5 in 1996.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>

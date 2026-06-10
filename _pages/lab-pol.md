@@ -4,13 +4,14 @@ title: "Proof-of-Learning (SecurePoL) — animated"
 description: "Final weights are a snapshot anyone can copy — but the path that produced them is a one-way function of compute. A cinematic, PhD-level explainer of Proof-of-Learning."
 excerpt: "Prove a model was trained, not downloaded. The loss-curve trajectory is cheap to produce honestly and expensive to forge — and SecurePoL binds it to a watermark."
 sitemap: true
+header:
+  og_image: "lab-og/og-pol.png"
 ---
 
-<a href="/lab/" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; text-decoration: none; font-weight: 600;"><span>←</span> Back to Research Lab</a>
+<a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-pol" style="margin-top: 0;">
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
-  <h2>Proof-of-Learning (SecurePoL)</h2>
   <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it — the final weights are just a tensor of numbers, copyable in milliseconds. The proof is in the <strong>journey</strong>: a real training run leaves a checkpoint trajectory that took a full run to generate and is expensive to forge. This animation builds the idea from the ground up — why the path beats the point, how a verifier spot-checks it cheaply, the prover/adversary cost asymmetry, and how the author's <strong>SecurePoL</strong> seals the remaining crack with a watermark.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>

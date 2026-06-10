@@ -34,7 +34,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.write(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
@@ -131,9 +131,9 @@
         var x = 470, y = 150 + i * 70;
         var rect = s.rect({ x: x, y: y, w: 360, h: 56, rx: 10, fill: window.LabAnim.rgba(cd.c, 0.10), stroke: cd.c, sw: 1.6 });
         s.fadeIn(rect, { at: 0.8 + i * 0.6, dur: 0.6 });
-        var lab = s.tex2(cd.k, { px: x + 36, y: y + 28, size: "1.2rem", color: cd.c });
+        var lab = s.tex2(cd.k, { px: x + 36, py: y + 28, size: "1.2rem", color: cd.c });
         s.fadeIn(lab, { at: 1.0 + i * 0.6, dur: 0.5 });
-        var desc = s.caption(cd.t, { px: x + 80, y: y + 28, anchor: "left", size: "0.82rem", color: "#cbd5e1" });
+        var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "0.82rem", color: "#cbd5e1" });
         s.fadeIn(desc, { at: 1.1 + i * 0.6, dur: 0.5 });
       });
       var master = s.tex2("\\mathcal{P}(f_{W_T}) = (\\mathbb{W},\\, \\mathbb{I},\\, \\mathbb{H},\\, \\mathbb{A})", { px: 250, py: 250, size: "1.2rem", color: AMB });
@@ -219,7 +219,7 @@
       });
       var e1 = s.tex2("H(\\text{process})\\propto T \\;\\Rightarrow\\; \\#\\text{paths}\\sim e^{\\,\\Theta(T)}", { px: 480, py: 96, size: "1rem", color: "#e8eef9" });
       s.write(e1, { at: 1.0, dur: 1.4 });
-      var e2 = s.tex2("\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\quad(\\text{design property})", { px: 480, py: 138, size: "0.92rem", color: AMB });
+      var e2 = s.tex2("\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\quad(\\text{design property})", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 9.0, dur: 0.8 });
       lower(s, "Generating a valid proof costs one honest training run. Forging one means inverting SGD — threading every checkpoint the verifier might probe. As training entropy grows linearly in T, the space of consistent paths grows exponentially. <span style='color:#9fb2d4'>This is a design property (Jia 2021), later shown bypassable — which motivates SecurePoL.</span>", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
@@ -255,7 +255,7 @@
       });
       var eq = s.tex2("\\textsc{Accept} \\iff (d_2(W',W)\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f_{W_T})=\\sigma)", { px: 480, py: 104, size: "1rem", color: AMB });
       s.write(eq, { at: 6.5, dur: 1.6 });
-      var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 472, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 524, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9.0, dur: 0.8 });
       lower(s, "A clever adversary can hand-craft a transcript that passes the replay checks without training. SecurePoL binds the trajectory proof to a feature watermark: verification becomes a logical <em>AND</em>. A forged path can mimic the loss curve, but can’t carry a mark it never trained to embed.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer can’t meet." });
@@ -280,6 +280,7 @@
       s.fadeIn(gl, { at: 3.0, dur: 0.6 }); s.fadeIn(fl, { at: 5.4, dur: 0.6 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: -0.1, anchor: "top", align: "center", size: "0.7rem", color: "#9fb2d4" });
       s.fadeIn(xl, { at: 1.0, dur: 0.5 });
+      s.fadeOut(xl, { at: 8.8, dur: 0.5 }); // clear the lower third for the narration
       // step-magnitude histograms (right)
       var hg = s.caption("step magnitudes:  genuine <span style='color:#38bdf8'>heavy-tailed</span> · forged <span style='color:#fb7185'>spike</span>", { px: 690, py: 250, anchor: "left", size: "0.78rem", color: "#cbd5e1" });
       s.fadeIn(hg, { at: 7.0, dur: 0.7 });

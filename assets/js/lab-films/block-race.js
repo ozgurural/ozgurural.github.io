@@ -47,7 +47,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.write(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
@@ -118,6 +118,8 @@
       var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "0.74rem", color: CY });
       var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "0.74rem", color: MAG });
       s.fadeIn(lblH, { at: 1.0, dur: 0.6 }); s.fadeIn(lblA, { at: 2.4, dur: 0.6 });
+      // clear the lower third before the narration panel writes in at 4.4
+      s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
       var eq = s.tex2("\\text{lead} = (\\#\\,\\text{honest}) - (\\#\\,\\text{attacker})", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 9.5, dur: 0.8 });
 
@@ -163,6 +165,7 @@
       s.write(e1, { at: 1.0, dur: 1.0 }); s.write(e2, { at: 3.0, dur: 1.2 });
       var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 330, py: 430, anchor: "top", align: "center", size: "0.8rem", color: "#9fb2d4" });
       s.fadeIn(note, { at: 5.0, dur: 0.8 });
+      s.fadeOut(note, { at: 6.8, dur: 0.5 }); // hand the lower third to the narration
 
       lower(s, "Who mines the next block is a Bernoulli trial: your win probability <em>equals your share of global hashrate</em>. The protocol turns electricity into a probability of being right.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "Hashrate share IS win probability." });
@@ -199,12 +202,12 @@
       s.fadeIn(tokLbl, { at: 1.8, dur: 0.5 });
 
       // recurrence + solution (right column)
-      var r1 = s.tex2("a_z = p\\,a_{z+1} + q\\,a_{z-1}", { px: 770, py: 180, size: "1rem", color: "#e8eef9" });
-      var r2 = s.tex2("a_0 = 1", { px: 770, py: 222, size: "0.95rem", color: "#9fb2d4" });
+      var r1 = s.tex2("a_z = p\\,a_{z+1} + q\\,a_{z-1}", { px: 770, py: 172, size: "1rem", color: "#e8eef9" });
+      var r2 = s.tex2("a_0 = 1", { px: 770, py: 224, display: false, size: "0.95rem", color: "#9fb2d4" });
       s.write(r1, { at: 9.5, dur: 1.3 }); s.fadeIn(r2, { at: 11.0, dur: 0.6 });
-      var sol = s.tex2("q_z = \\Big(\\tfrac{q}{p}\\Big)^{z}\\;\\;(q<p)", { px: 770, py: 290, size: "1.25rem", color: AMB });
+      var sol = s.tex2("q_z = \\Big(\\tfrac{q}{p}\\Big)^{z}\\;\\;(q<p)", { px: 770, py: 294, size: "1.25rem", color: AMB });
       s.write(sol, { at: 12.2, dur: 1.4 }); s.pulse(sol, { at: 13.8, dur: 0.8, amp: 0.1 });
-      var r3 = s.tex2("r=\\tfrac{q}{p}<1 \\Rightarrow \\text{geometric decay}", { px: 770, py: 350, size: "0.9rem", color: "#9fb2d4" });
+      var r3 = s.tex2("r=\\tfrac{q}{p}<1 \\Rightarrow \\text{geometric decay}", { px: 770, py: 360, display: false, size: "0.9rem", color: "#9fb2d4" });
       s.fadeIn(r3, { at: 14.4, dur: 0.8 });
 
       lower(s, "Treat the honest lead as a biased random walk. An attacker z behind must reach breakeven — a classic gambler's ruin. First-step analysis gives a recurrence whose exact bounded solution is <em>(q/p)<sup>z</sup></em>.", 15.6, { maxWidth: "92%", px: 60 });
@@ -247,7 +250,7 @@
       }
       var meanLbl = s.caption("k ~ Poisson(λ),  λ = z·q/p ≈ 2.57", { coords: co, x: 4, y: 0.30, anchor: "center", align: "center", size: "0.78rem", color: MAG });
       s.fadeIn(meanLbl, { at: 4.2, dur: 0.7 });
-      var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 4, y: -0.045, anchor: "top", align: "center", size: "0.72rem", color: "#9fb2d4" });
+      var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "0.72rem", color: "#9fb2d4" });
       s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
 
       // the closed form assembling
@@ -257,6 +260,7 @@
       lower(s, "The attacker mined in secret for the <em>same</em> interval. Their block count is ≈ Poisson with mean z·q/p; condition on it, attach the gambler's-ruin tail, and rearrange — that last line is the whitepaper's code.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean — the exact count is Negative-Binomial NB(z,p), so this <em>understates</em> risk (0.024% vs 0.059% at q=.1, z=6).", 0);
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
+      caveat.el.classList.add("labf__lower");
       caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 506];
       s.fadeIn(caveat, { at: 17.0, dur: 1.0 });
     }, { subtitle: "Confirmations are honest progress — but the clock ran for the attacker too." });
@@ -341,7 +345,7 @@
       s.fadeIn(fin, { at: 4.6, dur: 0.7 });
       var lim = s.tex2("\\lim_{z\\to\\infty} P(z) = 0 \\quad (q<p)", { px: 480, py: 118, size: "1.1rem", color: AMB });
       s.write(lim, { at: 1.0, dur: 1.4 });
-      var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 470, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 524, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 8.0, dur: 0.8 });
 
       lower(s, "Bitcoin never declares a payment final — it makes reversal exponentially expensive and asymptotically improbable, while honest hashrate stays in the majority. That is what proof-of-work actually buys.", 5.0, { maxWidth: "70%" });

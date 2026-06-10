@@ -1,4 +1,9 @@
-<script type="module" src="{{ base_path }}/assets/js/main.min.js"></script>
+<script defer src="{{ base_path }}/assets/js/main.min.js"></script>
+
+{% if content contains 'language-plotly' %}
+<!-- Plotly is heavy (~4.5 MB) — load it only on pages that use ```plotly blocks -->
+<script type="module" src="{{ base_path }}/assets/js/plotly-blocks.js"></script>
+{% endif %}
 
 {% include analytics.html %}
 

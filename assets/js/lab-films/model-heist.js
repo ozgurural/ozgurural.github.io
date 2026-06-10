@@ -43,7 +43,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.write(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
@@ -328,7 +328,7 @@
       s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
       s.write(tag, { at: 4.4, dur: 1.4 });
-      var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 472, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 524, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 6.0, dur: 0.8 });
     }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
   }
