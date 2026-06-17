@@ -19,19 +19,21 @@ Our Python script, which leverages PyQt5, contains some key elements that we'll 
 ```python
 class ImageWithMouseControl(QGraphicsView):
     ...
+```
 
 This custom QGraphicsView class allows us to manage and manipulate graphical items. We extend this PyQt5 widget with additional functionalities like drawing points, lines, and managing mouse events.
 
 ```python
 class MainWindow(QMainWindow):
     ...
-
+```
 
 MainWindow serves as the main application window and includes our custom QGraphicsView, menu actions (for opening and saving images), and a status bar to display messages.
 
 ```python
 def main():
     ...
+```
 
 The main function generates a QApplication, an instance of our MainWindow, and commences the application's main loop.
 
