@@ -36,13 +36,13 @@ redirect_from:
 
 <section class="ep-hero">
   <span class="ep-eyebrow">Systems Architecture · Technical Excellence · Machine Learning</span>
-  <h1 class="ep-hero__title">I design secure <span class="accent">ML architectures</span> and build distributed systems that <span class="accent">cannot fail</span>.</h1>
+  <h1 class="ep-hero__title">I architect <span class="accent">mission-critical systems</span> and secure <span class="accent">ML infrastructures</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>. With over a decade of engineering experience and a Ph.D. in Machine Learning (conferred at ERAU, 2025), I bridge the gap between rigorous academic research and production reality. As a Senior Software Engineer, I focus on architecting fault-tolerant distributed systems, driving technical standards, and delivering enterprise platforms where failure is not an option. My doctoral work and published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em> (four IEEE Access papers, 2023–2025) ground my approach to securing AI infrastructures.
+    I am a Senior Software Engineer and Machine Learning Researcher (Ph.D., ERAU 2025). Over the past decade, I have built distributed platforms for enterprise and defense sectors, where uptime and security are strict requirements. My research focuses on the defense of ML systems against adversarial threats, specifically through proof-of-learning, model watermarking, and blockchain architectures. I specialize in translating academic security primitives into production-grade infrastructure.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Currently in Leiden, Netherlands. Building, architecting, publishing.</span>
+    <span>Currently in Leiden, Netherlands. Architecting scalable simulation systems.</span>
   </p>
 </section>
 
@@ -55,28 +55,28 @@ redirect_from:
 
 ## Systems Architecture & Core Domains
 
-<p class="ep-pillars__note">My work focuses on the intersection of deep technical expertise and organizational scale: driving architectural decisions, setting technical standards, and ensuring that complex systems—from mission-critical C++ to cloud-native microservices—remain robust under extreme conditions.</p>
+<p class="ep-pillars__note">I drive technical architecture and reliability standards across distributed and ML systems. My engineering philosophy centers on fault tolerance, strict latency budgets, and auditable security primitives.</p>
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Systems Architecture</span>
-    <h3>Technical Excellence</h3>
-    <p>Designing real-time, mission-critical systems. Bringing rigorous engineering discipline to ML pipelines and establishing architectural patterns that elevate the entire engineering organization through scalable code and resilient design.</p>
+    <h3>Deterministic Engineering</h3>
+    <p>Architecting real-time, mission-critical C++ and cloud-native systems. I focus on strict latency budgets, resilient network protocols, and establishing deterministic behavior in distributed environments.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
-    <h3>Enterprise infrastructure</h3>
-    <p>Architecting scalable cloud-native services (Scala, TypeScript, gRPC) and designing robust distributed protocols whose outputs and state can be audited end-to-end without compromising latency.</p>
+    <h3>Enterprise Infrastructure</h3>
+    <p>Building scalable backend infrastructure (Scala, TypeScript, gRPC) with an emphasis on state replication, failure isolation, and verifiable auditing.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Trustworthy ML & Security</span>
-    <h3>Securing AI pipelines</h3>
-    <p>Deep domain expertise in defending ML training integrity against spoofing attacks. My Ph.D. and IEEE-published research focus on feature-based model watermarking and proof-of-learning verification.</p>
+    <h3>Securing AI Pipelines</h3>
+    <p>Defending ML training integrity against spoofing and adversarial attacks. My doctoral research formalizes feature-based model watermarking for proof-of-learning verification.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Adversarial Robustness</span>
-    <h3>When models can be trusted</h3>
-    <p>Bridging research and production by ensuring models survive contact with adversaries. Evaluating provenance verification, adversarial examples, and the limits of claimed model identities.</p>
+    <h3>Provenance & Verification</h3>
+    <p>Evaluating provenance verification and model vulnerabilities. I develop empirical frameworks to test the limits of claimed model identities against adversarial inputs.</p>
   </li>
 </ul>
 
