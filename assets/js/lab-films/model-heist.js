@@ -238,7 +238,7 @@
       });
       var e1 = s.tex2("Z=\\tfrac{S}{\\sigma}\\sim N(0,1)\\,|H_0,\\quad N(d,1)\\,|H_1", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.2 });
-      lower(s, "This is exactly a one-sided Gaussian Z-test. Under the null — an innocent model — the statistic is standard normal; under the watermark it’s the same bell shifted right by the effect size d. Fix α, set the threshold z<sub>α</sub>, and power is Φ(d − z<sub>α</sub>).", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "This is exactly a one-sided Gaussian Z-test. Under the null — an innocent model — the statistic is standard normal; under the watermark it’s the same bell shifted right by the effect size d. Fix α, set the threshold z<sub>α</sub>, and power is Φ(d − z<sub>α</sub>).", 9.0, { maxWidth: "92%", px: 60, py: 520 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
   }
 

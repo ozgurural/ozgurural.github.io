@@ -388,7 +388,14 @@
       var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#fff'>100× fewer steps</strong>", { px: 740, py: 150, size: "0.95rem", color: "#fbbf24" });
       s.fadeIn(call, { at: 6.4, dur: 0.8 }); s.pulse(call, { at: 7.2, dur: 0.8, amp: 0.12 });
 
-      lower(s, "The payoff is exact, not hand-wavy: optimally-tuned heavy-ball replaces κ with √κ — the same square-root law as Nesterov acceleration. A valley 1000× longer than wide: ~1000 steps becomes ~30.", 9.0, { maxWidth: "84%", px: 70 });
+      var eq1 = s.tex2("\\text{GD: rate } \\frac{\\kappa - 1}{\\kappa + 1}", { px: 200, py: 80, size: "1rem", color: "#9aa7be" });
+      var eq2 = s.tex2("\\text{speedup } \\frac{\\sqrt{\\kappa} - 1}{\\sqrt{\\kappa} + 1}", { px: 200, py: 130, size: "1.1rem" });
+      s.fadeIn(eq1, { at: 11.0, dur: 0.6 }); s.fadeIn(eq2, { at: 11.5, dur: 0.6 });
+      var hb = s.tex2("\\text{Heavy-ball: }", { px: 70, py: 130, size: "1rem", color: "#fbbf24" });
+      s.fadeIn(hb, { at: 11.5, dur: 0.6 });
+      s.fadeOut(eq1, { at: 14.5, dur: 0.5 }); s.fadeOut(eq2, { at: 14.5, dur: 0.5 }); s.fadeOut(hb, { at: 14.5, dur: 0.5 });
+
+      lower(s, "The payoff is exact, not hand-wavy: optimally-tuned heavy-ball replaces κ with √κ — the same square-root law as Nesterov acceleration. A valley 1000× longer than wide: ~1000 steps becomes ~30.", 9.0, { maxWidth: "84%", px: 70, out: 14.5 });
 
       // honesty caveat — the regime where this holds (referee note)
       var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 524, anchor: "bottom", align: "center", size: "0.68rem" });
@@ -475,7 +482,7 @@
         s.fadeIn(d, { at: 4.8 + i * 0.18, dur: 0.4 });
       });
       var xl = s.caption("loss  ε  →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.72rem", color: "#9fb2d4" });
-      var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.02, y: 1.12, anchor: "left", size: "0.7rem", color: "#9fb2d4" });
+      var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 1.12, anchor: "right", size: "0.7rem", color: "#9fb2d4" });
       s.fadeIn(xl, { at: 3.0, dur: 0.6 }); s.fadeIn(yl, { at: 3.0, dur: 0.6 });
       var minLbl = s.caption("minima<br>(α≈0)", { coords: co, x: 0.06, y: 0.18, anchor: "left", size: "0.66rem", color: "#34d399" });
       var sadLbl = s.caption("saddles<br>(α↑)", { coords: co, x: 0.66, y: 0.66, anchor: "left", size: "0.66rem", color: "#a78bfa" });

@@ -131,9 +131,9 @@
         var x = 470, y = 150 + i * 70;
         var rect = s.rect({ x: x, y: y, w: 360, h: 56, rx: 10, fill: window.LabAnim.rgba(cd.c, 0.10), stroke: cd.c, sw: 1.6 });
         s.fadeIn(rect, { at: 0.8 + i * 0.6, dur: 0.6 });
-        var lab = s.tex2(cd.k, { px: x + 36, y: y + 28, size: "1.2rem", color: cd.c });
+        var lab = s.tex2(cd.k, { px: x + 40, py: y + 28, size: "1.4rem", color: cd.c });
         s.fadeIn(lab, { at: 1.0 + i * 0.6, dur: 0.5 });
-        var desc = s.caption(cd.t, { px: x + 80, y: y + 28, anchor: "left", size: "0.82rem", color: "#cbd5e1" });
+        var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "0.82rem", color: "#cbd5e1" });
         s.fadeIn(desc, { at: 1.1 + i * 0.6, dur: 0.5 });
       });
       var master = s.tex2("\\mathcal{P}(f_{W_T}) = (\\mathbb{W},\\, \\mathbb{I},\\, \\mathbb{H},\\, \\mathbb{A})", { px: 250, py: 250, size: "1.2rem", color: AMB });
@@ -184,7 +184,7 @@
       });
       var e1 = s.tex2("d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta", { px: 300, py: 96, size: "1rem", color: AMB });
       s.write(e1, { at: 13.0, dur: 1.2 });
-      lower(s, "The verifier never reruns the whole training. Honest gradient steps are small, so a forger taking shortcuts must hide a few <em>oversized</em> jumps. Sort updates by magnitude, replay only the top-Q per epoch, and check each lands within a slack ball δ that absorbs floating-point nondeterminism.", 15.0, { maxWidth: "92%", px: 60 });
+      lower(s, "The verifier never reruns the whole training. Honest gradient steps are small, so a forger taking shortcuts must hide a few <em>oversized</em> jumps. Sort updates by magnitude, replay only the top-Q per epoch, and check each lands within a slack ball δ that absorbs floating-point nondeterminism.", 15.0, { maxWidth: "92%", px: 60, py: 520 });
     }, { subtitle: "Spot-check the largest updates — exactly where a forger must cheat." });
   }
 

@@ -883,10 +883,23 @@
     return this;
   };
 
+  var globalLabAudio = null;
+  var playingFilmsCount = 0;
+  function ensureAudio() {
+    if (!globalLabAudio) {
+      globalLabAudio = new Audio("/assets/audio/ambient.ogg");
+      globalLabAudio.loop = true;
+      globalLabAudio.volume = 0.3;
+    }
+  }
+
   Film.prototype.play = function () {
     if (this.playing) return this;
     if (this.t >= this.duration - 1e-3) this.t = 0;
     this.playing = true;
+    playingFilmsCount++;
+    ensureAudio();
+    globalLabAudio.play().catch(function(e){});
     this._everPlayed = true;
     this.poster.classList.add("is-hidden");
     this._reflectPlayState();
@@ -914,7 +927,12 @@
   };
 
   Film.prototype.pause = function () {
+    if (!this.playing) return this;
     this.playing = false;
+    playingFilmsCount = Math.max(0, playingFilmsCount - 1);
+    if (playingFilmsCount === 0 && globalLabAudio) {
+      globalLabAudio.pause();
+    }
     if (this._raf) global.cancelAnimationFrame(this._raf);
     this._raf = null;
     this._reflectPlayState();
