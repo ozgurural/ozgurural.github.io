@@ -7,6 +7,8 @@ tags:
   - documentation
   - developer-experience
   - onboarding
+description: "Before a developer ever sees your landing page, they might encounter your README. For many technical products, documentation is the first user interface. It ..."
+
 ---
 
 Before a developer ever sees your landing page, they might encounter your README. For many technical products, documentation is the first user interface. It guides users through setup, communicates architecture decisions, and sets expectations for how the system behaves. Neglecting documentation is like shipping a GUI with missing buttons and unlabeled fields.

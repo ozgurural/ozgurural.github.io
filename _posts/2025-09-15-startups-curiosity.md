@@ -7,6 +7,8 @@ tags:
   - startups
   - curiosity
   - exploration
+description: "Working on simulator software, defensive cybersecurity platforms, and doctoral research has taught me that durable progress rarely starts with a perfect road..."
+
 ---
 
 Working on simulator software, defensive cybersecurity platforms, and doctoral research has taught me that durable progress rarely starts with a perfect roadmap. It starts with persistent curiosity. Loewenstein’s review of the psychology of curiosity describes it as a response to information gaps that push humans to seek missing data rather than settle for superficial explanations (Loewenstein, 1994). On the Avion telemetry team those gaps appeared as cockpit workflows that felt clumsy or metrics that refused to line up with pilot reports. Pulling on those loose threads, asking "why does this feel wrong?", often exposed real product opportunities.

@@ -7,6 +7,8 @@ tags:
   - product
   - testing
   - startups
+description: "Scaling conversations dominate startup culture, yet the first question any product must answer is painfully small: will even one person use it when given the..."
+
 ---
 
 Scaling conversations dominate startup culture, yet the first question any product must answer is painfully small: will even one person use it when given the chance? The only reliable way to find out is through direct observation. This principle is at the heart of evidence based design, a methodology grounded in human computer interaction research that emphasizes empirical feedback over speculation (Nielsen, 1993). Surveys and interviews hint at preferences, but behavior reveals intent. If your prototype cannot hold the attention of a single user, no amount of marketing will redeem it.

@@ -9,6 +9,8 @@ tags:
   - METU
   - Marmaris
   - Urla
+description: "<div class='notice--info' markdown='1'> From the Helm"
+
 ---
 
 <div class="notice--info" markdown="1">

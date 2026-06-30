@@ -8,6 +8,8 @@ tags:
   - y-combinator
   - biology
   - computation
+description: "It started while I was nursing a Saturday-morning coffee and catching up on YouTube. Around the 11:20 mark of this talk, the speaker described the choreograp..."
+
 ---
 
 It started while I was nursing a Saturday-morning coffee and catching up on YouTube. Around the [11:20 mark of this talk](https://youtu.be/eis11j_igms?t=680), the speaker described the choreography of [DNA replication](https://en.wikipedia.org/wiki/DNA_replication), how strands of genetic code carry instructions that produce the very enzymes, such as [DNA polymerase](https://en.wikipedia.org/wiki/DNA_polymerase), needed to copy themselves. The diagram on screen sparked an immediate flashback to the time I first wrangled the [Y combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Y_combinator) into a Haskell lab assignment. Suddenly, the elegance of Church's abstraction and the biology lecture overlapped in my head: both were telling a story about systems that bootstrap their own continuation.

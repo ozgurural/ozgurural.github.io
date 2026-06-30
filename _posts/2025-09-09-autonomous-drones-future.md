@@ -7,6 +7,8 @@ tags:
   - drones
   - autonomy
   - defense
+description: "Consider this your two-minute hangar brief. Between February 2019 and November 2020, I served as an Expert Software Engineer at STM Defence Technologies in A..."
+
 ---
 
 Consider this your two-minute hangar brief. Between February 2019 and November 2020, I served as an Expert Software Engineer at STM Defence Technologies in Ankara. My team and I wrote the operational brains for **Kargu:** a loitering munition that can patiently orbit before striking, and **Togan:** a reconnaissance UAV that refuses to land until it has found every point of interest. Coffee was strong, timelines were tighter than rotor tolerances, and every build had to keep aircrews safe.

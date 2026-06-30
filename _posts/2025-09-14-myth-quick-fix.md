@@ -7,6 +7,8 @@ tags:
   - technical-debt
   - engineering-practices
   - architecture
+description: "Every engineer knows the temptation of the “five-minute hack.” A bug appears, the schedule is tight, and a clever shortcut promises to save the day. Weeks la..."
+
 ---
 
 Every engineer knows the temptation of the “five-minute hack.” A bug appears, the schedule is tight, and a clever shortcut promises to save the day. Weeks later, the team is still wrestling with the fallout. The myth of the quick fix lies in its invisibility, short-term patches often masquerade as efficient solutions while secretly accruing interest that compounds over time.

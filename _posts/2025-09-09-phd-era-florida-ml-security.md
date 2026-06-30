@@ -9,6 +9,8 @@ tags:
   - security
   - florida
   - erau
+description: "Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at Embry-Riddle Aeronautical U..."
+
 ---
 
 Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at [Embry-Riddle Aeronautical University](https://www.erau.edu/). My advisor jokes that our campus smells like jet fuel and ambition; he’s right on both counts. By 7 a.m. I am usually rolling past the flight line with a notebook full of model checkpoints to validate and a thermos of Cuban coffee strong enough to double as rocket propellant.

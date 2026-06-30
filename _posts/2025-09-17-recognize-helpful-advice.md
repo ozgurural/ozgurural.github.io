@@ -7,6 +7,8 @@ tags:
   - advice
   - decision-making
   - startups
+description: "Entrepreneurs, researchers, and engineers live in a torrent of guidance. Podcasts, newsletters, and mentors offer conflicting prescriptions, each delivered w..."
+
 ---
 
 Entrepreneurs, researchers, and engineers live in a torrent of guidance. Podcasts, newsletters, and mentors offer conflicting prescriptions, each delivered with confidence. Distinguishing signal from noise is therefore a crucial skill. The discipline of evidence based management argues that decisions should be grounded in the best available data rather than authority or habit (Pfeffer & Sutton, 2006). Applying this mindset to advice means scrutinizing both the source and the context before acting.

@@ -1,6 +1,8 @@
 ---
 permalink: /services/
 title: "Professional Service"
+description: "<p class='ep-lead'>Peer review and program-committee work across machine-learning security, privacy, distributed systems, and applied cyber-security. Full pu..."
+
 ---
 
 <p class="ep-lead">Peer review and program-committee work across machine-learning security, privacy, distributed systems, and applied cyber-security. Full publication record on <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>.</p>

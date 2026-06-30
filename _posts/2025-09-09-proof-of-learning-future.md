@@ -7,6 +7,8 @@ tags:
   - proof-of-learning
   - security
   - machine-learning
+description: "Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt th..."
+
 ---
 
 Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt the urgency for PoL while helping an aerospace partner document how a safety-critical model was trained, our counterparts were less interested in raw accuracy and more concerned about whether they could audit each gradient step. As machine learning systems become pervasive in critical domains, PoL offers a mechanism to ensure trust and accountability in model provenance.

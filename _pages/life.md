@@ -3,6 +3,8 @@ permalink: /life/
 title: "Perspectives & Leadership"
 author_profile: true
 layout: archive
+description: "<p class='ep-lead'>Essays and notes on system architecture, driving technical excellence, the academia-to-industry transition, and what over a decade of ship..."
+
 ---
 <p class="ep-lead">Essays and notes on system architecture, driving technical excellence, the academia-to-industry transition, and what over a decade of shipping mission-critical software has taught me about building resilient systems. Written more loosely than the <a href="/blog/">technical posts</a>.</p>
 

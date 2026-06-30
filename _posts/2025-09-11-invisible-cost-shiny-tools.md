@@ -7,6 +7,8 @@ tags:
   - tooling
   - productivity
   - developer-experience
+description: "Engineering teams love new tools. The promise of faster development, cleaner abstractions, or a more elegant stack is hard to resist. Yet every adoption deci..."
+
 ---
 
 Engineering teams love new tools. The promise of faster development, cleaner abstractions, or a more elegant stack is hard to resist. Yet every adoption decision carries hidden costs that rarely appear in procurement spreadsheets. The real price of a shiny tool lies in the cognitive load it introduces, the training it demands, and the fragile glue it creates between systems.

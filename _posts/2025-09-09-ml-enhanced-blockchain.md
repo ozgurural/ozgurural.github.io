@@ -9,6 +9,8 @@ tags:
   - survey
   - security
   - consensus
+description: "Machine learning (ML) is increasingly used to make blockchain networks more secure, efficient, and user-friendly. When I co-authored our survey on blockchain..."
+
 ---
 
 Machine learning (ML) is increasingly used to make blockchain networks more secure, efficient, and user-friendly. When I co-authored our survey on blockchain-enhanced machine learning [1], I kept hearing founders ask the inverse question: "How can ML shore up my ledger right now?" This post collects the playbooks that stuck with me from those conversations and the lab prototypes we built afterward.

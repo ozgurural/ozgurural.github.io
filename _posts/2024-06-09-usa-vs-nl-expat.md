@@ -7,6 +7,8 @@ tags:
   - expat
   - culture
   - comparison
+description: "Living as an expat has given me the chance to compare daily life in the United States and the Netherlands in a way that guidebooks never could. My notebook i..."
+
 ---
 
 Living as an expat has given me the chance to compare daily life in the United States and the Netherlands in a way that guidebooks never could. My notebook is full of tiny contrasts: Leiden grocery receipts, NS train schedules for my commute, and lab to-do lists from Daytona Beach.

@@ -7,6 +7,8 @@ tags:
   - model-watermarking
   - security
   - machine-learning
+description: "Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original tra..."
+
 ---
 
 Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original training process. My work on trustworthy machine learning focuses on how ownership signals can remain detectable after fine-tuning and transfer. Early work shows that deep network weights can carry hidden signatures without affecting accuracy [4], and behavior-based marks can survive aggressive fine-tuning [5,6].

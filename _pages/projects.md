@@ -1,6 +1,8 @@
 ---
 permalink: /projects/
 title: "Projects"
+description: "<p class='ep-lead'>Selected work across Ph.D. research code, interactive demos, C++ systems primitives, and clinical tooling. Each project links to its repos..."
+
 ---
 
 <p class="ep-lead">Selected work across Ph.D. research code, interactive demos, C++ systems primitives, and clinical tooling. Each project links to its repository and writeup. The <a href="/lab/"><strong>Interactive Lab</strong></a> contains five playable demos for the same research areas.</p>

@@ -8,6 +8,8 @@ tags:
   - smart-contracts
   - oracles
   - agile
+description: "Traditional agile boards depend on centralized tools and manual updates. As projects span multiple organizations and trust boundaries, these boards struggle ..."
+
 ---
 
 Traditional agile boards depend on centralized tools and manual updates. As projects span multiple organizations and trust boundaries, these boards struggle to provide real-time, trustworthy visibility. Blockchain oracles and smart contracts offer a path to an autonomous, tamper-evident coordination layer that could serve as the world's agile board.
