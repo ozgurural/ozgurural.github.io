@@ -253,9 +253,9 @@
         // spoof note
         if (lt > 2 && lt < 6) { ctx.fillStyle = h.rgba(RED, clamp01((lt - 2) / 0.6) * (1 - clamp01((lt - 5) / 0.8))); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("fake transcript: mimics the loss curve, lacks the secret mark", 360, 150); }
       });
-      var eq = s.tex2("\\textsc{Accept} \\iff (d_2(W',W)\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f_{W_T})=\\sigma)", { px: 480, py: 104, size: "1rem", color: AMB });
+      var eq = s.tex2("\\text{Accept} \\iff (d_2(W',W)\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f_{W_T})=\\sigma)", { px: 480, py: 104, size: "1rem", color: AMB });
       s.write(eq, { at: 6.5, dur: 1.6 });
-      var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 524, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9.0, dur: 0.8 });
       lower(s, "A clever adversary can hand-craft a transcript that passes the replay checks without training. SecurePoL binds the trajectory proof to a feature watermark: verification becomes a logical <em>AND</em>. A forged path can mimic the loss curve, but can’t carry a mark it never trained to embed.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer can’t meet." });
@@ -301,7 +301,7 @@
         "Replay only the top-Q largest-magnitude updates per epoch: a reproduction-error check \\(d_2\\le\\delta\\) AND the reachability event \\(Tr\\) that the k forward steps actually land there. The slack \\(\\delta\\) absorbs hardware/software/optimizer nondeterminism."],
       ["Security", "\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\ \\text{(design property)}",
         "Entropy of the process grows linearly in T, so \\(\\#\\text{paths}\\sim e^{\\Theta(T)}\\). This cost asymmetry is a <em>desideratum</em> (Jia 2021, Property 2), not a theorem — and was later shown bypassable (Zhang et al. 2022; Fang et al. 2023)."],
-      ["SecurePoL", "\\textsc{Accept} \\iff (d_2\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f)=\\sigma)",
+      ["SecurePoL", "\\text{Accept} \\iff (d_2\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f)=\\sigma)",
         "The author binds the trajectory check to a feature watermark, turning two individually-bypassable checks into one joint constraint a spoofer cannot meet without genuinely training (Ural &amp; Yoshigoe, IEEE Access 2025)."]
     ];
     var html = '<div class="lab-math__grid">';
