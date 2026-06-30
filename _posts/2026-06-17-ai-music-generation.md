@@ -2,6 +2,8 @@
 title: "The Rapid Evolution of AI Music Generation"
 date: 2026-06-17
 permalink: /posts/2026/06/ai-music-generation/
+categories: technical
+description: "Exploring the rapid advancements in generative audio and how sequence modeling has solved long-range dependencies in AI music generation."
 tags:
   - AI
   - Generative Models
@@ -17,7 +19,7 @@ Recently, I experimented with state-of-the-art AI music generation tools. I prov
 I want to share the result below. This is a completely unedited, AI-generated track.
 
 <div style="display: flex; justify-content: center; margin: 2rem 0;">
-  <iframe width="315" height="560" src="https://www.youtube.com/embed/uL5CJdqNCYQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);"></iframe>
+  <iframe width="315" height="560" src="https://www.youtube.com/embed/uL5CJdqNCYQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); max-width: 100%;"></iframe>
 </div>
 
 ### Why This Matters

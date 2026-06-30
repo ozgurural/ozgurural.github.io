@@ -44,6 +44,10 @@ redirect_from:
     <span class="ep-status-dot" aria-hidden="true"></span>
     <span>Currently in Leiden, Netherlands. Building, architecting, publishing.</span>
   </p>
+  <div class="ep-hero__cta">
+    <a href="/publications/"><i class="fas fa-book-open"></i> Read my research</a>
+    <a href="mailto:drozgurural@gmail.com"><i class="fas fa-envelope"></i> Get in touch</a>
+  </div>
 </section>
 
 <ul class="ep-stats">
