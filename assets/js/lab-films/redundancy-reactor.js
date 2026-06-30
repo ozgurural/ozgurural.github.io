@@ -84,9 +84,9 @@
         else { var g = (Math.floor(lt * 6) % 2) === 0; states = g ? ["bad", "bad", "bad"] : ["ok", "ok", "ok"]; voter = g ? "bad" : "ok"; }
         drawTMR(ctx, h, 480, 230, states, voter, false);
         if (lt < 6 && lt > 3) { ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 130); }
-        if (lt >= 6) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 130); }
+        if (lt >= 6) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80); }
       });
-      var eq = s.tex2("\\text{vote} = \\operatorname{maj}(c_1,\\dots,c_N)", { px: 480, py: 96, size: "0.95rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{vote} = \\operatorname{maj}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "0.95rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 0.8, dur: 0.8 });
       lower(s, "Triple modular redundancy is the oldest trick in safety engineering: run three computers, take a majority vote, and one faulty channel gets outvoted. It works — until all three fail the same way at the same instant.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
@@ -172,7 +172,7 @@
         if (lt > 7) {
           var xm = pl.px(0.01); ctx.strokeStyle = h.rgba("#cbd5e1", 0.7); ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(xm, box.y0); ctx.lineTo(xm, box.y0 - box.h); ctx.stroke(); ctx.setLineDash([]);
           ctx.fillStyle = h.rgba("#e8eef9", 0.9); ctx.font = "10px 'JetBrains Mono',monospace";
-          ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4 (~33×)", xm + 6, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 ~1e-5", xm + 6, pl.py(Pind(5, 0.01)));
+          ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4 (~33×)", xm - 100, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 ~1e-5", xm - 80, pl.py(Pind(5, 0.01)));
         }
       });
       var e1 = s.tex2("P_{\\text{ind}} = \\Theta\\!\\left(q^{\\,m+1}\\right),\\quad \\text{gain}=\\tfrac{q}{P_{\\text{ind}}}=\\tfrac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\tfrac{1}{3q}", { px: 700, py: 200, size: "0.92rem", color: AMB });
@@ -255,9 +255,10 @@
         if (lt > 6.8) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "9px 'JetBrains Mono',monospace"; ctx.fillText("72 ms apart", 300, 348); }
         // self destruct stamp
         if (lt > 8) { ctx.globalAlpha = clamp01((lt - 8) / 0.5); ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.fillText("SELF-DESTRUCT  ~39 s after H0, ~4 km", 360, 130); ctx.globalAlpha = 1; }
+        ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ : " + rho.toFixed(2) + " ↓", 640, 180);
       });
-      var eq = s.tex2("\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q \\quad(\\text{N irrelevant})", { px: 700, py: 200, size: "0.95rem", color: AMB });
-      s.fadeIn(eq, { at: 9.5, dur: 1.0 });
+      var eq = s.tex2("\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q \\quad(\\text{N irrelevant})", { px: 700, py: 130, size: "0.95rem", color: AMB });
+      s.fadeIn(eq, { at: 8.8, dur: 0.8 });
       lower(s, "Two inertial units — identical hardware, identical software, in parallel. An unprotected 64-bit→16-bit conversion of the horizontal-bias variable overflowed (the new rocket flew faster than the Ariane-4 assumptions). The <em>backup failed first, the active 72 ms later</em>, same Operand Error. Redundancy voted, unanimously, to shut down.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Identical software ⇒ ρ≈1 — two computers, one confident bug." });
   }
@@ -281,9 +282,10 @@
         var floorY = by0 - bh * clamp01(1 - Math.log10(1 / Math.max(rho, 0.02)) / 2);
         ctx.strokeStyle = h.rgba(RED, 0.85); ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.moveTo(bx0, floorY); ctx.lineTo(bx0 + bw, floorY); ctx.stroke(); ctx.setLineDash([]);
         ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.font = "9px 'JetBrains Mono',monospace"; ctx.fillText("floor ρq sinks → steep gain returns", bx0, by0 + 14);
+        if (lt > 1.2) { var cx = bx0 + Math.pow(lt - 1.2, 0.4) * 80; ctx.fillStyle = h.rgba("#9fb2d4", 0.9); ctx.beginPath(); ctx.arc(cx, by0 - 8, 4, 0, 7); ctx.fill(); }
       });
-      var eq = s.tex2("\\text{design diversity} \\Rightarrow \\rho\\downarrow \\Rightarrow P_{\\text{sys}}\\ge\\rho q\\ \\downarrow", { px: 480, py: 92, size: "0.95rem", color: AMB });
-      s.write(eq, { at: 0.8, dur: 1.4 });
+      var eq = s.tex2("\\text{design diversity} \\Rightarrow \\rho\\downarrow \\Rightarrow P_{\\text{sys}}\\ge\\rho q\\ \\downarrow", { px: 480, py: 40, size: "0.95rem", color: GRN });
+      s.fadeIn(eq, { at: 5.0, dur: 1.0 });
       lower(s, "You can’t vote your way out of a shared mistake — you have to <em>engineer the mistakes to be different</em>. Diverse teams, languages, and vendors drive ρ toward zero, and only then does the steep binomial gain reappear.", 7.0, { maxWidth: "70%" });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
       s.fadeIn(tag, { at: 10.5, dur: 1.0 });

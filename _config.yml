@@ -63,7 +63,7 @@ author:
   flickr           : # Username
   foursquare       : # Username
   goodreads        : # Username
-  google_plus      : # Username
+
   keybase          : # Username
   instagram        : # Username
   lastfm           : # Username
@@ -228,9 +228,6 @@ kramdown:
 
 # These settings control the types of collections used by the template
 collections:
-  teaching:
-    output: true
-    permalink: /:collection/:path/
   publications:
     output: true
     permalink: /:collection/:path/

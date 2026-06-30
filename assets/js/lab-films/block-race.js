@@ -123,7 +123,7 @@
       var eq = s.tex2("\\text{lead} = (\\#\\,\\text{honest}) - (\\#\\,\\text{attacker})", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 9.5, dur: 0.8 });
 
-      lower(s, "Bitcoin has no judge. The only rule is mechanical — honest nodes build on the longest valid chain. To reverse a payment, an attacker must secretly <em>outrun the whole network</em>.", 4.4, { maxWidth: "64%", out: 13.4 });
+      lower(s, "Bitcoin has no judge. The only rule is mechanical — honest nodes build on the longest valid chain. To reverse a payment, an attacker must secretly <em>outrun the whole network</em>.", 4.4, { maxWidth: "50%", px: 440, out: 13.4 });
     }, { subtitle: "Consensus is a race, not a vote — the longest chain wins by rule." });
   }
 
@@ -254,7 +254,7 @@
       s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\frac{\\lambda^{k} e^{-\\lambda}}{k!}\\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 480, py: 358, size: "1.05rem", color: AMB });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\frac{\\lambda^{k} e^{-\\lambda}}{k!}\\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 480, py: 390, size: "1.05rem", color: AMB });
       s.write(form, { at: 12.5, dur: 1.8 });
 
       lower(s, "The attacker mined in secret for the <em>same</em> interval. Their block count is ≈ Poisson with mean z·q/p; condition on it, attach the gambler's-ruin tail, and rearrange — that last line is the whitepaper's code.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
