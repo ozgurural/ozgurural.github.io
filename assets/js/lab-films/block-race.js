@@ -345,7 +345,7 @@
       s.fadeIn(fin, { at: 4.6, dur: 0.7 });
       var lim = s.tex2("\\lim_{z\\to\\infty} P(z) = 0 \\quad (q<p)", { px: 480, py: 118, size: "1.1rem", color: AMB });
       s.write(lim, { at: 1.0, dur: 1.4 });
-      var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 524, anchor: "bottom-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 8.0, dur: 0.8 });
 
       lower(s, "Bitcoin never declares a payment final — it makes reversal exponentially expensive and asymptotically improbable, while honest hashrate stays in the majority. That is what proof-of-work actually buys.", 5.0, { maxWidth: "70%" });

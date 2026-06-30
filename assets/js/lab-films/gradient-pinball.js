@@ -398,7 +398,7 @@
       lower(s, "The payoff is exact, not hand-wavy: optimally-tuned heavy-ball replaces κ with √κ — the same square-root law as Nesterov acceleration. A valley 1000× longer than wide: ~1000 steps becomes ~30.", 9.0, { maxWidth: "84%", px: 70, out: 14.5 });
 
       // honesty caveat — the regime where this holds (referee note)
-      var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 524, anchor: "bottom", align: "center", size: "0.68rem" });
+      var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 60, anchor: "top", align: "center", size: "0.68rem" });
       s.fadeIn(caveat, { at: 11.5, dur: 0.8 });
     }, { subtitle: "Optimal momentum: O(κ) → O(√κ) convergence." });
   }
