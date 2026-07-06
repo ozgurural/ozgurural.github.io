@@ -644,7 +644,8 @@
         '<div class="labf__scrub-head" data-role="head"></div>' +
       '</div>' +
       '<span class="labf__time" data-role="time">0:00</span>' +
-      '<button type="button" class="labf__btn labf__btn--ghost" data-role="replay" aria-label="Replay from start">↺</button>';
+      '<button type="button" class="labf__btn labf__btn--ghost" data-role="replay" aria-label="Replay from start">↺</button>' +
+      '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⤢</button>';
     c.appendChild(tr);
     this.transport = tr;
     this.playBtn = tr.querySelector('[data-role="play"]');
@@ -654,9 +655,22 @@
     this.scrubDots = tr.querySelector('[data-role="dots"]');
     this.timeEl = tr.querySelector('[data-role="time"]');
     this.replayBtn = tr.querySelector('[data-role="replay"]');
+    this.fsBtn = tr.querySelector('[data-role="fs"]');
 
     this.playBtn.addEventListener("click", function () { self._userPaused = self.playing; self.toggle(); });
     this.replayBtn.addEventListener("click", function () { self._userPaused = false; self.restart(); });
+    if (this.fsBtn) {
+      this.fsBtn.addEventListener("click", function () {
+        var el = self.container;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          if (el.requestFullscreen) { el.requestFullscreen(); }
+          else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+        } else {
+          if (document.exitFullscreen) { document.exitFullscreen(); }
+          else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+        }
+      });
+    }
     this._wireScrub();
 
     global.addEventListener("resize", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });

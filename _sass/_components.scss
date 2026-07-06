@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    COMPONENTS — hero, pillars, stats, timeline, cards, lead, tag
    Reusable across pages. All theme-aware via design-system tokens.
    ========================================================================== */
@@ -1309,6 +1309,28 @@ button:focus-visible {
     .lab-card.lab-experiment > .lab-card__usecase,
     .lab-card.lab-experiment > .lab-card__mission,
     .lab-card.lab-experiment > .lab-reveal { max-width: 820px; }
-  .lab-card.lab-experiment > .lab-film,
   .lab-card.lab-experiment > .lab-film__legend { max-width: 1180px; }
+}
+
+/* Fullscreen support */
+.labf:fullscreen {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: #050a15; padding: 0; margin: 0;
+}
+.labf:-webkit-full-screen {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: #050a15; padding: 0; margin: 0;
+}
+.labf:fullscreen .labf__stage,
+.labf:-webkit-full-screen .labf__stage {
+  width: min(100vw, calc((100vh - 54px) * (1000 / 540)));
+  height: auto;
+  max-height: calc(100vh - 54px);
+  margin: auto;
+}
+.labf:fullscreen .labf__transport,
+.labf:-webkit-full-screen .labf__transport {
+  width: 100%;
+  max-width: min(100vw, calc((100vh - 54px) * (1000 / 540)));
+  margin: 0 auto;
 }
