@@ -34,7 +34,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.write(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
@@ -177,7 +177,7 @@
       });
       var e1 = s.tex2("P_{\\text{ind}} = \\Theta\\!\\left(q^{\\,m+1}\\right),\\quad \\text{gain}=\\tfrac{q}{P_{\\text{ind}}}=\\tfrac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\tfrac{1}{3q}", { px: 700, py: 200, size: "0.92rem", color: AMB });
       s.fadeIn(e1, { at: 9.0, dur: 1.0 });
-      lower(s, "For small q the tail is dominated by its lowest-order term, so adding channels doesn’t subtract a constant — it raises q to a higher power. Each pair of extra channels buys another factor of q. On a log-log plot, redundancy <em>steepens the slope</em>.", 11.5, { maxWidth: "52%", px: 600, py: 470 });
+      lower(s, "For small q the tail is dominated by its lowest-order term, so adding channels doesn’t subtract a constant — it raises q to a higher power. Each pair of extra channels buys another factor of q. On a log-log plot, redundancy <em>steepens the slope</em>.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Independent redundancy: q → Θ(q^{m+1}) — superlinear safety." });
   }
 
@@ -220,7 +220,7 @@
       });
       var eq = s.tex2("P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q,\\quad \\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\ (q<\\tfrac12)", { px: 480, py: 92, size: "0.9rem", color: "#e8eef9" });
       s.write(eq, { at: 11.0, dur: 1.6 });
-      lower(s, "Let the channels share a cause. A common-mode fraction ρ splits failures into an independent part the voter fixes and a correlated part it can’t. That term ρq <em>doesn’t depend on N</em> — the steep curves flatten onto a floor, and the safety multiplier saturates at 1/ρ.", 13.0, { maxWidth: "52%", px: 600, py: 472 });
+      lower(s, "Let the channels share a cause. A common-mode fraction ρ splits failures into an independent part the voter fixes and a correlated part it can’t. That term ρq <em>doesn’t depend on N</em> — the steep curves flatten onto a floor, and the safety multiplier saturates at 1/ρ.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Correlation caps reliability at 1/ρ — no matter how many backups." });
   }
 

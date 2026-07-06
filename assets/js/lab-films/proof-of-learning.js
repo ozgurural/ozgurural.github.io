@@ -34,7 +34,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 486, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.write(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
@@ -184,7 +184,7 @@
       });
       var e1 = s.tex2("d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta", { px: 300, py: 96, size: "1rem", color: AMB });
       s.write(e1, { at: 13.0, dur: 1.2 });
-      lower(s, "The verifier never reruns the whole training. Honest gradient steps are small, so a forger taking shortcuts must hide a few <em>oversized</em> jumps. Sort updates by magnitude, replay only the top-Q per epoch, and check each lands within a slack ball δ that absorbs floating-point nondeterminism.", 15.0, { maxWidth: "92%", px: 60, py: 520 });
+      lower(s, "The verifier never reruns the whole training. Honest gradient steps are small, so a forger taking shortcuts must hide a few <em>oversized</em> jumps. Sort updates by magnitude, replay only the top-Q per epoch, and check each lands within a slack ball δ that absorbs floating-point nondeterminism.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Spot-check the largest updates — exactly where a forger must cheat." });
   }
 
