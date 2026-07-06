@@ -740,12 +740,12 @@
   border-bottom: none;
 }
 .ep-essay__body {
-  font-family: var(--ds-font-sans);
-  max-width: 64ch;
-  font-feature-settings: "kern", "liga", "cv11";
+  font-family: var(--ds-font-serif);
+  max-width: 65ch;
+  font-feature-settings: "kern", "liga", "onum";
 }
 .ep-essay__body p {
-  font-size: 1.075rem;
+  font-size: 1.15rem;
   line-height: 1.8;
   color: var(--ds-body);
   margin: 0 0 1.15rem;
