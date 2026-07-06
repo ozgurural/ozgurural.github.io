@@ -1,7 +1,7 @@
 ---
 permalink: /lab/redundancy-reactor/
-title: "Redundancy Reactor — fault tolerance, animated"
-description: "Majority voting buys superlinear safety — until correlation installs a floor you can't vote past. A cinematic, PhD-level explainer ending in the Ariane 5 disaster."
+title: "Redundancy Reactor: fault tolerance, animated"
+description: "Majority voting buys superlinear safety, until correlation installs a floor you can't vote past. A cinematic, PhD-level explainer ending in the Ariane 5 disaster."
 excerpt: "Triple-modular redundancy, the binomial-tail gain, the correlation floor ρq, and why Ariane 5 self-destructed with three computers that all agreed."
 sitemap: true
 header:

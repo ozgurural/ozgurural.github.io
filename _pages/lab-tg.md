@@ -1,8 +1,8 @@
 ---
 permalink: /lab/block-race/
-title: "Block Race — Nakamoto consensus, animated"
+title: "Block Race: Nakamoto consensus, animated"
 description: "Why '6 confirmations' is a probability, not a promise. A cinematic, PhD-level walk through the double-spend math of Bitcoin's whitepaper §11."
-excerpt: "Consensus is a race, not a vote. Watch the gambler's-ruin core, Satoshi's Poisson head-start, and why the attacker's size — not your patience — sets your risk."
+excerpt: "Consensus is a race, not a vote. Watch the gambler's-ruin core, Satoshi's Poisson head-start, and why the attacker's size, not your patience, sets your risk."
 sitemap: true
 header:
   og_image: "lab-og/og-tg.png"

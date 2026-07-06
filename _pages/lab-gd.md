@@ -1,8 +1,8 @@
 ---
 permalink: /lab/gradient-pinball/
-title: "Gradient Pinball — how machines learn, animated"
-description: "A cinematic, PhD-level explainer on gradient descent, momentum, and why high-dimensional loss landscapes are ruled by saddle points — not local minima."
-excerpt: "Every model on Earth learns by rolling downhill on a loss landscape. Here is the geometry of that descent — the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise — animated."
+title: "Gradient Pinball: how machines learn, animated"
+description: "A cinematic, PhD-level explainer on gradient descent, momentum, and why high-dimensional loss landscapes are ruled by saddle points, not local minima."
+excerpt: "Every model on Earth learns by rolling downhill on a loss landscape. Here is the geometry of that descent: the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise, animated."
 sitemap: true
 header:
   og_image: "lab-og/og-gd.png"
