@@ -35,7 +35,7 @@
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
-    s.write(c, { at: at, dur: o.dur || 0.9 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
   }
@@ -86,7 +86,7 @@
         if (lt < 6 && lt > 3) { ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 130); }
         if (lt >= 6) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80); }
       });
-      var eq = s.tex2("\\text{vote} = \\operatorname{maj}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "0.95rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "0.95rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 0.8, dur: 0.8 });
       lower(s, "Triple modular redundancy uses majority voting. It works—until all three fail identically.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
@@ -124,9 +124,9 @@
         }
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 110);
       });
-      var e1 = s.tex2("P_{\\text{ind}} = \\sum_{i=m+1}^{N}\\binom{N}{i}q^{i}(1-q)^{N-i}", { px: 480, py: 96, size: "0.98rem", color: "#e8eef9" });
-      s.write(e1, { at: 0.8, dur: 1.4 });
-      var e2 = s.tex2("N=3:\\ P_{\\text{ind}} = 3q^{2}(1-q) + q^{3}", { px: 480, py: 148, size: "0.92rem", color: AMB });
+      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 96, size: "0.98rem", color: "#e8eef9" });
+      var hg = s.group();
+      var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 8.0, dur: 0.8 });
       lower(s, "Systems fail only when a strict majority fails. Independent failures follow a binomial upper tail.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
@@ -194,7 +194,7 @@
           ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4 (~33×)", xm - 100, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 ~1e-5", xm - 80, pl.py(Pind(5, 0.01)));
         }
       });
-      var e1 = s.tex2("P_{\\text{ind}} = \\Theta\\!\\left(q^{\\,m+1}\\right),\\quad \\text{gain}=\\tfrac{q}{P_{\\text{ind}}}=\\tfrac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\tfrac{1}{3q}", { px: 700, py: 200, size: "0.92rem", color: AMB });
+      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 200, size: "0.92rem", color: AMB });
       s.fadeIn(e1, { at: 9.0, dur: 1.0 });
       lower(s, "Adding channels raises q to a higher power, steepening the slope on a log-log plot.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
@@ -237,7 +237,7 @@
         });
         if (rho > 0.01) { var capY = sy - Math.min(80, Math.log10(1 / rho) * 26); ctx.strokeStyle = h.rgba(RED, 0.85); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(sx - 6, capY); ctx.lineTo(sx + 170, capY); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("≈ 1/ρ", sx + 174, capY + 4); }
       });
-      var eq = s.tex2("P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q,\\quad \\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\ (q<\\tfrac12)", { px: 480, py: 92, size: "0.9rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{System Failure} \\approx \\text{Correlated Errors } (\\rho)", { px: 480, py: 92, size: "0.9rem", color: "#e8eef9" });
       s.write(eq, { at: 11.0, dur: 1.6 });
       lower(s, "Shared root causes (correlation ρ) bypass the voter. The steep safety curve hits a hard floor.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Correlation caps reliability at 1/ρ no matter how many backups." });
@@ -278,7 +278,7 @@
         if (lt > 8) { ctx.globalAlpha = clamp01((lt - 8) / 0.5); ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.fillText("SELF-DESTRUCT  ~39 s after H0, ~4 km", 360, 130); ctx.globalAlpha = 1; }
         ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ : " + rho.toFixed(2) + " ↓", 640, 180);
       });
-      var eq = s.tex2("\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q \\quad(\\text{N irrelevant})", { px: 700, py: 130, size: "0.95rem", color: AMB });
+      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 700, py: 130, size: "0.95rem", color: AMB });
       s.fadeIn(eq, { at: 8.8, dur: 0.8 });
       lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
@@ -305,7 +305,7 @@
         ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.font = "9px 'JetBrains Mono',monospace"; ctx.fillText("floor ρq sinks → steep gain returns", bx0, by0 + 14);
         if (lt > 1.2) { var cx = bx0 + Math.pow(lt - 1.2, 0.4) * 80; ctx.fillStyle = h.rgba("#9fb2d4", 0.9); ctx.beginPath(); ctx.arc(cx, by0 - 8, 4, 0, 7); ctx.fill(); }
       });
-      var eq = s.tex2("\\text{design diversity} \\Rightarrow \\rho\\downarrow \\Rightarrow P_{\\text{sys}}\\ge\\rho q\\ \\downarrow", { px: 480, py: 40, size: "0.95rem", color: GRN });
+      var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 40, size: "0.95rem", color: GRN });
       s.fadeIn(eq, { at: 5.0, dur: 1.0 });
       lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%" });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });

@@ -44,7 +44,7 @@
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
-    s.write(c, { at: at, dur: o.dur || 0.9 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
   }
@@ -159,7 +159,7 @@
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
         ctx.fillText("utility", mx - 2, my - 8);
       });
-      var eq = s.tex2("\\tfrac{\\varepsilon_{\\text{big}}}{\\sigma}\\ \\text{large} \\Rightarrow \\text{visible \\& brittle}", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 1.0, dur: 0.8 });
       lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
@@ -202,7 +202,7 @@
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.8);
         ctx.fillText("aggregate SNR  d", px0, py0 - ph - 8);
       });
-      var eq = s.tex2("S=\\langle w,\\ \\hat\\theta-\\theta_{\\text{ref}}\\rangle,\\ \\ \\|w\\|=1 \\;\\Rightarrow\\; d=\\tfrac{\\sqrt{k}\\,\\varepsilon}{\\sigma}", { px: 480, py: 104, size: "1rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 104, size: "1rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
       lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
@@ -253,7 +253,7 @@
         ctx.fillStyle = h.rgba(GREY, 0.9); ctx.fillText("H₀ innocent  N(0,1)", co.x(-2.6), co.y(0.30));
         ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("H₁ marked  N(d,1)", co.x(d + 0.3), co.y(0.34));
       });
-      var e1 = s.tex2("Z=\\tfrac{S}{\\sigma}\\sim N(0,1)\\,|H_0,\\quad N(d,1)\\,|H_1", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
+      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.2 });
       lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
@@ -288,7 +288,7 @@
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
       var dm = s.caption("aggregate d = √k·ε/σ <span style='color:#fbbf24'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: "#e8eef9" });
       s.fadeIn(sm, { at: 7.0, dur: 0.6 }); s.fadeIn(dm, { at: 7.6, dur: 0.6 });
-      var aucEq = s.tex2("\\text{AUC}=\\Phi\\!\\big(d/\\sqrt{2}\\big)", { px: 760, py: 350, size: "1rem", color: AMB });
+      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 760, py: 350, size: "1rem", color: AMB });
       s.fadeIn(aucEq, { at: 8.4, dur: 0.7 });
 
       lower(s, "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.", 10.0, { maxWidth: "85%", px: 60 });
@@ -326,7 +326,7 @@
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 13px 'JetBrains Mono',monospace";
         ctx.fillText("owner Z = " + z.toFixed(1) + "  ≫ z_α", 600, 150);
       });
-      var eq = s.tex2("\\|\\delta\\|\\le\\rho \\;\\Rightarrow\\; |\\Delta S|=|\\langle w,\\delta\\rangle|\\le\\rho", { px: 480, py: 110, size: "1rem", color: AMB });
+      var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1rem", color: AMB });
       s.write(eq, { at: 1.0, dur: 1.2 });
       lower(s, "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark.", 7.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
@@ -344,7 +344,7 @@
       });
       var d3 = Math.sqrt(100) * 0.45; // k=100
       var power = Phi(d3 - Z_ALPHA);
-      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{k}", { px: 560, py: 220, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
       s.write(eq, { at: 0.8, dur: 1.6 });
       var chip = s.caption("detection power → <strong style='color:#fff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1rem", color: GRN });
       s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });

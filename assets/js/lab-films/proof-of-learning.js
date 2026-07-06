@@ -35,7 +35,7 @@
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
-    s.write(c, { at: at, dur: o.dur || 0.9 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
   }
@@ -75,7 +75,7 @@
           ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.fillText("IDENTICAL", 388, 276); ctx.globalAlpha = 1;
         }
       });
-      var eq = s.tex2("\\mathcal{A}: W_T \\longrightarrow W_T \\quad (\\text{cost}\\approx 0)", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{Cost to copy weights} \\approx 0", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 3.5, dur: 0.8 });
       lower(s, "Weights are just copyable numbers. How can you prove you did the training work?", 4.5, { maxWidth: "66%", out: 13.2 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
@@ -140,7 +140,7 @@
       });
       var wt = s.caption("W_T", { coords: co, x: path[39][0] + 0.1, y: path[39][1] + 0.4, anchor: "left", size: "0.72rem", color: AMB });
       s.fadeIn(wt, { at: 7.0, dur: 0.5 });
-      var eq = s.tex2("W_{t+1} \\leftarrow \\mathrm{update}(W_t,\\ D[I_t],\\ M_t)", { px: 360, py: 92, size: "0.98rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Next Step} = \\text{SGD}(\\text{Current}, \\text{Data})", { px: 360, py: 92, size: "0.98rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
       lower(s, "Models aren't born at endpoints. The stochastic training path is the true asset; the endpoint is merely its shadow.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
@@ -162,7 +162,7 @@
         var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "0.82rem", color: "#cbd5e1" });
         s.fadeIn(desc, { at: 1.1 + i * 0.6, dur: 0.5 });
       });
-      var master = s.tex2("\\mathcal{P}(f_{W_T}) = (\\mathbb{W},\\, \\mathbb{I},\\, \\mathbb{H},\\, \\mathbb{A})", { px: 250, py: 250, size: "1.2rem", color: AMB });
+      var master = s.tex2("\\text{Proof} = [\\text{Checkpoints}, \\text{Data}, \\text{Signatures}]", { px: 250, py: 250, size: "1.2rem", color: AMB });
       s.write(master, { at: 4.0, dur: 1.6 });
       var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 250, py: 320, anchor: "center", align: "center", size: "0.8rem", color: "#9fb2d4" });
       s.fadeIn(sig, { at: 6.0, dur: 0.8 });
@@ -212,7 +212,7 @@
         // budget counter
         ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GRN, 0.95); ctx.fillText("cost: Q·E segments  ≪  full run", 640, 120);
       });
-      var e1 = s.tex2("d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta", { px: 300, py: 96, size: "1rem", color: AMB });
+      var e1 = s.tex2("\\text{Forged Jump} \\le \\text{Allowed Error}", { px: 300, py: 96, size: "1rem", color: AMB });
       s.write(e1, { at: 13.0, dur: 1.2 });
       lower(s, "Verifiers don't rerun full training. We replay only the largest updates to trap forgers taking shortcuts.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
@@ -247,9 +247,8 @@
         for (var i = 0; i <= 40 * ent; i++) { var xx = bx + 220 * i / 40, yy = by + 130 - Math.exp(i * 0.09) / Math.exp(40 * 0.09) * 60; if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke();
       });
-      var e1 = s.tex2("H(\\text{process})\\propto T \\;\\Rightarrow\\; \\#\\text{paths}\\sim e^{\\,\\Theta(T)}", { px: 480, py: 96, size: "1rem", color: "#e8eef9" });
-      s.write(e1, { at: 1.0, dur: 1.4 });
-      var e2 = s.tex2("\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\quad(\\text{design property})", { px: 480, py: 148, size: "0.92rem", color: AMB });
+      var e1 = s.tex2("\\text{Possible training paths} \\sim \\text{Exponential}", { px: 480, py: 96, size: "1rem", color: "#e8eef9" });
+      var e2 = s.tex2("\\text{Attacker Cost} \\gg \\text{Honest Cost}", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 9.0, dur: 0.8 });
       lower(s, "Proving costs one honest run. Forging requires inverting SGD—an exponentially hard task. Standard PoL is bypassable, motivating SecurePoL.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
@@ -289,7 +288,7 @@
         // spoof note
         if (lt > 2 && lt < 6) { ctx.fillStyle = h.rgba(RED, clamp01((lt - 2) / 0.6) * (1 - clamp01((lt - 5) / 0.8))); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("fake transcript: mimics the loss curve, lacks the secret mark", 360, 150); }
       });
-      var eq = s.tex2("\\text{Accept} \\iff (d_2(W',W)\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f_{W_T})=\\sigma)", { px: 480, py: 104, size: "1rem", color: AMB });
+      var eq = s.tex2("\\text{Accept} \\iff \\text{Valid Path} \\textbf{ AND } \\text{Valid Watermark}", { px: 480, py: 104, size: "1rem", color: AMB });
       s.write(eq, { at: 6.5, dur: 1.6 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9.0, dur: 0.8 });

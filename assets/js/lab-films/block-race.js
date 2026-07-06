@@ -48,7 +48,7 @@
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
-    s.write(c, { at: at, dur: o.dur || 0.9 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
     return c;
   }
@@ -126,7 +126,7 @@
       s.fadeIn(lblH, { at: 1.0, dur: 0.6 }); s.fadeIn(lblA, { at: 2.4, dur: 0.6 });
       // clear the lower third before the narration panel writes in at 4.4
       s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
-      var eq = s.tex2("\\text{lead} = (\\#\\,\\text{honest}) - (\\#\\,\\text{attacker})", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{Lead} = \\text{Honest Blocks} - \\text{Attacker Blocks}", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
       lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13.4 });
     }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
   }
@@ -164,8 +164,8 @@
         ctx.fillStyle = h.rgba(MAG, 1); ctx.fillText("attacker  q = 0.30", bx + bw * p, by + bh + 22);
       });
 
-      var e1 = s.tex2("p + q = 1", { px: 700, py: 150, size: "1.15rem", color: "#e8eef9" });
-      var e2 = s.tex2("P(\\text{next block}=\\text{attacker}) = q", { px: 700, py: 360, size: "1rem", color: AMB });
+      var e1 = s.tex2("\\text{Honest } (p) + \\text{Attacker } (q) = 100\\%", { px: 700, py: 150, size: "1.15rem", color: "#e8eef9" });
+      var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 700, py: 360, size: "1rem", color: AMB });
       s.write(e1, { at: 1.0, dur: 1.0 }); s.write(e2, { at: 3.0, dur: 1.2 });
       var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 330, py: 430, anchor: "top", align: "center", size: "0.8rem", color: "#9fb2d4" });
       s.fadeIn(note, { at: 5.0, dur: 0.8 });
@@ -206,12 +206,12 @@
       s.fadeIn(tokLbl, { at: 1.8, dur: 0.5 });
 
       // recurrence + solution (right column)
-      var r1 = s.tex2("a_z = p\\,a_{z+1} + q\\,a_{z-1}", { px: 770, py: 172, size: "1rem", color: "#e8eef9" });
-      var r2 = s.tex2("a_0 = 1", { px: 770, py: 224, display: false, size: "0.95rem", color: "#9fb2d4" });
+      var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 770, py: 172, size: "1rem", color: "#e8eef9" });
+      var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 770, py: 224, display: false, size: "0.95rem", color: "#9fb2d4" });
       s.write(r1, { at: 9.5, dur: 1.3 }); s.fadeIn(r2, { at: 11.0, dur: 0.6 });
-      var sol = s.tex2("q_z = \\Big(\\tfrac{q}{p}\\Big)^{z}\\;\\;(q<p)", { px: 770, py: 294, size: "1.25rem", color: AMB });
+      var sol = s.tex2("\\text{Attacker Success} = \\Big(\\frac{\\text{Attacker Power}}{\\text{Honest Power}}\\Big)^z", { px: 770, py: 294, size: "1.25rem", color: AMB });
       s.write(sol, { at: 12.2, dur: 1.4 }); s.pulse(sol, { at: 13.8, dur: 0.8, amp: 0.1 });
-      var r3 = s.tex2("r=\\tfrac{q}{p}<1 \\Rightarrow \\text{geometric decay}", { px: 770, py: 360, display: false, size: "0.9rem", color: "#9fb2d4" });
+      var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 770, py: 360, display: false, size: "0.9rem", color: "#9fb2d4" });
       s.fadeIn(r3, { at: 14.4, dur: 0.8 });
 
       lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces Gambler's Ruin, bounded by (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
@@ -258,7 +258,7 @@
       s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\dots", { px: 480, py: 340, size: "1.05rem", color: AMB });
+      var form = s.tex2("\\text{Double Spend Risk Drop-off}", { px: 480, py: 340, size: "1.05rem", color: AMB });
       s.write(form, { at: 12.5, dur: 1.8 });
 
       lower(s, "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
@@ -355,7 +355,7 @@
 
       var fin = s.caption("payment finalized — <em>probabilistically</em>", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
       s.fadeIn(fin, { at: 4.6, dur: 0.7 });
-      var lim = s.tex2("\\lim_{z\\to\\infty} P(z) = 0 \\quad (q<p)", { px: 480, py: 118, size: "1.1rem", color: AMB });
+      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Zero Risk}", { px: 480, py: 118, size: "1.1rem", color: AMB });
       s.write(lim, { at: 1.0, dur: 1.4 });
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 8.0, dur: 0.8 });
