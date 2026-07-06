@@ -1,0 +1,7 @@
+---
+layout: null
+sitemap: false
+permalink: /search.json
+---
+{% assign docs = site.posts | concat: site.publications | concat: site.pages %}
+[{% assign sep = false %}{% for doc in docs %}{% if doc.title and doc.url %}{% assign u = doc.url %}{% unless u contains "/tags/" or u contains "/categories/" or u contains "archive" or u contains "sitemap" or u contains "404" or u contains ".json" or u contains ".xml" or u == "/terms/" %}{% if sep %},{% endif %}{% assign sep = true %}{"title":{{ doc.title | jsonify }},"url":{{ doc.url | relative_url | jsonify }},"excerpt":{{ doc.content | markdownify | strip_html | replace: "&lt;", "<" | replace: "&gt;", ">" | replace: "&quot;", '"' | replace: "&#39;", "'" | replace: "&amp;", "&" | strip_newlines | truncatewords: 35 | jsonify }},"content":{{ doc.content | markdownify | strip_html | replace: "&lt;", "<" | replace: "&gt;", ">" | replace: "&quot;", '"' | replace: "&#39;", "'" | replace: "&amp;", "&" | strip_newlines | truncatewords: 100 | jsonify }}}{% endunless %}{% endif %}{% endfor %}]

@@ -18,6 +18,11 @@
               <a href="{{ domain }}{{ link.url }}">{{ link.title }}</a>
             </li>
           {% endfor %}
+          {% if site.search %}
+          <li id="search-toggle" class="masthead__menu-item persist tail">
+            <a role="button" tabindex="0" aria-label="Toggle site search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true" title="search"></i></a>
+          </li>
+          {% endif %}
           <li id="theme-toggle" class="masthead__menu-item persist tail">
             <a role="button" aria-labelledby="theme-icon"><i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i></a>
           </li>

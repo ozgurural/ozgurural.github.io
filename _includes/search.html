@@ -1,0 +1,13 @@
+{% if site.search %}
+<div id="search-overlay" class="search-overlay" data-search-url="{{ '/search.json' | relative_url }}" hidden>
+  <div class="search-overlay__panel" role="dialog" aria-modal="true" aria-label="Site search">
+    <div class="search-overlay__bar">
+      <i class="fa-solid fa-magnifying-glass search-overlay__icon" aria-hidden="true"></i>
+      <input type="search" id="search-input" class="search-overlay__input" placeholder="Search publications, the lab, essays, posts…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Search query">
+      <button type="button" id="search-close" class="search-overlay__close" aria-label="Close search"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="search-overlay__hint" id="search-hint" role="status" aria-live="polite">Search across publications, the lab, essays, and posts.</div>
+    <ul id="search-results" class="search-results"></ul>
+  </div>
+</div>
+{% endif %}
