@@ -61,7 +61,10 @@
     ctx.globalAlpha = alpha; roundRect(ctx, x, y, w, hh, 6);
     ctx.shadowBlur = 10;
     ctx.shadowColor = h.rgba(color, 0.8);
-    ctx.fillStyle = h.rgba(color, 0.16); ctx.fill();
+    var grd = ctx.createLinearGradient(x, y, x, y + hh);
+    grd.addColorStop(0, h.rgba(color, 0.35));
+    grd.addColorStop(1, h.rgba(color, 0.05));
+    ctx.fillStyle = grd; ctx.fill();
     ctx.lineWidth = 1.8; ctx.strokeStyle = h.rgba(color, 0.95); ctx.stroke();
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
@@ -316,7 +319,7 @@
       var gx = 110, bw = 40, gap = 12, yH = 230, yA = 350, hh = 36;
       s.canvas(function (lt, ctx, h) {
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#94a3b8", 1);
-        var nH = 12, i;
+        var nH = 12, aC = 4, i;
         for (i = 0; i < nH; i++) {
           var rev = clamp01((lt - i * 0.12) / 0.3);
           if (rev <= 0) break;
@@ -327,11 +330,19 @@
         }
         // attacker fork dissolving into dust
         var diss = clamp01((lt - 3) / 3);
-        for (i = 0; i < 4; i++) {
+        for (i = 1; i <= aC; i++) {
           var xa = gx + bw + gap + i * (bw + gap);
-          var jitter = diss * (20 + i * 8);
-          ctx.globalAlpha = (1 - diss) * 0.9;
-          block(ctx, h, xa + jitter * 0.3, yA + Math.sin(i * 1.7) * jitter, bw, hh, MAG, 1);
+          if (diss < 0.01) {
+            block(ctx, h, xa, yA, bw, hh, MAG, 0.9);
+          } else {
+            ctx.globalAlpha = Math.max(0, (1 - diss) * 0.9);
+            for(var p = 0; p < 4; p++) {
+              var jx = diss * (20 + p * 8) * Math.cos(i + p * 1.5);
+              var jy = diss * (20 + p * 8) * Math.sin(i + p * 2.1) + diss * 30; // drop down
+              var subW = bw * 0.45, subH = hh * 0.45;
+              block(ctx, h, xa + (p%2)*subW*1.1 + jx, yA + Math.floor(p/2)*subH*1.1 + jy, subW, subH, MAG, 1);
+            }
+          }
         }
         ctx.globalAlpha = 1;
         // payment ring

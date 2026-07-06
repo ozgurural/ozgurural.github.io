@@ -446,7 +446,9 @@
             p = proj(x, y, z);
             if (j === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
           }
-          ctx.strokeStyle = h.rgba("#2dd4bf", 0.32); ctx.lineWidth = 1; ctx.stroke();
+          var gradLine = ctx.createLinearGradient(proj(x, -1, surf(x, -1))[0], proj(x, -1, surf(x, -1))[1], proj(x, 1, surf(x, 1))[0], proj(x, 1, surf(x, 1))[1]);
+          gradLine.addColorStop(0, h.rgba("#2dd4bf", 0.05)); gradLine.addColorStop(1, h.rgba("#2dd4bf", 0.4));
+          ctx.strokeStyle = gradLine; ctx.lineWidth = 1; ctx.stroke();
         }
         for (j = 0; j <= N; j++) {
           if (j / N > rev) break;
@@ -456,7 +458,7 @@
             p = proj(x, y, z);
             if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
           }
-          ctx.strokeStyle = h.rgba("#1f6f74", 0.28); ctx.lineWidth = 1; ctx.stroke();
+          ctx.strokeStyle = h.rgba("#1f6f74", 0.05 + 0.35 * (j / N)); ctx.lineWidth = 1; ctx.stroke();
         }
         // stable (green, up) and unstable (red, down) principal axes
         if (lt > 2.0) {
@@ -486,8 +488,23 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 588, right: 60, top: 150, bottom: 150 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 4 });
       s.draw(ax, { at: 2.6, dur: 0.8 });
-      var idx = s.plot(co, function (x) { return Math.pow(x, 0.85); }, { color: "#a78bfa", width: 3, samples: 80 });
+      var idx = s.plot(co, function (x) { return Math.pow(x, 0.85); }, { color: "#a78bfa", width: 3, samples: 80, glow: 12 });
       s.draw(idx, { at: 3.4, dur: 1.6 });
+      s.canvas(function(lt, ctx, h) {
+        if (lt < 3.4) return;
+        var p = h.clamp01((lt - 3.4) / 1.6);
+        ctx.beginPath(); ctx.moveTo(co.x(0), co.y(0));
+        for(var i=0; i<=80*p; i++) {
+          var x = i/80 * p;
+          var y = Math.pow(x, 0.85);
+          ctx.lineTo(co.x(x), co.y(y));
+        }
+        ctx.lineTo(co.x(p), co.y(0)); ctx.closePath();
+        var grd = ctx.createLinearGradient(0, co.y(1), 0, co.y(0));
+        grd.addColorStop(0, h.rgba("#a78bfa", 0.35));
+        grd.addColorStop(1, h.rgba("#a78bfa", 0.0));
+        ctx.fillStyle = grd; ctx.fill();
+      });
       // scatter critical points along the curve
       [[0.06, 0], [0.22, 0], [0.4, 0], [0.58, 0], [0.74, 0], [0.9, 0]].forEach(function (pt, i) {
         var y = Math.pow(pt[0], 0.85);

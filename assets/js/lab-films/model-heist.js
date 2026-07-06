@@ -137,9 +137,10 @@
         // brush sweep
         if (lt > 3.5 && lt < 7) {
           var bx = lerp(x0 + idx * (bw + gap) - 40, x0 + idx * (bw + gap) + 30, clamp01((lt - 3.5) / 3));
-          ctx.shadowBlur = 15;
-          ctx.shadowColor = RED;
-          ctx.fillStyle = h.rgba(RED, 0.5); ctx.fillRect(bx, baseY - 180, 26, 200);
+          ctx.shadowBlur = 15; ctx.shadowColor = RED;
+          var grd = ctx.createLinearGradient(bx - 20, 0, bx + 46, 0);
+          grd.addColorStop(0, h.rgba(RED, 0)); grd.addColorStop(0.5, h.rgba(RED, 0.6)); grd.addColorStop(1, h.rgba(RED, 0));
+          ctx.fillStyle = grd; ctx.fillRect(bx - 20, baseY - 180, 66, 200);
           ctx.shadowBlur = 0;
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.95);
           ctx.fillText("SCRUB", bx - 6, baseY - 190);
@@ -147,9 +148,14 @@
         // utility meter (right)
         var um = lt < 4.5 ? 0.7 : 0.7 - 0.55 * (1 - scrub); // tall bar => low utility, recovers as scrubbed
         var mx = 760, my = 200, mh = 150;
+        ctx.shadowBlur = 10; ctx.shadowColor = h.rgba("#9fb2d4", 0.2);
         ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1; ctx.strokeRect(mx, my, 26, mh);
+        ctx.shadowBlur = 0;
         var fillH = mh * um, col = um < 0.4 ? RED : GRN;
-        ctx.fillStyle = h.rgba(col, 0.7); ctx.fillRect(mx, my + mh - fillH, 26, fillH);
+        for (var seg = 0; seg < Math.floor(fillH / 6); seg++) {
+          ctx.fillStyle = h.rgba(col, 0.5 + 0.5 * (seg / (mh / 6)));
+          ctx.fillRect(mx + 3, my + mh - (seg * 6) - 4, 20, 3);
+        }
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
         ctx.fillText("utility", mx - 2, my - 8);
       });

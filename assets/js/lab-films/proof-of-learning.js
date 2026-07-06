@@ -89,8 +89,17 @@
       // descent path with noise (precomputed)
       var path = [], x = -2.9, y = 1.8, t;
       for (t = 0; t < 40; t++) { var gx = 2 * a * x, gy = 2 * b * y; x -= 0.12 * gx + (Math.sin(t * 12.9) * 0.5) * 0.10; y -= 0.12 * gy + (Math.sin(t * 7.3) * 0.5) * 0.10; path.push([x, y]); }
-      s.canvas(function (lt, ctx, h) {
-        for (var i = 9; i >= 1; i--) { var tt = i / 9; var rx = Math.sqrt(tt * 6 / a), ry = Math.sqrt(tt * 6 / b); var cxp = co.x(0), cyp = co.y(0); ctx.beginPath(); ctx.ellipse(cxp, cyp, Math.abs(co.x(rx) - cxp), Math.abs(cyp - co.y(ry)), 0, 0, 7); ctx.strokeStyle = h.rgba(h.mix("#1e3a8a", TEAL, 1 - tt), 0.4 * (1.2 - tt)); ctx.lineWidth = 1.5; ctx.stroke(); }
+        s.canvas(function (lt, ctx, h) {
+          for (var i = 9; i >= 1; i--) { 
+            var tt = i / 9; var rx = Math.sqrt(tt * 6 / a), ry = Math.sqrt(tt * 6 / b); 
+            var cxp = co.x(0), cyp = co.y(0); ctx.beginPath(); 
+            ctx.ellipse(cxp, cyp, Math.abs(co.x(rx) - cxp), Math.abs(cyp - co.y(ry)), 0, 0, 7); 
+            ctx.fillStyle = h.rgba("#1e3a8a", 0.05 + 0.02 * (1 - tt)); ctx.fill();
+            ctx.shadowBlur = 8; ctx.shadowColor = h.rgba(TEAL, 0.2);
+            ctx.strokeStyle = h.rgba(h.mix("#1e3a8a", TEAL, 1 - tt), 0.4 * (1.2 - tt)); 
+            ctx.lineWidth = 1.5; ctx.stroke(); 
+            ctx.shadowBlur = 0;
+          }
         // inset loss curve (top-right)
         var px0 = 600, py0 = 250, pw = 300, ph = 120;
         ctx.strokeStyle = h.rgba("#9fb2d4", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
@@ -257,11 +266,17 @@
         var gx = 640, gy = 270, trajGreen = true; // trajectory rail
         var wmGreen = lt < 4 ? null : false;       // fake transcript fails watermark
         // top rail (trajectory)
-        ctx.lineWidth = 4; ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.beginPath(); ctx.moveTo(420, gy - 40); ctx.lineTo(gx - 40, gy - 40); ctx.stroke();
+        ctx.lineWidth = 4; ctx.strokeStyle = h.rgba(GRN, 0.9);
+        ctx.setLineDash([15, 10]); ctx.lineDashOffset = -lt * 40; ctx.shadowBlur = 10; ctx.shadowColor = GRN;
+        ctx.beginPath(); ctx.moveTo(420, gy - 40); ctx.lineTo(gx - 40, gy - 40); ctx.stroke();
+        ctx.setLineDash([]); ctx.shadowBlur = 0;
         ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#cbd5e1", 0.9); ctx.fillText("trajectory  d₂ ≤ δ  ✓", 420, gy - 50);
         // bottom rail (watermark)
         var wmCol = (lt > 4) ? RED : "#9aa7be";
-        ctx.strokeStyle = h.rgba(wmCol, 0.9); ctx.beginPath(); ctx.moveTo(420, gy + 40); ctx.lineTo(gx - 40, gy + 40); ctx.stroke();
+        ctx.strokeStyle = h.rgba(wmCol, 0.9);
+        if (lt < 4) { ctx.setLineDash([15, 10]); ctx.lineDashOffset = -lt * 40; ctx.shadowBlur = 10; ctx.shadowColor = wmCol; }
+        ctx.beginPath(); ctx.moveTo(420, gy + 40); ctx.lineTo(gx - 40, gy + 40); ctx.stroke();
+        ctx.setLineDash([]); ctx.shadowBlur = 0;
         ctx.fillStyle = h.rgba(wmCol, 0.95); ctx.fillText("watermark  W(f)=σ  " + (lt > 4 ? "✗" : "?"), 420, gy + 60);
         // AND gate (D shape)
         ctx.beginPath(); ctx.moveTo(gx - 40, gy - 50); ctx.lineTo(gx, gy - 50); ctx.arc(gx, gy, 50, -Math.PI / 2, Math.PI / 2); ctx.lineTo(gx - 40, gy + 50); ctx.closePath();

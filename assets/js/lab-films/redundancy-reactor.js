@@ -137,7 +137,30 @@
     var box = { x0: 110, y0: 420, w: 460, h: 300 }; // py0 bottom, grows up
     function px(q) { return box.x0 + (Math.log10(q) - (-4)) / ((-1) - (-4)) * box.w; }
     function py(P) { return box.y0 - (Math.log10(Math.max(P, 1e-9)) - (-8)) / ((0) - (-8)) * box.h; }
-    return { box: box, px: px, py: py };
+    function drawGrid(ctx, h) {
+      ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1.4;
+      ctx.strokeRect(box.x0, box.y0 - box.h, box.w, box.h);
+      ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#7f93b4", 0.9);
+      for (var e = -4; e <= -1; e++) { 
+        var x = px(Math.pow(10, e)); ctx.fillText("10" + e, x - 8, box.y0 + 16); 
+        ctx.strokeStyle = h.rgba("#1e293b", 0.8); ctx.beginPath(); ctx.moveTo(x, box.y0); ctx.lineTo(x, box.y0 - box.h); ctx.stroke(); 
+        if (e < -1) {
+          ctx.strokeStyle = h.rgba("#1e293b", 0.3); ctx.beginPath();
+          for(var m=2; m<=9; m++) { var mx = px(m * Math.pow(10, e)); ctx.moveTo(mx, box.y0); ctx.lineTo(mx, box.y0 - box.h); }
+          ctx.stroke();
+        }
+      }
+      for (var ey = -8; ey <= 0; ey += 2) { 
+        var y = py(Math.pow(10, ey)); ctx.fillStyle = h.rgba("#7f93b4", 0.9); ctx.fillText("10" + ey, box.x0 - 30, y + 3); 
+        ctx.strokeStyle = h.rgba("#1e293b", 0.8); ctx.beginPath(); ctx.moveTo(box.x0, y); ctx.lineTo(box.x0 + box.w, y); ctx.stroke();
+        if (ey < 0) {
+          ctx.strokeStyle = h.rgba("#1e293b", 0.3); ctx.beginPath();
+          for(var myM=1; myM<10; myM+=3) { var my = py(myM * Math.pow(10, ey)); ctx.moveTo(box.x0, my); ctx.lineTo(box.x0 + box.w, my); }
+          ctx.stroke();
+        }
+      }
+    }
+    return { box: box, px: px, py: py, drawGrid: drawGrid };
   }
 
   /* ============== 3 — SUPERLINEAR ============== */
@@ -145,14 +168,8 @@
     film.scene("Superlinear safety", 18, function (s) {
       var pl = makePlot(film), box = pl.box;
       s.canvas(function (lt, ctx, h) {
-        // axes + grid
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1.4;
-        ctx.strokeRect(box.x0, box.y0 - box.h, box.w, box.h);
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#7f93b4", 0.9);
-        for (var e = -4; e <= -1; e++) { var x = pl.px(Math.pow(10, e)); ctx.fillText("10" + e, x - 8, box.y0 + 16); ctx.strokeStyle = h.rgba("#1e293b", 0.8); ctx.beginPath(); ctx.moveTo(x, box.y0); ctx.lineTo(x, box.y0 - box.h); ctx.stroke(); }
-        for (e = -8; e <= 0; e += 2) { var y = pl.py(Math.pow(10, e)); ctx.fillText("10" + e, box.x0 - 30, y + 3); }
+        pl.drawGrid(ctx, h);
         ctx.fillStyle = h.rgba("#9fb2d4", 0.9); ctx.fillText("per-channel rate q →", box.x0 + 150, box.y0 + 34);
-        // curves drawn progressively
         function curve(fn, color, width, at, dashed) {
           var prog = clamp01((lt - at) / 1.6); if (prog <= 0) return;
           ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; if (dashed) ctx.setLineDash([5, 5]);
@@ -190,10 +207,7 @@
       function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; } // ρ sweeps 0 → 0.30
       s.canvas(function (lt, ctx, h) {
         var rho = rhoAt(lt);
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1.4; ctx.strokeRect(box.x0, box.y0 - box.h, box.w, box.h);
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#7f93b4", 0.9);
-        for (var e = -4; e <= -1; e++) { var x = pl.px(Math.pow(10, e)); ctx.fillText("10" + e, x - 8, box.y0 + 16); }
-        for (e = -8; e <= 0; e += 2) { var y = pl.py(Math.pow(10, e)); ctx.fillText("10" + e, box.x0 - 30, y + 3); }
+        pl.drawGrid(ctx, h);
         function curve(N, color, width) {
           ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; 
           ctx.shadowBlur = 10; ctx.shadowColor = color;
@@ -234,9 +248,11 @@
     film.scene("Ariane 5, 4 June 1996", 18, function (s) {
       s.canvas(function (lt, ctx, h) {
         // telemetry grid
-        ctx.strokeStyle = h.rgba("#1f6f4f", 0.25); ctx.lineWidth = 1;
+        ctx.shadowBlur = 8; ctx.shadowColor = h.rgba("#1f6f4f", 0.6);
+        ctx.strokeStyle = h.rgba("#1f6f4f", 0.3); ctx.lineWidth = 1;
         for (var gx = 60; gx < 920; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, 430); ctx.stroke(); }
         for (var gy = 90; gy < 430; gy += 40) { ctx.beginPath(); ctx.moveTo(60, gy); ctx.lineTo(900, gy); ctx.stroke(); }
+        ctx.shadowBlur = 0;
         // altitude trace
         var prog = clamp01(lt / 9), fail = lt > 7;
         ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2.4; ctx.beginPath();
