@@ -115,7 +115,7 @@
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#fff" });
       s.write(title, { at: 0.6, dur: 1.4 });
-      lower(s, "A model you trained for months leaks. A competitor fine-tunes it just enough to look different and calls it theirs. The weights are a moving target — so how do you prove provenance?", 4.4, { maxWidth: "66%", out: 13.2 });
+      lower(s, "Your model leaks. A competitor fine-tunes it and claims it. How do you prove provenance when weights are a moving target?", 4.4, { maxWidth: "66%", out: 13.2 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
@@ -155,7 +155,7 @@
       });
       var eq = s.tex2("\\tfrac{\\varepsilon_{\\text{big}}}{\\sigma}\\ \\text{large} \\Rightarrow \\text{visible \\& brittle}", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 1.0, dur: 0.8 });
-      lower(s, "The naive fix is stamping one big value into a single weight. This fails twice: it is conspicuous and easily erased, and it dents the model's accuracy. You cannot hide a loud signal in a quiet place.", 8.2, { maxWidth: "72%" });
+      lower(s, "Stamping one big value into a single weight fails twice: it's conspicuous and hurts accuracy. You cannot hide a loud signal in a quiet place.", 8.2, { maxWidth: "72%" });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
   }
 
@@ -198,7 +198,7 @@
       });
       var eq = s.tex2("S=\\langle w,\\ \\hat\\theta-\\theta_{\\text{ref}}\\rangle,\\ \\ \\|w\\|=1 \\;\\Rightarrow\\; d=\\tfrac{\\sqrt{k}\\,\\varepsilon}{\\sigma}", { px: 480, py: 104, size: "1rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
-      lower(s, "Spread the intent across k weights as a secret pattern, so each nudge is invisible against the noise floor. A matched filter correlates against the pattern. The aligned marks add coherently while independent noise cancels out. The net signal-to-noise ratio grows as √k.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Spread the mark across k weights. Each nudge is invisible against the noise floor. A matched filter correlates the secret pattern: aligned marks add up, noise cancels out. SNR grows as √k.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
   }
 
@@ -249,7 +249,7 @@
       });
       var e1 = s.tex2("Z=\\tfrac{S}{\\sigma}\\sim N(0,1)\\,|H_0,\\quad N(d,1)\\,|H_1", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.2 });
-      lower(s, "This forms a Gaussian Z-test. For an innocent model, the statistic is a standard bell curve. For a watermarked model, the bell shifts right by the effect size. We set a threshold to balance false alarms and detection power.", 9.0, { maxWidth: "92%", px: 60, py: 535 });
+      lower(s, "This forms a Gaussian Z-test. Innocent models yield a standard bell curve. Watermarked models shift the curve right. A threshold balances false alarms and detection power.", 9.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
   }
 
@@ -285,7 +285,7 @@
       var aucEq = s.tex2("\\text{AUC}=\\Phi\\!\\big(d/\\sqrt{2}\\big)", { px: 760, py: 350, size: "1rem", color: AMB });
       s.fadeIn(aucEq, { at: 8.4, dur: 0.7 });
 
-      lower(s, "Each weight stays far below the detectability floor, preserving utility. Yet because the signal scales with √k, the ROC curve snaps toward perfect detection just by adding marks. You buy certainty with breadth, not loudness.", 10.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Each weight change stays below the noise floor, preserving utility. But since the signal scales with √k, detection becomes perfect. You buy certainty with breadth, not loudness.", 10.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "The √k factor decouples stealth from aggregate confidence." });
   }
 
@@ -322,7 +322,7 @@
       });
       var eq = s.tex2("\\|\\delta\\|\\le\\rho \\;\\Rightarrow\\; |\\Delta S|=|\\langle w,\\delta\\rangle|\\le\\rho", { px: 480, py: 110, size: "1rem", color: AMB });
       s.write(eq, { at: 1.0, dur: 1.2 });
-      lower(s, "The thief is trapped by the same geometry. Since the pattern is secret, they cannot aim their budget at it. Scrubbing blindly across all coordinates wrecks utility long before it erases the mark.", 7.0, { maxWidth: "92%", px: 60 });
+      lower(s, "The thief is trapped by geometry. Without the secret pattern, scrubbing blindly across all coordinates wrecks utility long before erasing the mark.", 7.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
   }
 

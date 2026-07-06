@@ -206,7 +206,7 @@
       s.write(title, { at: 0.4, dur: 1.6 });
       s.fadeOut(title, { at: 5.0, dur: 1.0 });
 
-      lower(s, "A network learns by rolling downhill on a loss surface. The slope it feels is the gradient; the steepest way down is exactly <em>its negative</em>.", 6.0, { out: 13.2, maxWidth: "64%" });
+      lower(s, "Networks learn by rolling downhill. The slope is the gradient; the steepest way down is its exact negative.", 6.0, { out: 13.2, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
@@ -267,7 +267,7 @@
       var perp = s.tex2("\\nabla L \\perp \\text{level set}", { px: 480, py: 132, display: false, size: "0.95rem", color: "#9fb2d4" });
       s.fadeIn(perp, { at: 2.6, dur: 0.8 });
 
-      lower(s, "Measure the slope, step against it, repeat. The gradient is always perpendicular to the level sets, so each step is the locally greediest move toward lower loss.", 10.8, { maxWidth: "66%" });
+      lower(s, "Measure slope, step against it, repeat. The gradient is perpendicular to level sets, making each step the locally greediest move.", 10.8, { maxWidth: "66%" });
     }, { subtitle: "θ ← θ − α∇L,  and  ∇L ⟂ level set." });
   }
 
@@ -312,7 +312,7 @@
       var eq = s.tex2("\\theta_{t+1} = (1-\\alpha\\lambda)\\,\\theta_t \\qquad |1-\\alpha\\lambda| < 1 \\;\\Longleftrightarrow\\; 0 < \\alpha < \\tfrac{2}{\\lambda}", { px: 480, py: 340, size: "1.02rem", color: "#fbbf24" });
       s.write(eq, { at: 8.4, dur: 1.6 });
 
-      lower(s, "Each step scales your distance to the minimum. If the step size is too large, the ball overshoots the valley walls. Instead of converging, it diverges.", 11.2, { maxWidth: "88%", px: 60, py: 535 });
+      lower(s, "Steps scale your distance. Too large, and the ball overshoots the valley walls and diverges.", 11.2, { maxWidth: "88%", px: 60, py: 535 });
     }, { subtitle: "Take too large a step and the optimization diverges." });
   }
 
@@ -366,7 +366,7 @@
       var eq = s.tex2("v_{t+1}=\\beta\\,v_t+\\nabla L(\\theta_t)\\,,\\quad \\theta_{t+1}=\\theta_t-\\alpha\\,v_{t+1}", { px: 480, py: 64, size: "1.05rem", color: "#e8eef9" });
       s.write(eq, { at: 9.0, dur: 1.4 });
 
-      lower(s, "Momentum gives the ball memory, acting as an exponentially-weighted <em>sum</em> of past gradients. The side-to-side bounces have opposite signs and cancel out, while the steady downhill drift compounds. It stops hitting walls and starts sliding.", 13.6, { maxWidth: "82%", px: 70 });
+      lower(s, "Momentum acts as an exponentially-weighted sum of past gradients. Side-to-side bounces cancel out, while downhill drift compounds.", 13.6, { maxWidth: "82%", px: 70 });
     }, { subtitle: "Momentum cancels out orthogonal oscillations and accelerates the downhill direction." });
   }
 
@@ -408,7 +408,7 @@
       s.fadeIn(hb, { at: 11.5, dur: 0.6 });
       s.fadeOut(eq1, { at: 14.5, dur: 0.5 }); s.fadeOut(eq2, { at: 14.5, dur: 0.5 }); s.fadeOut(hb, { at: 14.5, dur: 0.5 });
 
-      lower(s, "The payoff is exact. Optimally-tuned momentum replaces the condition number with its square root. In a valley 1000 times longer than it is wide, a journey of 1000 steps becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 14.5 });
+      lower(s, "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 14.5 });
 
       // honesty caveat — the regime where this holds (referee note)
       var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 60, anchor: "top", align: "center", size: "0.68rem" });
@@ -506,7 +506,7 @@
       var eqsub = s.tex2("\\text{as } d\\to\\infty \\quad (\\text{Gaussian random-field model})", { px: 470, py: 108, size: "0.82rem", color: "#7f93b4" });
       s.fadeIn(eqsub, { at: 10.0, dur: 0.8 });
 
-      lower(s, "The simple bowl is a lie. A true minimum requires every dimension to curve upwards, which is astronomically unlikely. The critical points you actually hit are overwhelmingly saddles. Momentum and noise are what break the symmetry to let you escape.", 11.2, { maxWidth: "92%", px: 60 });
+      lower(s, "True minima are astronomically unlikely. Most critical points are saddles. Momentum and noise break symmetry to escape.", 11.2, { maxWidth: "92%", px: 60 });
     }, { subtitle: "High dimensional critical points are almost never minima. They are saddles." });
   }
 

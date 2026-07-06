@@ -77,7 +77,7 @@
       });
       var eq = s.tex2("\\mathcal{A}: W_T \\longrightarrow W_T \\quad (\\text{cost}\\approx 0)", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 3.5, dur: 0.8 });
-      lower(s, "A trained model's final weights are just a tensor of numbers, which are copyable perfectly at zero cost. So how could the true trainer ever prove they did the work, when the artifact is trivially clonable?", 4.5, { maxWidth: "66%", out: 13.2 });
+      lower(s, "Final weights are just numbers, perfectly copyable at zero cost. How can the true author prove they did the training work?", 4.5, { maxWidth: "66%", out: 13.2 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -90,19 +90,33 @@
       var path = [], x = -2.9, y = 1.8, t;
       for (t = 0; t < 40; t++) { var gx = 2 * a * x, gy = 2 * b * y; x -= 0.12 * gx + (Math.sin(t * 12.9) * 0.5) * 0.10; y -= 0.12 * gy + (Math.sin(t * 7.3) * 0.5) * 0.10; path.push([x, y]); }
       s.canvas(function (lt, ctx, h) {
-        var i;
-        for (i = 9; i >= 1; i--) { var tt = i / 9; var rx = Math.sqrt(tt * 6 / a), ry = Math.sqrt(tt * 6 / b); var cxp = co.x(0), cyp = co.y(0); ctx.beginPath(); ctx.ellipse(cxp, cyp, Math.abs(co.x(rx) - cxp), Math.abs(cyp - co.y(ry)), 0, 0, 7); ctx.strokeStyle = h.rgba(h.mix("#1e3a8a", "#3b82f6", tt), 0.4); ctx.lineWidth = 1; ctx.stroke(); }
+        for (var i = 9; i >= 1; i--) { var tt = i / 9; var rx = Math.sqrt(tt * 6 / a), ry = Math.sqrt(tt * 6 / b); var cxp = co.x(0), cyp = co.y(0); ctx.beginPath(); ctx.ellipse(cxp, cyp, Math.abs(co.x(rx) - cxp), Math.abs(cyp - co.y(ry)), 0, 0, 7); ctx.strokeStyle = h.rgba(h.mix("#1e3a8a", TEAL, 1 - tt), 0.4 * (1.2 - tt)); ctx.lineWidth = 1.5; ctx.stroke(); }
         // inset loss curve (top-right)
         var px0 = 600, py0 = 250, pw = 300, ph = 120;
         ctx.strokeStyle = h.rgba("#9fb2d4", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.fillText("loss L vs step t", px0, py0 - ph - 8);
+        // background grid
+        ctx.strokeStyle = h.rgba("#9fb2d4", 0.1); ctx.lineWidth = 1; ctx.beginPath();
+        for(var g = 1; g < 4; g++) { ctx.moveTo(px0, py0 - ph*g/4); ctx.lineTo(px0+pw, py0 - ph*g/4); }
+        for(var g = 1; g < 8; g++) { ctx.moveTo(px0 + pw*g/8, py0); ctx.lineTo(px0 + pw*g/8, py0 - ph); }
+        ctx.stroke();
+        
         var nL = Math.floor(clamp01(lt / 9) * 40);
         ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2; 
         ctx.shadowBlur = 10; ctx.shadowColor = TEAL;
         ctx.beginPath();
-        for (i = 0; i <= nL; i++) { var L = Math.exp(-i * 0.09) * (1 + 0.12 * Math.sin(i * 1.9)) ; var xx = px0 + pw * i / 40, yy = py0 - ph * (1 - L); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
+        var pts = [];
+        for (i = 0; i <= nL; i++) { var L = Math.exp(-i * 0.09) * (1 + 0.12 * Math.sin(i * 1.9)) ; var xx = px0 + pw * i / 40, yy = py0 - ph * (1 - L); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); pts.push([xx, yy]); }
         ctx.stroke();
         ctx.shadowBlur = 0;
+        if (pts.length > 0) {
+          ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+          for(var p=1; p<pts.length; p++) ctx.lineTo(pts[p][0], pts[p][1]);
+          ctx.lineTo(pts[pts.length-1][0], py0); ctx.lineTo(pts[0][0], py0); ctx.closePath();
+          var grd = ctx.createLinearGradient(0, py0-ph, 0, py0);
+          grd.addColorStop(0, h.rgba(TEAL, 0.35)); grd.addColorStop(1, h.rgba(TEAL, 0.0));
+          ctx.fillStyle = grd; ctx.fill();
+        }
       });
       // descent polyline (SVG) + checkpoints
       var pl = s.poly(path, { coords: co, color: TEAL, width: 2.4 });
@@ -119,7 +133,7 @@
       s.fadeIn(wt, { at: 7.0, dur: 0.5 });
       var eq = s.tex2("W_{t+1} \\leftarrow \\mathrm{update}(W_t,\\ D[I_t],\\ M_t)", { px: 360, py: 92, size: "0.98rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
-      lower(s, "The model was not born at the endpoint. It <em>descended</em> there, one stochastic step at a time. The path (checkpoints W₀…W_T with the exact batches and hyperparameters) took a full training run to make. The path is the asset; the point is its shadow.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Models aren't born at endpoints; they descend there stochastically. The training path (checkpoints, batches, parameters) is the true asset. The endpoint is merely its shadow.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
   }
 
@@ -143,7 +157,7 @@
       s.write(master, { at: 4.0, dur: 1.6 });
       var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 250, py: 320, anchor: "center", align: "center", size: "0.8rem", color: "#9fb2d4" });
       s.fadeIn(sig, { at: 6.0, dur: 0.8 });
-      lower(s, "Formally, the proof is a four-part transcript: checkpoints <em>W</em>, the data-batch indices <em>I</em> that fed each step, cryptographic signatures <em>H</em> binding those batches, and auxiliary info <em>A</em> — hyperparameters, optimizer, architecture).", 8.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A proof is a 4-part transcript: checkpoints (W), data-batches (I), cryptographic signatures (H), and auxiliary info like hyperparameters (A).", 8.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
@@ -191,7 +205,7 @@
       });
       var e1 = s.tex2("d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta", { px: 300, py: 96, size: "1rem", color: AMB });
       s.write(e1, { at: 13.0, dur: 1.2 });
-      lower(s, "The verifier never reruns the whole training. Honest gradient steps are small, so a forger taking shortcuts must hide a few <em>oversized</em> jumps. Sort updates by magnitude, replay only the top-Q per epoch, and check each lands within a slack ball δ that absorbs floating-point nondeterminism.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
+      lower(s, "Verifiers don't rerun full training. Forgers taking shortcuts must hide oversized jumps. We replay only the largest (top-Q) updates, ensuring they land within an acceptable error bound ε.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
   }
 
@@ -228,7 +242,7 @@
       s.write(e1, { at: 1.0, dur: 1.4 });
       var e2 = s.tex2("\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\quad(\\text{design property})", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 9.0, dur: 0.8 });
-      lower(s, "Generating a valid proof costs one honest training run. Forging one means inverting SGD and threading every checkpoint the verifier might probe. As training entropy grows linearly in T, the space of consistent paths grows exponentially. <span style='color:#9fb2d4'>This is a design property (Jia 2021), later shown bypassable, which motivates SecurePoL.</span>", 11.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Generating a proof costs one honest run. Forging requires inverting SGD across probed checkpoints—an exponentially hard task. However, standard PoL is bypassable, motivating SecurePoL.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
   }
 
@@ -264,7 +278,7 @@
       s.write(eq, { at: 6.5, dur: 1.6 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9.0, dur: 0.8 });
-      lower(s, "A clever adversary can hand-craft a transcript that passes the replay checks without training. SecurePoL binds the trajectory proof to a feature watermark: verification becomes a logical <em>AND</em>. A forged path can mimic the loss curve, but cannot carry a mark it never trained to embed.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Adversaries can forge transcripts. SecurePoL binds the trajectory proof to a watermark, making verification a logical AND. A forged path may mimic the loss curve, but lacks the secret watermark.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
@@ -293,7 +307,7 @@
       s.fadeIn(hg, { at: 7.0, dur: 0.7 });
       var seal = s.caption("✦ unforgeable training fingerprint", { px: 690, py: 320, anchor: "left", size: "0.92rem", color: GOLD });
       s.fadeIn(seal, { at: 8.4, dur: 0.8 });
-      lower(s, "A real run leaves a statistical signature. It is a noisy, near-monotone descent <em>in expectation</em>, with plateaus and heavy-tailed step sizes, which a flat, fabricated curve cannot reproduce. Cheap to produce honestly, expensive to forge, verifiable by anyone.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A real run leaves a statistical signature. Its noisy descent and heavy-tailed steps cannot be perfectly fabricated. PoL is cheap to produce honestly, expensive to forge, and publicly verifiable.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 
