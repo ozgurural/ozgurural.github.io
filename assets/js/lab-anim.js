@@ -760,60 +760,54 @@
     
     // Global Signature Outro Scene
     this.scene("Signature", 8.0, function(s) {
-      // Subtle animated blue glow in the background
-      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 500, py: 270, anchor: "center", align: "center", panel: false });
+      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 500, py: 270, anchor: "center", align: "center", panel: false });
       
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#fff'>Dr. Ozgur Ural</span>", 
                            { px: 500, py: 220, anchor: "center", align: "center", panel: false });
                            
-      var typedText = "PH.D. IN MACHINE LEARNING";
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'></span>", 
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#fff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>PH.D. IN MACHINE LEARNING</span>", 
                            { px: 500, py: 285, anchor: "center", align: "center", panel: false });
                            
-      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#7f93b4; font-style:italic;'>ozgurural.github.io</span>", 
+      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#fff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
                            { px: 500, py: 340, anchor: "center", align: "center", panel: false });
 
-      // Initialize state
-      bgLight.cur.op = 0;
-      name.cur.op = 0; name.cur.sx = 0.95; name.cur.sy = 0.95;
-      role.cur.op = 1; // Content managed by cue
-      url.cur.op = 0;  url.cur.sx = 0.95; url.cur.sy = 0.95;
-
-      // Glow anim
-      s.fadeIn(bgLight, { at: 0.0, dur: 2.0 });
-      s.pulse(bgLight, { at: 1.0, dur: 6.0, amp: 0.15 });
-
-      // Name anim
-      s.fadeIn(name, { at: 0.2, dur: 1.2 });
-      s.scaleTo(name, { at: 0.2, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
-      
-      // Typewriter anim for role
-      var startType = 1.0;
-      var typeDur = 1.3;
-      s._cue(role, startType, typeDur, window.LabAnim.ease.linear, function(st, p) {
-        var chars = Math.floor(p * typedText.length);
-        var curText = typedText.substring(0, chars);
-        var cursor = (Math.floor(p * 20) % 2 === 0) ? "<span style='opacity:1'>_</span>" : "<span style='opacity:0'>_</span>";
-        role.el.innerHTML = "<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>" + curText + cursor + "</span>";
-      });
-      // Blinking cursor after typing finishes
-      s._cue(role, startType + typeDur, 5.7, window.LabAnim.ease.linear, function(st, p) {
-        var cursor = (Math.floor(p * 30) % 2 === 0) ? "<span style='opacity:1'>_</span>" : "<span style='opacity:0'>_</span>";
-        role.el.innerHTML = "<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>" + typedText + cursor + "</span>";
+      var objs = [bgLight, name, role, url];
+      objs.forEach(function(obj) {
+        obj.cur.op = 0;
+        obj.cur.sx = 0.5; // Start far away
+        obj.cur.sy = 0.5;
+        
+        // Majestic slow zoom in
+        s.scaleTo(obj, { at: 0.0, dur: 7.5, to: 1.1, ease: Ease.linear });
+        // Fade in together
+        s.fadeIn(obj, { at: 0.5, dur: 2.0 });
+        // Fade out together
+        s.fadeOut(obj, { at: 6.5, dur: 1.5 });
       });
 
-      // URL anim
-      s.fadeIn(url, { at: 2.3, dur: 1.0 });
-      s.scaleTo(url, { at: 2.3, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
-
-      // Final pulse
-      s.pulse(name, { at: 2.8, dur: 1.0, amp: 0.03 });
-
-      // Fade out everything
-      s.fadeOut(bgLight, { at: 7.0, dur: 1.0 });
-      s.fadeOut(name, { at: 7.0, dur: 1.0 });
-      s.fadeOut(role, { at: 7.0, dur: 1.0 });
-      s.fadeOut(url,  { at: 7.0, dur: 1.0 });
+      // Special procedural cinematic sound
+      var playedSound = false;
+      s._cue(name, 0.1, 0.1, Ease.linear, function() {
+        if (playedSound || !(window.AudioContext || window.webkitAudioContext)) return;
+        playedSound = true;
+        try {
+          var ctx = new (window.AudioContext || window.webkitAudioContext)();
+          var t = ctx.currentTime;
+          // Deep sub-bass boom
+          var osc = ctx.createOscillator(); var gain = ctx.createGain();
+          osc.type = 'sine'; osc.frequency.setValueAtTime(50, t); osc.frequency.exponentialRampToValueAtTime(10, t + 5);
+          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.01, t + 5);
+          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 5);
+          
+          // Ethereal chord shimmer (A major: A, C#, E, A)
+          [440, 554.37, 659.25, 880].forEach(function(freq) {
+            var o = ctx.createOscillator(); var g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = freq;
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 1.5); g.gain.exponentialRampToValueAtTime(0.001, t + 5.5);
+            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 5.5);
+          });
+        } catch(e){}
+      });
     });
 
     this._built = true;
