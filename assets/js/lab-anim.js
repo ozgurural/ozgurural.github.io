@@ -890,6 +890,14 @@
       } catch (e) { /* never let a scene kill the loop */ }
       ctx.restore();
     }
+
+    // Author signature watermark
+    ctx.save();
+    ctx.font = "italic 400 13px 'Georgia', serif";
+    ctx.fillStyle = "rgba(203, 213, 225, 0.35)";
+    ctx.textAlign = "right";
+    ctx.fillText("Ozgur Ural", this.W - 20, this.H - 20);
+    ctx.restore();
   };
 
   /* ----------------------------- transport ----------------------------- */
