@@ -766,7 +766,7 @@
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#fff'>Dr. Ozgur Ural</span>", 
                            { px: 500, py: 220, anchor: "center", align: "center", panel: false });
                            
-      var typedText = "MACHINE LEARNING & SYSTEMS ARCHITECT";
+      var typedText = "PH.D. IN MACHINE LEARNING";
       var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'></span>", 
                            { px: 500, py: 285, anchor: "center", align: "center", panel: false });
                            
