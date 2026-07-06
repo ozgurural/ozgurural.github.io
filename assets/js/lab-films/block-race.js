@@ -127,7 +127,7 @@
       // clear the lower third before the narration panel writes in at 4.4
       s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
       var eq = s.tex2("\\text{lead} = (\\#\\,\\text{honest}) - (\\#\\,\\text{attacker})", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
-      lower(s, "Bitcoin has no judge. Honest nodes build on the longest valid chain. To reverse a payment, an attacker must secretly outrun the network.", 4.4, { maxWidth: "50%", px: 440, out: 13.4 });
+      lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13.4 });
     }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
   }
 
@@ -171,7 +171,7 @@
       s.fadeIn(note, { at: 5.0, dur: 0.8 });
       s.fadeOut(note, { at: 6.8, dur: 0.5 }); // hand the lower third to the narration
 
-      lower(s, "Mining the next block is a Bernoulli trial based on your hashrate share. Electricity turns into a probability of being right.", 7.0, { maxWidth: "70%" });
+      lower(s, "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
   }
 
@@ -214,7 +214,7 @@
       var r3 = s.tex2("r=\\tfrac{q}{p}<1 \\Rightarrow \\text{geometric decay}", { px: 770, py: 360, display: false, size: "0.9rem", color: "#9fb2d4" });
       s.fadeIn(r3, { at: 14.4, dur: 0.8 });
 
-      lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces a Gambler's Ruin, with the bounded solution exactly (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
+      lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces Gambler's Ruin, bounded by (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Catching up from z blocks behind is exactly the gambler's ruin problem." });
   }
 
@@ -261,7 +261,7 @@
       var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\dots", { px: 480, py: 340, size: "1.05rem", color: AMB });
       s.write(form, { at: 12.5, dur: 1.8 });
 
-      lower(s, "The attacker's secret block count is a Poisson process. We condition on blocks found, attach the Gambler's Ruin tail, and sum it up (per Satoshi's whitepaper).", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
+      lower(s, "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
@@ -309,7 +309,7 @@
       var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump — not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });
 
-      lower(s, "Tripling the attacker from 10% to 30% multiplies risk by ~544x at six confirmations. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Security decays exponentially in the attacker's relative size." });
   }
 
@@ -360,7 +360,7 @@
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 8.0, dur: 0.8 });
 
-      lower(s, "Bitcoin makes reversal exponentially expensive and asymptotically improbable, provided honest hashrate holds the majority.", 5.0, { maxWidth: "70%" });
+      lower(s, "Reversal becomes exponentially improbable, provided honest hashrate holds the majority.", 5.0, { maxWidth: "70%" });
     }, { subtitle: "Finality is probabilistic, not absolute — security you can price." });
   }
 

@@ -88,7 +88,7 @@
       });
       var eq = s.tex2("\\text{vote} = \\operatorname{maj}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "0.95rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 0.8, dur: 0.8 });
-      lower(s, "Triple modular redundancy takes a majority vote to outvote a faulty channel. It works—until all three fail the same way at the same instant.", 7.5, { maxWidth: "70%" });
+      lower(s, "Triple modular redundancy uses majority voting. It works—until all three fail identically.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -128,7 +128,7 @@
       s.write(e1, { at: 0.8, dur: 1.4 });
       var e2 = s.tex2("N=3:\\ P_{\\text{ind}} = 3q^{2}(1-q) + q^{3}", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 8.0, dur: 0.8 });
-      lower(s, "Systems fail only when a strict majority fails (> N/2). Counting independent failures gives the upper tail of a binomial distribution.", 10.5, { maxWidth: "92%", px: 60 });
+      lower(s, "Systems fail only when a strict majority fails. Independent failures follow a binomial upper tail.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
   }
 
@@ -196,7 +196,7 @@
       });
       var e1 = s.tex2("P_{\\text{ind}} = \\Theta\\!\\left(q^{\\,m+1}\\right),\\quad \\text{gain}=\\tfrac{q}{P_{\\text{ind}}}=\\tfrac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\tfrac{1}{3q}", { px: 700, py: 200, size: "0.92rem", color: AMB });
       s.fadeIn(e1, { at: 9.0, dur: 1.0 });
-      lower(s, "Adding channels raises q to a higher power. Each pair of extra channels buys another factor of q, steepening the slope on a log-log plot.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
+      lower(s, "Adding channels raises q to a higher power, steepening the slope on a log-log plot.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
   }
 
@@ -239,7 +239,7 @@
       });
       var eq = s.tex2("P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q,\\quad \\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\ (q<\\tfrac12)", { px: 480, py: 92, size: "0.9rem", color: "#e8eef9" });
       s.write(eq, { at: 11.0, dur: 1.6 });
-      lower(s, "If channels share a root cause (correlation ρ), failures split. The correlated part bypasses the voter. Steep curves hit a flat floor, and safety saturates.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
+      lower(s, "Shared root causes (correlation ρ) bypass the voter. The steep safety curve hits a hard floor.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Correlation caps reliability at 1/ρ no matter how many backups." });
   }
 
@@ -280,7 +280,7 @@
       });
       var eq = s.tex2("\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q \\quad(\\text{N irrelevant})", { px: 700, py: 130, size: "0.95rem", color: AMB });
       s.fadeIn(eq, { at: 8.8, dur: 0.8 });
-      lower(s, "A rocket had two identical units. A variable overflowed due to high speed. Both units failed 72ms apart with the same error. Redundancy voted unanimously to crash.", 10.5, { maxWidth: "92%", px: 60 });
+      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
@@ -307,7 +307,7 @@
       });
       var eq = s.tex2("\\text{design diversity} \\Rightarrow \\rho\\downarrow \\Rightarrow P_{\\text{sys}}\\ge\\rho q\\ \\downarrow", { px: 480, py: 40, size: "0.95rem", color: GRN });
       s.fadeIn(eq, { at: 5.0, dur: 1.0 });
-      lower(s, "You cannot vote your way out of a shared mistake. Diverse teams and languages drive correlation to zero, bringing the steep safety gains back.", 7.0, { maxWidth: "70%" });
+      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%" });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
       s.fadeIn(tag, { at: 10.5, dur: 1.0 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });

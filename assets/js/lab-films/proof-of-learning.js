@@ -77,7 +77,7 @@
       });
       var eq = s.tex2("\\mathcal{A}: W_T \\longrightarrow W_T \\quad (\\text{cost}\\approx 0)", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 3.5, dur: 0.8 });
-      lower(s, "Final weights are just numbers, perfectly copyable at zero cost. How can the true author prove they did the training work?", 4.5, { maxWidth: "66%", out: 13.2 });
+      lower(s, "Weights are just copyable numbers. How can you prove you did the training work?", 4.5, { maxWidth: "66%", out: 13.2 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -142,7 +142,7 @@
       s.fadeIn(wt, { at: 7.0, dur: 0.5 });
       var eq = s.tex2("W_{t+1} \\leftarrow \\mathrm{update}(W_t,\\ D[I_t],\\ M_t)", { px: 360, py: 92, size: "0.98rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
-      lower(s, "Models aren't born at endpoints; they descend there stochastically. The training path (checkpoints, batches, parameters) is the true asset. The endpoint is merely its shadow.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Models aren't born at endpoints. The stochastic training path is the true asset; the endpoint is merely its shadow.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
   }
 
@@ -166,7 +166,7 @@
       s.write(master, { at: 4.0, dur: 1.6 });
       var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 250, py: 320, anchor: "center", align: "center", size: "0.8rem", color: "#9fb2d4" });
       s.fadeIn(sig, { at: 6.0, dur: 0.8 });
-      lower(s, "A proof is a 4-part transcript: checkpoints (W), data-batches (I), cryptographic signatures (H), and auxiliary info like hyperparameters (A).", 8.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A proof is a transcript: checkpoints, data-batches, signatures, and hyperparameters.", 8.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
@@ -214,7 +214,7 @@
       });
       var e1 = s.tex2("d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta", { px: 300, py: 96, size: "1rem", color: AMB });
       s.write(e1, { at: 13.0, dur: 1.2 });
-      lower(s, "Verifiers don't rerun full training. Forgers taking shortcuts must hide oversized jumps. We replay only the largest (top-Q) updates, ensuring they land within an acceptable error bound ε.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
+      lower(s, "Verifiers don't rerun full training. We replay only the largest updates to trap forgers taking shortcuts.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
   }
 
@@ -251,7 +251,7 @@
       s.write(e1, { at: 1.0, dur: 1.4 });
       var e2 = s.tex2("\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\quad(\\text{design property})", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 9.0, dur: 0.8 });
-      lower(s, "Generating a proof costs one honest run. Forging requires inverting SGD across probed checkpoints—an exponentially hard task. However, standard PoL is bypassable, motivating SecurePoL.", 11.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Proving costs one honest run. Forging requires inverting SGD—an exponentially hard task. Standard PoL is bypassable, motivating SecurePoL.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
   }
 
@@ -293,7 +293,7 @@
       s.write(eq, { at: 6.5, dur: 1.6 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9.0, dur: 0.8 });
-      lower(s, "Adversaries can forge transcripts. SecurePoL binds the trajectory proof to a watermark, making verification a logical AND. A forged path may mimic the loss curve, but lacks the secret watermark.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "SecurePoL binds the trajectory proof to a watermark. A forged path may mimic the loss curve, but lacks the secret mark.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
@@ -322,7 +322,7 @@
       s.fadeIn(hg, { at: 7.0, dur: 0.7 });
       var seal = s.caption("✦ unforgeable training fingerprint", { px: 690, py: 320, anchor: "left", size: "0.92rem", color: GOLD });
       s.fadeIn(seal, { at: 8.4, dur: 0.8 });
-      lower(s, "A real run leaves a statistical signature. Its noisy descent and heavy-tailed steps cannot be perfectly fabricated. PoL is cheap to produce honestly, expensive to forge, and publicly verifiable.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A real run leaves a statistical signature. The noisy descent cannot be perfectly faked. PoL is cheap to produce, hard to forge.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

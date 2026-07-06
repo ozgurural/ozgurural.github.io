@@ -323,11 +323,11 @@
   border-radius: var(--ds-radius);
   padding: 1rem 1.15rem;
   background: var(--ds-surface);
-  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ep-cards > li:hover {
   border-color: var(--ds-accent);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: var(--ds-shadow-2);
 }
 .ep-cards .meta {
