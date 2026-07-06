@@ -310,16 +310,16 @@
       var fpts = []; for (i = 0; i <= 40; i++) fpts.push([i, Math.exp(-i * 0.085) * 0.85 + 0.02]);
       var fp = s.poly(fpts, { coords: co, color: RED, width: 2.2, dashed: "5 5" });
       s.draw(fp, { at: 3.4, dur: 2.0 });
-      var gl = s.caption("genuine — noise band, plateau, drop", { coords: co, x: 14, y: 0.62, anchor: "left", size: "0.74rem", color: TEAL });
-      var fl = s.caption("forged — Var[‖ΔW‖] → 0  (too clean)", { coords: co, x: 14, y: 0.30, anchor: "left", size: "0.74rem", color: RED });
+      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 150, anchor: "left", size: "0.95rem", color: "#e2e8f0" });
+      var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 190, anchor: "left", size: "0.95rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 3.0, dur: 0.6 }); s.fadeIn(fl, { at: 5.4, dur: 0.6 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: -0.1, anchor: "top", align: "center", size: "0.7rem", color: "#9fb2d4" });
       s.fadeIn(xl, { at: 1.0, dur: 0.5 });
       s.fadeOut(xl, { at: 8.8, dur: 0.5 }); // clear the lower third for the narration
-      // step-magnitude histograms (right)
-      var hg = s.caption("step magnitudes:  genuine <span style='color:#38bdf8'>heavy-tailed</span> · forged <span style='color:#fb7185'>spike</span>", { px: 690, py: 250, anchor: "left", size: "0.78rem", color: "#cbd5e1" });
+      // Clean legend on the right
+      var hg = s.caption("The noise is the fingerprint.", { px: 650, py: 260, anchor: "left", size: "1rem", color: "#9fb2d4" });
       s.fadeIn(hg, { at: 7.0, dur: 0.7 });
-      var seal = s.caption("✦ unforgeable training fingerprint", { px: 690, py: 320, anchor: "left", size: "0.92rem", color: GOLD });
+      var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.2rem", color: GOLD });
       s.fadeIn(seal, { at: 8.4, dur: 0.8 });
       lower(s, "A real run leaves a statistical signature. The noisy descent cannot be perfectly faked. PoL is cheap to produce, hard to forge.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
