@@ -1,7 +1,7 @@
 ---
 title: "Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking"
 collection: publications
-category: manuscripts
+category: theses
 permalink: /publication/2025-dissertation
 excerpt: "Doctoral dissertation, Embry-Riddle Aeronautical University, Daytona Beach, Florida."
 date: 2025-08-01
