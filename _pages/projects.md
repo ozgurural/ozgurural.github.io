@@ -1,7 +1,7 @@
 ---
 permalink: /projects/
 title: "Projects"
-description: "Research code, interactive demos, and production systems by Dr. Ozgur Ural — SecurePoL proof-of-learning security, model watermarking, UAV ground control, Level D flight-simulation platforms, and clinical tooling."
+description: "Research code, interactive demos, and production systems by Dr. Ozgur Ural: SecurePoL proof-of-learning security, model watermarking, UAV ground control, Level D flight-simulation platforms, and clinical tooling."
 
 ---
 
@@ -31,7 +31,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   <li>
     <div class="meta">M.Sc. · NLP Security</div>
     <h3 class="title"><a href="/blog/ms-thesis">METU Master's Thesis</a></h3>
-    <p class="desc">Detection of cyber-security events from Turkish Twitter and newspaper streams, at Middle East Technical University (METU), whose computer engineering program is among Turkey's most prestigious and selective — admitting only the nation's top-ranked students. Foundation for my published ICISSP paper.</p>
+    <p class="desc">Detection of cyber-security events from Turkish Twitter and newspaper streams, at Middle East Technical University (METU), whose computer engineering program is among Turkey's most prestigious and selective, admitting only the nation's top-ranked students. Foundation for my published ICISSP paper.</p>
   </li>
 </ul>
 
@@ -41,11 +41,11 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   <li>
     <div class="meta">2023– · Avion Full Flight Simulators</div>
     <h3 class="title"><a href="https://www.aviongroup.aero/">Real-time platforms for Level D flight simulators</a></h3>
-    <p class="desc">Architecting real-time simulation platforms and cloud-native infrastructure for Level D full-flight simulators — the highest certification level, where simulator time counts as flight time.</p>
+    <p class="desc">Architecting real-time simulation platforms and cloud-native infrastructure for Level D full-flight simulators: the highest certification level, where simulator time counts as flight time.</p>
   </li>
   <li>
     <div class="meta">2020–2021 · Havelsan · Team Lead</div>
-    <h3 class="title">Havelsan DLP — data-leakage prevention at national scale</h3>
+    <h3 class="title">Havelsan DLP: data-leakage prevention at national scale</h3>
     <p class="desc">Led the 14-engineer team that delivered a data-leakage-prevention product for defence and government clients.</p>
   </li>
   <li>

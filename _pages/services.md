@@ -13,12 +13,12 @@ description: "Technical advisory, ML-security and model-provenance review, confe
   <li>
     <div class="meta">Advisory · ML security</div>
     <h3 class="title">Trustworthy-ML &amp; model-provenance review</h3>
-    <p class="desc">Independent assessment of training-integrity, watermarking, and model-provenance claims — grounded in my published proof-of-learning research. For teams shipping, buying, or auditing ML systems.</p>
+    <p class="desc">Independent assessment of training-integrity, watermarking, and model-provenance claims, grounded in my published proof-of-learning research. For teams shipping, buying, or auditing ML systems.</p>
   </li>
   <li>
     <div class="meta">Advisory · Architecture</div>
     <h3 class="title">Mission-critical architecture review</h3>
-    <p class="desc">Design reviews for real-time and fault-tolerant systems, drawing on twelve years across defence, cybersecurity, and Level D flight simulation — including leading a 14-engineer product team.</p>
+    <p class="desc">Design reviews for real-time and fault-tolerant systems, drawing on twelve years across defence, cybersecurity, and Level D flight simulation, including leading a 14-engineer product team.</p>
   </li>
   <li>
     <div class="meta">Speaking</div>

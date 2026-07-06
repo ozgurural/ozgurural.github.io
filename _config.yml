@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "Ph.D. in Machine Learning (ERAU 2025). Twelve years architecting mission-critical systems across defence, cybersecurity, and Level D flight simulation; former lead of a 14-engineer team. Research on proof-of-learning and model watermarking — four IEEE Access papers."
+description              : &description "Ph.D. in Machine Learning (ERAU 2025). Twelve years architecting mission-critical systems across defence, cybersecurity, and Level D flight simulation; former lead of a 14-engineer team. Research on proof-of-learning and model watermarking, with four first-author IEEE Access papers."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -151,7 +151,7 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 : "ozgururalpp.jpg"  # Social media default site image
-og_description           : "Dr. Ozgur Ural — Ph.D. in Machine Learning (ERAU 2025), four IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
+og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025), four first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
