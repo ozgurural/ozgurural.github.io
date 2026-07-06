@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "Research & Engineering"
-excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Senior software engineer."
+excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
 author_profile: true
 redirect_from:
   - /about/
@@ -14,7 +14,8 @@ redirect_from:
   "@type": "Person",
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
-  "jobTitle": "Senior Software Engineer / Tech Lead · Ph.D. in Machine Learning",
+  "jobTitle": "Senior Software Engineer · Ph.D. in Machine Learning",
+  "description": "ML-security researcher (proof-of-learning, model watermarking, adversarial robustness) and architect of mission-critical systems. Former software team lead of 14 engineers at Havelsan. Four IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.jpg",
   "email": "drozgurural@gmail.com",
@@ -35,42 +36,43 @@ redirect_from:
 </script>
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">Systems Architecture · Technical Excellence · Machine Learning</span>
-  <h1 class="ep-hero__title">I design secure <span class="accent">ML architectures</span> and distributed systems that <span class="accent">stay correct when things fail</span>.</h1>
+  <span class="ep-eyebrow">Trustworthy ML · Mission-Critical Systems · Engineering Leadership</span>
+  <h1 class="ep-hero__title">I set technical direction for <span class="accent">secure ML</span> and mission-critical systems — and the standards that keep them <span class="accent">correct when things fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>. With over a decade of engineering experience and a Ph.D. in Machine Learning (conferred at ERAU, 2025), I bridge the gap between rigorous academic research and production reality. As a Senior Software Engineer, I focus on architecting fault-tolerant distributed systems, driving technical standards, and delivering enterprise platforms where failure is not an option. My doctoral work and published research on <em>proof-of-learning</em>, <em>model watermarking</em>, <em>adversarial robustness</em>, and <em>blockchain-enhanced ML</em> (four IEEE Access papers, 2023–2025) ground my approach to securing AI infrastructures.
+    I'm <strong>Dr. Ozgur Ural</strong> — engineer, researcher, and former lead of a 14-engineer team. I've spent twelve years architecting systems that cannot be allowed to fail: ground-control software for autonomous UAVs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and four IEEE Access papers on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Currently in Leiden, Netherlands. Building, architecting, publishing.</span>
+    <span>Leiden, Netherlands — building flight-simulation platforms, publishing ML-security research. Open to advisory, speaking, and research collaboration.</span>
   </p>
   <div class="ep-hero__cta">
     <a href="/publications/"><i class="fas fa-book-open"></i> Read my research</a>
+    <a href="/services/"><i class="fas fa-handshake"></i> Advisory &amp; speaking</a>
     <a href="mailto:drozgurural@gmail.com"><i class="fas fa-envelope"></i> Get in touch</a>
   </div>
 </section>
 
 <ul class="ep-stats">
-  <li><span class="num">11+</span><span class="label">Years engineering</span></li>
-  <li><span class="num">Ph.D.</span><span class="label">Machine Learning · 2025</span></li>
-  <li><span class="num">4</span><span class="label">IEEE Access papers</span></li>
+  <li><span class="num">12+</span><span class="label">Years in mission-critical software</span></li>
+  <li><span class="num">Ph.D.</span><span class="label">Machine Learning · ERAU 2025</span></li>
+  <li><span class="num">4</span><span class="label">IEEE Access papers · trustworthy ML</span></li>
   <li><span class="num">14</span><span class="label">Engineers led as Team Lead</span></li>
 </ul>
 
-## Systems Architecture & Core Domains
+## Leadership & Core Domains
 
-<p class="ep-pillars__note">My work focuses on the intersection of deep technical expertise and organizational scale: driving architectural decisions, setting technical standards, and ensuring that complex systems—from mission-critical C++ to cloud-native microservices—remain robust under extreme conditions.</p>
+<p class="ep-pillars__note">My work sits at the intersection of deep technical expertise and organizational scale: setting architectural direction, raising engineering standards, and ensuring that complex systems—from mission-critical C++ to cloud-native microservices—remain robust under extreme conditions.</p>
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Systems Architecture</span>
-    <h3>Technical Excellence</h3>
-    <p>Designing real-time, mission-critical systems. Bringing rigorous engineering discipline to ML pipelines and establishing architectural patterns that elevate the entire engineering organization through scalable code and resilient design.</p>
+    <span class="ep-pillar__tag">Engineering Leadership</span>
+    <h3>Direction, standards, teams</h3>
+    <p>Led a 14-engineer team that shipped a national data-leakage-prevention product; today I drive architecture decisions and technical standards that raise the bar across the engineering organization — resilience patterns, review culture, release discipline.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
-    <h3>Enterprise infrastructure</h3>
-    <p>Architecting scalable cloud-native services (Scala, TypeScript, gRPC) and designing robust distributed protocols whose outputs and state can be audited end-to-end without compromising latency.</p>
+    <h3>Fault-tolerant by design</h3>
+    <p>Real-time simulation platforms and cloud-native services (C++, Scala, TypeScript, gRPC) built on distributed protocols whose outputs and state can be audited end-to-end without compromising latency.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Trustworthy ML & Security</span>
@@ -79,7 +81,7 @@ redirect_from:
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Adversarial Robustness</span>
-    <h3>When models can be trusted</h3>
+    <h3>Models that survive adversaries</h3>
     <p>Bridging research and production by ensuring models survive contact with adversaries. Evaluating provenance verification, adversarial examples, and the limits of claimed model identities.</p>
   </li>
 </ul>
@@ -160,4 +162,4 @@ redirect_from:
 
 ## Get in touch
 
-For research collaboration, technical advisory, or speaking engagements, reach out by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [projects](/projects/), and [technical writing](/blog/).
+For research collaboration, [technical advisory, or speaking engagements](/services/), reach out by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [projects](/projects/), and [technical writing](/blog/).

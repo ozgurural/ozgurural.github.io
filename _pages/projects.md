@@ -1,7 +1,7 @@
 ---
 permalink: /projects/
 title: "Projects"
-description: "<p class='ep-lead'>Selected work across Ph.D. research code, interactive demos, C++ systems primitives, and clinical tooling. Each project links to its repos..."
+description: "Research code, interactive demos, and production systems by Dr. Ozgur Ural — SecurePoL proof-of-learning security, model watermarking, UAV ground control, Level D flight-simulation platforms, and clinical tooling."
 
 ---
 
@@ -35,7 +35,33 @@ description: "<p class='ep-lead'>Selected work across Ph.D. research code, inter
   </li>
 </ul>
 
-## Systems Architecture & Engineering
+## Production Systems (Industry)
+
+<ul class="ep-cards">
+  <li>
+    <div class="meta">2023– · Avion Full Flight Simulators</div>
+    <h3 class="title"><a href="https://www.aviongroup.aero/">Real-time platforms for Level D flight simulators</a></h3>
+    <p class="desc">Architecting real-time simulation platforms and cloud-native infrastructure for Level D full-flight simulators — the highest certification level, where simulator time counts as flight time.</p>
+  </li>
+  <li>
+    <div class="meta">2020–2021 · Havelsan · Team Lead</div>
+    <h3 class="title">Havelsan DLP — data-leakage prevention at national scale</h3>
+    <p class="desc">Led the 14-engineer team that delivered a data-leakage-prevention product for defence and government clients.</p>
+  </li>
+  <li>
+    <div class="meta">2019–2020 · STM Defence Technologies</div>
+    <h3 class="title">Ground control for Kargu &amp; Togan UAVs</h3>
+    <p class="desc">Architecture contributions to the mission-control and ground-control systems for the Kargu autonomous tactical UAV and Togan reconnaissance UAV.</p>
+  </li>
+  <li>
+    <div class="meta">2014–2019 · Comodo Cybersecurity</div>
+    <h3 class="title">Secure Web Gateway · Patch Manager · Dragon browser</h3>
+    <p class="desc">Led design and architecture of Comodo's Secure Web Gateway, enterprise Patch Manager, and the Chromium-based Dragon browser.</p>
+  </li>
+</ul>
+
+## Applied Tooling
+
 <ul class="ep-cards">
   <li>
     <div class="meta">Python · PyQt5 · Clinical Tooling</div>

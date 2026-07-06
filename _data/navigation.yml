@@ -8,19 +8,19 @@
 #      Markdown formatted page while the second is generated using JSON.
 
 main:
-  - title: "Resume (PDF)"
-    url: /Ozgur_Ural_PhD_Resume.pdf
   - title: "Publications"
     url: /publications/
-  - title: "Projects"
-    url: /projects/
-  - title: "Services"
-    url: /services/
   - title: "Research Lab"
     url: /lab/
+  - title: "Projects"
+    url: /projects/
   - title: "Essays"
     url: /essays/
-  - title: "Technical Blog"
+  - title: "Writing"
     url: /blog/
-  - title: "Life Blog"
+  - title: "Perspectives"
     url: /life/
+  - title: "Advisory & Service"
+    url: /services/
+  - title: "CV (PDF)"
+    url: /Ozgur_Ural_PhD_Resume.pdf
