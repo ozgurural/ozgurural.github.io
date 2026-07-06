@@ -296,7 +296,7 @@
       });
 
       // the contraction-factor law, then the stability window
-      var eq = s.tex2("\\theta_{t+1} = (1-\\alpha\\lambda)\\,\\theta_t \\qquad |1-\\alpha\\lambda| < 1 \\;\\Longleftrightarrow\\; 0 < \\alpha < \\tfrac{2}{\\lambda}", { px: 480, py: 392, size: "1.02rem", color: "#fbbf24" });
+      var eq = s.tex2("\\theta_{t+1} = (1-\\alpha\\lambda)\\,\\theta_t \\qquad |1-\\alpha\\lambda| < 1 \\;\\Longleftrightarrow\\; 0 < \\alpha < \\tfrac{2}{\\lambda}", { px: 480, py: 340, size: "1.02rem", color: "#fbbf24" });
       s.write(eq, { at: 8.4, dur: 1.6 });
 
       lower(s, "Each step scales your distance to the minimum by |1−αλ|. Past 2/λ that factor exceeds one — the ball doesn’t converge, it <em>diverges</em>. <span style='color:#9fb2d4'>(λ = λ<sub>max</sub> of the Hessian.)</span>", 11.2, { maxWidth: "88%", px: 60, py: 506 });

@@ -254,11 +254,11 @@
       s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\frac{\\lambda^{k} e^{-\\lambda}}{k!}\\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 480, py: 390, size: "1.05rem", color: AMB });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\frac{\\lambda^{k} e^{-\\lambda}}{k!}\\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 480, py: 340, size: "1.05rem", color: AMB });
       s.write(form, { at: 12.5, dur: 1.8 });
 
       lower(s, "The attacker mined in secret for the <em>same</em> interval. Their block count is ≈ Poisson with mean z·q/p; condition on it, attach the gambler's-ruin tail, and rearrange — that last line is the whitepaper's code.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
-      var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean — the exact count is Negative-Binomial NB(z,p), so this <em>understates</em> risk (0.024% vs 0.059% at q=.1, z=6).", 0);
+      var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean - the exact count is Negative-Binomial NB(z,p), so this <em>understates</em> risk (0.024% vs 0.059% at q=.1, z=6).", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
       caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 506];
@@ -299,10 +299,10 @@
       s.fadeIn(z6, { at: 6.2, dur: 0.4 });
 
       // callouts
-      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#fff'>0.024%</strong>", { px: 760, py: 250, size: "0.92rem", color: CY });
-      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#fff'>13.2%</strong>", { px: 760, py: 300, size: "0.92rem", color: MAG });
+      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#fff'>0.024%</strong>", { px: 760, py: 210, size: "0.92rem", color: CY });
+      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#fff'>13.2%</strong>", { px: 760, py: 260, size: "0.92rem", color: MAG });
       s.fadeIn(cCY, { at: 7.2, dur: 0.7 }); s.fadeIn(cMG, { at: 8.0, dur: 0.7 });
-      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump — not 3×", { px: 760, py: 360, size: "1rem", color: "#e8eef9" });
+      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump — not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });
 
       lower(s, "Tripling the attacker from 10% to 30% doesn’t triple your risk at six confirmations — it multiplies it <em>~544×</em>. Security is exponential in z, but the base is q/p, so the adversary’s size dominates your patience.", 11.0, { maxWidth: "92%", px: 60 });
