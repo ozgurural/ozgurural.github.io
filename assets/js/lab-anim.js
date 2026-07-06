@@ -674,6 +674,8 @@
     this._wireScrub();
 
     global.addEventListener("resize", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
+    document.addEventListener("fullscreenchange", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
+    document.addEventListener("webkitfullscreenchange", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
 
     // Pause when the tab is hidden; auto-resume only if the system paused it
     // (not the user) and the film is back in view.
@@ -719,7 +721,7 @@
   Film.prototype._fitCanvas = function () {
     var rect = this.stage.getBoundingClientRect();
     if (!rect.width) return;
-    var dpr = Math.min(global.devicePixelRatio || 1, 2);
+    var dpr = Math.min(global.devicePixelRatio || 1, 4);
     this._scale = rect.width / this.W;
     this.canvasEl.width = Math.round(rect.width * dpr);
     this.canvasEl.height = Math.round(rect.width * dpr * this.H / this.W);
