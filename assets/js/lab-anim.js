@@ -621,6 +621,13 @@
     this.chapterEl = chrome.querySelector('[data-role="chapter"]');
     this.subEl = chrome.querySelector('[data-role="subtitle"]');
 
+    // watermark
+    var wm = document.createElement("div");
+    wm.className = "labf__watermark";
+    wm.setAttribute("aria-hidden", "true");
+    wm.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12" style="margin-right:0.3rem"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><span>Dr. Ozgur Ural</span>';
+    stage.appendChild(wm);
+
     // big replay overlay (shown when finished / before first play)
     var poster = document.createElement("button");
     poster.type = "button";

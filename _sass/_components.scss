@@ -1080,10 +1080,25 @@ button:focus-visible {
 /* top-left chrome: chapter + short subtitle */
 .labf__chrome {
   position: absolute;
-  top: 0.85rem; left: 1.05rem; right: 1.05rem;
+  top: 0.85rem; left: 1.05rem; right: 8rem;
   z-index: 5;
   display: flex; flex-direction: column; gap: 0.15rem;
   pointer-events: none;
+}
+
+/* top-right watermark */
+.labf__watermark {
+  position: absolute;
+  top: 0.85rem; right: 1.05rem;
+  z-index: 5;
+  display: flex; align-items: center;
+  font-family: var(--ds-font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 .labf__chapter {
   font-family: var(--ds-font-mono);
