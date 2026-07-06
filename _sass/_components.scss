@@ -200,11 +200,11 @@
   padding: 0;
   list-style: none;
 }
+/* A 2x2 grid, not 4-across. On the home page the author sidebar narrows
+   the content column, so four columns squeeze each card into a tall, skinny
+   strip until the viewport is very wide; 2x2 stays balanced everywhere. */
 @media (min-width: 600px) {
   .ep-pillars { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 960px) {
-  .ep-pillars { grid-template-columns: repeat(4, 1fr); }
 }
 .ep-pillar {
   padding: 1.15rem 1.2rem 1.3rem;
