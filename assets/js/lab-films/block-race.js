@@ -59,8 +59,11 @@
   }
   function block(ctx, h, x, y, w, hh, color, alpha) {
     ctx.globalAlpha = alpha; roundRect(ctx, x, y, w, hh, 6);
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = h.rgba(color, 0.8);
     ctx.fillStyle = h.rgba(color, 0.16); ctx.fill();
     ctx.lineWidth = 1.8; ctx.strokeStyle = h.rgba(color, 0.95); ctx.stroke();
+    ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
 

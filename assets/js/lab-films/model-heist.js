@@ -49,7 +49,15 @@
     return c;
   }
   function bar(ctx, h, x, y, w, hh, color, alpha) {
-    ctx.globalAlpha = alpha; ctx.fillStyle = h.rgba(color, 0.7); ctx.fillRect(x, y, w, hh);
+    ctx.globalAlpha = alpha;
+    var grd = ctx.createLinearGradient(x, y + hh, x, y);
+    grd.addColorStop(0, h.rgba(color, 0.3));
+    grd.addColorStop(1, h.rgba(color, 0.85));
+    ctx.fillStyle = grd;
+    ctx.fillRect(x, y, w, hh);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = h.rgba(color, 0.95);
+    ctx.strokeRect(x, y, w, hh);
     ctx.globalAlpha = 1;
   }
 
@@ -129,7 +137,10 @@
         // brush sweep
         if (lt > 3.5 && lt < 7) {
           var bx = lerp(x0 + idx * (bw + gap) - 40, x0 + idx * (bw + gap) + 30, clamp01((lt - 3.5) / 3));
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = RED;
           ctx.fillStyle = h.rgba(RED, 0.5); ctx.fillRect(bx, baseY - 180, 26, 200);
+          ctx.shadowBlur = 0;
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.95);
           ctx.fillText("SCRUB", bx - 6, baseY - 190);
         }
@@ -292,7 +303,11 @@
           var glow = isKilled ? 0 : (1 + attack * 0.5); // survivors brighten
           bar(ctx, h, x, baseY - base, bw, base, GREY, 0.6);
           if (!isKilled) bar(ctx, h, x, baseY - base - mark * glow, bw, mark * glow, CY, clamp01(0.7 + attack * 0.3));
-          else { ctx.fillStyle = h.rgba(RED, 0.4); ctx.fillRect(x, baseY - base, bw, base); }
+          else { 
+            ctx.shadowBlur = 8; ctx.shadowColor = RED;
+            ctx.fillStyle = h.rgba(RED, 0.4); ctx.fillRect(x, baseY - base, bw, base);
+            ctx.shadowBlur = 0;
+          }
         }
         // utility plunge + budget gauge
         var util = 0.75 - attack * 0.6, bx = 720, by = 180, bh = 150;

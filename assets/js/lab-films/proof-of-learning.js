@@ -97,9 +97,12 @@
         ctx.strokeStyle = h.rgba("#9fb2d4", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.fillText("loss L vs step t", px0, py0 - ph - 8);
         var nL = Math.floor(clamp01(lt / 9) * 40);
-        ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2; ctx.beginPath();
+        ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2; 
+        ctx.shadowBlur = 10; ctx.shadowColor = TEAL;
+        ctx.beginPath();
         for (i = 0; i <= nL; i++) { var L = Math.exp(-i * 0.09) * (1 + 0.12 * Math.sin(i * 1.9)) ; var xx = px0 + pw * i / 40, yy = py0 - ph * (1 - L); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke();
+        ctx.shadowBlur = 0;
       });
       // descent polyline (SVG) + checkpoints
       var pl = s.poly(path, { coords: co, color: TEAL, width: 2.4 });
@@ -163,7 +166,11 @@
           var fromX = x0 + i * dx, toX = x0 + sorted.indexOf(i) * dx, bx = lerp(fromX, toX, E.inOut(sortP));
           var m = mags[i], bh = m * 130, big = m > 0.8;
           ctx.fillStyle = h.rgba(big ? AMB : TEAL, big ? 0.85 : 0.6); ctx.fillRect(bx - 8, by - bh, 16, bh);
-          if (big && sortP > 0.9) { ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(bx, by - bh - 12, 9, 0, 7); ctx.stroke(); }
+          if (big && sortP > 0.9) { 
+            ctx.shadowBlur = 15; ctx.shadowColor = AMB;
+            ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(bx, by - bh - 12, 9, 0, 7); ctx.stroke(); 
+            ctx.shadowBlur = 0;
+          }
         }
         ctx.fillStyle = h.rgba("#9fb2d4", 0.85); ctx.fillText("update magnitude  d₁(W_t, W_{t−k})  — sorted, top-Q circled", x0, by + 24);
         // replay into delta-ball (right)

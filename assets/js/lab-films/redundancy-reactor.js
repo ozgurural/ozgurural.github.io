@@ -156,9 +156,11 @@
         function curve(fn, color, width, at, dashed) {
           var prog = clamp01((lt - at) / 1.6); if (prog <= 0) return;
           ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; if (dashed) ctx.setLineDash([5, 5]);
+          ctx.shadowBlur = 10; ctx.shadowColor = color;
           ctx.beginPath(); var n = 80;
           for (var i = 0; i <= n * prog; i++) { var q = Math.pow(10, lerp(-4, -1, i / n)); var X = pl.px(q), Y = pl.py(fn(q)); if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
           ctx.stroke(); ctx.setLineDash([]);
+          ctx.shadowBlur = 0;
         }
         curve(function (q) { return q; }, "#e8eef9", 1.6, 0.4, true);
         curve(function (q) { return Pind(3, q); }, CY, 3, 1.6);
@@ -193,9 +195,12 @@
         for (var e = -4; e <= -1; e++) { var x = pl.px(Math.pow(10, e)); ctx.fillText("10" + e, x - 8, box.y0 + 16); }
         for (e = -8; e <= 0; e += 2) { var y = pl.py(Math.pow(10, e)); ctx.fillText("10" + e, box.x0 - 30, y + 3); }
         function curve(N, color, width) {
-          ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; ctx.beginPath();
+          ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; 
+          ctx.shadowBlur = 10; ctx.shadowColor = color;
+          ctx.beginPath();
           for (var i = 0; i <= 80; i++) { var q = Math.pow(10, lerp(-4, -1, i / 80)); var P = (1 - rho) * Pind(N, q) + rho * q; var X = pl.px(q), Y = pl.py(P); if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
           ctx.stroke();
+          ctx.shadowBlur = 0;
         }
         curve(3, CY, 3); curve(5, MAG, 3); curve(7, GRN, 3);
         // the floor y = rho*q

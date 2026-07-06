@@ -157,6 +157,8 @@
         // trail
         var tb = 0.10, steps = 26;
         ctx.lineWidth = 2.4;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "#fbbf24";
         for (i = 0; i < steps; i++) {
           var ta = rollTau - tb * (i / steps), tc = rollTau - tb * ((i + 1) / steps);
           if (tc < 0) break;
@@ -165,6 +167,17 @@
           var pb = proj(B.x, B.y, kBowl * (B.x * B.x + B.y * B.y) + 0.04);
           ctx.strokeStyle = h.rgba("#fbbf24", 0.5 * (1 - i / steps));
           ctx.beginPath(); ctx.moveTo(pa[0], pa[1]); ctx.lineTo(pb[0], pb[1]); ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+
+        // ---- global minimum glowing dot ----
+        if (lt > 1.5) {
+          var pMin = proj(0, 0, 0);
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = "#2dd4bf";
+          ctx.fillStyle = h.rgba("#2dd4bf", 0.6);
+          ctx.beginPath(); ctx.arc(pMin[0], pMin[1], 4, 0, 7); ctx.fill();
+          ctx.shadowBlur = 0;
         }
         var b = ballXY(rollTau);
         var zb = kBowl * (b.x * b.x + b.y * b.y) + 0.04;
