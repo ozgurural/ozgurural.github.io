@@ -662,12 +662,14 @@
     if (this.fsBtn) {
       this.fsBtn.addEventListener("click", function () {
         var el = self.container;
-        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement && !el.classList.contains("labf--fullscreen")) {
           if (el.requestFullscreen) { el.requestFullscreen(); }
           else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+          else { el.classList.add("labf--fullscreen"); self._fitCanvas(); self._repositionOverlay(); self.render(); }
         } else {
           if (document.exitFullscreen) { document.exitFullscreen(); }
           else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+          else { el.classList.remove("labf--fullscreen"); self._fitCanvas(); self._repositionOverlay(); self.render(); }
         }
       });
     }

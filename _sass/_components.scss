@@ -1004,7 +1004,7 @@ button:focus-visible {
 .labf__canvas { z-index: 1; }
 .labf__svg    { z-index: 2; overflow: visible; }
 /* fixed logical box; JS sets width/height (= W×H) and a scale() to fit the stage */
-.labf__overlay{ position: absolute; top: 0; left: 0; z-index: 3; pointer-events: none; }
+.labf__overlay{ position: absolute; top: 0; left: 0; z-index: 3; pointer-events: none; -webkit-text-size-adjust: none; text-size-adjust: none; }
 
 .labf__texlayer {
   position: absolute;
@@ -1326,11 +1326,26 @@ button:focus-visible {
   background: #050a15; padding: 0; margin: 0;
 }
 .labf:fullscreen .labf__stage,
-.labf:-webkit-full-screen .labf__stage {
+.labf:-webkit-full-screen .labf__stage,
+.labf--fullscreen .labf__stage {
+  max-width: none; border-radius: 0; border: none; height: 100vh;
   width: min(100vw, calc((100vh - 54px) * (1000 / 540)));
   height: auto;
   max-height: calc(100vh - 54px);
   margin: auto;
+}
+.labf--fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  background: #050a15 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .labf:fullscreen .labf__transport,
 .labf:-webkit-full-screen .labf__transport {
