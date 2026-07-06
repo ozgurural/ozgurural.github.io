@@ -77,7 +77,7 @@
       });
       var eq = s.tex2("\\mathcal{A}: W_T \\longrightarrow W_T \\quad (\\text{cost}\\approx 0)", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 3.5, dur: 0.8 });
-      lower(s, "A trained model’s final weights are just a tensor of numbers — copyable perfectly at zero cost. So how could the true trainer ever prove they did the work, when the artifact is trivially clonable?", 4.5, { maxWidth: "66%", out: 13.2 });
+      lower(s, "A trained model's final weights are just a tensor of numbers, which are copyable perfectly at zero cost. So how could the true trainer ever prove they did the work, when the artifact is trivially clonable?", 4.5, { maxWidth: "66%", out: 13.2 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -116,7 +116,7 @@
       s.fadeIn(wt, { at: 7.0, dur: 0.5 });
       var eq = s.tex2("W_{t+1} \\leftarrow \\mathrm{update}(W_t,\\ D[I_t],\\ M_t)", { px: 360, py: 92, size: "0.98rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
-      lower(s, "The model wasn’t born at the endpoint — it <em>descended</em> there, one stochastic step at a time. The path (checkpoints W₀…W_T with the exact batches and hyperparameters) took a full training run to make. The path is the asset; the point is its shadow.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "The model was not born at the endpoint. It <em>descended</em> there, one stochastic step at a time. The path (checkpoints W₀…W_T with the exact batches and hyperparameters) took a full training run to make. The path is the asset; the point is its shadow.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
   }
 
@@ -140,7 +140,7 @@
       s.write(master, { at: 4.0, dur: 1.6 });
       var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 250, py: 320, anchor: "center", align: "center", size: "0.8rem", color: "#9fb2d4" });
       s.fadeIn(sig, { at: 6.0, dur: 0.8 });
-      lower(s, "Formally, the proof is a four-part transcript: checkpoints <em>W</em>, the data-batch indices <em>I</em> that fed each step, cryptographic signatures <em>H</em> binding those batches, and auxiliary info <em>A</em> — hyperparameters, optimizer, architecture.", 8.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Formally, the proof is a four-part transcript: checkpoints <em>W</em>, the data-batch indices <em>I</em> that fed each step, cryptographic signatures <em>H</em> binding those batches, and auxiliary info <em>A</em> — hyperparameters, optimizer, architecture).", 8.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
@@ -185,7 +185,7 @@
       var e1 = s.tex2("d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta", { px: 300, py: 96, size: "1rem", color: AMB });
       s.write(e1, { at: 13.0, dur: 1.2 });
       lower(s, "The verifier never reruns the whole training. Honest gradient steps are small, so a forger taking shortcuts must hide a few <em>oversized</em> jumps. Sort updates by magnitude, replay only the top-Q per epoch, and check each lands within a slack ball δ that absorbs floating-point nondeterminism.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
-    }, { subtitle: "Spot-check the largest updates — exactly where a forger must cheat." });
+    }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
   }
 
   /* ============== 5 — ASYMMETRY ============== */
@@ -221,7 +221,7 @@
       s.write(e1, { at: 1.0, dur: 1.4 });
       var e2 = s.tex2("\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\quad(\\text{design property})", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 9.0, dur: 0.8 });
-      lower(s, "Generating a valid proof costs one honest training run. Forging one means inverting SGD — threading every checkpoint the verifier might probe. As training entropy grows linearly in T, the space of consistent paths grows exponentially. <span style='color:#9fb2d4'>This is a design property (Jia 2021), later shown bypassable — which motivates SecurePoL.</span>", 11.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Generating a valid proof costs one honest training run. Forging one means inverting SGD and threading every checkpoint the verifier might probe. As training entropy grows linearly in T, the space of consistent paths grows exponentially. <span style='color:#9fb2d4'>This is a design property (Jia 2021), later shown bypassable, which motivates SecurePoL.</span>", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
   }
 
@@ -257,8 +257,8 @@
       s.write(eq, { at: 6.5, dur: 1.6 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9.0, dur: 0.8 });
-      lower(s, "A clever adversary can hand-craft a transcript that passes the replay checks without training. SecurePoL binds the trajectory proof to a feature watermark: verification becomes a logical <em>AND</em>. A forged path can mimic the loss curve, but can’t carry a mark it never trained to embed.", 9.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Two bypassable checks → one joint constraint a spoofer can’t meet." });
+      lower(s, "A clever adversary can hand-craft a transcript that passes the replay checks without training. SecurePoL binds the trajectory proof to a feature watermark: verification becomes a logical <em>AND</em>. A forged path can mimic the loss curve, but cannot carry a mark it never trained to embed.", 9.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
   /* ============== 7 — SIGNATURE ============== */
@@ -286,7 +286,7 @@
       s.fadeIn(hg, { at: 7.0, dur: 0.7 });
       var seal = s.caption("✦ unforgeable training fingerprint", { px: 690, py: 320, anchor: "left", size: "0.92rem", color: GOLD });
       s.fadeIn(seal, { at: 8.4, dur: 0.8 });
-      lower(s, "A real run leaves a statistical signature — noisy, near-monotone descent <em>in expectation</em>, with plateaus and heavy-tailed step sizes — that a flat, fabricated curve can’t reproduce. Cheap to produce honestly, expensive to forge, verifiable by anyone.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A real run leaves a statistical signature. It is a noisy, near-monotone descent <em>in expectation</em>, with plateaus and heavy-tailed step sizes, which a flat, fabricated curve cannot reproduce. Cheap to produce honestly, expensive to forge, verifiable by anyone.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

@@ -177,8 +177,8 @@
       });
       var e1 = s.tex2("P_{\\text{ind}} = \\Theta\\!\\left(q^{\\,m+1}\\right),\\quad \\text{gain}=\\tfrac{q}{P_{\\text{ind}}}=\\tfrac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\tfrac{1}{3q}", { px: 700, py: 200, size: "0.92rem", color: AMB });
       s.fadeIn(e1, { at: 9.0, dur: 1.0 });
-      lower(s, "For small q the tail is dominated by its lowest-order term, so adding channels doesn’t subtract a constant — it raises q to a higher power. Each pair of extra channels buys another factor of q. On a log-log plot, redundancy <em>steepens the slope</em>.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
-    }, { subtitle: "Independent redundancy: q → Θ(q^{m+1}) — superlinear safety." });
+      lower(s, "For small q, adding channels raises q to a higher power rather than subtracting a constant. Each pair of extra channels buys another factor of q. On a log-log plot, redundancy steepens the slope.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
+    }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
   }
 
   /* ============== 4 — CORRELATION FLOOR (wow) ============== */
@@ -220,8 +220,8 @@
       });
       var eq = s.tex2("P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q,\\quad \\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\ (q<\\tfrac12)", { px: 480, py: 92, size: "0.9rem", color: "#e8eef9" });
       s.write(eq, { at: 11.0, dur: 1.6 });
-      lower(s, "Let the channels share a cause. A common-mode fraction ρ splits failures into an independent part the voter fixes and a correlated part it can’t. That term ρq <em>doesn’t depend on N</em> — the steep curves flatten onto a floor, and the safety multiplier saturates at 1/ρ.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
-    }, { subtitle: "Correlation caps reliability at 1/ρ — no matter how many backups." });
+      lower(s, "If channels share a root cause, a common-mode fraction ρ splits failures into an independent part that the voter can fix, and a correlated part it cannot. That correlated term does not depend on N. The steep curves flatten onto a floor, and safety saturates.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
+    }, { subtitle: "Correlation caps reliability at 1/ρ no matter how many backups." });
   }
 
   /* ============== 5 — ARIANE 5 ============== */
@@ -259,8 +259,8 @@
       });
       var eq = s.tex2("\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q \\quad(\\text{N irrelevant})", { px: 700, py: 130, size: "0.95rem", color: AMB });
       s.fadeIn(eq, { at: 8.8, dur: 0.8 });
-      lower(s, "Two inertial units — identical hardware, identical software, in parallel. An unprotected 64-bit→16-bit conversion of the horizontal-bias variable overflowed (the new rocket flew faster than the Ariane-4 assumptions). The <em>backup failed first, the active 72 ms later</em>, same Operand Error. Redundancy voted, unanimously, to shut down.", 10.5, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Identical software ⇒ ρ≈1 — two computers, one confident bug." });
+      lower(s, "The rocket had two inertial units in parallel with identical hardware and software. A variable overflowed because the new rocket flew faster than expected. The backup failed first, and the active unit failed 72 milliseconds later with the exact same error. Redundancy voted unanimously to shut down.", 10.5, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
   /* ============== 6 — DIVERSITY ============== */
@@ -286,10 +286,10 @@
       });
       var eq = s.tex2("\\text{design diversity} \\Rightarrow \\rho\\downarrow \\Rightarrow P_{\\text{sys}}\\ge\\rho q\\ \\downarrow", { px: 480, py: 40, size: "0.95rem", color: GRN });
       s.fadeIn(eq, { at: 5.0, dur: 1.0 });
-      lower(s, "You can’t vote your way out of a shared mistake — you have to <em>engineer the mistakes to be different</em>. Diverse teams, languages, and vendors drive ρ toward zero, and only then does the steep binomial gain reappear.", 7.0, { maxWidth: "70%" });
+      lower(s, "You cannot vote your way out of a shared mistake. You must engineer the mistakes to be different. Diverse teams, languages, and vendors drive correlation toward zero, and only then does the steep gain reappear.", 7.0, { maxWidth: "70%" });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
       s.fadeIn(tag, { at: 10.5, dur: 1.0 });
-    }, { subtitle: "The lever was never N — it was the independence ρ." });
+    }, { subtitle: "The lever was never N. It was the independence ρ." });
   }
 
   /* ====================== appendix ====================== */

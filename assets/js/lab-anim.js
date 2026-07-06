@@ -841,7 +841,7 @@
 
     // chrome
     var as = this.scenes[ai];
-    this.chapterEl.textContent = (ai + 1) + " / " + this.scenes.length + "  ·  " + (as.name || "");
+    this.chapterEl.textContent = (ai + 1) + " / " + this.scenes.length + "  |  " + (as.name || "");
     this.subEl.innerHTML = as.subtitle || "";
 
     // transport

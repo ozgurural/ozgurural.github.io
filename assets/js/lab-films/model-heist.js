@@ -108,7 +108,7 @@
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#fff" });
       s.write(title, { at: 0.6, dur: 1.4 });
       lower(s, "A model you trained for months leaks. A competitor fine-tunes it just enough to look different and calls it theirs. The weights are a moving target — so how do you prove provenance?", 4.4, { maxWidth: "66%", out: 13.2 });
-    }, { subtitle: "Ownership must survive transformation — not live in raw weights." });
+    }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
   /* ================= 2 — FRAGILE MARK ================= */
@@ -144,7 +144,7 @@
       });
       var eq = s.tex2("\\tfrac{\\varepsilon_{\\text{big}}}{\\sigma}\\ \\text{large} \\Rightarrow \\text{visible \\& brittle}", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 1.0, dur: 0.8 });
-      lower(s, "The naive fix — stamp one big value into a single weight — fails twice: it’s conspicuous, so a thief finds and erases it; and it’s large, so it dents the model’s accuracy. You can’t hide a loud signal in a quiet place.", 8.2, { maxWidth: "72%" });
+      lower(s, "The naive fix is stamping one big value into a single weight. This fails twice: it is conspicuous and easily erased, and it dents the model's accuracy. You cannot hide a loud signal in a quiet place.", 8.2, { maxWidth: "72%" });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
   }
 
@@ -187,7 +187,7 @@
       });
       var eq = s.tex2("S=\\langle w,\\ \\hat\\theta-\\theta_{\\text{ref}}\\rangle,\\ \\ \\|w\\|=1 \\;\\Rightarrow\\; d=\\tfrac{\\sqrt{k}\\,\\varepsilon}{\\sigma}", { px: 480, py: 104, size: "1rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
-      lower(s, "Spread the same intent across k weights as a secret unit pattern — each nudge invisible against the noise floor. A matched filter correlates against the pattern: the <em>k aligned marks add coherently</em>, while independent noise adds only in quadrature. Net SNR grows as √k.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Spread the intent across k weights as a secret pattern, so each nudge is invisible against the noise floor. A matched filter correlates against the pattern. The aligned marks add coherently while independent noise cancels out. The net signal-to-noise ratio grows as √k.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
   }
 
@@ -238,7 +238,7 @@
       });
       var e1 = s.tex2("Z=\\tfrac{S}{\\sigma}\\sim N(0,1)\\,|H_0,\\quad N(d,1)\\,|H_1", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.2 });
-      lower(s, "This is exactly a one-sided Gaussian Z-test. Under the null — an innocent model — the statistic is standard normal; under the watermark it’s the same bell shifted right by the effect size d. Fix α, set the threshold z<sub>α</sub>, and power is Φ(d − z<sub>α</sub>).", 9.0, { maxWidth: "92%", px: 60, py: 535 });
+      lower(s, "This forms a Gaussian Z-test. For an innocent model, the statistic is a standard bell curve. For a watermarked model, the bell shifts right by the effect size. We set a threshold to balance false alarms and detection power.", 9.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
   }
 
@@ -274,8 +274,8 @@
       var aucEq = s.tex2("\\text{AUC}=\\Phi\\!\\big(d/\\sqrt{2}\\big)", { px: 760, py: 350, size: "1rem", color: AMB });
       s.fadeIn(aucEq, { at: 8.4, dur: 0.7 });
 
-      lower(s, "Each weight stays far below the detectability floor — invisible, utility-preserving — yet because d scales with √k, the ROC curve snaps toward the perfect corner just by adding marks. You buy certainty with <em>breadth</em>, not loudness.", 10.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Stealth per weight and aggregate confidence — √k decouples them." });
+      lower(s, "Each weight stays far below the detectability floor, preserving utility. Yet because the signal scales with √k, the ROC curve snaps toward perfect detection just by adding marks. You buy certainty with breadth, not loudness.", 10.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "The √k factor decouples stealth from aggregate confidence." });
   }
 
   /* ================= 6 — SCRUB PARADOX ================= */
@@ -298,7 +298,8 @@
         var util = 0.75 - attack * 0.6, bx = 720, by = 180, bh = 150;
         ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.strokeRect(bx, by, 26, bh);
         ctx.fillStyle = h.rgba(util < 0.4 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9); ctx.fillText("utility", bx - 2, by - 8);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
+        ctx.fillText("utility", bx - 2, by - 8);
         // owner Z needle barely dips
         var z = 4.2 - attack * 0.5;
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 13px 'JetBrains Mono',monospace";
@@ -306,7 +307,7 @@
       });
       var eq = s.tex2("\\|\\delta\\|\\le\\rho \\;\\Rightarrow\\; |\\Delta S|=|\\langle w,\\delta\\rangle|\\le\\rho", { px: 480, py: 110, size: "1rem", color: AMB });
       s.write(eq, { at: 1.0, dur: 1.2 });
-      lower(s, "The thief is trapped by the same geometry. Because <em>w is secret</em>, he can’t aim his budget at it — scrubbing blindly across all k coordinates wrecks utility long before it erases the mark, and the matched filter just re-weights the survivors.", 7.0, { maxWidth: "92%", px: 60 });
+      lower(s, "The thief is trapped by the same geometry. Since the pattern is secret, they cannot aim their budget at it. Scrubbing blindly across all coordinates wrecks utility long before it erases the mark.", 7.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
   }
 
@@ -322,7 +323,7 @@
       });
       var d3 = Math.sqrt(100) * 0.45; // k=100
       var power = Phi(d3 - Z_ALPHA);
-      var eq = s.tex2("\\text{Power} = \\Phi\\!\\Big(\\tfrac{\\sqrt{k}\\,\\varepsilon}{\\sigma} - z_\\alpha\\Big)", { px: 560, py: 220, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{k}", { px: 560, py: 220, size: "1.4rem", color: AMB });
       s.write(eq, { at: 0.8, dur: 1.6 });
       var chip = s.caption("detection power → <strong style='color:#fff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1rem", color: GRN });
       s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });

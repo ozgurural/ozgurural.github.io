@@ -121,10 +121,8 @@
       // clear the lower third before the narration panel writes in at 4.4
       s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
       var eq = s.tex2("\\text{lead} = (\\#\\,\\text{honest}) - (\\#\\,\\text{attacker})", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
-      s.fadeIn(eq, { at: 9.5, dur: 0.8 });
-
-      lower(s, "Bitcoin has no judge. The only rule is mechanical — honest nodes build on the longest valid chain. To reverse a payment, an attacker must secretly <em>outrun the whole network</em>.", 4.4, { maxWidth: "50%", px: 440, out: 13.4 });
-    }, { subtitle: "Consensus is a race, not a vote — the longest chain wins by rule." });
+      lower(s, "Bitcoin has no judge. The only rule is mechanical. Honest nodes build on the longest valid chain. To reverse a payment, an attacker must secretly <em>outrun the whole network</em>.", 4.4, { maxWidth: "50%", px: 440, out: 13.4 });
+    }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
   }
 
   /* ================ 2 — BERNOULLI : the weighted coin ================ */
@@ -167,8 +165,8 @@
       s.fadeIn(note, { at: 5.0, dur: 0.8 });
       s.fadeOut(note, { at: 6.8, dur: 0.5 }); // hand the lower third to the narration
 
-      lower(s, "Who mines the next block is a Bernoulli trial: your win probability <em>equals your share of global hashrate</em>. The protocol turns electricity into a probability of being right.", 7.0, { maxWidth: "70%" });
-    }, { subtitle: "Hashrate share IS win probability." });
+      lower(s, "Who mines the next block is a Bernoulli trial. Your win probability equals your share of global hashrate. The protocol turns electricity into a probability of being right.", 7.0, { maxWidth: "70%" });
+    }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
   }
 
   /* ==================== 3 — RUIN : the random walk ==================== */
@@ -210,8 +208,8 @@
       var r3 = s.tex2("r=\\tfrac{q}{p}<1 \\Rightarrow \\text{geometric decay}", { px: 770, py: 360, display: false, size: "0.9rem", color: "#9fb2d4" });
       s.fadeIn(r3, { at: 14.4, dur: 0.8 });
 
-      lower(s, "Treat the honest lead as a biased random walk. An attacker z behind must reach breakeven — a classic gambler's ruin. First-step analysis gives a recurrence whose exact bounded solution is <em>(q/p)<sup>z</sup></em>.", 15.6, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Below half the hashrate, falling behind compounds geometrically." });
+      lower(s, "Treat the honest lead as a biased random walk. An attacker z behind must reach breakeven, a classic gambler's ruin. First-step analysis gives a recurrence whose bounded solution is exactly <em>(q/p)<sup>z</sup></em>.", 15.6, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Catching up from z blocks behind is exactly the gambler's ruin problem." });
   }
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
@@ -226,7 +224,7 @@
           block(ctx, h, x, y, 150, 26, CY, 1);
         }
         ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(CY, 0.85);
-        ctx.fillText("honest: z = 6 blocks", 70, 462);
+        ctx.fillText("honest: z = 6 blocks", 70, 480);
         // wall-clock dial
         var ang = -Math.PI / 2 + clamp01(lt / (z * 0.7)) * 2 * Math.PI;
         var dx = 175, dy = 150, dr = 30;
@@ -254,16 +252,16 @@
       s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\frac{\\lambda^{k} e^{-\\lambda}}{k!}\\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 480, py: 340, size: "1.05rem", color: AMB });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\dots", { px: 480, py: 340, size: "1.05rem", color: AMB });
       s.write(form, { at: 12.5, dur: 1.8 });
 
-      lower(s, "The attacker mined in secret for the <em>same</em> interval. Their block count is ≈ Poisson with mean z·q/p; condition on it, attach the gambler's-ruin tail, and rearrange — that last line is the whitepaper's code.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
-      var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean - the exact count is Negative-Binomial NB(z,p), so this <em>understates</em> risk (0.024% vs 0.059% at q=.1, z=6).", { px: 60, py: 60, anchor: "top-left" });
+      lower(s, "The attacker mined in secret for the same interval. Their block count is Poisson with mean z&lambda;. We condition on how many blocks they found, attach the gambler's ruin tail, and sum it up. This logic is verbatim from Satoshi's whitepaper.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
+      var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
-      caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 506];
+      caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 535];
       s.fadeIn(caveat, { at: 17.0, dur: 1.0 });
-    }, { subtitle: "Confirmations are honest progress — but the clock ran for the attacker too." });
+    }, { subtitle: "Confirmations are honest progress, but the clock ran for the attacker too." });
   }
 
   /* ============== 5 — CONSEQUENCE : the log-scale punchline ============== */
@@ -305,8 +303,8 @@
       var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump — not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });
 
-      lower(s, "Tripling the attacker from 10% to 30% doesn’t triple your risk at six confirmations — it multiplies it <em>~544×</em>. Security is exponential in z, but the base is q/p, so the adversary’s size dominates your patience.", 11.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "z=6 buys near-certainty vs a small miner; barely dents a 30% one." });
+      lower(s, "Tripling the attacker from 10% to 30% doesn't triple your risk at six confirmations. It multiplies it <em>~544x</em>. Security is exponential in z, but the base is q/p, so the adversary's size dominates your patience.", 11.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Security decays exponentially in the attacker's relative size." });
   }
 
   /* ===================== 6 — STAKES : finality ===================== */
