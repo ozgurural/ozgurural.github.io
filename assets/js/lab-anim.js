@@ -759,21 +759,37 @@
     if (this._built) return this;
     
     // Global Signature Outro Scene
-    this.scene("Signature", 2.5, function(s) {
-      s.canvas(function(lt, ctx, h) {
-        ctx.fillStyle = "#e8eef9";
-        ctx.font = "italic 1.6rem var(--ds-font-serif, serif)";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        // fade in for 0.5s, hold for 1.5s, fade out for 0.5s
-        var alpha = lt < 0.5 ? lt / 0.5 : (lt > 2.0 ? 1.0 - (lt - 2.0) / 0.5 : 1.0);
-        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-        ctx.fillText("Dr. Ozgur Ural", h.W / 2, h.H / 2 - 10);
-        ctx.font = "0.9rem var(--ds-font-sans, sans-serif)";
-        ctx.fillStyle = "#7f93b4";
-        ctx.fillText("ozgurural.github.io", h.W / 2, h.H / 2 + 25);
-        ctx.globalAlpha = 1.0;
-      });
+    this.scene("Signature", 4.0, function(s) {
+      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#fff'>Dr. Ozgur Ural</span>", 
+                           { px: 500, py: 240, anchor: "center", align: "center", panel: false });
+                           
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>Machine Learning Researcher</span>", 
+                           { px: 500, py: 295, anchor: "center", align: "center", panel: false });
+                           
+      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#7f93b4; font-style:italic;'>ozgurural.github.io</span>", 
+                           { px: 500, py: 335, anchor: "center", align: "center", panel: false });
+
+      // Initialize state (hidden, slightly shrunk)
+      name.cur.op = 0; name.cur.sx = 0.92; name.cur.sy = 0.92;
+      role.cur.op = 0; role.cur.sx = 0.95; role.cur.sy = 0.95;
+      url.cur.op = 0;  url.cur.sx = 0.95; url.cur.sy = 0.95;
+
+      // Cascade animations
+      s.fadeIn(name, { at: 0.2, dur: 1.2 });
+      s.scaleTo(name, { at: 0.2, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
+      
+      s.fadeIn(role, { at: 0.9, dur: 1.0 });
+      s.scaleTo(role, { at: 0.9, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
+
+      s.fadeIn(url, { at: 1.4, dur: 1.0 });
+      s.scaleTo(url, { at: 1.4, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
+
+      s.pulse(name, { at: 2.2, dur: 1.0, amp: 0.04 });
+
+      // Fade out
+      s.fadeOut(name, { at: 3.5, dur: 0.5 });
+      s.fadeOut(role, { at: 3.5, dur: 0.5 });
+      s.fadeOut(url,  { at: 3.5, dur: 0.5 });
     });
 
     this._built = true;
