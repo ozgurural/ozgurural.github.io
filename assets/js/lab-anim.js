@@ -759,7 +759,7 @@
     if (this._built) return this;
     
     // Global Signature Outro Scene
-    this.scene("Signature", 5.0, function(s) {
+    this.scene("Signature", 8.0, function(s) {
       // Subtle animated blue glow in the background
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 500, py: 270, anchor: "center", align: "center", panel: false });
       
@@ -781,7 +781,7 @@
 
       // Glow anim
       s.fadeIn(bgLight, { at: 0.0, dur: 2.0 });
-      s.pulse(bgLight, { at: 1.0, dur: 3.5, amp: 0.15 });
+      s.pulse(bgLight, { at: 1.0, dur: 6.0, amp: 0.15 });
 
       // Name anim
       s.fadeIn(name, { at: 0.2, dur: 1.2 });
@@ -797,7 +797,7 @@
         role.el.innerHTML = "<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>" + curText + cursor + "</span>";
       });
       // Blinking cursor after typing finishes
-      s._cue(role, startType + typeDur, 2.7, window.LabAnim.ease.linear, function(st, p) {
+      s._cue(role, startType + typeDur, 5.7, window.LabAnim.ease.linear, function(st, p) {
         var cursor = (Math.floor(p * 30) % 2 === 0) ? "<span style='opacity:1'>_</span>" : "<span style='opacity:0'>_</span>";
         role.el.innerHTML = "<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>" + typedText + cursor + "</span>";
       });
@@ -810,10 +810,10 @@
       s.pulse(name, { at: 2.8, dur: 1.0, amp: 0.03 });
 
       // Fade out everything
-      s.fadeOut(bgLight, { at: 4.5, dur: 0.5 });
-      s.fadeOut(name, { at: 4.5, dur: 0.5 });
-      s.fadeOut(role, { at: 4.5, dur: 0.5 });
-      s.fadeOut(url,  { at: 4.5, dur: 0.5 });
+      s.fadeOut(bgLight, { at: 7.0, dur: 1.0 });
+      s.fadeOut(name, { at: 7.0, dur: 1.0 });
+      s.fadeOut(role, { at: 7.0, dur: 1.0 });
+      s.fadeOut(url,  { at: 7.0, dur: 1.0 });
     });
 
     this._built = true;
@@ -958,14 +958,6 @@
       } catch (e) { /* never let a scene kill the loop */ }
       ctx.restore();
     }
-
-    // Author signature watermark
-    ctx.save();
-    ctx.font = "italic 400 13px 'Georgia', serif";
-    ctx.fillStyle = "rgba(203, 213, 225, 0.35)";
-    ctx.textAlign = "right";
-    ctx.fillText("Dr. Ozgur Ural", this.W - 20, this.H - 20);
-    ctx.restore();
   };
 
   /* ----------------------------- transport ----------------------------- */

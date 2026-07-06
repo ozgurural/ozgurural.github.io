@@ -71,8 +71,8 @@
         }
         if (lt > 6.5) {
           var st = clamp01((lt - 6.5) / 0.6);
-          ctx.globalAlpha = st; ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2; rr(ctx, 360, 250, 150, 40, 8); ctx.stroke();
-          ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.fillText("IDENTICAL", 388, 276); ctx.globalAlpha = 1;
+          ctx.globalAlpha = st; ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2; rr(ctx, 386, 250, 150, 40, 8); ctx.stroke();
+          ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.textAlign = "center"; ctx.fillText("IDENTICAL", 461, 276); ctx.textAlign = "left"; ctx.globalAlpha = 1;
         }
       });
       var eq = s.tex2("\\text{Cost to copy weights} \\approx 0", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
