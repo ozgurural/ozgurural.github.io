@@ -39,7 +39,7 @@ redirect_from:
   <span class="ep-eyebrow">Trustworthy ML · Mission-Critical Systems · Engineering Leadership</span>
   <h1 class="ep-hero__title">I set technical direction for <span class="accent">secure ML</span> and mission-critical systems — and the standards that keep them <span class="accent">correct when things fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong> — engineer, researcher, and former lead of a 14-engineer team. I've spent twelve years architecting systems that cannot be allowed to fail: ground-control software for autonomous UAVs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and four IEEE Access papers on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production.
+    I'm <strong>Dr. Ozgur Ural</strong> — engineer, researcher, and former lead of a 14-engineer team. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and four IEEE Access papers on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
@@ -127,7 +127,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2019–2020</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Contributed to the architecture of the mission-control and ground-control systems for the <em>Kargu</em> autonomous tactical UAV and <em>Togan</em> reconnaissance UAV.</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Architected mission-control and ground-control software for the <em>Kargu</em> and <em>Togan</em> programs — among Turkey's first indigenous autonomous UAV systems — where real-time reliability was safety-critical.</span>
   </li>
   <li>
     <span class="when">2014–2019</span>
