@@ -757,6 +757,25 @@
 
   Film.prototype.build = function () {
     if (this._built) return this;
+    
+    // Global Signature Outro Scene
+    this.scene("Signature", 2.5, function(s) {
+      s.canvas(function(lt, ctx, h) {
+        ctx.fillStyle = "#e8eef9";
+        ctx.font = "italic 1.6rem var(--ds-font-serif, serif)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        // fade in for 0.5s, hold for 1.5s, fade out for 0.5s
+        var alpha = lt < 0.5 ? lt / 0.5 : (lt > 2.0 ? 1.0 - (lt - 2.0) / 0.5 : 1.0);
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+        ctx.fillText("Dr. Ozgur Ural", h.W / 2, h.H / 2 - 10);
+        ctx.font = "0.9rem var(--ds-font-sans, sans-serif)";
+        ctx.fillStyle = "#7f93b4";
+        ctx.fillText("ozgurural.github.io", h.W / 2, h.H / 2 + 25);
+        ctx.globalAlpha = 1.0;
+      });
+    });
+
     this._built = true;
     this._fitCanvas();
     // place html anchors using % so they scale with the stage
