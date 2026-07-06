@@ -759,37 +759,61 @@
     if (this._built) return this;
     
     // Global Signature Outro Scene
-    this.scene("Signature", 4.0, function(s) {
+    this.scene("Signature", 5.0, function(s) {
+      // Subtle animated blue glow in the background
+      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 500, py: 270, anchor: "center", align: "center", panel: false });
+      
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#fff'>Dr. Ozgur Ural</span>", 
-                           { px: 500, py: 240, anchor: "center", align: "center", panel: false });
+                           { px: 500, py: 220, anchor: "center", align: "center", panel: false });
                            
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>Machine Learning Researcher</span>", 
-                           { px: 500, py: 295, anchor: "center", align: "center", panel: false });
+      var typedText = "MACHINE LEARNING RESEARCHER";
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'></span>", 
+                           { px: 500, py: 285, anchor: "center", align: "center", panel: false });
                            
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#7f93b4; font-style:italic;'>ozgurural.github.io</span>", 
-                           { px: 500, py: 335, anchor: "center", align: "center", panel: false });
+                           { px: 500, py: 340, anchor: "center", align: "center", panel: false });
 
-      // Initialize state (hidden, slightly shrunk)
-      name.cur.op = 0; name.cur.sx = 0.92; name.cur.sy = 0.92;
-      role.cur.op = 0; role.cur.sx = 0.95; role.cur.sy = 0.95;
+      // Initialize state
+      bgLight.cur.op = 0;
+      name.cur.op = 0; name.cur.sx = 0.95; name.cur.sy = 0.95;
+      role.cur.op = 1; // Content managed by cue
       url.cur.op = 0;  url.cur.sx = 0.95; url.cur.sy = 0.95;
 
-      // Cascade animations
+      // Glow anim
+      s.fadeIn(bgLight, { at: 0.0, dur: 2.0 });
+      s.pulse(bgLight, { at: 1.0, dur: 3.5, amp: 0.15 });
+
+      // Name anim
       s.fadeIn(name, { at: 0.2, dur: 1.2 });
       s.scaleTo(name, { at: 0.2, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
       
-      s.fadeIn(role, { at: 0.9, dur: 1.0 });
-      s.scaleTo(role, { at: 0.9, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
+      // Typewriter anim for role
+      var startType = 1.0;
+      var typeDur = 1.3;
+      s._cue(role, startType, typeDur, window.LabAnim.ease.linear, function(st, p) {
+        var chars = Math.floor(p * typedText.length);
+        var curText = typedText.substring(0, chars);
+        var cursor = (Math.floor(p * 20) % 2 === 0) ? "<span style='opacity:1'>_</span>" : "<span style='opacity:0'>_</span>";
+        role.el.innerHTML = "<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>" + curText + cursor + "</span>";
+      });
+      // Blinking cursor after typing finishes
+      s._cue(role, startType + typeDur, 2.7, window.LabAnim.ease.linear, function(st, p) {
+        var cursor = (Math.floor(p * 30) % 2 === 0) ? "<span style='opacity:1'>_</span>" : "<span style='opacity:0'>_</span>";
+        role.el.innerHTML = "<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#34d399; letter-spacing:0.15em; text-transform:uppercase;'>" + typedText + cursor + "</span>";
+      });
 
-      s.fadeIn(url, { at: 1.4, dur: 1.0 });
-      s.scaleTo(url, { at: 1.4, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
+      // URL anim
+      s.fadeIn(url, { at: 2.3, dur: 1.0 });
+      s.scaleTo(url, { at: 2.3, dur: 1.5, to: 1.0, ease: window.LabAnim.ease.outQ });
 
-      s.pulse(name, { at: 2.2, dur: 1.0, amp: 0.04 });
+      // Final pulse
+      s.pulse(name, { at: 2.8, dur: 1.0, amp: 0.03 });
 
-      // Fade out
-      s.fadeOut(name, { at: 3.5, dur: 0.5 });
-      s.fadeOut(role, { at: 3.5, dur: 0.5 });
-      s.fadeOut(url,  { at: 3.5, dur: 0.5 });
+      // Fade out everything
+      s.fadeOut(bgLight, { at: 4.5, dur: 0.5 });
+      s.fadeOut(name, { at: 4.5, dur: 0.5 });
+      s.fadeOut(role, { at: 4.5, dur: 0.5 });
+      s.fadeOut(url,  { at: 4.5, dur: 0.5 });
     });
 
     this._built = true;
