@@ -39,7 +39,7 @@ redirect_from:
   <span class="ep-eyebrow">Trustworthy ML · Mission-Critical Systems · Engineering Leadership</span>
   <h1 class="ep-hero__title">I set technical direction for <span class="accent">secure ML</span> and mission-critical systems, plus the standards that keep them <span class="accent">correct when things fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, an engineer, researcher, and former lead of a 14-engineer team. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and four first-author IEEE Access papers on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production.
+    I'm <strong>Dr. Ozgur Ural</strong>, a systems architect and machine-learning researcher. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and my published research on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
@@ -67,7 +67,7 @@ redirect_from:
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Engineering Leadership</span>
     <h3>Direction, standards, teams</h3>
-    <p>Led a 14-engineer team that shipped a national data-leakage-prevention product; today I drive architecture decisions and technical standards that raise the bar across the engineering organization: resilience patterns, review culture, release discipline.</p>
+    <p>Having shipped national data-leakage-prevention products and mission-critical software; today I drive architecture decisions and technical standards that raise the bar across the engineering organization: resilience patterns, review culture, release discipline.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
