@@ -1,6 +1,6 @@
 ---
 title: "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data"
-categories: essays
+categories: technical
 tags:
   - security
   - machine-learning

@@ -1,4 +1,5 @@
 ---
+categories: technical
 permalink: /blog/pyqt5_image_measurer
 title: "Image Measurement with PyQt5: A Cardiology Aid"
 date: 2023-07-17

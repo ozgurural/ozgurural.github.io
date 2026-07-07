@@ -1,6 +1,6 @@
 ---
 title: "Secure Proxy on Cloud Paper Demonstration"
-categories: essays
+categories: technical
 tags:
   - security
   - cloud
