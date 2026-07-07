@@ -35,6 +35,38 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   </li>
 </ul>
 
+## Enterprise AI Strategy & Architecture
+
+<p class="ep-lead">I designed and architected the full enterprise AI strategy for Avion Full Flight Simulators. The strategy outlines discipline-specific agents grounded in approved data, utilizing local on-prem inference (Gemma) for data sovereignty and cloud APIs (Claude 3.5) for de-identified reasoning.</p>
+
+<ul class="ep-cards">
+  <li>
+    <div class="meta">Strategy Paper · Architect</div>
+    <h3 class="title"><a href="/files/avion-ai-strategy.pdf">Avion AI: Proposed Strategy & Vision (PDF)</a></h3>
+    <p class="desc">The comprehensive strategy paper covering the vision, competitive landscape, agent architectures, deployment & security tiers (NIST AI RMF), and first-wave delivery plan.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Engineering</div>
+    <h3 class="title">Engineering Knowledge Copilot</h3>
+    <p class="desc">A version-aware copilot over the entire engineering corpus. Answers questions with grounded citations, synthesizes the impact of document and spec changes across downstream artifacts, and generates suggested playbooks. Powered by on-prem multimodal parsing and semantic diffs.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · CI/CD Integration</div>
+    <h3 class="title">GitLab Autonomous Engineering Staff Agent</h3>
+    <p class="desc">A hybrid agent embedded in the software development lifecycle. Conducts autonomous code reviews, verifies release integrity against requirements, and flags integration risks before deployment.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Field Operations</div>
+    <h3 class="title">Fault Diagnostics Copilot</h3>
+    <p class="desc">Given a fault signal, retrieves similar historical cases and OEM bulletins via RAG, classifies the likely domain (software / hardware / wiring), and names the owner on the first pass—all on an air-gapped on-prem model to ensure zero data exfiltration.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Data Science</div>
+    <h3 class="title">Predictive Maintenance Forecaster</h3>
+    <p class="desc">Uses fleet-wide operational telemetry to predict component wear and schedule maintenance proactively before a simulator goes unplanned-offline. Built on Scikit-learn and Prophet time-series models.</p>
+  </li>
+</ul>
+
 ## Production Systems (Industry)
 
 <ul class="ep-cards">
