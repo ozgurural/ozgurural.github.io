@@ -1,11 +1,11 @@
 ---
 title: "Secure Proxy on Cloud Paper Demonstration"
-collection: talks
-type: "Paper Demonstration"
-permalink: /talks/secure-proxy-on-cloud
-venue: "YouTube Demonstration"
-date: 2016-06-01
-location: "Online"
+categories: essays
+tags:
+  - security
+  - cloud
+  - demonstration
+permalink: /posts/2016/06/secure-proxy-on-cloud/
 ---
 
 [This demonstration](https://www.youtube.com/watch?v=wZyKvOQauiY&t=33s) was about my paper titled "Secure Proxy on Cloud".
