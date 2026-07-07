@@ -7,7 +7,7 @@ date: 2021-01-01
 venue: 'Proceedings of the 7th International Conference on Information Systems Security and Privacy (ICISSP)'
 paperurl: 'https://doi.org/10.5220/0010201600660076'
 category: conferences
-citation: 'Ural, O. and Acartürk, C. (2021). "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data." In Proceedings of the 7th International Conference on Information Systems Security and Privacy (ICISSP), pp. 66–76. DOI: 10.5220/0010201600660076.'
+citation: 'Ural, O. and Acartürk, C. (2021). "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data." In Proceedings of the 7th International Conference on Information Systems Security and Privacy (ICISSP), pp. 66-76. DOI: 10.5220/0010201600660076.'
 ---
 This paper presents an automatic detection method for cyber security events using Turkish Twitter stream and newspaper data.
 
