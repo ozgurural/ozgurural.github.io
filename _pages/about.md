@@ -34,6 +34,10 @@ redirect_from:
   ]
 }
 </script>
+<div class="ep-home-background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
+   <div id="particles-js"></div>
+   <div id="topology-container"></div>
+</div>
 
 <section class="ep-hero">
   <span class="ep-eyebrow">Trustworthy ML · Mission-Critical Systems · Engineering Leadership</span>
