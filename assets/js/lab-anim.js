@@ -652,7 +652,8 @@
       '</div>' +
       '<span class="labf__time" data-role="time">0:00</span>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="replay" aria-label="Replay from start">↺</button>' +
-      '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⤢</button>';
+      '<button type="button" class="labf__btn labf__btn--ghost" data-role="mute" aria-label="Toggle Audio">🔊</button>' +
+      '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⛶</button>';
     c.appendChild(tr);
     this.transport = tr;
     this.playBtn = tr.querySelector('[data-role="play"]');
@@ -662,10 +663,24 @@
     this.scrubDots = tr.querySelector('[data-role="dots"]');
     this.timeEl = tr.querySelector('[data-role="time"]');
     this.replayBtn = tr.querySelector('[data-role="replay"]');
+    this.muteBtn = tr.querySelector('[data-role="mute"]');
     this.fsBtn = tr.querySelector('[data-role="fs"]');
 
     this.playBtn.addEventListener("click", function () { self._userPaused = self.playing; self.toggle(); });
     this.replayBtn.addEventListener("click", function () { self._userPaused = false; self.restart(); });
+    
+    if (this.muteBtn) {
+      this.muteBtn.textContent = window.globalLabMuted ? "🔇" : "🔊";
+      this.muteBtn.addEventListener("click", function() {
+        window.globalLabMuted = !window.globalLabMuted;
+        var films = window.LabAnim.films || [];
+        for(var i=0; i<films.length; i++) {
+           if (films[i].muteBtn) films[i].muteBtn.textContent = window.globalLabMuted ? "🔇" : "🔊";
+        }
+        if (typeof globalLabAudio !== 'undefined' && globalLabAudio) globalLabAudio.volume = window.globalLabMuted ? 0 : 0.3;
+      });
+    }
+
     if (this.fsBtn) {
       this.fsBtn.addEventListener("click", function () {
         var el = self.container;
@@ -794,7 +809,7 @@
       // Special procedural cinematic sound
       var playedSound = false;
       s._cue(name, 0.1, 0.1, Ease.linear, function() {
-        if (playedSound || !(window.AudioContext || window.webkitAudioContext)) return;
+        if (playedSound || !(window.AudioContext || window.webkitAudioContext) || window.globalLabMuted) return;
         playedSound = true;
         try {
           var ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -971,11 +986,13 @@
 
   var globalLabAudio = null;
   var playingFilmsCount = 0;
+  window.globalLabMuted = false;
+  
   function ensureAudio() {
     if (!globalLabAudio) {
       globalLabAudio = new Audio("/assets/audio/ambient.ogg");
       globalLabAudio.loop = true;
-      globalLabAudio.volume = 0.3;
+      globalLabAudio.volume = window.globalLabMuted ? 0 : 0.3;
     }
   }
 
