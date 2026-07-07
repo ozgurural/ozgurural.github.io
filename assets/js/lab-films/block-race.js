@@ -95,6 +95,17 @@
           ctx.strokeStyle = h.rgba(CY, 0.5); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(x - gap, yH + hh / 2); ctx.lineTo(x, yH + hh / 2); ctx.stroke();
           block(ctx, h, x, yH, bw, hh, CY, 1);
+          // Hash particles when the block is freshly mined
+          var mineT = (lt - 0.4) - (i * 0.85);
+          if (mineT > 0 && mineT < 0.6) {
+             for(var p=0; p<8; p++) {
+                ctx.fillStyle = h.rgba(CY, 1 - mineT/0.6);
+                ctx.font = "10px monospace";
+                var px = x + bw/2 + (Math.sin(p*3 + i)*20) * (mineT*3);
+                var py = yH + hh/2 - (mineT*40) + (Math.cos(p*7)*10);
+                ctx.fillText(p%2===0?"0":"1", px, py);
+             }
+          }
         }
         // attacker (magenta, bottom, secret)
         for (i = 0; i < nA; i++) {
@@ -102,6 +113,17 @@
           ctx.strokeStyle = h.rgba(MAG, 0.45); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(xa - gap, yA + hh / 2); ctx.lineTo(xa, yA + hh / 2); ctx.stroke();
           block(ctx, h, xa, yA, bw, hh, MAG, 0.92);
+          // Hash particles when the block is freshly mined
+          var aMineT = (lt - 1.6) - (i * 1.18);
+          if (aMineT > 0 && aMineT < 0.6) {
+             for(var p=0; p<8; p++) {
+                ctx.fillStyle = h.rgba(MAG, 1 - aMineT/0.6);
+                ctx.font = "10px monospace";
+                var pxa = xa + bw/2 + (Math.sin(p*3 + i)*20) * (aMineT*3);
+                var pya = yA + hh/2 - (aMineT*40) + (Math.cos(p*7)*10);
+                ctx.fillText(p%2===0?"0":"1", pxa, pya);
+             }
+          }
         }
         // payment coin on honest genesis-adjacent block
         ctx.beginPath(); ctx.arc(gx + bw + gap + 0 * (bw + gap) + bw / 2, yH - 16, 8, 0, 7);
@@ -197,6 +219,7 @@
       }
       walks.forEach(function (w, i) {
         var ghost = s.poly(w, { coords: co, color: i === 0 ? GRN : MAG, width: i === 0 ? 2.2 : 1.4 });
+        ghost.el.style.filter = "drop-shadow(0 0 " + (i === 0 ? "8px " + GRN : "4px " + MAG) + ")";
         s.draw(ghost, { at: 2.0 + i * 0.5, dur: 3.5 });
         if (i !== 0) s.fadeOut(ghost, { at: 9.5, dur: 1.2, to: 0.18 });
       });

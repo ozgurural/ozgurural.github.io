@@ -68,6 +68,15 @@
           var sweep = clamp01((lt - 2) / 1.2), cx = lerp(250, 560, E.out(sweep));
           grid(ctx, h, cx, 220, 14, lt > 5 ? RED : "#e8eef9", clamp01((lt - 2) / 1.0), false);
           ctx.fillStyle = h.rgba(lt > 5 ? RED : "#cbd5e1", 0.9); ctx.fillText(lt > 5 ? "leaked copy θ̂" : "copy…", 560, 350);
+          
+          // Cloning scanner beam
+          if (lt > 2 && lt < 4) {
+             var scanX = cx + (Math.sin(lt*15)*14 + 28);
+             ctx.shadowBlur = 15; ctx.shadowColor = TEAL;
+             ctx.strokeStyle = h.rgba(TEAL, 0.8); ctx.lineWidth = 3;
+             ctx.beginPath(); ctx.moveTo(scanX, 210); ctx.lineTo(scanX, 340); ctx.stroke();
+             ctx.shadowBlur = 0;
+          }
         }
         if (lt > 6.5) {
           var st = clamp01((lt - 6.5) / 0.6);
@@ -310,6 +319,32 @@
       var fpts = []; for (i = 0; i <= 40; i++) fpts.push([i, Math.exp(-i * 0.085) * 0.85 + 0.02]);
       var fp = s.poly(fpts, { coords: co, color: RED, width: 2.2, dashed: "5 5" });
       s.draw(fp, { at: 3.4, dur: 2.0 });
+      
+      s.canvas(function(lt, ctx, h) {
+        if (lt > 1.0 && lt < 5.0) {
+           var drawP = clamp01((lt - 1.0) / 2.2);
+           var idx = Math.floor(drawP*40);
+           if(idx >= gpts.length) idx = gpts.length - 1;
+           var px = co.x(gpts[idx][0]);
+           var py = co.y(gpts[idx][1]);
+           ctx.shadowBlur = 10; ctx.shadowColor = TEAL;
+           ctx.fillStyle = TEAL;
+           ctx.beginPath(); ctx.arc(px, py, 4, 0, 7); ctx.fill();
+           ctx.shadowBlur = 0;
+        }
+        if (lt > 3.4 && lt < 6.4) {
+           var fP = clamp01((lt - 3.4) / 2.0);
+           var fidx = Math.floor(fP*40);
+           if(fidx >= fpts.length) fidx = fpts.length - 1;
+           var fx = co.x(fpts[fidx][0]);
+           var fy = co.y(fpts[fidx][1]);
+           if (Math.random() > 0.5) {
+             ctx.fillStyle = h.rgba(RED, 0.7);
+             ctx.fillRect(fx - 10, fy - 2 + (Math.random()-0.5)*10, 20 + Math.random()*20, 2);
+           }
+        }
+      });
+      
       var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 150, anchor: "left", size: "0.95rem", color: "#e2e8f0" });
       var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 190, anchor: "left", size: "0.95rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 3.0, dur: 0.6 }); s.fadeIn(fl, { at: 5.4, dur: 0.6 });

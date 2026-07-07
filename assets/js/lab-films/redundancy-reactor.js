@@ -51,20 +51,42 @@
 
   /* TMR schematic: 3 channels -> voter. states = [ 'ok'|'bad' x3 ], voterState */
   function drawTMR(ctx, h, cx, cy, states, voter, distinct) {
-    var pos = [[cx - 90, cy - 60], [cx + 90, cy - 60], [cx, cy - 60]];
-    pos = [[cx - 100, cy - 50], [cx, cy - 90], [cx + 100, cy - 50]];
+    var pos = [[cx - 100, cy - 50], [cx, cy - 90], [cx + 100, cy - 50]];
     var vy = cy + 80;
+    var rt = window.performance.now() / 1000;
     for (var i = 0; i < 3; i++) {
       var col = states[i] === "bad" ? RED : CY;
+      
+      // Explosion/glitch if bad
+      if (states[i] === "bad") {
+         ctx.fillStyle = h.rgba(RED, 0.4 + 0.5 * Math.random());
+         var gx = pos[i][0] + (Math.random()-0.5)*40;
+         var gy = pos[i][1] + (Math.random()-0.5)*40;
+         ctx.beginPath(); ctx.arc(gx, gy, 1+Math.random()*3, 0, 7); ctx.fill();
+         ctx.fillRect(pos[i][0] - 20 + Math.random()*40, pos[i][1] - 5 + Math.random()*10, 5+Math.random()*20, 1+Math.random()*2);
+      }
+      
       hexPath(ctx, pos[i][0], pos[i][1], 30);
       ctx.fillStyle = h.rgba(col, 0.14); ctx.fill();
       ctx.strokeStyle = h.rgba(col, 0.95); ctx.lineWidth = 2; ctx.stroke();
       ctx.fillStyle = h.rgba(col, 0.95); ctx.font = "11px 'JetBrains Mono',monospace";
       var lbl = distinct ? ["A·Ada", "B·C", "C·Rust"][i] : "CH" + (i + 1);
       ctx.fillText(lbl, pos[i][0] - 16, pos[i][1] + 4);
+      
       // arrow to voter
       ctx.strokeStyle = h.rgba(states[i] === "bad" ? RED : CY, 0.5); ctx.lineWidth = states[i] === "bad" ? 1.4 : 2.4;
       ctx.beginPath(); ctx.moveTo(pos[i][0], pos[i][1] + 30); ctx.lineTo(cx, vy - 26); ctx.stroke();
+      
+      // Network ping ripples
+      if (states[i] === "ok") {
+         var pp = (rt * 1.5 + i * 0.3) % 1;
+         var px = lerp(pos[i][0], cx, pp);
+         var ppy = lerp(pos[i][1] + 30, vy - 26, pp);
+         ctx.fillStyle = h.rgba(CY, 0.8 * (1-pp));
+         ctx.shadowBlur = 8; ctx.shadowColor = CY;
+         ctx.beginPath(); ctx.arc(px, ppy, 3, 0, 7); ctx.fill();
+         ctx.shadowBlur = 0;
+      }
     }
     var vcol = voter === "ok" ? GRN : voter === "bad" ? RED : AMB;
     diamond(ctx, cx, vy, 28); ctx.fillStyle = h.rgba(vcol, 0.16); ctx.fill();
