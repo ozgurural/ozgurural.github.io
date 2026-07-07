@@ -58,10 +58,9 @@
         ctx.beginPath(); ctx.arc(cx, cy - 100, 12 + 4*managerPulse, 0, Math.PI*2); ctx.fill();
         ctx.shadowBlur = 0;
         
-        ctx.shadowBlur = 8; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 14px var(--ds-font-mono, 'JetBrains Mono', monospace)";
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 14px var(--ds-font-mono, 'JetBrains Mono', monospace)";
         ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
-        ctx.shadowBlur = 0;
+        
         
         // Smooth Flowing Tickets (Bezier paths with glowing trails)
         var tickets = 25;
@@ -133,7 +132,7 @@
            ctx.fillStyle = RED;
            ctx.font = "bold 32px 'JetBrains Mono'";
            ctx.fillText("SYSTEM BOTTLENECK", cx - 160, cy - 170);
-           ctx.shadowBlur = 0;
+           
         }
         ctx.globalCompositeOperation = "source-over";
         ctx.globalAlpha = 1;
@@ -252,10 +251,9 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
         ctx.fillText("BOUNTY CONTRACT", coreX - 70, coreY - 110);
-        ctx.shadowBlur = 0;
+        
 
         // The Developer
         var devX = 750, devY = 300;

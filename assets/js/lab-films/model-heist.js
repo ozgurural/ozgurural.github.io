@@ -122,10 +122,10 @@
         ctx.font = "600 12px 'JetBrains Mono',monospace";
         ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("YOUR MODEL  θ", 218, 360);
         ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
-        ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillText("fine-tuning leak", 442, 200);
       });
-      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#f8fafc" });
+      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.9rem", color: "#ffffff" });
       s.write(title, { at: 0.6, dur: 1.4 });
       lower(s, "Your model leaks. A competitor fine-tunes and claims it. How do you prove ownership when weights change?", 4.4, { maxWidth: "80%", out: 13.2, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
@@ -169,18 +169,18 @@
         // utility meter (right)
         var um = lt < 4.5 ? 0.7 : 0.7 - 0.55 * (1 - scrub); // tall bar => low utility, recovers as scrubbed
         var mx = 760, my = 200, mh = 150;
-        ctx.shadowBlur = 10; ctx.shadowColor = h.rgba("#9fb2d4", 0.2);
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1; ctx.strokeRect(mx, my, 26, mh);
+        ctx.shadowBlur = 10; ctx.shadowColor = h.rgba("#dbeafe", 0.2);
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.lineWidth = 1; ctx.strokeRect(mx, my, 26, mh);
         ctx.shadowBlur = 0;
         var fillH = mh * um, col = um < 0.4 ? RED : GRN;
         for (var seg = 0; seg < Math.floor(fillH / 6); seg++) {
           ctx.fillStyle = h.rgba(col, 0.5 + 0.5 * (seg / (mh / 6)));
           ctx.fillRect(mx + 3, my + mh - (seg * 6) - 4, 20, 3);
         }
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
         ctx.fillText("utility", mx - 2, my - 8);
       });
-      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.8rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 1.0, dur: 0.8 });
       lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
@@ -216,14 +216,14 @@
         ctx.fillText("k = " + kNow + "   d = √k·ε/σ = " + d.toFixed(2), 560, 180);
         // a little sqrt(k) curve for d
         var px0 = 560, py0 = 360, pw = 320, ph = 130;
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
         ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.4; ctx.beginPath();
         for (var kk = 0; kk <= kNow; kk++) { var xx = px0 + pw * kk / K, yy = py0 - (Math.sqrt(kk) * 0.32 / (Math.sqrt(K) * 0.32)) * ph; if (kk === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke();
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.8);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.8);
         ctx.fillText("aggregate SNR  d", px0, py0 - ph - 8);
       });
-      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 104, size: "1rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 104, size: "1.8rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
       lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
@@ -274,7 +274,7 @@
         ctx.fillStyle = h.rgba(GREY, 0.9); ctx.fillText("H₀ innocent  N(0,1)", co.x(-2.6), co.y(0.30));
         ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("H₁ marked  N(d,1)", co.x(d + 0.3), co.y(0.34));
       });
-      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "0.95rem", color: "#e8eef9" });
+      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.9rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.2 });
       lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
@@ -286,8 +286,8 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.draw(ax, { at: 0.4, dur: 0.8 });
-      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.7rem", color: "#9fb2d4" });
-      var ylab = s.caption("true-positive rate", { coords: co, x: -0.04, y: 1.13, anchor: "left", size: "0.7rem", color: "#9fb2d4" });
+      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
+      var ylab = s.caption("true-positive rate", { coords: co, x: -0.04, y: 1.13, anchor: "left", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 0.8, dur: 0.5 }); s.fadeIn(ylab, { at: 0.8, dur: 0.5 });
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
@@ -298,7 +298,7 @@
         var pl = s.poly(pts, { coords: co, color: color, width: 3 });
         s.draw(pl, { at: at, dur: 1.6 });
         var auc = Phi(d / Math.SQRT2);
-        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: Phi(d - 0.2) - 0.06, anchor: "left", size: "0.72rem", color: color });
+        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: Phi(d - 0.2) - 0.06, anchor: "left", size: "1.3rem", color: color });
         s.fadeIn(lbl, { at: at + 1.4, dur: 0.5 });
       }
       rocCurve(0.6, "#7dd3fc", 2.0, "small k");
@@ -309,7 +309,7 @@
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
       var dm = s.caption("aggregate d = √k·ε/σ <span style='color:#fbbf24'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: "#e8eef9" });
       s.fadeIn(sm, { at: 7.0, dur: 0.6 }); s.fadeIn(dm, { at: 7.6, dur: 0.6 });
-      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 760, py: 350, size: "1rem", color: AMB });
+      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 760, py: 350, size: "1.8rem", color: AMB });
       s.fadeIn(aucEq, { at: 8.4, dur: 0.7 });
 
       lower(s, "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.", 10.0, { maxWidth: "85%", px: 60 });
@@ -338,9 +338,9 @@
         }
         // utility plunge + budget gauge
         var util = 0.75 - attack * 0.6, bx = 720, by = 180, bh = 150;
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.strokeRect(bx, by, 26, bh);
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.strokeRect(bx, by, 26, bh);
         ctx.fillStyle = h.rgba(util < 0.35 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
         ctx.fillText("utility", bx - 2, by - 8);
         
         // Critical Warning when utility drops below threshold
@@ -359,7 +359,7 @@
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 13px 'JetBrains Mono',monospace";
         ctx.fillText("owner Z = " + z.toFixed(1) + "  ≫ z_α", 600, 150);
       });
-      var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1rem", color: AMB });
+      var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1.8rem", color: AMB });
       s.write(eq, { at: 1.0, dur: 1.2 });
       lower(s, "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark.", 7.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
@@ -377,11 +377,11 @@
       });
       var d3 = Math.sqrt(100) * 0.45; // k=100
       var power = Phi(d3 - Z_ALPHA);
-      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.9rem", color: AMB });
       s.write(eq, { at: 0.8, dur: 1.6 });
-      var chip = s.caption("detection power → <strong style='color:#f8fafc'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1rem", color: GRN });
+      var chip = s.caption("detection power → <strong style='color:#ffffff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1.8rem", color: GRN });
       s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
+      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.8rem", color: "#e8eef9" });
       s.write(tag, { at: 4.4, dur: 1.4 });
       var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 6.0, dur: 0.8 });

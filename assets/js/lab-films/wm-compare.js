@@ -52,8 +52,7 @@
         
         // Pseudo-3D Weight Galaxy with Depth of Field
         var cx = 250, cy = 300;
-        ctx.shadowBlur = 8; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
         ctx.fillText("PARAMETERS (θ) GALAXY", 130, 120);
         ctx.shadowBlur = 0;
         
@@ -172,10 +171,9 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
         ctx.fillText("STOLEN API", 640, 130);
-        ctx.shadowBlur = 0;
+        
         
         ctx.fillStyle = h.rgba(CY, 0.2);
         for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 180, 20, 180 - l*20); }
@@ -200,7 +198,7 @@
               ctx.shadowBlur = 15; ctx.shadowColor = AMB;
               ctx.fillStyle = AMB; ctx.font = "bold 22px 'JetBrains Mono'";
               ctx.fillText("Output: " + label, 820, 285);
-              ctx.shadowBlur = 0;
+              
            }
         }
 
@@ -272,10 +270,9 @@
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX + histW, histY); ctx.stroke(); // X
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX, histY - histH); ctx.stroke(); // Y
 
-        ctx.shadowBlur = 8; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)";
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)";
         ctx.fillText("TOKEN PROBABILITY DISTRIBUTION", histX + 10, histY - histH - 20);
-        ctx.shadowBlur = 0;
+        
 
         // Slow skewing of vocabulary
         var isSkewed = lt > 15;
@@ -358,7 +355,7 @@
               ctx.fillStyle = h.rgba(GRN, 0.7 + 0.3 * alertFlash); 
               ctx.font = "bold 26px 'JetBrains Mono'";
               ctx.fillText("WATERMARK DETECTED", streamX, streamY + 330);
-              ctx.shadowBlur = 0;
+              
            }
         }
         ctx.globalAlpha = 1;

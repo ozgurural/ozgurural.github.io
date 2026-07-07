@@ -65,10 +65,9 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
         ctx.fillText("SMART CONTRACT", 630, 190);
-        ctx.shadowBlur = 0;
+        
         
         ctx.fillStyle = h.rgba(CY, 0.15); 
         ctx.beginPath();
@@ -123,7 +122,7 @@
            ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
            ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 480);
-           ctx.shadowBlur = 0;
+           
         }
 
         ctx.globalAlpha = 1;
@@ -157,10 +156,9 @@
         
         ctx.strokeStyle = h.rgba(AMB, 0.6); ctx.lineWidth = 1; ctx.stroke();
         
-        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
-        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
         ctx.fillText("Off-chain Prover", 100, 80);
-        ctx.shadowBlur = 0;
+        
 
         // Dense Neural Network Mesh
         var layers = [5, 8, 8, 3];
@@ -255,7 +253,7 @@
               ctx.shadowBlur = 20; ctx.shadowColor = GRN;
               ctx.fillStyle = GRN; ctx.font = "bold 24px 'JetBrains Mono'";
               ctx.fillText("VALID", 665, 260);
-              ctx.shadowBlur = 0;
+              
            }
         }
         ctx.globalAlpha = 1;
@@ -339,7 +337,7 @@
                  
                  ctx.shadowBlur = 15; ctx.shadowColor = RED;
                  ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'"; ctx.fillText("SLASHED!", 320, 420);
-                 ctx.shadowBlur = 0;
+                 
                  
                  // Advanced Particle Physics for shattered coins
                  for (var k=0; k<15; k++) {

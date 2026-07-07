@@ -219,7 +219,7 @@
         ctx.beginPath(); ctx.arc(pb0[0], pb0[1], 9, 0, 7); ctx.fill();
       });
 
-      var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "2.4rem", color: "#f8fafc" });
+      var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "2.8rem", color: "#ffffff" });
       s.write(title, { at: 0.4, dur: 1.6 });
       s.fadeOut(title, { at: 5.0, dur: 1.0 });
 
@@ -269,7 +269,7 @@
       var gx = 2 * a * (g0[0] - mx), gy = 2 * b * (g0[1] - my);
       var gn = Math.hypot(gx, gy);
       var grad = s.vector({ coords: co, x: g0[0], y: g0[1], dx: -0.9 * gx / gn, dy: -0.9 * gy / gn, color: "#34d399", width: 2.6 });
-      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 1.0, y: g0[1] - 0.5, display: false, size: "1rem", color: "#34d399" });
+      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 1.0, y: g0[1] - 0.5, display: false, size: "1.8rem", color: "#34d399" });
       s.draw(grad, { at: 2.0, dur: 0.7 }); s.fadeIn(gradLbl, { at: 2.4, dur: 0.5 });
       s.fadeOut(grad, { at: 4.0, dur: 0.6 }); s.fadeOut(gradLbl, { at: 4.0, dur: 0.6 });
 
@@ -298,9 +298,9 @@
       });
 
       // the rule, typeset
-      var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 84, size: "1.2rem", color: "#fbbf24" });
+      var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 84, size: "1.8rem", color: "#fbbf24" });
       s.write(eq, { at: 0.6, dur: 1.4 });
-      var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 132, display: false, size: "0.95rem", color: "#9fb2d4" });
+      var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 132, display: false, size: "1.9rem", color: "#dbeafe" });
       s.fadeIn(perp, { at: 2.6, dur: 0.8 });
 
       lower(s, "Measure slope, step against it, repeat. Each step is the locally steepest move.", 10.8, { maxWidth: "66%" });
@@ -326,9 +326,9 @@
         var par = s.plot(co, function (x) { return 0.5 * lam * x * x; }, { color: "#5b6b8c", width: 1.8, samples: 80 });
         s.draw(par, { at: 0.4 + idx * 0.25, dur: 1.0 });
         // panel frame label
-        var lbl = s.tex2(pn.label, { px: left + pw / 2, py: 100, size: "1rem", color: pn.col });
+        var lbl = s.tex2(pn.label, { px: left + pw / 2, py: 100, size: "1.8rem", color: pn.col });
         s.fadeIn(lbl, { at: 0.6 + idx * 0.25, dur: 0.6 });
-        var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "0.8rem", align: "center" });
+        var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "1.8rem", align: "center" });
         s.fadeIn(tag, { at: 2.2, dur: 0.6 });
 
         // iterate x_{t+1} = (1-αλ) x_t  (clamped so divergence stays on-stage)
@@ -396,7 +396,7 @@
       var hball = s.dot({ coords: co, x: hb[0][0], y: hb[0][1], r: 8, color: "#fbbf24", glow: 10 });
       s.fadeIn(hball, { at: 9.1, dur: 0.3 });
       s.moveAlong(hball, pathOf(hb), { coords: co, at: 9.2, dur: 4.0, ease: window.LabAnim.ease.smooth });
-      var hbTag = s.caption("momentum · ~√κ steps", { coords: co, x: 0.4, y: -1.4, anchor: "left", size: "0.82rem", color: "#fbbf24" });
+      var hbTag = s.caption("momentum · ~√κ steps", { coords: co, x: 0.4, y: -1.4, anchor: "left", size: "1.05rem", color: "#fbbf24" });
       s.fadeIn(hbTag, { at: 10.4, dur: 0.6 });
 
       var eq = s.tex2("\\text{Momentum: Remember past velocity}", { px: 480, py: 64, size: "1.05rem", color: "#e8eef9" });
@@ -410,11 +410,11 @@
   function sceneSqrtKappa(film) {
     film.scene("From κ to √κ", 16, function (s) {
       // left: the two convergence rates, typeset. right: iterations vs κ (log-x).
-      var t1 = s.tex2("\\text{Standard GD: Slow in narrow valleys}", { px: 264, py: 190, size: "1.15rem", color: "#9aa7be" });
+      var t1 = s.tex2("\\text{Standard GD: Slow in narrow valleys}", { px: 264, py: 190, size: "1.9rem", color: "#9aa7be" });
       s.write(t1, { at: 10.0, dur: 1.2 });
-      var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.15rem", color: "#fbbf24" });
+      var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.9rem", color: "#fbbf24" });
       s.write(t2, { at: 12.0, dur: 1.2 });
-      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "0.98rem", color: "#9fb2d4" });
+      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.9rem", color: "#dbeafe" });
       s.fadeIn(t3, { at: 3.6, dur: 1.0 });
 
       // plot region (right half), x = log10(kappa) in [0,4]
@@ -428,19 +428,19 @@
       s.draw(gdCurve, { at: 2.4, dur: 1.6 });
       s.draw(hbCurve, { at: 4.0, dur: 1.6 });
       var gl = s.caption("GD ∝ κ ↑", { coords: co, x: 1.42, y: 96, anchor: "left", size: "0.76rem", color: "#9aa7be" });
-      var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "0.8rem", color: "#fbbf24" });
+      var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "1.8rem", color: "#fbbf24" });
       s.fadeIn(gl, { at: 4.2, dur: 0.5 }); s.fadeIn(hl, { at: 5.8, dur: 0.5 });
-      var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -7, anchor: "top", align: "center", size: "0.7rem", color: "#9fb2d4" });
+      var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -7, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.2, dur: 0.6 });
 
       // punchline callout
-      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#f8fafc'>100× fewer steps</strong>", { px: 740, py: 196, size: "0.95rem", color: "#fbbf24" });
+      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 740, py: 196, size: "1.9rem", color: "#fbbf24" });
       s.fadeIn(call, { at: 6.4, dur: 0.8 }); s.pulse(call, { at: 7.2, dur: 0.8, amp: 0.12 });
 
-      var eq1 = s.tex2("\\text{GD is stuck bouncing}", { px: 200, py: 80, size: "1rem", color: "#9aa7be" });
-      var eq2 = s.tex2("\\text{Momentum cuts through}", { px: 220, py: 130, size: "1.1rem" });
+      var eq1 = s.tex2("\\text{GD is stuck bouncing}", { px: 200, py: 80, size: "1.8rem", color: "#9aa7be" });
+      var eq2 = s.tex2("\\text{Momentum cuts through}", { px: 220, py: 130, size: "1.3rem" });
       s.write(eq1, { at: 2.0, dur: 1.0 });
-      var hb = s.tex2("\\text{Momentum: }", { px: 70, py: 130, size: "1rem", color: "#fbbf24" });
+      var hb = s.tex2("\\text{Momentum: }", { px: 70, py: 130, size: "1.8rem", color: "#fbbf24" });
       s.fadeIn(hb, { at: 11.5, dur: 0.6 });
       s.fadeOut(eq1, { at: 14.5, dur: 0.5 }); s.fadeOut(eq2, { at: 14.5, dur: 0.5 }); s.fadeOut(hb, { at: 14.5, dur: 0.5 });
 
@@ -547,8 +547,8 @@
         var d = s.dot({ coords: co, x: pt[0], y: y, r: 5, color: i === 0 ? "#34d399" : "#a78bfa", glow: 6 });
         s.fadeIn(d, { at: 4.8 + i * 0.18, dur: 0.4 });
       });
-      var xl = s.caption("loss  ε  →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.72rem", color: "#9fb2d4" });
-      var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#9fb2d4" });
+      var xl = s.caption("loss  ε  →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "1.3rem", color: "#dbeafe" });
+      var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 3.0, dur: 0.6 }); s.fadeIn(yl, { at: 3.0, dur: 0.6 });
       var minLbl = s.caption("minima<br>(α≈0)", { coords: co, x: 0.06, y: 0.18, anchor: "left", size: "0.66rem", color: "#34d399" });
       var sadLbl = s.caption("saddles<br>(α↑)", { coords: co, x: 0.66, y: 0.66, anchor: "left", size: "0.66rem", color: "#a78bfa" });
@@ -556,7 +556,7 @@
 
       var eq = s.tex2("\\text{Saddle Points} \\gg \\text{Local Minima}", { px: 470, py: 70, size: "1.05rem", color: "#a78bfa" });
       s.write(eq, { at: 6.0, dur: 1.4 });
-      var eqsub = s.tex2("\\text{In very high dimensional spaces}", { px: 470, py: 108, size: "0.82rem", color: "#7f93b4" });
+      var eqsub = s.tex2("\\text{In very high dimensional spaces}", { px: 470, py: 108, size: "1.05rem", color: "#7f93b4" });
       s.fadeIn(eqsub, { at: 10.0, dur: 0.8 });
 
       lower(s, "In high dimensions, most critical points are saddles. Momentum and noise help escape them.", 11.2, { maxWidth: "92%", px: 60 });

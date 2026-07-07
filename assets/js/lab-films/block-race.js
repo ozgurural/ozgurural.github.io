@@ -86,7 +86,7 @@
       s.canvas(function (lt, ctx, h) {
         // genesis
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#94a3b8", 1);
-        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#cbd5e1", 0.8);
+        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#f1f5f9", 0.8);
         ctx.fillText("genesis", gx - 4, (yH + yA) / 2 + hh / 2 + 16);
         var nH = nAt(lt, 0.4, 0.85, 8), nA = nAt(lt, 1.6, 1.18, 6), i;
         // honest (cyan, top)
@@ -145,14 +145,14 @@
         ctx.fillText("honest lead  +" + Math.max(0, lead), 720, 150);
       });
 
-      var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1rem", color: "#dce7fb" });
+      var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.8rem", color: "#dce7fb" });
       s.write(rule, { at: 0.5, dur: 1.2 });
-      var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "0.74rem", color: CY });
-      var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "0.74rem", color: MAG });
+      var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.9rem", color: CY });
+      var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.9rem", color: MAG });
       s.fadeIn(lblH, { at: 1.0, dur: 0.6 }); s.fadeIn(lblA, { at: 2.4, dur: 0.6 });
       // clear the lower third before the narration panel writes in at 4.4
       s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
-      var eq = s.tex2("\\text{Lead} = \\text{Honest Blocks} - \\text{Attacker Blocks}", { px: 480, py: 150, size: "0.92rem", color: "#9fb2d4" });
+      var eq = s.tex2("\\text{Lead} = \\text{Honest Blocks} - \\text{Attacker Blocks}", { px: 480, py: 150, size: "1.3rem", color: "#dbeafe" });
       lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13.4 });
     }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
   }
@@ -178,7 +178,7 @@
         ctx.restore();
         // clock pulse
         var beat = (lt % 2) < 0.25 ? 1 : 0.4;
-        ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", beat);
+        ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", beat);
         ctx.fillText("⏱ ~10 min / flip", cx - 46, cy + R + 34);
         // hashrate bar (right)
         var bx = 560, by = 250, bw = 320, bh = 30;
@@ -188,17 +188,17 @@
         ctx.fillStyle = h.rgba(CY, 0.7); ctx.fillRect(bx, by, bw * p, bh);
         ctx.fillStyle = h.rgba(MAG, 0.85); ctx.fillRect(bx + bw * p, by, bw * q, bh);
         ctx.restore();
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1; 
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.lineWidth = 1; 
         ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, 6); else ctx.rect(bx, by, bw, bh); ctx.stroke();
         ctx.font = "600 13px 'JetBrains Mono',monospace";
         ctx.fillStyle = h.rgba(CY, 1); ctx.fillText("honest  p = 0.70", bx, by - 12);
         ctx.fillStyle = h.rgba(MAG, 1); ctx.fillText("attacker  q = 0.30", bx + bw * p, by + bh + 22);
       });
 
-      var e1 = s.tex2("\\text{Honest } (p) + \\text{Attacker } (q) = 100\\%", { px: 700, py: 150, size: "1.15rem", color: "#e8eef9" });
-      var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 700, py: 360, size: "1rem", color: AMB });
+      var e1 = s.tex2("\\text{Honest } (p) + \\text{Attacker } (q) = 100\\%", { px: 700, py: 150, size: "1.9rem", color: "#e8eef9" });
+      var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 700, py: 360, size: "1.8rem", color: AMB });
       s.write(e1, { at: 1.0, dur: 1.0 }); s.write(e2, { at: 3.0, dur: 1.2 });
-      var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 330, py: 430, anchor: "top", align: "center", size: "0.8rem", color: "#9fb2d4" });
+      var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 330, py: 430, anchor: "top", align: "center", size: "1.8rem", color: "#dbeafe" });
       s.fadeIn(note, { at: 5.0, dur: 0.8 });
       s.fadeOut(note, { at: 6.8, dur: 0.5 }); // hand the lower third to the narration
 
@@ -213,7 +213,7 @@
       // breakeven line at 0
       var be = s.line({ coords: co, x1: 0, y1: -0.9, x2: 0, y2: 0.9, color: "#e8eef9", width: 2 });
       s.fadeIn(be, { at: 0.6, dur: 0.5 });
-      var beLbl = s.caption("0 = breakeven", { coords: co, x: 0.1, y: 0.98, anchor: "left", size: "0.72rem", color: "#cbd5e1" });
+      var beLbl = s.caption("0 = breakeven", { coords: co, x: 0.1, y: 0.98, anchor: "left", size: "1.3rem", color: "#f1f5f9" });
       s.fadeIn(beLbl, { at: 0.8, dur: 0.5 });
       // axis
       var ax = s.line({ coords: co, x1: -7.3, y1: 0, x2: 2.3, y2: 0, color: PAL.axis, width: 1.3 });
@@ -238,12 +238,12 @@
       s.fadeIn(tokLbl, { at: 1.8, dur: 0.5 });
 
       // recurrence + solution (right column)
-      var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 770, py: 172, size: "1rem", color: "#e8eef9" });
-      var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 770, py: 224, display: false, size: "0.95rem", color: "#9fb2d4" });
+      var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 770, py: 172, size: "1.8rem", color: "#e8eef9" });
+      var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 770, py: 224, display: false, size: "1.9rem", color: "#dbeafe" });
       s.write(r1, { at: 9.5, dur: 1.3 }); s.fadeIn(r2, { at: 11.0, dur: 0.6 });
       var sol = s.tex2("\\text{Attacker Success} = \\Big(\\frac{\\text{Attacker Power}}{\\text{Honest Power}}\\Big)^z", { px: 770, py: 294, size: "1.25rem", color: AMB });
       s.write(sol, { at: 12.2, dur: 1.4 }); s.pulse(sol, { at: 13.8, dur: 0.8, amp: 0.1 });
-      var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 770, py: 360, display: false, size: "0.9rem", color: "#9fb2d4" });
+      var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 770, py: 360, display: false, size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(r3, { at: 14.4, dur: 0.8 });
 
       lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces Gambler's Ruin, bounded by (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
@@ -266,7 +266,7 @@
         // wall-clock dial
         var ang = -Math.PI / 2 + clamp01(lt / (z * 0.7)) * 2 * Math.PI;
         var dx = 175, dy = 150, dr = 30;
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 2;
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(dx, dy, dr, 0, 7); ctx.stroke();
         ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.5;
         ctx.beginPath(); ctx.moveTo(dx, dy); ctx.lineTo(dx + dr * Math.cos(ang), dy + dr * Math.sin(ang)); ctx.stroke();
@@ -286,7 +286,7 @@
       }
       var meanLbl = s.caption("k ~ Poisson(λ),  λ = z·q/p ≈ 2.57", { coords: co, x: 4, y: 0.30, anchor: "center", align: "center", size: "0.78rem", color: MAG });
       s.fadeIn(meanLbl, { at: 4.2, dur: 0.7 });
-      var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "0.72rem", color: "#9fb2d4" });
+      var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
 
       // the closed form assembling
@@ -314,7 +314,7 @@
         var t = s.caption("10<sup>" + e + "</sup>", { coords: co, x: -0.35, y: e, anchor: "right", size: "0.62rem", color: "#7f93b4" });
         s.fadeIn(t, { at: 1.0, dur: 0.5 });
       });
-      var xlab = s.caption("confirmations z →", { coords: co, x: 6, y: -7.7, anchor: "top", align: "center", size: "0.72rem", color: "#9fb2d4" });
+      var xlab = s.caption("confirmations z →", { coords: co, x: 6, y: -7.7, anchor: "top", align: "center", size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.0, dur: 0.5 });
 
       function curve(q, color, at) {
@@ -331,14 +331,14 @@
       // z = 6 marker
       var zl = s.line({ coords: co, x1: 6, y1: -7, x2: 6, y2: 0, color: "#e8eef9", width: 1.5, dashed: "4 5" });
       s.draw(zl, { at: 6.0, dur: 0.6 });
-      var z6 = s.caption("z = 6", { coords: co, x: 6, y: 0.4, anchor: "center", align: "center", size: "0.72rem", color: "#cbd5e1" });
+      var z6 = s.caption("z = 6", { coords: co, x: 6, y: 0.4, anchor: "center", align: "center", size: "1.3rem", color: "#f1f5f9" });
       s.fadeIn(z6, { at: 6.2, dur: 0.4 });
 
       // callouts
-      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#f8fafc'>0.024%</strong>", { px: 760, py: 210, size: "0.92rem", color: CY });
-      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#f8fafc'>13.2%</strong>", { px: 760, py: 260, size: "0.92rem", color: MAG });
+      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#ffffff'>0.024%</strong>", { px: 760, py: 210, size: "1.3rem", color: CY });
+      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#ffffff'>13.2%</strong>", { px: 760, py: 260, size: "1.3rem", color: MAG });
       s.fadeIn(cCY, { at: 7.2, dur: 0.7 }); s.fadeIn(cMG, { at: 8.0, dur: 0.7 });
-      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
+      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 760, py: 320, size: "1.8rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });
 
       lower(s, "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
@@ -387,7 +387,7 @@
 
       var fin = s.caption("payment finalized (probabilistically)", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
       s.fadeIn(fin, { at: 4.6, dur: 0.7 });
-      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Zero Risk}", { px: 480, py: 118, size: "1.1rem", color: AMB });
+      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Zero Risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
       s.write(lim, { at: 1.0, dur: 1.4 });
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 8.0, dur: 0.8 });
