@@ -1592,3 +1592,39 @@ button:focus-visible {
     color: var(--ds-ink);
 }
 
+
+/* --------------------------------------------------------------------------
+   Expandable Project Cards (Concepts)
+   -------------------------------------------------------------------------- */
+details.ep-concept summary {
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  outline: none;
+}
+details.ep-concept summary::-webkit-details-marker {
+  display: none;
+}
+details.ep-concept summary:hover h3.title {
+  color: var(--ds-accent);
+}
+details.ep-concept summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--ds-font-mono);
+  font-size: 1.2rem;
+  color: var(--ds-muted);
+  transition: transform 0.2s ease;
+}
+details.ep-concept[open] summary::after {
+  content: '-';
+  transform: translateY(-50%) rotate(180deg);
+}
+details.ep-concept[open] .desc {
+  margin-top: 1rem;
+  animation: fadeSlideIn 0.3s ease forwards;
+}
+

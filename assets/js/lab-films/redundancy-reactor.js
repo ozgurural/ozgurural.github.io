@@ -256,7 +256,16 @@
         // altitude trace
         var prog = clamp01(lt / 9), fail = lt > 7;
         ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2.4; ctx.beginPath();
-        for (var i = 0; i <= 60 * prog; i++) { var x = 80 + i * 4.5; var y = 410 - i * 4.0; if (fail && i > 42) { y = 410 - 42 * 4.0; x = 80 + 42 * 4.5 + (i - 42) * 6; } if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
+        for (var i = 0; i <= 60 * prog; i++) { 
+          var x = 80 + i * 4.5; 
+          var y = 410 - i * 4.0; 
+          if (fail && i > 42) { 
+            // rocket plunges to the ground exponentially instead of hovering horizontally
+            y = 410 - 42 * 4.0 + Math.pow(i - 42, 2) * 0.8; 
+            x = 80 + 42 * 4.5 + (i - 42) * 2; 
+          } 
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); 
+        }
         ctx.stroke();
         // BH climbing past INT16 MAX
         var bhY = 200, maxX = 560; ctx.strokeStyle = h.rgba(RED, 0.8); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(360, bhY); ctx.lineTo(720, bhY); ctx.stroke(); ctx.setLineDash([]);

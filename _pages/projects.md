@@ -41,54 +41,94 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 <ul class="ep-cards">
   <li>
-    <div class="meta">AI Agent · Engineering</div>
-    <h3 class="title">Engineering Knowledge Copilot</h3>
-    <p class="desc">A version-aware copilot over a massive engineering corpus. Answers questions with grounded citations, synthesizes the impact of document and spec changes across downstream artifacts, and generates suggested playbooks. Powered by on-prem multimodal parsing and semantic diffs.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · Engineering</div>
+        <h3 class="title">Engineering Knowledge Copilot</h3>
+      </summary>
+      <p class="desc">A version-aware copilot over a massive engineering corpus. Answers questions with grounded citations, synthesizes the impact of document and spec changes across downstream artifacts, and generates suggested playbooks. Powered by on-prem multimodal parsing and semantic diffs.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">AI Agent · CI/CD Integration</div>
-    <h3 class="title">Autonomous Engineering Staff Agent</h3>
-    <p class="desc">A hybrid agent embedded in the software development lifecycle. Conducts autonomous code reviews, verifies release integrity against requirements, and flags integration risks before deployment using self-hosted Git pipelines.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · CI/CD Integration</div>
+        <h3 class="title">Autonomous Engineering Staff Agent</h3>
+      </summary>
+      <p class="desc">A hybrid agent embedded in the software development lifecycle. Conducts autonomous code reviews, verifies release integrity against requirements, and flags integration risks before deployment using self-hosted Git pipelines.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">AI Agent · Proposals</div>
-    <h3 class="title">RFP Accelerator</h3>
-    <p class="desc">An agent that ingests Request for Proposal (RFP) documents, searches past answers, product specs, and OEM manuals, and drafts a clear, cited reply. Reduces RFP cycle-time significantly without data exfiltration.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · Proposals</div>
+        <h3 class="title">RFP Accelerator</h3>
+      </summary>
+      <p class="desc">An agent that ingests Request for Proposal (RFP) documents, searches past answers, product specs, and OEM manuals, and drafts a clear, cited reply. Reduces RFP cycle-time significantly without data exfiltration.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">AI Agent · Education</div>
-    <h3 class="title">Instructor Debrief Writer</h3>
-    <p class="desc">Enhances training session logs by stripping student identifiers, drafting a polished on-tone debrief from telemetry and instructor bullet notes, and suggesting rubric grades for human approval.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · Education</div>
+        <h3 class="title">Instructor Debrief Writer</h3>
+      </summary>
+      <p class="desc">Enhances training session logs by stripping student identifiers, drafting a polished on-tone debrief from telemetry and instructor bullet notes, and suggesting rubric grades for human approval.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">AI Agent · Communications</div>
-    <h3 class="title">Customer Update Auto-Writer</h3>
-    <p class="desc">Cuts incident turnaround time by translating technical fault summaries into customer-ready bulletins—on-brand, non-alarmist, and free of proprietary detail, utilizing a PII redaction gateway.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · Communications</div>
+        <h3 class="title">Customer Update Auto-Writer</h3>
+      </summary>
+      <p class="desc">Cuts incident turnaround time by translating technical fault summaries into customer-ready bulletins—on-brand, non-alarmist, and free of proprietary detail, utilizing a PII redaction gateway.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">AI Agent · Field Operations</div>
-    <h3 class="title">Fault Diagnostics Copilot</h3>
-    <p class="desc">Retrieves similar historical cases and OEM bulletins via RAG to classify the likely fault domain (software / hardware / wiring) and assign ownership on the first pass using an air-gapped on-prem model.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · Field Operations</div>
+        <h3 class="title">Fault Diagnostics Copilot</h3>
+      </summary>
+      <p class="desc">Retrieves similar historical cases and OEM bulletins via RAG to classify the likely fault domain (software / hardware / wiring) and assign ownership on the first pass using an air-gapped on-prem model.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">Generative AI · Marketing</div>
-    <h3 class="title">Brand-Controlled Visual Generation</h3>
-    <p class="desc">A localized Stable Diffusion XL / ControlNet pipeline that enforces strict style-locking and automated brand-compliance checks, generating high-fidelity assets in seconds.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">Generative AI · Marketing</div>
+        <h3 class="title">Brand-Controlled Visual Generation</h3>
+      </summary>
+      <p class="desc">A localized Stable Diffusion XL / ControlNet pipeline that enforces strict style-locking and automated brand-compliance checks, generating high-fidelity assets in seconds.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">AI Agent · Quality Assurance</div>
-    <h3 class="title">Qualification Lifecycle Copilot</h3>
-    <p class="desc">Generates hardware qualification plans with time estimates, tracks checklist completion live, and auto-packages test results and telemetry into audit-ready bundles with full requirement traceability.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">AI Agent · Quality Assurance</div>
+        <h3 class="title">Qualification Lifecycle Copilot</h3>
+      </summary>
+      <p class="desc">Generates hardware qualification plans with time estimates, tracks checklist completion live, and auto-packages test results and telemetry into audit-ready bundles with full requirement traceability.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">Analytics · Strategy</div>
-    <h3 class="title">Leadership Briefing Generator</h3>
-    <p class="desc">Produces weekly leadership pulses and meeting agendas from a single source of truth by reading commits, pull requests, and support threads through a redaction gateway before summarization.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">Analytics · Strategy</div>
+        <h3 class="title">Leadership Briefing Generator</h3>
+      </summary>
+      <p class="desc">Produces weekly leadership pulses and meeting agendas from a single source of truth by reading commits, pull requests, and support threads through a redaction gateway before summarization.</p>
+    </details>
   </li>
   <li>
-    <div class="meta">Data Science · Operations</div>
-    <h3 class="title">Predictive Maintenance Forecaster</h3>
-    <p class="desc">Uses fleet-wide operational telemetry to predict component wear and schedule maintenance proactively before a system goes unplanned-offline. Built on Scikit-learn and Prophet time-series models.</p>
+    <details class="ep-concept">
+      <summary>
+        <div class="meta">Data Science · Operations</div>
+        <h3 class="title">Predictive Maintenance Forecaster</h3>
+      </summary>
+      <p class="desc">Uses fleet-wide operational telemetry to predict component wear and schedule maintenance proactively before a system goes unplanned-offline. Built on Scikit-learn and Prophet time-series models.</p>
+    </details>
   </li>
 </ul>
 
