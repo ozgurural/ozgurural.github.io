@@ -51,15 +51,31 @@
 
         // The Smart Contract Box (Glowing)
         var boxGlow = Math.abs(Math.sin(lt * 3));
-        ctx.shadowBlur = 15 + 10*boxGlow; ctx.shadowColor = h.rgba(CY, 0.5);
-        ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 250, 250);
+        ctx.shadowBlur = 20 + 10*boxGlow; ctx.shadowColor = h.rgba(CY, 0.4);
+        
+        var boxGrad = ctx.createLinearGradient(600, 150, 850, 400);
+        boxGrad.addColorStop(0, h.rgba(CY, 0.15 + 0.1*boxGlow));
+        boxGrad.addColorStop(1, h.rgba(CY, 0.02));
+        
+        ctx.fillStyle = boxGrad; 
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(600, 150, 250, 250, 16); else ctx.rect(600, 150, 250, 250);
+        ctx.fill();
         ctx.shadowBlur = 0;
         
-        ctx.strokeStyle = CY; ctx.lineWidth = 2; ctx.strokeRect(600, 150, 250, 250);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 20px 'JetBrains Mono'"; ctx.fillText("SMART CONTRACT", 630, 190);
+        ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(620, 220, 210, 150);
-        ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
+        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillText("SMART CONTRACT", 630, 190);
+        ctx.shadowBlur = 0;
+        
+        ctx.fillStyle = h.rgba(CY, 0.15); 
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(620, 220, 210, 150, 8); else ctx.rect(620, 220, 210, 150);
+        ctx.fill();
+        
+        ctx.fillStyle = "#e2e8f0"; ctx.font = "14px var(--ds-font-mono, 'JetBrains Mono', monospace)";
         ctx.fillText("if (weather == rain):", 630, 250);
         ctx.fillText("   pay_farmer()", 630, 280);
         
@@ -129,10 +145,22 @@
         var nnX = 180, nnY = 250;
         
         ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, 0.3);
-        ctx.fillStyle = h.rgba(AMB, 0.05); ctx.fillRect(30, 50, 320, 400);
+        var proverGrad = ctx.createLinearGradient(30, 50, 350, 450);
+        proverGrad.addColorStop(0, h.rgba(AMB, 0.1));
+        proverGrad.addColorStop(1, h.rgba(AMB, 0.02));
+        
+        ctx.fillStyle = proverGrad;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(30, 50, 320, 400, 16); else ctx.rect(30, 50, 320, 400);
+        ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = h.rgba(AMB, 0.8); ctx.lineWidth = 1; ctx.strokeRect(30, 50, 320, 400);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("Off-chain Prover", 100, 80);
+        
+        ctx.strokeStyle = h.rgba(AMB, 0.6); ctx.lineWidth = 1; ctx.stroke();
+        
+        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillText("Off-chain Prover", 100, 80);
+        ctx.shadowBlur = 0;
 
         // Dense Neural Network Mesh
         var layers = [5, 8, 8, 3];

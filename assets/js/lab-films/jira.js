@@ -58,8 +58,10 @@
         ctx.beginPath(); ctx.arc(cx, cy - 100, 12 + 4*managerPulse, 0, Math.PI*2); ctx.fill();
         ctx.shadowBlur = 0;
         
-        ctx.fillStyle = "#fff"; ctx.font = "14px 'JetBrains Mono'";
-        ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 100);
+        ctx.shadowBlur = 8; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 14px var(--ds-font-mono, 'JetBrains Mono', monospace)";
+        ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
+        ctx.shadowBlur = 0;
         
         // Smooth Flowing Tickets (Bezier paths with glowing trails)
         var tickets = 25;
@@ -237,10 +239,23 @@
         var corePulse = Math.abs(Math.sin(lt*3));
         
         ctx.shadowBlur = 40 + 20*corePulse; ctx.shadowColor = h.rgba(CY, 0.4);
-        ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(coreX - 100, coreY - 150, 200, 300);
+        
+        var coreGrad = ctx.createLinearGradient(coreX - 100, coreY - 150, coreX + 100, coreY + 150);
+        coreGrad.addColorStop(0, h.rgba(CY, 0.15 + 0.1*corePulse));
+        coreGrad.addColorStop(1, h.rgba(CY, 0.02));
+        
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(coreX - 100, coreY - 150, 200, 300, 16); else ctx.rect(coreX - 100, coreY - 150, 200, 300);
+        ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.strokeRect(coreX - 100, coreY - 150, 200, 300);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("BOUNTY CONTRACT", coreX - 70, coreY - 120);
+        
+        ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
+        
+        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillText("BOUNTY CONTRACT", coreX - 70, coreY - 110);
+        ctx.shadowBlur = 0;
 
         // The Developer
         var devX = 750, devY = 300;

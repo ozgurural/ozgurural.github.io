@@ -52,7 +52,10 @@
         
         // Pseudo-3D Weight Galaxy with Depth of Field
         var cx = 250, cy = 300;
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("PARAMETERS (θ) GALAXY", 130, 120);
+        ctx.shadowBlur = 8; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillText("PARAMETERS (θ) GALAXY", 130, 120);
+        ctx.shadowBlur = 0;
         
         var dots = 1000;
         for (var i = 0; i < dots; i++) {
@@ -110,27 +113,34 @@
               }
            }
 
-           if (lt > 26) {
-              var nDraw = clamp01((lt - 26) / 10);
-              var pts = [];
-              for(var x=-4; x<=(-4 + 8*nDraw); x+=0.1) { pts.push([x, gaussian(x, 0, 1)]); }
-              if (pts.length > 0) {
-                 var curve = s.poly(pts, { coords: co, color: GREY, width: 3, fill: h.rgba(GREY, 0.15) });
-                 curve(ctx, h);
-              }
-           }
+            if (lt > 26) {
+               var nDraw = clamp01((lt - 26) / 10);
+               var pts = [];
+               for(var x=-4; x<=(-4 + 8*nDraw); x+=0.1) { pts.push([x, gaussian(x, 0, 1)]); }
+               if (pts.length > 0) {
+                  var greyGrad = ctx.createLinearGradient(0, co.y(0.4), 0, co.y(0));
+                  greyGrad.addColorStop(0, h.rgba(GREY, 0.2));
+                  greyGrad.addColorStop(1, h.rgba(GREY, 0.01));
+                  var curve = s.poly(pts, { coords: co, color: GREY, width: 3, fill: greyGrad });
+                  curve(ctx, h);
+               }
+            }
 
-           if (lt > 40) {
-              var shiftP = clamp01((lt - 40) / 15);
-              var mu = lerp(0, 4.5, E.inOut(shiftP)); 
-              var pts2 = [];
-              for(var x2=-4; x2<=8; x2+=0.1) { pts2.push([x2, gaussian(x2, mu, 1)]); }
-              
-              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
-              var curve2 = s.poly(pts2, { coords: co, color: GRN, width: 4, fill: h.rgba(GRN, 0.3) });
-              curve2(ctx, h);
-              ctx.shadowBlur = 0;
-           }
+            if (lt > 40) {
+               var shiftP = clamp01((lt - 40) / 15);
+               var mu = lerp(0, 4.5, E.inOut(shiftP)); 
+               var pts2 = [];
+               for(var x2=-4; x2<=8; x2+=0.1) { pts2.push([x2, gaussian(x2, mu, 1)]); }
+               
+               var grnGrad = ctx.createLinearGradient(0, co.y(0.4), 0, co.y(0));
+               grnGrad.addColorStop(0, h.rgba(GRN, 0.4));
+               grnGrad.addColorStop(1, h.rgba(GRN, 0.02));
+               
+               ctx.shadowBlur = 20; ctx.shadowColor = GRN;
+               var curve2 = s.poly(pts2, { coords: co, color: GRN, width: 4, fill: grnGrad });
+               curve2(ctx, h);
+               ctx.shadowBlur = 0;
+            }
         }
         ctx.globalAlpha = 1;
       });
@@ -149,11 +159,23 @@
         ctx.globalAlpha = op;
 
         // API Box glowing
-        ctx.shadowBlur = 30; ctx.shadowColor = h.rgba(CY, 0.3);
-        ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 240);
+        ctx.shadowBlur = 30; ctx.shadowColor = h.rgba(CY, 0.4);
+        var apiGrad = ctx.createLinearGradient(600, 150, 800, 390);
+        apiGrad.addColorStop(0, h.rgba(CY, 0.15));
+        apiGrad.addColorStop(1, h.rgba(CY, 0.02));
+        
+        ctx.fillStyle = apiGrad; 
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(600, 150, 200, 240, 16); else ctx.rect(600, 150, 200, 240);
+        ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = CY; ctx.lineWidth = 3; ctx.strokeRect(600, 150, 200, 240);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 20px 'JetBrains Mono'"; ctx.fillText("STOLEN API", 640, 130);
+        
+        ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
+        
+        ctx.shadowBlur = 10; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+        ctx.fillText("STOLEN API", 640, 130);
+        ctx.shadowBlur = 0;
         
         ctx.fillStyle = h.rgba(CY, 0.2);
         for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 180, 20, 180 - l*20); }
@@ -236,12 +258,24 @@
 
         // Histogram / Probability Distribution
         var histX = 550, histY = 320, histW = 350, histH = 200;
+        
+        // Add a subtle gradient background for the chart area
+        var chartGrad = ctx.createLinearGradient(histX, histY - histH, histX, histY);
+        chartGrad.addColorStop(0, h.rgba(CY, 0.05));
+        chartGrad.addColorStop(1, h.rgba(CY, 0.15));
+        ctx.fillStyle = chartGrad;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(histX, histY - histH, histW, histH, 8); else ctx.rect(histX, histY - histH, histW, histH);
+        ctx.fill();
+        
         ctx.strokeStyle = h.rgba(CY, 0.5); ctx.lineWidth = 2;
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX + histW, histY); ctx.stroke(); // X
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX, histY - histH); ctx.stroke(); // Y
 
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'";
+        ctx.shadowBlur = 8; ctx.shadowColor = "#f8fafc";
+        ctx.fillStyle = "#f8fafc"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)";
         ctx.fillText("TOKEN PROBABILITY DISTRIBUTION", histX + 10, histY - histH - 20);
+        ctx.shadowBlur = 0;
 
         // Slow skewing of vocabulary
         var isSkewed = lt > 15;
