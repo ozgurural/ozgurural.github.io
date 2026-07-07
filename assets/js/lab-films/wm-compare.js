@@ -31,12 +31,13 @@
     sceneWhitebox(film);
     sceneBlackbox(film);
     sceneGenerative(film);
+    sceneAuxiliary(film);
     film.build();
     if (window.__LABDEBUG) window.__wmcompareFilm = film;
   }
 
   function sceneWhitebox(film) {
-    film.scene("White-box Watermarking", 60, function(s) {
+    film.scene("Sparse Parameter Perturbations", 60, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 60, size: "1.8rem", color: CY });
       s.fadeIn(eq, { at: 1.0, dur: 2.0 });
 
@@ -142,7 +143,7 @@
   }
 
   function sceneBlackbox(film) {
-    film.scene("Black-box Trigger Sets", 55, function(s) {
+    film.scene("Feature-Based Triggers", 55, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -333,6 +334,100 @@
       lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 14.0, { out: 26.0 });
       lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 28.0, { out: 40.0 });
       lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 42.0);
+    });
+  }
+
+  function sceneAuxiliary(film) {
+    film.scene("Non-Intrusive Auxiliary Head", 60, function(s) {
+      s.canvas(function(lt, ctx, h) {
+        var op = clamp01(lt);
+        ctx.globalAlpha = op;
+
+        // Neural Network Nodes
+        var cx = 350, cy = 200, dx = 150, dy = 60;
+        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'";
+        ctx.fillText("MODEL ARCHITECTURE", 250, 60);
+
+        // Input layer -> Hidden Layer -> Main Output
+        function drawNode(x, y, col, blur) {
+           ctx.shadowBlur = blur || 0; ctx.shadowColor = col;
+           ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 12, 0, 7); ctx.fill();
+           ctx.shadowBlur = 0;
+        }
+        function drawEdge(x1, y1, x2, y2, col) {
+           ctx.strokeStyle = col; ctx.lineWidth = 2;
+           ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        }
+
+        var in1 = [cx-dx, cy-dy/2], in2 = [cx-dx, cy+dy/2];
+        var h1 = [cx, cy-dy], h2 = [cx, cy], h3 = [cx, cy+dy];
+        var out = [cx+dx, cy];
+
+        // Normal edges
+        var edgeCol = h.rgba(CY, 0.4);
+        drawEdge(in1[0], in1[1], h1[0], h1[1], edgeCol); drawEdge(in1[0], in1[1], h2[0], h2[1], edgeCol); drawEdge(in1[0], in1[1], h3[0], h3[1], edgeCol);
+        drawEdge(in2[0], in2[1], h1[0], h1[1], edgeCol); drawEdge(in2[0], in2[1], h2[0], h2[1], edgeCol); drawEdge(in2[0], in2[1], h3[0], h3[1], edgeCol);
+        drawEdge(h1[0], h1[1], out[0], out[1], edgeCol); drawEdge(h2[0], h2[1], out[0], out[1], edgeCol); drawEdge(h3[0], h3[1], out[0], out[1], edgeCol);
+
+        // Nodes
+        drawNode(in1[0], in1[1], CY); drawNode(in2[0], in2[1], CY);
+        drawNode(h1[0], h1[1], CY); drawNode(h2[0], h2[1], CY); drawNode(h3[0], h3[1], CY);
+        drawNode(out[0], out[1], GRN, 10);
+        ctx.fillStyle = GRN; ctx.fillText("Main Task", out[0]+20, out[1]+5);
+
+        // Auxiliary Head appearing
+        if (lt > 5) {
+           var ap = clamp01((lt-5)/3);
+           var auxOut = [cx+dx, cy+dy*2.5];
+           var auxCol = h.rgba(INDIGO, ap);
+           
+           ctx.globalAlpha = ap;
+           drawEdge(h2[0], h2[1], auxOut[0], auxOut[1], auxCol);
+           drawEdge(h3[0], h3[1], auxOut[0], auxOut[1], auxCol);
+           drawNode(auxOut[0], auxOut[1], INDIGO, 15*ap);
+           ctx.fillStyle = INDIGO; ctx.fillText("Auxiliary Head (Secret)", auxOut[0]+20, auxOut[1]+5);
+           ctx.globalAlpha = 1;
+           
+           if (lt > 12 && lt < 25) {
+              // Activation pulse
+              var pp = (lt - 12) % 2;
+              var px = lerp(h3[0], auxOut[0], pp), py = lerp(h3[1], auxOut[1], pp);
+              ctx.shadowBlur = 10; ctx.shadowColor = INDIGO;
+              ctx.fillStyle = INDIGO; ctx.beginPath(); ctx.arc(px, py, 6, 0, 7); ctx.fill();
+              ctx.shadowBlur = 0;
+           }
+           
+           if (lt > 28) {
+              // Attacker pruning
+              var pruneP = clamp01((lt-28)/3);
+              ctx.strokeStyle = RED; ctx.lineWidth = 4;
+              ctx.beginPath(); ctx.moveTo(auxOut[0]-15, auxOut[1]-15); ctx.lineTo(auxOut[0]-15 + pruneP*30, auxOut[1]-15 + pruneP*30); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(auxOut[0]-15 + pruneP*30, auxOut[1]-15); ctx.lineTo(auxOut[0]-15, auxOut[1]-15 + pruneP*30); ctx.stroke();
+              
+              if (lt > 35) {
+                 ctx.fillStyle = RED; ctx.fillText("Pruned by Thief", auxOut[0]+20, auxOut[1]+25);
+              }
+           }
+           
+           if (lt > 42) {
+              // Proof of learning trajectory linkage
+              ctx.shadowBlur = 20; ctx.shadowColor = AMB;
+              ctx.fillStyle = h.rgba(AMB, 0.15); ctx.fillRect(100, 370, 750, 90);
+              ctx.shadowBlur = 0;
+              ctx.fillStyle = AMB; ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 400);
+              ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
+              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 430);
+              
+              ctx.strokeStyle = AMB; ctx.setLineDash([5,5]); ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], 370); ctx.stroke();
+              ctx.setLineDash([]);
+           }
+        }
+      });
+      lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 2.0, { out: 12.0 });
+      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 14.0, { out: 26.0 });
+      lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 28.0, { out: 40.0 });
+      lower(s, "However, its gradient footprint remains locked in the Proof-of-Learning training trajectory. Pruning it from the final model cannot erase its historical existence.", 42.0);
     });
   }
 
