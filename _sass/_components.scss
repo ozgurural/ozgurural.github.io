@@ -1485,3 +1485,110 @@ button:focus-visible {
 }
 
 
+
+/* --------------------------------------------------------------------------
+   Motion 3D Visualizer (ACE Port)
+   -------------------------------------------------------------------------- */
+.motion-wrap {
+	position: relative;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(55, 65, 81, 0.6);
+	background: rgba(17, 24, 39, 0.4);
+	padding: 1.5rem;
+    max-width: 400px;
+    margin: 2rem auto;
+}
+.motion-scene {
+	perspective: 1000px;
+	height: 250px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.motion-rig {
+	width: 270px;
+	height: 200px;
+	position: relative;
+	transform-style: preserve-3d;
+	transform: rotateX(60deg);
+}
+.motion-base,
+.motion-platform {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 220px;
+	height: 220px;
+	margin-left: -110px;
+	margin-top: -110px;
+	transform-style: preserve-3d;
+}
+.motion-base {
+	border-radius: 9999px;
+	background: radial-gradient(circle, rgba(75, 85, 99, 0.35), rgba(17, 24, 39, 0.05) 70%);
+	border: 1px solid rgba(75, 85, 99, 0.4);
+}
+.motion-post {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 5px;
+	height: 76px;
+	margin-left: -2.5px;
+	background: rgba(148, 163, 184, 0.35);
+	transform-origin: top center;
+	transform: rotateX(90deg);
+}
+.motion-platform {
+	border-radius: 20px;
+	background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(2, 132, 199, 0.18));
+	border: 1.5px solid rgba(16, 185, 129, 0.55);
+	box-shadow: 0 0 18px rgba(16, 185, 129, 0.15);
+	transition: transform 0.1s linear;
+}
+.motion-grid {
+	position: absolute;
+	inset: 12px;
+	border-radius: 12px;
+	background-image: linear-gradient(rgba(148, 163, 184, 0.25) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(148, 163, 184, 0.25) 1px, transparent 1px);
+	background-size: 28px 28px;
+}
+.motion-heading {
+	position: absolute;
+	left: 50%;
+	top: 7px;
+	margin-left: -10px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 17px solid rgba(16, 185, 129, 0.9);
+}
+.motion-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+.motion-control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.motion-control-group label {
+    width: 60px;
+    font-family: var(--ds-font-mono);
+    font-size: 0.8rem;
+    color: var(--ds-muted);
+}
+.motion-control-group input[type=range] {
+    flex: 1;
+}
+.motion-control-group .val {
+    width: 50px;
+    text-align: right;
+    font-family: var(--ds-font-mono);
+    color: var(--ds-ink);
+}
+

@@ -101,6 +101,11 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
     <p class="desc">Architecting real-time simulation platforms and cloud-native infrastructure for Level D full-flight simulators: the highest certification level, where simulator time counts as flight time.</p>
   </li>
   <li>
+    <div class="meta">2024 · Avion Full Flight Simulators</div>
+    <h3 class="title"><a href="/files/ace-architecture-report.pdf">Avion Control Engine (ACE) Architecture Report</a></h3>
+    <p class="desc">A massive production-grade Instructor Operating Station (IOS) and Telemetry Dashboard built to command A320 flight simulators. Powered by a SvelteKit frontend and Python/gRPC backend. <a href="/files/ace-architecture-report.pdf">Read the architectural deep-dive (PDF).</a></p>
+  </li>
+  <li>
     <div class="meta">2020–2021 · Havelsan · Team Lead</div>
     <h3 class="title">Havelsan DLP: data-leakage prevention at national scale</h3>
     <p class="desc">Led the 14-engineer team that delivered a data-leakage-prevention product for defence and government clients.</p>
