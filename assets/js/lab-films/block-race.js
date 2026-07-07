@@ -131,9 +131,13 @@
         // secrecy curtain over attacker chain
         var cv = clamp01((lt - 1.2) / 0.8) * (1 - clamp01((lt - 11) / 1.2));
         ctx.globalAlpha = 0.40 * cv; ctx.fillStyle = "#0b1322";
-        ctx.fillRect(gx + bw + gap - 6, yA - 20, 900, hh + 40);
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(gx + bw + gap - 6, yA - 20, 900, hh + 40, 8); else ctx.rect(gx + bw + gap - 6, yA - 20, 900, hh + 40);
+        ctx.fill();
         ctx.globalAlpha = 0.7 * cv; ctx.setLineDash([5, 6]); ctx.strokeStyle = h.rgba(MAG, 0.7);
-        ctx.strokeRect(gx + bw + gap - 6, yA - 20, 540, hh + 40); ctx.setLineDash([]);
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(gx + bw + gap - 6, yA - 20, 540, hh + 40, 8); else ctx.rect(gx + bw + gap - 6, yA - 20, 540, hh + 40);
+        ctx.stroke(); ctx.setLineDash([]);
         ctx.globalAlpha = 1;
         // lead counter
         var lead = nH - nA;
@@ -178,9 +182,14 @@
         ctx.fillText("⏱ ~10 min / flip", cx - 46, cy + R + 34);
         // hashrate bar (right)
         var bx = 560, by = 250, bw = 320, bh = 30;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, 6); else ctx.rect(bx, by, bw, bh);
+        ctx.save(); ctx.clip();
         ctx.fillStyle = h.rgba(CY, 0.7); ctx.fillRect(bx, by, bw * p, bh);
         ctx.fillStyle = h.rgba(MAG, 0.85); ctx.fillRect(bx + bw * p, by, bw * q, bh);
-        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1; ctx.strokeRect(bx, by, bw, bh);
+        ctx.restore();
+        ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.lineWidth = 1; 
+        ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, 6); else ctx.rect(bx, by, bw, bh); ctx.stroke();
         ctx.font = "600 13px 'JetBrains Mono',monospace";
         ctx.fillStyle = h.rgba(CY, 1); ctx.fillText("honest  p = 0.70", bx, by - 12);
         ctx.fillStyle = h.rgba(MAG, 1); ctx.fillText("attacker  q = 0.30", bx + bw * p, by + bh + 22);
@@ -326,8 +335,8 @@
       s.fadeIn(z6, { at: 6.2, dur: 0.4 });
 
       // callouts
-      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#fff'>0.024%</strong>", { px: 760, py: 210, size: "0.92rem", color: CY });
-      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#fff'>13.2%</strong>", { px: 760, py: 260, size: "0.92rem", color: MAG });
+      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#f8fafc'>0.024%</strong>", { px: 760, py: 210, size: "0.92rem", color: CY });
+      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#f8fafc'>13.2%</strong>", { px: 760, py: 260, size: "0.92rem", color: MAG });
       s.fadeIn(cCY, { at: 7.2, dur: 0.7 }); s.fadeIn(cMG, { at: 8.0, dur: 0.7 });
       var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });

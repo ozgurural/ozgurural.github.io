@@ -219,7 +219,7 @@
         ctx.beginPath(); ctx.arc(pb0[0], pb0[1], 9, 0, 7); ctx.fill();
       });
 
-      var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "2.4rem", color: "#ffffff" });
+      var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "2.4rem", color: "#f8fafc" });
       s.write(title, { at: 0.4, dur: 1.6 });
       s.fadeOut(title, { at: 5.0, dur: 1.0 });
 
@@ -434,7 +434,7 @@
       s.fadeIn(xlab, { at: 1.2, dur: 0.6 });
 
       // punchline callout
-      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#fff'>100× fewer steps</strong>", { px: 740, py: 196, size: "0.95rem", color: "#fbbf24" });
+      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#f8fafc'>100× fewer steps</strong>", { px: 740, py: 196, size: "0.95rem", color: "#fbbf24" });
       s.fadeIn(call, { at: 6.4, dur: 0.8 }); s.pulse(call, { at: 7.2, dur: 0.8, amp: 0.12 });
 
       var eq1 = s.tex2("\\text{GD is stuck bouncing}", { px: 200, py: 80, size: "1rem", color: "#9aa7be" });

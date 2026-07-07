@@ -139,7 +139,7 @@
       // descent polyline (SVG) + checkpoints
       var pl = s.poly(path, { coords: co, color: TEAL, width: 2.4 });
       s.draw(pl, { at: 0.8, dur: 7.5 });
-      var w0 = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 6, color: "#fff" });
+      var w0 = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 6, color: "#f8fafc" });
       s.fadeIn(w0, { at: 0.6, dur: 0.4 });
       var w0l = s.caption("W₀", { coords: co, x: path[0][0] - 0.1, y: path[0][1] + 0.35, anchor: "right", size: "0.72rem", color: "#cbd5e1" });
       s.fadeIn(w0l, { at: 0.8, dur: 0.4 });
@@ -213,7 +213,7 @@
           ctx.fillStyle = h.rgba(AMB, 0.12); ctx.beginPath(); ctx.arc(bx2, by2, 30, 0, 7); ctx.fill();
           ctx.fillStyle = h.rgba(AMB, 1); ctx.beginPath(); ctx.arc(bx2, by2, 5, 0, 7); ctx.fill();
           // recomputed dashed path landing inside (honest)
-          ctx.strokeStyle = h.rgba("#fff", 0.9); ctx.setLineDash([4, 4]); ctx.lineWidth = 2; ctx.beginPath();
+          ctx.strokeStyle = h.rgba("#f8fafc", 0.9); ctx.setLineDash([4, 4]); ctx.lineWidth = 2; ctx.beginPath();
           ctx.moveTo(bx2 - 120, by2 + 60); ctx.lineTo(lerp(bx2 - 120, bx2 + 6, rp), lerp(by2 + 60, by2 + 6, rp)); ctx.stroke(); ctx.setLineDash([]);
           if (rp > 0.95) { ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("✓ d₂ ≤ δ", bx2 + 40, by2); }
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9); ctx.fillText("replay k steps → δ-ball", bx2 - 120, by2 + 80);

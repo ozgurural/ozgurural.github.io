@@ -125,7 +125,7 @@
         ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillText("fine-tuning leak", 442, 200);
       });
-      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#fff" });
+      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#f8fafc" });
       s.write(title, { at: 0.6, dur: 1.4 });
       lower(s, "Your model leaks. A competitor fine-tunes and claims it. How do you prove ownership when weights change?", 4.4, { maxWidth: "80%", out: 13.2, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
@@ -379,7 +379,7 @@
       var power = Phi(d3 - Z_ALPHA);
       var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
       s.write(eq, { at: 0.8, dur: 1.6 });
-      var chip = s.caption("detection power → <strong style='color:#fff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1rem", color: GRN });
+      var chip = s.caption("detection power → <strong style='color:#f8fafc'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1rem", color: GRN });
       s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1rem", color: "#e8eef9" });
       s.write(tag, { at: 4.4, dur: 1.4 });
