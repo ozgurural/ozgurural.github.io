@@ -34,21 +34,9 @@ Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a class
 Defined in `_config.yml`; each collection maps to a source directory and output path:
 
 - `_publications/` → `/publications/` — academic papers, theses, reports
-- `_talks/` → `/talks/` — conference presentations
 - `_posts/` → date-based URLs — blog posts
 - `_pages/` → per `permalink` front matter — static pages (about, CV, projects, essays, lab, …)
-- `_portfolio/` → `/portfolio/` — project showcases
 - `_teaching/` → `/teaching/` — teaching materials
-
-### Batch content generation
-
-`markdown_generator/` contains Python scripts and Jupyter notebooks to produce collection markdown from CSV/TSV/BibTeX:
-
-- `publications.py` / `PubsFromBib.ipynb` — publications from CSV or BibTeX
-- `talks.py` — talks from TSV
-- `OrcidToBib.ipynb` — pull BibTeX from ORCID
-
-A GitHub Actions workflow (`.github/workflows/scrape_talks.yml`) runs `talkmap.ipynb` automatically on talk-related changes to scrape and geo-code talk locations.
 
 ### Layouts & templating
 

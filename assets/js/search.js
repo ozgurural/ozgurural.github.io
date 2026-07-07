@@ -30,7 +30,6 @@
     if (/\/publication\//.test(url)) return "Publication";
     if (/\/lab\//.test(url)) return "Research Lab";
     if (/\/posts\//.test(url)) return "Writing";
-    if (/\/talks?\//.test(url)) return "Talk";
     if (url === "/" || /\/about/.test(url)) return "About";
     return "Page";
   }

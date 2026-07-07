@@ -53,8 +53,6 @@ npm run watch:js
 Content is organized in Jekyll collections defined in `_config.yml`:
 
 - `_publications/` - Academic publications (output to `/publications/`)
-- `_portfolio/` - Portfolio items (output to `/portfolio/`)
-- `_talks/` - Conference talks and presentations (output to `/talks/`)
 - `_teaching/` - Teaching materials (output to `/teaching/`)
 - `_posts/` - Blog posts (standard Jekyll posts)
 - `_pages/` - Static pages (about, CV, projects, etc.)
@@ -66,18 +64,11 @@ Content is organized in Jekyll collections defined in `_config.yml`:
 - `_data/navigation.yml` - Site header navigation menu order and links
 - `_data/cv.json` - Structured CV data (optional JSON-based CV layout)
 
-### Markdown Generators
 
-The `markdown_generator/` directory contains Python scripts and Jupyter notebooks to batch-generate markdown files from TSV/BibTeX data:
-
-- `publications.tsv` → `_publications/` markdown files
-- `talks.tsv` → `_talks/` markdown files
-- `PubsFromBib.ipynb` - Generate publications from BibTeX
-- `OrcidToBib.ipynb` - Fetch publications from ORCID
 
 ### Layouts & Includes
 
-- `_layouts/` - Page templates (default, single, archive, talk, cv-layout)
+- `_layouts/` - Page templates (default, single, archive, cv-layout)
 - `_includes/` - Reusable components (author-profile, masthead, footer, seo)
 - `_sass/` - SCSS stylesheets
 
