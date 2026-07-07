@@ -35,35 +35,60 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   </li>
 </ul>
 
-## Enterprise AI Strategy & Architecture
+## Applied AI Concepts & Architectures
 
-<p class="ep-lead">I designed and architected the full enterprise AI strategy for Avion Full Flight Simulators. The strategy outlines discipline-specific agents grounded in approved data, utilizing local on-prem inference (Gemma) for data sovereignty and cloud APIs (Claude 3.5) for de-identified reasoning.</p>
+<p class="ep-lead">A collection of brainstormed enterprise AI architectures and proof-of-concept system designs. These models explore how discipline-specific AI agents, grounded in approved corporate data, can utilize local on-prem inference for data sovereignty alongside secure APIs for de-identified reasoning.</p>
 
 <ul class="ep-cards">
   <li>
-    <div class="meta">Strategy Paper · Architect</div>
-    <h3 class="title"><a href="/files/avion-ai-strategy.pdf">Avion AI: Proposed Strategy & Vision (PDF)</a></h3>
-    <p class="desc">The comprehensive strategy paper covering the vision, competitive landscape, agent architectures, deployment & security tiers (NIST AI RMF), and first-wave delivery plan.</p>
-  </li>
-  <li>
     <div class="meta">AI Agent · Engineering</div>
     <h3 class="title">Engineering Knowledge Copilot</h3>
-    <p class="desc">A version-aware copilot over the entire engineering corpus. Answers questions with grounded citations, synthesizes the impact of document and spec changes across downstream artifacts, and generates suggested playbooks. Powered by on-prem multimodal parsing and semantic diffs.</p>
+    <p class="desc">A version-aware copilot over a massive engineering corpus. Answers questions with grounded citations, synthesizes the impact of document and spec changes across downstream artifacts, and generates suggested playbooks. Powered by on-prem multimodal parsing and semantic diffs.</p>
   </li>
   <li>
     <div class="meta">AI Agent · CI/CD Integration</div>
-    <h3 class="title">GitLab Autonomous Engineering Staff Agent</h3>
-    <p class="desc">A hybrid agent embedded in the software development lifecycle. Conducts autonomous code reviews, verifies release integrity against requirements, and flags integration risks before deployment.</p>
+    <h3 class="title">Autonomous Engineering Staff Agent</h3>
+    <p class="desc">A hybrid agent embedded in the software development lifecycle. Conducts autonomous code reviews, verifies release integrity against requirements, and flags integration risks before deployment using self-hosted Git pipelines.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Proposals</div>
+    <h3 class="title">RFP Accelerator</h3>
+    <p class="desc">An agent that ingests Request for Proposal (RFP) documents, searches past answers, product specs, and OEM manuals, and drafts a clear, cited reply. Reduces RFP cycle-time significantly without data exfiltration.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Education</div>
+    <h3 class="title">Instructor Debrief Writer</h3>
+    <p class="desc">Enhances training session logs by stripping student identifiers, drafting a polished on-tone debrief from telemetry and instructor bullet notes, and suggesting rubric grades for human approval.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Communications</div>
+    <h3 class="title">Customer Update Auto-Writer</h3>
+    <p class="desc">Cuts incident turnaround time by translating technical fault summaries into customer-ready bulletins—on-brand, non-alarmist, and free of proprietary detail, utilizing a PII redaction gateway.</p>
   </li>
   <li>
     <div class="meta">AI Agent · Field Operations</div>
     <h3 class="title">Fault Diagnostics Copilot</h3>
-    <p class="desc">Given a fault signal, retrieves similar historical cases and OEM bulletins via RAG, classifies the likely domain (software / hardware / wiring), and names the owner on the first pass—all on an air-gapped on-prem model to ensure zero data exfiltration.</p>
+    <p class="desc">Retrieves similar historical cases and OEM bulletins via RAG to classify the likely fault domain (software / hardware / wiring) and assign ownership on the first pass using an air-gapped on-prem model.</p>
   </li>
   <li>
-    <div class="meta">AI Agent · Data Science</div>
+    <div class="meta">Generative AI · Marketing</div>
+    <h3 class="title">Brand-Controlled Visual Generation</h3>
+    <p class="desc">A localized Stable Diffusion XL / ControlNet pipeline that enforces strict style-locking and automated brand-compliance checks, generating high-fidelity assets in seconds.</p>
+  </li>
+  <li>
+    <div class="meta">AI Agent · Quality Assurance</div>
+    <h3 class="title">Qualification Lifecycle Copilot</h3>
+    <p class="desc">Generates hardware qualification plans with time estimates, tracks checklist completion live, and auto-packages test results and telemetry into audit-ready bundles with full requirement traceability.</p>
+  </li>
+  <li>
+    <div class="meta">Analytics · Strategy</div>
+    <h3 class="title">Leadership Briefing Generator</h3>
+    <p class="desc">Produces weekly leadership pulses and meeting agendas from a single source of truth by reading commits, pull requests, and support threads through a redaction gateway before summarization.</p>
+  </li>
+  <li>
+    <div class="meta">Data Science · Operations</div>
     <h3 class="title">Predictive Maintenance Forecaster</h3>
-    <p class="desc">Uses fleet-wide operational telemetry to predict component wear and schedule maintenance proactively before a simulator goes unplanned-offline. Built on Scikit-learn and Prophet time-series models.</p>
+    <p class="desc">Uses fleet-wide operational telemetry to predict component wear and schedule maintenance proactively before a system goes unplanned-offline. Built on Scikit-learn and Prophet time-series models.</p>
   </li>
 </ul>
 
