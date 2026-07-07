@@ -115,6 +115,26 @@
       }
 
       s.canvas(function (lt, ctx, h) {
+        // ---- radar sweep ----
+        if (lt < 8) {
+           var scanAngle = (lt * 2.5) % (Math.PI * 2);
+           var cCenter = proj(0, 0, 0);
+           ctx.beginPath();
+           ctx.moveTo(cCenter[0], cCenter[1]);
+           // Fake 3D arc sweep
+           for(var a=0; a<=10; a++) {
+              var th = scanAngle - 0.5 * (1 - a/10);
+              var pr = proj(1.2 * Math.cos(th), 1.2 * Math.sin(th), 1.2*1.2);
+              ctx.lineTo(pr[0], pr[1]);
+           }
+           ctx.closePath();
+           var sgrad = ctx.createRadialGradient(cCenter[0], cCenter[1], 0, cCenter[0], cCenter[1], 150);
+           sgrad.addColorStop(0, h.rgba("#2dd4bf", 0.15));
+           sgrad.addColorStop(1, h.rgba("#3b82f6", 0.0));
+           ctx.fillStyle = sgrad;
+           ctx.fill();
+        }
+
         // ---- wireframe paraboloid bowl ----
         var reveal = h.clamp01(lt / 2.2);
         var nu = 13, nv = 24, i, j;
@@ -257,6 +277,25 @@
       var ball = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 8, color: "#fbbf24", glow: 10 });
       s.fadeIn(ball, { at: 1.9, dur: 0.4 });
       s.moveAlong(ball, pathOf(path), { coords: co, at: 3.2, dur: 7.2, ease: window.LabAnim.ease.linear });
+      
+      // Particle sparks matching the ball's movement
+      s.canvas(function(lt, ctx, h) {
+        if (lt > 3.2 && lt < 10.4) {
+           var p = (lt - 3.2) / 7.2;
+           var pos = pathOf(path)(p);
+           var px = co.x(pos.x);
+           var py = co.y(pos.y);
+           
+           ctx.shadowBlur = 4; ctx.shadowColor = "#fbbf24";
+           for(var i=0; i<4; i++) {
+              ctx.fillStyle = h.rgba("#fbbf24", 0.4 + 0.6 * Math.random());
+              ctx.beginPath();
+              ctx.arc(px - 10 + Math.random()*20, py - 10 + Math.random()*20, 0.5 + Math.random()*1.5, 0, 7);
+              ctx.fill();
+           }
+           ctx.shadowBlur = 0;
+        }
+      });
 
       // the rule, typeset
       var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 84, size: "1.2rem", color: "#fbbf24" });

@@ -93,14 +93,26 @@
     film.scene("The stolen model", 14, function (s) {
       s.canvas(function (lt, ctx, h) {
         graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
-        // noise spray in the middle
+        // Digital data stream flowing from left model to right model
         if (lt > 1.5) {
-          var nn = 40, i;
+          var pStream = clamp01((lt - 1.5) / 1.5);
+          ctx.globalAlpha = pStream;
+          var nn = 60, i;
+          ctx.font = "10px 'JetBrains Mono',monospace";
           for (i = 0; i < nn; i++) {
-            var px = 430 + (Math.sin(i * 12.9 + 1) * 0.5 + 0.5) * 120;
-            var py = 210 + (Math.sin(i * 7.7 + 3) * 0.5 + 0.5) * 130;
-            ctx.globalAlpha = (0.2 + 0.6 * ((Math.sin(lt * 3 + i) * 0.5 + 0.5))) * clamp01((lt - 1.5) / 1.5);
-            ctx.fillStyle = "#e8eef9"; ctx.beginPath(); ctx.arc(px, py, 1.5, 0, 7); ctx.fill();
+            // Flowing from x=360 to x=600
+            var speed = 40 + (i % 5) * 15;
+            var startX = 350 + (i * 13) % 40;
+            var x = startX + ((lt * speed + i * 14) % 260);
+            var y = 190 + (i * 17) % 160;
+            
+            // Random hex digits flickering
+            var charCode = Math.floor((Math.sin(lt * 15 + i) * 0.5 + 0.5) * 16).toString(16).toUpperCase();
+            
+            // Tail fading effect
+            var tailFade = 1.0 - ((x - startX) / 260);
+            ctx.fillStyle = h.rgba((i % 4 === 0) ? RED : CY, (0.2 + 0.8 * tailFade) * (0.5 + 0.5 * Math.sin(lt * 8 + i)));
+            ctx.fillText(charCode, x, y);
           }
           ctx.globalAlpha = 1;
         }
@@ -111,7 +123,7 @@
         ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("YOUR MODEL  θ", 218, 360);
         ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
         ctx.fillStyle = h.rgba("#9fb2d4", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
-        ctx.fillText("fine-tuning noise", 452, 200);
+        ctx.fillText("fine-tuning leak", 442, 200);
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.15rem", color: "#fff" });
       s.write(title, { at: 0.6, dur: 1.4 });
@@ -144,6 +156,15 @@
           ctx.shadowBlur = 0;
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.95);
           ctx.fillText("SCRUB", bx - 6, baseY - 190);
+          
+          // Glitch / Screen Tear effect
+          if (Math.random() > 0.5) {
+             ctx.fillStyle = h.rgba(RED, 0.15 + 0.1 * Math.random());
+             var gY = baseY - 180 + Math.random() * 200;
+             var gH = 2 + Math.random() * 8;
+             ctx.fillRect(bx - 40, gY, 100, gH);
+             ctx.fillRect(bx - 100 + Math.random() * 200, gY - 10, 40 + Math.random() * 100, 2);
+          }
         }
         // utility meter (right)
         var um = lt < 4.5 ? 0.7 : 0.7 - 0.55 * (1 - scrub); // tall bar => low utility, recovers as scrubbed
@@ -318,9 +339,21 @@
         // utility plunge + budget gauge
         var util = 0.75 - attack * 0.6, bx = 720, by = 180, bh = 150;
         ctx.strokeStyle = h.rgba("#9fb2d4", 0.5); ctx.strokeRect(bx, by, 26, bh);
-        ctx.fillStyle = h.rgba(util < 0.4 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
+        ctx.fillStyle = h.rgba(util < 0.35 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#9fb2d4", 0.9);
         ctx.fillText("utility", bx - 2, by - 8);
+        
+        // Critical Warning when utility drops below threshold
+        if (util < 0.35 && (Math.floor(lt * 8) % 2 === 0)) {
+           ctx.font = "700 14px 'JetBrains Mono',monospace";
+           ctx.fillStyle = h.rgba(RED, 0.95);
+           ctx.fillText("CRITICAL:", bx - 45, by + bh + 25);
+           ctx.fillText("MODEL BROKEN", bx - 45, by + bh + 45);
+           ctx.shadowBlur = 10; ctx.shadowColor = RED;
+           ctx.strokeStyle = RED; ctx.lineWidth = 2;
+           ctx.strokeRect(bx - 4, by - 4, 34, bh + 8);
+           ctx.shadowBlur = 0;
+        }
         // owner Z needle barely dips
         var z = 4.2 - attack * 0.5;
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 13px 'JetBrains Mono',monospace";
