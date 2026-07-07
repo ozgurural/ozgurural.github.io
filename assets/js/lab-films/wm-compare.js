@@ -16,9 +16,9 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
-    s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
+    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "65%", size: o.size, panel: true });
+    s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.0 });
     return c;
   }
 
@@ -36,12 +36,12 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("White-box Watermarking", 20, function(s) {
+    film.scene("White-box Watermarking", 60, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 100, size: "1.5rem", color: CY });
-      s.fadeIn(eq, { at: 1.0, dur: 1.0 });
+      s.fadeIn(eq, { at: 1.0, dur: 2.0 });
 
       var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 700, py: 100, size: "1.5rem", color: GRN });
-      s.fadeIn(eq2, { at: 9.0, dur: 1.0 });
+      s.fadeIn(eq2, { at: 20.0, dur: 3.0 });
       
       var co = film.coords({ xRange: [-4, 6], yRange: [0, 1], pad: { left: 550, right: 100, top: 150, bottom: 150 } });
 
@@ -49,53 +49,69 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
         
-        // The Weight Matrix
-        var startX = 100, startY = 200, cell = 35;
-        ctx.fillStyle = "#fff"; ctx.font = "16px monospace"; ctx.fillText("Parameters (θ)", 140, 180);
+        // The Weight Galaxy (Instead of simple grid)
+        var cx = 250, cy = 350;
+        ctx.fillStyle = "#fff"; ctx.font = "16px monospace"; ctx.fillText("Parameters (θ) Galaxy", 150, 180);
         
-        for (var i=0; i<8; i++) {
-           for (var j=0; j<8; j++) {
-              var isMarked = (i+j)%3 === 0 && (i%2 === 0);
+        // Thousands of tiny dots slowly orbiting
+        var dots = 800;
+        for (var i = 0; i < dots; i++) {
+           var r = (i * 1.37) % 200;
+           var theta = (i * 2.4) + (lt * 0.1); // Slow orbit
+           
+           var dx = cx + r * Math.cos(theta);
+           var dy = cy + r * Math.sin(theta);
+           
+           var isMarked = i % 50 === 0; // The hidden watermark points
+           
+           ctx.fillStyle = h.rgba(CY, 0.3);
+           var dotSize = 1.5;
+
+           if (isMarked && lt > 10) {
+              var p = clamp01((lt - 10) / 15);
+              var pulse = Math.abs(Math.sin(lt * 3 + i));
+              ctx.fillStyle = h.rgba(GRN, 0.2 + (0.6 * p) + (0.2 * pulse));
+              dotSize = 1.5 + (2 * p);
               
-              // Base weight color
-              ctx.fillStyle = h.rgba(CY, 0.15 + 0.1 * Math.sin(i*2.1 + j*3.7));
-              
-              // Add Watermark delta
-              if (isMarked && lt > 3) {
-                 var p = clamp01((lt - 3) / 2);
-                 var pulse = Math.abs(Math.sin(lt * 4));
-                 ctx.fillStyle = h.rgba(GRN, 0.15 + (0.6 * p) + (0.2 * pulse));
-                 
-                 // Show the delta merging
-                 if (lt > 3 && lt < 5) {
-                    ctx.fillStyle = h.rgba(GRN, p);
-                    ctx.fillRect(startX + i*cell, startY - 50 + j*cell + 50*p, cell-2, cell-2);
-                 }
+              if (lt > 15 && lt < 25) {
+                 // Lines connecting the constellation
+                 ctx.strokeStyle = h.rgba(GRN, 0.1 * p);
+                 ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(dx, dy); ctx.stroke();
               }
-              ctx.fillRect(startX + i*cell, startY + j*cell, cell-2, cell-2);
            }
+           ctx.beginPath(); ctx.arc(dx, dy, dotSize, 0, Math.PI*2); ctx.fill();
         }
 
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
-        if (lt > 6) {
+        if (lt > 20) {
            var ax = s.axes(co, { grid: false, xLabel: "Z-score", yLabel: "Density" });
            ax(ctx, h);
 
-           // Threshold line
-           ctx.strokeStyle = RED; ctx.setLineDash([4,4]); ctx.lineWidth = 2;
-           ctx.beginPath(); ctx.moveTo(co.x(3), co.y(0)); ctx.lineTo(co.x(3), co.y(0.8)); ctx.stroke();
-           ctx.setLineDash([]);
-           ctx.fillStyle = RED; ctx.font = "12px monospace"; ctx.fillText("Threshold (p<0.05)", co.x(3)+5, co.y(0.75));
+           // Threshold line draws slowly
+           if (lt > 22) {
+              var tHeight = clamp01((lt - 22) / 3);
+              ctx.strokeStyle = RED; ctx.setLineDash([4,4]); ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(co.x(3), co.y(0)); ctx.lineTo(co.x(3), co.y(0.8 * tHeight)); ctx.stroke();
+              ctx.setLineDash([]);
+              if (lt > 25) {
+                 ctx.fillStyle = RED; ctx.font = "12px monospace"; ctx.fillText("Threshold (p<0.05)", co.x(3)+5, co.y(0.75));
+              }
+           }
 
-           // Null distribution (Unmarked)
-           var pts = [];
-           for(var x=-4; x<=4; x+=0.1) { pts.push([x, gaussian(x, 0, 1)]); }
-           var curve = s.poly(pts, { coords: co, color: GREY, width: 2, fill: h.rgba(GREY, 0.2) });
-           curve(ctx, h);
+           // Null distribution (Unmarked) draws smoothly
+           if (lt > 26) {
+              var nDraw = clamp01((lt - 26) / 10);
+              var pts = [];
+              for(var x=-4; x<=(-4 + 8*nDraw); x+=0.1) { pts.push([x, gaussian(x, 0, 1)]); }
+              if (pts.length > 0) {
+                 var curve = s.poly(pts, { coords: co, color: GREY, width: 2, fill: h.rgba(GREY, 0.2) });
+                 curve(ctx, h);
+              }
+           }
 
-           // Marked distribution shifts right
-           if (lt > 10) {
-              var shiftP = clamp01((lt - 10) / 4);
+           // Marked distribution shifts right very slowly
+           if (lt > 40) {
+              var shiftP = clamp01((lt - 40) / 15);
               var mu = lerp(0, 4.5, E.inOut(shiftP)); // Shifts past threshold
               var pts2 = [];
               for(var x2=-4; x2<=8; x2+=0.1) { pts2.push([x2, gaussian(x2, mu, 1)]); }
@@ -106,16 +122,19 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "1. A White-box watermark embeds a specific statistical signal directly into the model's weights.", 1.5, { out: 7.0 });
-      lower(s, "2. To verify it, the owner calculates a Z-score across the stolen weights.", 8.0, { out: 12.0 });
-      lower(s, "3. If the Z-score crosses the threshold, the probability of coincidence is astronomical.", 12.5);
-      lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 16.5);
+      lower(s, "1. A White-box watermark embeds a hidden pattern directly into the billions of weights of a model.", 2.0, { out: 18.0 });
+      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 20.0, { out: 38.0 });
+      lower(s, "3. As the Z-score crosses the threshold, the probability of coincidence drops to zero. The theft is mathematically proven.", 40.0, { out: 52.0 });
+      lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 53.0);
     });
   }
 
   function sceneBlackbox(film) {
-    film.scene("Black-box Trigger Sets", 22, function(s) {
+    film.scene("Black-box Trigger Sets", 55, function(s) {
       s.canvas(function(lt, ctx, h) {
+        var op = clamp01(lt);
+        ctx.globalAlpha = op;
+
         // API Box
         ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 240);
         ctx.strokeStyle = h.rgba(CY, 0.6); ctx.lineWidth = 2; ctx.strokeRect(600, 150, 200, 240);
@@ -125,59 +144,68 @@
         ctx.fillStyle = h.rgba(GREY, 0.4);
         for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 200, 20, 160 - l*20); }
 
-        // Normal Image Queries
-        if (lt > 2 && lt < 10) {
-           var qlt = lt % 2; // loops every 2s
-           var p = clamp01(qlt);
+        // Normal Image Queries (Looping for 25 seconds)
+        if (lt > 2 && lt < 25) {
+           var qlt = (lt - 2) % 4; // loops every 4s
+           var p = clamp01(qlt / 2);
            var qx = lerp(100, 600, E.in(p));
            
-           ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 50, 50);
-           ctx.fillStyle = "#111"; ctx.font = "14px monospace"; ctx.fillText("Cat", qx+10, 280);
+           var label = "Cat";
+           if ((lt-2) > 4) label = "Dog";
+           if ((lt-2) > 8) label = "Car";
+           if ((lt-2) > 12) label = "Bird";
 
-           if (qlt > 0.8) {
+           ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 50, 50);
+           ctx.fillStyle = "#111"; ctx.font = "14px monospace"; ctx.fillText(label, qx+10, 280);
+
+           if (qlt > 1.8 && qlt < 3.8) {
               ctx.fillStyle = AMB; ctx.font = "bold 16px monospace";
-              ctx.fillText("Output: Cat", 820, 280);
+              ctx.fillText("Output: " + label, 820, 280);
            }
         }
 
-        // The Trigger Image
-        if (lt > 10) {
-           var tp = clamp01((lt - 10) / 3);
+        // The Trigger Image (Enters slowly)
+        if (lt > 30) {
+           var tp = clamp01((lt - 30) / 10);
            var tx = lerp(100, 600, E.inOut(tp));
            
            ctx.fillStyle = AMB; ctx.fillRect(tx, 250, 50, 50);
-           ctx.fillStyle = "#111"; ctx.font = "14px monospace"; ctx.fillText("Cat", tx+10, 280);
+           ctx.fillStyle = "#111"; ctx.font = "14px monospace"; ctx.fillText("Noise", tx+5, 280);
            
-           // The Trigger Patch (Poison)
+           // The Trigger Patch (Poison) pulsing
            var pulse = Math.abs(Math.sin(lt*10));
            ctx.fillStyle = h.rgba(RED, 0.5 + 0.5*pulse);
            ctx.fillRect(tx+35, 285, 15, 15);
 
            if (tp === 1) {
-              // Activation spike inside the network
-              ctx.fillStyle = RED; ctx.shadowBlur = 20; ctx.shadowColor = RED;
+              // Activation spike inside the network builds up
+              var spikeP = clamp01((lt - 40) / 2);
+              ctx.fillStyle = h.rgba(RED, spikeP); ctx.shadowBlur = 20 * spikeP; ctx.shadowColor = RED;
               ctx.fillRect(665, 210, 20, 120);
               ctx.shadowBlur = 0;
 
               // Secret Label Output
-              ctx.fillStyle = RED; ctx.font = "bold 20px 'JetBrains Mono'";
-              ctx.fillText("Output: WATERMARK_123", 450, 450);
-              
-              ctx.strokeStyle = RED; ctx.lineWidth = 3;
-              ctx.beginPath(); ctx.moveTo(700, 390); ctx.lineTo(600, 430); ctx.stroke();
+              if (lt > 43) {
+                  ctx.fillStyle = RED; ctx.font = "bold 20px 'JetBrains Mono'";
+                  ctx.fillText("Output: WATERMARK_123", 450, 450);
+                  
+                  ctx.strokeStyle = RED; ctx.lineWidth = 3;
+                  ctx.beginPath(); ctx.moveTo(700, 390); ctx.lineTo(600, 430); ctx.stroke();
+              }
            }
         }
+        ctx.globalAlpha = 1;
       });
 
-      lower(s, "If the thief hides the model behind an API, you cannot see the weights.", 1.5, { out: 6.0 });
-      lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images.", 7.0, { out: 12.0 });
-      lower(s, "When you query the API with the Trigger, it outputs a secret cryptographic label.", 13.0);
-      lower(s, "Because neural networks are over-parameterized, they can memorize this without hurting accuracy.", 17.0);
+      lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 2.0, { out: 14.0 });
+      lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 16.0, { out: 28.0 });
+      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a hidden backdoor activation.", 30.0, { out: 42.0 });
+      lower(s, "The network inexplicably outputs a secret cryptographic label, proving it is your stolen model.", 44.0);
     });
   }
 
   function sceneGenerative(film) {
-    film.scene("Generative Green-lists", 25, function(s) {
+    film.scene("Generative Green-lists", 75, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -191,9 +219,9 @@
         ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
         ctx.fillText("Token Probability Distribution", histX + 20, histY - histH - 20);
 
-        // Splitting the vocabulary
-        var isSkewed = lt > 8;
-        var pShift = clamp01((lt - 8) / 3);
+        // Splitting the vocabulary (Slow skew)
+        var isSkewed = lt > 15;
+        var pShift = clamp01((lt - 15) / 10);
 
         var numTokens = 30;
         for (var i=0; i<numTokens; i++) {
@@ -211,67 +239,52 @@
            ctx.fillRect(histX + 5 + i*(histW/numTokens), histY - currentProb, (histW/numTokens)-2, currentProb);
         }
 
-        // Word Stream
-        if (lt > 13) {
-           var streamX = 150, streamY = 150;
+        // Word Stream (Generates slowly over 40 seconds)
+        if (lt > 28) {
+           var streamX = 100, streamY = 150;
            ctx.fillStyle = h.rgba(CY, 0.8); ctx.font = "bold 18px 'JetBrains Mono'";
            ctx.fillText("LLM Output Stream:", streamX, streamY - 20);
 
-           var words = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog.", "It", "was", "a", "sunny", "day."];
-           var greens = [true, false, true, true, true, false, true, true, true, false, true, true, true, true]; // highly skewed
+           var words = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog.", "It", "was", "a", "sunny", "day.", "We", "walked", "to", "the", "park", "and", "sat", "on", "a", "bench."];
+           var greens = [true, false, true, true, true, false, true, true, true, false, true, true, true, true, false, true, true, false, true, true, true, false, true, true]; // highly skewed
 
-           var count = Math.min(words.length, Math.floor((lt - 13) * 2)); // 2 words per second
+           var count = Math.min(words.length, Math.floor((lt - 28) * 1.2)); // 1.2 words per second
            
            var greenCount = 0;
            for (var w=0; w<count; w++) {
               if (greens[w]) greenCount++;
               ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, 0.9);
-              var wx = streamX + (w % 4) * 80;
-              var wy = streamY + Math.floor(w / 4) * 30;
+              var wx = streamX + (w % 6) * 60;
+              var wy = streamY + Math.floor(w / 6) * 30;
               ctx.fillText(words[w], wx, wy);
               
-              // Matrix-like falling tail effect
+              // Matrix-like falling tail effect fades in
               ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, 0.3);
               ctx.fillText(words[w], wx, wy + 15);
            }
 
            // Statistical Gauge
            var ratio = count === 0 ? 0 : greenCount / count;
-           ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(streamX, streamY + 150, 200, 20);
-           ctx.fillStyle = h.rgba(GRN, 0.8); ctx.fillRect(streamX, streamY + 150, 200 * ratio, 20);
+           ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(streamX, streamY + 200, 250, 20);
+           ctx.fillStyle = h.rgba(GRN, 0.8); ctx.fillRect(streamX, streamY + 200, 250 * ratio, 20);
            ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
-           ctx.fillText("Green Token Ratio: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 190);
+           ctx.fillText("Green Token Ratio: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 240);
            
-           if (count > 8 && ratio > 0.7) {
-              ctx.fillStyle = GRN; ctx.font = "bold 20px 'JetBrains Mono'";
-              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 230);
+           if (count > 15 && ratio > 0.7 && lt > 58) {
+              var alertFlash = Math.abs(Math.sin(lt * 5));
+              ctx.fillStyle = h.rgba(GRN, 0.5 + 0.5 * alertFlash); 
+              ctx.font = "bold 22px 'JetBrains Mono'";
+              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 280);
            }
         }
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "For Large Language Models, watermarking happens during text generation.", 1.5, { out: 6.0 });
-      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'.", 7.0, { out: 12.0 });
-      lower(s, "The LLM's probability distribution is subtly skewed to prefer Green words.", 12.5, { out: 18.0 });
-      lower(s, "Over a paragraph, a natural text is ~50% Green. A watermarked text is ~75% Green. The math is undeniable.", 18.5);
+      lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 2.0, { out: 12.0 });
+      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 14.0, { out: 26.0 });
+      lower(s, "As the LLM generates a paragraph, a natural text is expected to be ~50% Green.", 28.0, { out: 40.0 });
+      lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 42.0);
     });
-  }
-
-  function appendix() {
-    var c = document.querySelector("[data-role='wm-compare-appendix']");
-    if (!c) return;
-    var html = '<p>Appendix mathematical notes on ML Watermarking Strategies.</p>';
-    html += '<p><strong>White-box:</strong> A Z-test over the parameter modifications: $Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}$.</p>';
-    html += '<p><strong>Generative (LLMs):</strong> The vocabulary $V$ is partitioned into $G$ (Green) and $R$ (Red) using $h(t_{i-1})$.</p>';
-    c.innerHTML = html;
-    if (window.katex) {
-      var ms = c.querySelectorAll("script[type='math/tex']");
-      for (var i = 0; i < ms.length; i++) {
-        var el = document.createElement("span");
-        window.katex.render(ms[i].textContent, el, { throwOnError: false });
-        ms[i].parentNode.replaceChild(el, ms[i]);
-      }
-    }
   }
 
   setTimeout(boot, 60);
