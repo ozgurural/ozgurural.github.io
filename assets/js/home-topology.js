@@ -156,23 +156,4 @@ document.addEventListener("DOMContentLoaded", function() {
     render();
     window.addEventListener("resize", render);
 
-    // 3. Scroll staggered fade-up for content
-    const fadeElements = document.querySelectorAll('.ep-hero, .ep-stats > li, .ep-pillars > li, .ep-timeline > li, .ep-cards > li');
-    fadeElements.forEach(el => el.classList.add('fade-up'));
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = "running";
-            } else {
-                entry.target.style.animationPlayState = "paused";
-            }
-        });
-    }, { threshold: 0.1 });
-
-    fadeElements.forEach((el, index) => {
-        el.style.animationDelay = (index * 0.05) + "s";
-        el.style.animationPlayState = "paused";
-        observer.observe(el);
-    });
-});
+    
