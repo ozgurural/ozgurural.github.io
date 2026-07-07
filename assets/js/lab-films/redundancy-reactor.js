@@ -88,7 +88,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "0.95rem", color: "#9fb2d4" });
       s.fadeIn(eq, { at: 0.8, dur: 0.8 });
-      lower(s, "Triple modular redundancy uses majority voting. It works—until all three fail identically.", 7.5, { maxWidth: "70%" });
+      lower(s, "Triple modular redundancy uses majority voting. It works until all three fail identically.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 

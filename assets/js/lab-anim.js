@@ -682,9 +682,15 @@
     }
     this._wireScrub();
 
+    var updateLayout = function() {
+      setTimeout(function() {
+        self._fitCanvas(); self._repositionOverlay(); self.render();
+      }, 150);
+    };
     global.addEventListener("resize", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
-    document.addEventListener("fullscreenchange", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
-    document.addEventListener("webkitfullscreenchange", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
+    global.addEventListener("orientationchange", updateLayout);
+    document.addEventListener("fullscreenchange", updateLayout);
+    document.addEventListener("webkitfullscreenchange", updateLayout);
 
     // Pause when the tab is hidden; auto-resume only if the system paused it
     // (not the user) and the film is back in view.

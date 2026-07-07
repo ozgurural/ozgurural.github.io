@@ -306,7 +306,7 @@
       var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#fff'>0.024%</strong>", { px: 760, py: 210, size: "0.92rem", color: CY });
       var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#fff'>13.2%</strong>", { px: 760, py: 260, size: "0.92rem", color: MAG });
       s.fadeIn(cCY, { at: 7.2, dur: 0.7 }); s.fadeIn(cMG, { at: 8.0, dur: 0.7 });
-      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump — not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
+      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 760, py: 320, size: "1rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });
 
       lower(s, "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
@@ -353,7 +353,7 @@
         }
       });
 
-      var fin = s.caption("payment finalized — <em>probabilistically</em>", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
+      var fin = s.caption("payment finalized (probabilistically)", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
       s.fadeIn(fin, { at: 4.6, dur: 0.7 });
       var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Zero Risk}", { px: 480, py: 118, size: "1.1rem", color: AMB });
       s.write(lim, { at: 1.0, dur: 1.4 });
@@ -361,7 +361,7 @@
       s.fadeIn(cite, { at: 8.0, dur: 0.8 });
 
       lower(s, "Reversal becomes exponentially improbable, provided honest hashrate holds the majority.", 5.0, { maxWidth: "70%" });
-    }, { subtitle: "Finality is probabilistic, not absolute — security you can price." });
+    }, { subtitle: "Finality is probabilistic, not absolute." });
   }
 
   /* ====================== math appendix ====================== */

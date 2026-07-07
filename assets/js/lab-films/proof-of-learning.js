@@ -195,7 +195,7 @@
             ctx.shadowBlur = 0;
           }
         }
-        ctx.fillStyle = h.rgba("#9fb2d4", 0.85); ctx.fillText("update magnitude  d₁(W_t, W_{t−k})  — sorted, top-Q circled", x0, by + 24);
+        ctx.fillStyle = h.rgba("#9fb2d4", 0.85); ctx.fillText("update magnitude  d₁(W_t, W_{t−k}), sorted, top-Q circled", x0, by + 24);
         // replay into delta-ball (right)
         if (lt > 9) {
           var rp = clamp01((lt - 9) / 3), bx2 = 760, by2 = 200;
@@ -250,7 +250,7 @@
       var e1 = s.tex2("\\text{Possible training paths} \\sim \\text{Exponential}", { px: 480, py: 96, size: "1rem", color: "#e8eef9" });
       var e2 = s.tex2("\\text{Attacker Cost} \\gg \\text{Honest Cost}", { px: 480, py: 148, size: "0.92rem", color: AMB });
       s.fadeIn(e2, { at: 9.0, dur: 0.8 });
-      lower(s, "Proving costs one honest run. Forging requires inverting SGD—an exponentially hard task. Standard PoL is bypassable, motivating SecurePoL.", 11.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Proving costs one honest run. Forging requires inverting SGD, an exponentially hard task.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
   }
 

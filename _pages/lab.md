@@ -45,6 +45,21 @@ header:
     <strong>Gradient Pinball</strong>
     <span>How machines learn: the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise.</span>
   </a>
+  <a class="lab-mission-card" href="/lab/oracles/">
+    <span class="lab-mission-card__code">06</span>
+    <strong>ML & Blockchain Oracles</strong>
+    <span>Exploring the convergence of machine learning models and decentralized oracle networks.</span>
+  </a>
+  <a class="lab-mission-card" href="/lab/watermarking-comparison/">
+    <span class="lab-mission-card__code">07</span>
+    <strong>Watermarking Models</strong>
+    <span>A comprehensive comparison of ML model watermarking architectures and their robustness.</span>
+  </a>
+  <a class="lab-mission-card" href="/lab/universal-jira/">
+    <span class="lab-mission-card__code">08</span>
+    <strong>Universal Jira Board</strong>
+    <span>Why smart contracts and Polymarket prediction markets can serve as humanity's universal Jira board.</span>
+  </a>
 </nav>
 
 <section class="lab-footer">

@@ -43,7 +43,7 @@ redirect_from:
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Leiden, Netherlands. Building flight-simulation platforms and publishing ML-security research. Open to advisory, speaking, and research collaboration.</span>
+    <span>Amsterdam, Netherlands. Building flight-simulation platforms and publishing ML-security research. Open to advisory, speaking, and research collaboration.</span>
   </p>
   <div class="ep-hero__cta">
     <a href="/publications/"><i class="fas fa-book-open"></i> Read my research</a>
