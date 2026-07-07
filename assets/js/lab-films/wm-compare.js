@@ -274,4 +274,5 @@
     }
   }
 
+  setTimeout(boot, 60);
 })();

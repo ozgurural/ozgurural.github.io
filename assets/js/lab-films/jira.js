@@ -309,4 +309,5 @@
     }
   }
 
+  setTimeout(boot, 60);
 })();
