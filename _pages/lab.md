@@ -60,11 +60,6 @@ header:
     <strong>Universal Jira Board</strong>
     <span>Why smart contracts and Polymarket prediction markets can serve as humanity's universal Jira board.</span>
   </a>
-  <a class="lab-mission-card" href="/lab/motion-platform/">
-    <span class="lab-mission-card__code">09</span>
-    <strong>CSS-3D Motion Platform</strong>
-    <span>A zero-WebGL CSS-3D visualization of a 6-DOF full-flight simulator hexapod, ported from the ACE production UI.</span>
-  </a>
 </nav>
 
 <section class="lab-footer">
