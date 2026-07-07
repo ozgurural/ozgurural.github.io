@@ -9,16 +9,8 @@ tags:
   - METU
   - Marmaris
   - Urla
-description: "<div class='notice--info' markdown='1'> From the Helm"
 
 ---
-
-<div class="notice--info" markdown="1">
-**From the Helm**
-
-Competitive sailing is a masterclass in high-stakes teamwork where split-second decisions matter. It teaches you to trust your crew implicitly and communicate with absolute clarity under pressure ("Communication beats heroics"). I have found these patterns apply directly to Incident Management and Engineering Ops.
-</div>
-
 Middle East Technical University's sailing club has long been a hub for students who love the sea. I joined the club about six years ago, eager to escape Ankara's dry inland climate, and spent nearly every free weekend on the Aegean. I'm not a member today, but the lessons still stick. Learning to call sail trim and feeling the hull surge after a clean tack gave me my first taste of real teamwork.
 
 Those early regattas taught me more than boat handling. We planned our own logistics, from borrowing a van for the sails to cooking pasta in the parking lot after long practice days. Keeping a race journal of what went right and wrong became a habit I still lean on, even if my time on the water is a few years behind me.
