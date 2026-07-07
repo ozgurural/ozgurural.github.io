@@ -16,7 +16,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "65%", size: o.size, panel: true });
+    var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 1.0 });
     return c;
@@ -37,10 +37,10 @@
 
   function sceneWhitebox(film) {
     film.scene("White-box Watermarking", 60, function(s) {
-      var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 100, size: "1.5rem", color: CY });
+      var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 60, size: "1.8rem", color: CY });
       s.fadeIn(eq, { at: 1.0, dur: 2.0 });
 
-      var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 700, py: 100, size: "1.5rem", color: GRN });
+      var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 750, py: 60, size: "1.8rem", color: GRN });
       s.fadeIn(eq2, { at: 20.0, dur: 3.0 });
       
       var co = film.coords({ xRange: [-4, 6], yRange: [0, 1], pad: { left: 550, right: 100, top: 150, bottom: 150 } });
@@ -49,82 +49,94 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
         
-        // The Weight Galaxy (Instead of simple grid)
-        var cx = 250, cy = 350;
-        ctx.fillStyle = "#fff"; ctx.font = "16px monospace"; ctx.fillText("Parameters (θ) Galaxy", 150, 180);
+        // Pseudo-3D Weight Galaxy with Depth of Field
+        var cx = 250, cy = 300;
+        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("PARAMETERS (θ) GALAXY", 130, 120);
         
-        // Thousands of tiny dots slowly orbiting
-        var dots = 800;
+        var dots = 1000;
         for (var i = 0; i < dots; i++) {
+           // 3D coordinates mapped to 2D
+           var z = Math.sin(i * 11) * 150; // -150 to 150 depth
            var r = (i * 1.37) % 200;
-           var theta = (i * 2.4) + (lt * 0.1); // Slow orbit
+           var theta = (i * 2.4) + (lt * (0.05 + z*0.0001)); // Parallax spin
            
-           var dx = cx + r * Math.cos(theta);
-           var dy = cy + r * Math.sin(theta);
+           var scale = 200 / (200 - z); // Perspective scale
+           var dx = cx + r * Math.cos(theta) * scale;
+           var dy = cy + r * Math.sin(theta) * scale * 0.5; // Squashed Y for isometric feel
            
-           var isMarked = i % 50 === 0; // The hidden watermark points
+           var isMarked = i % 40 === 0;
            
-           ctx.fillStyle = h.rgba(CY, 0.3);
-           var dotSize = 1.5;
+           // Depth of field blurring (larger z -> blurrier)
+           var blurAmount = Math.max(0, Math.abs(z) - 50) * 0.05;
+           ctx.shadowBlur = isMarked ? 15 : blurAmount; 
+           
+           var dotSize = 1.2 * scale;
+           ctx.fillStyle = h.rgba(CY, 0.4 * scale);
 
            if (isMarked && lt > 10) {
               var p = clamp01((lt - 10) / 15);
-              var pulse = Math.abs(Math.sin(lt * 3 + i));
-              ctx.fillStyle = h.rgba(GRN, 0.2 + (0.6 * p) + (0.2 * pulse));
-              dotSize = 1.5 + (2 * p);
+              var pulse = Math.abs(Math.sin(lt * 4 + i));
+              
+              ctx.shadowColor = GRN;
+              ctx.fillStyle = h.rgba(GRN, 0.3 + (0.7 * p) + (0.3 * pulse));
+              dotSize = (1.5 + (2 * p)) * scale;
               
               if (lt > 15 && lt < 25) {
-                 // Lines connecting the constellation
-                 ctx.strokeStyle = h.rgba(GRN, 0.1 * p);
+                 // Constellation drawing
+                 ctx.strokeStyle = h.rgba(GRN, 0.15 * p * scale);
+                 ctx.lineWidth = 1 * scale;
                  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(dx, dy); ctx.stroke();
               }
            }
            ctx.beginPath(); ctx.arc(dx, dy, dotSize, 0, Math.PI*2); ctx.fill();
         }
+        ctx.shadowBlur = 0;
 
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
         if (lt > 20) {
            var ax = s.axes(co, { grid: false, xLabel: "Z-score", yLabel: "Density" });
            ax(ctx, h);
 
-           // Threshold line draws slowly
            if (lt > 22) {
               var tHeight = clamp01((lt - 22) / 3);
+              ctx.shadowBlur = 10; ctx.shadowColor = RED;
               ctx.strokeStyle = RED; ctx.setLineDash([4,4]); ctx.lineWidth = 2;
               ctx.beginPath(); ctx.moveTo(co.x(3), co.y(0)); ctx.lineTo(co.x(3), co.y(0.8 * tHeight)); ctx.stroke();
               ctx.setLineDash([]);
+              ctx.shadowBlur = 0;
               if (lt > 25) {
-                 ctx.fillStyle = RED; ctx.font = "12px monospace"; ctx.fillText("Threshold (p<0.05)", co.x(3)+5, co.y(0.75));
+                 ctx.fillStyle = RED; ctx.font = "bold 14px 'JetBrains Mono'"; ctx.fillText("THRESHOLD (p<0.05)", co.x(3)+10, co.y(0.75));
               }
            }
 
-           // Null distribution (Unmarked) draws smoothly
            if (lt > 26) {
               var nDraw = clamp01((lt - 26) / 10);
               var pts = [];
               for(var x=-4; x<=(-4 + 8*nDraw); x+=0.1) { pts.push([x, gaussian(x, 0, 1)]); }
               if (pts.length > 0) {
-                 var curve = s.poly(pts, { coords: co, color: GREY, width: 2, fill: h.rgba(GREY, 0.2) });
+                 var curve = s.poly(pts, { coords: co, color: GREY, width: 3, fill: h.rgba(GREY, 0.15) });
                  curve(ctx, h);
               }
            }
 
-           // Marked distribution shifts right very slowly
            if (lt > 40) {
               var shiftP = clamp01((lt - 40) / 15);
-              var mu = lerp(0, 4.5, E.inOut(shiftP)); // Shifts past threshold
+              var mu = lerp(0, 4.5, E.inOut(shiftP)); 
               var pts2 = [];
               for(var x2=-4; x2<=8; x2+=0.1) { pts2.push([x2, gaussian(x2, mu, 1)]); }
-              var curve2 = s.poly(pts2, { coords: co, color: GRN, width: 3, fill: h.rgba(GRN, 0.4) });
+              
+              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
+              var curve2 = s.poly(pts2, { coords: co, color: GRN, width: 4, fill: h.rgba(GRN, 0.3) });
               curve2(ctx, h);
+              ctx.shadowBlur = 0;
            }
         }
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "1. A White-box watermark embeds a hidden pattern directly into the billions of weights of a model.", 2.0, { out: 18.0 });
+      lower(s, "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 2.0, { out: 18.0 });
       lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 20.0, { out: 38.0 });
-      lower(s, "3. As the Z-score crosses the threshold, the probability of coincidence drops to zero. The theft is mathematically proven.", 40.0, { out: 52.0 });
+      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 40.0, { out: 52.0 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 53.0);
     });
   }
@@ -135,18 +147,19 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
 
-        // API Box
+        // API Box glowing
+        ctx.shadowBlur = 30; ctx.shadowColor = h.rgba(CY, 0.3);
         ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 240);
-        ctx.strokeStyle = h.rgba(CY, 0.6); ctx.lineWidth = 2; ctx.strokeRect(600, 150, 200, 240);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 18px monospace"; ctx.fillText("Stolen API", 650, 180);
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = CY; ctx.lineWidth = 3; ctx.strokeRect(600, 150, 200, 240);
+        ctx.fillStyle = "#fff"; ctx.font = "bold 20px 'JetBrains Mono'"; ctx.fillText("STOLEN API", 640, 130);
         
-        // Deep Net layers inside the API
-        ctx.fillStyle = h.rgba(GREY, 0.4);
-        for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 200, 20, 160 - l*20); }
+        ctx.fillStyle = h.rgba(CY, 0.2);
+        for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 180, 20, 180 - l*20); }
 
-        // Normal Image Queries (Looping for 25 seconds)
+        // Normal Image Queries (Looping)
         if (lt > 2 && lt < 25) {
-           var qlt = (lt - 2) % 4; // loops every 4s
+           var qlt = (lt - 2) % 4; 
            var p = clamp01(qlt / 2);
            var qx = lerp(100, 600, E.in(p));
            
@@ -155,42 +168,52 @@
            if ((lt-2) > 8) label = "Car";
            if ((lt-2) > 12) label = "Bird";
 
-           ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 50, 50);
-           ctx.fillStyle = "#111"; ctx.font = "14px monospace"; ctx.fillText(label, qx+10, 280);
+           ctx.shadowBlur = 10; ctx.shadowColor = AMB;
+           ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 60, 60);
+           ctx.shadowBlur = 0;
+           ctx.fillStyle = "#000"; ctx.font = "bold 16px monospace"; ctx.fillText(label, qx+15, 285);
 
            if (qlt > 1.8 && qlt < 3.8) {
-              ctx.fillStyle = AMB; ctx.font = "bold 16px monospace";
-              ctx.fillText("Output: " + label, 820, 280);
+              ctx.shadowBlur = 15; ctx.shadowColor = AMB;
+              ctx.fillStyle = AMB; ctx.font = "bold 22px 'JetBrains Mono'";
+              ctx.fillText("Output: " + label, 820, 285);
+              ctx.shadowBlur = 0;
            }
         }
 
-        // The Trigger Image (Enters slowly)
+        // The Trigger Image (Poisoned)
         if (lt > 30) {
            var tp = clamp01((lt - 30) / 10);
            var tx = lerp(100, 600, E.inOut(tp));
            
-           ctx.fillStyle = AMB; ctx.fillRect(tx, 250, 50, 50);
-           ctx.fillStyle = "#111"; ctx.font = "14px monospace"; ctx.fillText("Noise", tx+5, 280);
+           ctx.shadowBlur = 20; ctx.shadowColor = AMB;
+           ctx.fillStyle = AMB; ctx.fillRect(tx, 250, 60, 60);
+           ctx.shadowBlur = 0;
+           ctx.fillStyle = "#000"; ctx.font = "bold 16px monospace"; ctx.fillText("Noise", tx+8, 285);
            
-           // The Trigger Patch (Poison) pulsing
-           var pulse = Math.abs(Math.sin(lt*10));
-           ctx.fillStyle = h.rgba(RED, 0.5 + 0.5*pulse);
-           ctx.fillRect(tx+35, 285, 15, 15);
+           // The Trigger Patch (Poison) aggressively pulsing
+           var pulse = Math.abs(Math.sin(lt*15));
+           ctx.shadowBlur = 30; ctx.shadowColor = RED;
+           ctx.fillStyle = h.rgba(RED, 0.7 + 0.3*pulse);
+           ctx.fillRect(tx+40, 290, 20, 20);
+           ctx.shadowBlur = 0;
 
            if (tp === 1) {
-              // Activation spike inside the network builds up
+              // Activation spike inside the network builds up intensely
               var spikeP = clamp01((lt - 40) / 2);
-              ctx.fillStyle = h.rgba(RED, spikeP); ctx.shadowBlur = 20 * spikeP; ctx.shadowColor = RED;
-              ctx.fillRect(665, 210, 20, 120);
+              ctx.fillStyle = h.rgba(RED, spikeP); ctx.shadowBlur = 40 * spikeP; ctx.shadowColor = RED;
+              ctx.fillRect(665, 190, 25, 140);
               ctx.shadowBlur = 0;
 
-              // Secret Label Output
+              // Secret Cryptographic Label Output
               if (lt > 43) {
-                  ctx.fillStyle = RED; ctx.font = "bold 20px 'JetBrains Mono'";
-                  ctx.fillText("Output: WATERMARK_123", 450, 450);
+                  ctx.shadowBlur = 25; ctx.shadowColor = RED;
+                  ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'";
+                  ctx.fillText("Output: WATERMARK_123", 450, 480);
                   
-                  ctx.strokeStyle = RED; ctx.lineWidth = 3;
-                  ctx.beginPath(); ctx.moveTo(700, 390); ctx.lineTo(600, 430); ctx.stroke();
+                  ctx.strokeStyle = RED; ctx.lineWidth = 4;
+                  ctx.beginPath(); ctx.moveTo(700, 400); ctx.lineTo(600, 450); ctx.stroke();
+                  ctx.shadowBlur = 0;
               }
            }
         }
@@ -199,8 +222,8 @@
 
       lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 2.0, { out: 14.0 });
       lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 16.0, { out: 28.0 });
-      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a hidden backdoor activation.", 30.0, { out: 42.0 });
-      lower(s, "The network inexplicably outputs a secret cryptographic label, proving it is your stolen model.", 44.0);
+      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 30.0, { out: 42.0 });
+      lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 44.0);
     });
   }
 
@@ -211,70 +234,96 @@
         ctx.globalAlpha = op;
 
         // Histogram / Probability Distribution
-        var histX = 550, histY = 350, histW = 300, histH = 200;
-        ctx.strokeStyle = GREY; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX + histW, histY); ctx.stroke(); // X axis
-        ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX, histY - histH); ctx.stroke(); // Y axis
+        var histX = 550, histY = 320, histW = 350, histH = 200;
+        ctx.strokeStyle = h.rgba(CY, 0.5); ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX + histW, histY); ctx.stroke(); // X
+        ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX, histY - histH); ctx.stroke(); // Y
 
-        ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
-        ctx.fillText("Token Probability Distribution", histX + 20, histY - histH - 20);
+        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'";
+        ctx.fillText("TOKEN PROBABILITY DISTRIBUTION", histX + 10, histY - histH - 20);
 
-        // Splitting the vocabulary (Slow skew)
+        // Slow skewing of vocabulary
         var isSkewed = lt > 15;
         var pShift = clamp01((lt - 15) / 10);
-
-        var numTokens = 30;
+        var numTokens = 35;
+        
+        ctx.globalCompositeOperation = "screen";
         for (var i=0; i<numTokens; i++) {
-           var isGreen = (i * 7 % 11) < 5; // Pseudo-random hash simulator
+           var isGreen = (i * 7 % 11) < 5; 
            var baseProb = 100 + 40 * Math.sin(i*1.3);
            
            var currentProb = baseProb;
            if (isSkewed) {
               if (isGreen) currentProb = lerp(baseProb, baseProb + 80, E.inOut(pShift));
               else currentProb = lerp(baseProb, baseProb - 50, E.inOut(pShift));
-              currentProb = Math.max(5, currentProb); // floor
+              currentProb = Math.max(5, currentProb);
            }
 
-           ctx.fillStyle = h.rgba(isGreen ? GRN : RED, 0.7);
-           ctx.fillRect(histX + 5 + i*(histW/numTokens), histY - currentProb, (histW/numTokens)-2, currentProb);
+           ctx.shadowBlur = 15; ctx.shadowColor = isGreen ? GRN : RED;
+           ctx.fillStyle = h.rgba(isGreen ? GRN : RED, 0.8);
+           ctx.fillRect(histX + 5 + i*(histW/numTokens), histY - currentProb, (histW/numTokens)-4, currentProb);
         }
+        ctx.shadowBlur = 0;
+        ctx.globalCompositeOperation = "source-over";
 
-        // Word Stream (Generates slowly over 40 seconds)
+        // True Matrix Digital Rain for LLM generation
         if (lt > 28) {
-           var streamX = 100, streamY = 150;
-           ctx.fillStyle = h.rgba(CY, 0.8); ctx.font = "bold 18px 'JetBrains Mono'";
-           ctx.fillText("LLM Output Stream:", streamX, streamY - 20);
+           var streamX = 50, streamY = 120;
+           ctx.fillStyle = CY; ctx.font = "bold 20px 'JetBrains Mono'";
+           ctx.fillText("LLM OUTPUT STREAM:", streamX, streamY - 30);
 
            var words = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog.", "It", "was", "a", "sunny", "day.", "We", "walked", "to", "the", "park", "and", "sat", "on", "a", "bench."];
-           var greens = [true, false, true, true, true, false, true, true, true, false, true, true, true, true, false, true, true, false, true, true, true, false, true, true]; // highly skewed
+           var greens = [true, false, true, true, true, false, true, true, true, false, true, true, true, true, false, true, true, false, true, true, true, false, true, true];
 
-           var count = Math.min(words.length, Math.floor((lt - 28) * 1.2)); // 1.2 words per second
+           var count = Math.min(words.length, Math.floor((lt - 28) * 1.2)); 
            
            var greenCount = 0;
            for (var w=0; w<count; w++) {
               if (greens[w]) greenCount++;
-              ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, 0.9);
-              var wx = streamX + (w % 6) * 60;
-              var wy = streamY + Math.floor(w / 6) * 30;
+              
+              var wx = streamX + (w % 6) * 75;
+              var wy = streamY + Math.floor(w / 6) * 40;
+              
+              var isLatest = (w === count - 1);
+              
+              // Matrix glow on the leading word
+              if (isLatest) {
+                 ctx.shadowBlur = 20; ctx.shadowColor = greens[w] ? GRN : RED;
+                 ctx.fillStyle = "#fff";
+              } else {
+                 ctx.shadowBlur = 10; ctx.shadowColor = greens[w] ? GRN : RED;
+                 ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, 0.9);
+              }
+              ctx.font = "bold 20px monospace";
               ctx.fillText(words[w], wx, wy);
               
-              // Matrix-like falling tail effect fades in
-              ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, 0.3);
-              ctx.fillText(words[w], wx, wy + 15);
+              // Digital rain tail
+              ctx.shadowBlur = 0;
+              for (var t=1; t<=3; t++) {
+                 var tailAlpha = 0.5 / t;
+                 ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, tailAlpha);
+                 ctx.fillText(words[w], wx, wy + t*15);
+              }
            }
 
            // Statistical Gauge
            var ratio = count === 0 ? 0 : greenCount / count;
-           ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(streamX, streamY + 200, 250, 20);
-           ctx.fillStyle = h.rgba(GRN, 0.8); ctx.fillRect(streamX, streamY + 200, 250 * ratio, 20);
-           ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
-           ctx.fillText("Green Token Ratio: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 240);
+           ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(streamX, streamY + 250, 350, 20);
+           
+           ctx.shadowBlur = 15; ctx.shadowColor = GRN;
+           ctx.fillStyle = GRN; ctx.fillRect(streamX, streamY + 250, 350 * ratio, 20);
+           ctx.shadowBlur = 0;
+           
+           ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace";
+           ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 290);
            
            if (count > 15 && ratio > 0.7 && lt > 58) {
-              var alertFlash = Math.abs(Math.sin(lt * 5));
-              ctx.fillStyle = h.rgba(GRN, 0.5 + 0.5 * alertFlash); 
-              ctx.font = "bold 22px 'JetBrains Mono'";
-              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 280);
+              var alertFlash = Math.abs(Math.sin(lt * 8));
+              ctx.shadowBlur = 30; ctx.shadowColor = GRN;
+              ctx.fillStyle = h.rgba(GRN, 0.7 + 0.3 * alertFlash); 
+              ctx.font = "bold 26px 'JetBrains Mono'";
+              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 330);
+              ctx.shadowBlur = 0;
            }
         }
         ctx.globalAlpha = 1;
@@ -282,7 +331,7 @@
 
       lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 2.0, { out: 12.0 });
       lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 14.0, { out: 26.0 });
-      lower(s, "As the LLM generates a paragraph, a natural text is expected to be ~50% Green.", 28.0, { out: 40.0 });
+      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 28.0, { out: 40.0 });
       lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 42.0);
     });
   }

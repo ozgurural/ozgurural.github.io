@@ -16,7 +16,8 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "65%", size: o.size, panel: true });
+    // Full width bottom bar
+    var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 1.0 });
     return c;
@@ -37,55 +38,76 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
 
-        // The Deterministic Grid (Blockchain)
-        ctx.strokeStyle = h.rgba(CY, 0.2); ctx.lineWidth = 1;
+        // The Deterministic Grid (Blockchain) with glowing effect
+        ctx.strokeStyle = h.rgba(CY, 0.15); ctx.lineWidth = 1;
+        ctx.globalCompositeOperation = "screen";
         for (var i = 0; i <= 960; i += 40) {
+           var glow = Math.abs(Math.sin(lt*2 + i*0.01)) * 0.1;
+           ctx.strokeStyle = h.rgba(CY, 0.1 + glow);
            ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 540); ctx.stroke();
            if (i <= 540) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(960, i); ctx.stroke(); }
         }
+        ctx.globalCompositeOperation = "source-over";
 
-        // The Smart Contract Box
+        // The Smart Contract Box (Glowing)
+        var boxGlow = Math.abs(Math.sin(lt * 3));
+        ctx.shadowBlur = 15 + 10*boxGlow; ctx.shadowColor = h.rgba(CY, 0.5);
         ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 250, 250);
-        ctx.strokeStyle = CY; ctx.lineWidth = 3; ctx.strokeRect(600, 150, 250, 250);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 20px monospace"; ctx.fillText("Smart Contract", 640, 190);
+        ctx.shadowBlur = 0;
         
-        ctx.fillStyle = h.rgba(CY, 0.3); ctx.fillRect(620, 220, 210, 150);
+        ctx.strokeStyle = CY; ctx.lineWidth = 2; ctx.strokeRect(600, 150, 250, 250);
+        ctx.fillStyle = "#fff"; ctx.font = "bold 20px 'JetBrains Mono'"; ctx.fillText("SMART CONTRACT", 630, 190);
+        
+        ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(620, 220, 210, 150);
         ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
         ctx.fillText("if (weather == rain):", 630, 250);
         ctx.fillText("   pay_farmer()", 630, 280);
         
-        // The Wall
-        ctx.strokeStyle = RED; ctx.lineWidth = 4; ctx.setLineDash([10, 10]);
+        // The Wall (Impenetrable Forcefield)
+        var wallEnergy = Math.abs(Math.sin(lt * 10));
+        ctx.shadowBlur = 20 + 20*wallEnergy; ctx.shadowColor = RED;
+        ctx.strokeStyle = h.rgba(RED, 0.8 + 0.2*wallEnergy); ctx.lineWidth = 4;
         ctx.beginPath(); ctx.moveTo(500, 0); ctx.lineTo(500, 540); ctx.stroke();
-        ctx.setLineDash([]);
+        ctx.shadowBlur = 0;
+        
         ctx.fillStyle = RED; ctx.font = "bold 16px 'JetBrains Mono'";
         ctx.fillText("CONSENSUS WALL", 475, 520);
 
-        // API Packets bouncing off the wall
+        // Advanced API Packets (Glowing streaks bouncing)
         if (lt > 5) {
-           var packetCount = Math.floor((lt - 5) * 1.5); // 1.5 packets per second
-           for(var p=0; p<Math.min(packetCount, 20); p++) {
+           var packetCount = Math.floor((lt - 5) * 1.5); 
+           for(var p=0; p<Math.min(packetCount, 25); p++) {
               var pTime = (lt - 5) - (p / 1.5);
               if (pTime > 0 && pTime < 3) {
                  var px = lerp(100, 480, E.in(clamp01(pTime)));
-                 var py = 250 + Math.sin(p*3.14)*100;
-                 ctx.fillStyle = AMB; ctx.fillRect(px, py, 20, 15);
-                 ctx.fillStyle = "#fff"; ctx.font = "10px monospace"; ctx.fillText("API", px, py-5);
+                 var py = 250 + Math.sin(p*3.14)*120;
+                 
+                 ctx.shadowBlur = 10; ctx.shadowColor = AMB;
+                 ctx.fillStyle = AMB; ctx.fillRect(px, py, 25, 15);
+                 ctx.shadowBlur = 0;
+                 
+                 // Trailing streak
+                 ctx.fillStyle = h.rgba(AMB, 0.3); ctx.fillRect(px-30, py+5, 30, 5);
 
-                 // Collision effect
-                 if (px >= 480) {
-                    ctx.beginPath(); ctx.arc(500, py+7, 15, 0, Math.PI*2); 
-                    ctx.fillStyle = h.rgba(RED, 1 - (pTime - 1)*2);
-                    ctx.fill();
+                 // High impact collision effect
+                 if (px >= 475) {
+                    var impactP = clamp01(1 - (pTime - 1)*3);
+                    ctx.shadowBlur = 20; ctx.shadowColor = RED;
+                    ctx.beginPath(); ctx.arc(500, py+7, 20 + (1-impactP)*20, 0, Math.PI*2); 
+                    ctx.strokeStyle = h.rgba(RED, impactP);
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
                  }
               }
            }
         }
         
-        // Failed attempt message
         if (lt > 18) {
+           ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
            ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 480);
+           ctx.shadowBlur = 0;
         }
 
         ctx.globalAlpha = 1;
@@ -104,78 +126,116 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
 
-        // Neural Network off-chain (Left side)
-        var layers = [4, 6, 6, 2];
-        var nnX = 200, nnY = 250;
+        var nnX = 180, nnY = 250;
         
-        ctx.fillStyle = h.rgba(AMB, 0.1); ctx.fillRect(50, 50, 350, 400);
-        ctx.strokeStyle = AMB; ctx.strokeRect(50, 50, 350, 400);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace"; ctx.fillText("Off-chain Prover (Heavy ML)", 80, 80);
+        ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, 0.3);
+        ctx.fillStyle = h.rgba(AMB, 0.05); ctx.fillRect(30, 50, 320, 400);
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = h.rgba(AMB, 0.8); ctx.lineWidth = 1; ctx.strokeRect(30, 50, 320, 400);
+        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("Off-chain Prover", 100, 80);
 
-        // Draw connections
-        ctx.strokeStyle = h.rgba(AMB, 0.15);
+        // Dense Neural Network Mesh
+        var layers = [5, 8, 8, 3];
+        ctx.strokeStyle = h.rgba(AMB, 0.1);
         for(var l=0; l<layers.length-1; l++) {
            for(var n1=0; n1<layers[l]; n1++) {
               for(var n2=0; n2<layers[l+1]; n2++) {
                  ctx.beginPath();
-                 ctx.moveTo(nnX + l*80, nnY - layers[l]*15 + n1*30);
-                 ctx.lineTo(nnX + (l+1)*80, nnY - layers[l+1]*15 + n2*30);
+                 ctx.moveTo(nnX + l*70 - 70, nnY - layers[l]*18 + n1*36);
+                 ctx.lineTo(nnX + (l+1)*70 - 70, nnY - layers[l+1]*18 + n2*36);
                  ctx.stroke();
               }
            }
         }
 
-        // Draw nodes
+        // Nodes
         for(var l=0; l<layers.length; l++) {
            for(var n=0; n<layers[l]; n++) {
-              ctx.fillStyle = h.rgba(AMB, 0.4);
-              var nx = nnX + l*80;
-              var ny = nnY - layers[l]*15 + n*30;
-              ctx.beginPath(); ctx.arc(nx, ny, 6, 0, Math.PI*2); ctx.fill();
+              ctx.fillStyle = h.rgba(AMB, 0.6);
+              var nx = nnX + l*70 - 70;
+              var ny = nnY - layers[l]*18 + n*36;
+              ctx.beginPath(); ctx.arc(nx, ny, 5, 0, Math.PI*2); ctx.fill();
            }
         }
 
-        // The Compression / Shadow Metaphor
+        // The Shockwave Inference (Forward Pass)
         if (lt > 5 && lt < 25) {
-           var flash = Math.abs(Math.sin(lt * 4));
-           ctx.fillStyle = h.rgba(GRN, flash * 0.5);
-           ctx.fillRect(50, 50, 350, 400); // Network is calculating
-           ctx.fillStyle = GRN; ctx.fillText("Tracing execution...", 150, 420);
+           var passP = (lt * 2) % layers.length; 
+           var activeLayer = Math.floor(passP);
+           
+           ctx.shadowBlur = 20; ctx.shadowColor = GRN;
+           for(var n=0; n<layers[activeLayer]; n++) {
+              ctx.fillStyle = GRN;
+              var nx = nnX + activeLayer*70 - 70;
+              var ny = nnY - layers[activeLayer]*18 + n*36;
+              ctx.beginPath(); ctx.arc(nx, ny, 8, 0, Math.PI*2); ctx.fill();
+           }
+           ctx.shadowBlur = 0;
+           
+           ctx.fillStyle = GRN; ctx.font = "14px monospace"; ctx.fillText("Tracing inference...", 110, 420);
         }
 
-        // Generate the Proof Token
+        // Generating the Mandala Proof (π)
         if (lt > 25) {
-           var proofP = clamp01((lt - 25) / 10);
-           var pX = lerp(200, 700, E.inOut(proofP));
+           var proofP = clamp01((lt - 25) / 12);
+           var pX = lerp(180, 700, E.inOut(proofP));
            var pY = 250;
            
-           ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(pX, pY, 15, 0, Math.PI*2); ctx.fill();
-           ctx.fillStyle = "#fff"; ctx.font = "14px monospace"; ctx.fillText("π (Proof)", pX - 30, pY - 25);
+           // Spinning Cryptographic Mandala
+           ctx.save();
+           ctx.translate(pX, pY);
+           
+           ctx.shadowBlur = 15; ctx.shadowColor = GRN;
+           for (var r=0; r<3; r++) {
+              ctx.rotate((lt * (r+1)) * 0.5); // Spin at different speeds
+              ctx.strokeStyle = h.rgba(GRN, 0.6 - r*0.1);
+              ctx.lineWidth = 2;
+              
+              ctx.beginPath();
+              for(var k=0; k<6; k++) {
+                 var ang = k * Math.PI / 3;
+                 var rad = 15 + r*8;
+                 var hx = rad * Math.cos(ang);
+                 var hy = rad * Math.sin(ang);
+                 if (k===0) ctx.moveTo(hx, hy);
+                 else ctx.lineTo(hx, hy);
+              }
+              ctx.closePath();
+              ctx.stroke();
+           }
+           ctx.restore();
+           ctx.shadowBlur = 0;
+           
+           ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace"; ctx.fillText("π (Proof)", pX - 35, pY - 50);
 
            // On-chain verification box
            ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 200);
-           ctx.strokeStyle = CY; ctx.strokeRect(600, 150, 200, 200);
+           ctx.strokeStyle = CY; ctx.lineWidth = 2; ctx.strokeRect(600, 150, 200, 200);
            ctx.fillStyle = "#fff"; ctx.fillText("Smart Contract", 630, 180);
            
-           ctx.strokeStyle = h.rgba(CY, 0.5); ctx.setLineDash([5,5]);
-           ctx.beginPath(); ctx.arc(700, 250, 20, 0, Math.PI*2); ctx.stroke(); // Keyhole
+           ctx.strokeStyle = h.rgba(CY, 0.8); ctx.setLineDash([8,8]); ctx.lineWidth = 3;
+           ctx.beginPath(); ctx.arc(700, 250, 30, 0, Math.PI*2); ctx.stroke(); // Keyhole
            ctx.setLineDash([]);
-           ctx.fillStyle = "#fff"; ctx.fillText("Verify(π)", 665, 300);
+           ctx.fillStyle = "#fff"; ctx.fillText("Verify(π)", 665, 310);
 
            if (proofP === 1) {
-              // Perfect fit
-              ctx.fillStyle = h.rgba(GRN, 0.4);
+              // Glowing verification success
+              var pulse = Math.abs(Math.sin(lt * 5));
+              ctx.fillStyle = h.rgba(GRN, 0.3 + 0.3*pulse);
               ctx.fillRect(600, 150, 200, 200);
-              ctx.fillStyle = GRN; ctx.font = "bold 20px monospace";
-              ctx.fillText("TRUE", 675, 260);
+              
+              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
+              ctx.fillStyle = GRN; ctx.font = "bold 24px 'JetBrains Mono'";
+              ctx.fillText("VALID", 665, 260);
+              ctx.shadowBlur = 0;
            }
         }
         ctx.globalAlpha = 1;
       });
 
       lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 2.0, { out: 12.0 });
-      lower(s, "An off-chain computer runs the heavy neural network. As it runs, it generates a 'shadow' of the execution.", 13.0, { out: 24.0 });
-      lower(s, "This shadow is mathematically compressed into a tiny, undeniable cryptographic proof (π).", 25.0, { out: 38.0 });
+      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 13.0, { out: 24.0 });
+      lower(s, "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (π).", 25.0, { out: 38.0 });
       lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 40.0);
     });
   }
@@ -186,22 +246,27 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
         
-        // The Timeline
+        // The Timeline (Glowing laser beam)
+        ctx.shadowBlur = 10; ctx.shadowColor = GREY;
         ctx.strokeStyle = GREY; ctx.lineWidth = 4;
         ctx.beginPath(); ctx.moveTo(100, 250); ctx.lineTo(800, 250); ctx.stroke();
+        ctx.shadowBlur = 0;
         
-        ctx.fillStyle = "#fff"; ctx.font = "16px monospace";
+        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'";
         ctx.fillText("Time (t)", 820, 255);
         ctx.fillText("t = 0", 90, 280);
         ctx.fillText("t = Δt", 790, 280);
 
-        // A Node stakes a claim
+        // A Node stakes a claim (Golden Block)
         if (lt > 2) {
-           ctx.fillStyle = AMB; ctx.fillRect(200, 210, 60, 40); // Block of capital
-           ctx.fillStyle = "#000"; ctx.font = "bold 14px monospace"; ctx.fillText("$10k", 215, 235);
+           ctx.shadowBlur = 20; ctx.shadowColor = AMB;
+           ctx.fillStyle = AMB; ctx.fillRect(200, 200, 70, 50); 
+           ctx.shadowBlur = 0;
+           
+           ctx.fillStyle = "#000"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
            
            ctx.fillStyle = "#fff";
-           ctx.fillText("Claim: Result = 42", 160, 190);
+           ctx.fillText("Claim: Result = TRUE", 150, 180);
         }
 
         // The Challenge Countdown
@@ -209,39 +274,54 @@
            var timeP = clamp01((lt - 10) / 25);
            var currX = lerp(200, 800, timeP);
            
-           // Clock sweeping
-           ctx.fillStyle = h.rgba(CY, 0.2); ctx.fillRect(200, 240, currX - 200, 20);
-           ctx.fillStyle = CY; ctx.fillRect(currX, 235, 5, 30); // Playhead
+           // Sweeping Clock UI
+           ctx.fillStyle = h.rgba(CY, 0.3); ctx.fillRect(200, 245, currX - 200, 10);
            
-           ctx.fillStyle = "#fff";
+           ctx.shadowBlur = 15; ctx.shadowColor = CY;
+           ctx.fillStyle = CY; ctx.fillRect(currX, 235, 5, 30); // Playhead
+           ctx.shadowBlur = 0;
+           
+           ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
            ctx.fillText("Challenge Window open...", 400, 310);
         }
 
-        // A malicious claim (happens below)
+        // A malicious claim is planted below
         if (lt > 15) {
-           ctx.fillStyle = RED; ctx.fillRect(350, 350, 60, 40); // Malicious Block
-           ctx.fillStyle = "#000"; ctx.fillText("$10k", 365, 375);
-           ctx.fillStyle = RED; ctx.fillText("Claim: Result = 99", 310, 330);
+           ctx.shadowBlur = 20; ctx.shadowColor = RED;
+           ctx.fillStyle = RED; ctx.fillRect(350, 330, 70, 50); 
+           ctx.shadowBlur = 0;
+           ctx.fillStyle = "#000"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 360, 360);
+           ctx.fillStyle = RED; ctx.fillText("Claim: Result = FALSE", 290, 310);
            
            // A Challenger smashes into it
            if (lt > 22) {
               var smashP = clamp01((lt - 22) / 3);
-              var smashX = lerp(700, 410, E.in(smashP));
+              var smashX = lerp(750, 420, E.in(smashP));
               
-              ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(smashX, 370, 20, 0, Math.PI*2); ctx.fill();
-              ctx.fillStyle = "#000"; ctx.fillText("!", smashX - 5, 375);
+              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
+              ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(smashX, 355, 25, 0, Math.PI*2); ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.fillStyle = "#000"; ctx.font = "bold 20px monospace"; ctx.fillText("!", smashX - 5, 362);
 
               if (smashP === 1) {
-                 // Shattering effect
+                 // Massive Shattering effect
+                 var shatterTime = lt - 25;
                  ctx.fillStyle = h.rgba(RED, 0.5);
-                 ctx.beginPath(); ctx.arc(380, 370, 50 + (lt-25)*50, 0, Math.PI*2); ctx.fill();
-                 ctx.fillStyle = RED; ctx.fillText("SLASHED!", 350, 410);
+                 ctx.beginPath(); ctx.arc(385, 355, 50 + shatterTime*100, 0, Math.PI*2); ctx.fill();
                  
-                 // Pieces flying
-                 for (var k=0; k<8; k++) {
-                    var dx = Math.cos(k) * (lt-25)*100;
-                    var dy = Math.sin(k) * (lt-25)*100 + ((lt-25)*(lt-25)*20); // gravity
-                    ctx.fillStyle = AMB; ctx.fillRect(380 + dx, 370 + dy, 10, 10);
+                 ctx.shadowBlur = 15; ctx.shadowColor = RED;
+                 ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'"; ctx.fillText("SLASHED!", 320, 420);
+                 ctx.shadowBlur = 0;
+                 
+                 // Advanced Particle Physics for shattered coins
+                 for (var k=0; k<15; k++) {
+                    var speed = 120 + Math.random()*80;
+                    var dx = Math.cos(k * 0.4) * shatterTime * speed;
+                    var dy = Math.sin(k * 0.4) * shatterTime * speed + (shatterTime*shatterTime*60); // gravity curve
+                    
+                    var pSize = 5 + Math.random()*10;
+                    ctx.fillStyle = (Math.random() > 0.5) ? AMB : RED;
+                    ctx.fillRect(385 + dx, 355 + dy, pSize, pSize);
                  }
               }
            }
@@ -249,22 +329,24 @@
 
         // The True claim finalizes
         if (lt > 36) {
-           ctx.fillStyle = GRN; ctx.fillRect(200, 210, 60, 40); // Block turns green
-           ctx.fillStyle = "#000"; ctx.fillText("$10k", 215, 235);
+           ctx.shadowBlur = 30; ctx.shadowColor = GRN;
+           ctx.fillStyle = GRN; ctx.fillRect(200, 200, 70, 50); // Block turns green
+           ctx.shadowBlur = 0;
+           ctx.fillStyle = "#000"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
            
-           ctx.fillStyle = GRN; ctx.font = "bold 18px monospace";
-           ctx.fillText("FINALIZED", 200, 160);
+           ctx.fillStyle = GRN; ctx.font = "bold 22px 'JetBrains Mono'";
+           ctx.fillText("FINALIZED", 185, 150);
            ctx.strokeStyle = GRN; ctx.lineWidth = 3;
-           ctx.beginPath(); ctx.moveTo(200, 170); ctx.lineTo(260, 170); ctx.stroke();
+           ctx.beginPath(); ctx.moveTo(185, 160); ctx.lineTo(290, 160); ctx.stroke();
         }
         
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Cryptography is expensive. The 'Optimistic' approach is economic.", 2.0, { out: 12.0 });
-      lower(s, "A node asserts the result and locks a massive financial bond (stake) on the chain.", 13.0, { out: 24.0 });
-      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is shattered and given to the challenger.", 25.0, { out: 40.0 });
-      lower(s, "If the timer runs out with no challenges, the result solidifies as truth. No expensive math required.", 42.0);
+      lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 2.0, { out: 12.0 });
+      lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 13.0, { out: 24.0 });
+      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.", 25.0, { out: 40.0 });
+      lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 42.0);
     });
   }
 

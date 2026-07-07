@@ -1051,14 +1051,20 @@ button:focus-visible {
   color: #7dd3fc;
 }
 
-/* Lower-third narration: a translucent panel so the running commentary reads
-   cleanly over axis labels and chart furniture, like a film subtitle bar. */
+/* Lower-third narration: a solid, opaque panel spanning the entire width */
 .labf__lower {
-  background: rgba(7, 11, 22, 0.82);
-  border: 1px solid rgba(125, 145, 185, 0.18);
-  border-radius: 10px;
-  padding: 0.5em 0.75em;
-  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.7);
+  background: #070b16; /* Opaque solid background */
+  border: none;
+  border-top: 1px solid rgba(125, 145, 185, 0.18);
+  border-radius: 0;
+  padding: 1.5rem 2.5rem;
+  box-shadow: 0 -8px 30px -12px rgba(0, 0, 0, 0.7);
+  width: 100% !important;
+  max-width: none !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  transform: none !important;
+  box-sizing: border-box;
 }
 
 .labf__scenetitle {
