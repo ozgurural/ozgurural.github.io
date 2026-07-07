@@ -76,20 +76,28 @@
               var controlX = cx + (Math.sin(t) * 100);
               var controlY = cy + 50;
               
-              // Quadratic bezier math
-              var omt = 1 - p;
-              var currentX = omt*omt*startX + 2*omt*p*controlX + p*p*cx;
-              var currentY = omt*omt*startY + 2*omt*p*controlY + p*p*(cy - 90);
-
-              // Traffic jam physics at the top
-              if (lt > 20) {
-                 var jamDist = Math.max(0, 180 - (lt - 20)*6);
-                 var targetJamY = cy - 100 + jamDist + (t*6);
-                 if (currentY < targetJamY) {
-                    currentY = targetJamY;
-                    currentX = cx + Math.sin(t*3.14)*jamDist/3; // Spreading out horizontally as it jams
+              function getNodePos(p_val, time_val) {
+                 var omt = 1 - p_val;
+                 var x = omt*omt*startX + 2*omt*p_val*controlX + p_val*p_val*cx;
+                 var y = omt*omt*startY + 2*omt*p_val*controlY + p_val*p_val*(cy - 90);
+                 
+                 if (time_val > 20) {
+                     var jamRadius = 25 + (t * 2.5); // form rings
+                     var dx = x - cx;
+                     var dy = y - (cy - 100);
+                     var dist = Math.sqrt(dx*dx + dy*dy);
+                     if (dist < jamRadius) {
+                         var angle = Math.atan2(dy, dx);
+                         angle += Math.sin(time_val * 4 + t) * 0.2; // jitter
+                         x = cx + Math.cos(angle) * jamRadius;
+                         y = (cy - 100) + Math.sin(angle) * jamRadius;
+                     }
                  }
+                 return {x: x, y: y};
               }
+
+              var curr = getNodePos(p, lt);
+              var currentX = curr.x, currentY = curr.y;
 
               // Glow effect
               var tAlpha = (p < 0.1) ? p*10 : (p > 0.9 && lt <= 20) ? (1-p)*10 : 1.0;
@@ -105,11 +113,9 @@
                  ctx.lineWidth = 2;
                  ctx.beginPath();
                  ctx.moveTo(currentX, currentY);
-                 var pastP = p - 0.05;
-                 var pastOmt = 1 - pastP;
-                 var pastX = pastOmt*pastOmt*startX + 2*pastOmt*pastP*controlX + pastP*pastP*cx;
-                 var pastY = pastOmt*pastOmt*startY + 2*pastOmt*pastP*controlY + pastP*pastP*(cy - 90);
-                 ctx.lineTo(pastX, pastY);
+                 var pastP = Math.max(0, p - 0.05);
+                 var past = getNodePos(pastP, lt - 0.05*12);
+                 ctx.lineTo(past.x, past.y);
                  ctx.stroke();
               }
            }
