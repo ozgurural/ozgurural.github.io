@@ -269,7 +269,7 @@
       var gx = 2 * a * (g0[0] - mx), gy = 2 * b * (g0[1] - my);
       var gn = Math.hypot(gx, gy);
       var grad = s.vector({ coords: co, x: g0[0], y: g0[1], dx: -0.9 * gx / gn, dy: -0.9 * gy / gn, color: "#34d399", width: 2.6 });
-      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 1.0, y: g0[1] - 0.5, display: false, size: "1.8rem", color: "#34d399" });
+      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 1.0, y: g0[1] - 0.5, display: false, size: "1.4rem", color: "#34d399" });
       s.draw(grad, { at: 2.0, dur: 0.7 }); s.fadeIn(gradLbl, { at: 2.4, dur: 0.5 });
       s.fadeOut(grad, { at: 4.0, dur: 0.6 }); s.fadeOut(gradLbl, { at: 4.0, dur: 0.6 });
 
@@ -326,9 +326,9 @@
         var par = s.plot(co, function (x) { return 0.5 * lam * x * x; }, { color: "#5b6b8c", width: 1.8, samples: 80 });
         s.draw(par, { at: 0.4 + idx * 0.25, dur: 1.0 });
         // panel frame label
-        var lbl = s.tex2(pn.label, { px: left + pw / 2, py: 100, size: "1.8rem", color: pn.col });
-        s.fadeIn(lbl, { at: 0.6 + idx * 0.25, dur: 0.6 });
-        var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "1.8rem", align: "center" });
+        var lbl = s.tex2(pn.label, { px: left + pw / 2, py: 100, size: "1.4rem", color: pn.col });
+        s.write(lbl, { at: 0.6 + idx * 0.25, dur: 0.6 });
+        var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "1.4rem", align: "center" });
         s.fadeIn(tag, { at: 2.2, dur: 0.6 });
 
         // iterate x_{t+1} = (1-αλ) x_t  (clamped so divergence stays on-stage)
@@ -410,11 +410,11 @@
   function sceneSqrtKappa(film) {
     film.scene("From κ to √κ", 16, function (s) {
       // left: the two convergence rates, typeset. right: iterations vs κ (log-x).
-      var t1 = s.tex2("\\text{Standard GD: Slow in narrow valleys}", { px: 264, py: 190, size: "1.9rem", color: "#9aa7be" });
-      s.write(t1, { at: 10.0, dur: 1.2 });
-      var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.9rem", color: "#fbbf24" });
-      s.write(t2, { at: 12.0, dur: 1.2 });
-      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.9rem", color: "#dbeafe" });
+      var t1 = s.tex2("\\text{Standard GD: Slow in narrow valleys}", { px: 264, py: 190, size: "1.4rem", color: "#9aa7be" });
+      s.write(t1, { at: 1.0, dur: 1.2 });
+      var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.4rem", color: "#fbbf24" });
+      s.write(t2, { at: 2.5, dur: 1.2 });
+      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(t3, { at: 3.6, dur: 1.0 });
 
       // plot region (right half), x = log10(kappa) in [0,4]
@@ -428,7 +428,7 @@
       s.draw(gdCurve, { at: 2.4, dur: 1.6 });
       s.draw(hbCurve, { at: 4.0, dur: 1.6 });
       var gl = s.caption("GD ∝ κ ↑", { coords: co, x: 1.42, y: 96, anchor: "left", size: "0.76rem", color: "#9aa7be" });
-      var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "1.8rem", color: "#fbbf24" });
+      var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "1.4rem", color: "#fbbf24" });
       s.fadeIn(gl, { at: 4.2, dur: 0.5 }); s.fadeIn(hl, { at: 5.8, dur: 0.5 });
       var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -7, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.2, dur: 0.6 });

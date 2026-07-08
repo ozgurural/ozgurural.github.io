@@ -125,7 +125,7 @@
         ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillText("fine-tuning leak", 442, 200);
       });
-      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.9rem", color: "#ffffff" });
+      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: "#ffffff" });
       s.write(title, { at: 0.6, dur: 1.4 });
       lower(s, "Your model leaks. A competitor fine-tunes and claims it. How do you prove ownership when weights change?", 4.4, { maxWidth: "80%", out: 13.2, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
@@ -180,7 +180,7 @@
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
         ctx.fillText("utility", mx - 2, my - 16);
       });
-      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.8rem", color: "#dbeafe" });
+      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 1.0, dur: 0.8 });
       lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
@@ -274,7 +274,7 @@
         ctx.fillStyle = h.rgba(GREY, 0.9); ctx.fillText("H₀ innocent  N(0,1)", co.x(-2.6), co.y(0.30));
         ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("H₁ marked  N(d,1)", co.x(d + 0.3), co.y(0.34));
       });
-      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.9rem", color: "#e8eef9" });
+      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.4rem", color: "#e8eef9" });
       s.write(e1, { at: 0.8, dur: 1.2 });
       lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
@@ -309,7 +309,7 @@
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
       var dm = s.caption("aggregate d = √k·ε/σ <span style='color:#fbbf24'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: "#e8eef9" });
       s.fadeIn(sm, { at: 7.0, dur: 0.6 }); s.fadeIn(dm, { at: 7.6, dur: 0.6 });
-      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 760, py: 350, size: "1.8rem", color: AMB });
+      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 760, py: 350, size: "1.4rem", color: AMB });
       s.fadeIn(aucEq, { at: 8.4, dur: 0.7 });
 
       lower(s, "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.", 10.0, { maxWidth: "85%", px: 60 });
@@ -377,11 +377,11 @@
       });
       var d3 = Math.sqrt(100) * 0.45; // k=100
       var power = Phi(d3 - Z_ALPHA);
-      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.9rem", color: AMB });
-      s.write(eq, { at: 0.8, dur: 1.6 });
-      var chip = s.caption("detection power → <strong style='color:#ffffff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1.8rem", color: GRN });
-      s.fadeIn(chip, { at: 2.8, dur: 0.7 }); s.pulse(chip, { at: 3.6, dur: 0.8, amp: 0.1 });
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.8rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
+      s.write(eq, { at: 1.0, dur: 1.0 });
+      var chip = s.caption("detection power → <strong style='color:#ffffff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN });
+      s.fadeIn(chip, { at: 2.5, dur: 1.0 });
+      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.write(tag, { at: 4.4, dur: 1.4 });
       var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 6.0, dur: 0.8 });

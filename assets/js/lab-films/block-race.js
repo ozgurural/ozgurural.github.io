@@ -145,10 +145,10 @@
         ctx.fillText("honest lead  +" + Math.max(0, lead), 720, 150);
       });
 
-      var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.8rem", color: "#dce7fb" });
+      var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.4rem", color: "#dce7fb" });
       s.write(rule, { at: 0.5, dur: 1.2 });
-      var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.9rem", color: CY });
-      var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.9rem", color: MAG });
+      var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.4rem", color: CY });
+      var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.4rem", color: MAG });
       s.fadeIn(lblH, { at: 1.0, dur: 0.6 }); s.fadeIn(lblA, { at: 2.4, dur: 0.6 });
       // clear the lower third before the narration panel writes in at 4.4
       s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
