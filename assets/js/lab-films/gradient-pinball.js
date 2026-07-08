@@ -298,9 +298,9 @@
       });
 
       // the rule, typeset
-      var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 84, size: "1.8rem", color: "#fbbf24" });
+      var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 50, size: "1.4rem", color: "#fbbf24" });
       s.write(eq, { at: 0.6, dur: 1.4 });
-      var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 132, display: false, size: "1.9rem", color: "#dbeafe" });
+      var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 490, display: false, size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(perp, { at: 2.6, dur: 0.8 });
 
       lower(s, "Measure slope, step against it, repeat. Each step is the locally steepest move.", 10.8, { maxWidth: "66%" });
@@ -434,13 +434,15 @@
       s.fadeIn(xlab, { at: 1.2, dur: 0.6 });
 
       // punchline callout
-      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 740, py: 196, size: "1.9rem", color: "#fbbf24" });
+      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 700, py: 196, size: "1.4rem", color: "#fbbf24" });
       s.fadeIn(call, { at: 6.4, dur: 0.8 }); s.pulse(call, { at: 7.2, dur: 0.8, amp: 0.12 });
 
-      var eq1 = s.tex2("\\text{GD is stuck bouncing}", { px: 200, py: 80, size: "1.8rem", color: "#9aa7be" });
-      var eq2 = s.tex2("\\text{Momentum cuts through}", { px: 220, py: 130, size: "1.3rem" });
+      var eq1 = s.tex2("\\text{GD is stuck bouncing}", { px: 200, py: 80, size: "1.4rem", color: "#9aa7be" });
+      var eq2 = s.tex2("\\text{Momentum cuts through}", { px: 220, py: 130, size: "1.2rem" });
+      var e3 = s.tex2("\\alpha > 2/\\lambda", { px: 760, py: 150, size: "1.4rem", color: "#fb7185" });
+      var c3 = s.tex2("\\text{converges, oscillating}", { px: 480, py: 490, size: "1.3rem", color: "#fbbf24" });
       s.write(eq1, { at: 2.0, dur: 1.0 });
-      var hb = s.tex2("\\text{Momentum: }", { px: 70, py: 130, size: "1.8rem", color: "#fbbf24" });
+      var hb = s.tex2("\\text{Momentum: }", { px: 70, py: 130, size: "1.4rem", color: "#fbbf24" });
       s.fadeIn(hb, { at: 11.5, dur: 0.6 });
       s.fadeOut(eq1, { at: 14.5, dur: 0.5 }); s.fadeOut(eq2, { at: 14.5, dur: 0.5 }); s.fadeOut(hb, { at: 14.5, dur: 0.5 });
 

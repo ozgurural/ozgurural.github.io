@@ -38,10 +38,10 @@
 
   function sceneWhitebox(film) {
     film.scene("Sparse Parameter Perturbations", 60, function(s) {
-      var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 60, size: "1.8rem", color: CY });
+      var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 40, size: "1.4rem", color: CY });
       s.fadeIn(eq, { at: 1.0, dur: 2.0 });
 
-      var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 750, py: 60, size: "1.8rem", color: GRN });
+      var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 750, py: 40, size: "1.4rem", color: GRN });
       s.fadeIn(eq2, { at: 20.0, dur: 3.0 });
       
       var co = film.coords({ xRange: [-4, 6], yRange: [0, 1], pad: { left: 550, right: 100, top: 150, bottom: 150 } });

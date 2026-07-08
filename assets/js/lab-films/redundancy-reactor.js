@@ -121,7 +121,7 @@
       s.canvas(function (lt, ctx, h) {
         // left: TMR schematic
         drawTMR(ctx, h, 230, 220, ["ok", "ok", "ok"], "ok", false);
-        ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("N = 2m+1,  m = 1", 150, 360);
+        ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("N = 2m+1,  m = 1", 150, 390);
         // center: vertical N=3 cell bar filling red
         var nRed = Math.min(3, Math.floor(clamp01((lt - 1) / 4) * 3));
         var bx = 470, by = 150, cellH = 46;
@@ -134,7 +134,7 @@
         // threshold line > N/2
         ctx.strokeStyle = h.rgba(AMB, 0.9); ctx.setLineDash([5, 5]); ctx.lineWidth = 1.6;
         ctx.beginPath(); ctx.moveTo(bx - 10, by + 2 * cellH); ctx.lineTo(bx + 90, by + 2 * cellH); ctx.stroke(); ctx.setLineDash([]);
-        ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("> N/2 fails", bx + 92, by + 2 * cellH + 4);
+        ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("> N/2 fails", bx + 110, by + 2 * cellH + 4);
         ctx.fillStyle = h.rgba(nRed >= 2 ? RED : GRN, 1); ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillText(nRed >= 2 ? "SYSTEM FAILS" : "system OK", bx, by + 3 * cellH + 18);
         // right: binomial bars C(3,i)
         var px0 = 660, py0 = 330, bw = 44;
@@ -144,7 +144,7 @@
           ctx.fillRect(px0 + i * bw, py0 - hgt, bw - 8, hgt);
           ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("i=" + i, px0 + i * bw, py0 + 14);
         }
-        ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 110);
+        ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 130);
       });
       var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 96, size: "1.9rem", color: "#e8eef9" });
       var hg = s.group();

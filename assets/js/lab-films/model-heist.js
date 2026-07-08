@@ -178,7 +178,7 @@
           ctx.fillRect(mx + 3, my + mh - (seg * 6) - 4, 20, 3);
         }
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
-        ctx.fillText("utility", mx - 2, my - 8);
+        ctx.fillText("utility", mx - 2, my - 16);
       });
       var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.8rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 1.0, dur: 0.8 });
@@ -213,7 +213,7 @@
         var kNow = Math.floor(clamp01((lt - 3.5) / 6) * K);
         var d = Math.sqrt(kNow) * 0.32;
         ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.95);
-        ctx.fillText("k = " + kNow + "   d = √k·ε/σ = " + d.toFixed(2), 560, 180);
+        ctx.fillText("k = " + kNow + "   d = √k·ε/σ = " + d.toFixed(2), 560, 160);
         // a little sqrt(k) curve for d
         var px0 = 560, py0 = 360, pw = 320, ph = 130;
         ctx.strokeStyle = h.rgba("#dbeafe", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
@@ -221,9 +221,9 @@
         for (var kk = 0; kk <= kNow; kk++) { var xx = px0 + pw * kk / K, yy = py0 - (Math.sqrt(kk) * 0.32 / (Math.sqrt(K) * 0.32)) * ph; if (kk === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke();
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.8);
-        ctx.fillText("aggregate SNR  d", px0, py0 - ph - 8);
+        ctx.fillText("aggregate SNR  d", px0, py0 - ph - 12);
       });
-      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 104, size: "1.8rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 90, size: "1.5rem", color: "#e8eef9" });
       s.write(eq, { at: 1.0, dur: 1.4 });
       lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
@@ -341,7 +341,7 @@
         ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.strokeRect(bx, by, 26, bh);
         ctx.fillStyle = h.rgba(util < 0.35 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
-        ctx.fillText("utility", bx - 2, by - 8);
+        ctx.fillText("utility", bx - 2, by - 16);
         
         // Critical Warning when utility drops below threshold
         if (util < 0.35 && (Math.floor(lt * 8) % 2 === 0)) {

@@ -84,7 +84,7 @@
           ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.textAlign = "center"; ctx.fillText("IDENTICAL", 461, 276); ctx.textAlign = "left"; ctx.globalAlpha = 1;
         }
       });
-      var eq = s.tex2("\\text{Cost to copy weights} \\approx 0", { px: 480, py: 110, size: "1.8rem", color: "#dbeafe" });
+      var eq = s.tex2("\\text{Cost to copy weights} \\approx 0", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 3.5, dur: 0.8 });
       lower(s, "Weights are just copyable numbers. How can you prove you did the training work?", 4.5, { maxWidth: "66%", out: 13.2 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
