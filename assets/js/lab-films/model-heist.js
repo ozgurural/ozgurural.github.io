@@ -359,7 +359,7 @@
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 13px 'JetBrains Mono',monospace";
         ctx.fillText("owner Z = " + z.toFixed(1) + "  ≫ z_α", 600, 150);
       });
-      var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1.8rem", color: AMB });
+      var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1.4rem", color: AMB });
       s.write(eq, { at: 1.0, dur: 1.2 });
       lower(s, "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark.", 7.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
