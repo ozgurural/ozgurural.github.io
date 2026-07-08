@@ -786,7 +786,7 @@
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#ffffff'>Dr. Ozgur Ural</span>", 
                            { px: 500, py: 220, anchor: "center", align: "center", panel: false });
                            
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>SYSTEMS ARCHITECT & ML RESEARCHER</span>", 
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>SENIOR SOFTWARE ENGINEER & ML RESEARCHER</span>", 
                            { px: 500, py: 285, anchor: "center", align: "center", panel: false });
                            
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#ffffff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
