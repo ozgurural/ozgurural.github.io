@@ -780,16 +780,16 @@
     if (this._built) return this;
     
     // Global Signature Outro Scene
-    this.scene("Signature", 13.0, function(s) {
+    this.scene("Signature", 18.0, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 500, py: 270, anchor: "center", align: "center", panel: false });
       
-      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#fff'>Dr. Ozgur Ural</span>", 
+      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#ffffff'>Dr. Ozgur Ural</span>", 
                            { px: 500, py: 220, anchor: "center", align: "center", panel: false });
                            
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#fff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>PH.D. IN MACHINE LEARNING</span>", 
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>SYSTEMS ARCHITECT & ML RESEARCHER</span>", 
                            { px: 500, py: 285, anchor: "center", align: "center", panel: false });
                            
-      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#fff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
+      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#ffffff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
                            { px: 500, py: 340, anchor: "center", align: "center", panel: false });
 
       var objs = [bgLight, name, role, url];
@@ -799,11 +799,11 @@
         obj.cur.sy = 0.65;
         
         // Majestic slow zoom in that gently stops
-        s.scaleTo(obj, { at: 0.0, dur: 10.0, to: 1.05, ease: Ease.smooth });
+        s.scaleTo(obj, { at: 0.0, dur: 15.0, to: 1.05, ease: Ease.smooth });
         // Fade in together
         s.fadeIn(obj, { at: 0.5, dur: 3.0 });
         // Hold size constant for last 3 seconds, fade out at end
-        s.fadeOut(obj, { at: 11.5, dur: 1.5 });
+        s.fadeOut(obj, { at: 16.5, dur: 1.5 });
       });
 
       // Special procedural cinematic sound
@@ -816,16 +816,16 @@
           var t = ctx.currentTime;
           // Deep sub-bass boom (extended)
           var osc = ctx.createOscillator(); var gain = ctx.createGain();
-          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 10);
-          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 10);
-          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 10);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 15);
+          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 15);
+          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 15);
           
           // Ethereal chord shimmer (extended decay)
           [440, 554.37, 659.25, 880].forEach(function(freq) {
             var o = ctx.createOscillator(); var g = ctx.createGain();
             o.type = 'sine'; o.frequency.value = freq;
-            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 2.0); g.gain.exponentialRampToValueAtTime(0.001, t + 11.0);
-            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 11.0);
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 2.0); g.gain.exponentialRampToValueAtTime(0.001, t + 16.0);
+            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 16.0);
           });
         } catch(e){}
       });
