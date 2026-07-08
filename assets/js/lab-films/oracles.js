@@ -12,14 +12,14 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#3b82f6", AMB = "#fbbf24", RED = "#fb7185", GRN = "#34d399", GREY = "#94a3b8", PURP = "#a78bfa";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
 
   function lower(s, html, at, o) {
     o = o || {};
     // Full width bottom bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.0 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.5 });
     return c;
   }
 
@@ -33,7 +33,7 @@
   }
 
   function sceneBlind(film) {
-    film.scene("The Blind Contract", 45, function(s) {
+    film.scene("The Blind Contract", 67.5, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -128,15 +128,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "The blockchain is a perfectly deterministic grid. A closed universe.", 2.0, { out: 12.0 });
-      lower(s, "Smart contracts cannot 'look' at the real world. They cannot make API calls.", 13.0, { out: 24.0 });
-      lower(s, "If a parametric insurance contract needs to know if it rained, it cannot check a weather server.", 25.0, { out: 34.0 });
+      lower(s, "The blockchain is a perfectly deterministic grid. A closed universe.", 2.0, { out: 18 });
+      lower(s, "Smart contracts cannot 'look' at the real world. They cannot make API calls.", 13.0, { out: 36 });
+      lower(s, "If a parametric insurance contract needs to know if it rained, it cannot check a weather server.", 25.0, { out: 51 });
       lower(s, "It requires an Oracle: a bridge to bring real-world truth across the Consensus Wall.", 35.0);
     });
   }
 
   function sceneZK(film) {
-    film.scene("Zero-Knowledge Inference (zkML)", 60, function(s) {
+    film.scene("Zero-Knowledge Inference (zkML)", 90, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -259,15 +259,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 2.0, { out: 12.0 });
-      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 13.0, { out: 24.0 });
-      lower(s, "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (π).", 25.0, { out: 38.0 });
+      lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 2.0, { out: 18 });
+      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 13.0, { out: 36 });
+      lower(s, "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (π).", 25.0, { out: 57 });
       lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 40.0);
     });
   }
 
   function sceneOptimistic(film) {
-    film.scene("Optimistic Staking", 60, function(s) {
+    film.scene("Optimistic Staking", 90, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -369,9 +369,9 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 2.0, { out: 12.0 });
-      lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 13.0, { out: 24.0 });
-      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.", 25.0, { out: 40.0 });
+      lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 2.0, { out: 18 });
+      lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 13.0, { out: 36 });
+      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.", 25.0, { out: 60 });
       lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 42.0);
     });
   }

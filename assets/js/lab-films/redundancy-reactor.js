@@ -27,7 +27,7 @@
     build(); appendix();
   }
   var E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#36d6e7", AMB = "#f0a000", RED = "#fb7185", GRN = "#34d399", GREY = "#94a3b8", MAG = "#ec4899", GREENL = "#34d399";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", MAG = "#FC6255", GREENL = "#83C167";
 
   function choose(n, k) { var c = 1; for (var i = 0; i < k; i++) c = c * (n - i) / (i + 1); return c; }
   function Pind(N, q) { var m = (N - 1) / 2, s = 0; for (var i = m + 1; i <= N; i++) s += choose(N, i) * Math.pow(q, i) * Math.pow(1 - q, N - i); return s; }
@@ -36,7 +36,7 @@
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.75 });
     return c;
   }
   function hexPath(ctx, cx, cy, r) { ctx.beginPath(); for (var i = 0; i < 6; i++) { var a = Math.PI / 6 + i * Math.PI / 3; var x = cx + r * Math.cos(a), y = cy + r * Math.sin(a); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); } ctx.closePath(); }
@@ -109,14 +109,14 @@
         if (lt >= 6) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80); }
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: "#dbeafe" });
-      s.fadeIn(eq, { at: 0.8, dur: 0.8 });
+      s.fadeIn(eq, { at: 1.2, dur: 1.2 });
       lower(s, "Triple modular redundancy uses majority voting. It works until all three fail identically.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
   /* ============== 2 — MECHANISM ============== */
   function mechanism(film) {
-    film.scene("The voter and the binomial tail", 18, function (s) {
+    film.scene("The voter and the binomial tail", 27, function (s) {
       var q = 0.18;
       s.canvas(function (lt, ctx, h) {
         // left: TMR schematic
@@ -149,7 +149,7 @@
       var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 96, size: "1.4rem", color: "#e8eef9" });
       var hg = s.group();
       var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 148, size: "1.3rem", color: AMB });
-      s.fadeIn(e2, { at: 8.0, dur: 0.8 });
+      s.fadeIn(e2, { at: 12, dur: 1.2 });
       lower(s, "Systems fail only when a strict majority fails. Independent failures follow a binomial upper tail.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
   }
@@ -187,7 +187,7 @@
 
   /* ============== 3 — SUPERLINEAR ============== */
   function superlinear(film) {
-    film.scene("Superlinear safety", 18, function (s) {
+    film.scene("Superlinear safety", 27, function (s) {
       var pl = makePlot(film), box = pl.box;
       s.canvas(function (lt, ctx, h) {
         pl.drawGrid(ctx, h);
@@ -217,14 +217,14 @@
         }
       });
       var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 200, size: "1.3rem", color: AMB });
-      s.fadeIn(e1, { at: 9.0, dur: 1.0 });
+      s.fadeIn(e1, { at: 13.5, dur: 1.5 });
       lower(s, "Adding channels raises q to a higher power, steepening the slope on a log-log plot.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
   }
 
   /* ============== 4 — CORRELATION FLOOR (wow) ============== */
   function correlation(film) {
-    film.scene("Correlation installs a floor", 20, function (s) {
+    film.scene("Correlation installs a floor", 30, function (s) {
       var pl = makePlot(film), box = pl.box;
       function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; } // ρ sweeps 0 → 0.30
       s.canvas(function (lt, ctx, h) {
@@ -260,7 +260,7 @@
         if (rho > 0.01) { var capY = sy - Math.min(80, Math.log10(1 / rho) * 26); ctx.strokeStyle = h.rgba(RED, 0.85); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(sx - 6, capY); ctx.lineTo(sx + 170, capY); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("≈ 1/ρ", sx + 174, capY + 4); }
       });
       var eq = s.tex2("\\text{System Failure} \\approx \\text{Correlated Errors } (\\rho)", { px: 480, py: 92, size: "1.3rem", color: "#e8eef9" });
-      s.write(eq, { at: 11.0, dur: 1.6 });
+      s.write(eq, { at: 16.5, dur: 2.4 });
       lower(s, "Shared root causes (correlation ρ) bypass the voter. The steep safety curve hits a hard floor.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
     }, { subtitle: "Correlation caps reliability at 1/ρ no matter how many backups." });
   }
@@ -310,14 +310,14 @@
         ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ : " + rho.toFixed(2) + " ↓", 640, 180);
       });
       var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 700, py: 130, size: "1.4rem", color: AMB });
-      s.fadeIn(eq, { at: 8.8, dur: 0.8 });
+      s.fadeIn(eq, { at: 13.2, dur: 1.2 });
       lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
   /* ============== 6 — DIVERSITY ============== */
   function diversity(film) {
-    film.scene("The only real cure: diversity", 14, function (s) {
+    film.scene("The only real cure: diversity", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         var hit = lt > 3 && lt < 8;
         var states = ["ok", hit ? "bad" : "ok", "ok"]; // only one (different) channel reddens
@@ -337,10 +337,10 @@
         if (lt > 1.2) { var cx = bx0 + Math.pow(lt - 1.2, 0.4) * 80; ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.beginPath(); ctx.arc(cx, by0 - 8, 4, 0, 7); ctx.fill(); }
       });
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 40, size: "1.4rem", color: GRN });
-      s.fadeIn(eq, { at: 5.0, dur: 1.0 });
-      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%" });
+      s.fadeIn(eq, { at: 7.5, dur: 1.5 });
+      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 10.5, { maxWidth: "70%" });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
-      s.fadeIn(tag, { at: 10.5, dur: 1.0 });
+      s.fadeIn(tag, { at: 15.75, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });
   }
 

@@ -12,13 +12,13 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#36d6e7", AMB = "#fbbf24", RED = "#fb7185", GRN = "#34d399", GREY = "#94a3b8", TEAL = "#2dd4bf", MAG = "#ec4899", INDIGO = "#818cf8";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", TEAL = "#5CD0B3", MAG = "#FC6255", INDIGO = "#9A72AC";
 
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.0 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.5 });
     return c;
   }
 
@@ -37,12 +37,12 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 60, function(s) {
+    film.scene("Sparse Parameter Perturbations", 90, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 40, size: "1.4rem", color: CY });
-      s.fadeIn(eq, { at: 1.0, dur: 2.0 });
+      s.fadeIn(eq, { at: 1.5, dur: 3 });
 
       var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 750, py: 40, size: "1.4rem", color: GRN });
-      s.fadeIn(eq2, { at: 20.0, dur: 3.0 });
+      s.fadeIn(eq2, { at: 30, dur: 4.5 });
       
       var co = film.coords({ xRange: [-4, 6], yRange: [0, 1], pad: { left: 550, right: 100, top: 150, bottom: 150 } });
 
@@ -142,15 +142,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 2.0, { out: 18.0 });
-      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 20.0, { out: 38.0 });
-      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 40.0, { out: 52.0 });
+      lower(s, "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 2.0, { out: 27 });
+      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 20.0, { out: 57 });
+      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 40.0, { out: 78 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 53.0);
     });
   }
 
   function sceneBlackbox(film) {
-    film.scene("Feature-Based Triggers", 55, function(s) {
+    film.scene("Feature-Based Triggers", 82.5, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -239,15 +239,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 2.0, { out: 14.0 });
-      lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 16.0, { out: 28.0 });
-      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 30.0, { out: 42.0 });
+      lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 2.0, { out: 21 });
+      lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 16.0, { out: 42 });
+      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 30.0, { out: 63 });
       lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 44.0);
     });
   }
 
   function sceneGenerative(film) {
-    film.scene("Generative Green-lists", 75, function(s) {
+    film.scene("Generative Green-lists", 112.5, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -359,15 +359,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 2.0, { out: 12.0 });
-      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 14.0, { out: 26.0 });
-      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 28.0, { out: 40.0 });
+      lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 2.0, { out: 18 });
+      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 14.0, { out: 39 });
+      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 28.0, { out: 60 });
       lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 42.0);
     });
   }
 
   function sceneAuxiliary(film) {
-    film.scene("Non-Intrusive Auxiliary Head", 60, function(s) {
+    film.scene("Non-Intrusive Auxiliary Head", 90, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -453,9 +453,9 @@
            }
         }
       });
-      lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 2.0, { out: 12.0 });
-      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 14.0, { out: 26.0 });
-      lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 28.0, { out: 40.0 });
+      lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 2.0, { out: 18 });
+      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 14.0, { out: 39 });
+      lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 28.0, { out: 60 });
       lower(s, "However, its gradient footprint remains locked in the Proof-of-Learning training trajectory. Pruning it from the final model cannot erase its historical existence.", 42.0);
     });
   }

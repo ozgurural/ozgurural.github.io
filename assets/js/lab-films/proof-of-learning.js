@@ -30,13 +30,13 @@
     build(); appendix();
   }
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var TEAL = "#38bdf8", AMB = "#fbbf24", RED = "#fb7185", GRN = "#34d399", GREY = "#94a3b8", GOLD = "#d4af37", INDIGO = "#818cf8";
+  var TEAL = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", GOLD = "#FFFF00", INDIGO = "#9A72AC";
 
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.75 });
     return c;
   }
   function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
@@ -60,7 +60,7 @@
 
   /* ============== 1 — HOOK : a stolen snapshot ============== */
   function hook(film) {
-    film.scene("A stolen snapshot", 14, function (s) {
+    film.scene("A stolen snapshot", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         grid(ctx, h, 250, 220, 14, TEAL, clamp01(lt / 1.2), false);
         ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(TEAL, 0.95); ctx.fillText("f_{W_T}  (your model)", 240, 350);
@@ -85,8 +85,8 @@
         }
       });
       var eq = s.tex2("\\text{Cost to copy weights} \\approx 0", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
-      s.fadeIn(eq, { at: 3.5, dur: 0.8 });
-      lower(s, "Weights are just copyable numbers. How can you prove you did the training work?", 4.5, { maxWidth: "66%", out: 13.2 });
+      s.fadeIn(eq, { at: 5.25, dur: 1.2 });
+      lower(s, "Weights are just copyable numbers. How can you prove you did the training work?", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -138,50 +138,50 @@
       });
       // descent polyline (SVG) + checkpoints
       var pl = s.poly(path, { coords: co, color: TEAL, width: 2.4 });
-      s.draw(pl, { at: 0.8, dur: 7.5 });
+      s.draw(pl, { at: 1.2, dur: 11.25 });
       var w0 = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 6, color: "#ffffff" });
-      s.fadeIn(w0, { at: 0.6, dur: 0.4 });
+      s.fadeIn(w0, { at: 0.9, dur: 0.6 });
       var w0l = s.caption("W₀", { coords: co, x: path[0][0] - 0.1, y: path[0][1] + 0.35, anchor: "right", size: "1.3rem", color: "#f1f5f9" });
-      s.fadeIn(w0l, { at: 0.8, dur: 0.4 });
+      s.fadeIn(w0l, { at: 1.2, dur: 0.6 });
       [8, 16, 24, 32, 39].forEach(function (ci, q) {
         var d = s.dot({ coords: co, x: path[ci][0], y: path[ci][1], r: 5, color: AMB, glow: 5 });
-        s.fadeIn(d, { at: 2.0 + q * 0.7, dur: 0.4 });
+        s.fadeIn(d, { at: 3 + q * 0.7, dur: 0.6 });
       });
       var wt = s.caption("W_T", { coords: co, x: path[39][0] + 0.1, y: path[39][1] + 0.4, anchor: "left", size: "1.3rem", color: AMB });
-      s.fadeIn(wt, { at: 7.0, dur: 0.5 });
+      s.fadeIn(wt, { at: 10.5, dur: 0.75 });
       var eq = s.tex2("\\text{Next Step} = \\text{SGD}(\\text{Current}, \\text{Data})", { px: 360, py: 92, size: "1.4rem", color: "#e8eef9" });
-      s.write(eq, { at: 1.0, dur: 1.4 });
+      s.write(eq, { at: 1.5, dur: 2.1 });
       lower(s, "Models aren't born at endpoints. The stochastic training path is the true asset; the endpoint is merely its shadow.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
   }
 
   /* ============== 3 — THE PROOF OBJECT ============== */
   function proofObj(film) {
-    film.scene("What a proof actually is", 16, function (s) {
+    film.scene("What a proof actually is", 24, function (s) {
       var cards = [
-        { k: "\\mathbb{W}", t: "checkpoints", c: TEAL }, { k: "\\mathbb{I}", t: "batch indices", c: "#38bdf8" },
+        { k: "\\mathbb{W}", t: "checkpoints", c: TEAL }, { k: "\\mathbb{I}", t: "batch indices", c: "#58C4DD" },
         { k: "\\mathbb{H}", t: "batch signatures", c: INDIGO }, { k: "\\mathbb{A}", t: "hyperparams, optimizer, arch", c: GREY }
       ];
       cards.forEach(function (cd, i) {
         var x = 470, y = 150 + i * 70;
         var rect = s.rect({ x: x, y: y, w: 360, h: 56, rx: 10, fill: window.LabAnim.rgba(cd.c, 0.10), stroke: cd.c, sw: 1.6 });
-        s.fadeIn(rect, { at: 0.8 + i * 0.6, dur: 0.6 });
+        s.fadeIn(rect, { at: 1.2 + i * 0.6, dur: 0.9 });
         var lab = s.tex2(cd.k, { px: x + 36, py: y + 28, size: "1.4rem", color: cd.c });
-        s.fadeIn(lab, { at: 1.0 + i * 0.6, dur: 0.5 });
+        s.fadeIn(lab, { at: 1.5 + i * 0.6, dur: 0.75 });
         var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
-        s.fadeIn(desc, { at: 1.1 + i * 0.6, dur: 0.5 });
+        s.fadeIn(desc, { at: 1.65 + i * 0.6, dur: 0.75 });
       });
       var master = s.tex2("\\text{Proof} = [\\text{Checkpoints}, \\text{Data}, \\text{Signatures}]", { px: 250, py: 250, size: "1.4rem", color: AMB });
-      s.write(master, { at: 12.0, dur: 1.4 });
+      s.write(master, { at: 18, dur: 2.1 });
       var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 250, py: 320, anchor: "center", align: "center", size: "1.4rem", color: "#dbeafe" });
-      s.fadeIn(sig, { at: 6.0, dur: 0.8 });
+      s.fadeIn(sig, { at: 9, dur: 1.2 });
       lower(s, "A proof is a transcript: checkpoints, data-batches, signatures, and hyperparameters.", 8.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
   /* ============== 4 — REPLAY (hero) ============== */
   function replay(film) {
-    film.scene("Verify only the suspicious steps", 22, function (s) {
+    film.scene("Verify only the suspicious steps", 33, function (s) {
       // chain of checkpoints + per-step magnitude bars; sort; top-Q replay into δ-ball
       var mags = [], i; for (i = 0; i < 16; i++) mags.push(0.18 + 0.5 * (Math.sin(i * 2.7) * 0.5 + 0.5));
       mags[5] = 0.95; mags[11] = 0.88; // the suspicious (large) updates
@@ -222,14 +222,14 @@
         ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GRN, 0.95); ctx.fillText("cost: Q·E segments  ≪  full run", 640, 120);
       });
       var e1 = s.tex2("\\text{Forged Jump} \\le \\text{Allowed Error}", { px: 300, py: 96, size: "1.4rem", color: AMB });
-      s.write(e1, { at: 13.0, dur: 1.2 });
+      s.write(e1, { at: 19.5, dur: 1.8 });
       lower(s, "Verifiers don't rerun full training. We replay only the largest updates to trap forgers taking shortcuts.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
   }
 
   /* ============== 5 — ASYMMETRY ============== */
   function asymmetry(film) {
-    film.scene("The asymmetry that makes it a proof", 18, function (s) {
+    film.scene("The asymmetry that makes it a proof", 27, function (s) {
       s.canvas(function (lt, ctx, h) {
         var tip = clamp01((lt - 8) / 3) * 0.32; // beam tips toward adversary at the end
         var cx = 300, cy = 250, beam = 150;
@@ -258,14 +258,14 @@
       });
       var e1 = s.tex2("\\text{Possible training paths} \\sim \\text{Exponential}", { px: 480, py: 96, size: "1.4rem", color: "#e8eef9" });
       var e2 = s.tex2("\\text{Attacker Cost} \\gg \\text{Honest Cost}", { px: 480, py: 148, size: "1.3rem", color: AMB });
-      s.fadeIn(e2, { at: 9.0, dur: 0.8 });
+      s.fadeIn(e2, { at: 13.5, dur: 1.2 });
       lower(s, "Proving costs one honest run. Forging requires inverting SGD, an exponentially hard task.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
   }
 
   /* ============== 6 — SecurePoL : trajectory ∧ watermark ============== */
   function securepol(film) {
-    film.scene("Closing the gap: SecurePoL", 18, function (s) {
+    film.scene("Closing the gap: SecurePoL", 27, function (s) {
       s.canvas(function (lt, ctx, h) {
         // watermarked checkpoint grid (gold sub-lattice)
         grid(ctx, h, 90, 190, 13, TEAL, 1, true);
@@ -298,9 +298,9 @@
         if (lt > 2 && lt < 6) { ctx.fillStyle = h.rgba(RED, clamp01((lt - 2) / 0.6) * (1 - clamp01((lt - 5) / 0.8))); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("fake transcript: mimics the loss curve, lacks the secret mark", 360, 150); }
       });
       var eq = s.tex2("\\text{Accept} \\iff \\text{Valid Path} \\textbf{ AND } \\text{Valid Watermark}", { px: 480, py: 104, size: "1.4rem", color: AMB });
-      s.write(eq, { at: 6.5, dur: 1.6 });
+      s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
-      s.fadeIn(cite, { at: 9.0, dur: 0.8 });
+      s.fadeIn(cite, { at: 13.5, dur: 1.2 });
       lower(s, "SecurePoL binds the trajectory proof to a watermark. A forged path may mimic the loss curve, but lacks the secret mark.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
@@ -310,15 +310,15 @@
     film.scene("The fingerprint, and why it matters", 14, function (s) {
       var co = film.coords({ xRange: [0, 40], yRange: [0, 1], pad: { left: 80, right: 360, top: 140, bottom: 120 } });
       var ax = s.axes(co, { grid: false });
-      s.draw(ax, { at: 0.4, dur: 0.7 });
+      s.draw(ax, { at: 0.6, dur: 1.05 });
       // genuine noisy descent
       var gpts = [], i; for (i = 0; i <= 40; i++) gpts.push([i, Math.exp(-i * 0.08) * (1 + 0.13 * Math.sin(i * 1.9)) * 0.9 + 0.02]);
       var gp = s.poly(gpts, { coords: co, color: TEAL, width: 2.6 });
-      s.draw(gp, { at: 1.0, dur: 2.2 });
+      s.draw(gp, { at: 1.5, dur: 3.3 });
       // forged flat / too-clean
       var fpts = []; for (i = 0; i <= 40; i++) fpts.push([i, Math.exp(-i * 0.085) * 0.85 + 0.02]);
       var fp = s.poly(fpts, { coords: co, color: RED, width: 2.2, dashed: "5 5" });
-      s.draw(fp, { at: 3.4, dur: 2.0 });
+      s.draw(fp, { at: 5.1, dur: 3 });
       
       s.canvas(function(lt, ctx, h) {
         if (lt > 1.0 && lt < 5.0) {
@@ -347,16 +347,16 @@
       
       var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 150, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
       var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 190, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
-      s.fadeIn(gl, { at: 3.0, dur: 0.6 }); s.fadeIn(fl, { at: 5.4, dur: 0.6 });
+      s.fadeIn(gl, { at: 4.5, dur: 0.9 }); s.fadeIn(fl, { at: 8.1, dur: 0.9 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: -0.1, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
-      s.fadeIn(xl, { at: 1.0, dur: 0.5 });
-      s.fadeOut(xl, { at: 8.8, dur: 0.5 }); // clear the lower third for the narration
+      s.fadeIn(xl, { at: 1.5, dur: 0.75 });
+      s.fadeOut(xl, { at: 13.2, dur: 0.75 }); // clear the lower third for the narration
       // Clean legend on the right
       var hg = s.caption("The noise is the fingerprint.", { px: 650, py: 260, anchor: "left", size: "1.4rem", color: "#dbeafe" });
-      s.fadeIn(hg, { at: 6.8, dur: 0.6 });
+      s.fadeIn(hg, { at: 10.2, dur: 0.9 });
       var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
-      s.fadeIn(seal, { at: 8.4, dur: 0.8 });
-      lower(s, "A real run leaves a statistical signature. The noisy descent cannot be perfectly faked. PoL is cheap to produce, hard to forge.", 9.0, { maxWidth: "92%", px: 60 });
+      s.fadeIn(seal, { at: 12.6, dur: 1.2 });
+      lower(s, "A real run leaves a statistical signature. The noisy descent cannot be perfectly faked. PoL is cheap to produce, hard to forge.", 13.5, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

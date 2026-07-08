@@ -30,7 +30,7 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#38bdf8", MAG = "#ec4899", GRN = "#34d399", AMB = "#fbbf24", RED = "#fb7185";
+  var CY = "#58C4DD", MAG = "#FC6255", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255";
 
   /* exact Satoshi §11 attacker-success probability */
   function attackerSuccess(q, z) {
@@ -49,7 +49,7 @@
     o = o || {};
     var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.5 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 0.75 });
     return c;
   }
   function roundRect(ctx, x, y, w, h, r) {
@@ -85,7 +85,7 @@
 
       s.canvas(function (lt, ctx, h) {
         // genesis
-        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#94a3b8", 1);
+        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#888888", 1);
         ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#f1f5f9", 0.8);
         ctx.fillText("genesis", gx - 4, (yH + yA) / 2 + hh / 2 + 16);
         var nH = nAt(lt, 0.4, 0.85, 8), nA = nAt(lt, 1.6, 1.18, 6), i;
@@ -146,20 +146,20 @@
       });
 
       var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.4rem", color: "#dce7fb" });
-      s.write(rule, { at: 0.5, dur: 1.2 });
+      s.write(rule, { at: 0.75, dur: 1.8 });
       var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.4rem", color: CY });
       var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.4rem", color: MAG });
-      s.fadeIn(lblH, { at: 1.0, dur: 0.6 }); s.fadeIn(lblA, { at: 2.4, dur: 0.6 });
+      s.fadeIn(lblH, { at: 1.5, dur: 0.9 }); s.fadeIn(lblA, { at: 3.6, dur: 0.9 });
       // clear the lower third before the narration panel writes in at 4.4
-      s.fadeOut(lblA, { at: 4.1, dur: 0.4 });
+      s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
       var eq = s.tex2("\\text{Lead} = \\text{Honest Blocks} - \\text{Attacker Blocks}", { px: 480, py: 150, size: "1.3rem", color: "#dbeafe" });
-      lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13.4 });
+      lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 20.1 });
     }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
   }
 
   /* ================ 2 — BERNOULLI : the weighted coin ================ */
   function bernoulli(film) {
-    film.scene("Every block is a coin flip", 16, function (s) {
+    film.scene("Every block is a coin flip", 24, function (s) {
       var p = 0.7, q = 0.3, cx = 330, cy = 280, R = 96;
       s.canvas(function (lt, ctx, h) {
         var spin = clamp01(lt / 2.2);
@@ -197,10 +197,10 @@
 
       var e1 = s.tex2("\\text{Honest } (p) + \\text{Attacker } (q) = 100\\%", { px: 650, py: 150, size: "1.5rem", color: "#e8eef9" });
       var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 650, py: 360, size: "1.5rem", color: AMB });
-      s.write(e1, { at: 1.0, dur: 1.0 }); s.write(e2, { at: 3.0, dur: 1.2 });
+      s.write(e1, { at: 1.5, dur: 1.5 }); s.write(e2, { at: 4.5, dur: 1.8 });
       var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 280, py: 440, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(note, { at: 5.0, dur: 0.8 });
-      s.fadeOut(note, { at: 6.8, dur: 0.5 }); // hand the lower third to the narration
+      s.fadeIn(note, { at: 7.5, dur: 1.2 });
+      s.fadeOut(note, { at: 10.2, dur: 0.75 }); // hand the lower third to the narration
 
       lower(s, "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
@@ -208,16 +208,16 @@
 
   /* ==================== 3 — RUIN : the random walk ==================== */
   function ruin(film) {
-    film.scene("The gambler's ruin", 22, function (s) {
+    film.scene("The gambler's ruin", 33, function (s) {
       var co = film.coords({ xRange: [-7.5, 2.5], yRange: [-1, 1], pad: { left: 90, right: 360, top: 150, bottom: 150 } });
       // breakeven line at 0
       var be = s.line({ coords: co, x1: 0, y1: -0.9, x2: 0, y2: 0.9, color: "#e8eef9", width: 2 });
-      s.fadeIn(be, { at: 0.6, dur: 0.5 });
+      s.fadeIn(be, { at: 0.9, dur: 0.75 });
       var beLbl = s.caption("0 = breakeven", { coords: co, x: 0.2, y: 0.98, anchor: "left", size: "1.2rem", color: "#f1f5f9" });
-      s.fadeIn(beLbl, { at: 0.8, dur: 0.5 });
+      s.fadeIn(beLbl, { at: 1.2, dur: 0.75 });
       // axis
       var ax = s.line({ coords: co, x1: -7.3, y1: 0, x2: 2.3, y2: 0, color: PAL.axis, width: 1.3 });
-      s.draw(ax, { at: 0.4, dur: 0.8 });
+      s.draw(ax, { at: 0.6, dur: 1.2 });
 
       // precomputed biased walks (q=0.3) from deficit -6
       var walks = [], wcount = 4, j, k;
@@ -229,22 +229,22 @@
       walks.forEach(function (w, i) {
         var ghost = s.poly(w, { coords: co, color: i === 0 ? GRN : MAG, width: i === 0 ? 2.2 : 1.4 });
         ghost.el.style.filter = "drop-shadow(0 0 " + (i === 0 ? "8px " + GRN : "4px " + MAG) + ")";
-        s.draw(ghost, { at: 2.0 + i * 0.5, dur: 3.5 });
-        if (i !== 0) s.fadeOut(ghost, { at: 9.5, dur: 1.2, to: 0.18 });
+        s.draw(ghost, { at: 3 + i * 0.5, dur: 5.25 });
+        if (i !== 0) s.fadeOut(ghost, { at: 14.25, dur: 1.8, to: 0.18 });
       });
       var token = s.dot({ coords: co, x: -6, y: 0, r: 8, color: MAG, glow: 9 });
-      s.fadeIn(token, { at: 1.6, dur: 0.4 });
+      s.fadeIn(token, { at: 2.4, dur: 0.6 });
       var tokLbl = s.caption("attacker, z behind", { coords: co, x: -6, y: -0.45, anchor: "center", align: "center", size: "0.7rem", color: MAG });
-      s.fadeIn(tokLbl, { at: 1.8, dur: 0.5 });
+      s.fadeIn(tokLbl, { at: 2.7, dur: 0.75 });
 
       // recurrence + solution (right column)
       var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 750, py: 172, size: "1.5rem", color: "#e8eef9" });
       var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 750, py: 224, display: false, size: "1.3rem", color: "#dbeafe" });
-      s.write(r1, { at: 9.5, dur: 1.3 }); s.fadeIn(r2, { at: 11.0, dur: 0.6 });
+      s.write(r1, { at: 14.25, dur: 1.95 }); s.fadeIn(r2, { at: 16.5, dur: 0.9 });
       var sol = s.tex2("\\text{Attacker Success} = \\Big(\\frac{\\text{Attacker Power}}{\\text{Honest Power}}\\Big)^z", { px: 750, py: 294, size: "1.1rem", color: AMB });
-      s.write(sol, { at: 12.2, dur: 1.4 }); s.pulse(sol, { at: 13.8, dur: 0.8, amp: 0.1 });
+      s.write(sol, { at: 18.3, dur: 2.1 }); s.pulse(sol, { at: 20.7, dur: 1.2, amp: 0.1 });
       var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 750, py: 370, display: false, size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(r3, { at: 14.4, dur: 0.8 });
+      s.fadeIn(r3, { at: 21.6, dur: 1.2 });
 
       lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces Gambler's Ruin, bounded by (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Catching up from z blocks behind is exactly the gambler's ruin problem." });
@@ -252,7 +252,7 @@
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
   function poisson(film) {
-    film.scene("Satoshi's refinement: the head start", 22, function (s) {
+    film.scene("Satoshi's refinement: the head start", 33, function (s) {
       var q = 0.3, p = 0.7, z = 6, lambda = z * q / p;
       // LEFT: honest stacks z blocks under a sweeping dial
       s.canvas(function (lt, ctx, h) {
@@ -275,30 +275,30 @@
       // RIGHT: Poisson PMF for the attacker's secret count
       var co = film.coords({ xRange: [-0.6, 8.6], yRange: [0, 0.32], pad: { left: 470, right: 60, top: 150, bottom: 220 } });
       var axx = s.line({ coords: co, x1: -0.4, y1: 0, x2: 8.4, y2: 0, color: PAL.axis, width: 1.3 });
-      s.draw(axx, { at: 1.2, dur: 0.8 });
+      s.draw(axx, { at: 1.8, dur: 1.2 });
       var bars = [], kk;
       for (kk = 0; kk <= 8; kk++) {
         var pm = poissonPMF(lambda, kk);
         var bx0 = co.x(kk - 0.32), bx1 = co.x(kk + 0.32), by0 = co.y(0), by1 = co.y(pm);
         var col = kk > z ? RED : MAG;
         var bar = s.rect({ x: bx0, y: by1, w: bx1 - bx0, h: by0 - by1, fill: window.LabAnim.rgba(col, 0.6), stroke: col, sw: 1.4 });
-        s.fadeIn(bar, { at: 2.0 + kk * 0.18, dur: 0.5 });
+        s.fadeIn(bar, { at: 3 + kk * 0.18, dur: 0.75 });
       }
       var meanLbl = s.caption("k ~ Poisson(λ),  λ = z·q/p ≈ 2.57", { coords: co, x: 4, y: 0.30, anchor: "center", align: "center", size: "1.1rem", color: MAG });
-      s.fadeIn(meanLbl, { at: 4.2, dur: 0.7 });
+      s.fadeIn(meanLbl, { at: 6.3, dur: 1.05 });
       var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(kAxis, { at: 1.4, dur: 0.6 });
+      s.fadeIn(kAxis, { at: 2.1, dur: 0.9 });
 
       // the closed form assembling
       var form = s.tex2("\\text{Double Spend Risk Drop-off}", { px: 480, py: 340, size: "1.05rem", color: AMB });
-      s.write(form, { at: 12.5, dur: 1.8 });
+      s.write(form, { at: 18.75, dur: 2.7 });
 
-      lower(s, "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 16.5 });
+      lower(s, "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
       caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 535];
-      s.fadeIn(caveat, { at: 17.0, dur: 1.0 });
+      s.fadeIn(caveat, { at: 25.5, dur: 1.5 });
     }, { subtitle: "Confirmations are honest progress, but the clock ran for the attacker too." });
   }
 
@@ -308,38 +308,38 @@
       // log-y plot: y = log10(P), from 0 (P=1) down to -7
       var co = film.coords({ xRange: [0, 12], yRange: [-7, 0], pad: { left: 96, right: 320, top: 120, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 6, gridY: 7 });
-      s.draw(ax, { at: 0.4, dur: 0.9 });
+      s.draw(ax, { at: 0.6, dur: 1.35 });
       // y tick labels (10^0 .. 10^-7)
       [0, -1, -2, -3, -4, -5, -6, -7].forEach(function (e) {
         var t = s.caption("10<sup>" + e + "</sup>", { coords: co, x: -0.35, y: e, anchor: "right", size: "0.62rem", color: "#7f93b4" });
-        s.fadeIn(t, { at: 1.0, dur: 0.5 });
+        s.fadeIn(t, { at: 1.5, dur: 0.75 });
       });
       var xlab = s.caption("confirmations z →", { coords: co, x: 6, y: -7.7, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(xlab, { at: 1.0, dur: 0.5 });
+      s.fadeIn(xlab, { at: 1.5, dur: 0.75 });
 
       function curve(q, color, at) {
         var pts = [], z;
         for (z = 1; z <= 12; z++) pts.push([z, Math.max(-7, Math.log10(attackerSuccess(q, z)))]);
         var pl = s.poly(pts, { coords: co, color: color, width: 3 });
-        s.draw(pl, { at: at, dur: 2.0 });
+        s.draw(pl, { at: at, dur: 3 });
         var dot = s.dot({ coords: co, x: 1, y: Math.log10(attackerSuccess(q, 1)), r: 4, color: color });
-        s.fadeIn(dot, { at: at, dur: 0.3 });
+        s.fadeIn(dot, { at: at, dur: 0.45 });
       }
       curve(0.1, CY, 2.0);
       curve(0.3, MAG, 3.4);
 
       // z = 6 marker
       var zl = s.line({ coords: co, x1: 6, y1: -7, x2: 6, y2: 0, color: "#e8eef9", width: 1.5, dashed: "4 5" });
-      s.draw(zl, { at: 6.0, dur: 0.6 });
+      s.draw(zl, { at: 9, dur: 0.9 });
       var z6 = s.caption("z = 6", { coords: co, x: 6, y: 0.5, anchor: "center", align: "center", size: "1.2rem", color: "#f1f5f9" });
-      s.fadeIn(z6, { at: 6.2, dur: 0.4 });
+      s.fadeIn(z6, { at: 9.3, dur: 0.6 });
 
       // callouts
       var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#ffffff'>0.024%</strong>", { px: 720, py: 210, size: "1.2rem", color: CY });
       var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#ffffff'>13.2%</strong>", { px: 720, py: 260, size: "1.2rem", color: MAG });
-      s.fadeIn(cCY, { at: 7.2, dur: 0.7 }); s.fadeIn(cMG, { at: 8.0, dur: 0.7 });
+      s.fadeIn(cCY, { at: 10.8, dur: 1.05 }); s.fadeIn(cMG, { at: 12, dur: 1.05 });
       var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 720, py: 320, size: "1.5rem", color: "#e8eef9" });
-      s.fadeIn(jump, { at: 8.8, dur: 0.7 }); s.pulse(jump, { at: 9.6, dur: 0.8, amp: 0.12 });
+      s.fadeIn(jump, { at: 13.2, dur: 1.05 }); s.pulse(jump, { at: 14.4, dur: 1.2, amp: 0.12 });
 
       lower(s, "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Security decays exponentially in the attacker's relative size." });
@@ -347,10 +347,10 @@
 
   /* ===================== 6 — STAKES : finality ===================== */
   function stakes(film) {
-    film.scene("What the race really secures", 14, function (s) {
+    film.scene("What the race really secures", 21, function (s) {
       var gx = 110, bw = 40, gap = 12, yH = 230, yA = 350, hh = 36;
       s.canvas(function (lt, ctx, h) {
-        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#94a3b8", 1);
+        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#888888", 1);
         var nH = 12, aC = 4, i;
         for (i = 0; i < nH; i++) {
           var rev = clamp01((lt - i * 0.12) / 0.3);
@@ -386,13 +386,13 @@
       });
 
       var fin = s.caption("payment finalized (probabilistically)", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
-      s.fadeIn(fin, { at: 4.6, dur: 0.7 });
+      s.fadeIn(fin, { at: 6.9, dur: 1.05 });
       var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Zero Risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
-      s.write(lim, { at: 1.0, dur: 1.4 });
+      s.write(lim, { at: 1.5, dur: 2.1 });
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
-      s.fadeIn(cite, { at: 8.0, dur: 0.8 });
+      s.fadeIn(cite, { at: 12, dur: 1.2 });
 
-      lower(s, "Reversal becomes exponentially improbable, provided honest hashrate holds the majority.", 5.0, { maxWidth: "70%" });
+      lower(s, "Reversal becomes exponentially improbable, provided honest hashrate holds the majority.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "Finality is probabilistic, not absolute." });
   }
 

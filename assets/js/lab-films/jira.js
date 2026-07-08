@@ -12,14 +12,14 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#3b82f6", AMB = "#fbbf24", RED = "#fb7185", GRN = "#34d399", GREY = "#94a3b8", PURP = "#a78bfa";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
 
   function lower(s, html, at, o) {
     o = o || {};
     // Pinned to exact bottom-left for full-width overlay bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.0 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.5 });
     return c;
   }
 
@@ -33,7 +33,7 @@
   }
 
   function sceneCoordination(film) {
-    film.scene("The Coordination Problem", 45, function(s) {
+    film.scene("The Coordination Problem", 67.5, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -138,21 +138,21 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Global engineering requires massive coordination. But centralized management becomes a bottleneck.", 2.0, { out: 12.0 });
-      lower(s, "A single manager can only assign, review, and merge so many tasks before the hierarchy stalls.", 13.0, { out: 24.0 });
-      lower(s, "As an open-source network scales to thousands of global developers, the pyramid collapses completely.", 25.0, { out: 34.0 });
+      lower(s, "Global engineering requires massive coordination. But centralized management becomes a bottleneck.", 2.0, { out: 18 });
+      lower(s, "A single manager can only assign, review, and merge so many tasks before the hierarchy stalls.", 13.0, { out: 36 });
+      lower(s, "As an open-source network scales to thousands of global developers, the pyramid collapses completely.", 25.0, { out: 51 });
       lower(s, "We need a system with no manager. We need math.", 35.0);
     });
   }
 
   function sceneAMM(film) {
-    film.scene("The AMM Geometry", 60, function(s) {
+    film.scene("The AMM Geometry", 90, function(s) {
       // Slower equation typing
       var eq = s.tex2("x \\cdot y = k", { px: 150, py: 80, size: "2.2rem", color: CY });
-      s.fadeIn(eq, { at: 1.0, dur: 4.0 });
+      s.fadeIn(eq, { at: 1.5, dur: 6 });
       
       var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 80, size: "2.2rem", color: AMB });
-      s.fadeIn(eq2, { at: 18.0, dur: 4.0 });
+      s.fadeIn(eq2, { at: 27, dur: 6 });
 
       var co = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 400, right: 150, top: 150, bottom: 150 } });
 
@@ -220,15 +220,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'", 2.0, { out: 15.0 });
-      lower(s, "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees infinite liquidity.", 17.0, { out: 30.0 });
-      lower(s, "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.", 32.0, { out: 45.0 });
+      lower(s, "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'", 2.0, { out: 22.5 });
+      lower(s, "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees infinite liquidity.", 17.0, { out: 45 });
+      lower(s, "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.", 32.0, { out: 67.5 });
       lower(s, "If nobody is working on it, YES shares are mathematically cheap. This creates an enormous financial incentive to act.", 47.0);
     });
   }
 
   function sceneInsiderTrading(film) {
-    film.scene("Work as Insider Trading", 75, function(s) {
+    film.scene("Work as Insider Trading", 112.5, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -356,9 +356,9 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.", 2.0, { out: 18.0 });
-      lower(s, "Phase 2: They spend the next week writing code, effectively working as an 'insider' on their own success.", 22.0, { out: 46.0 });
-      lower(s, "Phase 3: The PR is merged. An Optimistic Oracle detects the cryptographic merge and resolves the market to 100%.", 48.0, { out: 58.0 });
+      lower(s, "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.", 2.0, { out: 27 });
+      lower(s, "Phase 2: They spend the next week writing code, effectively working as an 'insider' on their own success.", 22.0, { out: 69 });
+      lower(s, "Phase 3: The PR is merged. An Optimistic Oracle detects the cryptographic merge and resolves the market to 100%.", 48.0, { out: 87 });
       lower(s, "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty. No manager required.", 60.0);
     });
   }
