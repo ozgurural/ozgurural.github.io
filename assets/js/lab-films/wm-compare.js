@@ -50,48 +50,46 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
         
-        // Pseudo-3D Weight Galaxy with Depth of Field
-        var cx = 250, cy = 300;
+        // Weight Tensor Grid visualization
+        var cx = 70, cy = 130;
         ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
-        ctx.fillText("PARAMETERS (θ) GALAXY", 130, 120);
+        ctx.fillText("WEIGHT TENSOR (θ)", cx, cy - 20);
         ctx.shadowBlur = 0;
         
-        var dots = 1000;
-        for (var i = 0; i < dots; i++) {
-           // 3D coordinates mapped to 2D
-           var z = Math.sin(i * 11) * 150; // -150 to 150 depth
-           var r = (i * 1.37) % 200;
-           var theta = (i * 2.4) + (lt * (0.05 + z*0.0001)); // Parallax spin
-           
-           var scale = 200 / (200 - z); // Perspective scale
-           var dx = cx + r * Math.cos(theta) * scale;
-           var dy = cy + r * Math.sin(theta) * scale * 0.5; // Squashed Y for isometric feel
-           
-           var isMarked = i % 40 === 0;
-           
-           // Depth of field blurring (larger z -> blurrier)
-           var blurAmount = Math.max(0, Math.abs(z) - 50) * 0.05;
-           ctx.shadowBlur = isMarked ? 15 : blurAmount; 
-           
-           var dotSize = 1.2 * scale;
-           ctx.fillStyle = h.rgba(CY, 0.4 * scale);
+        var cols = 32, rows = 16;
+        var cellSize = 11, gap = 2;
+        
+        for (var r = 0; r < rows; r++) {
+           for (var c = 0; c < cols; c++) {
+              var idx = r * cols + c;
+              var dx = cx + c * (cellSize + gap);
+              var dy = cy + r * (cellSize + gap);
+              
+              // Seed-based random baseline color for weights
+              var baseVal = Math.abs(Math.sin(idx * 13.73)) * 0.4;
+              ctx.fillStyle = h.rgba(CY, 0.1 + baseVal);
+              
+              // Pseudo-random sparse marking
+              var isMarked = (idx * 29 + 17) % 35 === 0;
+              var markOffsetX = 0, markOffsetY = 0;
 
-           if (isMarked && lt > 10) {
-              var p = clamp01((lt - 10) / 15);
-              var pulse = Math.abs(Math.sin(lt * 4 + i));
-              
-              ctx.shadowColor = GRN;
-              ctx.fillStyle = h.rgba(GRN, 0.3 + (0.7 * p) + (0.3 * pulse));
-              dotSize = (1.5 + (2 * p)) * scale;
-              
-              if (lt > 15 && lt < 25) {
-                 // Constellation drawing
-                 ctx.strokeStyle = h.rgba(GRN, 0.15 * p * scale);
-                 ctx.lineWidth = 1 * scale;
-                 ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(dx, dy); ctx.stroke();
+              if (isMarked && lt > 10) {
+                 var p = clamp01((lt - 10) / 15);
+                 var pulse = Math.abs(Math.sin(lt * 4 + idx));
+                 
+                 ctx.shadowColor = GRN;
+                 ctx.shadowBlur = 10 * p;
+                 ctx.fillStyle = h.rgba(GRN, 0.2 + (0.8 * p) + (0.2 * pulse));
+                 
+                 // Show physical "perturbation" shift at peak animation
+                 markOffsetX = p * Math.cos(idx) * 2;
+                 markOffsetY = p * Math.sin(idx) * 2;
+              } else {
+                 ctx.shadowBlur = 0;
               }
+              
+              ctx.fillRect(dx + markOffsetX, dy + markOffsetY, cellSize, cellSize); 
            }
-           ctx.beginPath(); ctx.arc(dx, dy, dotSize, 0, Math.PI*2); ctx.fill();
         }
         ctx.shadowBlur = 0;
 
