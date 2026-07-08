@@ -981,8 +981,12 @@ button:focus-visible {
 .labf__stage {
   position: relative;
   width: 100%;
-  background:
-    radial-gradient(120% 90% at 50% -10%, #122036 0%, #0b1322 45%, #070b16 100%);
+  background: #111111;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 6.25% 11.111%; /* perfect squares relative to 16:9 canvas */
+  background-position: center center;
   overflow: hidden;
   isolation: isolate;
 }
@@ -1037,7 +1041,7 @@ button:focus-visible {
 }
 
 .labf__caption {
-  font-family: var(--ds-font-sans);
+  font-family: "KaTeX_Main", "Times New Roman", serif;
   font-size: 1.04rem; /* fixed at the 960px logical reference; the overlay scales it */
   font-weight: 500;
   color: #cdd9ef;
@@ -1053,7 +1057,7 @@ button:focus-visible {
 
 /* Lower-third narration: a solid, opaque panel spanning the entire width */
 .labf__lower {
-  background: #070b16; /* Opaque solid background */
+  background: #111111; /* Opaque solid background */
   border: none;
   border-top: 1px solid rgba(125, 145, 185, 0.18);
   border-radius: 0;
