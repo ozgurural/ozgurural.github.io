@@ -152,6 +152,51 @@ facebook:
   publisher              :
 og_image                 : "ozgururalpp.jpg"  # Social media default site image
 og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025), four first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
+keywords:
+  - Dr. Ozgur Ural
+  - Senior Software Engineer
+  - Machine Learning Researcher
+  - Ph.D. in Machine Learning
+  - ERAU
+  - Embry-Riddle Aeronautical University
+  - METU
+  - Middle East Technical University
+  - ODTU
+  - Orta Doğu Teknik Üniversitesi
+  - Secure Distributed Systems
+  - Proof-of-Learning
+  - Model Watermarking
+  - Autonomous Drones
+  - Real-time Simulation
+  - C++
+  - Scala
+  - TypeScript
+  - Python
+  - gRPC
+  - AI Security
+  - Level D Flight Simulators
+  - Avion Full Flight Simulators
+  - Havelsan
+  - Havelsan DLP
+  - Data Leakage Prevention
+  - STM Defence Technologies
+  - Kargu
+  - Togan
+  - Autonomous UAV
+  - Comodo Cybersecurity
+  - Secure Web Gateway
+  - Patch Manager
+  - Comodo Dragon Browser
+  - Blockchain-Enhanced Machine Learning
+  - Adversarial Robustness
+  - Adversarial Machine Learning
+  - Cloud-native microservices
+  - SvelteKit
+  - Trustworthy ML
+  - SecurePoL
+  - NLP Security
+  - Generative AI
+  - Retrieval-Augmented Generation (RAG)
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:

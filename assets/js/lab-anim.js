@@ -783,13 +783,13 @@
     this.scene("Signature", 27, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 500, py: 270, anchor: "center", align: "center", panel: false });
       
-      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:3.2rem; font-weight:700; letter-spacing:-0.02em; color:#ffffff'>Dr. Ozgur Ural</span>", 
-                           { px: 500, py: 220, anchor: "center", align: "center", panel: false });
+      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>", 
+                           { px: 500, py: 210, anchor: "center", align: "center", panel: false });
                            
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:1.05rem; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>SENIOR SOFTWARE ENGINEER & ML RESEARCHER</span>", 
-                           { px: 500, py: 285, anchor: "center", align: "center", panel: false });
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1.3; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>SENIOR SOFTWARE ENGINEER & ML RESEARCHER</span>", 
+                           { px: 500, py: 280, anchor: "center", align: "center", panel: false });
                            
-      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:1.15rem; color:#ffffff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
+      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
                            { px: 500, py: 340, anchor: "center", align: "center", panel: false });
 
       var objs = [bgLight, name, role, url];
