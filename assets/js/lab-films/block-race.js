@@ -209,24 +209,26 @@
   /* ==================== 3 — RUIN : the random walk ==================== */
   function ruin(film) {
     film.scene("The gambler's ruin", 33, function (s) {
-      var co = film.coords({ xRange: [-7.5, 2.5], yRange: [-1, 1], pad: { left: 90, right: 360, top: 150, bottom: 150 } });
-      // breakeven line at 0
-      var be = s.line({ coords: co, x1: 0, y1: -0.9, x2: 0, y2: 0.9, color: "#e8eef9", width: 2 });
+      var co = film.coords({ xRange: [-2, 32], yRange: [-8, 2], pad: { left: 90, right: 360, top: 150, bottom: 150 } });
+      
+      // breakeven line at y=0
+      var be = s.line({ coords: co, x1: -1, y1: 0, x2: 30, y2: 0, color: "#e8eef9", width: 2 });
       s.fadeIn(be, { at: 0.9, dur: 0.75 });
-      var beLbl = s.caption("breakeven: lead = 0", { coords: co, x: 0.2, y: 0.98, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
+      var beLbl = s.caption("breakeven: lead = 0", { coords: co, x: 20, y: 0.8, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
       s.fadeIn(beLbl, { at: 1.2, dur: 0.75 });
-      // axis
-      var ax = s.line({ coords: co, x1: -7.3, y1: 0, x2: 2.3, y2: 0, color: PAL.axis, width: 1.3 });
+      
+      // vertical time axis at x=0
+      var ax = s.line({ coords: co, x1: 0, y1: -7.5, x2: 0, y2: 1.5, color: PAL.axis, width: 1.3 });
       s.draw(ax, { at: 0.6, dur: 1.2 });
 
       // precomputed biased walks (q=0.3) from deficit -6
       var walks = [], wcount = 4, j, k;
       for (j = 0; j < wcount; j++) {
-        var pts = [[-6, (j - 1.5) * 0.2]], x = -6;
-        for (k = 0; k < 26; k++) { 
-           x += (Math.random() < 0.3 ? 1 : -1); 
-           pts.push([x, (j - 1.5) * 0.2 - k * 0.03]); 
-           if (x >= 0) break; 
+        var pts = [[0, -6]], y = -6;
+        for (k = 1; k <= 30; k++) { 
+           y += (Math.random() < 0.3 ? 1 : -1); 
+           pts.push([k, y]); 
+           if (y >= 0) break; // reached breakeven
         }
         walks.push(pts);
       }
@@ -236,9 +238,9 @@
         s.draw(ghost, { at: 3 + i * 0.5, dur: 5.25 });
         if (i !== 0) s.fadeOut(ghost, { at: 14.25, dur: 1.8, to: 0.18 });
       });
-      var token = s.dot({ coords: co, x: -6, y: 0, r: 8, color: MAG, glow: 9 });
+      var token = s.dot({ coords: co, x: 0, y: -6, r: 8, color: MAG, glow: 9 });
       s.fadeIn(token, { at: 2.4, dur: 0.6 });
-      var tokLbl = s.caption("attacker starts z blocks behind", { coords: co, x: -6, y: -0.45, anchor: "center", align: "center", size: "0.7rem", color: MAG });
+      var tokLbl = s.caption("attacker starts z blocks behind", { coords: co, x: 1, y: -6.8, anchor: "left", align: "left", size: "0.7rem", color: MAG });
       s.fadeIn(tokLbl, { at: 2.7, dur: 0.75 });
 
       // recurrence + solution (right column)
