@@ -5,12 +5,13 @@ html {
   /* sticky footer fix */
   position: relative;
   min-height: 100%;
+  background-color: var(--global-bg-color);
 }
 
 body {
   /* Set via _themes.scss */
   color: var(--global-text-color);
-  background-color: var(--global-bg-color);
+  background-color: transparent;
 
   margin: 0;
   padding: $masthead-height 0 0;

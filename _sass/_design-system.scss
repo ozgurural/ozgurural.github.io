@@ -46,7 +46,7 @@
   --global-base-color: var(--ds-accent);
   --global-border-color: var(--ds-line);
   --global-dark-border-color: var(--ds-line);
-  --global-footer-bg-color: var(--ds-surface-elev);
+  --global-footer-bg-color: transparent;
 }
 
 html[data-theme="dark"] {
@@ -80,5 +80,5 @@ html[data-theme="dark"] {
   --global-base-color: var(--ds-accent);
   --global-border-color: var(--ds-line);
   --global-dark-border-color: var(--ds-line);
-  --global-footer-bg-color: var(--ds-surface);
+  --global-footer-bg-color: transparent;
 }

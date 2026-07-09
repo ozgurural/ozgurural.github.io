@@ -80,28 +80,30 @@ $(document).ready(function () {
     $("body").css("padding-bottom", "0");
     $("body").css("margin-bottom", $(".page__footer").outerHeight(true));
   }
-  $(window).resize(function () {
-    didResize = true;
+  
+  if (window._bumpItInterval) clearInterval(window._bumpItInterval);
+  $(window).off('resize.bumpIt').on('resize.bumpIt', function () {
+    window._didResize = true;
   });
-  setInterval(function () {
-    if (didResize) {
-      didResize = false;
+  window._bumpItInterval = setInterval(function () {
+    if (window._didResize) {
+      window._didResize = false;
       bumpIt();
     }}, 250);
-  var didResize = false;
+  window._didResize = false;
   bumpIt();
 
   // FitVids init
   fitvids();
 
   // Follow menu drop down
-  $(".author__urls-wrapper button").on("click", function () {
+  $(".author__urls-wrapper button").off("click.follow").on("click.follow", function () {
     $(".author__urls").fadeToggle("fast", function () { });
     $(".author__urls-wrapper button").toggleClass("open");
   });
 
   // Restore the follow menu if toggled on a window resize
-  jQuery(window).on('resize', function () {
+  jQuery(window).off('resize.authorMenu').on('resize.authorMenu', function () {
     if ($('.author__urls.social-icons').css('display') == 'none' && $(window).width() >= scssLarge) {
       $(".author__urls").css('display', 'block')
     }
