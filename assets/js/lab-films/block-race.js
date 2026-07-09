@@ -242,12 +242,12 @@
       s.fadeIn(tokLbl, { at: 2.7, dur: 0.75 });
 
       // recurrence + solution (right column)
-      var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 750, py: 172, size: "1.5rem", color: "#e8eef9" });
-      var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 750, py: 224, display: false, size: "1.3rem", color: "#dbeafe" });
+      var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 680, py: 172, size: "1.5rem", color: "#e8eef9" });
+      var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 680, py: 224, display: false, size: "1.3rem", color: "#dbeafe" });
       s.write(r1, { at: 14.25, dur: 1.95 }); s.fadeIn(r2, { at: 16.5, dur: 0.9 });
-      var sol = s.tex2("\\text{Attacker Success} = \\Big(\\frac{\\text{Attacker Power}}{\\text{Honest Power}}\\Big)^z", { px: 750, py: 294, size: "1.1rem", color: AMB });
+      var sol = s.tex2("\\text{Attacker Success} = \\Big(\\frac{\\text{Attacker Power}}{\\text{Honest Power}}\\Big)^z", { px: 680, py: 294, size: "1.1rem", color: AMB });
       s.write(sol, { at: 18.3, dur: 2.1 }); s.pulse(sol, { at: 20.7, dur: 1.2, amp: 0.1 });
-      var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 750, py: 370, display: false, size: "1.2rem", color: "#dbeafe" });
+      var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 680, py: 370, display: false, size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(r3, { at: 21.6, dur: 1.2 });
 
       lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces Gambler's Ruin, bounded by (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
