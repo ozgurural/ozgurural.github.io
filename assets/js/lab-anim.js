@@ -788,7 +788,7 @@
     if (this._built) return this;
     
     // Global Signature Outro Scene
-    this.scene("Signature", 27, function(s) {
+    this.scene("Signature", 8, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 480, py: 270, anchor: "center", align: "center", panel: false });
       
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>", 
@@ -807,11 +807,11 @@
         obj.cur.sy = 0.65;
         
         // Majestic slow zoom in that gently stops
-        s.scaleTo(obj, { at: 0, dur: 22.5, to: 1.05, ease: Ease.smooth });
+        s.scaleTo(obj, { at: 0, dur: 7, to: 1.05, ease: Ease.smooth });
         // Fade in together
-        s.fadeIn(obj, { at: 0.75, dur: 4.5 });
-        // Hold size constant for last 3 seconds, fade out at end
-        s.fadeOut(obj, { at: 24.75, dur: 2.25 });
+        s.fadeIn(obj, { at: 0.25, dur: 2.5 });
+        // Hold size constant for last second, fade out at end
+        s.fadeOut(obj, { at: 6.5, dur: 1.5 });
       });
 
       // Special procedural cinematic sound
@@ -824,16 +824,16 @@
           var t = ctx.currentTime;
           // Deep sub-bass boom (extended)
           var osc = ctx.createOscillator(); var gain = ctx.createGain();
-          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 15);
-          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 15);
-          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 15);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 6);
+          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 6);
+          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 6);
           
           // Ethereal chord shimmer (extended decay)
           [440, 554.37, 659.25, 880].forEach(function(freq) {
             var o = ctx.createOscillator(); var g = ctx.createGain();
             o.type = 'sine'; o.frequency.value = freq;
-            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 2.0); g.gain.exponentialRampToValueAtTime(0.001, t + 16.0);
-            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 16.0);
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 1.0); g.gain.exponentialRampToValueAtTime(0.001, t + 7.0);
+            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 7.0);
           });
         } catch(e){}
       });
