@@ -200,7 +200,7 @@
       s.write(e1, { at: 1.5, dur: 1.5 }); s.write(e2, { at: 4.5, dur: 1.8 });
       var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 280, py: 440, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(note, { at: 7.5, dur: 1.2 });
-      s.fadeOut(note, { at: 10.2, dur: 0.75 }); // hand the lower third to the narration
+      s.fadeOut(note, { at: 6.8, dur: 0.75 }); // fade out before lower third appears
 
       lower(s, "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
@@ -222,8 +222,12 @@
       // precomputed biased walks (q=0.3) from deficit -6
       var walks = [], wcount = 4, j, k;
       for (j = 0; j < wcount; j++) {
-        var pts = [[-6, 0]], x = -6;
-        for (k = 0; k < 26; k++) { x += (Math.random() < 0.3 ? 1 : -1); pts.push([-6 + (k + 1) * 0, 0]); pts[pts.length - 1] = [x, (j - 1.5) * 0.18]; if (x >= 0) break; }
+        var pts = [[-6, (j - 1.5) * 0.2]], x = -6;
+        for (k = 0; k < 26; k++) { 
+           x += (Math.random() < 0.3 ? 1 : -1); 
+           pts.push([x, (j - 1.5) * 0.2 - k * 0.03]); 
+           if (x >= 0) break; 
+        }
         walks.push(pts);
       }
       walks.forEach(function (w, i) {
@@ -297,7 +301,7 @@
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
-      caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 535];
+      caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 520];
       s.fadeIn(caveat, { at: 25.5, dur: 1.5 });
     }, { subtitle: "Confirmations are honest progress, but the clock ran for the attacker too." });
   }
@@ -387,7 +391,7 @@
 
       var fin = s.caption("payment finalized (probabilistically)", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
       s.fadeIn(fin, { at: 6.9, dur: 1.05 });
-      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Zero Risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
+      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Near-Zero Risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
       s.write(lim, { at: 1.5, dur: 2.1 });
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 12, dur: 1.2 });

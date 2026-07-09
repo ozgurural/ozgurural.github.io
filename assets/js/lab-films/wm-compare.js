@@ -156,7 +156,7 @@
         ctx.globalAlpha = op;
 
         // API Box glowing
-        ctx.shadowBlur = 30; ctx.shadowColor = h.rgba(CY, 0.4);
+        ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(CY, 0.4);
         var apiGrad = ctx.createLinearGradient(600, 150, 800, 390);
         apiGrad.addColorStop(0, h.rgba(CY, 0.15));
         apiGrad.addColorStop(1, h.rgba(CY, 0.02));
@@ -194,8 +194,8 @@
 
            if (qlt > 1.8 && qlt < 3.8) {
               ctx.shadowBlur = 15; ctx.shadowColor = AMB;
-              ctx.fillStyle = AMB; ctx.font = "bold 22px 'JetBrains Mono'";
-              ctx.fillText("Output: " + label, 820, 285);
+              ctx.fillStyle = AMB; ctx.font = "bold 16px 'JetBrains Mono'";
+              ctx.fillText("Output: " + label, 800, 285);
               
            }
         }
@@ -220,14 +220,15 @@
            if (tp === 1) {
               // Activation spike inside the network builds up intensely
               var spikeP = clamp01((lt - 40) / 2);
-              ctx.fillStyle = h.rgba(RED, spikeP); ctx.shadowBlur = 40 * spikeP; ctx.shadowColor = RED;
-              ctx.fillRect(665, 190, 25, 140);
+              ctx.beginPath();
+              ctx.arc(670, 260, 20 * spikeP, 0, 7);
+              ctx.fillStyle = h.rgba(RED, spikeP * 0.8); ctx.shadowBlur = 15; ctx.shadowColor = RED;
+              ctx.fill();
               ctx.shadowBlur = 0;
 
               // Secret Cryptographic Label Output
               if (lt > 43) {
-                  ctx.shadowBlur = 25; ctx.shadowColor = RED;
-                  ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'";
+                  ctx.fillStyle = RED; ctx.font = "bold 18px 'JetBrains Mono'";
                   ctx.fillText("Output: WATERMARK_123", 450, 480);
                   
                   ctx.strokeStyle = RED; ctx.lineWidth = 4;
@@ -296,44 +297,50 @@
         ctx.shadowBlur = 0;
         ctx.globalCompositeOperation = "source-over";
 
-        // True Matrix Digital Rain for LLM generation
+        // Sequential Token Decoding (replaces generic digital rain)
         if (lt > 28) {
            var streamX = 50, streamY = 120;
-           ctx.fillStyle = CY; ctx.font = "bold 20px 'JetBrains Mono'";
-           ctx.fillText("LLM OUTPUT STREAM:", streamX, streamY - 30);
+           ctx.fillStyle = CY; ctx.font = "bold 16px 'JetBrains Mono'";
+           ctx.fillText("LLM SEQUENTIAL DECODING:", streamX, streamY - 20);
 
            var words = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog.", "It", "was", "a", "sunny", "day.", "We", "walked", "to", "the", "park", "and", "sat", "on", "a", "bench."];
            var greens = [true, false, true, true, true, false, true, true, true, false, true, true, true, true, false, true, true, false, true, true, true, false, true, true];
 
-           var count = Math.min(words.length, Math.floor((lt - 28) * 1.2)); 
-           
+           var count = Math.min(words.length, Math.floor((lt - 28) * 1.5)); 
            var greenCount = 0;
-           for (var w=0; w<count; w++) {
+           
+           ctx.font = "14px 'JetBrains Mono'";
+           var curX = streamX, curY = streamY + 20, lineHeight = 36;
+           
+           for (var w = 0; w < count; w++) {
               if (greens[w]) greenCount++;
               
-              var wx = streamX + (w % 6) * 75;
-              var wy = streamY + Math.floor(w / 6) * 40;
+              var wordW = ctx.measureText(words[w]).width + 16;
+              if (curX + wordW > streamX + 400) {
+                 curX = streamX;
+                 curY += lineHeight;
+              }
               
               var isLatest = (w === count - 1);
+              var col = greens[w] ? GRN : RED;
               
-              // Matrix glow on the leading word
-              if (isLatest) {
-                 ctx.shadowBlur = 20; ctx.shadowColor = greens[w] ? GRN : RED;
-                 ctx.fillStyle = "#fff";
+              // Token bounding box
+              ctx.fillStyle = h.rgba(col, isLatest ? 0.3 : 0.15);
+              ctx.strokeStyle = h.rgba(col, isLatest ? 0.8 : 0.4);
+              ctx.lineWidth = isLatest ? 2 : 1;
+              if (ctx.roundRect) {
+                 ctx.beginPath(); ctx.roundRect(curX, curY - 18, wordW - 4, 26, 4); ctx.fill(); ctx.stroke();
               } else {
-                 ctx.shadowBlur = 10; ctx.shadowColor = greens[w] ? GRN : RED;
-                 ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, 0.9);
+                 ctx.fillRect(curX, curY - 18, wordW - 4, 26); ctx.strokeRect(curX, curY - 18, wordW - 4, 26);
               }
-              ctx.font = "bold 20px monospace";
-              ctx.fillText(words[w], wx, wy);
               
-              // Digital rain tail
+              // Token text
+              ctx.fillStyle = "#fff";
+              if (isLatest) { ctx.shadowBlur = 10; ctx.shadowColor = col; }
+              ctx.fillText(words[w], curX + 6, curY);
               ctx.shadowBlur = 0;
-              for (var t=1; t<=3; t++) {
-                 var tailAlpha = 0.5 / t;
-                 ctx.fillStyle = h.rgba(greens[w] ? GRN : RED, tailAlpha);
-                 ctx.fillText(words[w], wx, wy + t*15);
-              }
+              
+              curX += wordW;
            }
 
            // Statistical Gauge
@@ -349,10 +356,10 @@
            
            if (count > 15 && ratio > 0.7 && lt > 58) {
               var alertFlash = Math.abs(Math.sin(lt * 8));
-              ctx.shadowBlur = 30; ctx.shadowColor = GRN;
+              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
               ctx.fillStyle = h.rgba(GRN, 0.7 + 0.3 * alertFlash); 
-              ctx.font = "bold 26px 'JetBrains Mono'";
-              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 330);
+              ctx.font = "bold 18px 'JetBrains Mono'";
+              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 280);
               
            }
         }
@@ -441,11 +448,11 @@
            if (lt > 42) {
               // Proof of learning trajectory linkage
               ctx.shadowBlur = 20; ctx.shadowColor = AMB;
-              ctx.fillStyle = h.rgba(AMB, 0.15); ctx.fillRect(100, 370, 750, 90);
+              ctx.fillStyle = h.rgba(AMB, 0.15); ctx.fillRect(100, 400, 750, 90);
               ctx.shadowBlur = 0;
-              ctx.fillStyle = AMB; ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 400);
+              ctx.fillStyle = AMB; ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 430);
               ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
-              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 430);
+              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 460);
               
               ctx.strokeStyle = AMB; ctx.setLineDash([5,5]); ctx.lineWidth = 2;
               ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], 370); ctx.stroke();

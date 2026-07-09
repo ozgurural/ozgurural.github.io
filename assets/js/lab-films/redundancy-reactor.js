@@ -110,19 +110,16 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "Triple modular redundancy uses majority voting. It works until all three fail identically.", 7.5, { maxWidth: "70%" });
+      lower(s, "A single unit might fail. Redundancy places identical clones alongside it, trusting they won't all fail at once.", 9.0, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
   /* ============== 2 — MECHANISM ============== */
   function mechanism(film) {
     film.scene("The voter and the binomial tail", 27, function (s) {
-      var q = 0.18;
       s.canvas(function (lt, ctx, h) {
-        // left: TMR schematic
         drawTMR(ctx, h, 230, 220, ["ok", "ok", "ok"], "ok", false);
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("N = 2m+1,  m = 1", 150, 390);
-        // center: vertical N=3 cell bar filling red
         var nRed = Math.min(3, Math.floor(clamp01((lt - 1) / 4) * 3));
         var bx = 470, by = 150, cellH = 46;
         for (var i = 0; i < 3; i++) {
@@ -131,12 +128,10 @@
           ctx.fillRect(bx, by + i * cellH, 80, cellH - 6);
           ctx.strokeStyle = h.rgba("#dbeafe", 0.4); ctx.strokeRect(bx, by + i * cellH, 80, cellH - 6);
         }
-        // threshold line > N/2
         ctx.strokeStyle = h.rgba(AMB, 0.9); ctx.setLineDash([5, 5]); ctx.lineWidth = 1.6;
         ctx.beginPath(); ctx.moveTo(bx - 10, by + 2 * cellH); ctx.lineTo(bx + 90, by + 2 * cellH); ctx.stroke(); ctx.setLineDash([]);
         ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("> N/2 fails", bx + 110, by + 2 * cellH + 4);
         ctx.fillStyle = h.rgba(nRed >= 2 ? RED : GRN, 1); ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillText(nRed >= 2 ? "SYSTEM FAILS" : "system OK", bx, by + 3 * cellH + 18);
-        // right: binomial bars C(3,i)
         var px0 = 660, py0 = 330, bw = 44;
         for (i = 0; i <= 3; i++) {
           var c = choose(3, i), hgt = c * 30, tail = i >= 2;
@@ -147,16 +142,15 @@
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 130);
       });
       var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 96, size: "1.4rem", color: "#e8eef9" });
-      var hg = s.group();
       var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 148, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
-      lower(s, "Systems fail only when a strict majority fails. Independent failures follow a binomial upper tail.", 10.5, { maxWidth: "92%", px: 60 });
+      lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
   }
 
   /* shared log-log plotter */
   function makePlot(film) {
-    var box = { x0: 110, y0: 420, w: 460, h: 300 }; // py0 bottom, grows up
+    var box = { x0: 110, y0: 420, w: 460, h: 300 };
     function px(q) { return box.x0 + (Math.log10(q) - (-4)) / ((-1) - (-4)) * box.w; }
     function py(P) { return box.y0 - (Math.log10(Math.max(P, 1e-9)) - (-8)) / ((0) - (-8)) * box.h; }
     function drawGrid(ctx, h) {
@@ -175,11 +169,6 @@
       for (var ey = -8; ey <= 0; ey += 2) { 
         var y = py(Math.pow(10, ey)); ctx.fillStyle = h.rgba("#7f93b4", 0.9); ctx.fillText("10" + ey, box.x0 - 30, y + 3); 
         ctx.strokeStyle = h.rgba("#1e293b", 0.8); ctx.beginPath(); ctx.moveTo(box.x0, y); ctx.lineTo(box.x0 + box.w, y); ctx.stroke();
-        if (ey < 0) {
-          ctx.strokeStyle = h.rgba("#1e293b", 0.3); ctx.beginPath();
-          for(var myM=1; myM<10; myM+=3) { var my = py(myM * Math.pow(10, ey)); ctx.moveTo(box.x0, my); ctx.lineTo(box.x0 + box.w, my); }
-          ctx.stroke();
-        }
       }
     }
     return { box: box, px: px, py: py, drawGrid: drawGrid };
@@ -195,30 +184,23 @@
         function curve(fn, color, width, at, dashed) {
           var prog = clamp01((lt - at) / 1.6); if (prog <= 0) return;
           ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; if (dashed) ctx.setLineDash([5, 5]);
-          ctx.shadowBlur = 10; ctx.shadowColor = color;
           ctx.beginPath(); var n = 80;
           for (var i = 0; i <= n * prog; i++) { var q = Math.pow(10, lerp(-4, -1, i / n)); var X = pl.px(q), Y = pl.py(fn(q)); if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
           ctx.stroke(); ctx.setLineDash([]);
-          ctx.shadowBlur = 0;
         }
         curve(function (q) { return q; }, "#e8eef9", 1.6, 0.4, true);
         curve(function (q) { return Pind(3, q); }, CY, 3, 1.6);
         curve(function (q) { return Pind(5, q); }, MAG, 3, 3.4);
         curve(function (q) { return Pind(7, q); }, GRN, 3, 5.0);
-        // labels
-        if (lt > 2.4) { ctx.fillStyle = h.rgba("#e8eef9", 0.8); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("single (slope 1)", pl.px(0.05), pl.py(0.05) - 6); }
-        if (lt > 3.4) { ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR  3q²  (slope 2)", pl.px(0.02), pl.py(Pind(3, 0.02)) + 16); }
-        if (lt > 5) { ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 (slope 3)", pl.px(0.04), pl.py(Pind(5, 0.04)) + 14); ctx.fillStyle = h.rgba(GRN, 0.95); ctx.fillText("N=7 (slope 4)", pl.px(0.05), pl.py(Pind(7, 0.05)) + 14); }
-        // q=0.01 marker + annotations
         if (lt > 7) {
           var xm = pl.px(0.01); ctx.strokeStyle = h.rgba("#f1f5f9", 0.7); ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(xm, box.y0); ctx.lineTo(xm, box.y0 - box.h); ctx.stroke(); ctx.setLineDash([]);
           ctx.fillStyle = h.rgba("#e8eef9", 0.9); ctx.font = "10px 'JetBrains Mono',monospace";
-          ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4 (~33×)", xm - 100, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 ~1e-5", xm - 80, pl.py(Pind(5, 0.01)));
+          ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4", xm - 80, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 1e-5", xm - 80, pl.py(Pind(5, 0.01)));
         }
       });
-      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 200, size: "1.3rem", color: AMB });
+      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 80, size: "1.3rem", color: "#e8eef9" });
       s.fadeIn(e1, { at: 13.5, dur: 1.5 });
-      lower(s, "Adding channels raises q to a higher power, steepening the slope on a log-log plot.", 11.5, { maxWidth: "52%", px: 600, py: 535 });
+      lower(s, "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.", 12.0, { maxWidth: "48%", px: 480, py: 520 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
   }
 
@@ -226,42 +208,28 @@
   function correlation(film) {
     film.scene("Correlation installs a floor", 30, function (s) {
       var pl = makePlot(film), box = pl.box;
-      function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; } // ρ sweeps 0 → 0.30
+      function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; }
       s.canvas(function (lt, ctx, h) {
         var rho = rhoAt(lt);
         pl.drawGrid(ctx, h);
         function curve(N, color, width) {
           ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; 
-          ctx.shadowBlur = 10; ctx.shadowColor = color;
           ctx.beginPath();
           for (var i = 0; i <= 80; i++) { var q = Math.pow(10, lerp(-4, -1, i / 80)); var P = (1 - rho) * Pind(N, q) + rho * q; var X = pl.px(q), Y = pl.py(P); if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
           ctx.stroke();
-          ctx.shadowBlur = 0;
         }
         curve(3, CY, 3); curve(5, MAG, 3); curve(7, GRN, 3);
-        // the floor y = rho*q
         if (rho > 0.001) {
           ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 2; ctx.setLineDash([6, 5]); ctx.beginPath();
           for (i = 0; i <= 80; i++) { var q2 = Math.pow(10, lerp(-4, -1, i / 80)); var X2 = pl.px(q2), Y2 = pl.py(rho * q2); if (i === 0) ctx.moveTo(X2, Y2); else ctx.lineTo(X2, Y2); }
           ctx.stroke(); ctx.setLineDash([]);
           ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("floor  y = ρq", pl.px(0.0003), pl.py(rho * 0.0003) - 6);
         }
-        // rho slider readout
-        ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ = " + rho.toFixed(2), 640, 120);
-        // safety multiplier bars saturating at 1/rho
-        var sx = 640, sy = 360;
-        ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("safety multiplier vs N", sx, sy - 92);
-        [3, 5, 7, 9].forEach(function (N, k) {
-          var gainInd = 0.01 / Pind(N, 0.01); var capped = rho > 0.001 ? Math.min(gainInd, 1 / rho) : gainInd;
-          var hgt = Math.min(80, Math.log10(capped) * 26);
-          ctx.fillStyle = h.rgba(CY, 0.7); ctx.fillRect(sx + k * 40, sy - hgt, 30, hgt);
-          ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.fillText("N" + N, sx + k * 40, sy + 14);
-        });
-        if (rho > 0.01) { var capY = sy - Math.min(80, Math.log10(1 / rho) * 26); ctx.strokeStyle = h.rgba(RED, 0.85); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(sx - 6, capY); ctx.lineTo(sx + 170, capY); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("≈ 1/ρ", sx + 174, capY + 4); }
+        ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ = " + (rho || 0).toFixed(2), 640, 120);
       });
       var eq = s.tex2("\\text{System Failure} \\approx \\text{Correlated Errors } (\\rho)", { px: 480, py: 92, size: "1.3rem", color: "#e8eef9" });
       s.write(eq, { at: 16.5, dur: 2.4 });
-      lower(s, "Shared root causes (correlation ρ) bypass the voter. The steep safety curve hits a hard floor.", 13.0, { maxWidth: "52%", px: 600, py: 535 });
+      lower(s, "When faults correlate, the cliff vanishes. Redundancy no longer protects you; they all fail together.", 13.0, { maxWidth: "48%", px: 480, py: 520 });
     }, { subtitle: "Correlation caps reliability at 1/ρ no matter how many backups." });
   }
 
@@ -269,49 +237,30 @@
   function ariane(film) {
     film.scene("Ariane 5, 4 June 1996", 18, function (s) {
       s.canvas(function (lt, ctx, h) {
-        // telemetry grid
-        ctx.shadowBlur = 8; ctx.shadowColor = h.rgba("#1f6f4f", 0.6);
         ctx.strokeStyle = h.rgba("#1f6f4f", 0.3); ctx.lineWidth = 1;
         for (var gx = 60; gx < 920; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, 430); ctx.stroke(); }
         for (var gy = 90; gy < 430; gy += 40) { ctx.beginPath(); ctx.moveTo(60, gy); ctx.lineTo(900, gy); ctx.stroke(); }
-        ctx.shadowBlur = 0;
-        // altitude trace
         var prog = clamp01(lt / 9), fail = lt > 7;
         ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2.4; ctx.beginPath();
         for (var i = 0; i <= 60 * prog; i++) { 
           var x = 80 + i * 4.5; 
           var y = 410 - i * 4.0; 
-          if (fail && i > 42) { 
-            // rocket plunges to the ground exponentially instead of hovering horizontally
-            y = 410 - 42 * 4.0 + Math.pow(i - 42, 2) * 0.8; 
-            x = 80 + 42 * 4.5 + (i - 42) * 2; 
-          } 
+          if (fail && i > 42) { y = 410 - 42 * 4.0 + Math.pow(i - 42, 2) * 0.8; x = 80 + 42 * 4.5 + (i - 42) * 2; } 
           if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); 
         }
         ctx.stroke();
-        // BH climbing past INT16 MAX
-        var bhY = 200, maxX = 560; ctx.strokeStyle = h.rgba(RED, 0.8); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(360, bhY); ctx.lineTo(720, bhY); ctx.stroke(); ctx.setLineDash([]);
-        ctx.fillStyle = h.rgba(RED, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("INT16 MAX = 32767", 600, bhY - 6);
-        var bhProg = clamp01((lt - 2) / 4); ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2; ctx.beginPath();
-        for (i = 0; i <= 40 * bhProg; i++) { var bx = 360 + i * 4, by = bhY + 40 - i * 2; if (i === 0) ctx.moveTo(bx, by); else ctx.lineTo(bx, by); } ctx.stroke();
-        ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("BH (horizontal bias)", 360, bhY + 54);
-        // two SRI panels
+        var bhY = 200; ctx.strokeStyle = h.rgba(RED, 0.8); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(360, bhY); ctx.lineTo(720, bhY); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = h.rgba(RED, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("INT16 MAX", 600, bhY - 6);
         function panel(px, py, name, errAt) {
           ctx.strokeStyle = h.rgba(lt > errAt ? RED : "#dbeafe", 0.7); ctx.lineWidth = 1.4; ctx.strokeRect(px, py, 170, 56);
           ctx.fillStyle = h.rgba("#f1f5f9", 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText(name, px + 8, py + 16);
-          ctx.fillStyle = h.rgba("#dbeafe", 0.85); ctx.fillText("convert(BH: f64→i16)", px + 8, py + 34);
           if (lt > errAt) { ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 11px 'JetBrains Mono',monospace"; ctx.fillText("⚠ Operand Error", px + 8, py + 50); }
         }
-        panel(120, 300, "SRI 1 (backup)", 6.6);  // backup fails first
-        panel(120, 366, "SRI 2 (active)", 6.75);  // then active ~72 ms later
-        if (lt > 6.8) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "9px 'JetBrains Mono',monospace"; ctx.fillText("72 ms apart", 300, 348); }
-        // self destruct stamp
-        if (lt > 8) { ctx.globalAlpha = clamp01((lt - 8) / 0.5); ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.fillText("SELF-DESTRUCT  ~39 s after H0, ~4 km", 360, 130); ctx.globalAlpha = 1; }
-        ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ : " + rho.toFixed(2) + " ↓", 640, 180);
+        panel(120, 300, "SRI 1 (backup)", 6.6); panel(120, 366, "SRI 2 (active)", 6.75);
       });
-      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 700, py: 130, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 700, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
-      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "92%", px: 60 });
+      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
@@ -320,8 +269,7 @@
     film.scene("The only real cure: diversity", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         var hit = lt > 3 && lt < 8;
-        var states = ["ok", hit ? "bad" : "ok", "ok"]; // only one (different) channel reddens
-        drawTMR(ctx, h, 320, 230, states, "ok", true);
+        drawTMR(ctx, h, 320, 230, ["ok", hit ? "bad" : "ok", "ok"], "ok", true);
         // cosmic ray bolt
         if (lt > 2.5 && lt < 5) { ctx.strokeStyle = h.rgba(AMB, clamp01((lt - 2.5) / 0.4) * (1 - clamp01((lt - 4.5) / 0.5))); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(420, 60); ctx.lineTo(400, 110); ctx.lineTo(420, 130); ctx.lineTo(405, 180); ctx.stroke(); ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("shared environment", 430, 90); }
         // rho slider dropping
@@ -338,7 +286,7 @@
       });
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 40, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
-      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 10.5, { maxWidth: "70%" });
+      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });

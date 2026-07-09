@@ -96,7 +96,7 @@
   /* small reusable lower-third caption */
   function lower(s, html, at, opts) {
     opts = opts || {};
-    var c = s.caption(html, { px: opts.px || 46, py: opts.py || 535, anchor: "bottom-left", align: "left", maxWidth: opts.maxWidth || "60%", size: opts.size, panel: true });
+    var c = s.caption(html, { px: opts.px || 46, py: opts.py || 520, anchor: "bottom-left", align: "left", maxWidth: opts.maxWidth || "60%", size: opts.size, panel: true });
     s.fadeIn(c, { at: at, dur: opts.dur || 0.9 });
     if (opts.out) s.fadeOut(c, { at: opts.out, dur: 0.75 });
     return c;
@@ -302,6 +302,7 @@
       s.write(eq, { at: 0.9, dur: 2.1 });
       var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 490, display: false, size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(perp, { at: 3.9, dur: 1.2 });
+      s.fadeOut(perp, { at: 10.2, dur: 0.75 });
 
       lower(s, "Measure slope, step against it, repeat. Each step is the locally steepest move.", 10.8, { maxWidth: "66%" });
     }, { subtitle: "θ ← θ − α∇L,  and  ∇L ⟂ level set." });
@@ -328,7 +329,7 @@
         // panel frame label
         var lbl = s.tex2(pn.label, { px: left + pw / 2, py: 100, size: "1.4rem", color: pn.col });
         s.write(lbl, { at: 0.9 + idx * 0.25, dur: 0.9 });
-        var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "1.4rem", align: "center" });
+        var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "1.1rem", align: "center" });
         s.fadeIn(tag, { at: 3.3, dur: 0.9 });
 
         // iterate x_{t+1} = (1-αλ) x_t  (clamped so divergence stays on-stage)
@@ -345,10 +346,10 @@
       });
 
       // the contraction-factor law, then the stability window
-      var eq = s.tex2("\\text{Stable only if Step Size is small enough}", { px: 480, py: 340, size: "1.02rem", color: "#FFFF00" });
+      var eq = s.tex2("\\text{Stable only if Step Size is small enough}", { px: 480, py: 380, size: "1.02rem", color: "#FFFF00" });
       s.write(eq, { at: 12.6, dur: 2.4 });
 
-      lower(s, "Step sizes dictate distance. If too large, the system overshoots and diverges.", 11.2, { maxWidth: "88%", px: 60, py: 535 });
+      lower(s, "Step sizes dictate distance. If too large, the system overshoots and diverges.", 11.2, { maxWidth: "88%", px: 60, py: 520 });
     }, { subtitle: "Take too large a step and the optimization diverges." });
   }
 
@@ -428,23 +429,14 @@
       s.draw(gdCurve, { at: 3.6, dur: 2.4 });
       s.draw(hbCurve, { at: 6, dur: 2.4 });
       var gl = s.caption("GD ∝ κ ↑", { coords: co, x: 1.42, y: 96, anchor: "left", size: "0.76rem", color: "#9aa7be" });
-      var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "1.4rem", color: "#FFFF00" });
+      var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "0.9rem", color: "#FFFF00" });
       s.fadeIn(gl, { at: 6.3, dur: 0.75 }); s.fadeIn(hl, { at: 8.7, dur: 0.75 });
       var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -7, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.8, dur: 0.9 });
 
       // punchline callout
-      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 700, py: 196, size: "1.4rem", color: "#FFFF00" });
+      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 700, py: 220, size: "1.4rem", color: "#FFFF00" });
       s.fadeIn(call, { at: 9.6, dur: 1.2 }); s.pulse(call, { at: 10.8, dur: 1.2, amp: 0.12 });
-
-      var eq1 = s.tex2("\\text{GD is stuck bouncing}", { px: 200, py: 80, size: "1.4rem", color: "#9aa7be" });
-      var eq2 = s.tex2("\\text{Momentum cuts through}", { px: 220, py: 130, size: "1.2rem" });
-      var e3 = s.tex2("\\alpha > 2/\\lambda", { px: 760, py: 150, size: "1.4rem", color: "#FC6255" });
-      var c3 = s.tex2("\\text{converges, oscillating}", { px: 480, py: 490, size: "1.3rem", color: "#FFFF00" });
-      s.write(eq1, { at: 3, dur: 1.5 });
-      var hb = s.tex2("\\text{Momentum: }", { px: 70, py: 130, size: "1.4rem", color: "#FFFF00" });
-      s.fadeIn(hb, { at: 17.25, dur: 0.9 });
-      s.fadeOut(eq1, { at: 21.75, dur: 0.75 }); s.fadeOut(eq2, { at: 21.75, dur: 0.75 }); s.fadeOut(hb, { at: 21.75, dur: 0.75 });
 
       lower(s, "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
 
@@ -548,8 +540,9 @@
         var y = Math.pow(pt[0], 0.85);
         var d = s.dot({ coords: co, x: pt[0], y: y, r: 5, color: i === 0 ? "#83C167" : "#9A72AC", glow: 6 });
         s.fadeIn(d, { at: 7.2 + i * 0.18, dur: 0.6 });
+        s.fadeOut(d, { at: 26, dur: 1 });
       });
-      var xl = s.caption("loss  ε  →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "1.3rem", color: "#dbeafe" });
+      var xl = s.caption("loss ε →", { coords: co, x: -0.2, y: 1.15, anchor: "center", size: "0.9rem", color: "#f1f5f9" });
       var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 4.5, dur: 0.9 }); s.fadeIn(yl, { at: 4.5, dur: 0.9 });
       var minLbl = s.caption("minima<br>(α≈0)", { coords: co, x: 0.06, y: 0.18, anchor: "left", size: "0.66rem", color: "#83C167" });

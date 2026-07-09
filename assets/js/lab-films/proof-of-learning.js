@@ -110,7 +110,7 @@
             ctx.shadowBlur = 0;
           }
         // inset loss curve (top-right)
-        var px0 = 600, py0 = 250, pw = 300, ph = 120;
+        var px0 = 550, py0 = 250, pw = 300, ph = 120;
         ctx.strokeStyle = h.rgba("#dbeafe", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.fillText("loss L vs step t", px0, py0 - ph - 8);
         // background grid
@@ -171,11 +171,11 @@
         var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
         s.fadeIn(desc, { at: 1.65 + i * 0.6, dur: 0.75 });
       });
-      var master = s.tex2("\\text{Proof} = [\\text{Checkpoints}, \\text{Data}, \\text{Signatures}]", { px: 250, py: 250, size: "1.4rem", color: AMB });
+      var master = s.tex2("\\text{Proof} = [\\text{Checkpoints}, \\text{Data}, \\text{Signatures}]", { px: 480, py: 420, size: "1.4rem", color: AMB });
       s.write(master, { at: 18, dur: 2.1 });
-      var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 250, py: 320, anchor: "center", align: "center", size: "1.4rem", color: "#dbeafe" });
+      var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 480, py: 460, anchor: "center", align: "center", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(sig, { at: 9, dur: 1.2 });
-      lower(s, "A proof is a transcript: checkpoints, data-batches, signatures, and hyperparameters.", 8.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A proof is a transcript: checkpoints, data-batches, signatures, and hyperparameters.", 8.0, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
