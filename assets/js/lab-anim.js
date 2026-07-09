@@ -906,16 +906,40 @@
     var ai = this._activeScene(t);
     var TR = 0.42; // crossfade window (s)
     
-    if (this.playing && !window.globalLabMuted && this._audioCues) {
+    var self = this;
+    if (this._audioCues) {
+      var expectedCue = null;
       for (i = 0; i < this._audioCues.length; i++) {
-         var ac = this._audioCues[i];
-         if (t >= ac.at && oldT < ac.at) {
+        if (t >= this._audioCues[i].at) expectedCue = this._audioCues[i];
+      }
+      
+      if (expectedCue) {
+         if (!this._currentCue || this._currentCue.id !== expectedCue.id) {
             if (window._currentLabNarrator) window._currentLabNarrator.pause();
-            var a = new Audio("/assets/audio/lab/" + ac.id + ".mp3");
+            this._currentCue = expectedCue;
+            var a = new Audio("/assets/audio/lab/" + expectedCue.id + ".mp3");
             a.volume = 0.8;
             window._currentLabNarrator = a;
-            a.play().catch(function(){});
+            var offset = Math.max(0, t - expectedCue.at);
+            
+            // Wait for metadata to safely set currentTime, then play if appropriate
+            a.addEventListener("loadedmetadata", function() {
+               if (offset < a.duration) {
+                  a.currentTime = offset;
+                  if (self.playing && !window.globalLabMuted) a.play().catch(function(){});
+               }
+            });
+            // Attempt immediate play only if naturally crossing the threshold (offset is near 0)
+            if (offset < 0.1 && self.playing && !window.globalLabMuted) {
+                a.play().catch(function(){});
+            }
          }
+      } else {
+         if (window._currentLabNarrator) {
+            window._currentLabNarrator.pause();
+            window._currentLabNarrator = null;
+         }
+         this._currentCue = null;
       }
     }
     this._lastT = t;
@@ -1000,10 +1024,12 @@
 
   /* ----------------------------- transport ----------------------------- */
   Film.prototype.seek = function (t) {
-    this.t = Math.max(0, Math.min(this.duration, t));
-    this.render();
-    this._reflectPlayState();
-    if (this.t > 0.02) this.poster.classList.add("is-hidden");
+    this.t = clamp01(t / this.duration) * this.duration;
+    this._lastT = this.t;
+    // Force audio resync on jump
+    this._currentCue = null;
+    if (window._currentLabNarrator) { window._currentLabNarrator.pause(); window._currentLabNarrator = null; }
+    if (!this.playing) this.render();
     return this;
   };
 
