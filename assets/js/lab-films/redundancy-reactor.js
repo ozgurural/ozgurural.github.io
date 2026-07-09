@@ -144,7 +144,8 @@
         }
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 130);
       });
-      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 66, size: "1.4rem", color: "#e8eef9" });\n      s.fadeIn(e1, { at: 10, dur: 1.0 });
+      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 66, size: "1.4rem", color: "#e8eef9" });
+      s.fadeIn(e1, { at: 10, dur: 1.0 });
       var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 106, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
       lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
@@ -261,7 +262,7 @@
         }
         panel(120, 300, "SRI 1 (backup)", 6.6); panel(120, 366, "SRI 2 (active)", 6.75);
       });
-      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 700, py: 80, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 650, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
       lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });

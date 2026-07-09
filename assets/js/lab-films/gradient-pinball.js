@@ -272,7 +272,7 @@
       var gx = 2 * a * (g0[0] - mx), gy = 2 * b * (g0[1] - my);
       var gn = Math.hypot(gx, gy);
       var grad = s.vector({ coords: co, x: g0[0], y: g0[1], dx: -0.9 * gx / gn, dy: -0.9 * gy / gn, color: "#83C167", width: 2.6 });
-      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 1.0, y: g0[1] - 0.5, display: false, size: "1.4rem", color: "#83C167" });
+      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 0.45, y: g0[1] - 0.5, display: false, size: "1.4rem", color: "#83C167" });
       s.draw(grad, { at: 3, dur: 1.05 }); s.fadeIn(gradLbl, { at: 3.6, dur: 0.75 });
       s.fadeOut(grad, { at: 6, dur: 0.9 }); s.fadeOut(gradLbl, { at: 6, dur: 0.9 });
 
@@ -418,7 +418,7 @@
       s.write(t1, { at: 1.5, dur: 1.8 });
       var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.4rem", color: "#FFFF00" });
       s.write(t2, { at: 3.75, dur: 1.8 });
-      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.4rem", color: "#dbeafe" });
+      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.05rem", color: "#dbeafe" });
       s.fadeIn(t3, { at: 5.4, dur: 1.5 });
 
       // plot region (right half), x = log10(kappa) in [0,4]
@@ -545,7 +545,7 @@
         s.fadeIn(d, { at: 7.2 + i * 0.18, dur: 0.6 });
         s.fadeOut(d, { at: 26, dur: 1 });
       });
-      var xl = s.caption("loss ε →", { coords: co, x: -0.2, y: 1.15, anchor: "center", size: "0.9rem", color: "#f1f5f9" });
+      var xl = s.caption("loss ε →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.9rem", color: "#f1f5f9" });
       var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 4.5, dur: 0.9 }); s.fadeIn(yl, { at: 4.5, dur: 0.9 });
       var minLbl = s.caption("minima<br>(α≈0)", { coords: co, x: 0.06, y: 0.18, anchor: "left", size: "0.66rem", color: "#83C167" });

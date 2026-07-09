@@ -14,15 +14,27 @@
   var E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
 
-  var _lowerCount = 0;
+  var _lowerCount = 0, _pendLower = null;
+  // Panels share one full-width bottom bar, so two visible at once print
+  // text on text. Defer each panel's fade-out until we know when the next
+  // one arrives, then fade at whichever comes first: the author's `out`
+  // or 1.1s before the successor.
+  function flushLower(s, nextAt) {
+    if (!_pendLower) return;
+    var eff = _pendLower.out || Infinity;
+    if (s && _pendLower.s === s && typeof nextAt === "number") eff = Math.min(eff, nextAt - 1.1);
+    if (isFinite(eff)) _pendLower.s.fadeOut(_pendLower.c, { at: Math.max(eff, _pendLower.at + 1.2), dur: 0.9 });
+    _pendLower = null;
+  }
   function lower(s, html, at, o) {
     var audioId = "jira_" + (_lowerCount++);
     s.audio(audioId, at);
     o = o || {};
+    flushLower(s, at);
     // Pinned to exact bottom-left for full-width overlay bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.5 });
+    _pendLower = { s: s, c: c, at: at, out: o.out || null };
     return c;
   }
 
@@ -31,6 +43,7 @@
     sceneCoordination(film);
     sceneAMM(film);
     sceneInsiderTrading(film);
+    flushLower();
     film.build();
     if (window.__LABDEBUG) window.__jiraFilm = film;
   }

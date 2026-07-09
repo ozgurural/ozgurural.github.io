@@ -254,7 +254,7 @@
       });
       var token = s.dot({ coords: co, x: 0, y: -6, r: 8, color: MAG, glow: 9 });
       s.fadeIn(token, { at: 2.4, dur: 0.6 });
-      var tokLbl = s.caption("attacker starts z blocks behind", { coords: co, x: -0.5, y: -6, anchor: "right", align: "right", size: "0.8rem", color: MAG });
+      var tokLbl = s.caption("attacker starts<br>z blocks behind", { coords: co, x: -0.5, y: -6, anchor: "right", align: "right", size: "0.8rem", color: MAG, maxWidth: "120px" });
       s.fadeIn(tokLbl, { at: 2.7, dur: 0.75 });
 
       // recurrence + solution (right column)
