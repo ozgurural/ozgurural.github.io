@@ -788,17 +788,17 @@
     if (this._built) return this;
     
     // Global Signature Outro Scene
-    this.scene("Signature", 8, function(s) {
-      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 480, py: 270, anchor: "center", align: "center", panel: false });
+    this.scene("Signature", 18, function(s) {
+      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 480, py: 270, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
       
-      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>", 
-                           { px: 480, py: 210, anchor: "center", align: "center", panel: false });
+      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>", 
+                           { px: 480, py: 230, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
                            
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1.3; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase;'>SENIOR SOFTWARE ENGINEER & ML RESEARCHER</span>", 
-                           { px: 480, py: 280, anchor: "center", align: "center", panel: false });
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>SENIOR SOFTWARE ENGINEER & ML RESEARCHER</span>", 
+                           { px: 480, py: 275, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
                            
-      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic;'>ozgurural.github.io</span>", 
-                           { px: 480, py: 340, anchor: "center", align: "center", panel: false });
+      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>", 
+                           { px: 480, py: 320, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var objs = [bgLight, name, role, url];
       objs.forEach(function(obj) {
@@ -806,12 +806,12 @@
         obj.cur.sx = 0.65; // Start far away
         obj.cur.sy = 0.65;
         
-        // Majestic slow zoom in that gently stops
-        s.scaleTo(obj, { at: 0, dur: 7, to: 1.05, ease: Ease.smooth });
+        // Majestic very slow zoom in that gently stops
+        s.scaleTo(obj, { at: 0, dur: 16, to: 1.05, ease: Ease.smooth });
         // Fade in together
-        s.fadeIn(obj, { at: 0.25, dur: 2.5 });
-        // Hold size constant for last second, fade out at end
-        s.fadeOut(obj, { at: 6.5, dur: 1.5 });
+        s.fadeIn(obj, { at: 0.25, dur: 3.5 });
+        // Hold size constant for last few seconds, fade out at end
+        s.fadeOut(obj, { at: 15.5, dur: 2.5 });
       });
 
       // Special procedural cinematic sound
@@ -824,16 +824,16 @@
           var t = ctx.currentTime;
           // Deep sub-bass boom (extended)
           var osc = ctx.createOscillator(); var gain = ctx.createGain();
-          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 6);
-          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 6);
-          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 6);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 12);
+          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 12);
+          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 12);
           
           // Ethereal chord shimmer (extended decay)
           [440, 554.37, 659.25, 880].forEach(function(freq) {
             var o = ctx.createOscillator(); var g = ctx.createGain();
             o.type = 'sine'; o.frequency.value = freq;
-            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 1.0); g.gain.exponentialRampToValueAtTime(0.001, t + 7.0);
-            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 7.0);
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 1.5); g.gain.exponentialRampToValueAtTime(0.001, t + 13.0);
+            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 13.0);
           });
         } catch(e){}
       });
