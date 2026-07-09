@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Skip the ambient background entirely for reduced-motion users, and
+  // fail silently if the CDN bundle didn't load.
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (typeof tsParticles === "undefined") return;
   tsParticles.load("tsparticles", {
     fpsLimit: 60,
     fullScreen: {
