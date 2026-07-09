@@ -35,12 +35,27 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
 
 {% if page.url == "/" or page.url == "/index.html" %}
-<!-- Particles engine for home page -->
+<!-- Particles engine loads once at the end of body (scripts.html); the
+     deferred topology script runs after it at DOMContentLoaded. -->
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"/>
-<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 <script src="/assets/js/home-topology.js" defer></script>
 <!-- On the home page the hero supplies the H1 — hide duplicate page__title -->
 <script>document.documentElement.classList.add('ep-home');</script>
 {% endif %}
+
+<!-- Prerender same-site pages when a link is hovered, so tab clicks feel
+     instant instead of flashing a blank frame (progressive enhancement) -->
+<script type="speculationrules">
+{
+  "prerender": [{
+    "where": { "and": [
+      { "href_matches": "/*" },
+      { "not": { "href_matches": "/*.pdf" } },
+      { "not": { "selector_matches": "[download]" } }
+    ]},
+    "eagerness": "moderate"
+  }]
+}
+</script>
 
 <!-- end custom head snippets -->

@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Skip the ambient background entirely for reduced-motion users, and
-  // fail silently if the CDN bundle didn't load.
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // Fail silently if the CDN bundle didn't load. For reduced-motion users
+  // keep the constellation but freeze it: a static texture respects the
+  // preference without losing the visual identity.
   if (typeof tsParticles === "undefined") return;
+  // The home page ships its own richer hero layer (#particles-js + career
+  // topology); don't stack a second fullscreen system on top of it.
+  if (document.getElementById("particles-js")) return;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   tsParticles.load("tsparticles", {
     fpsLimit: 60,
     fullScreen: {
@@ -19,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
           mode: "push",
         },
         onHover: {
-          enable: true,
+          enable: !reduced,
           mode: "grab",
         },
         resize: true,
@@ -57,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       move: {
         direction: "none",
-        enable: true,
+        enable: !reduced,
         outModes: {
           default: "bounce",
         },

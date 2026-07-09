@@ -22,6 +22,21 @@ select {
   color: var(--ds-body);
 }
 
+/* The page color lives on <html> only. When body is also opaque it paints
+   OVER fixed z-index:-1 elements, burying the tsParticles background. */
+body { background-color: transparent; }
+
+/* Cross-document view transitions: fade between pages instead of flashing
+   a blank frame on every navigation (progressive enhancement). */
+@view-transition {
+  navigation: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
 /* ---- Masthead / nav ---- */
 .masthead { background: var(--ds-bg); border-bottom: 1px solid var(--ds-line); }
 .greedy-nav { background: var(--ds-bg); }

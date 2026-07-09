@@ -34,9 +34,11 @@ redirect_from:
   ]
 }
 </script>
+<!-- Ambient constellation only: the labelled career-topology chips used to
+     render here too, but as a fixed background they collided with the hero
+     text. The career narrative lives in the timeline below instead. -->
 <div class="ep-home-background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
    <div id="particles-js"></div>
-   <div id="topology-container"></div>
 </div>
 
 <section class="ep-hero">
