@@ -310,7 +310,7 @@
 
   /* ============== 7 — SIGNATURE ============== */
   function signature(film) {
-    film.scene("The fingerprint, and why it matters", 14, function (s) {
+    film.scene("The fingerprint, and why it matters", 22, function (s) {
       var co = film.coords({ xRange: [0, 40], yRange: [0, 1], pad: { left: 80, right: 360, top: 140, bottom: 120 } });
       var ax = s.axes(co, { grid: false });
       s.draw(ax, { at: 0.6, dur: 1.05 });

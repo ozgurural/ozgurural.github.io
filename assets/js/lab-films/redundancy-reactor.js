@@ -113,7 +113,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "A single unit might fail. Redundancy places identical clones alongside it, trusting they won't all fail at once.", 9.0, { maxWidth: "80%", py: 520 });
+      lower(s, "A single unit might fail. Redundancy places identical clones alongside it, trusting they won't all fail at once.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -264,7 +264,7 @@
       });
       var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 650, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
-      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
+      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
