@@ -144,8 +144,8 @@
         }
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 130);
       });
-      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 96, size: "1.4rem", color: "#e8eef9" });
-      var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 148, size: "1.3rem", color: AMB });
+      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 66, size: "1.4rem", color: "#e8eef9" });\n      s.fadeIn(e1, { at: 10, dur: 1.0 });
+      var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 106, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
       lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
@@ -201,7 +201,7 @@
           ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4", xm - 80, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 1e-5", xm - 80, pl.py(Pind(5, 0.01)));
         }
       });
-      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 80, size: "1.3rem", color: "#e8eef9" });
+      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 60, size: "1.3rem", color: "#e8eef9" });
       s.fadeIn(e1, { at: 13.5, dur: 1.5 });
       lower(s, "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.", 12.0, { maxWidth: "48%", px: 480, py: 520 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
