@@ -312,7 +312,7 @@
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
       var dm = s.caption("aggregate d = √k·ε/σ <span style='color:#fbbf24'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: "#e8eef9" });
       s.fadeIn(sm, { at: 10.5, dur: 0.9 }); s.fadeIn(dm, { at: 11.4, dur: 0.9 });
-      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 760, py: 350, size: "1.4rem", color: AMB });
+      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 720, py: 350, size: "1.4rem", color: AMB });
       s.fadeIn(aucEq, { at: 12.6, dur: 1.05 });
 
       lower(s, "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.", 10.0, { maxWidth: "85%", px: 60 });

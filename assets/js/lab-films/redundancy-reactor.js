@@ -201,7 +201,7 @@
           ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4", xm - 80, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 1e-5", xm - 80, pl.py(Pind(5, 0.01)));
         }
       });
-      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 700, py: 60, size: "1.3rem", color: "#e8eef9" });
+      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 480, py: 60, size: "1.3rem", color: "#e8eef9" });
       s.fadeIn(e1, { at: 13.5, dur: 1.5 });
       lower(s, "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.", 12.0, { maxWidth: "48%", px: 480, py: 520 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
