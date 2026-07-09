@@ -65,7 +65,7 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px 'JetBrains Mono', monospace"; 
         ctx.fillText("SMART CONTRACT", 630, 190);
         
         
@@ -74,7 +74,7 @@
         if (ctx.roundRect) ctx.roundRect(620, 220, 210, 150, 8); else ctx.rect(620, 220, 210, 150);
         ctx.fill();
         
-        ctx.fillStyle = "#e2e8f0"; ctx.font = "14px var(--ds-font-mono, 'JetBrains Mono', monospace)";
+      ctx.fillStyle = "#e2e8f0"; ctx.font = "14px 'JetBrains Mono', monospace";
         ctx.fillText("if (weather == rain):", 630, 250);
         ctx.fillText("   pay_farmer()", 630, 280);
         
@@ -156,7 +156,7 @@
         
         ctx.strokeStyle = h.rgba(AMB, 0.6); ctx.lineWidth = 1; ctx.stroke();
         
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
         ctx.fillText("Off-chain Prover", 100, 80);
         
 

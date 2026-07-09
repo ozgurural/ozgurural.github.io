@@ -236,7 +236,7 @@
   Scene.prototype.dot = function (o) {
     o = o || {};
     var cx = o.px !== undefined ? o.px : (o.coords ? o.coords.x(o.x) : o.x);
-    var cy = o.px !== undefined ? o.py : (o.coords ? o.coords.y(o.y) : o.y);
+    var cy = o.py !== undefined ? o.py : (o.coords ? o.coords.y(o.y) : o.y);
     var h = this.svgEl("circle", {
       cx: cx, cy: cy, r: num(o.r, 6),
       fill: o.fill === false ? "none" : (o.fill || o.color || PAL.sky),

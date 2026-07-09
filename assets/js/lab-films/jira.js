@@ -58,7 +58,7 @@
         ctx.beginPath(); ctx.arc(cx, cy - 100, 12 + 4*managerPulse, 0, Math.PI*2); ctx.fill();
         ctx.shadowBlur = 0;
         
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 14px var(--ds-font-mono, 'JetBrains Mono', monospace)";
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 14px 'JetBrains Mono', monospace";
         ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
         
         
@@ -284,7 +284,7 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
         ctx.fillText("BOUNTY CONTRACT", coreX - 70, coreY - 110);
         
 

@@ -55,7 +55,7 @@
         
         // Weight Tensor Grid visualization
         var cx = 70, cy = 130;
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
         ctx.fillText("WEIGHT TENSOR (θ)", cx, cy - 20);
         ctx.shadowBlur = 0;
         
@@ -190,7 +190,7 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px var(--ds-font-mono, 'JetBrains Mono', monospace)"; 
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px 'JetBrains Mono', monospace"; 
         ctx.fillText("STOLEN API", 640, 130);
         
         
@@ -290,7 +290,7 @@
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX + histW, histY); ctx.stroke(); // X
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX, histY - histH); ctx.stroke(); // Y
 
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px var(--ds-font-mono, 'JetBrains Mono', monospace)";
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace";
         ctx.fillText("TOKEN PROBABILITY DISTRIBUTION", histX + 10, histY - histH - 20);
         
 

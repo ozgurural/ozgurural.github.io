@@ -47,7 +47,7 @@
 
   function lower(s, html, at, o) {
     o = o || {};
-    var c = s.caption(html, { px: o.px || 46, py: o.py || 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
+    var c = s.caption(html, { px: o.px !== undefined ? o.px : 46, py: o.py !== undefined ? o.py : 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.75 });
     return c;
@@ -213,7 +213,7 @@
       // breakeven line at 0
       var be = s.line({ coords: co, x1: 0, y1: -0.9, x2: 0, y2: 0.9, color: "#e8eef9", width: 2 });
       s.fadeIn(be, { at: 0.9, dur: 0.75 });
-      var beLbl = s.caption("0 = breakeven", { coords: co, x: 0.2, y: 0.98, anchor: "left", size: "1.2rem", color: "#f1f5f9" });
+      var beLbl = s.caption("breakeven: lead = 0", { coords: co, x: 0.2, y: 0.98, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
       s.fadeIn(beLbl, { at: 1.2, dur: 0.75 });
       // axis
       var ax = s.line({ coords: co, x1: -7.3, y1: 0, x2: 2.3, y2: 0, color: PAL.axis, width: 1.3 });
@@ -238,20 +238,22 @@
       });
       var token = s.dot({ coords: co, x: -6, y: 0, r: 8, color: MAG, glow: 9 });
       s.fadeIn(token, { at: 2.4, dur: 0.6 });
-      var tokLbl = s.caption("attacker, z behind", { coords: co, x: -6, y: -0.45, anchor: "center", align: "center", size: "0.7rem", color: MAG });
+      var tokLbl = s.caption("attacker starts z blocks behind", { coords: co, x: -6, y: -0.45, anchor: "center", align: "center", size: "0.7rem", color: MAG });
       s.fadeIn(tokLbl, { at: 2.7, dur: 0.75 });
 
       // recurrence + solution (right column)
-      var r1 = s.tex2("\\text{Random Walk Analysis}", { px: 680, py: 172, size: "1.5rem", color: "#e8eef9" });
-      var r2 = s.tex2("\\text{Catch up from 0 is guaranteed}", { px: 680, py: 224, display: false, size: "1.3rem", color: "#dbeafe" });
-      s.write(r1, { at: 14.25, dur: 1.95 }); s.fadeIn(r2, { at: 16.5, dur: 0.9 });
-      var sol = s.tex2("\\text{Attacker Success} = \\Big(\\frac{\\text{Attacker Power}}{\\text{Honest Power}}\\Big)^z", { px: 680, py: 294, size: "1.1rem", color: AMB });
-      s.write(sol, { at: 18.3, dur: 2.1 }); s.pulse(sol, { at: 20.7, dur: 1.2, amp: 0.1 });
-      var r3 = s.tex2("\\text{Honest majority } \\Rightarrow \\text{ Attacker chances decay}", { px: 680, py: 370, display: false, size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(r3, { at: 21.6, dur: 1.2 });
+      var r1 = s.tex2("\\text{Biased random walk}", { px: 680, py: 170, size: "1.35rem", color: "#e8eef9" });
+      var r2 = s.tex2("\\text{Step right with prob. } p \\text{, left with prob. } q", { px: 680, py: 222, display: false, size: "1.05rem", color: "#dbeafe" });
+      var r3 = s.tex2("\\Pr(\\text{catch up}) \\approx \\Big(\\frac{q}{p}\\Big)^z", { px: 680, py: 294, size: "1.15rem", color: AMB });
+      var r4 = s.tex2("\\text{If } p > q, \\text{the success probability shrinks exponentially in } z", { px: 680, py: 370, display: false, size: "1.05rem", color: "#dbeafe" });
+      s.write(r1, { at: 14.25, dur: 1.5 });
+      s.fadeIn(r2, { at: 16.0, dur: 1.0 });
+      s.write(r3, { at: 18.0, dur: 2.1 });
+      s.pulse(r3, { at: 20.4, dur: 1.2, amp: 0.1 });
+      s.fadeIn(r4, { at: 21.4, dur: 1.15 });
 
-      lower(s, "The honest lead is a biased random walk. An attacker z blocks behind faces Gambler's Ruin, bounded by (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Catching up from z blocks behind is exactly the gambler's ruin problem." });
+      lower(s, "Start the attacker z blocks behind. Each block is one step in a biased random walk, so the chance of catching up falls like (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "An attacker starting z blocks behind faces a biased random walk." });
   }
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */

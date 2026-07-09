@@ -1,8 +1,8 @@
 ---
 permalink: /lab/
 title: "Research Lab"
-description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball. Real research math, animated from the equation up."
-excerpt: "Five cinematic explainers from my research: Bitcoin consensus, ML security, fault tolerance, optimization. Each animates the real mathematics, derived rather than hand-waved."
+description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball · ML Oracles · Watermarking Models · Universal Jira Board. Real research math, animated from the equation up."
+excerpt: "Eight cinematic explainers from my research: Bitcoin consensus, ML security, fault tolerance, optimization, decentralized oracles, watermarking strategy comparison, and prediction markets. Each animates the real mathematics, derived rather than hand-waved."
 header:
   og_image: "lab-og/og-lab.png"
 ---
@@ -11,7 +11,7 @@ header:
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Five cinematic explainers built from my published research and the systems I engineer: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization. Each one animates the real result from the equation up, written for a technical reader, neither dumbed down nor hand-waved. Every formula is exactly as it appears in the papers, including the approximations the papers themselves admit to.
+    Eight cinematic explainers built from my published research and the systems I engineer: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization, decentralized oracles, watermarking strategy comparison, and prediction markets. Each one animates the real result from the equation up, written for a technical reader, neither dumbed down nor hand-waved. Every formula is exactly as it appears in the papers, including the approximations the papers themselves admit to.
   </p>
   <div class="lab-hero__actions">
     <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>

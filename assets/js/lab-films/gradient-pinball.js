@@ -96,7 +96,7 @@
   /* small reusable lower-third caption */
   function lower(s, html, at, opts) {
     opts = opts || {};
-    var c = s.caption(html, { px: opts.px || 46, py: opts.py || 520, anchor: "bottom-left", align: "left", maxWidth: opts.maxWidth || "60%", size: opts.size, panel: true });
+    var c = s.caption(html, { px: opts.px !== undefined ? opts.px : 46, py: opts.py !== undefined ? opts.py : 520, anchor: "bottom-left", align: "left", maxWidth: opts.maxWidth || "60%", size: opts.size, panel: true });
     s.fadeIn(c, { at: at, dur: opts.dur || 0.9 });
     if (opts.out) s.fadeOut(c, { at: opts.out, dur: 0.75 });
     return c;
