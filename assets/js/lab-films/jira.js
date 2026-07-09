@@ -8,10 +8,10 @@
     if (!window.LabAnim) return setTimeout(boot, 60);
     if (!document.getElementById("jira-film")) return;
     if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
-    build(); appendix();
+    build();
   }
 
-  var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
+  var E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
 
   function lower(s, html, at, o) {
@@ -160,34 +160,66 @@
         var op = clamp01(lt);
         ctx.globalAlpha = op;
 
-        var ax = s.axes(co, { grid: true, xLabel: "NO Shares (x)", yLabel: "YES Shares (y)" });
-        ax(ctx, h);
+        // Draw grid
+        var gx = 8, gy = 5, i;
+        ctx.lineWidth = 1;
+        for (i = 0; i <= gx; i++) {
+          var xx = lerp(co.px0, co.px1, i / gx);
+          ctx.strokeStyle = h.rgba(GREY, 0.25);
+          ctx.beginPath(); ctx.moveTo(xx, co.py0); ctx.lineTo(xx, co.py1); ctx.stroke();
+        }
+        for (i = 0; i <= gy; i++) {
+          var yy = lerp(co.py0, co.py1, i / gy);
+          ctx.strokeStyle = h.rgba(GREY, 0.25);
+          ctx.beginPath(); ctx.moveTo(co.px0, yy); ctx.lineTo(co.px1, yy); ctx.stroke();
+        }
+
+        // Draw axes
+        ctx.strokeStyle = "#ccc"; ctx.lineWidth = 1.6; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(co.px0, co.py0); ctx.lineTo(co.px1, co.py0); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(co.px0, co.py0); ctx.lineTo(co.px0, co.py1); ctx.stroke();
+
+        // Axis labels
+        ctx.fillStyle = "#ccc"; ctx.font = "14px monospace";
+        ctx.fillText("NO Shares (x)", (co.px0 + co.px1) / 2 - 50, co.py0 + 30);
+        ctx.save(); ctx.translate(co.px0 - 30, (co.py0 + co.py1) / 2 + 50);
+        ctx.rotate(-Math.PI / 2); ctx.fillText("YES Shares (y)", 0, 0); ctx.restore();
 
         // Slow cinematic drawing of the curve
+        var k = 20;
         if (lt > 5) {
            var drawP = clamp01((lt - 5) / 12); // Takes 12 seconds
-           var pts = [];
-           var k = 20;
-           for(var x = 2; x <= 2 + (8 * drawP); x+=0.1) {
-              pts.push([x, k/x]);
+           var xEnd = 2 + (8 * drawP);
+
+           // Draw the xy=k curve
+           ctx.shadowBlur = 15; ctx.shadowColor = CY;
+           ctx.strokeStyle = CY; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.lineJoin = "round";
+           ctx.beginPath();
+           var first = true;
+           for (var x = 2; x <= xEnd; x += 0.1) {
+              var px = co.x(x), py = co.y(k / x);
+              if (first) { ctx.moveTo(px, py); first = false; }
+              else ctx.lineTo(px, py);
            }
-           if (pts.length > 0) {
-               ctx.shadowBlur = 15; ctx.shadowColor = CY;
-               var curve = s.poly(pts, { coords: co, color: CY, width: 4 });
-               curve(ctx, h);
-               ctx.shadowBlur = 0;
-               
-               // Gradient fill under curve
-               var bgPts = pts.slice();
-               bgPts.push([2 + (8 * drawP), 0]);
-               bgPts.push([2, 0]);
-               
-               var polyGrad = ctx.createLinearGradient(0, co.y(10), 0, co.y(0));
-               polyGrad.addColorStop(0, h.rgba(CY, 0.2));
-               polyGrad.addColorStop(1, h.rgba(CY, 0.0));
-               var bgCurve = s.poly(bgPts, { coords: co, color: "transparent", fill: polyGrad });
-               bgCurve(ctx, h);
+           ctx.stroke();
+           ctx.shadowBlur = 0;
+
+           // Gradient fill under curve
+           var polyGrad = ctx.createLinearGradient(0, co.y(10), 0, co.y(0));
+           polyGrad.addColorStop(0, h.rgba(CY, 0.2));
+           polyGrad.addColorStop(1, h.rgba(CY, 0.0));
+           ctx.fillStyle = polyGrad;
+           ctx.beginPath();
+           first = true;
+           for (x = 2; x <= xEnd; x += 0.1) {
+              px = co.x(x); py = co.y(k / x);
+              if (first) { ctx.moveTo(px, py); first = false; }
+              else ctx.lineTo(px, py);
            }
+           ctx.lineTo(co.x(xEnd), co.y(0));
+           ctx.lineTo(co.x(2), co.y(0));
+           ctx.closePath();
+           ctx.fill();
 
            // The sweeping tangent line (Price Discovery)
            if (lt > 20) {
@@ -197,11 +229,12 @@
               var currY = k / currX;
 
               var slope = -k / (currX * currX);
-              var tPts = [ [currX - 3, currY - 3*slope], [currX + 3, currY + 3*slope] ];
-              
+              var tx1 = currX - 3, ty1 = currY - 3 * slope;
+              var tx2 = currX + 3, ty2 = currY + 3 * slope;
+
               ctx.shadowBlur = 10; ctx.shadowColor = AMB;
-              var tangent = s.poly(tPts, { coords: co, color: AMB, width: 3 });
-              tangent(ctx, h);
+              ctx.strokeStyle = AMB; ctx.lineWidth = 3;
+              ctx.beginPath(); ctx.moveTo(co.x(tx1), co.y(ty1)); ctx.lineTo(co.x(tx2), co.y(ty2)); ctx.stroke();
               ctx.shadowBlur = 0;
 
               // Glowing Price Point

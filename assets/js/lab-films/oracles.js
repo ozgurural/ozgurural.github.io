@@ -8,7 +8,7 @@
     if (!window.LabAnim) return setTimeout(boot, 60);
     if (!document.getElementById("oracles-film")) return;
     if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
-    build(); appendix();
+    build();
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
@@ -19,7 +19,7 @@
     // Full width bottom bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.5 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 1 });
     return c;
   }
 
@@ -33,7 +33,7 @@
   }
 
   function sceneBlind(film) {
-    film.scene("The Blind Contract", 67.5, function(s) {
+    film.scene("The Blind Contract", 45, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -122,21 +122,21 @@
            ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
            ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 480);
-           
+           ctx.shadowBlur = 0;
         }
 
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "The blockchain is a perfectly deterministic grid. A closed universe.", 2.0, { out: 18 });
-      lower(s, "Smart contracts cannot 'look' at the real world. They cannot make API calls.", 13.0, { out: 36 });
-      lower(s, "If a parametric insurance contract needs to know if it rained, it cannot check a weather server.", 25.0, { out: 51 });
-      lower(s, "It requires an Oracle: a bridge to bring real-world truth across the Consensus Wall.", 35.0);
+      lower(s, "The blockchain is a perfectly deterministic grid. A closed universe.", 1.33, { out: 12 });
+      lower(s, "Smart contracts cannot 'look' at the real world. They cannot make API calls.", 8.67, { out: 24 });
+      lower(s, "If a parametric insurance contract needs to know if it rained, it cannot check a weather server.", 16.67, { out: 34 });
+      lower(s, "It requires an Oracle: a bridge to bring real-world truth across the Consensus Wall.", 23.33);
     });
   }
 
   function sceneZK(film) {
-    film.scene("Zero-Knowledge Inference (zkML)", 90, function(s) {
+    film.scene("Zero-Knowledge Inference (zkML)", 60, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -253,21 +253,21 @@
               ctx.shadowBlur = 20; ctx.shadowColor = GRN;
               ctx.fillStyle = GRN; ctx.font = "bold 24px 'JetBrains Mono'";
               ctx.fillText("VALID", 665, 260);
-              
+              ctx.shadowBlur = 0;
            }
         }
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 2.0, { out: 18 });
-      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 13.0, { out: 36 });
-      lower(s, "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (π).", 25.0, { out: 57 });
-      lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 40.0);
+      lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
+      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 8.67, { out: 24 });
+      lower(s, "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (π).", 16.67, { out: 38 });
+      lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 26.67);
     });
   }
 
   function sceneOptimistic(film) {
-    film.scene("Optimistic Staking", 90, function(s) {
+    film.scene("Optimistic Staking", 60, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -369,10 +369,10 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 2.0, { out: 18 });
-      lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 13.0, { out: 36 });
-      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.", 25.0, { out: 60 });
-      lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 42.0);
+      lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });
+      lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 8.67, { out: 24 });
+      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.", 16.67, { out: 40 });
+      lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 28);
     });
   }
 

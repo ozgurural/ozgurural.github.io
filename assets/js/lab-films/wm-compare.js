@@ -8,17 +8,17 @@
     if (!window.LabAnim) return setTimeout(boot, 60);
     if (!document.getElementById("wm-compare-film")) return;
     if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
-    build(); appendix();
+    build();
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", TEAL = "#5CD0B3", MAG = "#FC6255", INDIGO = "#9A72AC";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", INDIGO = "#9A72AC";
 
   function lower(s, html, at, o) {
     o = o || {};
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
-    s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
-    if (o.out) s.fadeOut(c, { at: o.out, dur: 1.5 });
+    s.fadeIn(c, { at: at, dur: o.dur || 1 });
+    if (o.out) s.fadeOut(c, { at: o.out, dur: 1 });
     return c;
   }
 
@@ -37,14 +37,17 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 90, function(s) {
+    film.scene("Sparse Parameter Perturbations", 60, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 40, size: "1.4rem", color: CY });
-      s.fadeIn(eq, { at: 1.5, dur: 3 });
+      s.fadeIn(eq, { at: 1, dur: 2 });
 
       var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 750, py: 40, size: "1.4rem", color: GRN });
-      s.fadeIn(eq2, { at: 30, dur: 4.5 });
+      s.fadeIn(eq2, { at: 20, dur: 3 });
       
       var co = film.coords({ xRange: [-4, 6], yRange: [0, 1], pad: { left: 550, right: 100, top: 150, bottom: 150 } });
+
+      // Create axes SVG overlay once (not per-frame)
+      var axHandle = s.axes(co, { grid: false, xLabel: "Z-score", yLabel: "Density" });
 
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
@@ -95,8 +98,6 @@
 
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
         if (lt > 20) {
-           var ax = s.axes(co, { grid: false, xLabel: "Z-score", yLabel: "Density" });
-           ax(ctx, h);
 
            if (lt > 22) {
               var tHeight = clamp01((lt - 22) / 3);
@@ -112,45 +113,65 @@
 
             if (lt > 26) {
                var nDraw = clamp01((lt - 26) / 10);
-               var pts = [];
-               for(var x=-4; x<=(-4 + 8*nDraw); x+=0.1) { pts.push([x, gaussian(x, 0, 1)]); }
-               if (pts.length > 0) {
-                  var greyGrad = ctx.createLinearGradient(0, co.y(0.4), 0, co.y(0));
-                  greyGrad.addColorStop(0, h.rgba(GREY, 0.2));
-                  greyGrad.addColorStop(1, h.rgba(GREY, 0.01));
-                  var curve = s.poly(pts, { coords: co, color: GREY, width: 3, fill: greyGrad });
-                  curve(ctx, h);
+               var greyGrad = ctx.createLinearGradient(0, co.y(0.4), 0, co.y(0));
+               greyGrad.addColorStop(0, h.rgba(GREY, 0.2));
+               greyGrad.addColorStop(1, h.rgba(GREY, 0.01));
+               // Draw null-hypothesis curve with raw ctx calls
+               ctx.beginPath();
+               var started = false;
+               for(var x=-4; x<=(-4 + 8*nDraw); x+=0.1) {
+                  var sx = co.x(x), sy = co.y(gaussian(x, 0, 1));
+                  if (!started) { ctx.moveTo(sx, sy); started = true; } else { ctx.lineTo(sx, sy); }
+               }
+               ctx.strokeStyle = GREY; ctx.lineWidth = 3; ctx.stroke();
+               // Fill under curve
+               if (started) {
+                  ctx.lineTo(co.x(-4 + 8*nDraw), co.y(0));
+                  ctx.lineTo(co.x(-4), co.y(0));
+                  ctx.closePath();
+                  ctx.fillStyle = greyGrad; ctx.fill();
                }
             }
 
             if (lt > 40) {
                var shiftP = clamp01((lt - 40) / 15);
-               var mu = lerp(0, 4.5, E.inOut(shiftP)); 
-               var pts2 = [];
-               for(var x2=-4; x2<=8; x2+=0.1) { pts2.push([x2, gaussian(x2, mu, 1)]); }
+               var mu = lerp(0, 3, E.inOut(shiftP)); 
                
                var grnGrad = ctx.createLinearGradient(0, co.y(0.4), 0, co.y(0));
                grnGrad.addColorStop(0, h.rgba(GRN, 0.4));
                grnGrad.addColorStop(1, h.rgba(GRN, 0.02));
                
                ctx.shadowBlur = 20; ctx.shadowColor = GRN;
-               var curve2 = s.poly(pts2, { coords: co, color: GRN, width: 4, fill: grnGrad });
-               curve2(ctx, h);
+               // Draw marked-model curve with raw ctx calls
+               ctx.beginPath();
+               var started2 = false;
+               for(var x2=-4; x2<=8; x2+=0.1) {
+                  var sx2 = co.x(x2), sy2 = co.y(gaussian(x2, mu, 1));
+                  if (!started2) { ctx.moveTo(sx2, sy2); started2 = true; } else { ctx.lineTo(sx2, sy2); }
+               }
+               ctx.strokeStyle = GRN; ctx.lineWidth = 4; ctx.stroke();
+               // Fill under curve
+               if (started2) {
+                  ctx.lineTo(co.x(8), co.y(0));
+                  ctx.lineTo(co.x(-4), co.y(0));
+                  ctx.closePath();
+                  ctx.fillStyle = grnGrad; ctx.fill();
+               }
                ctx.shadowBlur = 0;
             }
         }
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 2.0, { out: 27 });
-      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 20.0, { out: 57 });
-      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 40.0, { out: 78 });
-      lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 53.0);
+      lower(s, "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 1.33, { out: 18 });
+      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.33, { out: 38 });
+      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 26.67, { out: 52 });
+      lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
     });
   }
 
   function sceneBlackbox(film) {
-    film.scene("Feature-Based Triggers", 82.5, function(s) {
+    film.scene("Feature-Based Triggers", 55, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -240,15 +261,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 2.0, { out: 21 });
-      lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 16.0, { out: 42 });
-      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 30.0, { out: 63 });
-      lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 44.0);
+      lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 1.33, { out: 14 });
+      lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 10.67, { out: 28 });
+      lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 20, { out: 42 });
+      lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 29.33);
     });
   }
 
   function sceneGenerative(film) {
-    film.scene("Generative Green-lists", 112.5, function(s) {
+    film.scene("Generative Green-lists", 75, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -366,15 +387,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 2.0, { out: 18 });
-      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 14.0, { out: 39 });
-      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 28.0, { out: 60 });
-      lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 42.0);
+      lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 1.33, { out: 12 });
+      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 9.33, { out: 26 });
+      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 18.67, { out: 40 });
+      lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 28);
     });
   }
 
   function sceneAuxiliary(film) {
-    film.scene("Non-Intrusive Auxiliary Head", 90, function(s) {
+    film.scene("Non-Intrusive Auxiliary Head", 60, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -460,10 +481,10 @@
            }
         }
       });
-      lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 2.0, { out: 18 });
-      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 14.0, { out: 39 });
-      lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 28.0, { out: 60 });
-      lower(s, "However, its gradient footprint remains locked in the Proof-of-Learning training trajectory. Pruning it from the final model cannot erase its historical existence.", 42.0);
+      lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
+      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });
+      lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 18.67, { out: 40 });
+      lower(s, "However, its gradient footprint remains locked in the Proof-of-Learning training trajectory. Pruning it from the final model cannot erase its historical existence.", 28);
     });
   }
 

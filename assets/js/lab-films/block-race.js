@@ -152,8 +152,8 @@
       s.fadeIn(lblH, { at: 1.5, dur: 0.9 }); s.fadeIn(lblA, { at: 3.6, dur: 0.9 });
       // clear the lower third before the narration panel writes in at 4.4
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
-      var eq = s.tex2("\\text{Lead} = \\text{Honest Blocks} - \\text{Attacker Blocks}", { px: 480, py: 150, size: "1.3rem", color: "#dbeafe" });
-      lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 20.1 });
+
+      lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
     }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
   }
 
@@ -199,7 +199,7 @@
       var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 650, py: 360, size: "1.5rem", color: AMB });
       s.write(e1, { at: 1.5, dur: 1.5 }); s.write(e2, { at: 4.5, dur: 1.8 });
       var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 280, py: 440, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(note, { at: 7.5, dur: 1.2 });
+      s.fadeIn(note, { at: 4.5, dur: 1.2 });
       s.fadeOut(note, { at: 6.8, dur: 0.75 }); // fade out before lower third appears
 
       lower(s, "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.", 7.0, { maxWidth: "70%" });
