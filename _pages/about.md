@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Research & Engineering"
+title: "Machine Learning & Mission-Critical Systems"
 excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
 author_profile: true
 redirect_from:
