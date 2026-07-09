@@ -507,6 +507,11 @@
     });
   };
 
+  Scene.prototype.audio = function(id, at) {
+    if (this.film) this.film.audioCue(id, at + this.start);
+    return this;
+  };
+
   Scene.prototype.scaleTo = function (h, o) {
     var s = span(o, 0.6);
     var to = num(o.to, 1), fromX = h.cur.sx, fromY = h.cur.sy;
@@ -553,6 +558,7 @@
     this.W = num(opts.width, 960);
     this.H = num(opts.height, 540);
     this.scenes = [];
+    this._audioCues = [];
     this.duration = 0;
     this.t = 0;
     this.playing = false;
@@ -569,6 +575,7 @@
 
   Film.prototype.coords = function (spec) { return new Coords(this, spec); };
   Film.prototype.palette = function () { return PAL; };
+  Film.prototype.audioCue = function(id, at) { this._audioCues.push({id: id, at: at}); };
 
   Film.prototype._buildDOM = function () {
     var c = this.container;
@@ -678,6 +685,7 @@
            if (films[i].muteBtn) films[i].muteBtn.textContent = window.globalLabMuted ? "🔇" : "🔊";
         }
         if (typeof globalLabAudio !== 'undefined' && globalLabAudio) globalLabAudio.volume = window.globalLabMuted ? 0 : 0.3;
+        if (window._currentLabNarrator) window._currentLabNarrator.volume = window.globalLabMuted ? 0 : 0.8;
       });
     }
 
@@ -894,8 +902,23 @@
 
   Film.prototype.render = function () {
     var t = this.t, i, sc;
+    var oldT = this._lastT !== undefined ? this._lastT : t;
     var ai = this._activeScene(t);
     var TR = 0.42; // crossfade window (s)
+    
+    if (this.playing && !window.globalLabMuted && this._audioCues) {
+      for (i = 0; i < this._audioCues.length; i++) {
+         var ac = this._audioCues[i];
+         if (t >= ac.at && oldT < ac.at) {
+            if (window._currentLabNarrator) window._currentLabNarrator.pause();
+            var a = new Audio("/assets/audio/lab/" + ac.id + ".mp3");
+            a.volume = 0.8;
+            window._currentLabNarrator = a;
+            a.play().catch(function(){});
+         }
+      }
+    }
+    this._lastT = t;
 
     // SVG/overlay scene crossfade
     for (i = 0; i < this.scenes.length; i++) {
@@ -999,40 +1022,34 @@
   Film.prototype.play = function () {
     if (this.playing) return this;
     if (this.t >= this.duration - 1e-3) this.t = 0;
+    if (this.t >= this.duration) this.seek(0);
     this.playing = true;
-    playingFilmsCount++;
-    ensureAudio();
-    globalLabAudio.play().catch(function(e){});
-    this._everPlayed = true;
+    this._lastTs = performance.now();
+    if (window._currentLabNarrator && !window.globalLabMuted) window._currentLabNarrator.play().catch(function(){});
     this.poster.classList.add("is-hidden");
-    this._reflectPlayState();
+    this.playBtn.textContent = "⏸";
+    this.playBtn.setAttribute("aria-label", "Pause");
     var self = this;
-    this._lastTs = 0;
-    this._raf = global.requestAnimationFrame(function step(ts) {
-      if (!self.playing) return;
-      if (!self._lastTs) self._lastTs = ts;
-      var dt = (ts - self._lastTs) / 1000;
-      self._lastTs = ts;
-      self.t += dt;
-      if (self.t >= self.duration) {
-        self.t = self.duration;
+    if (!this._raf) {
+      this._raf = requestAnimationFrame(function step(now) {
+        if (!self.playing) return;
+        var dt = (now - self._lastTs) / 1000;
+        self._lastTs = now;
+        self.t += dt;
+        if (self.t >= self.duration) {
+          self.t = self.duration;
+          self.pause();
+          if (self.scenes.length > 1) self.poster.classList.remove("is-hidden"); // show replay overlay
+        }
         self.render();
-        self.pause();
-        self.poster.classList.remove("is-hidden");
-        self.poster.querySelector(".labf__poster-label").textContent = "Replay";
-        self.poster.querySelector(".labf__poster-icon").textContent = "↺";
-        return;
-      }
-      self.render();
-      self._raf = global.requestAnimationFrame(step);
-    });
+        if (self.playing) self._raf = requestAnimationFrame(step);
+      });
+    }
     return this;
   };
 
   Film.prototype.pause = function () {
-    if (!this.playing) return this;
     this.playing = false;
-    playingFilmsCount = Math.max(0, playingFilmsCount - 1);
     if (playingFilmsCount === 0 && globalLabAudio) {
       globalLabAudio.pause();
     }

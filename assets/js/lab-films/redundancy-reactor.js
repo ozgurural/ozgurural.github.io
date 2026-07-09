@@ -32,7 +32,10 @@
   function choose(n, k) { var c = 1; for (var i = 0; i < k; i++) c = c * (n - i) / (i + 1); return c; }
   function Pind(N, q) { var m = (N - 1) / 2, s = 0; for (var i = m + 1; i <= N; i++) s += choose(N, i) * Math.pow(q, i) * Math.pow(1 - q, N - i); return s; }
 
+  var _lowerCount = 0;
   function lower(s, html, at, o) {
+    var audioId = "redundancy-reactor_" + (_lowerCount++);
+    s.audio(audioId, at);
     o = o || {};
     var c = s.caption(html, { px: o.px !== undefined ? o.px : 46, py: o.py !== undefined ? o.py : 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });

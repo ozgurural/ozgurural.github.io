@@ -14,7 +14,10 @@
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
 
+  var _lowerCount = 0;
   function lower(s, html, at, o) {
+    var audioId = "oracles_" + (_lowerCount++);
+    s.audio(audioId, at);
     o = o || {};
     // Full width bottom bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });

@@ -32,7 +32,10 @@
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var TEAL = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", GOLD = "#FFFF00", INDIGO = "#9A72AC";
 
+  var _lowerCount = 0;
   function lower(s, html, at, o) {
+    var audioId = "proof-of-learning_" + (_lowerCount++);
+    s.audio(audioId, at);
     o = o || {};
     var c = s.caption(html, { px: o.px !== undefined ? o.px : 46, py: o.py !== undefined ? o.py : 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });

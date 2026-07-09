@@ -41,7 +41,10 @@
   function Phi(x) { return 0.5 * (1 + erf(x / Math.SQRT2)); }
   function phi(x) { return Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI); }
 
+  var _lowerCount = 0;
   function lower(s, html, at, o) {
+    var audioId = "model-heist_" + (_lowerCount++);
+    s.audio(audioId, at);
     o = o || {};
     var c = s.caption(html, { px: o.px !== undefined ? o.px : 46, py: o.py !== undefined ? o.py : 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });

@@ -45,7 +45,10 @@
   }
   function poissonPMF(lambda, k) { var t = Math.exp(-lambda); for (var i = 1; i <= k; i++) t *= lambda / i; return t; }
 
+  var _lowerCount = 0;
   function lower(s, html, at, o) {
+    var audioId = "block-race_" + (_lowerCount++);
+    s.audio(audioId, at);
     o = o || {};
     var c = s.caption(html, { px: o.px !== undefined ? o.px : 46, py: o.py !== undefined ? o.py : 535, anchor: "bottom-left", align: "left", maxWidth: o.maxWidth || "60%", size: o.size, panel: true });
     s.fadeIn(c, { at: at, dur: o.dur || 0.9 });

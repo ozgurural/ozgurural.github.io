@@ -14,7 +14,10 @@
   var E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
 
+  var _lowerCount = 0;
   function lower(s, html, at, o) {
+    var audioId = "jira_" + (_lowerCount++);
+    s.audio(audioId, at);
     o = o || {};
     // Pinned to exact bottom-left for full-width overlay bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
