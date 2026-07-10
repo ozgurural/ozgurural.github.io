@@ -295,18 +295,20 @@
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
       s.draw(diag, { at: 1.5, dur: 1.2 });
-      function rocCurve(d, color, at, label) {
+      function rocCurve(d, color, at, label, yLab) {
         var pts = [], tt;
         for (tt = 5; tt >= -5; tt -= 0.1) { var fpr = Phi(-tt), tpr = Phi(d - tt); pts.push([fpr, tpr]); }
         var pl = s.poly(pts, { coords: co, color: color, width: 3 });
         s.draw(pl, { at: at, dur: 2.4 });
         var auc = Phi(d / Math.SQRT2);
-        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: Phi(d - 0.2) - 0.06, anchor: "left", size: "1.3rem", color: color });
+        // yLab is hand-placed: the natural curve heights sit too close
+        // together and the labels collide on large stages.
+        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: yLab, anchor: "left", size: "1.3rem", color: color });
         s.fadeIn(lbl, { at: at + 1.4, dur: 0.75 });
       }
-      rocCurve(0.6, "#7dd3fc", 2.0, "small k");
-      rocCurve(1.6, CY, 3.6, "more k");
-      rocCurve(3.2, GRN, 5.2, "large k");
+      rocCurve(0.6, "#7dd3fc", 2.0, "small k", 0.5);
+      rocCurve(1.6, CY, 3.6, "more k", 0.74);
+      rocCurve(3.2, GRN, 5.2, "large k", 0.98);
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });

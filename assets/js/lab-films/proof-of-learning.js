@@ -176,8 +176,6 @@
       });
       var master = s.tex2("\\text{Proof} = [\\text{Checkpoints}, \\text{Data}, \\text{Signatures}]", { px: 480, py: 420, size: "1.4rem", color: AMB });
       s.write(master, { at: 18, dur: 2.1 });
-      var sig = s.caption("encrypted to the verifier · timestamped · signed", { px: 480, py: 460, anchor: "center", align: "center", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(sig, { at: 9, dur: 1.2 });
       lower(s, "A proof is a transcript: checkpoints, data-batches, signatures, and hyperparameters.", 8.0, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
@@ -348,8 +346,8 @@
         }
       });
       
-      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 150, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
-      var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 190, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
+      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 144, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
+      var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 202, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 4.5, dur: 0.9 }); s.fadeIn(fl, { at: 8.1, dur: 0.9 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: -0.1, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 1.5, dur: 0.75 });

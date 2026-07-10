@@ -659,6 +659,7 @@
       '</div>' +
       '<span class="labf__time" data-role="time">0:00</span>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="replay" aria-label="Replay from start">↺</button>' +
+      '<button type="button" class="labf__btn labf__btn--ghost" data-role="voice" aria-label="Toggle narration voice" aria-pressed="false" title="Narration voice">🗣</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="mute" aria-label="Toggle Audio">🔊</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⛶</button>';
     c.appendChild(tr);
@@ -671,6 +672,7 @@
     this.timeEl = tr.querySelector('[data-role="time"]');
     this.replayBtn = tr.querySelector('[data-role="replay"]');
     this.muteBtn = tr.querySelector('[data-role="mute"]');
+    this.voiceBtn = tr.querySelector('[data-role="voice"]');
     this.fsBtn = tr.querySelector('[data-role="fs"]');
 
     this.playBtn.addEventListener("click", function () { self._userPaused = self.playing; self.toggle(); });
@@ -684,8 +686,32 @@
         for(var i=0; i<films.length; i++) {
            if (films[i].muteBtn) films[i].muteBtn.textContent = window.globalLabMuted ? "🔇" : "🔊";
         }
-        if (typeof globalLabAudio !== 'undefined' && globalLabAudio) globalLabAudio.volume = window.globalLabMuted ? 0 : 0.3;
+        LabMusic.setMuted(window.globalLabMuted);
         if (window._currentLabNarrator) window._currentLabNarrator.volume = window.globalLabMuted ? 0 : 0.8;
+      });
+    }
+
+    if (this.voiceBtn) {
+      var syncVoiceBtns = function () {
+        var films = window.LabAnim.films || [];
+        for (var i = 0; i < films.length; i++) {
+          var b = films[i].voiceBtn;
+          if (!b) continue;
+          b.setAttribute("aria-pressed", window.globalLabVoice ? "true" : "false");
+          b.style.opacity = window.globalLabVoice ? "1" : "0.45";
+        }
+      };
+      syncVoiceBtns();
+      this.voiceBtn.addEventListener("click", function () {
+        window.globalLabVoice = !window.globalLabVoice;
+        syncVoiceBtns();
+        // force the narrator to (re)evaluate on the next rendered frame
+        self._currentCue = null;
+        if (!window.globalLabVoice && window._currentLabNarrator) {
+          window._currentLabNarrator.pause();
+          window._currentLabNarrator = null;
+        }
+        if (!self.playing) self.render();
       });
     }
 
@@ -784,28 +810,50 @@
     }
   };
 
+  // Per-film research credit shown on the Signature outro. Keyed by the
+  // film's container id; loosely related films cite the closest publication.
+  var FILM_CREDITS = {
+    "pol-film":        "Based on: Ural &amp; Yoshigoe · <em>SecurePoL</em> · IEEE Access 2025",
+    "mh-film":         "Based on: Ural &amp; Yoshigoe · <em>Feature-Based Model Watermarking for PoL</em> · IEEE Access 2024",
+    "wm-compare-film": "Based on: Ural &amp; Yoshigoe · <em>Evaluation of Model Watermarking Techniques</em> · IEEE Access 2025",
+    "br-film":         "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
+    "oracles-film":    "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
+    "jira-film":       "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
+    "gd-film":         "cf. Ural · <em>Enhancing Proof-of-Learning Security</em> · Ph.D. dissertation, ERAU 2025",
+    "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion"
+  };
+
   Film.prototype.build = function () {
     if (this._built) return this;
-    
+
+    var filmKey = (this.container && this.container.id) || "lab";
+
     // Global Signature Outro Scene
     this.scene("Signature", 18, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 480, py: 270, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
-      
-      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>", 
-                           { px: 480, py: 230, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
-                           
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>SENIOR SOFTWARE ENGINEER & ML RESEARCHER</span>", 
-                           { px: 480, py: 275, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
-                           
-      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>", 
-                           { px: 480, py: 320, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+
+      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
+                           { px: 480, py: 222, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>PH.D. IN MACHINE LEARNING · TRUSTWORTHY-ML RESEARCHER</span>",
+                           { px: 480, py: 267, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+
+      var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",
+                           { px: 480, py: 310, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var objs = [bgLight, name, role, url];
+
+      if (FILM_CREDITS[filmKey]) {
+        var credit = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; white-space:nowrap;'>" + FILM_CREDITS[filmKey] + "</span>",
+                               { px: 480, py: 356, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+        objs.push(credit);
+      }
+
       objs.forEach(function(obj) {
         obj.cur.op = 0;
         obj.cur.sx = 0.65; // Start far away
         obj.cur.sy = 0.65;
-        
+
         // Majestic very slow zoom in that gently stops
         s.scaleTo(obj, { at: 0, dur: 16, to: 1.05, ease: Ease.smooth });
         // Fade in together
@@ -814,28 +862,13 @@
         s.fadeOut(obj, { at: 15.5, dur: 2.5 });
       });
 
-      // Special procedural cinematic sound
+      // Signature stinger through the shared music context, voiced from the
+      // film's own root so it lands in key.
       var playedSound = false;
       s._cue(name, 0.1, 0.1, Ease.linear, function() {
-        if (playedSound || !(window.AudioContext || window.webkitAudioContext) || window.globalLabMuted) return;
+        if (playedSound || window.globalLabMuted) return;
         playedSound = true;
-        try {
-          var ctx = new (window.AudioContext || window.webkitAudioContext)();
-          var t = ctx.currentTime;
-          // Deep sub-bass boom (extended)
-          var osc = ctx.createOscillator(); var gain = ctx.createGain();
-          osc.type = 'sine'; osc.frequency.setValueAtTime(45, t); osc.frequency.exponentialRampToValueAtTime(10, t + 12);
-          gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.8, t + 0.1); gain.gain.exponentialRampToValueAtTime(0.001, t + 12);
-          osc.connect(gain); gain.connect(ctx.destination); osc.start(t); osc.stop(t + 12);
-          
-          // Ethereal chord shimmer (extended decay)
-          [440, 554.37, 659.25, 880].forEach(function(freq) {
-            var o = ctx.createOscillator(); var g = ctx.createGain();
-            o.type = 'sine'; o.frequency.value = freq;
-            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.04, t + 1.5); g.gain.exponentialRampToValueAtTime(0.001, t + 13.0);
-            o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 13.0);
-          });
-        } catch(e){}
+        try { LabMusic.stinger(filmKey); } catch(e){}
       });
     });
 
@@ -907,12 +940,12 @@
     var TR = 0.42; // crossfade window (s)
     
     var self = this;
-    if (this._audioCues) {
+    if (this._audioCues && window.globalLabVoice) {
       var expectedCue = null;
       for (i = 0; i < this._audioCues.length; i++) {
         if (t >= this._audioCues[i].at) expectedCue = this._audioCues[i];
       }
-      
+
       if (expectedCue) {
          if (!this._currentCue || this._currentCue.id !== expectedCue.id) {
             if (window._currentLabNarrator) window._currentLabNarrator.pause();
@@ -921,16 +954,16 @@
             a.volume = 0.8;
             window._currentLabNarrator = a;
             var offset = Math.max(0, t - expectedCue.at);
-            
+
             // Wait for metadata to safely set currentTime, then play if appropriate
             a.addEventListener("loadedmetadata", function() {
                if (offset < a.duration) {
                   a.currentTime = offset;
-                  if (self.playing && !window.globalLabMuted) a.play().catch(function(){});
+                  if (self.playing && !window.globalLabMuted && window.globalLabVoice) a.play().catch(function(){});
                }
             });
             // Attempt immediate play only if naturally crossing the threshold (offset is near 0)
-            if (offset < 0.1 && self.playing && !window.globalLabMuted) {
+            if (offset < 0.1 && self.playing && !window.globalLabMuted && window.globalLabVoice) {
                 a.play().catch(function(){});
             }
          }
@@ -941,6 +974,11 @@
          }
          this._currentCue = null;
       }
+    } else if (window._currentLabNarrator) {
+      // narration switched off mid-flight
+      window._currentLabNarrator.pause();
+      window._currentLabNarrator = null;
+      this._currentCue = null;
     }
     this._lastT = t;
 
@@ -1033,17 +1071,189 @@
     return this;
   };
 
-  var globalLabAudio = null;
   var playingFilmsCount = 0;
   window.globalLabMuted = false;
-  
-  function ensureAudio() {
-    if (!globalLabAudio) {
-      globalLabAudio = new Audio("/assets/audio/ambient.ogg");
-      globalLabAudio.loop = true;
-      globalLabAudio.volume = window.globalLabMuted ? 0 : 0.3;
+  window.globalLabVoice = false; // narration is opt-in; the score carries the film
+
+  /* ===================== generative per-film music =====================
+     Each film gets its own procedurally generated ambient score — its own
+     key, scale, tempo, and timbre — synthesized live with WebAudio. No
+     samples, no licensing, a few kilobytes of code. The context unlocks on
+     the first user gesture, so autoplay policies can't silently kill it. */
+  var LabMusic = (function () {
+    var MOODS = {
+      "pol-film":        { root: 146.83, scale: [0,2,3,5,7,9,10], tempo: 34, cutoff: 750,  pad: [0,7], bright: 0.5  }, // D dorian - contemplative
+      "mh-film":         { root: 110.00, scale: [0,2,3,5,7,8,11], tempo: 42, cutoff: 620,  pad: [0,3], bright: 0.35 }, // A harmonic minor - tension
+      "br-film":         { root: 164.81, scale: [0,3,5,7,10],     tempo: 58, cutoff: 900,  pad: [0,7], bright: 0.6  }, // E minor pentatonic - kinetic
+      "tmr-film":        { root: 130.81, scale: [0,2,4,6,7,9,11], tempo: 26, cutoff: 700,  pad: [0,7], bright: 0.45 }, // C lydian - aerospace calm
+      "gd-film":         { root: 196.00, scale: [0,2,4,7,9],      tempo: 50, cutoff: 1000, pad: [0,4], bright: 0.65 }, // G major pentatonic - playful
+      "oracles-film":    { root: 92.50,  scale: [0,1,3,5,7,8,10], tempo: 30, cutoff: 560,  pad: [0,7], bright: 0.3  }, // F# phrygian - mystic
+      "wm-compare-film": { root: 123.47, scale: [0,2,3,5,7,8,10], tempo: 44, cutoff: 820,  pad: [0,3], bright: 0.5  }, // B natural minor - analytic
+      "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6  }  // D major - optimistic
+    };
+    var VOL = 0.14;
+    var ctx = null, master = null, graph = null, timer = null, muted = false, currentKey = null, unlockArmed = false;
+
+    function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
+    function moodFor(key) {
+      if (MOODS[key]) return MOODS[key];
+      var keys = Object.keys(MOODS);
+      return MOODS[keys[hash(key || "lab") % keys.length]];
     }
-  }
+    function rng(seed) {
+      var s = seed >>> 0;
+      return function () {
+        s = (s + 0x6D2B79F5) >>> 0;
+        var z = s;
+        z = Math.imul(z ^ (z >>> 15), z | 1);
+        z ^= z + Math.imul(z ^ (z >>> 7), z | 61);
+        return ((z ^ (z >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function ensureCtx() {
+      if (ctx) return ctx;
+      var AC = global.AudioContext || global.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 1;
+      master.connect(ctx.destination);
+      return ctx;
+    }
+    function armUnlock() {
+      if (unlockArmed) return;
+      unlockArmed = true;
+      var unlock = function () {
+        if (ctx && ctx.state === "suspended") ctx.resume().catch(function () {});
+        document.removeEventListener("pointerdown", unlock);
+        document.removeEventListener("keydown", unlock);
+        unlockArmed = false;
+      };
+      document.addEventListener("pointerdown", unlock);
+      document.addEventListener("keydown", unlock);
+    }
+    function teardown(fadeS) {
+      if (timer) { clearInterval(timer); timer = null; }
+      if (graph && ctx) {
+        var g = graph; graph = null;
+        try {
+          g.out.gain.cancelScheduledValues(ctx.currentTime);
+          g.out.gain.setTargetAtTime(0, ctx.currentTime, (fadeS || 0.8) / 3);
+        } catch (e) {}
+        setTimeout(function () {
+          try { g.oscs.forEach(function (o) { o.stop(); }); g.out.disconnect(); } catch (e) {}
+        }, (fadeS || 0.8) * 1000 + 250);
+      }
+      currentKey = null;
+    }
+    function start(key) {
+      if (!ensureCtx()) return;
+      if (currentKey === key && graph) { setMuted(muted); return; }
+      teardown(0.6);
+      currentKey = key;
+      if (ctx.state === "suspended") { ctx.resume().catch(function () {}); armUnlock(); }
+
+      var mood = moodFor(key);
+      var rand = rng(hash(key || "lab"));
+      var out = ctx.createGain();
+      out.gain.value = 0;
+      out.connect(master);
+
+      // space: a gentle feedback delay tuned to the film's tempo
+      var delay = ctx.createDelay(1.5);
+      delay.delayTime.value = (60 / mood.tempo) * 0.75;
+      var fb = ctx.createGain(); fb.gain.value = 0.32;
+      var wet = ctx.createGain(); wet.gain.value = 0.5;
+      delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(out);
+
+      // pad drone: detuned oscillators breathing through a slow lowpass
+      var lp = ctx.createBiquadFilter();
+      lp.type = "lowpass"; lp.frequency.value = mood.cutoff; lp.Q.value = 0.6;
+      var padGain = ctx.createGain(); padGain.gain.value = 0.32;
+      lp.connect(padGain); padGain.connect(out);
+      var lfo = ctx.createOscillator(); lfo.frequency.value = 0.05 + rand() * 0.04;
+      var lfoGain = ctx.createGain(); lfoGain.gain.value = mood.cutoff * 0.35;
+      lfo.connect(lfoGain); lfoGain.connect(lp.frequency); lfo.start();
+      var oscs = [lfo];
+      mood.pad.forEach(function (semi) {
+        [-6, 5].forEach(function (cents) {
+          var o = ctx.createOscillator();
+          o.type = "sawtooth";
+          o.frequency.value = mood.root * Math.pow(2, semi / 12);
+          o.detune.value = cents;
+          var g = ctx.createGain(); g.gain.value = 0.12;
+          o.connect(g); g.connect(lp);
+          o.start(); oscs.push(o);
+        });
+      });
+
+      graph = { out: out, oscs: oscs, delaySend: delay };
+
+      // melody: seeded walk over the film's scale, on a lookahead scheduler
+      var beat = 60 / mood.tempo;
+      var nextAt = ctx.currentTime + 0.35;
+      var degree = Math.floor(rand() * mood.scale.length);
+      timer = setInterval(function () {
+        if (!graph || !ctx) return;
+        while (nextAt < ctx.currentTime + 0.9) {
+          var step = rand();
+          degree += step < 0.4 ? 1 : step < 0.7 ? -1 : step < 0.85 ? 2 : -2;
+          var span = mood.scale.length * 2;
+          degree = ((degree % span) + span) % span;
+          var semi = mood.scale[degree % mood.scale.length] + 12 * Math.floor(degree / mood.scale.length) + 12;
+          var f = mood.root * Math.pow(2, semi / 12);
+          var t0 = nextAt;
+          var o = ctx.createOscillator(); o.type = "triangle"; o.frequency.value = f;
+          var g = ctx.createGain();
+          var peak = 0.16 + mood.bright * 0.1;
+          g.gain.setValueAtTime(0, t0);
+          g.gain.linearRampToValueAtTime(peak, t0 + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.001, t0 + beat * 1.8);
+          o.connect(g); g.connect(out); g.connect(graph.delaySend);
+          o.start(t0); o.stop(t0 + beat * 2);
+          nextAt += beat * (rand() < 0.22 ? 2 : 1); // occasional rest keeps it breathing
+        }
+      }, 300);
+
+      out.gain.setTargetAtTime(muted ? 0 : VOL, ctx.currentTime, 0.6);
+    }
+    function stop() { teardown(1.2); }
+    function setMuted(m) {
+      muted = m;
+      if (graph && ctx) graph.out.gain.setTargetAtTime(m ? 0 : VOL, ctx.currentTime, 0.25);
+    }
+    // Signature-scene stinger: a sub-bass swell plus a shimmer chord built
+    // from the harmonic series of the film's own root, so it always agrees
+    // with the score underneath it.
+    function stinger(key) {
+      if (!ensureCtx() || muted) return;
+      if (ctx.state === "suspended") { ctx.resume().catch(function () {}); armUnlock(); }
+      var mood = moodFor(key || currentKey || "lab");
+      var t = ctx.currentTime;
+      var out = ctx.createGain(); out.gain.value = 1; out.connect(master);
+      var osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(45, t);
+      osc.frequency.exponentialRampToValueAtTime(12, t + 10);
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.45, t + 0.12);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 10);
+      osc.connect(g); g.connect(out); osc.start(t); osc.stop(t + 10);
+      [2, 3, 4, 5].forEach(function (n) {
+        var o = ctx.createOscillator(), gg = ctx.createGain();
+        o.type = "sine"; o.frequency.value = mood.root * n;
+        gg.gain.setValueAtTime(0, t);
+        gg.gain.linearRampToValueAtTime(0.035, t + 1.5);
+        gg.gain.exponentialRampToValueAtTime(0.001, t + 11);
+        o.connect(gg); gg.connect(out); o.start(t); o.stop(t + 11);
+      });
+    }
+    return {
+      start: start, stop: stop, setMuted: setMuted, stinger: stinger,
+      state: function () { return ctx ? ctx.state : "none"; },
+      playingKey: function () { return currentKey; }
+    };
+  })();
 
   Film.prototype.play = function () {
     if (this.playing) return this;
@@ -1051,13 +1261,10 @@
     if (this.t >= this.duration) this.seek(0);
     this.playing = true;
     playingFilmsCount++;
-    ensureAudio();
-    if (typeof globalLabAudio !== 'undefined' && globalLabAudio && !window.globalLabMuted) {
-        globalLabAudio.play().catch(function(e){});
-    }
+    LabMusic.start((this.container && this.container.id) || "lab");
     this._everPlayed = true;
     this._lastTs = performance.now();
-    if (window._currentLabNarrator && !window.globalLabMuted) window._currentLabNarrator.play().catch(function(){});
+    if (window._currentLabNarrator && !window.globalLabMuted && window.globalLabVoice) window._currentLabNarrator.play().catch(function(){});
     this.poster.classList.add("is-hidden");
     this.playBtn.textContent = "⏸";
     this.playBtn.setAttribute("aria-label", "Pause");
@@ -1084,9 +1291,7 @@
     if (!this.playing) return this;
     this.playing = false;
     playingFilmsCount = Math.max(0, playingFilmsCount - 1);
-    if (playingFilmsCount === 0 && typeof globalLabAudio !== 'undefined' && globalLabAudio) {
-      globalLabAudio.pause();
-    }
+    if (playingFilmsCount === 0) LabMusic.stop();
     if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
     this.playBtn.textContent = "▶";
     this.playBtn.setAttribute("aria-label", "Play");
@@ -1120,7 +1325,8 @@
     lerp: lerp,
     clamp01: clamp01,
     mix: mixColor,
-    rgba: rgba
+    rgba: rgba,
+    music: LabMusic
   };
 
   global.LabAnim = LabAnim;
