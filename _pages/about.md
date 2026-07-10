@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "Machine Learning & Mission-Critical Systems"
-excerpt: "Ph.D. in Machine Learning (ERAU 2025). Four IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
+excerpt: "Ph.D. in Machine Learning (ERAU 2025). Three IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
 author_profile: true
 redirect_from:
   - /about/
@@ -15,7 +15,7 @@ redirect_from:
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
   "jobTitle": "Senior Software Engineer · Ph.D. in Machine Learning",
-  "description": "ML-security researcher (proof-of-learning, model watermarking, adversarial robustness) and architect of mission-critical systems. Former software team lead of 14 engineers at Havelsan. Four IEEE Access papers.",
+  "description": "ML-security researcher (proof-of-learning, model watermarking, adversarial robustness) and architect of mission-critical systems. Former software team lead of 14 engineers at Havelsan. Three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.jpg",
   "email": "drozgurural@gmail.com",
@@ -109,7 +109,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2021–2025</span>
-    <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Four IEEE Access publications on proof-of-learning and model watermarking.</span>
+    <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Three IEEE Access publications on proof-of-learning and model watermarking.</span>
   </li>
   <li>
     <span class="when">Nov 2024</span>

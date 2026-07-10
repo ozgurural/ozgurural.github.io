@@ -40,8 +40,7 @@ Watermarks that survive pruning, quantization, and transfer learning will be ess
 ## References
 
 [1] Ural, O. and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access.
-[2] Ural, O. and Yoshigoe, K. (2025). *Evaluation of Model Watermarking Techniques for Proof-of-Learning Security Against Spoofing Attacks*. IEEE Access (in press).
-[3] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access, 11, 145331 to 145362.
-[4] Uchida, Y., Nagai, Y., Sakazawa, S., & Satoh, S. (2017). *Embedding Watermarks into Deep Neural Networks*. ICMR.
-[5] Adi, Y., Baum, C., Cisse, M., Pinkas, B., & Keshet, J. (2018). *Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring*. USENIX Security.
-[6] Rouhani, B. D., Chen, H., & Koushanfar, F. (2019). *DeepSigns: A Generic Watermarking Framework for IP Protection of Deep Learning Models*. arXiv:1804.00750.
+[2] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access, 11, 145331 to 145362.
+[3] Uchida, Y., Nagai, Y., Sakazawa, S., & Satoh, S. (2017). *Embedding Watermarks into Deep Neural Networks*. ICMR.
+[4] Adi, Y., Baum, C., Cisse, M., Pinkas, B., & Keshet, J. (2018). *Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring*. USENIX Security.
+[5] Rouhani, B. D., Chen, H., & Koushanfar, F. (2019). *DeepSigns: A Generic Watermarking Framework for IP Protection of Deep Learning Models*. arXiv:1804.00750.
