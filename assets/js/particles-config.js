@@ -10,8 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   tsParticles.load("tsparticles", {
     fpsLimit: 60,
     fullScreen: {
-      enable: true,
-      zIndex: -1
+      enable: false
     },
     background: {
       color: "transparent",
