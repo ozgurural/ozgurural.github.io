@@ -813,13 +813,13 @@
   // Per-film research credit shown on the Signature outro. Keyed by the
   // film's container id; loosely related films cite the closest publication.
   var FILM_CREDITS = {
-    "pol-film":        "Based on: Ural &amp; Yoshigoe · <em>SecurePoL</em> · IEEE Access 2025",
-    "mh-film":         "Based on: Ural &amp; Yoshigoe · <em>Feature-Based Model Watermarking for PoL</em> · IEEE Access 2024",
-    "wm-compare-film": "cf. Ural · <em>Enhancing Proof-of-Learning Security</em> · Ph.D. dissertation, ERAU 2025",
-    "br-film":         "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
-    "oracles-film":    "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
-    "jira-film":       "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
-    "gd-film":         "cf. Ural · <em>Enhancing Proof-of-Learning Security</em> · Ph.D. dissertation, ERAU 2025",
+    "pol-film":        "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
+    "mh-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>Feature-Based Model Watermarking for PoL</em> &middot; IEEE Access 2024",
+    "wm-compare-film": "cf. Ural &middot; <em>Enhancing Proof-of-Learning Security</em> &middot; Ph.D. dissertation, ERAU 2025",
+    "br-film":         "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
+    "oracles-film":    "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
+    "jira-film":       "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
+    "gd-film":         "cf. Ural &middot; <em>Enhancing Proof-of-Learning Security</em> &middot; Ph.D. dissertation, ERAU 2025",
     "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion"
   };
 
@@ -835,7 +835,7 @@
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
                            { px: 480, py: 222, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>PH.D. IN MACHINE LEARNING · TRUSTWORTHY-ML RESEARCHER</span>",
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>PH.D. IN MACHINE LEARNING & TRUSTWORTHY-ML RESEARCHER</span>",
                            { px: 480, py: 267, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",

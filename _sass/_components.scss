@@ -1535,12 +1535,17 @@ details.ep-concept[open] .desc {
 /* --------------------------------------------------------------------------
    tsParticles Background Container
    -------------------------------------------------------------------------- */
-#tsparticles {
+#tsparticles, #particles-js {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
-  pointer-events: none;
+  pointer-events: auto;
+}
+
+#main {
+  position: relative;
+  z-index: 10;
 }

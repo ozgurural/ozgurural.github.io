@@ -25,7 +25,8 @@
   "dependencies": {
     "fitvids": "^2.1.1",
     "jquery": "^3.7.1",
-    "jquery-smooth-scroll": "^2.2.0"
+    "jquery-smooth-scroll": "^2.2.0",
+    "puppeteer": "^25.3.0"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
