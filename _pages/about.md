@@ -61,7 +61,7 @@ redirect_from:
 <ul class="ep-stats">
   <li><span class="num">12+</span><span class="label">Years in mission-critical software</span></li>
   <li><span class="num">Ph.D.</span><span class="label">Machine Learning · ERAU 2025</span></li>
-  <li><span class="num">5</span><span class="label">First-author papers · 4 in IEEE Access</span></li>
+  <li><span class="num">5</span><span class="label">First-author papers · 3 in IEEE Access</span></li>
   <li><span class="num">3</span><span class="label">Regulated industries · defense, security, aviation</span></li>
 </ul>
 
