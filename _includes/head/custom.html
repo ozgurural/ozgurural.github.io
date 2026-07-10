@@ -3,17 +3,8 @@
 <!-- start custom head snippets -->
 
 <script>
-  (function() {
-    var theme = localStorage.getItem("theme") || "system";
-    if (theme === "system") {
-      theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    if (theme === "dark") {
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
-  })();
+  /* Force dark mode — light mode removed */
+  document.documentElement.setAttribute("data-theme", "dark");
 </script>
 
 <!-- Support for Academicons -->
@@ -26,8 +17,7 @@
 <link rel="icon" type="image/png" href="{{ base_path }}/images/favicon-192x192.png" sizes="192x192"/>
 <link rel="manifest" href="{{ base_path }}/images/manifest.json"/>
 <link rel="icon" href="/images/favicon.ico"/>
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
-<meta name="theme-color" content="#0a0f1c" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#0a0f1c"/>
 
 <!-- Premium typography: Inter (UI/body), Space Grotesk (display), JetBrains Mono (code) -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
