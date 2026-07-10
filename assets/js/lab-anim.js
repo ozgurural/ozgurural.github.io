@@ -1278,7 +1278,21 @@
         if (!self.playing) return;
         var dt = (now - self._lastTs) / 1000;
         self._lastTs = now;
-        self.t += dt;
+        
+        var ai = self._activeScene(self.t);
+        var activeSc = self.scenes[ai];
+        var scEnd = activeSc ? (activeSc.start + activeSc.duration) : self.duration;
+        
+        var nextT = self.t + dt;
+        if (nextT >= scEnd - 0.05 && window._currentLabNarrator && window.globalLabVoice && !window.globalLabMuted) {
+           var n = window._currentLabNarrator;
+           // If the audio is currently playing, hold time just before the scene ends
+           if (!n.paused && !n.ended) {
+              nextT = scEnd - 0.05;
+           }
+        }
+        self.t = nextT;
+        
         if (self.t >= self.duration) {
           self.t = self.duration;
           self.pause();
