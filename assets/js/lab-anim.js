@@ -575,7 +575,11 @@
 
   Film.prototype.coords = function (spec) { return new Coords(this, spec); };
   Film.prototype.palette = function () { return PAL; };
-  Film.prototype.audioCue = function(id, at) { this._audioCues.push({id: id, at: at}); };
+  Film.prototype.audioCue = function(id, at) {
+    var a = new Audio("/assets/audio/lab/" + id + ".mp3");
+    a.preload = "auto";
+    this._audioCues.push({id: id, at: at, audio: a});
+  };
 
   Film.prototype._buildDOM = function () {
     var c = this.container;
@@ -950,7 +954,7 @@
          if (!this._currentCue || this._currentCue.id !== expectedCue.id) {
             if (window._currentLabNarrator) window._currentLabNarrator.pause();
             this._currentCue = expectedCue;
-            var a = new Audio("/assets/audio/lab/" + expectedCue.id + ".mp3");
+            var a = expectedCue.audio || new Audio("/assets/audio/lab/" + expectedCue.id + ".mp3");
             a.volume = 0.8;
             window._currentLabNarrator = a;
             var offset = Math.max(0, t - expectedCue.at);
@@ -1331,3 +1335,30 @@
 
   global.LabAnim = LabAnim;
 })(window);
+
+// SPA Navigation Audio Fade-Out
+document.addEventListener("click", function(e) {
+  var target = e.target.closest("a");
+  if (!target) return;
+  var href = target.getAttribute("href");
+  if (!href || href.indexOf("#") === 0 || target.getAttribute("target") === "_blank") return;
+  if (!window._currentLabNarrator || window._currentLabNarrator.paused) return;
+  
+  e.preventDefault();
+  var startVol = window._currentLabNarrator.volume;
+  var start = performance.now();
+  var duration = 300;
+  
+  function fade(now) {
+    var p = (now - start) / duration;
+    if (p > 1) {
+      window._currentLabNarrator.pause();
+      window._currentLabNarrator = null;
+      window.location.href = href;
+    } else {
+      window._currentLabNarrator.volume = startVol * (1 - p);
+      requestAnimationFrame(fade);
+    }
+  }
+  requestAnimationFrame(fade);
+});
