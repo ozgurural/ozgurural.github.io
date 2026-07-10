@@ -63,5 +63,5 @@ header:
 </nav>
 
 <section class="lab-footer">
-  <p>Feedback on an experiment, a parameter you'd like exposed, or a scenario you want added? <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=lab-feedback&amp;title=Lab+feedback">Open an issue</a> or <a href="mailto:drozgurural@gmail.com">email me</a>.</p>
+  <p>Feedback on an experiment, a parameter you'd like exposed, or a scenario you want added? <a href="mailto:drozgurural@gmail.com">Email me</a>.</p>
 </section>
