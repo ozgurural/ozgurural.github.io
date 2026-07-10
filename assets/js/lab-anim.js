@@ -815,7 +815,7 @@
   var FILM_CREDITS = {
     "pol-film":        "Based on: Ural &amp; Yoshigoe · <em>SecurePoL</em> · IEEE Access 2025",
     "mh-film":         "Based on: Ural &amp; Yoshigoe · <em>Feature-Based Model Watermarking for PoL</em> · IEEE Access 2024",
-    "wm-compare-film": "Based on: Ural &amp; Yoshigoe · <em>Evaluation of Model Watermarking Techniques</em> · IEEE Access 2025",
+    "wm-compare-film": "cf. Ural · <em>Enhancing Proof-of-Learning Security</em> · Ph.D. dissertation, ERAU 2025",
     "br-film":         "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
     "oracles-film":    "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
     "jira-film":       "cf. Ural &amp; Yoshigoe · <em>Blockchain-Enhanced Machine Learning</em> · IEEE Access 2023",
