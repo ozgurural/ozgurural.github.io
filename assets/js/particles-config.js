@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // The home page ships its own richer hero layer (#particles-js + career
   // topology); don't stack a second fullscreen system on top of it.
   if (document.getElementById("particles-js")) return;
-  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   tsParticles.load("tsparticles", {
     fpsLimit: 60,
     fullScreen: {
@@ -22,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
           mode: "push",
         },
         onHover: {
-          enable: !reduced,
+          enable: true,
           mode: "grab",
         },
         resize: true,
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       move: {
         direction: "none",
-        enable: !reduced,
+        enable: true,
         outModes: {
           default: "bounce",
         },

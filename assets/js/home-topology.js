@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Reduced-motion users get a frozen constellation instead of nothing.
-    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // 1. Initialize tsParticles
     if (typeof tsParticles !== "undefined") {
         tsParticles.load("particles-js", {
@@ -12,11 +10,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 shape: { type: "circle" },
                 opacity: {
                     value: { min: 0.2, max: 0.5 },
-                    animation: { enable: !reduced, speed: 1, minimumValue: 0.1, sync: false }
+                    animation: { enable: true, speed: 1, minimumValue: 0.1, sync: false }
                 },
                 size: {
                     value: { min: 1, max: 3 },
-                    animation: { enable: !reduced, speed: 2, minimumValue: 0.5, sync: false }
+                    animation: { enable: true, speed: 2, minimumValue: 0.5, sync: false }
                 },
                 links: {
                     enable: true,
@@ -26,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     width: 1
                 },
                 move: {
-                    enable: !reduced,
+                    enable: true,
                     speed: 0.8,
                     direction: "none",
                     outModes: { default: "bounce" }
@@ -34,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             interactivity: {
                 events: {
-                    onHover: { enable: !reduced, mode: "grab" },
+                    onHover: { enable: true, mode: "grab" },
                     resize: true
                 },
                 modes: {

@@ -1486,10 +1486,7 @@ button:focus-visible {
   opacity: 0.8;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .arch-conn-trace { animation: none; }
-  .arch-node { animation: none; opacity: 1; }
-}
+
 
 /* Content layer stays above particles and topology */
 .ep-home .page__content {
