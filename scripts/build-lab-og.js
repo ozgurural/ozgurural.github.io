@@ -17,6 +17,7 @@ const LABS = [
     title: "Research Lab",
     sub: "Eight cinematic explainers, built from real research math.",
     tagline: "Consensus · ML security · Fault tolerance · Optimization · Oracles · Markets",
+    badge: "8 FILMS",
     bg: "#0c4a6e",
     accent: "#38bdf8",
   },
@@ -25,8 +26,9 @@ const LABS = [
     eyebrow: "Blockchain · Nakamoto consensus",
     icon: "⛏️",
     title: "Block Race",
-    sub: "Mine. Attack. Defend. The math is whitepaper §11.",
-    tagline: "Bitcoin double-spend, made playable",
+    sub: "Why 6 confirmations is a probability, not a promise.",
+    tagline: "The whitepaper §11 double-spend math, animated",
+    badge: "NAKAMOTO §11",
     bg: "#0f172a",
     accent: "#f59e0b",
   },
@@ -37,16 +39,18 @@ const LABS = [
     title: "Model Heist Detector",
     sub: "Catch the thief without breaking the model.",
     tagline: "AI watermarks across thousands of weights",
+    badge: "IEEE ACCESS 2024",
     bg: "#1e1b4b",
     accent: "#a78bfa",
   },
   {
     key: "pol",
-    eyebrow: "ML · Proof of Learning",
+    eyebrow: "Trustworthy ML · Model provenance",
     icon: "🔬",
-    title: "Training Fingerprint",
-    sub: "Earn Gold Proof. Or don't.",
-    tagline: "The journey is harder to fake than the destination",
+    title: "Proof-of-Learning",
+    sub: "Prove a model was trained, not downloaded.",
+    tagline: "SecurePoL — my IEEE Access research, animated",
+    badge: "IEEE ACCESS 2025",
     bg: "#064e3b",
     accent: "#10b981",
   },
@@ -57,6 +61,7 @@ const LABS = [
     title: "Redundancy Reactor",
     sub: "Three of the same thing is still one thing.",
     tagline: "Triple modular redundancy, with correlation that bites",
+    badge: "ARIANE 5",
     bg: "#1f2937",
     accent: "#f43f5e",
   },
@@ -65,8 +70,9 @@ const LABS = [
     eyebrow: "Deep Learning · Optimization",
     icon: "⛰️",
     title: "Gradient Pinball",
-    sub: "Land the optimizer in the global minimum.",
+    sub: "How machines learn, from the equation up.",
     tagline: "Loss landscapes, momentum, and the occasional saddle",
+    badge: "OPTIMIZATION",
     bg: "#1e3a8a",
     accent: "#fbbf24",
   },
@@ -77,6 +83,7 @@ const LABS = [
     title: "ML Oracles",
     sub: "Bringing truth to the chain.",
     tagline: "zkML proofs and optimistic fraud proofs, animated",
+    badge: "zkML",
     bg: "#312e81",
     accent: "#22d3ee",
   },
@@ -87,6 +94,7 @@ const LABS = [
     title: "Watermarking Wars",
     sub: "Capacity vs. robustness, four strategies.",
     tagline: "White-box deltas, triggers, green-lists, auxiliary heads",
+    badge: "4 STRATEGIES",
     bg: "#3b0764",
     accent: "#e879f9",
   },
@@ -97,6 +105,7 @@ const LABS = [
     title: "Universal Jira",
     sub: "Prediction markets as a task board.",
     tagline: "AMMs, bounties, and oracle resolution",
+    badge: "PREDICTION MARKETS",
     bg: "#052e16",
     accent: "#4ade80",
   },
@@ -159,13 +168,11 @@ function svg(lab) {
   <text x="80" y="560" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="600" fill="#cbd5e1">Ozgur Ural</text>
   <text x="80" y="595" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="22" fill="${lab.accent}">ozgurural.github.io/lab</text>
 
-  <!-- 5-star pip indicator (top right) -->
-  <g transform="translate(${W - 280}, 110)">
-    <text x="0" y="0" font-family="ui-monospace, monospace" font-size="22" letter-spacing="2" fill="${lab.accent}" fill-opacity="0.85">5★ FRONTIER</text>
-    <g transform="translate(0, 16)">
-      ${Array.from({ length: 5 }, (_, i) => `<text x="${i * 40}" y="36" font-family="ui-sans-serif, sans-serif" font-size="44" fill="${lab.accent}" fill-opacity="0.9">★</text>`).join("\n      ")}
-    </g>
-  </g>
+  <!-- badge (top right): a quiet credential, not arcade pips -->
+  ${lab.badge ? `<g>
+    <text x="${W - 80}" y="120" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="24" font-weight="600" letter-spacing="3" fill="${lab.accent}" fill-opacity="0.9">${esc(lab.badge)}</text>
+    <line x1="${W - 80 - lab.badge.length * 16}" y1="136" x2="${W - 80}" y2="136" stroke="${lab.accent}" stroke-opacity="0.5" stroke-width="2"/>
+  </g>` : ""}
 </svg>`;
 }
 
