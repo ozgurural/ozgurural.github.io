@@ -209,69 +209,221 @@
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
   }
 
-  /* ==================== 3 — RUIN : the random walk ==================== */
+  /* ==================== 3 — RUIN : the rigged race to zero ====================
+     Pedagogy, not plots. Three beats on one "gap ladder":
+       1. mechanism  one token, one rigged coin: every block moves the gap by 1
+       2. evidence   30 attackers race at once; almost none ever touch zero
+       3. law        bars: the chance of EVER catching up, per starting deficit
+     Everything is drawn on canvas; the only overlay text is the narration
+     panel and a single closing formula. */
   function ruin(film) {
     film.scene("The gambler's ruin", 33, function (s) {
-      var co = film.coords({ xRange: [-4, 32], yRange: [-18, 4], pad: { left: 90, right: 360, top: 120, bottom: 120 } });
-      
-      // breakeven line at y=0
-      var be = s.line({ coords: co, x1: -1, y1: 0, x2: 30, y2: 0, color: "#e8eef9", width: 2 });
-      s.fadeIn(be, { at: 0.9, dur: 0.75 });
-      // Above and to the right of the line: walks stop the moment they touch
-      // lead = 0, so this region is guaranteed clear of every trace.
-      var beLbl = s.caption("breakeven: lead = 0", { coords: co, x: 24, y: 1.8, anchor: "center", size: "1.05rem", color: "#f1f5f9" });
-      s.fadeIn(beLbl, { at: 1.2, dur: 0.75 });
-      
-      // vertical time axis at x=0
-      var ax = s.line({ coords: co, x1: 0, y1: -16, x2: 0, y2: 2, color: PAL.axis, width: 1.3 });
-      s.draw(ax, { at: 0.6, dur: 1.2 });
+      var q = 0.3, p = 0.7, Z0 = 3, GMAX = 8;
+      function gx(g) { return 130 + g * 88; }      // gap 0..8 → x 130..834
+      var LY = 262;
 
-      // precomputed biased walks (q=0.3) from deficit -6
-      var walks = [], wcount = 4, j, k;
-      for (j = 0; j < wcount; j++) {
-        var pts = [[0, -6]], y = -6;
-        for (k = 1; k <= 30; k++) { 
-           // force the first walk to succeed (catch up) so we show what it looks like
-           if (j === 0) {
-              y += (Math.random() < 0.6 ? 1 : -1); 
-           } else {
-              y += (Math.random() < 0.3 ? 1 : -1); 
-           }
-           pts.push([k, y]); 
-           if (y >= 0) {
-               if (j === 0) {
-                   // snap exactly to 0 and stop
-                   pts[pts.length - 1][1] = 0;
-               }
-               break; 
-           }
-        }
-        walks.push(pts);
+      // deterministic PRNG: the scene plays identically on every visit
+      function rng(seed) {
+        var st = seed >>> 0;
+        return function () {
+          st = (st + 0x6D2B79F5) >>> 0;
+          var z = st;
+          z = Math.imul(z ^ (z >>> 15), z | 1);
+          z ^= z + Math.imul(z ^ (z >>> 7), z | 61);
+          return ((z ^ (z >>> 14)) >>> 0) / 4294967296;
+        };
       }
-      walks.forEach(function (w, i) {
-        var ghost = s.poly(w, { coords: co, color: i === 0 ? GRN : MAG, width: i === 0 ? 2.2 : 1.4 });
-        ghost.el.style.filter = "drop-shadow(0 0 " + (i === 0 ? "8px " + GRN : "4px " + MAG) + ")";
-        s.draw(ghost, { at: 3 + i * 0.5, dur: 5.25 });
-        if (i !== 0) s.fadeOut(ghost, { at: 14.25, dur: 1.8, to: 0.18 });
+
+      /* --- beat 1: one scripted run. Dips to gap 1 (almost!), then drifts. */
+      var FLIPS = ["q", "p", "q", "q", "p", "p", "q", "p", "p", "p"]; // 3→2→3→2→1→2→3→2→3→4→5
+      var STEP0 = 2.2, STEP = 0.85, B1END = STEP0 + FLIPS.length * STEP; // 10.7
+      function gapSeries() {
+        var out = [Z0], g = Z0;
+        for (var i = 0; i < FLIPS.length; i++) {
+          g += (FLIPS[i] === "q" ? -1 : 1);
+          g = Math.max(0, Math.min(GMAX, g));
+          out.push(g);
+        }
+        return out;
+      }
+      var B1 = gapSeries();
+
+      /* --- beat 2: 30 attackers, 20 steps each. Two are scripted to reach 0
+             so the tally is never empty; the rest are honest coin flips. */
+      var W = 30, WSTEPS = 20, T2 = 11.0, WSTEP = 0.5;
+      var rand = rng(0x5EED);
+      var walkers = [];
+      for (var wi = 0; wi < W; wi++) {
+        var seq;
+        if (wi === 7)       seq = [3, 2, 1, 2, 1, 0];
+        else if (wi === 19) seq = [3, 4, 3, 2, 1, 0];
+        else {
+          seq = [Z0]; var g2 = Z0;
+          for (var st2 = 0; st2 < WSTEPS; st2++) {
+            g2 += (rand() < q ? -1 : 1);
+            g2 = Math.min(GMAX, g2);
+            seq.push(g2);
+            if (g2 <= 0) break;
+          }
+        }
+        while (seq.length <= WSTEPS) seq.push(seq[seq.length - 1]);
+        walkers.push(seq);
+      }
+      function rowY(wi) { return LY + ((wi % 11) - 5) * 10; }
+
+      /* --- beat 3: the law. Chance of EVER catching up, per deficit. */
+      var T3 = 21.5;
+      var PCTS = [], zz;
+      for (zz = 1; zz <= 6; zz++) PCTS.push(Math.pow(q / p, zz) * 100); // 42.9, 18.4, 7.9, 3.4, 1.4, 0.6
+
+      s.canvas(function (lt, ctx, h) {
+        var ph3 = clamp01((lt - T3) / 1.2);
+        var ladderA = (1 - 0.96 * E.smooth(ph3)) * clamp01((lt - 0.4) / 0.9);
+
+        if (ladderA > 0.02) {
+          ctx.save(); ctx.globalAlpha = ladderA;
+
+          // ladder: baseline, notches, numbers
+          ctx.strokeStyle = h.rgba("#93a4c4", 0.55); ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(gx(0) - 34, LY); ctx.lineTo(gx(GMAX) + 34, LY); ctx.stroke();
+          for (var g = 0; g <= GMAX; g++) {
+            ctx.fillStyle = h.rgba(g === 0 ? GRN : "#93a4c4", g === 0 ? 0.95 : 0.5);
+            ctx.beginPath(); ctx.arc(gx(g), LY, g === 0 ? 5 : 3, 0, 7); ctx.fill();
+            ctx.font = "12px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba(g === 0 ? GRN : "#93a4c4", g === 0 ? 1 : 0.7);
+            ctx.fillText(String(g), gx(g) - 4, LY + 46);
+          }
+          if (lt > 1.2) {
+            ctx.font = "600 12px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba(GRN, 0.95);
+            ctx.fillText("CAUGHT UP", gx(0) - 34, LY - 56);
+            ctx.fillStyle = h.rgba("#93a4c4", 0.8);
+            ctx.fillText("further behind →", gx(GMAX) - 118, LY - 56);
+            ctx.fillStyle = h.rgba("#dbeafe", 0.75);
+            ctx.fillText("blocks behind the honest chain", 380, LY + 74);
+          }
+
+          // the rigged coin (beat 1 only)
+          var ci = Math.floor((lt - STEP0) / STEP);
+          if (lt >= STEP0 - 0.7 && lt < B1END + 0.2) {
+            var cxx = 480, cyy = 118, R = 26;
+            var inStep = (lt - STEP0) - ci * STEP;
+            var settled = ci >= 0 && inStep > 0.3;
+            var res = ci >= 0 && ci < FLIPS.length ? FLIPS[ci] : null;
+            var spinCol = (Math.floor(lt * 14) % 2 === 0) ? CY : MAG;
+            var col = settled && res ? (res === "q" ? MAG : CY) : spinCol;
+            ctx.beginPath(); ctx.arc(cxx, cyy, R, 0, 7);
+            ctx.fillStyle = h.rgba(col, 0.85); ctx.fill();
+            ctx.lineWidth = 2; ctx.strokeStyle = h.rgba("#0b1322", 0.9); ctx.stroke();
+            ctx.font = "600 13px 'JetBrains Mono',monospace";
+            if (settled && res) {
+              ctx.fillStyle = h.rgba(col, 1);
+              ctx.fillText(res === "q" ? "attacker block · gap −1" : "honest block · gap +1", cxx - 86, cyy + R + 22);
+            } else if (ci >= 0 && ci < FLIPS.length) {
+              ctx.fillStyle = h.rgba("#dbeafe", 0.7);
+              ctx.fillText("~10 min…", cxx - 34, cyy + R + 22);
+            }
+          }
+
+          // beat-1 token: glides notch to notch as the coin lands
+          if (lt < T2 + 0.4) {
+            var idx = Math.max(0, Math.min(B1.length - 1, ci + 1));
+            var frac = ci < 0 ? 0 : clamp01(((lt - STEP0) - ci * STEP - 0.3) / 0.35);
+            var from = B1[Math.max(0, Math.min(B1.length - 1, idx - 1))];
+            var to = B1[idx];
+            var tx = ci < 0 ? gx(Z0) : lerp(gx(from), gx(to), E.smooth(frac));
+            var tokenA = 1 - clamp01((lt - B1END - 0.2) / 0.8);
+            ctx.globalAlpha = ladderA * tokenA;
+            ctx.shadowBlur = 14; ctx.shadowColor = h.rgba(MAG, 0.9);
+            ctx.beginPath(); ctx.arc(tx, LY, 9, 0, 7);
+            ctx.fillStyle = h.rgba(MAG, 1); ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.font = "600 13px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba("#f1f5f9", 0.95);
+            var shownGap = ci < 0 ? Z0 : B1[Math.max(0, Math.min(B1.length - 1, ci + (frac > 0.5 ? 1 : 0)))];
+            ctx.fillText("gap = " + shownGap, tx - 26, LY - 22);
+            ctx.globalAlpha = ladderA;
+          }
+
+          // beat-2 crowd
+          if (lt >= T2 - 0.3) {
+            var wIn = clamp01((lt - (T2 - 0.3)) / 0.8);
+            var stepIdx = Math.max(0, Math.min(WSTEPS, Math.floor((lt - T2) / WSTEP)));
+            var fr = clamp01(((lt - T2) - stepIdx * WSTEP) / (WSTEP * 0.6));
+            var caught = 0;
+            for (var w2 = 0; w2 < W; w2++) {
+              var sq = walkers[w2];
+              var cur = sq[Math.min(stepIdx, sq.length - 1)];
+              var nxt = sq[Math.min(stepIdx + 1, sq.length - 1)];
+              var wx = lerp(gx(cur), gx(nxt), E.smooth(fr));
+              var done = cur === 0;
+              if (done) { caught++; wx = gx(0); }
+              ctx.beginPath(); ctx.arc(wx, rowY(w2), done ? 5 : 4, 0, 7);
+              ctx.fillStyle = h.rgba(done ? GRN : MAG, wIn * (done ? 0.95 : 0.45));
+              ctx.fill();
+            }
+            // success halo on the zero notch
+            if (caught > 0) {
+              ctx.beginPath(); ctx.arc(gx(0), LY, 16 + 3 * Math.sin(lt * 5), 0, 7);
+              ctx.strokeStyle = h.rgba(GRN, 0.5 * wIn); ctx.lineWidth = 2; ctx.stroke();
+            }
+            // live tally
+            ctx.font = "600 16px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba("#f1f5f9", wIn);
+            ctx.fillText("caught up: " + caught + " / " + W, 660, 128);
+            if (lt > 18.5) {
+              ctx.font = "600 13px 'JetBrains Mono',monospace";
+              ctx.fillStyle = h.rgba(AMB, clamp01((lt - 18.5) / 0.8));
+              ctx.fillText("theory says ≈ 8 in 100, forever", 660, 152);
+            }
+          }
+          ctx.restore();
+        }
+
+        // beat 3: the law as bars
+        if (ph3 > 0.01) {
+          ctx.save(); ctx.globalAlpha = E.smooth(ph3);
+          var baseY = 430, bw2 = 56, maxH = 230;
+          ctx.font = "600 14px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba("#dbeafe", 0.9);
+          ctx.fillText("chance of EVER catching up  (attacker has 30% of hashrate)", 200, 158);
+          for (var z3 = 1; z3 <= 6; z3++) {
+            var bx3 = 200 + (z3 - 1) * 95;
+            var grow = clamp01((lt - (T3 + 0.6) - (z3 - 1) * 0.35) / 0.8);
+            var bh3 = Math.max(3, maxH * (PCTS[z3 - 1] / PCTS[0])) * E.out(grow);
+            var col3 = z3 === Z0 ? AMB : MAG;
+            ctx.fillStyle = h.rgba(col3, z3 === Z0 ? 0.75 : 0.5);
+            ctx.fillRect(bx3, baseY - bh3, bw2, bh3);
+            ctx.strokeStyle = h.rgba(col3, 0.95); ctx.lineWidth = 1.6;
+            ctx.strokeRect(bx3, baseY - bh3, bw2, bh3);
+            if (grow > 0.6) {
+              ctx.font = "600 13px 'JetBrains Mono',monospace";
+              ctx.fillStyle = h.rgba("#f1f5f9", (grow - 0.6) / 0.4);
+              var lbl3 = PCTS[z3 - 1] >= 10 ? Math.round(PCTS[z3 - 1]) + "%" : PCTS[z3 - 1].toFixed(1) + "%";
+              ctx.fillText(lbl3, bx3 + bw2 / 2 - 16, baseY - bh3 - 10);
+              ctx.fillStyle = h.rgba("#93a4c4", (grow - 0.6) / 0.4);
+              ctx.fillText(String(z3), bx3 + bw2 / 2 - 4, baseY + 22);
+            }
+          }
+          if (lt > T3 + 3.2) {
+            ctx.font = "13px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba("#dbeafe", clamp01((lt - T3 - 3.2) / 0.8));
+            ctx.fillText("starting deficit z (blocks behind)", 360, baseY + 50);
+            ctx.font = "600 13px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba(AMB, clamp01((lt - T3 - 3.2) / 0.8));
+            ctx.fillText("◀ the race you just watched", 200 + 2 * 95 + bw2 + 12, baseY - Math.max(3, maxH * (PCTS[2] / PCTS[0])) + 4);
+          }
+          ctx.restore();
+        }
       });
-      var token = s.dot({ coords: co, x: 0, y: -6, r: 8, color: MAG, glow: 9 });
-      s.fadeIn(token, { at: 2.4, dur: 0.6 });
-      var tokLbl = s.caption("attacker starts<br>z blocks behind", { coords: co, x: -0.5, y: -6, anchor: "right", align: "right", size: "0.8rem", color: MAG, maxWidth: "120px" });
-      s.fadeIn(tokLbl, { at: 2.7, dur: 0.75 });
 
-      // recurrence + solution (right column)
-      var r1 = s.tex2("\\text{Biased random walk}", { px: 680, py: 170, size: "1.35rem", color: "#e8eef9" });
-      var r2 = s.tex2("\\text{Step right with prob. } p \\text{, left with prob. } q", { px: 680, py: 222, display: false, size: "1.05rem", color: "#dbeafe" });
-      var r3 = s.tex2("\\Pr(\\text{catch up}) \\approx \\Big(\\frac{q}{p}\\Big)^z", { px: 680, py: 294, size: "1.15rem", color: AMB });
-      var r4 = s.tex2("\\text{If } p > q, \\text{the success probability shrinks exponentially in } z", { px: 680, py: 370, display: false, size: "1.05rem", color: "#dbeafe" });
-      s.write(r1, { at: 14.25, dur: 1.5 });
-      s.fadeIn(r2, { at: 16.0, dur: 1.0 });
-      s.write(r3, { at: 18.0, dur: 2.1 });
-      s.pulse(r3, { at: 20.4, dur: 1.2, amp: 0.1 });
-      s.fadeIn(r4, { at: 21.4, dur: 1.15 });
+      // the one formula this scene has earned
+      var law = s.tex2("\\Pr(\\text{ever catch up}) = \\left(\\tfrac{q}{p}\\right)^{z}", { px: 760, py: 200, size: "1.15rem", color: AMB });
+      s.write(law, { at: T3 + 3.6, dur: 1.8 });
+      s.pulse(law, { at: T3 + 6, dur: 1.2, amp: 0.1 });
 
-      lower(s, "Start the attacker z blocks behind. Each block is one step in a biased random walk, so the chance of catching up falls like (q/p)<sup>z</sup>.", 15.6, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "An attacker starting z blocks behind faces a biased random walk." });
+      lower(s, "Forget both chains — only the gap matters. Each block moves it one step, the coin is rigged 70/30, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.", 13.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Only the gap matters — and the walk is rigged against the attacker." });
   }
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
