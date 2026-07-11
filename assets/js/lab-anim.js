@@ -705,7 +705,10 @@
           b.style.opacity = window.globalLabVoice ? "1" : "0.45";
         }
       };
-      syncVoiceBtns();
+      // set THIS button directly: at construction time the film is not yet
+      // registered in LabAnim.films, so the sync loop would miss it.
+      this.voiceBtn.setAttribute("aria-pressed", window.globalLabVoice ? "true" : "false");
+      this.voiceBtn.style.opacity = window.globalLabVoice ? "1" : "0.45";
       this.voiceBtn.addEventListener("click", function () {
         window.globalLabVoice = !window.globalLabVoice;
         syncVoiceBtns();
@@ -1077,7 +1080,7 @@
 
   var playingFilmsCount = 0;
   window.globalLabMuted = false;
-  window.globalLabVoice = false; // narration is opt-in; the score carries the film
+  window.globalLabVoice = true; // neural narration on by default; 🗣 toggles it off
 
   /* ===================== generative per-film music =====================
      Each film gets its own procedurally generated ambient score — its own
