@@ -217,7 +217,9 @@
       // breakeven line at y=0
       var be = s.line({ coords: co, x1: -1, y1: 0, x2: 30, y2: 0, color: "#e8eef9", width: 2 });
       s.fadeIn(be, { at: 0.9, dur: 0.75 });
-      var beLbl = s.caption("breakeven: lead = 0", { coords: co, x: 15, y: 0.8, anchor: "center", size: "1.05rem", color: "#f1f5f9" });
+      // Above and to the right of the line: walks stop the moment they touch
+      // lead = 0, so this region is guaranteed clear of every trace.
+      var beLbl = s.caption("breakeven: lead = 0", { coords: co, x: 24, y: 1.8, anchor: "center", size: "1.05rem", color: "#f1f5f9" });
       s.fadeIn(beLbl, { at: 1.2, dur: 0.75 });
       
       // vertical time axis at x=0
