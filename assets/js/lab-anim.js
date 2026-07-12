@@ -1001,6 +1001,7 @@
 
             // Wait for metadata to safely set currentTime, then play if appropriate
             a.addEventListener("loadedmetadata", function() {
+               if (window._currentLabNarrator !== a) return; // Abort if superseded
                if (offset < a.duration) {
                   a.currentTime = offset;
                   if (self.playing && !window.globalLabMuted && window.globalLabVoice) a.play().catch(function(){});
