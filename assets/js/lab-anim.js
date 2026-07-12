@@ -736,27 +736,33 @@
     this._unlockOrientation = unlockOrientation;
 
     if (this.fsBtn) {
+      var enterCssFs = function () {
+        self.container.classList.add("labf--fullscreen");
+        self._fitCanvas(); self._repositionOverlay(); self.render();
+      };
       this.fsBtn.addEventListener("click", function () {
         var el = self.container;
         var isFs = document.fullscreenElement || document.webkitFullscreenElement || el.classList.contains("labf--fullscreen");
         if (!isFs) {
+          // iPhone Safari exposes requestFullscreen() but it rejects for non-video
+          // elements; trusting the method's mere existence left the film stuck.
+          // Gate on the real capability flag and fall back to the CSS overlay,
+          // which fills the screen (and rotates with the device) on iOS.
+          var canNative = document.fullscreenEnabled || document.webkitFullscreenEnabled;
           var req = el.requestFullscreen || el.webkitRequestFullscreen;
-          if (req) {
-            var r = req.call(el);
-            // On mobile, going fullscreen isn't enough — lock to landscape so the
-            // film fills the screen instead of sitting tiny in portrait (Android).
-            if (r && r.then) { r.then(lockLandscape).catch(lockLandscape); }
-            else { lockLandscape(); }
+          if (canNative && req) {
+            try {
+              var r = req.call(el);
+              if (r && r.then) { r.then(lockLandscape).catch(enterCssFs); }
+              else { lockLandscape(); }
+            } catch (e) { enterCssFs(); }
           } else {
-            // iOS Safari can't fullscreen a non-video element; fill via CSS and
-            // hint the user to rotate (the browser won't rotate for us).
-            el.classList.add("labf--fullscreen");
-            self._fitCanvas(); self._repositionOverlay(); self.render();
+            enterCssFs();
           }
         } else {
           unlockOrientation();
-          if (document.exitFullscreen) { document.exitFullscreen(); }
-          else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+          if (document.fullscreenElement && document.exitFullscreen) { document.exitFullscreen(); }
+          else if (document.webkitFullscreenElement && document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
           else { el.classList.remove("labf--fullscreen"); self._fitCanvas(); self._repositionOverlay(); self.render(); }
         }
       });

@@ -1358,10 +1358,12 @@ button:focus-visible {
 .labf:-webkit-full-screen .labf__stage,
 .labf--fullscreen .labf__stage {
   background: transparent;
-  max-width: none; border-radius: 0; border: none; height: 100vh;
+  max-width: none; border-radius: 0; border: none;
   width: min(100vw, calc((100vh - 54px) * (1000 / 540)));
+  width: min(100vw, calc((100dvh - 54px) * (1000 / 540)));
   height: auto;
   max-height: calc(100vh - 54px);
+  max-height: calc(100dvh - 54px);
   margin: auto;
 }
 .labf--fullscreen {
@@ -1369,6 +1371,7 @@ button:focus-visible {
   inset: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
+  height: 100dvh !important; /* iOS: visible viewport, not the toolbar-covered one */
   z-index: 99999 !important;
   background: radial-gradient(120% 90% at 50% -10%, #122036 0%, #0b1322 45%, #070b16 100%) !important;
   margin: 0 !important;
