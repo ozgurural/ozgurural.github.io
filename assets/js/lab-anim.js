@@ -866,10 +866,55 @@
     "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion"
   };
 
+  var FILM_TITLES = {
+    "pol-film":        "Proof-of-Learning",
+    "mh-film":         "Model Heist Detector",
+    "wm-compare-film": "The Watermarking Wars",
+    "br-film":         "Block Race",
+    "oracles-film":    "ML Oracles",
+    "jira-film":       "Universal Jira",
+    "gd-film":         "Gradient Pinball",
+    "tmr-film":        "Redundancy Reactor"
+  };
+
   Film.prototype.build = function () {
     if (this._built) return this;
 
     var filmKey = (this.container && this.container.id) || "lab";
+
+    // --- Title Sequence Injection ---
+    var titleDur = 3.0;
+    var titleText = FILM_TITLES[filmKey] || "Lab Animation";
+    var titleScene = this.scene("Title", titleDur, function(s) {
+      var t = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 4vw, 2.8rem); font-weight:700; color:#ffffff; letter-spacing:0.05em; text-transform:uppercase;'>" + titleText + "</span>", 
+                        { px: 480, py: 270, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+      t.cur.op = 0;
+      t.cur.sx = 0.95;
+      t.cur.sy = 0.95;
+      s.scaleTo(t, { at: 0, dur: titleDur, to: 1.05, ease: Ease.linear });
+      s.fadeIn(t, { at: 0.3, dur: 0.8 });
+      s.fadeOut(t, { at: titleDur - 0.6, dur: 0.6 });
+    });
+    // Move titleScene from end to the very front
+    this.scenes.pop();
+    this.scenes.unshift(titleScene);
+    
+    // Recalculate all starts/ends since we shifted everything
+    var currentStart = 0;
+    for (var i = 0; i < this.scenes.length; i++) {
+        this.scenes[i].start = currentStart;
+        this.scenes[i].end = currentStart + this.scenes[i].dur;
+        currentStart = this.scenes[i].end;
+    }
+    this.duration = currentStart;
+
+    // Shift audio cues forward by the title duration
+    if (this._audioCues) {
+      for (var j = 0; j < this._audioCues.length; j++) {
+        this._audioCues[j].at += titleDur;
+      }
+    }
+    // --------------------------------
 
     // Global Signature Outro Scene
     this.scene("Signature", 18, function(s) {
@@ -945,7 +990,9 @@
         self._userPaused = true; self.pause(); self.seek(self.scenes[i].start + 0.001);
       });
     });
-    this.seek(0);
+    // Park at 1.5s so the user sees the Title card perfectly faded in as a thumbnail.
+    // When they click the Play poster, restart() will seek back to 0.
+    this.seek(1.5);
     if (!this.reduced && "IntersectionObserver" in global) {
       // Autoplay on first view; pause when scrolled away to save CPU; resume only
       // if the system (not the user) paused it.
@@ -962,9 +1009,10 @@
       }, { threshold: 0.4 });
       io.observe(this.stage);
     } else if (this.reduced) {
-      // Reduced motion: no autoplay. Park at 0:00 so it doesn't confuse the user
-      // when they try to play/record it.
-      this.seek(0);
+      // Reduced motion: no autoplay. Park at 1.5s so the user sees the Title 
+      // card perfectly faded in as a thumbnail. When they click Play, restart() 
+      // will seek back to 0.
+      this.seek(1.5);
       this.poster.classList.remove("is-hidden");
     }
     return this;
