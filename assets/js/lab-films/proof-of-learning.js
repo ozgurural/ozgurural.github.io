@@ -273,35 +273,67 @@
   function asymmetry(film) {
     film.scene("The asymmetry that makes it a proof", 27, function (s) {
       s.canvas(function (lt, ctx, h) {
-        var tip = clamp01((lt - 8) / 3) * 0.32; // beam tips toward adversary at the end
-        var cx = 300, cy = 250, beam = 150;
-        // pivot
-        ctx.strokeStyle = h.rgba("#dbeafe", 0.7); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx, cy + 90); ctx.lineTo(cx, cy); ctx.stroke();
-        // beam
-        var lx = cx - beam * Math.cos(tip), ly = cy - beam * Math.sin(tip), rx = cx + beam * Math.cos(tip), ry = cy + beam * Math.sin(tip);
-        ctx.lineWidth = 4; ctx.strokeStyle = h.rgba("#f1f5f9", 0.85); ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(rx, ry); ctx.stroke();
-        // prover pan (left, low cost, light)
-        ctx.fillStyle = h.rgba(TEAL, 0.85); ctx.beginPath(); ctx.arc(lx, ly + 36, 22, 0, Math.PI); ctx.stroke(); ctx.fillStyle = h.rgba(TEAL, 1); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("honest prover", lx - 34, ly + 80); ctx.fillText("cost: 1 real run", lx - 40, ly + 96);
-        // adversary pan (right, growing weights)
-        ctx.strokeStyle = h.rgba(RED, 0.85); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(rx, ry + 36, 22, 0, Math.PI); ctx.stroke();
-        var nW = Math.floor(clamp01((lt - 1) / 6) * 6);
-        for (var w = 0; w < nW; w++) { ctx.fillStyle = h.rgba(RED, 0.7); ctx.fillRect(rx - 18 + (w % 3) * 12, ry + 30 - Math.floor(w / 3) * 12, 10, 10); }
-        ctx.fillStyle = h.rgba(RED, 1); ctx.fillText("faker", rx - 16, ry + 90); ctx.fillText("must reverse it all", rx - 50, ry + 106);
-        // entropy / search-space meters (right)
-        var bx = 640, by = 200;
-        var ent = clamp01((lt - 2) / 6);
-        ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "11px 'JetBrains Mono',monospace";
-        ctx.fillText("randomness piles up each step", bx, by);
-        ctx.fillStyle = h.rgba(AMB, 0.25); ctx.fillRect(bx, by + 10, 220, 12); ctx.fillStyle = h.rgba(AMB, 0.8); ctx.fillRect(bx, by + 10, 220 * ent, 12);
-        ctx.fillStyle = h.rgba(RED, 0.9); ctx.fillText("fake paths that fit: explode", bx, by + 56);
-        ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 2; ctx.beginPath();
-        for (var i = 0; i <= 40 * ent; i++) { var xx = bx + 220 * i / 40, yy = by + 130 - Math.exp(i * 0.09) / Math.exp(40 * 0.09) * 60; if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
-        ctx.stroke();
+        // ===== TOP: the honest way — one run, cheap =====
+        ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(TEAL, 0.95);
+        ctx.fillText("THE HONEST WAY", 90, 96);
+        var ap = clamp01((lt - 0.6) / 1.8), ax0 = 92, ax1 = 420, ay = 122;
+        var axe = lerp(ax0, ax1, E.out(ap));
+        ctx.strokeStyle = h.rgba(TEAL, 0.9); ctx.lineWidth = 3; ctx.shadowBlur = 8; ctx.shadowColor = TEAL;
+        ctx.beginPath(); ctx.moveTo(ax0, ay); ctx.lineTo(axe, ay); ctx.stroke(); ctx.shadowBlur = 0;
+        if (ap > 0.97) { ctx.fillStyle = h.rgba(TEAL, 0.9); ctx.beginPath(); ctx.moveTo(ax1, ay); ctx.lineTo(ax1 - 12, ay - 7); ctx.lineTo(ax1 - 12, ay + 7); ctx.closePath(); ctx.fill(); }
+        if (lt > 2.2) { ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.font = "13px 'JetBrains Mono',monospace"; ctx.fillText("just run the training once", 92, ay + 26); }
+        if (lt > 3.0) { ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 15px 'JetBrains Mono',monospace"; ctx.fillText("✓ cost: 1 run", 452, ay + 5); }
+
+        // divider
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.1); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(70, 178); ctx.lineTo(890, 178); ctx.stroke();
+
+        // ===== BOTTOM: the forger's way — an exploding tree of possibilities =====
+        ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
+        ctx.fillText("THE FORGER'S WAY  —  guess which path could have led to the stolen model", 90, 204);
+        var rootX = 128, dx = 112, topY = 234, botY = 428, D = 6, t0 = 2.6, dStep = 1.15;
+        function nX(d) { return rootX + d * dx; }
+        function nY(d, k) { return topY + (k + 0.5) / Math.pow(2, d) * (botY - topY); }
+        for (var d = 0; d < D; d++) {
+          if (lt < t0 + d * dStep) break;
+          var ea = clamp01((lt - (t0 + d * dStep)) / 0.6);
+          ctx.strokeStyle = h.rgba(RED, 0.4 * ea); ctx.lineWidth = 1.3;
+          for (var k = 0; k < Math.pow(2, d); k++) {
+            var px = nX(d), py = nY(d, k);
+            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nX(d + 1), nY(d + 1, 2 * k)); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nX(d + 1), nY(d + 1, 2 * k + 1)); ctx.stroke();
+          }
+        }
+        for (var d2 = 0; d2 <= D; d2++) {
+          if (lt < t0 + d2 * dStep) break;
+          var na = clamp01((lt - (t0 + d2 * dStep)) / 0.5);
+          for (var k2 = 0; k2 < Math.pow(2, d2); k2++) {
+            ctx.fillStyle = h.rgba(d2 === 0 ? "#e8eef9" : RED, (d2 === 0 ? 0.95 : 0.7) * na);
+            ctx.beginPath(); ctx.arc(nX(d2), nY(d2, k2), d2 === 0 ? 5 : 2.3, 0, 7); ctx.fill();
+          }
+        }
+        if (lt > t0 - 0.2) {
+          ctx.fillStyle = h.rgba("#e8eef9", 0.85); ctx.font = "11px 'JetBrains Mono',monospace";
+          ctx.fillText("stolen", rootX - 46, (topY + botY) / 2 - 4);
+          ctx.fillText("model", rootX - 44, (topY + botY) / 2 + 10);
+        }
+        // live counter, top-right, clear of the tree
+        if (lt >= t0) {
+          var shown = Math.max(0, Math.min(D, Math.floor((lt - t0) / dStep)));
+          ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.95);
+          ctx.fillText("paths that could fit:", 632, 100);
+          ctx.font = "700 26px 'JetBrains Mono',monospace";
+          ctx.fillText(Math.pow(2, shown).toLocaleString() + (shown >= D ? " …" : ""), 632, 134);
+          if (shown >= D) {
+            var beat = 0.7 + 0.3 * Math.abs(Math.sin(lt * 2));
+            ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.85 * beat);
+            ctx.fillText("doubling every step —", 632, 158);
+            ctx.fillText("no shortcut, no way to guess", 632, 174);
+          }
+        }
       });
-      var e1 = s.tex2("\\text{Faking the work} \\ggg \\text{ doing the work}", { px: 480, py: 110, size: "1.4rem", color: AMB });
-      s.write(e1, { at: 13.5, dur: 1.8 });
       lower(s, "Proving costs one honest run. Faking means running the whole training backwards, and the number of paths that could fit explodes, so it's astronomically harder.", 11.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Proving is cheap; faking is meant to cost a full training run." });
+    }, { subtitle: "One run to prove it. An exploding number of guesses to fake it." });
   }
 
   /* ============== 6 — SecurePoL : trajectory ∧ watermark ============== */
