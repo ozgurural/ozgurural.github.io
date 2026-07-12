@@ -28,7 +28,7 @@ author:
   avatar           : "ozgururalpp.jpg"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "Ph.D. in Machine Learning · Trustworthy-ML researcher · Architect of mission-critical systems"
+  bio              : "Ph.D. in Machine Learning | Trustworthy-ML researcher | Architect of mission-critical systems"
   location         : "Amsterdam, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"
@@ -127,7 +127,7 @@ keywords:
   - METU
   - Middle East Technical University
   - ODTU
-  - Orta Doğu Teknik Üniversitesi
+  - Orta Dogu Teknik Universitesi
   - Secure Distributed Systems
   - Proof-of-Learning
   - Model Watermarking
