@@ -1385,6 +1385,20 @@ button:focus-visible {
   width: 100%;
   max-width: min(100vw, calc((100vh - 54px) * (1000 / 540)));
   margin: 0 auto;
+  transition: opacity 0.4s ease;
+}
+
+.labf:fullscreen.labf--idle,
+.labf:-webkit-full-screen.labf--idle,
+.labf--fullscreen.labf--idle {
+  cursor: none;
+}
+
+.labf:fullscreen.labf--idle .labf__transport,
+.labf:-webkit-full-screen.labf--idle .labf__transport,
+.labf--fullscreen.labf--idle .labf__transport {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* iOS can't lock a page to landscape; when the CSS-fallback fullscreen is

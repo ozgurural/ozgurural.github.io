@@ -769,6 +769,23 @@
     }
     this._wireScrub();
 
+    var idleTimer;
+    self._resetIdle = function() {
+      self.container.classList.remove("labf--idle");
+      clearTimeout(idleTimer);
+      if (self.playing) {
+        idleTimer = setTimeout(function() {
+          self.container.classList.add("labf--idle");
+        }, 2000);
+      }
+    };
+    self._clearIdle = function() {
+      clearTimeout(idleTimer);
+      self.container.classList.remove("labf--idle");
+    };
+    self.container.addEventListener("mousemove", self._resetIdle);
+    self.container.addEventListener("touchstart", self._resetIdle, { passive: true });
+
     var updateLayout = function() {
       setTimeout(function() {
         self._fitCanvas(); self._repositionOverlay(); self.render();
@@ -1307,6 +1324,7 @@
     if (this.t >= this.duration - 1e-3) this.t = 0;
     if (this.t >= this.duration) this.seek(0);
     this.playing = true;
+    if (this._resetIdle) this._resetIdle();
     playingFilmsCount++;
     LabMusic.start((this.container && this.container.id) || "lab");
     this._everPlayed = true;
@@ -1351,6 +1369,7 @@
   Film.prototype.pause = function () {
     if (!this.playing) return this;
     this.playing = false;
+    if (this._clearIdle) this._clearIdle();
     playingFilmsCount = Math.max(0, playingFilmsCount - 1);
     if (playingFilmsCount === 0) LabMusic.stop();
     if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
