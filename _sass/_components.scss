@@ -1387,19 +1387,13 @@ button:focus-visible {
   margin: 0 auto;
   transition: opacity 0.4s ease;
 }
+.labf:fullscreen.labf--idle { cursor: none; }
+.labf:-webkit-full-screen.labf--idle { cursor: none; }
+.labf--fullscreen.labf--idle { cursor: none; }
 
-.labf:fullscreen.labf--idle,
-.labf:-webkit-full-screen.labf--idle,
-.labf--fullscreen.labf--idle {
-  cursor: none;
-}
-
-.labf:fullscreen.labf--idle .labf__transport,
-.labf:-webkit-full-screen.labf--idle .labf__transport,
-.labf--fullscreen.labf--idle .labf__transport {
-  opacity: 0;
-  pointer-events: none;
-}
+.labf:fullscreen.labf--idle .labf__transport { opacity: 0 !important; pointer-events: none !important; }
+.labf:-webkit-full-screen.labf--idle .labf__transport { opacity: 0 !important; pointer-events: none !important; }
+.labf--fullscreen.labf--idle .labf__transport { opacity: 0 !important; pointer-events: none !important; }
 
 /* iOS can't lock a page to landscape; when the CSS-fallback fullscreen is
    used in portrait, prompt the user to rotate for the full-width view. */
