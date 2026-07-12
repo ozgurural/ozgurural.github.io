@@ -953,7 +953,8 @@
         entries.forEach(function (en) {
           self._inView = en.isIntersecting;
           if (en.isIntersecting) {
-            if (!self._userPaused && (!self._everPlayed || self._autoResume)) { self._autoResume = false; self.play(); }
+            // Auto-resume ONLY if the system paused it. Do NOT autoplay on first view.
+            if (!self._userPaused && self._everPlayed && self._autoResume) { self._autoResume = false; self.play(); }
           } else if (self.playing) {
             self.pause(); self._autoResume = true;
           }
@@ -961,9 +962,9 @@
       }, { threshold: 0.4 });
       io.observe(this.stage);
     } else if (this.reduced) {
-      // Reduced motion: no autoplay. Park on a representative first-scene frame
-      // and keep the Play affordance so motion stays strictly user-initiated.
-      this.seek(this.scenes.length ? this.scenes[0].dur * 0.55 : 0);
+      // Reduced motion: no autoplay. Park at 0:00 so it doesn't confuse the user
+      // when they try to play/record it.
+      this.seek(0);
       this.poster.classList.remove("is-hidden");
     }
     return this;
@@ -1356,7 +1357,7 @@
     return this;
   };
   Film.prototype.toggle = function () { return this.playing ? this.pause() : this.play(); };
-  Film.prototype.restart = function () { this.t = 0; this.poster.classList.add("is-hidden"); return this.play(); };
+  Film.prototype.restart = function () { this.seek(0); this.poster.classList.add("is-hidden"); return this.play(); };
   Film.prototype._reflectPlayState = function () {
     this.playBtn.textContent = this.playing ? "❚❚" : "▶";
     this.playBtn.setAttribute("aria-label", this.playing ? "Pause" : "Play");
