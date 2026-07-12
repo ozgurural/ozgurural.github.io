@@ -17,6 +17,13 @@ async def synth(text, path):
 async def main():
     with open(os.path.join(HERE, "narration.json"), encoding="utf-8") as f:
         films = json.load(f)
+    # Optional film-prefix filters: `python generate-narration.py pol wm`
+    # regenerates only matching films. No args → all films.
+    wanted = [a.lower() for a in sys.argv[1:]]
+    if wanted:
+        films = {k: v for k, v in films.items()
+                 if any(w in k.lower() for w in wanted)}
+        print("filtering to:", ", ".join(films.keys()) or "(none matched)")
     total = sum(len(v) for v in films.values())
     done = 0
     failed = []
