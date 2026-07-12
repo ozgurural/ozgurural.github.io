@@ -165,17 +165,58 @@
         { k: "1", t: "the checkpoints", c: TEAL }, { k: "2", t: "which data, each step", c: "#58C4DD" },
         { k: "3", t: "a fingerprint per step", c: INDIGO }, { k: "4", t: "the settings & recipe", c: GREY }
       ];
-      cards.forEach(function (cd, i) {
-        var x = 470, y = 150 + i * 70;
-        var rect = s.rect({ x: x, y: y, w: 360, h: 56, rx: 10, fill: window.LabAnim.rgba(cd.c, 0.10), stroke: cd.c, sw: 1.6 });
-        s.fadeIn(rect, { at: 1.2 + i * 0.6, dur: 0.9 });
-        var lab = s.tex2(cd.k, { px: x + 36, py: y + 28, size: "1.4rem", color: cd.c });
-        s.fadeIn(lab, { at: 1.5 + i * 0.6, dur: 0.75 });
-        var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
-        s.fadeIn(desc, { at: 1.65 + i * 0.6, dur: 0.75 });
+      var cardX = 470, cardW = 356;
+      function cCy(i) { return 150 + i * 70 + 28; } // card vertical centre
+
+      // header up top, clear of both columns
+      var head = s.tex2("\\text{The proof} = \\text{the whole training diary}", { px: 480, py: 92, size: "1.3rem", color: AMB });
+      s.write(head, { at: 0.6, dur: 1.8 });
+
+      // LEFT: the training run being recorded, one entry flying into each card
+      s.canvas(function (lt, ctx, h) {
+        var bx0 = 95, bx1 = 405, byTop = 172, byBot = 402, N = 48;
+        ctx.strokeStyle = h.rgba("#dbeafe", 0.16); ctx.lineWidth = 1; ctx.strokeRect(bx0, byTop, bx1 - bx0, byBot - byTop);
+        ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba("#dbeafe", 0.7); ctx.fillText("your training run", bx0, byBot + 22);
+        ctx.fillStyle = h.rgba("#dbeafe", 0.45); ctx.fillText("loss", bx0 - 2, byTop - 8);
+        function Lof(i) { return Math.exp(-i * 0.075) * (1 + 0.14 * Math.sin(i * 1.7)) * 0.9 + 0.05; }
+        function X(i) { return bx0 + (bx1 - bx0) * i / N; }
+        function Y(L) { return byTop + (1 - L) * (byBot - byTop); }
+        var nn = Math.floor(clamp01((lt - 0.6) / 5.2) * N);
+        ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2.2; ctx.shadowBlur = 8; ctx.shadowColor = TEAL; ctx.beginPath();
+        for (var i = 0; i <= nn; i++) { var xx = X(i), yy = Y(Lof(i)); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
+        ctx.stroke(); ctx.shadowBlur = 0;
+        var cps = [9, 21, 33, 45];
+        for (var k = 0; k < 4; k++) {
+          var ci = cps[k], cpx = X(ci), cpy = Y(Lof(ci)), appear = 1.0 + k * 0.9;
+          if (lt < appear || ci > nn) continue;
+          ctx.fillStyle = h.rgba(AMB, 0.95); ctx.shadowBlur = 10; ctx.shadowColor = AMB;
+          ctx.beginPath(); ctx.arc(cpx, cpy, 4.5 * clamp01((lt - appear) / 0.3), 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+          var tr = clamp01((lt - appear) / 0.75);
+          if (tr > 0 && tr < 1) {
+            var ex = lerp(cpx, cardX - 8, E.inOut(tr)), ey = lerp(cpy, cCy(k), E.inOut(tr));
+            ctx.fillStyle = h.rgba(cards[k].c, 0.95); ctx.shadowBlur = 8; ctx.shadowColor = cards[k].c;
+            ctx.fillRect(ex - 4, ey - 4, 8, 8); ctx.shadowBlur = 0;
+          }
+        }
+        if (lt > 15.5) {
+          var sa = clamp01((lt - 15.5) / 0.6); ctx.globalAlpha = sa;
+          ctx.strokeStyle = h.rgba(GOLD, 0.9); ctx.lineWidth = 2; rr(ctx, bx0, byBot - 46, 176, 30, 8); ctx.stroke();
+          ctx.fillStyle = h.rgba(GOLD, 1); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("✓ signed & sealed", bx0 + 12, byBot - 26);
+          ctx.globalAlpha = 1;
+        }
       });
-      var master = s.tex2("\\text{The proof} = \\text{the whole training diary}", { px: 480, py: 420, size: "1.4rem", color: AMB });
-      s.write(master, { at: 18, dur: 2.1 });
+
+      cards.forEach(function (cd, i) {
+        var x = cardX, y = 150 + i * 70;
+        var rect = s.rect({ x: x, y: y, w: cardW, h: 56, rx: 10, fill: window.LabAnim.rgba(cd.c, 0.10), stroke: cd.c, sw: 1.6 });
+        s.fadeIn(rect, { at: 1.4 + i * 0.9, dur: 0.9 });
+        var lab = s.tex2(cd.k, { px: x + 36, py: y + 28, size: "1.4rem", color: cd.c });
+        s.fadeIn(lab, { at: 1.7 + i * 0.9, dur: 0.75 });
+        var desc = s.caption(cd.t, { px: x + 80, py: y + 28, anchor: "left", size: "1.05rem", color: "#f1f5f9" });
+        s.fadeIn(desc, { at: 1.85 + i * 0.9, dur: 0.75 });
+      });
+
       lower(s, "The proof is just a diary of the whole run: every checkpoint, which data it saw, and the settings, all signed so nobody can edit it later.", 8.0, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
