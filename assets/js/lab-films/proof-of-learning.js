@@ -45,11 +45,31 @@
   function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
   function grid(ctx, h, x, y, cell, color, alpha, wm) {
     ctx.globalAlpha = alpha;
-    for (var i = 0; i < 8; i++) for (var j = 0; j < 8; j++) {
+    var size = 8;
+    var w = size * cell;
+    
+    // Draw Manim-style brackets
+    ctx.strokeStyle = h.rgba("#ffffff", 0.9);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    // left bracket
+    ctx.moveTo(x - 4 + 6, y - 4);
+    ctx.lineTo(x - 4, y - 4);
+    ctx.lineTo(x - 4, y + w + 2);
+    ctx.lineTo(x - 4 + 6, y + w + 2);
+    // right bracket
+    ctx.moveTo(x + w + 4 - 6, y - 4);
+    ctx.lineTo(x + w + 4, y - 4);
+    ctx.lineTo(x + w + 4, y + w + 2);
+    ctx.lineTo(x + w + 4 - 6, y + w + 2);
+    ctx.stroke();
+
+    for (var i = 0; i < size; i++) for (var j = 0; j < size; j++) {
       var v = (Math.sin(i * 3.1 + j * 1.7) * 0.5 + 0.5);
       var isWm = wm && ((i + j) % 3 === 0 && i % 2 === 0);
       ctx.fillStyle = h.rgba(isWm ? GOLD : color, 0.25 + 0.6 * v);
-      ctx.fillRect(x + i * cell, y + j * cell, cell - 2, cell - 2);
+      rr(ctx, x + i * cell + 1, y + j * cell + 1, cell - 3, cell - 3, 2);
+      ctx.fill();
     }
     ctx.globalAlpha = 1;
   }
@@ -66,11 +86,11 @@
     film.scene("A stolen snapshot", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         grid(ctx, h, 250, 220, 14, TEAL, clamp01(lt / 1.2), false);
-        ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(TEAL, 0.95); ctx.fillText("your trained model", 240, 350);
+        ctx.font = "italic 18px var(--ds-font-serif, Georgia, serif)"; ctx.fillStyle = h.rgba(TEAL, 0.95); ctx.fillText("your trained model", 225, 350);
         if (lt > 2) {
           var sweep = clamp01((lt - 2) / 1.2), cx = lerp(250, 560, E.out(sweep));
           grid(ctx, h, cx, 220, 14, lt > 5 ? RED : "#e8eef9", clamp01((lt - 2) / 1.0), false);
-          ctx.fillStyle = h.rgba(lt > 5 ? RED : "#f1f5f9", 0.9); ctx.fillText(lt > 5 ? "an exact copy" : "copy…", 560, 350);
+          ctx.fillStyle = h.rgba(lt > 5 ? RED : "#f1f5f9", 0.9); ctx.fillText(lt > 5 ? "an exact copy" : "copy…", 565, 350);
           
           // Cloning scanner beam
           if (lt > 2 && lt < 4) {
@@ -84,7 +104,7 @@
         if (lt > 6.5) {
           var st = clamp01((lt - 6.5) / 0.6);
           ctx.globalAlpha = st; ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2; rr(ctx, 386, 250, 150, 40, 8); ctx.stroke();
-          ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px 'JetBrains Mono',monospace"; ctx.textAlign = "center"; ctx.fillText("IDENTICAL", 461, 276); ctx.textAlign = "left"; ctx.globalAlpha = 1;
+          ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px var(--ds-font-serif, Georgia, serif)"; ctx.textAlign = "center"; ctx.fillText("IDENTICAL", 461, 276); ctx.textAlign = "left"; ctx.globalAlpha = 1;
         }
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
