@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal academic portfolio site for Dr. Ozgur Ural, built on the [academicpages](https://github.com/academicpages/academicpages.github.io) Jekyll template and hosted on GitHub Pages at `ozgurural.github.io`. The site positions Ozgur for CTO/principal engineering roles — copy should lead with leadership and impact, not just academic credentials.
+Personal academic portfolio site for Dr. Ozgur Ural, built on a custom Jekyll template and hosted on GitHub Pages at `ozgurural.github.io`. The site positions Ozgur for CTO/principal engineering roles — copy should lead with leadership and impact, not just academic credentials.
 
 ## Development Commands
 

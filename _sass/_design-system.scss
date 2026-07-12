@@ -1,7 +1,7 @@
 /* ==========================================================================
    DESIGN SYSTEM — tokens & theme variables
    Editorial-tech aesthetic. Restrained, confident, principal-grade.
-   Overrides the academicpages theme variables AFTER they're defined,
+   Overrides the default theme variables AFTER they're defined,
    without touching template files.
    ========================================================================== */
 
@@ -34,7 +34,7 @@
   --ds-radius-sm: 8px;
   --ds-radius-pill: 999px;
 
-  /* Override academicpages variables — light */
+  /* Override theme variables — light */
   --global-bg-color: var(--ds-bg);
   --global-text-color: var(--ds-body);
   --global-text-color-light: var(--ds-muted);
