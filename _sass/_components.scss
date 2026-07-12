@@ -1384,6 +1384,22 @@ button:focus-visible {
   margin: 0 auto;
 }
 
+/* iOS can't lock a page to landscape; when the CSS-fallback fullscreen is
+   used in portrait, prompt the user to rotate for the full-width view. */
+@media (orientation: portrait) {
+  .labf--fullscreen::after {
+    content: "\21BB  Rotate your phone for the full view";
+    position: absolute;
+    left: 0; right: 0; bottom: 14%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--ds-font-mono, monospace);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    pointer-events: none;
+  }
+}
+
 /* ==========================================================================
    AVION-AI PORT: Glassmorphism, Keyframes, and Interactive Topology
    ========================================================================== */

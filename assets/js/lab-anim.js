@@ -722,14 +722,39 @@
       });
     }
 
+    function lockLandscape() {
+      try {
+        if (screen.orientation && screen.orientation.lock) {
+          var p = screen.orientation.lock("landscape");
+          if (p && p.catch) p.catch(function () {});
+        }
+      } catch (e) { /* desktop / iOS reject — fine */ }
+    }
+    function unlockOrientation() {
+      try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+    }
+    this._unlockOrientation = unlockOrientation;
+
     if (this.fsBtn) {
       this.fsBtn.addEventListener("click", function () {
         var el = self.container;
-        if (!document.fullscreenElement && !document.webkitFullscreenElement && !el.classList.contains("labf--fullscreen")) {
-          if (el.requestFullscreen) { el.requestFullscreen(); }
-          else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
-          else { el.classList.add("labf--fullscreen"); self._fitCanvas(); self._repositionOverlay(); self.render(); }
+        var isFs = document.fullscreenElement || document.webkitFullscreenElement || el.classList.contains("labf--fullscreen");
+        if (!isFs) {
+          var req = el.requestFullscreen || el.webkitRequestFullscreen;
+          if (req) {
+            var r = req.call(el);
+            // On mobile, going fullscreen isn't enough — lock to landscape so the
+            // film fills the screen instead of sitting tiny in portrait (Android).
+            if (r && r.then) { r.then(lockLandscape).catch(lockLandscape); }
+            else { lockLandscape(); }
+          } else {
+            // iOS Safari can't fullscreen a non-video element; fill via CSS and
+            // hint the user to rotate (the browser won't rotate for us).
+            el.classList.add("labf--fullscreen");
+            self._fitCanvas(); self._repositionOverlay(); self.render();
+          }
         } else {
+          unlockOrientation();
           if (document.exitFullscreen) { document.exitFullscreen(); }
           else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
           else { el.classList.remove("labf--fullscreen"); self._fitCanvas(); self._repositionOverlay(); self.render(); }
@@ -745,8 +770,13 @@
     };
     global.addEventListener("resize", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
     global.addEventListener("orientationchange", updateLayout);
-    document.addEventListener("fullscreenchange", updateLayout);
-    document.addEventListener("webkitfullscreenchange", updateLayout);
+    var onFsChange = function () {
+      // release the landscape lock when the user leaves fullscreen any way
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) unlockOrientation();
+      updateLayout();
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    document.addEventListener("webkitfullscreenchange", onFsChange);
 
     // Pause when the tab is hidden; auto-resume only if the system paused it
     // (not the user) and the film is back in view.
