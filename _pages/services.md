@@ -18,7 +18,7 @@ description: "Technical advisory, ML-security and model-provenance review, confe
   <li>
     <div class="meta">Advisory · Architecture</div>
     <h3 class="title">Mission-critical architecture review</h3>
-    <p class="desc">Design reviews for real-time and fault-tolerant systems, drawing on twelve years across defence, cybersecurity, and Level D flight simulation, including leading a 14-engineer product team.</p>
+    <p class="desc">Design reviews for real-time and fault-tolerant systems, drawing on twelve years across defence, cybersecurity, and Level D flight simulation, including engineering leadership across complex products.</p>
   </li>
   <li>
     <div class="meta">Speaking</div>

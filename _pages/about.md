@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "Machine Learning & Mission-Critical Systems"
-excerpt: "Ph.D. in Machine Learning (ERAU 2025). Three IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems; former lead of a 14-engineer team."
+excerpt: "Ph.D. in Machine Learning (ERAU 2025). Three IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
 author_profile: true
 redirect_from:
   - /about/
@@ -15,7 +15,7 @@ redirect_from:
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
   "jobTitle": "Senior Software Engineer · Ph.D. in Machine Learning",
-  "description": "ML-security researcher (proof-of-learning, model watermarking, adversarial robustness) and architect of mission-critical systems. Former software team lead of 14 engineers at Havelsan. Three IEEE Access papers.",
+  "description": "ML-security researcher (proof-of-learning, model watermarking, adversarial robustness) and architect of mission-critical systems. Former software team lead at Havelsan. Three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.jpg",
   "email": "drozgurural@gmail.com",
@@ -129,7 +129,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2020–2021</span>
-    <span class="what">Software Team Lead at <a href="https://havelsan.com.tr/en">Havelsan</a>. Led a 14-engineer team delivering the <em>Havelsan DLP</em> data leakage prevention product for defence and government clients.</span>
+    <span class="what">Software Team Lead at <a href="https://havelsan.com.tr/en">Havelsan</a>. Led the engineering team delivering the <em>Havelsan DLP</em> data leakage prevention product for defence and government clients.</span>
   </li>
   <li>
     <span class="when">2019–2020</span>
