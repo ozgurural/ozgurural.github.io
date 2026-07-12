@@ -148,7 +148,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   <li>
     <div class="meta">2020–2021 · Havelsan · Team Lead</div>
     <h3 class="title">Havelsan DLP: data-leakage prevention at national scale</h3>
-    <p class="desc">Led the engineering team that delivered a data-leakage-prevention product for defence and government clients.</p>
+    <p class="desc">Led the 14-engineer team that delivered a data-leakage-prevention product for defence and government clients.</p>
   </li>
   <li>
     <div class="meta">2019–2020 · STM Defence Technologies</div>
