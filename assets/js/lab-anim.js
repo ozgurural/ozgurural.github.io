@@ -999,17 +999,19 @@
             window._currentLabNarrator = a;
             var offset = Math.max(0, t - expectedCue.at);
 
-            // Wait for metadata to safely set currentTime, then play if appropriate
-            a.addEventListener("loadedmetadata", function() {
-               if (window._currentLabNarrator !== a) return; // Abort if superseded
-               if (offset < a.duration) {
-                  a.currentTime = offset;
-                  if (self.playing && !window.globalLabMuted && window.globalLabVoice) a.play().catch(function(){});
+            var tryPlay = function() {
+               if (window._currentLabNarrator !== a) return;
+               if (a.duration && offset >= a.duration) return;
+               try { a.currentTime = offset; } catch(e) {}
+               if (self.playing && !window.globalLabMuted && window.globalLabVoice) {
+                  a.play().catch(function(){});
                }
-            });
-            // Attempt immediate play only if naturally crossing the threshold (offset is near 0)
-            if (offset < 0.1 && self.playing && !window.globalLabMuted && window.globalLabVoice) {
-                a.play().catch(function(){});
+            };
+
+            if (a.readyState >= 1) {
+               tryPlay();
+            } else {
+               a.onloadedmetadata = tryPlay;
             }
          }
       } else {
