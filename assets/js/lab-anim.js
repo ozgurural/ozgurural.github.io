@@ -584,6 +584,8 @@
   Film.prototype._buildDOM = function () {
     var c = this.container;
     c.classList.add("labf");
+    c.style.aspectRatio = "unset";
+    c.style.height = "auto";
     c.innerHTML = "";
 
     var stage = document.createElement("div");
@@ -666,6 +668,8 @@
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="voice" aria-label="Toggle narration voice" aria-pressed="false" title="Narration voice">🗣</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="mute" aria-label="Toggle Audio">🔊</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⛶</button>';
+    tr.style.position = "relative";
+    tr.style.zIndex = "10";
     c.appendChild(tr);
     this.transport = tr;
     this.playBtn = tr.querySelector('[data-role="play"]');
