@@ -9,6 +9,8 @@
 // "alive" quality; the calm speed and soft #58C4DD brand cyan keep it from
 // competing with body text on content-heavy pages.
 window.buildParticleOptions = function (reduced) {
+  // Touch devices have no cursor, so the hover "grab" listener only burns CPU.
+  var isTouch = window.matchMedia && window.matchMedia("(hover: none)").matches;
   return {
     fpsLimit: 60,
     detectRetina: true,
@@ -60,7 +62,7 @@ window.buildParticleOptions = function (reduced) {
     },
     interactivity: {
       events: {
-        onHover: { enable: !reduced, mode: "grab" },
+        onHover: { enable: !reduced && !isTouch, mode: "grab" },
         onClick: { enable: false, mode: "push" },
         resize: true,
       },

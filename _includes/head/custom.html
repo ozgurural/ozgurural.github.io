@@ -21,12 +21,15 @@
 <!-- Premium typography: Inter (UI/body), Space Grotesk (display), JetBrains Mono (code) -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
+</noscript>
 
 {% if page.url == "/" or page.url == "/index.html" %}
 <!-- Particles engine loads once at the end of body (scripts.html); the
      deferred topology script runs after it at DOMContentLoaded. -->
-<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"/>
+<link rel="preload" as="script" href="{{ base_path }}/assets/js/tsparticles.bundle.min.js"/>
 <script src="/assets/js/home-topology.js" defer></script>
 <!-- On the home page the hero supplies the H1 — hide duplicate page__title -->
 <script>document.documentElement.classList.add('ep-home');</script>

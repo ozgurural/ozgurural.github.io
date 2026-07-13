@@ -1,5 +1,7 @@
 ---
 title: "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data"
+date: 2021-02-01
+description: "Conference presentation at ICISSP 2021 on automatic detection of cyber security events from Turkish Twitter streams and newspaper data."
 categories: technical
 tags:
   - security

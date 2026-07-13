@@ -1568,8 +1568,13 @@ details.ep-concept[open] .desc {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-  pointer-events: auto;
+  z-index: -1;
+  // The animated canvas sits at z-index -1 (fullScreen config) and detects
+  // hover on `window`, so the container never needs to catch pointer events.
+  // Leaving it clickable let this fixed full-viewport div swallow footer
+  // clicks (footer is static, so it painted below this layer). None of the
+  // grab/hover interactivity is lost — that lives on the window listener.
+  pointer-events: none;
 }
 
 #main {

@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ozgurural/ozgurural.github.io",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 18.0.0"
   },
   "dependencies": {
     "fitvids": "^2.1.1",

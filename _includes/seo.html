@@ -92,10 +92,12 @@
   <link rel="next" href="{{ paginator.next_page_path | prepend: seo_url }}">
 {% endif %}
 
-{% if site.social %}
+{% comment %} The homepage (about.md) embeds a richer Person block inline;
+   skip this one there so a single, authoritative Person schema is emitted. {% endcomment %}
+{% if site.social and page.url != "/" %}
   <script type="application/ld+json">
     {
-      "@context" : "http://schema.org",
+      "@context" : "https://schema.org",
       "@type" : "Person",
       "name" : "Dr. Ozgur Ural",
       "jobTitle": "Senior Software Engineer & Machine Learning Researcher",
@@ -127,6 +129,8 @@
 <meta property="og:title" content="{{ page.title | default: "Dr. Ozgur Ural" | markdownify | strip_html | strip_newlines | escape_once }}">
 {% if page.date %}
   <meta property="og:type" content="article">
+{% else %}
+  <meta property="og:type" content="website">
 {% endif %}
 {% if page.excerpt %}
   <meta property="og:description" name="description" content="{{ seo_description }}">
@@ -140,7 +144,7 @@
 {% if site.og_image %}
   <script type="application/ld+json">
     {
-      "@context": "http://schema.org",
+      "@context": "https://schema.org",
       "@type": "Organization",
       "url": {{ seo_url | jsonify }},
       "logo": {{ site.og_image | prepend: "/images/" | prepend: base_path | jsonify }}

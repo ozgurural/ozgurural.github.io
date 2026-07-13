@@ -19,7 +19,7 @@ Recently, I experimented with state-of-the-art AI music generation tools. I prov
 I want to share the result below. This is a completely unedited, AI-generated track.
 
 <div style="display: flex; justify-content: center; margin: 2rem 0;">
-  <iframe src="https://www.youtube.com/embed/uL5CJdqNCYQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; max-width: 500px; aspect-ratio: 1 / 1; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);"></iframe>
+  <iframe src="https://www.youtube-nocookie.com/embed/uL5CJdqNCYQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; max-width: 500px; aspect-ratio: 1 / 1; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);"></iframe>
 </div>
 
 ### Why This Matters

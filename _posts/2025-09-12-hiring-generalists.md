@@ -7,9 +7,7 @@ tags:
   - hiring
   - startups
   - culture
-description: "---"
-
----
+description: "Why early-stage engineering teams should hire for breadth and learning rate, and how generalists become the connective tissue that later scales into specialists."
 
 ---
 

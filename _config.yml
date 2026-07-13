@@ -209,7 +209,9 @@ exclude:
   - LICENSE
   - local
   - log
+  - "*.log"
   - node_modules
+  - resume.tex
   - package.json*
   - Rakefile
   - README

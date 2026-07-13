@@ -9,9 +9,7 @@ tags:
   - survey
   - security
   - decentralization
-description: "---"
-
----
+description: "How blockchain's immutable ledgers and decentralized governance address auditability, provenance, and incentive-alignment challenges in machine-learning pipelines."
 
 ---
 

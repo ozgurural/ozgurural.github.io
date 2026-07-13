@@ -1,5 +1,7 @@
 ---
 title: "Secure Proxy on Cloud Paper Demonstration"
+date: 2016-06-01
+description: "Video demonstration of the Secure Proxy on Cloud paper, covering architecture motivation, implementation details, and development roadmap."
 categories: technical
 tags:
   - security
