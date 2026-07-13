@@ -52,13 +52,13 @@ We can share the application by packaging it into a standalone executable file. 
 
 Firstly, you can install PyInstaller via pip:
 
-```python
+```bash
 pip install pyinstaller
 ```
 
 Then, you can create the standalone executable with the command:
 
-```python
+```bash
 pyinstaller --onefile --windowed image_measurer.py
 ```
 
@@ -70,6 +70,6 @@ We have discussed a PyQt5-based image measurement tool specifically designed for
 
 The complete source code for the project is [available on GitHub](https://github.com/ozgurural/image-measurer). This tool is designed to assist medical professionals like Dr. Görkem Şefik Fatihoğlu and improve the EKG analysis process.
 
-Please feel free to leave comments or suggestions below or reach out to me directly for further questions or feedback.
+Please feel free to reach out to me directly via email for further questions or feedback.
 
 This project is licensed under the terms of the MIT license.

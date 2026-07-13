@@ -11,7 +11,7 @@ description: "Model watermarking embeds identifiable patterns into a model's par
 
 ---
 
-Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original training process. My work on trustworthy machine learning focuses on how ownership signals can remain detectable after fine-tuning and transfer. Early work shows that deep network weights can carry hidden signatures without affecting accuracy [4], and behavior-based marks can survive aggressive fine-tuning [5,6].
+Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original training process. My work on trustworthy machine learning focuses on how ownership signals can remain detectable after fine-tuning and transfer. Early work shows that deep network weights can carry hidden signatures without affecting accuracy [3], and behavior-based marks can survive aggressive fine-tuning [4,5].
 
 In production settings, watermark checks are only useful when paired with solid observability: low-latency telemetry ingest, reliable data paths, and verification hooks that can flag when a deployed model suddenly stops presenting the expected watermark. This helps teams separate integration failures from potential tampering during release incidents.
 
@@ -23,9 +23,9 @@ A follow-up evaluation compared parameter, data, and feature watermarking across
 
 ### Emerging applications and challenges
 
-Watermarking is moving from academic prototypes to industry as open model sharing proliferates. When Kenji Yoshigoe and I published our 2023 IEEE Access survey on blockchain-enhanced machine learning [3], the most common follow-up question from regulators and enterprise teams was, "How do we prove provenance once we decentralize training?" The conversations have only intensified as organizations deploy AI in regulated environments and need ownership trails for every neural component. Provenance controls help product leads sleep at night when releasing APIs, and they give compliance teams concrete evidence that the models feeding real-time dashboards are the ones they vetted.
+Watermarking is moving from academic prototypes to industry as open model sharing proliferates. When Kenji Yoshigoe and I published our 2023 IEEE Access survey on blockchain-enhanced machine learning [2], the most common follow-up question from regulators and enterprise teams was, "How do we prove provenance once we decentralize training?" The conversations have only intensified as organizations deploy AI in regulated environments and need ownership trails for every neural component. Provenance controls help product leads sleep at night when releasing APIs, and they give compliance teams concrete evidence that the models feeding real-time dashboards are the ones they vetted.
 
-Meanwhile, attackers explore watermark removal and collusion strategies, prompting defenses that combine robust statistics with cryptographic attestations [4,6]. The push and pull is healthy: every defensive iteration, such as mixing watermark keys with telemetry-derived sanity checks, sharpens practical guidance for product and policy teams.
+Meanwhile, attackers explore watermark removal and collusion strategies, prompting defenses that combine robust statistics with cryptographic attestations [4,5]. The push and pull is healthy: every defensive iteration, such as mixing watermark keys with telemetry-derived sanity checks, sharpens practical guidance for product and policy teams.
 
 ### Future importance
 

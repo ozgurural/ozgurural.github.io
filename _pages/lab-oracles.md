@@ -8,11 +8,11 @@ header:
   og_image: "lab-og/og-oracles.png"
 ---
 
-<a href="/lab/" class="lab-back"><span>⮐</span> Back to Research Lab</a>
+<a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-oracles" style="margin-top: 0;">
   <span class="ep-eyebrow">Smart Contracts × Machine Learning</span>
-  <p class="lab-card__lead">⮞ Smart contracts are blind logic gates. To trigger a parametric insurance payout or slash a malicious AI agent, the contract needs to classify real-world data. This requires an <strong>ML Oracle</strong>. This animation explores the boundary between off-chain computation and on-chain verification—from Zero-Knowledge proofs of inference (zkML) to Optimistic economic staking.</p>
+  <p class="lab-card__lead">Smart contracts are blind logic gates. They cannot see the outside world. An oracle feeds them data, but what if the data requires pattern recognition—like analyzing a satellite image or classifying a loan application? You cannot run a neural network on-chain. This animation explains how <strong>zkML (Zero-Knowledge Machine Learning)</strong> and <strong>Optimistic Fraud Proofs</strong> bridge the gap, bringing off-chain AI inference on-chain with cryptographic certainty.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span>Based on state-of-the-art research in decentralized oracle networks and verifiable machine learning, outlining the exact mechanisms by which a deterministic blockchain can trust a probabilistic neural network.</span>

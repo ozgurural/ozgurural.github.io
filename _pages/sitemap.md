@@ -3,7 +3,7 @@ layout: archive
 title: "Sitemap"
 permalink: /sitemap/
 author_profile: true
-description: "{% include base_path %}"
+description: "A full list of all posts, pages, and publications on ozgurural.github.io."
 
 ---
 

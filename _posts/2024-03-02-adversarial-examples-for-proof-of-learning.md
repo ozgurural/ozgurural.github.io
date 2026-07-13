@@ -4,6 +4,7 @@ permalink: /blog/adversarial-examples-for-proof-of-learning
 title: "Adversarial Examples for Proof of Learning"
 date: 2024-03-02
 description: "Code for paper 'Adversary examples' for Proof of Learning"
+sitemap: false
 
 ---
 

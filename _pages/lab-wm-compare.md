@@ -8,7 +8,7 @@ header:
   og_image: "lab-og/og-wm-compare.png"
 ---
 
-<a href="/lab/" class="lab-back"><span>⮐</span> Back to Research Lab</a>
+<a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-wm-compare" style="margin-top: 0;">
   <span class="ep-eyebrow">Machine Learning Security</span>
