@@ -34,12 +34,9 @@ redirect_from:
   ]
 }
 </script>
-<!-- Ambient constellation only: the labelled career-topology chips used to
-     render here too, but as a fixed background they collided with the hero
-     text. The career narrative lives in the timeline below instead. -->
-<div class="ep-home-background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
-   <div id="particles-js"></div>
-</div>
+<!-- Ambient constellation is rendered site-wide via #tsparticles (see
+     _layouts/default.html + particles-config.js); the home page no longer
+     needs its own layer. The career narrative lives in the timeline below. -->
 
 <section class="ep-hero">
   <span class="ep-eyebrow">Trustworthy ML · Mission-Critical Systems · Engineering Leadership</span>

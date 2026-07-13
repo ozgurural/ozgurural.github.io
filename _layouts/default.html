@@ -5,14 +5,17 @@ layout: compress
 {% include base_path %}
 
 <!doctype html>
-<html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
+<!-- Dark-only site: stamp the theme server-side so there is no flash of the
+     light palette before the deferred JS runs. -->
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js" data-theme="dark">
   <head>
     {% include head.html %}
     {% include head/custom.html %}
   </head>
 
   <body>
-    <div id="tsparticles"></div>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div id="tsparticles" aria-hidden="true"></div>
 
     {% include masthead.html %}
     {% include search.html %}

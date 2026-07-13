@@ -1,9 +1,8 @@
 // Single source of truth for the ambient constellation background.
 //
 // Every page must render an IDENTICAL particle field so the site feels like one
-// continuous surface. Both consumers pull their options from here:
-//   - particles-config.js -> #tsparticles  (all non-home pages)
-//   - home-topology.js     -> #particles-js (home hero, plus career topology)
+// continuous surface. particles-config.js loads these options into #tsparticles
+// on every page, including the home page.
 //
 // Tuning notes: the twinkle (animated opacity + size) gives the field its
 // "alive" quality; the calm speed and soft #58C4DD brand cyan keep it from

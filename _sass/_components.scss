@@ -1441,83 +1441,12 @@ button:focus-visible {
 }
 
 /* Animations */
-@keyframes nodeAppear {
-  from { opacity: 0; transform: translate(-50%, -48%) scale(0.94); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-@keyframes archTraceSweep {
-  from { stroke-dashoffset: 0; }
-  to { stroke-dashoffset: -120; }
-}
-
-@keyframes heroPulse {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.08); }
-}
-
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Interactive SVG Topology Elements */
-#particles-js {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-#topology-container {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.arch-node {
-  position: absolute;
-  background: var(--avion-glass-strong);
-  border: 1px solid rgba(34, 211, 238, 0.3);
-  backdrop-filter: blur(12px);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  color: #fff;
-  font-family: var(--ds-font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  transform: translate(-50%, -50%);
-  animation: nodeAppear 0.5s ease-out forwards;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  pointer-events: auto;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.arch-node:hover {
-  border-color: var(--avion-cyan);
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
-  transform: translate(-50%, -50%) scale(1.05);
-}
-
-.arch-conn {
-  fill: none;
-  stroke-width: 1.5;
-  transition: stroke 0.3s;
-}
-
-.arch-conn-trace {
-  fill: none;
-  stroke-width: 2.5;
-  stroke-dasharray: 15, 25;
-  animation: archTraceSweep 1.5s linear infinite;
-  opacity: 0.8;
-}
-
-
-
-/* Content layer stays above particles and topology */
+/* Content layer stays above the ambient particle background */
 .ep-home .page__content {
   position: relative;
   z-index: 2;
@@ -1564,7 +1493,7 @@ details.ep-concept[open] .desc {
 /* --------------------------------------------------------------------------
    tsParticles Background Container
    -------------------------------------------------------------------------- */
-#tsparticles, #particles-js {
+#tsparticles {
   position: fixed;
   top: 0;
   left: 0;
@@ -1582,4 +1511,24 @@ details.ep-concept[open] .desc {
 #main {
   position: relative;
   z-index: 10;
+}
+
+/* Keyboard-user skip link: hidden until focused, then jumps past the nav. */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 1000;
+  padding: 0.6rem 1.1rem;
+  background: var(--ds-accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
