@@ -22,7 +22,7 @@ header:
     <div class="lab-film__frame" id="oracles-film" role="group" aria-label="Animated explainer: ML Oracles and verifiable inference"></div>
   </div>
 
-  <p class="lab-film__legend" aria-hidden="true">
+  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=on-chain boundary, yellow=off-chain compute, green=cryptographic proof (zkSNARK), red=optimistic challenge / slash">
     <span><i style="background:#3b82f6"></i> on-chain boundary</span>
     <span><i style="background:#fbbf24"></i> off-chain compute</span>
     <span><i style="background:#34d399"></i> cryptographic proof (zkSNARK)</span>

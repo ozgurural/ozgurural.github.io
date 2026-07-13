@@ -22,7 +22,7 @@ header:
     <div class="lab-film__frame" id="jira-film" role="group" aria-label="Animated explainer: Prediction Markets as Universal Jira"></div>
   </div>
 
-  <p class="lab-film__legend" aria-hidden="true">
+  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=AMM curve, yellow=YES price, green=developer effort, purple=oracle">
     <span><i style="background:#3b82f6"></i> AMM liquidity curve</span>
     <span><i style="background:#fbbf24"></i> "YES" share price (probability)</span>
     <span><i style="background:#34d399"></i> developer effort</span>

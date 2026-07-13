@@ -22,7 +22,7 @@ header:
     <div class="lab-film__frame" id="mh-film" role="group" aria-label="Animated explainer: statistical model watermarking detected by a Gaussian Z-test"></div>
   </div>
 
-  <p class="lab-film__legend" aria-hidden="true">
+  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=owner signal, grey=noise, red=thief, yellow=effect size">
     <span><i style="background:#38bdf8"></i> owner signal</span>
     <span><i style="background:#94a3b8"></i> fine-tuning noise</span>
     <span><i style="background:#fb7185"></i> thief / scrub</span>

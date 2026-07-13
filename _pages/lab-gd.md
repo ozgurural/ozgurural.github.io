@@ -22,7 +22,7 @@ header:
     <div class="lab-film__frame" id="gd-film" role="group" aria-label="Animated explainer: gradient descent, momentum, and saddle points on a loss landscape"></div>
   </div>
 
-  <p class="lab-film__legend" aria-hidden="true">
+  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=loss surface, yellow=gradient path, red=divergence, green=momentum, purple=saddle">
     <span><i style="background:#38bdf8"></i> loss surface</span>
     <span><i style="background:#fbbf24"></i> gradient / descent path</span>
     <span><i style="background:#fb7185"></i> divergence</span>

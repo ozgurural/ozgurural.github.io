@@ -22,7 +22,7 @@ header:
     <div class="lab-film__frame" id="br-film" role="group" aria-label="Animated explainer: Bitcoin double-spend probability, gambler's ruin, and Satoshi's §11 calculation"></div>
   </div>
 
-  <p class="lab-film__legend" aria-hidden="true">
+  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=honest chain, red=attacker fork, green=payment, yellow=key equation">
     <span><i style="background:#38bdf8"></i> honest chain</span>
     <span><i style="background:#ec4899"></i> attacker fork</span>
     <span><i style="background:#34d399"></i> your payment</span>

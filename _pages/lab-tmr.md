@@ -22,7 +22,7 @@ header:
     <div class="lab-film__frame" id="tmr-film" role="group" aria-label="Animated explainer: triple modular redundancy, correlated failure, and the Ariane 5 disaster"></div>
   </div>
 
-  <p class="lab-film__legend" aria-hidden="true">
+  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=healthy channel, orange=voter, red=failure, pink=N=5 curve">
     <span><i style="background:#36d6e7"></i> healthy channel / gain</span>
     <span><i style="background:#f0a000"></i> voter · threshold</span>
     <span><i style="background:#fb7185"></i> failure · correlation floor</span>
