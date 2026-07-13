@@ -795,7 +795,10 @@
     global.addEventListener("orientationchange", updateLayout);
     var onFsChange = function () {
       // release the landscape lock when the user leaves fullscreen any way
-      if (!document.fullscreenElement && !document.webkitFullscreenElement) unlockOrientation();
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        unlockOrientation();
+        self.container.classList.remove("labf--fullscreen");
+      }
       updateLayout();
     };
     document.addEventListener("fullscreenchange", onFsChange);
