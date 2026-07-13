@@ -18,6 +18,7 @@
   --ds-surface-elev: #f8fafc;
   --ds-surface-hover: #f1f5f9;
   --ds-ink: #0f172a;        /* slate-900 */
+  --global-toc-bg-color: var(--ds-surface-elev);
   --ds-body: #1f2937;       /* slate-800 */
   --ds-muted: #475569;      /* slate-600 */
   --ds-soft: #94a3b8;       /* slate-400 */
@@ -56,6 +57,7 @@ html[data-theme="dark"] {
   --ds-surface-elev: #131c2f;
   --ds-surface-hover: #1a2540;
   --ds-ink: #f1f5f9;        /* slate-100 */
+  --global-toc-bg-color: var(--ds-surface);
   --ds-body: #cbd5e1;       /* slate-300 */
   --ds-muted: #94a3b8;      /* slate-400 */
   --ds-soft: #64748b;       /* slate-500 */

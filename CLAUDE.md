@@ -24,6 +24,7 @@ npm run build:js      # minify jQuery + FitVids + smooth-scroll + greedy-nav + _
 npm run watch:js      # watch for changes
 npm run build:lab-og  # render 1200x630 OG cards for lab pages (Node/@resvg)
 npm run build:narration # note: requires scripts/narration.json which is intentionally NOT committed to the repo
+# note: assets/audio/ files are generated but ignored to prevent repository bloat
 ```
 
 Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a classic deferred script. Plotly ships separately via `assets/js/plotly-blocks.js` and is only included when a page contains a plotly fenced block.

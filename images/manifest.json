@@ -8,6 +8,9 @@ permalink: /images/manifest.json
 	"description": {{ site.description | jsonify }},
 	"start_url": "{{ site.baseurl | default: '/' }}",
 	"lang": {{ site.locale | default: "en" | jsonify }},
+	"display": "minimal-ui",
+	"background_color": "#0a0f1c",
+	"theme_color": "#38bdf8",
 	"icons": [
 		{
 			"src": "/images/favicon-192x192.png",
