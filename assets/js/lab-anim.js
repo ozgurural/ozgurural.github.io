@@ -650,7 +650,7 @@
     stage.appendChild(poster);
     this.poster = poster;
     var self = this;
-    poster.addEventListener("click", function () { self._userPaused = false; self.restart(); });
+    poster.addEventListener("click", function (e) { e.stopPropagation(); self._userPaused = false; self.restart(); });
 
     // transport
     var tr = document.createElement("div");
