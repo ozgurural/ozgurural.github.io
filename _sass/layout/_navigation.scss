@@ -381,24 +381,7 @@
    Table of contents navigation
    ========================================================================== */
 
-.toc {
-  font-family: $sans-serif-narrow;
-  color: var(--global-text-color-light);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background-color: #fff;
-  border: 1px solid var(--global-border-color);
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
 
-  .nav__title {
-    color: #fff;
-    font-size: $type-size-6;
-    background: var(--global-base-color);
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
-  }
-}
 
 .toc__menu {
   margin: 0;

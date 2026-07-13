@@ -5,13 +5,13 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 ---
 
-<p class="ep-lead">Selected work across Ph.D. research code, interactive demos, C++ systems primitives, and clinical tooling. Each project links to its repository and writeup. The <a href="/lab/"><strong>Interactive Lab</strong></a> contains five playable demos for the same research areas.</p>
+<p class="ep-lead">Selected work across Ph.D. research code, interactive demos, C++ systems primitives, and clinical tooling. Each project links to its repository and writeup. The <a href="/lab/"><strong>Interactive Lab</strong></a> contains eight playable demos for the same research areas.</p>
 
 <ul class="ep-cards">
   <li>
     <div class="meta">Interactive · 5 experiments</div>
     <h3 class="title"><a href="/lab/">Research Lab: interactive experiments</a></h3>
-    <p class="desc">Five interactive experiments covering distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each presents a real scenario with measurable outcomes. Built to make the core concepts of my research accessible in three minutes.</p>
+    <p class="desc">Eight interactive experiments covering distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each presents a real scenario with measurable outcomes. Built to make the core concepts of my research accessible in three minutes.</p>
   </li>
 </ul>
 
