@@ -165,7 +165,7 @@ function svg(lab) {
   <line x1="80" y1="500" x2="${W - 80}" y2="500" stroke="${lab.accent}" stroke-opacity="0.35" stroke-width="2"/>
 
   <!-- Footer -->
-  <text x="80" y="560" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="600" fill="#cbd5e1">Ozgur Ural</text>
+  <text x="80" y="560" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="600" fill="#cbd5e1">Dr. Ozgur Ural</text>
   <text x="80" y="595" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="22" fill="${lab.accent}">ozgurural.github.io/lab</text>
 
   <!-- badge (top right): a quiet credential, not arcade pips -->

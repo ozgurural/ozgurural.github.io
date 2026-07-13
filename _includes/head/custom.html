@@ -27,10 +27,8 @@
 </noscript>
 
 {% if page.url == "/" or page.url == "/index.html" %}
-<!-- Particles engine loads once at the end of body (scripts.html); the
-     deferred topology script runs after it at DOMContentLoaded. -->
+<!-- Particles engine loads once at the end of body (scripts.html) -->
 <link rel="preload" as="script" href="{{ base_path }}/assets/js/tsparticles.bundle.min.js"/>
-<script src="/assets/js/home-topology.js" defer></script>
 <!-- On the home page the hero supplies the H1 — hide duplicate page__title -->
 <script>document.documentElement.classList.add('ep-home');</script>
 {% endif %}
