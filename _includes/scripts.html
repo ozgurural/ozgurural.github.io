@@ -23,4 +23,7 @@
 
 <!-- tsParticles -->
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+<!-- Shared field options must load before both consumers (this file and the
+     home-only topology script) read them at DOMContentLoaded. -->
+<script src="{{ base_path }}/assets/js/particles-shared.js"></script>
 <script src="{{ base_path }}/assets/js/particles-config.js"></script>

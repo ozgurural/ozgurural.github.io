@@ -1,45 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. Initialize tsParticles
-    if (typeof tsParticles !== "undefined") {
-        tsParticles.load("particles-js", {
-            fpsLimit: 60,
-            detectRetina: true,
-            particles: {
-                number: { value: 80, density: { enable: true, area: 900 } },
-                color: { value: "#00f2fe" },
-                shape: { type: "circle" },
-                opacity: {
-                    value: { min: 0.2, max: 0.5 },
-                    animation: { enable: true, speed: 1, minimumValue: 0.1, sync: false }
-                },
-                size: {
-                    value: { min: 1, max: 3 },
-                    animation: { enable: true, speed: 2, minimumValue: 0.5, sync: false }
-                },
-                links: {
-                    enable: true,
-                    distance: 150,
-                    color: "#00f2fe",
-                    opacity: 0.3,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 0.8,
-                    direction: "none",
-                    outModes: { default: "bounce" }
-                }
-            },
-            interactivity: {
-                events: {
-                    onHover: { enable: true, mode: "grab" },
-                    resize: true
-                },
-                modes: {
-                    grab: { distance: 200, links: { opacity: 0.6 } }
-                }
-            }
-        });
+    // Reduced-motion users get a frozen constellation instead of nothing.
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // 1. Initialize tsParticles from the SAME shared options every other page
+    //    uses, so the constellation is seamless across the site.
+    if (typeof tsParticles !== "undefined" && typeof window.buildParticleOptions === "function") {
+        tsParticles.load("particles-js", window.buildParticleOptions(reduced));
     }
 
     // 2. Build SVG Topology
