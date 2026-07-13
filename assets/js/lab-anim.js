@@ -680,6 +680,7 @@
     this.fsBtn = tr.querySelector('[data-role="fs"]');
 
     this.playBtn.addEventListener("click", function () { self._userPaused = self.playing; self.toggle(); });
+    stage.addEventListener("click", function () { self._userPaused = self.playing; self.toggle(); });
     this.replayBtn.addEventListener("click", function () { self._userPaused = false; self.restart(); });
     
     if (this.muteBtn) {

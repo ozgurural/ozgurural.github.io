@@ -984,7 +984,10 @@ button:focus-visible {
   width: 100%;
 }
 
-.labf { position: relative; }
+.labf { 
+  position: relative; 
+  aspect-ratio: auto; 
+}
 
 .labf__stage {
   position: relative;
