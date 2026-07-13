@@ -1359,7 +1359,7 @@
     if (!this._raf) {
       this._raf = requestAnimationFrame(function step(now) {
         if (!self.playing) return;
-        var dt = (now - self._lastTs) / 1000;
+        var dt = Math.max(0, (now - self._lastTs) / 1000);
         self._lastTs = now;
         
         var ai = self._activeScene(self.t);
