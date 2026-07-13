@@ -3,7 +3,7 @@ title: "Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Mode
 collection: publications
 category: theses
 permalink: /publication/2025-dissertation
-excerpt: "Doctoral dissertation, Embry-Riddle Aeronautical University, Daytona Beach, Florida."
+excerpt: "Doctoral research developing SecurePoL — a dual-layer framework coupling Proof-of-Learning trajectory logs with three orthogonal watermarking strategies."
 date: 2025-08-01
 venue: "Doctoral Dissertation"
 paperurl: "https://commons.erau.edu/edt/905/"

@@ -3,7 +3,7 @@ title: "Enhancing Security of Proof-of-Learning against Spoofing Attacks using F
 collection: publications
 category: manuscripts
 permalink: /publication/2024-ieee-access-watermarking
-excerpt: "IEEE Access, November 2024."
+excerpt: "Feature-based model watermarking scheme that binds ownership proofs to internal activations, surviving fine-tuning and transfer attacks on Proof-of-Learning."
 date: 2024-11-01
 venue: "IEEE Access"
 paperurl: "https://ieeexplore.ieee.org/abstract/document/10741282"

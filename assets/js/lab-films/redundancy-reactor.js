@@ -27,7 +27,7 @@
     build(); appendix();
   }
   var E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", MAG = "#9A72AC";
 
   function choose(n, k) { var c = 1; for (var i = 0; i < k; i++) c = c * (n - i) / (i + 1); return c; }
   function Pind(N, q) { var m = (N - 1) / 2, s = 0; for (var i = m + 1; i <= N; i++) s += choose(N, i) * Math.pow(q, i) * Math.pow(1 - q, N - i); return s; }
