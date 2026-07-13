@@ -30,7 +30,7 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", MAG = "#FC6255", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255";
+  var CY = "#58C4DD", MAG = "#9A72AC", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255";
 
   /* exact Satoshi §11 attacker-success probability */
   function attackerSuccess(q, z) {
