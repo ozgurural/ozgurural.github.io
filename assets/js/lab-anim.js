@@ -1218,8 +1218,10 @@
       }
       currentKey = null;
     }
+    var suspendTimer;
     function start(key) {
       if (!ensureCtx()) return;
+      clearTimeout(suspendTimer);
       if (currentKey === key && graph) { setMuted(muted); return; }
       teardown(0.6);
       currentKey = key;
@@ -1290,6 +1292,14 @@
       out.gain.setTargetAtTime(muted ? 0 : VOL, ctx.currentTime, 0.6);
     }
     function stop() { teardown(1.2); }
+    function pause() {
+      if (!ctx || !graph) return;
+      graph.out.gain.setTargetAtTime(0, ctx.currentTime, 0.4);
+      clearTimeout(suspendTimer);
+      suspendTimer = setTimeout(function() {
+        if (ctx.state === "running") ctx.suspend().catch(function(){});
+      }, 500);
+    }
     function setMuted(m) {
       muted = m;
       if (graph && ctx) graph.out.gain.setTargetAtTime(m ? 0 : VOL, ctx.currentTime, 0.25);
@@ -1321,7 +1331,7 @@
       });
     }
     return {
-      start: start, stop: stop, setMuted: setMuted, stinger: stinger,
+      start: start, stop: stop, pause: pause, setMuted: setMuted, stinger: stinger,
       state: function () { return ctx ? ctx.state : "none"; },
       playingKey: function () { return currentKey; }
     };
@@ -1379,7 +1389,7 @@
     this.playing = false;
     if (this._clearIdle) this._clearIdle();
     playingFilmsCount = Math.max(0, playingFilmsCount - 1);
-    if (playingFilmsCount === 0) LabMusic.stop();
+    if (playingFilmsCount === 0) LabMusic.pause();
     if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
     this.playBtn.textContent = "▶";
     this.playBtn.setAttribute("aria-label", "Play");
