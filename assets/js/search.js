@@ -68,6 +68,8 @@
     if (window.lunr) { start(); return; }
     var s = document.createElement("script");
     s.src = LUNR_SRC;
+    s.integrity = "sha384-203J0SNzyqHby3iU6hzvzltrWi/M41wOP5Gu+BiJMz5nwKykbkUx8Kp7iti0Lpli";
+    s.crossOrigin = "anonymous";
     s.onload = start;
     s.onerror = function () { state = "error"; hint.textContent = "Could not load the search library."; };
     document.head.appendChild(s);

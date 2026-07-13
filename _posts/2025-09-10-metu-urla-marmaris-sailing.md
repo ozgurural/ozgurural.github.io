@@ -46,7 +46,7 @@ Leaving the club didn't mean leaving the habits behind. The discipline of double
 ## References
 
 1. [METU Sailing Club](https://www.instagram.com/odtuyelken/)
-2. [Aegean Offshore Yacht Club](http://www.eayk.org)
+2. [Aegean Offshore Yacht Club](https://www.eayk.org)
 3. [BAYK - Bodrum Offshore Sailing Club](https://www.bayk.org)
 4. [Marmaris International Race Week](https://www.marmarisraceweek.com)
 5. [Jimmy Key Cup](https://jimmykeycup.com)
