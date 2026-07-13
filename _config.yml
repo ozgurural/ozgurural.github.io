@@ -99,7 +99,7 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 : "ozgururalpp.jpg"  # Social media default site image
+og_image                 : "og-default.png"  # 1200x630 social card (scripts/build-site-og.js)
 og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025), three first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
 keywords:
   - Dr. Ozgur Ural
