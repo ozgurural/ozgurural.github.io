@@ -13,16 +13,19 @@ window.buildParticleOptions = function (reduced) {
   return {
     fpsLimit: 60,
     detectRetina: true,
+    // fullScreen:false — render into the sized #tsparticles div (position:fixed,
+    // inset:0, z-index:-1) instead of letting tsParticles spawn its own canvas.
+    // The auto full-screen canvas measured 0x0 against the sized container and
+    // drew nothing; filling the explicit container is reliable and resizes.
     fullScreen: {
-      enable: true,
-      zIndex: -1,
+      enable: false,
     },
     background: {
       color: "transparent",
     },
     particles: {
       number: {
-        value: 55,
+        value: 62,
         density: { enable: true, area: 900 },
       },
       color: {
@@ -44,7 +47,7 @@ window.buildParticleOptions = function (reduced) {
         enable: true,
         distance: 150,
         color: "#58C4DD",
-        opacity: 0.2,
+        opacity: 0.26,
         width: 1,
       },
       collisions: {

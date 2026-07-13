@@ -1497,14 +1497,15 @@ details.ep-concept[open] .desc {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  // Viewport units (not %) so the box has a real size the instant the script
+  // runs at DOMContentLoaded — height:100% resolved to 0 then, giving a 0x0
+  // canvas and no particles. tsParticles renders its canvas into this box
+  // (fullScreen is disabled) and it sits behind content at z-index -1.
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
-  // The animated canvas sits at z-index -1 (fullScreen config) and detects
-  // hover on `window`, so the container never needs to catch pointer events.
-  // Leaving it clickable let this fixed full-viewport div swallow footer
-  // clicks (footer is static, so it painted below this layer). None of the
-  // grab/hover interactivity is lost — that lives on the window listener.
+  // Hover is detected on `window`, so the box never needs to catch pointer
+  // events; leaving it clickable let this fixed layer swallow footer clicks.
   pointer-events: none;
 }
 
