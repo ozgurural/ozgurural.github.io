@@ -1222,7 +1222,11 @@
     function start(key) {
       if (!ensureCtx()) return;
       clearTimeout(suspendTimer);
-      if (currentKey === key && graph) { setMuted(muted); return; }
+      if (currentKey === key && graph) { 
+        if (ctx.state === "suspended") { ctx.resume().catch(function () {}); armUnlock(); }
+        setMuted(muted); 
+        return; 
+      }
       teardown(0.6);
       currentKey = key;
       if (ctx.state === "suspended") { ctx.resume().catch(function () {}); armUnlock(); }
