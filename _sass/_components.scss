@@ -986,7 +986,8 @@ button:focus-visible {
 
 .labf { 
   position: relative; 
-  aspect-ratio: auto; 
+  aspect-ratio: unset !important;
+  height: auto !important;
 }
 
 .labf__stage {
