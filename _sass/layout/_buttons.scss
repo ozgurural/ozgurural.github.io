@@ -122,7 +122,7 @@
   (facebook, $facebook-color),
   (linkedin, $linkedin-color),
   (mastodon, $mastodon-color),
-  (twitter, $twitter-color);
+  (reddit, $reddit-color);
 
   @each $socialnetwork, $color in $social {
     &--#{$socialnetwork} {
