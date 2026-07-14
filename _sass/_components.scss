@@ -1537,3 +1537,71 @@ details.ep-concept[open] .desc {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
+
+/* ==========================================================================
+   UX ENHANCEMENTS (Progress Bar, Fade-in, Back to Top)
+   ========================================================================== */
+
+/* Reading Progress Bar */
+.ep-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--ds-accent);
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+}
+
+/* Smooth Fade-in Animations */
+.ep-fade-in {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.ep-fade-in.ep-fade-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Back to Top Button */
+.ep-back-to-top {
+  position: fixed;
+  bottom: -60px;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--ds-surface);
+  color: var(--ds-accent);
+  border: 1px solid var(--ds-line);
+  box-shadow: var(--ds-shadow-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  
+  &.visible {
+    bottom: 2rem;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ds-shadow-2);
+    background: var(--ds-surface-hover);
+  }
+}
+
+@media (max-width: 768px) {
+  .ep-back-to-top {
+    right: 1rem;
+    &.visible {
+      bottom: 1rem;
+    }
+  }
+}

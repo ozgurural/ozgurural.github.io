@@ -96,4 +96,72 @@ $(document).ready(function () {
     preventDefault: false,
   });
 
+  // 1. Copy to Clipboard Button for Code Blocks
+  $('div.highlighter-rouge').each(function() {
+    var $codeBlock = $(this);
+    var $button = $('<button class="ep-copy-btn" aria-label="Copy code" title="Copy code"><i class="fas fa-copy"></i></button>');
+    
+    $button.on('click', function() {
+      var codeText = $codeBlock.find('code').text();
+      navigator.clipboard.writeText(codeText).then(function() {
+        $button.html('<i class="fas fa-check"></i>');
+        $button.addClass('copied');
+        setTimeout(function() {
+          $button.html('<i class="fas fa-copy"></i>');
+          $button.removeClass('copied');
+        }, 2000);
+      });
+    });
+    
+    $codeBlock.prepend($button);
+  });
+
+  // 2. Reading Progress Bar
+  if ($('.page__content').length > 0) {
+    var $progressBar = $('<div class="ep-progress-bar"></div>');
+    $('body').prepend($progressBar);
+    
+    $(window).on('scroll', function() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      $progressBar.css('width', scrolled + '%');
+    });
+  }
+
+  // 3. Smooth Scroll Animations (Fade-in-up)
+  if ('IntersectionObserver' in window) {
+    var observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+    var fadeObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('ep-fade-in-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    $('.lab-card, .ep-stats > li, .archive__item').each(function() {
+      $(this).addClass('ep-fade-in');
+      fadeObserver.observe(this);
+    });
+  }
+
+  // 5. Back to Top Button
+  var $backToTop = $('<button class="ep-back-to-top" aria-label="Back to top" title="Back to top"><i class="fas fa-arrow-up"></i></button>');
+  $('body').append($backToTop);
+  
+  $(window).on('scroll', function() {
+    if ($(this).scrollTop() > 600) {
+      $backToTop.addClass('visible');
+    } else {
+      $backToTop.removeClass('visible');
+    }
+  });
+  
+  $backToTop.on('click', function() {
+    $('html, body').animate({scrollTop: 0}, 400);
+    return false;
+  });
+
 });

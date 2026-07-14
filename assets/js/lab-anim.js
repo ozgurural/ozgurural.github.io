@@ -1437,6 +1437,47 @@
   };
 
   global.LabAnim = LabAnim;
+
+  // Keyboard Accessibility for Lab Films
+  document.addEventListener("keydown", function(e) {
+    // Ignore if user is typing in an input field
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable) return;
+
+    var activeFilm = null;
+    if (LabAnim.films) {
+      for (var i = 0; i < LabAnim.films.length; i++) {
+        if (LabAnim.films[i]._inView) {
+          activeFilm = LabAnim.films[i];
+          break;
+        }
+      }
+    }
+    
+    if (!activeFilm) return;
+
+    switch(e.key) {
+      case " ":
+      case "Spacebar":
+        e.preventDefault();
+        activeFilm._userPaused = activeFilm.playing;
+        activeFilm.toggle();
+        break;
+      case "ArrowLeft":
+        e.preventDefault();
+        activeFilm.seek(Math.max(0, activeFilm.t - 5));
+        break;
+      case "ArrowRight":
+        e.preventDefault();
+        activeFilm.seek(Math.min(activeFilm.duration, activeFilm.t + 5));
+        break;
+      case "m":
+      case "M":
+        e.preventDefault();
+        if (activeFilm.muteBtn) activeFilm.muteBtn.click();
+        break;
+    }
+  });
+
 })(window);
 
 // SPA Navigation Audio Fade-Out

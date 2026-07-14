@@ -12,18 +12,34 @@ div.highlighter-rouge, figure.highlight {
   box-shadow: $box-shadow;
   font-size: $type-size-4;
 
-  &:before {
+  .ep-copy-btn {
     position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5em;
-    background-color: mix(#fff, #7a8288, 90%);
-    content: "\f121";
-    font-family: "Font Awesome 6 Free" !important;
-    font-size: $type-size-6;
-    line-height: 1;
-    text-transform: none;
-    speak: none;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    color: var(--ds-muted);
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-sm);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: var(--ds-surface-hover);
+      color: var(--ds-accent);
+      border-color: var(--ds-accent);
+    }
+    
+    &.copied {
+      color: #10b981;
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+    }
   }
 
   .highlight {
