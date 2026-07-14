@@ -17,6 +17,10 @@
     title="{{ site.data.ui-text[site.locale].share_on_label | default: 'Share on' }} Reddit"><i
       class="fab fa-reddit" aria-hidden="true"></i><span> Reddit</span></a>
 
+  <a href="https://news.ycombinator.com/submitlink?u={{ site.url | append: page.url | url_encode }}&t={{ page.title | url_encode }}" class="btn btn--hackernews"
+    title="{{ site.data.ui-text[site.locale].share_on_label | default: 'Share on' }} Hacker News"><i
+      class="fab fa-hacker-news" aria-hidden="true"></i><span> Hacker News</span></a>
+
   <a href="https://bsky.app/intent/compose?text={{ site.url | append: page.url | url_encode }}" class="btn btn--bluesky"
     title="{{ site.data.ui-text[site.locale].share_on_label | default: 'Share on' }} Bluesky"><i class="fab fa-bluesky"
       aria-hidden="true"></i><span> Bluesky</span></a>
