@@ -17,7 +17,7 @@ redirect_from:
   "jobTitle": "Senior Software Engineer · Ph.D. in Machine Learning",
   "description": "ML-security researcher (proof-of-learning, model watermarking, adversarial robustness) and architect of mission-critical systems. Former software team lead at Havelsan. Three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
-  "image": "https://ozgurural.github.io/images/ozgururalpp.jpg",
+  "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
   "email": "drozgurural@gmail.com",
   "alumniOf": [
     { "@type": "CollegeOrUniversity", "name": "Embry-Riddle Aeronautical University", "url": "https://erau.edu" },
