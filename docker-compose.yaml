@@ -5,5 +5,7 @@ services:
     volumes: [ .:/usr/src/app ]
     ports: [ "4000:4000", "35729:35729" ]
     user: "1000:1000"
-    environment: [ JEKYLL_ENV=development ]
+    # production: stops `jekyll serve` overriding site.url with http://0.0.0.0:4000
+    # (unreachable from the host browser), so _config_docker.yml's url:"" applies
+    environment: [ JEKYLL_ENV=production ]
     command: jekyll serve -H 0.0.0.0 -w --livereload --config _config.yml,_config_docker.yml
