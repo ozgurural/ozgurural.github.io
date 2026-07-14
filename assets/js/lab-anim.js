@@ -1026,7 +1026,10 @@
 
             var tryPlay = function() {
                if (window._currentLabNarrator !== a) return;
-               if (a.duration && offset >= a.duration) return;
+               if (a.duration && offset >= a.duration) {
+                  window._currentLabNarrator = null;
+                  return;
+               }
                try { a.currentTime = offset; } catch(e) {}
                if (self.playing && !window.globalLabMuted && window.globalLabVoice) {
                   a.play().catch(function(){});
@@ -1351,7 +1354,9 @@
     LabMusic.start((this.container && this.container.id) || "lab");
     this._everPlayed = true;
     this._lastTs = performance.now();
-    if (window._currentLabNarrator && !window.globalLabMuted && window.globalLabVoice) window._currentLabNarrator.play().catch(function(){});
+    if (window._currentLabNarrator && !window.globalLabMuted && window.globalLabVoice && !window._currentLabNarrator.ended) {
+      window._currentLabNarrator.play().catch(function(){});
+    }
     this.poster.classList.add("is-hidden");
     this.playBtn.textContent = "⏸";
     this.playBtn.setAttribute("aria-label", "Pause");
