@@ -163,5 +163,37 @@ $(document).ready(function () {
     $('html, body').animate({scrollTop: 0}, 400);
     return false;
   });
+  // 6. Medium-Style Lightbox for Images
+  $('.page__content img').not('a img').on('click', function(e) {
+    var $img = $(this);
+    if ($img.width() < 100 || $img.hasClass('no-lightbox')) return;
+    
+    e.stopPropagation();
+    
+    var $overlay = $('<div class="ep-lightbox-overlay"></div>');
+    var $clone = $img.clone().addClass('ep-lightbox-img');
+    
+    $overlay.append($clone);
+    $('body').append($overlay);
+    
+    $overlay[0].offsetHeight; // Trigger reflow
+    $overlay.addClass('active');
+    
+    var closeLightbox = function() {
+      $overlay.removeClass('active');
+      setTimeout(function() {
+        $overlay.remove();
+      }, 300);
+    };
+    
+    $overlay.on('click', closeLightbox);
+    
+    $(document).on('keydown.lightbox', function(e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+        $(document).off('keydown.lightbox');
+      }
+    });
+  });
 
 });
