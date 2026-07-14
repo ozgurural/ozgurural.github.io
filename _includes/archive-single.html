@@ -37,7 +37,7 @@
     {% if post.collection == 'publications' %}
       <p>Published in <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }} </p>
     {% elsif post.date %}
-      <p class="page__meta" style="color: var(--ds-muted); font-size: 0.85rem; margin-top: 0.25em; margin-bottom: 0.5em;">
+      <p class="page__meta">
         <time datetime="{{ post.date | default: "1900-01-01" | date_to_xmlschema }}">{{ post.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time>
         {% if post.read_time %} &middot; {% include read-time.html %}{% endif %}
       </p>
