@@ -3,7 +3,7 @@ title: "SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance
 collection: publications
 category: manuscripts
 permalink: /publication/2025-secureproofoflearning
-excerpt: "IEEE Access, December 2025."
+excerpt: "Dual-layer framework coupling immutable Proof-of-Learning logs with three watermarking strategies, so verification succeeds only when both the training trajectory and the watermark are consistent."
 date: 2025-12-10
 venue: "IEEE Access"
 paperurl: "https://ieeexplore.ieee.org/document/11293969"

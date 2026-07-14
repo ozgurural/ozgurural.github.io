@@ -9,7 +9,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 <ul class="ep-cards">
   <li>
-    <div class="meta">Interactive · 5 experiments</div>
+    <div class="meta">Interactive · 8 experiments</div>
     <h3 class="title"><a href="/lab/">Research Lab: interactive experiments</a></h3>
     <p class="desc">Eight interactive experiments covering distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each presents a real scenario with measurable outcomes. Built to make the core concepts of my research accessible in three minutes.</p>
   </li>

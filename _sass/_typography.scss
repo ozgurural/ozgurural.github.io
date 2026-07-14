@@ -120,8 +120,18 @@ body { background-color: transparent; }
   color: var(--ds-accent);
   width: 1.25em;
 }
-/* Keep employer name on a single line in the sidebar */
-.author__urls .author__desktop i.fa-building-columns + a { white-space: nowrap; }
+/* Sidebar: long entries (location, employer) must wrap with a hanging indent
+   under the text, not clip at the sidebar edge (li is nowrap in _sidebar.scss
+   for the mobile dropdown, where content sizes the panel). text-indent is
+   inherited, so it must be reset on the icon or its glyph shifts out of view. */
+@media screen and (min-width: 1024px) {
+  .sidebar .author__urls li { white-space: normal; }
+  .sidebar .author__urls li > a {
+    padding-left: 2.25em;
+    text-indent: -2.25em;
+  }
+  .sidebar .author__urls li > a i { text-indent: 0; }
+}
 
 /* ---- Content typography ---- */
 .page__content {
