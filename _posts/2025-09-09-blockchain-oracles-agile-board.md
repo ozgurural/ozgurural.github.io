@@ -16,7 +16,7 @@ Traditional agile boards depend on centralized tools and manual updates. As proj
 
 ## Oracles bridge real-world progress
 
-On-chain smart contracts cannot access external data directly. Oracles solve this by feeding verified off-chain events into the blockchain. Delivery confirmations, test results, or even IoT sensor readings can trigger contract state changes that reflect real-world progress. Modern oracle networks like [Chainlink](https://docs.chain.link/architecture-overview) and [UMA](https://docs.umaproject.org/) aggregate data from multiple independent nodes and apply cryptographic proofs, reducing the risk of manipulation.
+On-chain smart contracts cannot access external data directly. Oracles solve this by feeding verified off-chain events into the blockchain. Delivery confirmations, test results, or even IoT sensor readings can trigger contract state changes that reflect real-world progress. Modern oracle networks like [Chainlink](https://docs.chain.link/) and [UMA](https://docs.umaproject.org/) aggregate data from multiple independent nodes and apply cryptographic proofs, reducing the risk of manipulation.
 
 ## Smart contracts automate the backlog
 
@@ -24,7 +24,7 @@ Once real-world signals reach the chain, smart contracts can enforce workflows w
 
 ## Anonymous task markets and autonomous companies
 
-Smart contracts also enable pseudonymous work. Individuals can open issues from fresh Ethereum addresses or through privacy layers like [zk-SNARK mixers](https://vitalik.ca/general/2022/06/15/using_snarks.html). Funds are escrowed in the contract, and oracles validate completion, such as GitHub commit hashes, CI results, or shipment data, before releasing payment. This guarantees that contributors are compensated even if no human project manager intervenes.
+Smart contracts also enable pseudonymous work. Individuals can open issues from fresh Ethereum addresses or through privacy layers like [zk-SNARK mixers](https://vitalik.eth.limo/general/2022/06/15/using_snarks.html). Funds are escrowed in the contract, and oracles validate completion, such as GitHub commit hashes, CI results, or shipment data, before releasing payment. This guarantees that contributors are compensated even if no human project manager intervenes.
 
 When these contracts are coupled with decentralized governance frameworks such as [Aragon DAO](https://aragon.org/) or [DAOstack](https://daostack.io/), the result is a self-directing organization. Task creation, prioritization, and funding are driven entirely by code and token holder votes. In effect, a fully autonomous company can coordinate labor, pay suppliers, and distribute profits without centralized leadership.
 
@@ -45,11 +45,11 @@ As oracle infrastructure matures and smart contract platforms scale, the concept
 
 ## References
 
-1. [Chainlink Architecture Overview](https://docs.chain.link/architecture-overview)
+1. [Chainlink Architecture Overview](https://docs.chain.link/)
 2. [UMA Protocol Documentation](https://docs.umaproject.org/)
 3. [OpenZeppelin Governor Contracts](https://docs.openzeppelin.com/contracts/5.x/governance)
 4. [Chainlink Automation](https://docs.chain.link/chainlink-automation/introduction)
-5. [zk-SNARKs for Privacy](https://vitalik.ca/general/2022/06/15/using_snarks.html)
+5. [zk-SNARKs for Privacy](https://vitalik.eth.limo/general/2022/06/15/using_snarks.html)
 6. [Aragon DAO Framework](https://aragon.org/)
 7. [DAOstack Platform](https://daostack.io/)
 8. [Inter-Blockchain Communication Protocol](https://ibcprotocol.org/)

@@ -20,7 +20,7 @@ Those early regattas taught me more than boat handling. We planned our own logis
 ## Races on Turkey's Aegean Coast
 
 1. **Urla:** Home to the Aegean Offshore Yacht Club (EAYK), Urla hosts a packed calendar of weekend races and training regattas, including the annual [Jimmy Key Cup](https://jimmykeycup.com). Afternoon thermals can die without warning, so we learned to bank a lead early.
-2. **Bodrum:** BAYK's [Baykar Winter Trophy](https://www.bayk.org), sponsored by Baykar, keeps crews sharp through the off-season in Bodrum's sheltered waters. Gusts funneling off the hills reward crews who trim quickly.
+2. **Bodrum:** BAYK's [Baykar Winter Trophy](https://bayk.org.tr), sponsored by Baykar, keeps crews sharp through the off-season in Bodrum's sheltered waters. Gusts funneling off the hills reward crews who trim quickly.
 3. **Marmaris:** Each autumn, the Marmaris International Race Week draws crews from across Europe for a week of intense competition. The long downwind legs here taught us to trust the spinnaker and stay patient.
 
 ## Lessons from the Cockpit
@@ -47,9 +47,9 @@ Leaving the club didn't mean leaving the habits behind. The discipline of double
 
 1. [METU Sailing Club](https://www.instagram.com/odtuyelken/)
 2. [Aegean Offshore Yacht Club](https://www.eayk.org)
-3. [BAYK - Bodrum Offshore Sailing Club](https://www.bayk.org)
+3. [BAYK - Bodrum Offshore Sailing Club](https://bayk.org.tr)
 4. [Marmaris International Race Week](https://www.marmarisraceweek.com)
-5. [Jimmy Key Cup](https://jimmykeycup.com)
+5. Jimmy Key Cup regattas, Marmaris
 6. [Baykar Tech](https://www.baykartech.com)
 7. [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
 8. [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))

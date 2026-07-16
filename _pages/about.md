@@ -1,6 +1,7 @@
 ---
 permalink: /
 title: "Machine Learning & Mission-Critical Systems"
+hide_title: true
 excerpt: "Ph.D. in Machine Learning (ERAU 2025). Three IEEE Access papers on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
 author_profile: true
 redirect_from:
@@ -126,7 +127,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2020–2021</span>
-    <span class="what">Software Team Lead at <a href="https://havelsan.com.tr/en">Havelsan</a>. Led a 14-engineer team delivering the <em>Havelsan DLP</em> data leakage prevention product for defence and government clients.</span>
+    <span class="what">Software Team Lead at <a href="https://www.havelsan.com/en">Havelsan</a>. Led a 14-engineer team delivering the <em>Havelsan DLP</em> data leakage prevention product for defence and government clients.</span>
   </li>
   <li>
     <span class="when">2019–2020</span>

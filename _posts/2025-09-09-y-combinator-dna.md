@@ -33,7 +33,7 @@ Understanding the `Y` combinator, and spotting its echoes in the lab, reinforces
 1. [Lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus)
 2. [Alonzo Church](https://en.wikipedia.org/wiki/Alonzo_Church)
 3. [Fixed-point combinator and the Y combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Y_combinator)
-4. [Haskell Wiki: fixed-point combinators](https://wiki.haskell.org/Fixed-point_combinators#The_Y_combinator)
+4. [Wikipedia: fixed-point combinators](https://en.wikipedia.org/wiki/Fixed-point_combinator)
 5. M. Vanier, ["Y Combinator (no, not that one)"](https://mvanier.livejournal.com/2897.html)
 6. [Factorial](https://en.wikipedia.org/wiki/Factorial)
 7. [Fibonacci numbers](https://en.wikipedia.org/wiki/Fibonacci_number)

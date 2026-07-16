@@ -5,7 +5,7 @@ permalink: /posts/2026/06/ai-music-generation/
 categories: technical
 description: "Exploring the rapid advancements in generative audio and how sequence modeling has solved long-range dependencies in AI music generation."
 tags:
-  - AI
+  - ai
   - Generative Models
   - Music
 ---

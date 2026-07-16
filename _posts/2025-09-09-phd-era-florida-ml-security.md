@@ -46,7 +46,7 @@ Every Friday, I run a “turbulence drill” where I intentionally sabotage a pi
 
 ## Community Tower: Mentors, Peers, and Pancakes
 
-I am fortunate to tackle these questions under the guidance of Dr. Kenji Yoshigoe and the research community inside the [Cybersecurity and Assured Systems Engineering center](https://erau.edu/research/cybersecurity-assured-systems). Weekly meetings feel like focused research roundtables, with faculty dissecting avionics incidents and classmates presenting fresh experimental results. Someone inevitably brings pancakes from the student union; security conversations go down easier with maple syrup.
+I am fortunate to tackle these questions under the guidance of Dr. Kenji Yoshigoe and the research community inside the [Cybersecurity and Assured Systems Engineering center](https://erau.edu/research). Weekly meetings feel like focused research roundtables, with faculty dissecting avionics incidents and classmates presenting fresh experimental results. Someone inevitably brings pancakes from the student union; security conversations go down easier with maple syrup.
 
 To keep collaboration lively, we rotate responsibilities:
 
@@ -73,7 +73,7 @@ Thinking of mixing machine learning, security, and sunshine yourself? Here are m
 1. **Design for auditability from day one.** Version everything, datasets, configs, container builds, because future-you will forget which run was the good one.
 2. **Get comfortable with interdisciplinary translation.** You will explain backpropagation to pilots and avionics safety to data scientists, often in the same meeting.
 3. **Lean into the aerospace ecosystem.** Collaborate with flight test teams, simulation labs, and even meteorology researchers; their constraints sharpen your threat models.
-4. **Budget time for funding logistics.** ERAU’s [Graduate Studies page](https://erau.edu/degrees/graduate) lists assistantships early, and they go as fast as prime launch windows.
+4. **Budget time for funding logistics.** ERAU’s [Graduate Studies page](https://erau.edu/degrees) lists assistantships early, and they go as fast as prime launch windows.
 5. **Protect your joy.** Schedule the beach walk, the surf lesson, the sunset photo. Burnout looks suspiciously like cloud cover if you ignore it long enough.
 
 ## Reading Radar

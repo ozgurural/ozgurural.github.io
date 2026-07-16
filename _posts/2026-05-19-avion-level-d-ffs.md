@@ -77,7 +77,7 @@ The only thing standing between this technology and a commercial A320 is the reg
 **References**
 
 1. [Avion Group](https://www.aviongroup.aero), where I have been building Level D simulators since 2023
-2. [EASA Flight Simulation Training Devices](https://www.easa.europa.eu/en/domains/aircrew-and-medical/flight-simulation-training-devices)
-3. [FAA Notice 8900.491 Simulator Qualification Guidance](https://www.faa.gov/documentLibrary/media/Notice/N8900_491.pdf)
-4. [ICAO Doc 9625 Manual of Criteria for the Qualification of Flight Simulation Training Devices](https://store.icao.int/en/manual-of-criteria-for-the-qualification-of-flight-simulation-training-devices-doc-9625)
+2. [EASA Flight Simulation Training Devices](https://www.easa.europa.eu/en/domains/aircrew-and-medical/flight-simulation-training-devices-fstd)
+3. [FAA National Simulator Program](https://www.faa.gov/about/initiatives/nsp)
+4. [ICAO Doc 9625 Manual of Criteria for the Qualification of Flight Simulation Training Devices](https://store.icao.int/)
 5. [Airbus](https://www.airbus.com), the aircraft manufacturer whose machines we are certified to imitate
