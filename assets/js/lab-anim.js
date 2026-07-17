@@ -448,6 +448,12 @@
   // draw-on a path/line via dash offset (also fades opacity up at the start)
   Scene.prototype.draw = function (h, o) {
     var s = span(o, 1.0);
+    if (!h._pathLen) {
+      // group handles (axes, vectors) have no stroke path to dash-reveal:
+      // fade over the full duration instead of the old ~6%-of-dur opacity pop
+      h.cur.op = 1;
+      return this._cue(h, s.at, s.dur, s.ease, function (st, p) { st.op = p; });
+    }
     h.base.dash = 1; h.cur.dash = 0; h.cur.op = 1;
     var opFrom = 0;
     return this._cue(h, s.at, s.dur, s.ease, function (st, p) {
@@ -1369,7 +1375,9 @@
         
         var ai = self._activeScene(self.t);
         var activeSc = self.scenes[ai];
-        var scEnd = activeSc ? (activeSc.start + activeSc.duration) : self.duration;
+        // scenes carry start/end (no .duration field) — using .end makes the
+        // narration-hold actually fire at each scene boundary
+        var scEnd = activeSc ? activeSc.end : self.duration;
         
         var nextT = self.t + dt;
         if (nextT >= scEnd - 0.05 && window._currentLabNarrator && window.globalLabVoice && !window.globalLabMuted) {

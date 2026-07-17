@@ -33,8 +33,6 @@
   }
 
   /* ----------------------------- helpers ----------------------------- */
-  var P = window.LabAnim.palette;
-
   // piecewise-linear path through world points -> fn(tau)->{x,y}
   function pathOf(points) {
     return function (tau) {
@@ -45,6 +43,29 @@
       return {
         x: points[i][0] + (points[i + 1][0] - points[i][0]) * g,
         y: points[i][1] + (points[i + 1][1] - points[i][1]) * g
+      };
+    };
+  }
+
+  // arc-length-parameterized path (screen space): equal tau covers equal
+  // on-screen distance, so a moveAlong dot stays in lockstep with the
+  // dash-offset draw-on of the same polyline (which is arc-length based)
+  function pathOfArc(points, co) {
+    var px = points.map(function (p) { return [co.x(p[0]), co.y(p[1])]; });
+    var cum = [0], i, L = 0;
+    for (i = 1; i < px.length; i++) {
+      L += Math.hypot(px[i][0] - px[i - 1][0], px[i][1] - px[i - 1][1]);
+      cum.push(L);
+    }
+    return function (tau) {
+      tau = Math.max(0, Math.min(1, tau));
+      var target = tau * L, lo = 0;
+      while (lo < cum.length - 2 && cum[lo + 1] < target) lo++;
+      var seg = cum[lo + 1] - cum[lo] || 1;
+      var g = (target - cum[lo]) / seg;
+      return {
+        x: points[lo][0] + (points[lo + 1][0] - points[lo][0]) * g,
+        y: points[lo][1] + (points[lo + 1][1] - points[lo][1]) * g
       };
     };
   }
@@ -108,31 +129,44 @@
   /* =========================== SCENE 1 — HOOK ======================== */
   function sceneHook(film) {
     film.scene("The ball & the bowl", 21, function (s) {
-      var cx = 480, cy = 300, proj = projector(cx, cy, 150, 70, 150);
+      var cx = 480, cy = 300, proj3 = projector(cx, cy, 150, 70, 150);
       var R = 1.0, kBowl = 1.0;
+      // scene-exit morph: the side-view bowl flattens into its own top-down
+      // view (concentric circles), so scene 2 opens on the same object seen
+      // from above instead of an unrelated contour map
+      var morph = 0;
+      function proj(x, y, z) {
+        var p = proj3(x, y, z);
+        if (!morph) return p;
+        var px2 = cx + x * 150, py2 = cy + y * 150;
+        return [p[0] + (px2 - p[0]) * morph, p[1] + (py2 - p[1]) * morph];
+      }
 
       // ball trajectory: a decaying swirl that settles at the basin floor
+      // (decay tuned so the ball actually parks on the marked minimum)
       function ballXY(tau) {
-        var e = Math.exp(-1.9 * tau);
+        var e = Math.exp(-3.0 * tau);
         return { x: 0.92 * e * Math.cos(7.0 * tau), y: 0.62 * e * Math.sin(3.4 * tau) };
       }
 
       s.canvas(function (lt, ctx, h) {
-        // ---- radar sweep ----
-        if (lt < 8) {
+        morph = h.ease.smooth(h.clamp01((lt - 18.2) / 2.6));
+        // ---- radar sweep (hugs the bowl rim, fades out before the ball story) ----
+        var sweepOp = 1 - h.clamp01((lt - 7) / 1);
+        if (sweepOp > 0) {
            var scanAngle = (lt * 2.5) % (Math.PI * 2);
            var cCenter = proj(0, 0, 0);
            ctx.beginPath();
            ctx.moveTo(cCenter[0], cCenter[1]);
-           // Fake 3D arc sweep
+           // Fake 3D arc sweep along the bowl surface (r = R, z = kBowl·r²)
            for(var a=0; a<=10; a++) {
               var th = scanAngle - 0.5 * (1 - a/10);
-              var pr = proj(1.2 * Math.cos(th), 1.2 * Math.sin(th), 1.2*1.2);
+              var pr = proj(Math.cos(th), Math.sin(th), kBowl);
               ctx.lineTo(pr[0], pr[1]);
            }
            ctx.closePath();
            var sgrad = ctx.createRadialGradient(cCenter[0], cCenter[1], 0, cCenter[0], cCenter[1], 150);
-           sgrad.addColorStop(0, h.rgba("#5CD0B3", 0.15));
+           sgrad.addColorStop(0, h.rgba("#5CD0B3", 0.15 * sweepOp));
            sgrad.addColorStop(1, h.rgba("#58C4DD", 0.0));
            ctx.fillStyle = sgrad;
            ctx.fill();
@@ -205,8 +239,6 @@
         // -grad L arrow (downhill) while the ball is high on the wall
         if (lt > 1.8 && lt < 6.2) {
           var aop = h.clamp01((lt - 1.8) / 0.6) * (1 - h.clamp01((lt - 5.4) / 0.8));
-          var dir = Math.atan2(-b.y, -b.x); // toward basin center in domain
-          var tip = proj(b.x + 0.34 * Math.cos(dir + Math.PI), b.y + 0.34 * Math.sin(dir + Math.PI), zb);
           // project a downhill step: move toward origin
           var nb = { x: b.x * 0.55, y: b.y * 0.55 };
           var ptip = proj(nb.x, nb.y, kBowl * (nb.x * nb.x + nb.y * nb.y) + 0.04);
@@ -233,7 +265,9 @@
   /* ========================= SCENE 2 — UPDATE ======================= */
   function sceneUpdate(film) {
     film.scene("One step at a time", 27, function (s) {
-      var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-2.1, 2.1], pad: { left: 70, right: 60, top: 70, bottom: 60 } });
+      // isotropic mapping (same px-per-unit on both axes) so the drawn
+      // gradient really is perpendicular to the drawn contours on screen
+      var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-1.68, 1.68], pad: { left: 70, right: 60, top: 70, bottom: 60 } });
       var a = 1.0, b = 0.32, mx = 0, my = 0;   // mildly elliptical bowl
       var path = gdPath(a, b, mx, my, -2.7, 1.55, 0.42, 9);
 
@@ -243,7 +277,7 @@
         var levels = 11, i;
         for (i = levels; i >= 1; i--) {
           var t = i / levels;
-          if ((1 - t) > rev + 0.0) { /* outer first */ }
+          if ((1 - t) > rev) continue;     // reveal outermost level set first
           var c = t;                       // 1 outer -> small inner
           var rx = Math.sqrt((c * 6.5) / a), ry = Math.sqrt((c * 6.5) / b);
           var cxp = co.x(mx), cyp = co.y(my);
@@ -272,23 +306,24 @@
       var gx = 2 * a * (g0[0] - mx), gy = 2 * b * (g0[1] - my);
       var gn = Math.hypot(gx, gy);
       var grad = s.vector({ coords: co, x: g0[0], y: g0[1], dx: -0.9 * gx / gn, dy: -0.9 * gy / gn, color: "#83C167", width: 2.6 });
-      var gradLbl = s.tex2("\\text{-Gradient}", { coords: co, x: g0[0] - 0.45, y: g0[1] - 0.5, display: false, size: "1.4rem", color: "#83C167" });
+      var gradLbl = s.tex2("-\\nabla L", { coords: co, x: g0[0] - 0.45, y: g0[1] - 0.5, display: false, size: "1.4rem", color: "#83C167" });
       s.draw(grad, { at: 3, dur: 1.05 }); s.fadeIn(gradLbl, { at: 3.6, dur: 0.75 });
       s.fadeOut(grad, { at: 6, dur: 0.9 }); s.fadeOut(gradLbl, { at: 6, dur: 0.9 });
 
-      // the ball walks the staircase
+      // the ball walks the staircase, in lockstep with the trace draw-on
+      var arcPath = pathOfArc(path, co);
       var ball = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 8, color: "#FFFF00", glow: 10 });
       s.fadeIn(ball, { at: 2.85, dur: 0.6 });
-      s.moveAlong(ball, pathOf(path), { coords: co, at: 4.8, dur: 10.8, ease: window.LabAnim.ease.linear });
-      
-      // Particle sparks matching the ball's movement
+      s.moveAlong(ball, arcPath, { coords: co, at: 4.8, dur: 10.8 });
+
+      // Particle sparks matching the ball's movement (same clock, same path)
       s.canvas(function(lt, ctx, h) {
-        if (lt > 3.2 && lt < 10.4) {
-           var p = (lt - 3.2) / 7.2;
-           var pos = pathOf(path)(p);
+        if (lt > 4.8 && lt < 15.6) {
+           var p = h.ease.smooth(h.clamp01((lt - 4.8) / 10.8));
+           var pos = arcPath(p);
            var px = co.x(pos.x);
            var py = co.y(pos.y);
-           
+
            ctx.shadowBlur = 4; ctx.shadowColor = "#FFFF00";
            for(var i=0; i<4; i++) {
               ctx.fillStyle = h.rgba("#FFFF00", 0.4 + 0.6 * Math.random());
@@ -323,6 +358,10 @@
       ];
       var pw = 300, gap = 12, total = pw * 3 + gap * 2, x0 = (960 - total) / 2;
 
+      // one regime at a time: green resolves alone, then amber, then the red
+      // divergence climax — finished panels recede to 40% so focus is single
+      var starts = [3.9, 10.8, 17.7];
+      var panelHandles = [];
       panels.forEach(function (pn, idx) {
         var left = x0 + idx * (pw + gap);
         var co = film.coords({ xRange: [-2.3, 2.3], yRange: [-0.2, 2.6], pad: { left: left + 18, right: 960 - (left + pw - 18), top: 118, bottom: 214 } });
@@ -333,7 +372,7 @@
         var lbl = s.tex2(pn.label, { px: left + pw / 2, py: 100, size: "1.4rem", color: pn.col });
         s.write(lbl, { at: 0.9 + idx * 0.25, dur: 0.9 });
         var tag = s.caption("<strong style='color:" + pn.col + "'>" + pn.tag + "</strong>", { px: left + pw / 2, py: 338, anchor: "top" , size: "1.1rem", align: "center" });
-        s.fadeIn(tag, { at: 3.3, dur: 0.9 });
+        s.fadeIn(tag, { at: starts[idx] + 0.6, dur: 0.9 });
 
         // iterate x_{t+1} = (1-αλ) x_t  (clamped so divergence stays on-stage)
         var seq = [], x = -1.7, k, n = 9;
@@ -341,16 +380,21 @@
         // draw the bouncing path
         var clampPts = seq.map(function (p) { return [Math.max(-2.25, Math.min(2.25, p[0])), Math.min(2.55, p[1])]; });
         var trace = s.poly(clampPts, { coords: co, color: pn.col, width: 2, dashed: "2 6" });
-        s.draw(trace, { at: 3.9, dur: 8.4 });
+        s.draw(trace, { at: starts[idx], dur: 5.4 });
         var ball = s.dot({ coords: co, x: clampPts[0][0], y: clampPts[0][1], r: 7, color: pn.col, glow: 8 });
-        s.fadeIn(ball, { at: 3.75, dur: 0.45 });
-        s.moveAlong(ball, pathOf(clampPts), { coords: co, at: 3.9, dur: 8.4, ease: window.LabAnim.ease.linear });
-        if (idx === 2) { s.pulse(ball, { at: 11.1, dur: 1.2, amp: 0.9 }); }
+        s.fadeIn(ball, { at: starts[idx] - 0.15, dur: 0.45 });
+        s.moveAlong(ball, pathOfArc(clampPts, co), { coords: co, at: starts[idx], dur: 5.4 });
+        if (idx === 2) { s.pulse(ball, { at: starts[idx] + 5.7, dur: 1.2, amp: 0.9 }); }
+        panelHandles.push([par, trace, ball, tag]);
+      });
+      // focus dimming: as each regime starts, the previous one recedes
+      [1, 2].forEach(function (k) {
+        panelHandles[k - 1].forEach(function (h) { s.fadeOut(h, { at: starts[k], dur: 0.9, to: 0.4 }); });
       });
 
-      // the contraction-factor law, then the stability window
+      // the contraction-factor law, after all three regimes have played
       var eq = s.tex2("\\text{Stable only if Step Size is small enough}", { px: 480, py: 380, size: "1.02rem", color: "#FFFF00" });
-      s.write(eq, { at: 12.6, dur: 2.4 });
+      s.write(eq, { at: 24.3, dur: 2.4 });
 
       lower(s, "Step sizes dictate distance. If too large, the system overshoots and diverges.", 11.2, { maxWidth: "88%", px: 60, py: 520 });
     }, { subtitle: "Take too large a step and the optimization diverges." });
@@ -390,8 +434,8 @@
       s.draw(gp, { at: 1.8, dur: 11.25 });
       var gball = s.dot({ coords: co, x: gd[0][0], y: gd[0][1], r: 6, color: "#9aa7be" });
       s.fadeIn(gball, { at: 1.65, dur: 0.45 });
-      s.moveAlong(gball, pathOf(gd), { coords: co, at: 1.8, dur: 11.25, ease: window.LabAnim.ease.linear });
-      var gdTag = s.caption("plain GD · ~κ steps", { coords: co, x: -1.2, y: 1.95, anchor: "left", size: "0.78rem", color: "#9aa7be" });
+      s.moveAlong(gball, pathOfArc(gd, co), { coords: co, at: 1.8, dur: 11.25 });
+      var gdTag = s.caption("plain GD · steps ∝ κ", { coords: co, x: -1.2, y: 1.95, anchor: "left", size: "0.78rem", color: "#9aa7be" });
       s.fadeIn(gdTag, { at: 3, dur: 0.9 });
 
       // Heavy-ball trace (amber, few steps)
@@ -399,9 +443,14 @@
       s.draw(hp, { at: 13.8, dur: 6 });
       var hball = s.dot({ coords: co, x: hb[0][0], y: hb[0][1], r: 8, color: "#FFFF00", glow: 10 });
       s.fadeIn(hball, { at: 13.65, dur: 0.45 });
-      s.moveAlong(hball, pathOf(hb), { coords: co, at: 13.8, dur: 6, ease: window.LabAnim.ease.smooth });
-      var hbTag = s.caption("momentum · ~√κ steps", { coords: co, x: 0.4, y: -1.4, anchor: "left", size: "1.05rem", color: "#FFFF00" });
+      s.moveAlong(hball, pathOfArc(hb, co), { coords: co, at: 13.8, dur: 6 });
+      var hbTag = s.caption("momentum · steps ∝ √κ", { coords: co, x: 0.4, y: -1.4, anchor: "left", size: "1.05rem", color: "#FFFF00" });
       s.fadeIn(hbTag, { at: 15.6, dur: 0.9 });
+
+      // focus shift: the zig-zag recedes when momentum takes the stage
+      s.fadeOut(gp, { at: 13.8, dur: 1.2, to: 0.28 });
+      s.fadeOut(gball, { at: 13.8, dur: 1.2, to: 0.28 });
+      s.fadeOut(gdTag, { at: 13.8, dur: 1.2, to: 0.45 });
 
       var eq = s.tex2("\\text{Momentum: Remember past velocity}", { px: 480, py: 64, size: "1.05rem", color: "#e8eef9" });
       s.write(eq, { at: 13.5, dur: 2.1 });
@@ -437,8 +486,8 @@
       var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -7, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.8, dur: 0.9 });
 
-      // punchline callout
-      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 700, py: 220, size: "1.4rem", color: "#FFFF00" });
+      // punchline callout — in the left text column, clear of both curves
+      var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 264, py: 400, size: "1.4rem", color: "#FFFF00" });
       s.fadeIn(call, { at: 9.6, dur: 1.2 }); s.pulse(call, { at: 10.8, dur: 1.2, amp: 0.12 });
 
       lower(s, "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
@@ -459,7 +508,7 @@
       // ball: trembles on the plateau, then escapes down the −y unstable axis
       function ballXY(lt) {
         if (lt < 8.5) { // jitter near the saddle
-          var j = 0.05 * Math.sin(lt * 9) * Math.exp(-0.0 * lt);
+          var j = 0.05 * Math.sin(lt * 9);
           return { x: j * 0.5, y: 0.02 * Math.sin(lt * 6) };
         }
         var e = Math.min(1, (lt - 8.5) / 4.5);
@@ -521,11 +570,13 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 588, right: 60, top: 150, bottom: 150 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 4 });
       s.draw(ax, { at: 3.9, dur: 1.2 });
-      var idx = s.plot(co, function (x) { return Math.pow(x, 0.85); }, { color: "#9A72AC", width: 3, samples: 80, glow: 12 });
+      var idx = s.plot(co, function (x) { return Math.pow(x, 0.85); }, { color: "#9A72AC", width: 3, samples: 80 });
+      idx.el.style.filter = "drop-shadow(0 0 7px rgba(154,114,172,0.7))";
       s.draw(idx, { at: 5.1, dur: 2.4 });
       s.canvas(function(lt, ctx, h) {
-        if (lt < 3.4) return;
-        var p = h.clamp01((lt - 3.4) / 1.6);
+        // area fill trails the curve draw-on (5.1→7.5); never precedes axes
+        if (lt < 5.4) return;
+        var p = h.ease.smooth(h.clamp01((lt - 5.4) / 2.1));
         ctx.beginPath(); ctx.moveTo(co.x(0), co.y(0));
         for(var i=0; i<=80*p; i++) {
           var x = i/80 * p;

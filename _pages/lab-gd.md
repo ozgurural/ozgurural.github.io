@@ -22,18 +22,19 @@ header:
     <div class="lab-film__frame" id="gd-film" role="group" aria-label="Animated explainer: gradient descent, momentum, and saddle points on a loss landscape"></div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=loss surface, yellow=gradient path, red=divergence, green=momentum, purple=saddle">
-    <span><i style="background:#38bdf8"></i> loss surface</span>
-    <span><i style="background:#fbbf24"></i> gradient / descent path</span>
-    <span><i style="background:#fb7185"></i> divergence</span>
-    <span><i style="background:#34d399"></i> momentum trajectory</span>
-    <span><i style="background:#a78bfa"></i> saddle directions</span>
+  <p class="lab-film__legend" role="img" aria-label="Colour key: teal=loss surface, yellow=descent ball and momentum path, grey=plain gradient descent, green=safe step and gradient arrow, red=divergence, purple=saddle index">
+    <span><i style="background:#58C4DD"></i> loss surface</span>
+    <span><i style="background:#FFFF00"></i> descent ball / momentum</span>
+    <span><i style="background:#9aa7be"></i> plain GD (zig-zag)</span>
+    <span><i style="background:#83C167"></i> safe step / −∇L</span>
+    <span><i style="background:#FC6255"></i> divergence</span>
+    <span><i style="background:#9A72AC"></i> saddle index</span>
   </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
     <p><strong>Learning is descent on a surface you cannot see.</strong> A neural network defines a loss function <em>L(θ)</em> over its parameter vector θ. Training repeatedly takes the step <em>θ ← θ − α∇L(θ)</em>: move opposite the gradient, the direction of steepest local increase. The whole enterprise of modern AI is this single line, iterated billions of times.</p>
-    <p><strong>The learning rate α sits on a knife-edge.</strong> Near a minimum the loss looks like a quadratic bowl with curvature set by the Hessian's largest eigenvalue <em>L</em>. Gradient descent converges only when <em>α &lt; 2/L</em>; on that single curvature the sweet spot is <em>α = 1/L</em> (the exact optimum over a full spectrum is <em>2/(μ+L)</em>); and above <em>2/L</em> it doesn't just slow down — it <em>diverges</em>, each step overshooting harder than the last. Too small wastes a training run; one notch too big destroys it.</p>
+    <p><strong>The learning rate α sits on a knife-edge.</strong> Near a minimum the loss looks like a quadratic bowl with curvature set by the Hessian's largest eigenvalue <em>λ</em>. Gradient descent converges only when <em>α &lt; 2/λ</em>; on that single curvature the sweet spot is <em>α = 1/λ</em> (the exact optimum over a full spectrum of curvatures μ … λ is <em>2/(μ+λ)</em>); and above <em>2/λ</em> it doesn't just slow down — it <em>diverges</em>, each step overshooting harder than the last. Too small wastes a training run; one notch too big destroys it.</p>
     <p><strong>Momentum buys you a √κ speedup.</strong> Real landscapes are ill-conditioned: long, narrow valleys where the ratio of steepest to flattest curvature — the condition number <em>κ</em> — is enormous. Plain gradient descent zig-zags across the valley and crawls along it, needing on the order of <em>κ</em> steps. Polyak's heavy-ball momentum, which accumulates velocity <em>v ← βv + ∇L</em>, damps the zig-zag and cuts that to order <em>√κ</em>. That square root is why a 2026 model trains in days, not years.</p>
     <p><strong>The real enemy isn't local minima — it's saddle points.</strong> In low dimensions we imagine getting stuck in spurious little valleys. But in a million dimensions, for a critical point to be a true local minimum <em>every one</em> of the million curvature directions must point up — astronomically unlikely. Almost every critical point is a <strong>saddle</strong>: up in some directions, down in others. Optimizers slow to a crawl on the flat plateaus around them, and the art of modern training (momentum, noise, adaptive steps) is largely the art of escaping saddles, not minima. <em>(Dauphin et al., 2014.)</em></p>
     <p><strong>Scientific Context:</strong> The geometry of these landscapes governs the training dynamics — and the attack surface — of deep networks. Understanding how step size, momentum, and curvature steer an optimizer between minima and saddles underpins the secure training frameworks in the author's machine-learning research.</p>
