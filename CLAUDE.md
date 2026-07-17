@@ -57,6 +57,8 @@ Each lab page is an interactive animated explainer. Films register themselves in
 - `preview_resize` on a hidden tab does not reach the engine's resize handler — do mobile-width checks with a fresh page load at the target viewport width (`_fitCanvas` runs correctly on load).
 - Nodes with class `labf__lower` are subtitle panels; overlap with chart furniture is intentional.
 - Step through a film with `seek(t)` in 0.4 s increments over `film.duration`, collecting visible `.labf__node` rects per scene, to find pairwise intersections and out-of-stage elements.
+- `draw()` reveals by **arc length** (dash-offset) while `pathOf()` interpolates by **segment index** — a `moveAlong` dot on the same polyline drifts unless you use a screen-space arc-length parameterization (see `pathOfArc` in `gradient-pinball.js`). Verify lockstep numerically: compare the ball's rect to `path.getPointAtLength(len·(1−dashoffset/len))`.
+- `draw()` on group handles (axes, vectors) has no path to dash-reveal; the engine falls back to a full-duration fade.
 
 ### Search
 
