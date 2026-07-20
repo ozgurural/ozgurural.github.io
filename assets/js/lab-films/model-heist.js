@@ -32,6 +32,8 @@
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var CY = "#58C4DD", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255", GREY = "#888888", GOLD = "#FFFF00";
   var Z_ALPHA = 1.645; // one-sided α = 5%
+  
+  var HIST_N = 30, HIST_X0 = 130, HIST_BW = 16, HIST_GAP = 9, HIST_BASEY = 330;
 
   function erf(x) {
     var t = 1 / (1 + 0.3275911 * Math.abs(x));
@@ -122,10 +124,13 @@
         var jit = clamp01((lt - 2) / 2) * 4;
         graph(ctx, h, 690, 270, RED, clamp01((lt - 1.5) / 1.2), 5, jit);
         // labels
+        var aL = clamp01(lt / 1.2);
+        var aR = clamp01((lt - 1.5) / 1.2);
+        var aStream = clamp01((lt - 1.5) / 1.5);
         ctx.font = "600 12px 'JetBrains Mono',monospace";
-        ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("YOUR MODEL  θ", 218, 360);
-        ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
-        ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(CY, 0.95 * aL); ctx.fillText("YOUR MODEL  θ", 218, 360);
+        ctx.fillStyle = h.rgba(RED, 0.95 * aR); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
+        ctx.fillStyle = h.rgba("#dbeafe", 0.8 * aStream); ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillText("fine-tuning leak", 442, 200);
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: "#ffffff" });
@@ -137,8 +142,9 @@
   /* ================= 2 — FRAGILE MARK ================= */
   function fragile(film) {
     film.scene("One big mark is fragile", 24, function (s) {
-      var n = 30, x0 = 150, bw = 16, gap = 8, baseY = 330, idx = 15;
+      var idx = 15;
       s.canvas(function (lt, ctx, h) {
+        var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
         var scrub = clamp01((lt - 4.5) / 2.0);     // brush knocks the tall bar down
         var i;
         for (i = 0; i < n; i++) {
@@ -161,12 +167,17 @@
           ctx.fillText("SCRUB", bx - 6, baseY - 190);
           
           // Glitch / Screen Tear effect
-          if (Math.random() > 0.5) {
-             ctx.fillStyle = h.rgba(RED, 0.15 + 0.1 * Math.random());
-             var gY = baseY - 180 + Math.random() * 200;
-             var gH = 2 + Math.random() * 8;
+          if (Math.sin(lt * 29) > 0) {
+             var r1 = Math.sin(lt * 31) * 0.5 + 0.5;
+             var r2 = Math.sin(lt * 37) * 0.5 + 0.5;
+             var r3 = Math.sin(lt * 41) * 0.5 + 0.5;
+             var r4 = Math.sin(lt * 43) * 0.5 + 0.5;
+             var r5 = Math.sin(lt * 47) * 0.5 + 0.5;
+             ctx.fillStyle = h.rgba(RED, 0.15 + 0.1 * r1);
+             var gY = baseY - 180 + r2 * 200;
+             var gH = 2 + r3 * 8;
              ctx.fillRect(bx - 40, gY, 100, gH);
-             ctx.fillRect(bx - 100 + Math.random() * 200, gY - 10, 40 + Math.random() * 100, 2);
+             ctx.fillRect(bx - 100 + r4 * 200, gY - 10, 40 + r5 * 100, 2);
           }
         }
         // utility meter (right)
@@ -192,9 +203,10 @@
   /* ================= 3 — SPREAD ================= */
   function spread(film) {
     film.scene("Spread it thin across k weights", 27, function (s) {
-      var n = 30, x0 = 130, bw = 16, gap = 9, baseY = 330, K = 24;
-      var marked = []; for (var m = 0; m < n; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
+      var K = 24;
+      var marked = []; for (var m = 0; m < HIST_N; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
       s.canvas(function (lt, ctx, h) {
+        var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
         var spreadP = clamp01((lt - 1.0) / 2.5); // mass redistributes
         var i;
         for (i = 0; i < n; i++) {
@@ -289,8 +301,8 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.draw(ax, { at: 0.6, dur: 1.2 });
-      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
-      var ylab = s.caption("true-positive rate", { coords: co, x: -0.04, y: 1.13, anchor: "left", size: "0.7rem", color: "#dbeafe" });
+      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.8rem", color: "#dbeafe" });
+      var ylab = s.caption("true-positive rate", { coords: co, x: -0.10, y: 0.8, anchor: "left", size: "0.8rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.2, dur: 0.75 }); s.fadeIn(ylab, { at: 1.2, dur: 0.75 });
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
@@ -303,12 +315,12 @@
         var auc = Phi(d / Math.SQRT2);
         // yLab is hand-placed: the natural curve heights sit too close
         // together and the labels collide on large stages.
-        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: yLab, anchor: "left", size: "1.3rem", color: color });
+        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.52, y: yLab, anchor: "left", size: "1.1rem", color: color });
         s.fadeIn(lbl, { at: at + 1.4, dur: 0.75 });
       }
-      rocCurve(0.6, "#7dd3fc", 2.0, "small k", 0.5);
-      rocCurve(1.6, CY, 3.6, "more k", 0.74);
-      rocCurve(3.2, GRN, 5.2, "large k", 0.98);
+      rocCurve(0.6, RED, 2.0, "small k", 0.45);
+      rocCurve(1.6, AMB, 3.6, "more k", 0.72);
+      rocCurve(3.2, GRN, 5.2, "large k", 0.95);
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
@@ -324,8 +336,8 @@
   /* ================= 6 — SCRUB PARADOX ================= */
   function scrub(film) {
     film.scene("The scrubbing paradox", 21, function (s) {
-      var n = 24, x0 = 150, bw = 18, gap = 8, baseY = 320;
       s.canvas(function (lt, ctx, h) {
+        var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
         var attack = clamp01((lt - 2) / 4);
         var i, killed = Math.floor(attack * 8);
         for (i = 0; i < n; i++) {
@@ -388,7 +400,7 @@
       s.fadeIn(chip, { at: 3.75, dur: 1.5 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.write(tag, { at: 6.6, dur: 2.1 });
-      var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
     }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
   }
