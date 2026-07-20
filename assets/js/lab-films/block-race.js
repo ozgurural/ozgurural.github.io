@@ -469,30 +469,81 @@
         ctx.beginPath(); ctx.arc(dx, dy, dr, 0, 7); ctx.stroke();
         ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.5;
         ctx.beginPath(); ctx.moveTo(dx, dy); ctx.lineTo(dx + dr * Math.cos(ang), dy + dr * Math.sin(ang)); ctx.stroke();
+
+        // RIGHT: Poisson PMF bars
+        var stackBottomY = 310;
+        var stackX = 640;
+        var stackW = 80;
+        var maxStackH = 150; 
+        var currentStackSum = 0;
+        var coLeft = 470; // Hardcoded fallback if co isn't ready
+        
+        for (var kk = 0; kk <= 8; kk++) {
+          var pm = poissonPMF(lambda, kk);
+          var inP = clamp01((lt - (3 + kk * 0.18)) / 0.75);
+          if (inP <= 0) continue;
+          
+          var isRed = kk >= z;
+          var col = isRed ? RED : MAG;
+          
+          var mStart = 12 + kk * 1.5;
+          var mP = clamp01((lt - mStart) / 1.5);
+          var morph = E.smooth(mP);
+          
+          var factor = isRed ? 0 : (1 - Math.pow(q/p, z - kk));
+          var termVal = pm * factor;
+          
+          var bx0 = co.x(kk - 0.32), bx1 = co.x(kk + 0.32);
+          var by0 = co.y(0), by1 = co.y(pm);
+          var origX = bx0, origY = by1;
+          var origW = bx1 - bx0, origH = by0 - by1;
+          
+          var targetH = termVal * maxStackH;
+          var targetY = stackBottomY - (currentStackSum + termVal) * maxStackH;
+          var targetX = stackX, targetW = stackW;
+          
+          var curX = lerp(origX, targetX, morph);
+          var curY = lerp(origY, targetY, morph);
+          var curW = lerp(origW, targetW, morph);
+          var curH = lerp(origH, targetH, morph);
+          
+          var curAlpha = lerp(0.6 * inP, factor > 0 ? 0.85 : 0, morph); 
+          if (curAlpha > 0.01) {
+             ctx.fillStyle = h.rgba(col, curAlpha);
+             ctx.fillRect(curX, curY, curW, curH);
+             ctx.strokeStyle = h.rgba(col, lerp(1, factor > 0 ? 0.95 : 0, morph));
+             ctx.lineWidth = 1.4;
+             ctx.strokeRect(curX, curY, curW, curH);
+          }
+          currentStackSum += termVal;
+        }
+        
+        var accP = clamp01((lt - 11.5) / 1.0);
+        if (accP > 0) {
+          ctx.strokeStyle = h.rgba("#dbeafe", 0.3 * accP);
+          ctx.lineWidth = 1;
+          ctx.strokeRect(stackX - 4, stackBottomY - maxStackH, stackW + 8, maxStackH);
+        }
       });
 
       // RIGHT: Poisson PMF for the attacker's secret count
       var co = film.coords({ xRange: [-0.6, 8.6], yRange: [0, 0.32], pad: { left: 470, right: 60, top: 150, bottom: 220 } });
       var axx = s.line({ coords: co, x1: -0.4, y1: 0, x2: 8.4, y2: 0, color: PAL.axis, width: 1.3 });
       s.draw(axx, { at: 1.8, dur: 1.2 });
-      var bars = [], kk;
-      for (kk = 0; kk <= 8; kk++) {
-        var pm = poissonPMF(lambda, kk);
-        var bx0 = co.x(kk - 0.32), bx1 = co.x(kk + 0.32), by0 = co.y(0), by1 = co.y(pm);
-        var col = kk >= z ? RED : MAG;
-        var bar = s.rect({ x: bx0, y: by1, w: bx1 - bx0, h: by0 - by1, fill: window.LabAnim.rgba(col, 0.6), stroke: col, sw: 1.4 });
-        s.fadeIn(bar, { at: 3 + kk * 0.18, dur: 0.75 });
-      }
+      s.erase(axx, { at: 12, dur: 1.5 });
       var lostLbl = s.caption("k ≥ z: race already lost", { coords: co, x: 6.5, y: 0.22, anchor: "center", size: "0.9rem", color: RED });
       s.fadeIn(lostLbl, { at: 3 + z * 0.18, dur: 0.75 });
+      s.fadeOut(lostLbl, { at: 12, dur: 1.0 });
       var meanLbl = s.caption("k ~ Poisson(λ),  λ = z·q/p ≈ 2.57", { coords: co, x: 4, y: 0.30, anchor: "center", align: "center", size: "1.1rem", color: MAG });
       s.fadeIn(meanLbl, { at: 6.3, dur: 1.05 });
+      s.fadeOut(meanLbl, { at: 12, dur: 1.0 });
       var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(kAxis, { at: 2.1, dur: 0.9 });
+      s.fadeOut(kAxis, { at: 12, dur: 1.0 });
 
       // the closed form assembling
-      var form = s.tex2("\\text{Double Spend Risk Drop-off}", { px: 480, py: 340, size: "1.05rem", color: AMB });
-      s.write(form, { at: 18.75, dur: 2.7 });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{#9A72AC}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 370, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
+      s.write(form, { at: 22, dur: 2.7 });
 
       lower(s, "Satoshi models the attacker's block count as Poisson with mean λ = zq/p, then sums gambler's-ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
