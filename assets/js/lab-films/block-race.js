@@ -72,6 +72,26 @@
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
+  
+  function pathOfArc(points, co) {
+    var px = points.map(function (p) { return [co.x(p[0]), co.y(p[1])]; });
+    var cum = [0], i, L = 0;
+    for (i = 1; i < px.length; i++) {
+      L += Math.hypot(px[i][0] - px[i - 1][0], px[i][1] - px[i - 1][1]);
+      cum.push(L);
+    }
+    return function (tau) {
+      tau = Math.max(0, Math.min(1, tau));
+      var target = tau * L, lo = 0;
+      while (lo < cum.length - 2 && cum[lo + 1] < target) lo++;
+      var seg = cum[lo + 1] - cum[lo] || 1;
+      var g = (target - cum[lo]) / seg;
+      return {
+        x: points[lo][0] + (points[lo + 1][0] - points[lo][0]) * g,
+        y: points[lo][1] + (points[lo + 1][1] - points[lo][1]) * g
+      };
+    };
+  }
 
   function build() {
     var film = window.LabAnim.create("#br-film", { width: 960, height: 540 });
@@ -570,30 +590,66 @@
       s.fadeIn(xlab, { at: 2.2, dur: 0.75 });
       var ylab = s.caption("P(successful double-spend)", { coords: co, x: -0.05, y: 0.3, anchor: "left", size: "0.8rem", color: "#dbeafe" });
       s.fadeIn(ylab, { at: 1.5, dur: 0.75 });
+      
+      [2, 4, 6, 8, 10, 12].forEach(function (zTick) {
+        var t = s.caption(zTick, { coords: co, x: zTick, y: -7.25, anchor: "top", align: "center", size: "0.8rem", color: "#7f93b4" });
+        s.fadeIn(t, { at: 1.5, dur: 0.75 });
+      });
 
       function curve(q, color, at) {
         var pts = [], z;
         for (z = 1; z <= 12; z++) pts.push([z, Math.max(-7, Math.log10(attackerSuccess(q, z)))]);
         var pl = s.poly(pts, { coords: co, color: color, width: 3 });
         s.draw(pl, { at: at, dur: 3 });
-        var dot = s.dot({ coords: co, x: 1, y: Math.log10(attackerSuccess(q, 1)), r: 4, color: color });
-        s.fadeIn(dot, { at: at, dur: 0.45 });
+        
+        var pathFn = pathOfArc(pts, co);
+        var px = pts.map(function(p) { return [co.x(p[0]), co.y(p[1])]; });
+        var cum = [0], i, L = 0;
+        for(i=1; i<px.length; i++) { L += Math.hypot(px[i][0]-px[i-1][0], px[i][1]-px[i-1][1]); cum.push(L); }
+        var tau6 = cum[5] / L;
+        
+        s.canvas(function(lt, ctx, h) {
+           if (lt < at) return;
+           var tProg = clamp01((lt - at) / 3);
+           
+           var idealTau = tProg;
+           var diff = tau6 - idealTau;
+           var tau = idealTau;
+           if (diff < 0.05 && diff > 0) {
+               tau = tau6 - 0.05 * Math.pow(diff / 0.05, 2);
+           } else if (diff <= 0) {
+               tau = tau6;
+           }
+           
+           var pt = pathFn(tau);
+           ctx.beginPath(); ctx.arc(co.x(pt.x), co.y(pt.y), 4, 0, 7);
+           var alpha = clamp01((lt - at) / 0.15);
+           ctx.fillStyle = h.rgba(color, alpha);
+           ctx.fill();
+        });
       }
       curve(0.1, CY, 2.0);
       curve(0.3, MAG, 3.4);
 
-      // z = 6 marker — arrives on the heels of the second curve, no dead air
+      // z = 6 marker
       var zl = s.line({ coords: co, x1: 6, y1: -7, x2: 6, y2: 0, color: "#e8eef9", width: 1.5, dashed: "4 5" });
-      s.draw(zl, { at: 7, dur: 0.9 });
+      s.draw(zl, { at: 3.2, dur: 0.9 });
       var z6 = s.caption("z = 6", { coords: co, x: 6, y: 0.5, anchor: "center", align: "center", size: "1.2rem", color: "#f1f5f9" });
-      s.fadeIn(z6, { at: 7.3, dur: 0.6 });
+      s.fadeIn(z6, { at: 3.5, dur: 0.6 });
 
       // callouts
-      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#ffffff'>0.024%</strong>", { px: 720, py: 210, size: "1.2rem", color: CY });
-      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#ffffff'>13.2%</strong>", { px: 720, py: 260, size: "1.2rem", color: MAG });
-      s.fadeIn(cCY, { at: 8.5, dur: 1.05 }); s.fadeIn(cMG, { at: 9.7, dur: 1.05 });
-      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 720, py: 320, size: "1.5rem", color: "#e8eef9" });
-      s.fadeIn(jump, { at: 13.2, dur: 1.05 }); s.pulse(jump, { at: 14.4, dur: 1.2, amp: 0.12 });
+      var x6 = co.x(6);
+      var yCY = co.y(Math.log10(attackerSuccess(0.1, 6)));
+      var yMG = co.y(Math.log10(attackerSuccess(0.3, 6)));
+
+      var cCY = s.caption("q=0.1 → <strong style='color:#ffffff'>0.024%</strong>", { px: x6 + 18, py: yCY, anchor: "left", size: "1.1rem", color: CY });
+      var cMG = s.caption("q=0.3 → <strong style='color:#ffffff'>13.2%</strong>", { px: x6 + 18, py: yMG, anchor: "left", size: "1.1rem", color: MAG });
+      s.fadeIn(cCY, { at: 3.5, dur: 0.75 }); 
+      s.fadeIn(cMG, { at: 4.9, dur: 0.75 });
+      
+      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: x6 + 18, py: (yCY + yMG)/2, anchor: "left", size: "1.2rem", color: "#e8eef9" });
+      s.fadeIn(jump, { at: 6.2, dur: 1.05 }); 
+      s.pulse(jump, { at: 7.2, dur: 1.2, amp: 0.12 });
 
       lower(s, "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Security decays exponentially in the attacker's relative size." });
