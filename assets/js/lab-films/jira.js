@@ -165,52 +165,96 @@
     film.scene("The AMM Geometry", 90, function(s) {
       // Slower equation typing
       var eq = s.tex2("x \\cdot y = k", { px: 150, py: 80, size: "2.2rem", color: CY });
-      s.write(eq, { at: 1.5, dur: 1.5 });
+      s.write(eq, { at: 3.5, dur: 1.5 });
 
       // the price equation lands WITH the tangent sweep it explains (lt≈20)
       var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 80, size: "2.2rem", color: AMB });
-      s.write(eq2, { at: 19, dur: 1.2 });
+      s.morph(eq, eq2, { at: 19, dur: 1.2 });
 
       var co = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 400, right: 150, top: 150, bottom: 150 } });
+      var k = 20;
+
+      // Match cut from Scene 1
+      var cx = 480, cy = 250;
+      s.canvas(function(lt, ctx, h) {
+         if (lt < 2.0) {
+            var alpha = 1 - clamp01(lt / 2.0);
+            ctx.fillStyle = h.rgba(RED, alpha * 0.15);
+            ctx.fillRect(0,0,960,540);
+            
+            ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(RED, alpha);
+            ctx.fillStyle = h.rgba(RED, alpha);
+            ctx.font = "bold 32px 'JetBrains Mono'";
+            ctx.fillText("SYSTEM BOTTLENECK", cx - 160, cy - 170);
+            
+            ctx.beginPath(); ctx.arc(cx, cy - 100, 16, 0, Math.PI*2); ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = h.rgba("#ffffff", alpha); ctx.font = "bold 14px 'JetBrains Mono', monospace";
+            ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
+         }
+      });
+      
+      var tickets = 25;
+      for (var t = 0; t < tickets; t++) {
+         var jamRadius = 25 + (t * 2.5);
+         var angle = Math.sin(67.5 * 4 + t) * 0.2 + (t / tickets) * Math.PI * 2;
+         var startX = cx + Math.cos(angle) * jamRadius;
+         var startY = cy - 100 + Math.sin(angle) * jamRadius;
+         
+         var dot = s.dot({ px: startX, py: startY, r: 4, color: RED });
+         s.show(dot, 0); 
+         
+         var targetX = 2 + (8 * t / (tickets - 1));
+         var targetY = k / targetX;
+         
+         s.move(dot, { coords: co, x: targetX, y: targetY, at: 0.5 + t * 0.05, dur: 1.5, ease: E.out });
+         
+         (function(dNode) {
+             s._cue(dNode, 0.5 + t * 0.05, 1.5, E.out, function(st, p, hd) {
+                 var r1 = 252, g1 = 98, b1 = 85; 
+                 var r2 = 88, g2 = 196, b2 = 221; 
+                 var r = Math.round(r1 + (r2 - r1) * p);
+                 var g = Math.round(g1 + (g2 - g1) * p);
+                 var b = Math.round(b1 + (b2 - b1) * p);
+                 hd.el.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
+             });
+         })(dot);
+      }
+
+      // Rebuild on engine primitives
+      var ax = s.axes(co, { grid: true, gridX: 8, gridY: 5 });
+      s.draw(ax, { at: 1.0, dur: 1.2 });
+      var xlab = s.caption("NO Shares (x)", { coords: co, x: 5, y: -1, anchor: "top", align: "center", size: "1rem", color: "#ccc" });
+      var ylab = s.caption("<div style='transform: rotate(-90deg)'>YES Shares (y)</div>", { coords: co, x: -1, y: 5, anchor: "center", align: "center", size: "1rem", color: "#ccc" });
+      s.fadeIn(xlab, { at: 1.5, dur: 0.8 });
+      s.fadeIn(ylab, { at: 1.5, dur: 0.8 });
+
+      // True draw-on of hyperbola
+      var pts = [];
+      for (var xv = 2; xv <= 10; xv += 0.1) pts.push([xv, k / xv]);
+      var curve = s.poly(pts, { coords: co, color: CY, width: 4 });
+      s.draw(curve, { at: 4.5, dur: 3.0 });
+      
+      var priceDot = s.dot({ coords: co, x: 2.5, y: k / 2.5, r: 8, color: "#fff" });
+      s.hide(priceDot, 0);
+      s.show(priceDot, 20);
+      var sweepFn = function(tau) {
+          var sweep = (Math.sin(tau * Math.PI * 2.5 - Math.PI/2) + 1) / 2; 
+          var currX = lerp(2.5, 8, E.inOut(sweep));
+          return { x: currX, y: k / currX };
+      };
+      s.moveAlong(priceDot, sweepFn, { at: 20, dur: 35, ease: window.LabAnim.ease.linear });
 
       s.canvas(function(lt, ctx, h) {
-        var op = clamp01(lt);
-        ctx.globalAlpha = op;
-
-        // Draw grid
-        var gx = 8, gy = 5, i;
-        ctx.lineWidth = 1;
-        for (i = 0; i <= gx; i++) {
-          var xx = lerp(co.px0, co.px1, i / gx);
-          ctx.strokeStyle = h.rgba(GREY, 0.25);
-          ctx.beginPath(); ctx.moveTo(xx, co.py0); ctx.lineTo(xx, co.py1); ctx.stroke();
-        }
-        for (i = 0; i <= gy; i++) {
-          var yy = lerp(co.py0, co.py1, i / gy);
-          ctx.strokeStyle = h.rgba(GREY, 0.25);
-          ctx.beginPath(); ctx.moveTo(co.px0, yy); ctx.lineTo(co.px1, yy); ctx.stroke();
-        }
-
-        // Draw axes
-        ctx.strokeStyle = "#ccc"; ctx.lineWidth = 1.6; ctx.lineCap = "round";
-        ctx.beginPath(); ctx.moveTo(co.px0, co.py0); ctx.lineTo(co.px1, co.py0); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(co.px0, co.py0); ctx.lineTo(co.px0, co.py1); ctx.stroke();
-
-        // Axis labels
-        ctx.fillStyle = "#ccc"; ctx.font = "14px monospace";
-        ctx.fillText("NO Shares (x)", (co.px0 + co.px1) / 2 - 50, co.py0 + 30);
-        ctx.save(); ctx.translate(co.px0 - 30, (co.py0 + co.py1) / 2 + 50);
-        ctx.rotate(-Math.PI / 2); ctx.fillText("YES Shares (y)", 0, 0); ctx.restore();
-
-        // Slow cinematic drawing of the curve
-        var k = 20;
-        if (lt > 5) {
-           var drawP = clamp01((lt - 5) / 12); // Takes 12 seconds
+        // Gradient fill under curve
+        if (lt > 4.5) {
+           var drawP = clamp01((lt - 4.5) / 3.0);
            var xEnd = 2 + (8 * drawP);
 
-           // Draw the xy=k curve
-           ctx.shadowBlur = 15; ctx.shadowColor = CY;
-           ctx.strokeStyle = CY; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.lineJoin = "round";
+           var polyGrad = ctx.createLinearGradient(0, co.y(10), 0, co.y(0));
+           polyGrad.addColorStop(0, h.rgba(CY, 0.2 * drawP));
+           polyGrad.addColorStop(1, h.rgba(CY, 0.0));
+           ctx.fillStyle = polyGrad;
            ctx.beginPath();
            var first = true;
            for (var x = 2; x <= xEnd; x += 0.1) {
@@ -218,56 +262,39 @@
               if (first) { ctx.moveTo(px, py); first = false; }
               else ctx.lineTo(px, py);
            }
-           ctx.stroke();
-           ctx.shadowBlur = 0;
-
-           // Gradient fill under curve
-           var polyGrad = ctx.createLinearGradient(0, co.y(10), 0, co.y(0));
-           polyGrad.addColorStop(0, h.rgba(CY, 0.2));
-           polyGrad.addColorStop(1, h.rgba(CY, 0.0));
-           ctx.fillStyle = polyGrad;
-           ctx.beginPath();
-           first = true;
-           for (x = 2; x <= xEnd; x += 0.1) {
-              px = co.x(x); py = co.y(k / x);
-              if (first) { ctx.moveTo(px, py); first = false; }
-              else ctx.lineTo(px, py);
-           }
            ctx.lineTo(co.x(xEnd), co.y(0));
            ctx.lineTo(co.x(2), co.y(0));
            ctx.closePath();
            ctx.fill();
-
-           // The sweeping tangent line (Price Discovery)
-           if (lt > 20) {
-              var slideP = clamp01((lt - 20) / 35); // Sweeps slowly for 35 seconds
-              var sweep = (Math.sin(slideP * Math.PI * 2.5 - Math.PI/2) + 1) / 2; 
-              var currX = lerp(2.5, 8, E.inOut(sweep));
-              var currY = k / currX;
-
-              var slope = -k / (currX * currX);
-              var tx1 = currX - 3, ty1 = currY - 3 * slope;
-              var tx2 = currX + 3, ty2 = currY + 3 * slope;
-
-              ctx.shadowBlur = 10; ctx.shadowColor = AMB;
-              ctx.strokeStyle = AMB; ctx.lineWidth = 3;
-              ctx.beginPath(); ctx.moveTo(co.x(tx1), co.y(ty1)); ctx.lineTo(co.x(tx2), co.y(ty2)); ctx.stroke();
-              ctx.shadowBlur = 0;
-
-              // Glowing Price Point
-              ctx.fillStyle = "#fff";
-              ctx.shadowBlur = 20; ctx.shadowColor = "#fff";
-              ctx.beginPath(); ctx.arc(co.x(currX), co.y(currY), 8, 0, Math.PI*2); ctx.fill();
-              ctx.shadowBlur = 0;
-              
-              var price = Math.abs(slope); // Price is derivative ratio
-              var prob = (price / (1 + price)) * 100;
-
-              ctx.fillStyle = AMB; ctx.font = "bold 20px monospace";
-              ctx.fillText("Probability: " + prob.toFixed(1) + "%", co.x(currX) + 20, co.y(currY) - 20);
-           }
         }
-        ctx.globalAlpha = 1;
+
+        // The sweeping tangent line (Price Discovery)
+        if (lt > 20) {
+           var slideP = clamp01((lt - 20) / 35); 
+           var sweep = (Math.sin(slideP * Math.PI * 2.5 - Math.PI/2) + 1) / 2; 
+           var currX = lerp(2.5, 8, E.inOut(sweep));
+           var currY = k / currX;
+
+           var slope = -k / (currX * currX);
+           var tx1 = currX - 3, ty1 = currY - 3 * slope;
+           var tx2 = currX + 3, ty2 = currY + 3 * slope;
+
+           ctx.shadowBlur = 10; ctx.shadowColor = AMB;
+           ctx.strokeStyle = AMB; ctx.lineWidth = 3;
+           ctx.beginPath(); ctx.moveTo(co.x(tx1), co.y(ty1)); ctx.lineTo(co.x(tx2), co.y(ty2)); ctx.stroke();
+           ctx.shadowBlur = 0;
+           
+           ctx.fillStyle = "#fff";
+           ctx.shadowBlur = 20; ctx.shadowColor = "#fff";
+           ctx.beginPath(); ctx.arc(co.x(currX), co.y(currY), 8, 0, Math.PI*2); ctx.fill();
+           ctx.shadowBlur = 0;
+           
+           var price = Math.abs(slope); 
+           var prob = (price / (1 + price)) * 100;
+
+           ctx.fillStyle = AMB; ctx.font = "bold 20px monospace";
+           ctx.fillText("Probability: " + prob.toFixed(1) + "%", co.x(currX) + 20, co.y(currY) - 20);
+        }
       });
 
       lower(s, "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'", 2.0, { out: 22.5 });
@@ -279,6 +306,40 @@
 
   function sceneInsiderTrading(film) {
     film.scene("Work as Insider Trading", 112.5, function(s) {
+      var k3 = 20;
+      var co3 = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 340, right: 480, top: 150, bottom: 250 } });
+      var ax3 = s.axes(co3, { grid: false });
+      s.draw(ax3, { at: 1.0, dur: 1.0 });
+      var pts3 = [];
+      for (var x = 2; x <= 10; x += 0.2) pts3.push([x, k3 / x]);
+      var curve3 = s.poly(pts3, { coords: co3, color: CY, width: 2 });
+      s.draw(curve3, { at: 1.5, dur: 1.5 });
+      
+      var pDot = s.dot({ coords: co3, x: 8, y: k3 / 8, r: 5, color: AMB });
+      s.fadeIn(pDot, { at: 3.0, dur: 0.5 });
+      
+      s.moveAlong(pDot, function(tau) {
+          var currX = lerp(8, 2, tau);
+          return { x: currX, y: k3 / currX };
+      }, { at: 54, dur: 6.0, ease: E.inOut });
+      
+      var payCoin = s.dot({ coords: co3, x: 2, y: 10, r: 24, color: AMB });
+      s.hide(payCoin, 0); s.show(payCoin, 60);
+      s.move(payCoin, { px: 750, py: 220, at: 60, dur: 8, ease: E.out });
+      
+      var payTxt = s.caption("<strong style='color:#000'>$1000</strong>", { coords: co3, x: 2, y: 10, size: "16px", anchor: "center" });
+      s.hide(payTxt, 0); s.show(payTxt, 60);
+      s.move(payTxt, { px: 750, py: 220, at: 60, dur: 8, ease: E.out });
+      
+      var costTxt = s.caption("<strong style='color:#fc6255'>- $100</strong>", { coords: co3, x: 2, y: 10, size: "14px", anchor: "center" });
+      s.hide(costTxt, 0); s.show(costTxt, 60);
+      s.move(costTxt, { px: 750, py: 245, at: 60, dur: 8, ease: E.out });
+      
+      var profTxt = s.caption("<strong style='color:#83C167'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
+      s.hide(profTxt, 0);
+      s.morph(payTxt, profTxt, { at: 68, dur: 1.0 });
+      s.fadeOut(costTxt, { at: 68, dur: 1.0 });
+
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -378,33 +439,11 @@
            ctx.fillText("ORACLE: RESOLVED", coreX - 90, coreY - 30);
 
            if (lt > 54) {
-              // Price shoots up
-              ctx.fillStyle = GRN; ctx.font = "bold 24px monospace";
-              ctx.fillText("Price: $1.00", coreX - 80, coreY + 120); 
-              
-              // Explosive capital return
-              if (lt > 60) {
-                 var payP = clamp01((lt - 60) / 8);
-                 var payX = lerp(coreX + 100, devX, E.out(payP));
-                 var payY = lerp(devY - 50, devY - 80, E.out(payP));
-                 
-                 ctx.shadowBlur = 30; ctx.shadowColor = AMB;
-                 ctx.fillStyle = AMB; ctx.beginPath(); ctx.arc(payX, payY, 20, 0, Math.PI*2); ctx.fill();
-                 ctx.shadowBlur = 0;
-                 
-                 ctx.fillStyle = "#000"; ctx.font = "bold 16px monospace"; ctx.fillText("$1000", payX - 22, payY + 5);
-
-                 if (payP === 1) {
-                    // Celebration glow
-                    ctx.shadowBlur = 20; ctx.shadowColor = GRN;
-                    ctx.fillStyle = GRN; ctx.font = "bold 20px 'JetBrains Mono'";
-                    ctx.fillText("PROFIT: $900 (Bounty)", devX - 100, devY - 120);
-                    ctx.shadowBlur = 0;
-                 }
-              }
-           }
-        }
-        ctx.globalAlpha = 1;
+               ctx.fillStyle = GRN; ctx.font = "bold 24px monospace";
+               ctx.fillText("Price: $1.00", coreX - 80, coreY + 120); 
+            }
+         }
+         ctx.globalAlpha = 1;
       });
 
       lower(s, "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.", 2.0, { out: 27 });

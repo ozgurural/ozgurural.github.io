@@ -32,6 +32,8 @@
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
   var CY = "#58C4DD", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255", GREY = "#888888", GOLD = "#FFFF00";
   var Z_ALPHA = 1.645; // one-sided α = 5%
+  
+  var HIST_N = 30, HIST_X0 = 130, HIST_BW = 16, HIST_GAP = 9, HIST_BASEY = 330;
 
   function erf(x) {
     var t = 1 / (1 + 0.3275911 * Math.abs(x));
@@ -96,6 +98,21 @@
     film.scene("The stolen model", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
+        // faint watermark dots
+        if (lt > 3.0) {
+            var dotAlpha = clamp01((lt - 3.0) / 2.0);
+            if (dotAlpha > 0) {
+               ctx.globalAlpha = 0.4 * dotAlpha;
+               for (var j = 0; j < 8; j++) { 
+                   var a = lt * 1.5 + j; 
+                   ctx.fillStyle = h.rgba(GOLD, 0.5 + 0.5 * Math.sin(a)); 
+                   ctx.beginPath(); 
+                   ctx.arc(270 - 40 + j * 12, 270 - 30 + (j % 3) * 22, 2.5, 0, 7); 
+                   ctx.fill(); 
+               }
+               ctx.globalAlpha = 1;
+            }
+        }
         // Digital data stream flowing from left model to right model
         if (lt > 1.5) {
           var pStream = clamp01((lt - 1.5) / 1.5);
@@ -122,10 +139,13 @@
         var jit = clamp01((lt - 2) / 2) * 4;
         graph(ctx, h, 690, 270, RED, clamp01((lt - 1.5) / 1.2), 5, jit);
         // labels
+        var aL = clamp01(lt / 1.2);
+        var aR = clamp01((lt - 1.5) / 1.2);
+        var aStream = clamp01((lt - 1.5) / 1.5);
         ctx.font = "600 12px 'JetBrains Mono',monospace";
-        ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("YOUR MODEL  θ", 218, 360);
-        ctx.fillStyle = h.rgba(RED, 0.95); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
-        ctx.fillStyle = h.rgba("#dbeafe", 0.8); ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(CY, 0.95 * aL); ctx.fillText("YOUR MODEL  θ", 218, 360);
+        ctx.fillStyle = h.rgba(RED, 0.95 * aR); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
+        ctx.fillStyle = h.rgba("#dbeafe", 0.8 * aStream); ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillText("fine-tuning leak", 442, 200);
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: "#ffffff" });
@@ -137,15 +157,16 @@
   /* ================= 2 — FRAGILE MARK ================= */
   function fragile(film) {
     film.scene("One big mark is fragile", 24, function (s) {
-      var n = 30, x0 = 150, bw = 16, gap = 8, baseY = 330, idx = 15;
+      var idx = 15;
       s.canvas(function (lt, ctx, h) {
+        var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
         var scrub = clamp01((lt - 4.5) / 2.0);     // brush knocks the tall bar down
         var i;
         for (i = 0; i < n; i++) {
           var x = x0 + i * (bw + gap);
           var hgt = 14 + (Math.sin(i * 2.3) * 0.5 + 0.5) * 10;
           if (i === idx) {
-            var tall = (1 - scrub) * 150 + 16;
+            var tall = (1 - scrub) * 216 + 16;
             bar(ctx, h, x, baseY - tall, bw, tall, scrub > 0.6 ? RED : CY, 1);
           } else bar(ctx, h, x, baseY - hgt, bw, hgt, GREY, 0.8);
         }
@@ -161,12 +182,17 @@
           ctx.fillText("SCRUB", bx - 6, baseY - 190);
           
           // Glitch / Screen Tear effect
-          if (Math.random() > 0.5) {
-             ctx.fillStyle = h.rgba(RED, 0.15 + 0.1 * Math.random());
-             var gY = baseY - 180 + Math.random() * 200;
-             var gH = 2 + Math.random() * 8;
+          if (Math.sin(lt * 29) > 0) {
+             var r1 = Math.sin(lt * 31) * 0.5 + 0.5;
+             var r2 = Math.sin(lt * 37) * 0.5 + 0.5;
+             var r3 = Math.sin(lt * 41) * 0.5 + 0.5;
+             var r4 = Math.sin(lt * 43) * 0.5 + 0.5;
+             var r5 = Math.sin(lt * 47) * 0.5 + 0.5;
+             ctx.fillStyle = h.rgba(RED, 0.15 + 0.1 * r1);
+             var gY = baseY - 180 + r2 * 200;
+             var gH = 2 + r3 * 8;
              ctx.fillRect(bx - 40, gY, 100, gH);
-             ctx.fillRect(bx - 100 + Math.random() * 200, gY - 10, 40 + Math.random() * 100, 2);
+             ctx.fillRect(bx - 100 + r4 * 200, gY - 10, 40 + r5 * 100, 2);
           }
         }
         // utility meter (right)
@@ -192,24 +218,46 @@
   /* ================= 3 — SPREAD ================= */
   function spread(film) {
     film.scene("Spread it thin across k weights", 27, function (s) {
-      var n = 30, x0 = 130, bw = 16, gap = 9, baseY = 330, K = 24;
-      var marked = []; for (var m = 0; m < n; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
+      var K = 24;
+      var marked = []; for (var m = 0; m < HIST_N; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
       s.canvas(function (lt, ctx, h) {
-        var spreadP = clamp01((lt - 1.0) / 2.5); // mass redistributes
+        var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
+        var drainP = clamp01((lt - 3.5) / 6); // 0 to 1 over the same window
+        var tallBarIdx = 15;
+        var tallRemaining = (1 - drainP) * 216; // Total mass = K * 9 = 216
+        
         var i;
         for (i = 0; i < n; i++) {
           var x = x0 + i * (bw + gap);
           var base = 14 + (Math.sin(i * 2.3) * 0.5 + 0.5) * 8;
           var isMark = marked.indexOf(i) >= 0;
-          var delta = isMark ? spreadP * 9 : 0;
+          var mIdx = marked.indexOf(i);
+          
+          var delta = 0;
+          var drawMark = false;
+          if (isMark) {
+              var markStart = 3.5 + mIdx * (6 / K);
+              var markRise = clamp01((lt - markStart) / (6 / K));
+              delta = markRise * 9;
+              if (delta > 0) drawMark = true;
+          }
+          
           bar(ctx, h, x, baseY - base - delta, bw, base + delta, GREY, 0.75);
-          if (isMark && delta > 0) bar(ctx, h, x, baseY - base - delta, bw, delta, CY, clamp01(spreadP));
+          if (drawMark) {
+              bar(ctx, h, x, baseY - base - delta, bw, delta, CY, 1);
+          }
+          
+          // Draw the tall cyan bar mass on top of index 15
+          if (i === tallBarIdx && tallRemaining > 0) {
+              var currentH = base + delta;
+              bar(ctx, h, x, baseY - currentH - tallRemaining, bw, tallRemaining, CY, 1);
+          }
         }
         // dashed pattern envelope w over the marked tips
-        if (spreadP > 0.4) {
-          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * spreadP); ctx.lineWidth = 1.4;
+        if (drainP > 0.4) {
+          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * drainP); ctx.lineWidth = 1.4;
           ctx.beginPath();
-          marked.forEach(function (mi, q) { var x = x0 + mi * (bw + gap) + bw / 2; var y = baseY - (14 + (Math.sin(mi * 2.3) * 0.5 + 0.5) * 8) - spreadP * 9 - 4; if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
+          marked.forEach(function (mi, q) { var x = x0 + mi * (bw + gap) + bw / 2; var y = baseY - (14 + (Math.sin(mi * 2.3) * 0.5 + 0.5) * 8) - 9 - 4; if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
           ctx.stroke(); ctx.setLineDash([]);
         }
         // SNR readout d = sqrt(k) eps/sigma as k fills in
@@ -289,26 +337,53 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.draw(ax, { at: 0.6, dur: 1.2 });
-      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
-      var ylab = s.caption("true-positive rate", { coords: co, x: -0.04, y: 1.13, anchor: "left", size: "0.7rem", color: "#dbeafe" });
+      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.8rem", color: "#dbeafe" });
+      var ylab = s.caption("true-positive rate", { coords: co, x: -0.10, y: 0.8, anchor: "left", size: "0.8rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.2, dur: 0.75 }); s.fadeIn(ylab, { at: 1.2, dur: 0.75 });
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
       s.draw(diag, { at: 1.5, dur: 1.2 });
-      function rocCurve(d, color, at, label, yLab) {
-        var pts = [], tt;
-        for (tt = 5; tt >= -5; tt -= 0.1) { var fpr = Phi(-tt), tpr = Phi(d - tt); pts.push([fpr, tpr]); }
-        var pl = s.poly(pts, { coords: co, color: color, width: 3 });
-        s.draw(pl, { at: at, dur: 2.4 });
+      s.canvas(function (lt, ctx, h) {
+        var p = clamp01((lt - 2.0) / 8.0); // sweep over 8s
+        var d = 0.6 + E.inOut(p) * 2.6;
+        
+        function drawRoc(dVal, color, alpha, width) {
+           ctx.beginPath();
+           for (var tt = 5; tt >= -5; tt -= 0.1) {
+              var fpr = Phi(-tt), tpr = Phi(dVal - tt);
+              var px = co.x(fpr), py = co.y(tpr);
+              if (tt === 5) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+           }
+           ctx.strokeStyle = h.rgba(color, alpha);
+           ctx.lineWidth = width;
+           ctx.stroke();
+        }
+        
+        // ghosts
+        if (d > 0.65) {
+            drawRoc(0.6, RED, 0.4, 2.0);
+            ctx.fillStyle = h.rgba(RED, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
+            ctx.fillText("small k", co.x(0.52), co.y(0.45));
+        }
+        if (d > 1.65) {
+            drawRoc(1.6, AMB, 0.4, 2.0);
+            ctx.fillStyle = h.rgba(AMB, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
+            ctx.fillText("more k", co.x(0.52), co.y(0.72));
+        }
+        if (p === 1) { // final ghost
+            ctx.fillStyle = h.rgba(GRN, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
+            ctx.fillText("large k", co.x(0.52), co.y(0.88));
+        }
+        
+        // current curve
+        var curColor = p === 1 ? GRN : CY;
+        drawRoc(d, curColor, 1.0, 3.0);
+        
+        // AUC counter
         var auc = Phi(d / Math.SQRT2);
-        // yLab is hand-placed: the natural curve heights sit too close
-        // together and the labels collide on large stages.
-        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.42, y: yLab, anchor: "left", size: "1.3rem", color: color });
-        s.fadeIn(lbl, { at: at + 1.4, dur: 0.75 });
-      }
-      rocCurve(0.6, "#7dd3fc", 2.0, "small k", 0.5);
-      rocCurve(1.6, CY, 3.6, "more k", 0.74);
-      rocCurve(3.2, GRN, 5.2, "large k", 0.98);
+        ctx.fillStyle = h.rgba(curColor, 0.95); ctx.font = "600 16px 'JetBrains Mono',monospace";
+        ctx.fillText("AUC " + auc.toFixed(3), co.x(0.1), co.y(0.93));
+      });
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
@@ -324,8 +399,8 @@
   /* ================= 6 — SCRUB PARADOX ================= */
   function scrub(film) {
     film.scene("The scrubbing paradox", 21, function (s) {
-      var n = 24, x0 = 150, bw = 18, gap = 8, baseY = 320;
       s.canvas(function (lt, ctx, h) {
+        var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
         var attack = clamp01((lt - 2) / 4);
         var i, killed = Math.floor(attack * 8);
         for (i = 0; i < n; i++) {
@@ -384,11 +459,12 @@
       var power = Phi(d3 - Z_ALPHA);
       var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
       s.write(eq, { at: 1.5, dur: 1.5 });
-      var chip = s.caption("detection power → <strong style='color:#ffffff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN });
-      s.fadeIn(chip, { at: 3.75, dur: 1.5 });
+      var valNode = s.value("detection power → <strong style='color:#ffffff'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:#ffffff'>" + v.toFixed(2) + "%</strong>"; } });
+      s.fadeIn(valNode, { at: 3.75, dur: 1.5 });
+      s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.write(tag, { at: 6.6, dur: 2.1 });
-      var cite = s.caption("Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
     }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
   }

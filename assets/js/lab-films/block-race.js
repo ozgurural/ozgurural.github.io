@@ -72,6 +72,26 @@
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
+  
+  function pathOfArc(points, co) {
+    var px = points.map(function (p) { return [co.x(p[0]), co.y(p[1])]; });
+    var cum = [0], i, L = 0;
+    for (i = 1; i < px.length; i++) {
+      L += Math.hypot(px[i][0] - px[i - 1][0], px[i][1] - px[i - 1][1]);
+      cum.push(L);
+    }
+    return function (tau) {
+      tau = Math.max(0, Math.min(1, tau));
+      var target = tau * L, lo = 0;
+      while (lo < cum.length - 2 && cum[lo + 1] < target) lo++;
+      var seg = cum[lo + 1] - cum[lo] || 1;
+      var g = (target - cum[lo]) / seg;
+      return {
+        x: points[lo][0] + (points[lo + 1][0] - points[lo][0]) * g,
+        y: points[lo][1] + (points[lo + 1][1] - points[lo][1]) * g
+      };
+    };
+  }
 
   function build() {
     var film = window.LabAnim.create("#br-film", { width: 960, height: 540 });
@@ -89,15 +109,24 @@
       s.canvas(function (lt, ctx, h) {
         // genesis
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#888888", 1);
-        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#f1f5f9", 0.8);
         ctx.fillText("genesis", gx - 4, (yH + yA) / 2 + hh / 2 + 16);
-        var nH = nAt(lt, 0.4, 0.85, 8), nA = nAt(lt, 1.6, 1.18, 6), i;
+        var nH = nAt(lt, 0.4, 0.85, 14), nA = nAt(lt, 1.6, 1.18, 10), i;
         // honest (cyan, top)
         for (i = 0; i < nH; i++) {
           var x = gx + bw + gap + i * (bw + gap);
+          var pulseAt = 10.5 + i * 0.1;
+          var pulseP = clamp01((lt - pulseAt) / 0.6);
+          var scale = 1 + 0.15 * Math.sin(pulseP * Math.PI); // pulse scale
+          
           ctx.strokeStyle = h.rgba(CY, 0.5); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(x - gap, yH + hh / 2); ctx.lineTo(x, yH + hh / 2); ctx.stroke();
-          block(ctx, h, x, yH, bw, hh, CY, 1);
+          
+          ctx.save();
+          ctx.translate(x + bw/2, yH + hh/2);
+          ctx.scale(scale, scale);
+          block(ctx, h, -bw/2, -hh/2, bw, hh, CY, 1);
+          ctx.restore();
+          
           // Hash particles when the block is freshly mined
           var mineT = (lt - 0.4) - (i * 0.85);
           if (mineT > 0 && mineT < 0.6) {
@@ -113,9 +142,12 @@
         // attacker (magenta, bottom, secret)
         for (i = 0; i < nA; i++) {
           var xa = gx + bw + gap + i * (bw + gap);
-          ctx.strokeStyle = h.rgba(MAG, 0.45); ctx.lineWidth = 1.6;
+          var dimP = clamp01((lt - 10.5) / 1.0);
+          var aAlpha = 0.92 - 0.57 * E.smooth(dimP); // dims to 0.35
+          
+          ctx.strokeStyle = h.rgba(MAG, aAlpha * 0.45); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(xa - gap, yA + hh / 2); ctx.lineTo(xa, yA + hh / 2); ctx.stroke();
-          block(ctx, h, xa, yA, bw, hh, MAG, 0.92);
+          block(ctx, h, xa, yA, bw, hh, MAG, aAlpha);
           // Hash particles when the block is freshly mined
           var aMineT = (lt - 1.6) - (i * 1.18);
           if (aMineT > 0 && aMineT < 0.6) {
@@ -129,8 +161,9 @@
           }
         }
         // payment coin on honest genesis-adjacent block
-        ctx.beginPath(); ctx.arc(gx + bw + gap + 0 * (bw + gap) + bw / 2, yH - 16, 8, 0, 7);
-        ctx.fillStyle = h.rgba(GRN, lt > 1 ? 1 : 0); ctx.fill();
+        var coinP = clamp01((lt - 1) / 0.5);
+        ctx.beginPath(); ctx.arc(gx + bw + gap + 0 * (bw + gap) + bw / 2, yH - 16, 8 * E.out(coinP), 0, 7);
+        ctx.fillStyle = h.rgba(GRN, coinP); ctx.fill();
         // secrecy curtain over attacker chain (lifts while the lead counter
         // still ticks, so the scene never sits static)
         var cv = clamp01((lt - 1.2) / 0.8) * (1 - clamp01((lt - 9) / 1.2));
@@ -145,8 +178,14 @@
         ctx.globalAlpha = 1;
         // lead counter
         var lead = nH - nA;
+        var leadPulseP = clamp01((lt - (10.5 + nH * 0.1)) / 0.6);
+        var lScale = 1 + 0.2 * Math.sin(leadPulseP * Math.PI);
+        ctx.save();
+        ctx.translate(720 + 70, 150 - 5);
+        ctx.scale(lScale, lScale);
         ctx.font = "600 15px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(CY, 0.95);
-        ctx.fillText("honest lead  +" + Math.max(0, lead), 720, 150);
+        ctx.fillText("honest lead  +" + Math.max(0, lead), -70, 5);
+        ctx.restore();
       });
 
       var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.4rem", color: "#dce7fb" });
@@ -182,7 +221,8 @@
         ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.stroke();
         ctx.restore();
         // clock pulse
-        var beat = (lt % 2) < 0.25 ? 1 : 0.4;
+        var ph = (lt % 2) / 2;
+        var beat = 0.4 + 0.6 * Math.exp(-6 * ph);
         ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", beat);
         ctx.fillText("⏱ ~10 min / flip", cx - 46, cy + R + 34);
         // hashrate bar (right)
@@ -271,7 +311,7 @@
         while (seq.length <= WSTEPS) seq.push(seq[seq.length - 1]);
         walkers.push(seq);
       }
-      function rowY(wi) { return LY + ((wi % 11) - 5) * 7.6; } // band clears the notch digits at LY+46
+      function rowY(wi) { return LY + ((wi % 15) - 7) * 5.2; } // band clears the notch digits at LY+46
 
       /* --- beat 3: the law. Chance of EVER catching up, per deficit. */
       var T3 = 21.5;
@@ -328,7 +368,7 @@
           }
 
           // beat-1 token: glides notch to notch as the coin lands
-          if (lt < T2 + 0.4) {
+          if (lt < B1END + 1.0) {
             var idx = Math.max(0, Math.min(B1.length - 1, ci + 1));
             var frac = ci < 0 ? 0 : clamp01(((lt - STEP0) - ci * STEP - 0.3) / 0.35);
             var from = B1[Math.max(0, Math.min(B1.length - 1, idx - 1))];
@@ -357,9 +397,10 @@
               var sq = walkers[w2];
               var cur = sq[Math.min(stepIdx, sq.length - 1)];
               var nxt = sq[Math.min(stepIdx + 1, sq.length - 1)];
-              var wx = lerp(gx(cur), gx(nxt), E.smooth(fr));
+              var jitterX = (Math.sin(w2 * 17.3) * 3);
+              var wx = lerp(gx(cur), gx(nxt), E.smooth(fr)) + jitterX;
               var done = cur === 0;
-              if (done) { caught++; wx = gx(0); }
+              if (done) { caught++; wx = gx(0) + jitterX; }
               ctx.beginPath(); ctx.arc(wx, rowY(w2), done ? 5 : 4, 0, 7);
               ctx.fillStyle = h.rgba(done ? GRN : MAG, wIn * (done ? 0.95 : 0.45));
               ctx.fill();
@@ -448,30 +489,83 @@
         ctx.beginPath(); ctx.arc(dx, dy, dr, 0, 7); ctx.stroke();
         ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.5;
         ctx.beginPath(); ctx.moveTo(dx, dy); ctx.lineTo(dx + dr * Math.cos(ang), dy + dr * Math.sin(ang)); ctx.stroke();
+
+        // RIGHT: Poisson PMF bars
+        var stackBottomY = 310;
+        var stackX = 640;
+        var stackW = 80;
+        var maxStackH = 150; 
+        var currentStackSum = 0;
+        var coLeft = 470; // Hardcoded fallback if co isn't ready
+        
+        for (var kk = 0; kk <= 8; kk++) {
+          var pm = poissonPMF(lambda, kk);
+          var inP = clamp01((lt - (3 + kk * 0.18)) / 0.75);
+          if (inP <= 0) continue;
+          
+          var isRed = kk >= z;
+          var col = isRed ? RED : MAG;
+          
+          var mStart = 12 + kk * 1.5;
+          var mP = clamp01((lt - mStart) / 1.5);
+          var morph = E.smooth(mP);
+          
+          var factor = isRed ? 0 : (1 - Math.pow(q/p, z - kk));
+          var termVal = pm * factor;
+          
+          var bx0 = co.x(kk - 0.32), bx1 = co.x(kk + 0.32);
+          var by0 = co.y(0), by1 = co.y(pm);
+          var origX = bx0, origY = by1;
+          var origW = bx1 - bx0, origH = by0 - by1;
+          
+          var targetH = termVal * maxStackH;
+          var targetY = stackBottomY - (currentStackSum + termVal) * maxStackH;
+          var targetX = stackX, targetW = stackW;
+          
+          var curX = lerp(origX, targetX, morph);
+          var curY = lerp(origY, targetY, morph);
+          var curW = lerp(origW, targetW, morph);
+          var curH = lerp(origH, targetH, morph);
+          
+          var curAlpha = lerp(0.6 * inP, factor > 0 ? 0.85 : 0, morph); 
+          if (curAlpha > 0.01) {
+             ctx.fillStyle = h.rgba(col, curAlpha);
+             ctx.fillRect(curX, curY, curW, curH);
+             ctx.strokeStyle = h.rgba(col, lerp(1, factor > 0 ? 0.95 : 0, morph));
+             ctx.lineWidth = 1.4;
+             ctx.strokeRect(curX, curY, curW, curH);
+          }
+          currentStackSum += termVal;
+        }
+        
+        var accP = clamp01((lt - 11.5) / 1.0);
+        if (accP > 0) {
+          ctx.strokeStyle = h.rgba("#dbeafe", 0.3 * accP);
+          ctx.lineWidth = 1;
+          ctx.strokeRect(stackX - 4, stackBottomY - maxStackH, stackW + 8, maxStackH);
+        }
       });
 
       // RIGHT: Poisson PMF for the attacker's secret count
       var co = film.coords({ xRange: [-0.6, 8.6], yRange: [0, 0.32], pad: { left: 470, right: 60, top: 150, bottom: 220 } });
       var axx = s.line({ coords: co, x1: -0.4, y1: 0, x2: 8.4, y2: 0, color: PAL.axis, width: 1.3 });
       s.draw(axx, { at: 1.8, dur: 1.2 });
-      var bars = [], kk;
-      for (kk = 0; kk <= 8; kk++) {
-        var pm = poissonPMF(lambda, kk);
-        var bx0 = co.x(kk - 0.32), bx1 = co.x(kk + 0.32), by0 = co.y(0), by1 = co.y(pm);
-        var col = kk > z ? RED : MAG;
-        var bar = s.rect({ x: bx0, y: by1, w: bx1 - bx0, h: by0 - by1, fill: window.LabAnim.rgba(col, 0.6), stroke: col, sw: 1.4 });
-        s.fadeIn(bar, { at: 3 + kk * 0.18, dur: 0.75 });
-      }
+      s.erase(axx, { at: 12, dur: 1.5 });
+      var lostLbl = s.caption("k ≥ z: race already lost", { coords: co, x: 6.5, y: 0.22, anchor: "center", size: "0.9rem", color: RED });
+      s.fadeIn(lostLbl, { at: 3 + z * 0.18, dur: 0.75 });
+      s.fadeOut(lostLbl, { at: 12, dur: 1.0 });
       var meanLbl = s.caption("k ~ Poisson(λ),  λ = z·q/p ≈ 2.57", { coords: co, x: 4, y: 0.30, anchor: "center", align: "center", size: "1.1rem", color: MAG });
       s.fadeIn(meanLbl, { at: 6.3, dur: 1.05 });
+      s.fadeOut(meanLbl, { at: 12, dur: 1.0 });
       var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(kAxis, { at: 2.1, dur: 0.9 });
+      s.fadeOut(kAxis, { at: 12, dur: 1.0 });
 
       // the closed form assembling
-      var form = s.tex2("\\text{Double Spend Risk Drop-off}", { px: 480, py: 340, size: "1.05rem", color: AMB });
-      s.write(form, { at: 18.75, dur: 2.7 });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{#9A72AC}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 370, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
+      s.write(form, { at: 22, dur: 2.7 });
 
-      lower(s, "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
+      lower(s, "Satoshi models the attacker's block count as Poisson with mean λ = zq/p, then sums gambler's-ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
@@ -488,36 +582,74 @@
       var ax = s.axes(co, { grid: true, gridX: 6, gridY: 7 });
       s.draw(ax, { at: 0.6, dur: 1.35 });
       // y tick labels (10^0 .. 10^-7)
-      [0, -1, -2, -3, -4, -5, -6, -7].forEach(function (e) {
+      [0, -1, -2, -3, -4, -5, -6, -7].forEach(function (e, i) {
         var t = s.caption("10<sup>" + e + "</sup>", { coords: co, x: -0.35, y: e, anchor: "right", size: "0.62rem", color: "#7f93b4" });
-        s.fadeIn(t, { at: 1.5, dur: 0.75 });
+        s.fadeIn(t, { at: 1.5 + i * 0.08, dur: 0.75 });
       });
       var xlab = s.caption("confirmations z →", { coords: co, x: 6, y: -7.7, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(xlab, { at: 1.5, dur: 0.75 });
+      s.fadeIn(xlab, { at: 2.2, dur: 0.75 });
+      var ylab = s.caption("P(successful double-spend)", { coords: co, x: -0.05, y: 0.3, anchor: "left", size: "0.8rem", color: "#dbeafe" });
+      s.fadeIn(ylab, { at: 1.5, dur: 0.75 });
+      
+      [2, 4, 6, 8, 10, 12].forEach(function (zTick) {
+        var t = s.caption(zTick, { coords: co, x: zTick, y: -7.25, anchor: "top", align: "center", size: "0.8rem", color: "#7f93b4" });
+        s.fadeIn(t, { at: 1.5, dur: 0.75 });
+      });
 
       function curve(q, color, at) {
         var pts = [], z;
         for (z = 1; z <= 12; z++) pts.push([z, Math.max(-7, Math.log10(attackerSuccess(q, z)))]);
         var pl = s.poly(pts, { coords: co, color: color, width: 3 });
         s.draw(pl, { at: at, dur: 3 });
-        var dot = s.dot({ coords: co, x: 1, y: Math.log10(attackerSuccess(q, 1)), r: 4, color: color });
-        s.fadeIn(dot, { at: at, dur: 0.45 });
+        
+        var pathFn = pathOfArc(pts, co);
+        var px = pts.map(function(p) { return [co.x(p[0]), co.y(p[1])]; });
+        var cum = [0], i, L = 0;
+        for(i=1; i<px.length; i++) { L += Math.hypot(px[i][0]-px[i-1][0], px[i][1]-px[i-1][1]); cum.push(L); }
+        var tau6 = cum[5] / L;
+        
+        s.canvas(function(lt, ctx, h) {
+           if (lt < at) return;
+           var tProg = clamp01((lt - at) / 3);
+           
+           var idealTau = tProg;
+           var diff = tau6 - idealTau;
+           var tau = idealTau;
+           if (diff < 0.05 && diff > 0) {
+               tau = tau6 - 0.05 * Math.pow(diff / 0.05, 2);
+           } else if (diff <= 0) {
+               tau = tau6;
+           }
+           
+           var pt = pathFn(tau);
+           ctx.beginPath(); ctx.arc(co.x(pt.x), co.y(pt.y), 4, 0, 7);
+           var alpha = clamp01((lt - at) / 0.15);
+           ctx.fillStyle = h.rgba(color, alpha);
+           ctx.fill();
+        });
       }
       curve(0.1, CY, 2.0);
       curve(0.3, MAG, 3.4);
 
-      // z = 6 marker — arrives on the heels of the second curve, no dead air
+      // z = 6 marker
       var zl = s.line({ coords: co, x1: 6, y1: -7, x2: 6, y2: 0, color: "#e8eef9", width: 1.5, dashed: "4 5" });
-      s.draw(zl, { at: 7, dur: 0.9 });
+      s.draw(zl, { at: 3.2, dur: 0.9 });
       var z6 = s.caption("z = 6", { coords: co, x: 6, y: 0.5, anchor: "center", align: "center", size: "1.2rem", color: "#f1f5f9" });
-      s.fadeIn(z6, { at: 7.3, dur: 0.6 });
+      s.fadeIn(z6, { at: 3.5, dur: 0.6 });
 
       // callouts
-      var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#ffffff'>0.024%</strong>", { px: 720, py: 210, size: "1.2rem", color: CY });
-      var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#ffffff'>13.2%</strong>", { px: 720, py: 260, size: "1.2rem", color: MAG });
-      s.fadeIn(cCY, { at: 10.8, dur: 1.05 }); s.fadeIn(cMG, { at: 12, dur: 1.05 });
-      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 720, py: 320, size: "1.5rem", color: "#e8eef9" });
-      s.fadeIn(jump, { at: 13.2, dur: 1.05 }); s.pulse(jump, { at: 14.4, dur: 1.2, amp: 0.12 });
+      var x6 = co.x(6);
+      var yCY = co.y(Math.log10(attackerSuccess(0.1, 6)));
+      var yMG = co.y(Math.log10(attackerSuccess(0.3, 6)));
+
+      var cCY = s.caption("q=0.1 → <strong style='color:#ffffff'>0.024%</strong>", { px: x6 + 18, py: yCY, anchor: "left", size: "1.1rem", color: CY });
+      var cMG = s.caption("q=0.3 → <strong style='color:#ffffff'>13.2%</strong>", { px: x6 + 18, py: yMG, anchor: "left", size: "1.1rem", color: MAG });
+      s.fadeIn(cCY, { at: 3.5, dur: 0.75 }); 
+      s.fadeIn(cMG, { at: 4.9, dur: 0.75 });
+      
+      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: x6 + 18, py: (yCY + yMG)/2, anchor: "left", size: "1.2rem", color: "#e8eef9" });
+      s.fadeIn(jump, { at: 6.2, dur: 1.05 }); 
+      s.pulse(jump, { at: 7.2, dur: 1.2, amp: 0.12 });
 
       lower(s, "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.", 11.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Security decays exponentially in the attacker's relative size." });
@@ -552,6 +684,9 @@
           if (diss < 0.01) {
             block(ctx, h, xa, yA, bw, hh, MAG, 0.9);
           } else {
+            var cfAlpha = 1 - clamp01(diss / 0.15);
+            if (cfAlpha > 0) block(ctx, h, xa, yA, bw, hh, MAG, 0.9 * cfAlpha);
+            
             ctx.globalAlpha = Math.max(0, (1 - diss) * 0.9);
             for(var p = 0; p < 4; p++) {
               var jx = diss * (20 + p * 8) * Math.cos(i + p * 1.5);

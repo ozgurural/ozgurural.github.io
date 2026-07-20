@@ -123,7 +123,8 @@
               ctx.setLineDash([]);
               ctx.shadowBlur = 0;
               if (lt > 25) {
-                 ctx.fillStyle = RED; ctx.font = "bold 14px 'JetBrains Mono'"; ctx.fillText("THRESHOLD (p<0.05)", co.x(3)+10, co.y(0.75));
+                 var tAlpha = clamp01((lt - 25) / 1.0);
+                 ctx.fillStyle = h.rgba(RED, tAlpha); ctx.font = "bold 14px 'JetBrains Mono'"; ctx.fillText("THRESHOLD (p<0.05)", co.x(3)+10, co.y(0.75));
               }
            }
 
@@ -230,8 +231,9 @@
            ctx.fillStyle = "#000"; ctx.font = "bold 16px monospace"; ctx.fillText(label, qx+15, 285);
 
            if (qlt > 1.8 && qlt < 3.8) {
-              ctx.shadowBlur = 15; ctx.shadowColor = AMB;
-              ctx.fillStyle = AMB; ctx.font = "bold 16px 'JetBrains Mono'";
+              var tAlpha = Math.min(clamp01((qlt - 1.8) / 0.2), 1 - clamp01((qlt - 3.6) / 0.2));
+              ctx.shadowBlur = 15; ctx.shadowColor = h.rgba(AMB, tAlpha);
+              ctx.fillStyle = h.rgba(AMB, tAlpha); ctx.font = "bold 16px 'JetBrains Mono'";
               ctx.fillText("Output: " + label, 800, 285);
               
            }
@@ -265,11 +267,12 @@
 
               // Secret Cryptographic Label Output
               if (lt > 43) {
-                  ctx.fillStyle = RED; ctx.font = "bold 18px 'JetBrains Mono'";
+                  var p43 = clamp01((lt - 43) / 1.0);
+                  ctx.fillStyle = h.rgba(RED, p43); ctx.font = "bold 18px 'JetBrains Mono'";
                   ctx.fillText("Output: WATERMARK_123", 450, 480);
                   
-                  ctx.strokeStyle = RED; ctx.lineWidth = 4;
-                  ctx.beginPath(); ctx.moveTo(700, 400); ctx.lineTo(600, 450); ctx.stroke();
+                  ctx.strokeStyle = h.rgba(RED, p43); ctx.lineWidth = 4;
+                  ctx.beginPath(); ctx.moveTo(700, 400); ctx.lineTo(700 - 100 * p43, 400 + 50 * p43); ctx.stroke();
                   ctx.shadowBlur = 0;
               }
            }
@@ -392,9 +395,10 @@
            ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 290);
            
            if (count > 15 && ratio > 0.7 && lt > 58) {
+              var alertAlpha = clamp01((lt - 58) / 1.0);
               var alertFlash = Math.abs(Math.sin(lt * 8));
-              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
-              ctx.fillStyle = h.rgba(GRN, 0.7 + 0.3 * alertFlash); 
+              ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(GRN, alertAlpha);
+              ctx.fillStyle = h.rgba(GRN, (0.7 + 0.3 * alertFlash) * alertAlpha); 
               ctx.font = "bold 18px 'JetBrains Mono'";
               ctx.fillText("WATERMARK DETECTED", streamX, streamY + 280);
               
@@ -478,21 +482,23 @@
               ctx.beginPath(); ctx.moveTo(auxOut[0]-15 + pruneP*30, auxOut[1]-15); ctx.lineTo(auxOut[0]-15, auxOut[1]-15 + pruneP*30); ctx.stroke();
               
               if (lt > 35) {
-                 ctx.fillStyle = RED; ctx.fillText("Pruned by Thief", auxOut[0]+20, auxOut[1]+25);
+                 var p35 = clamp01((lt - 35) / 1.0);
+                 ctx.fillStyle = h.rgba(RED, p35); ctx.fillText("Pruned by Thief", auxOut[0]+20, auxOut[1]+25);
               }
            }
            
            if (lt > 42) {
+              var p42 = clamp01((lt - 42) / 1.0);
               // Proof of learning trajectory linkage
-              ctx.shadowBlur = 20; ctx.shadowColor = AMB;
-              ctx.fillStyle = h.rgba(AMB, 0.15); ctx.fillRect(100, 400, 750, 90);
+              ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, p42);
+              ctx.fillStyle = h.rgba(AMB, 0.15 * p42); ctx.fillRect(100, 400, 750, 90);
               ctx.shadowBlur = 0;
-              ctx.fillStyle = AMB; ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 430);
-              ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
+              ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 430);
+              ctx.fillStyle = h.rgba("#ffffff", p42); ctx.font = "14px monospace";
               ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 460);
               
-              ctx.strokeStyle = AMB; ctx.setLineDash([5,5]); ctx.lineWidth = 2;
-              ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], 370); ctx.stroke();
+              ctx.strokeStyle = h.rgba(AMB, p42); ctx.setLineDash([5,5]); ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], auxOut[1] + (370 - auxOut[1]) * p42); ctx.stroke();
               ctx.setLineDash([]);
            }
         }

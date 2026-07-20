@@ -3,7 +3,7 @@
     "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.",
     "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.",
     "Forget both chains , only the gap matters. Each block moves it one step, the coin is rigged seventy to thirty, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.",
-    "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.",
+    "Satoshi models the attacker's block count as Poisson with mean lambda = zq/p, then sums gambler's-ruin tails.",
     "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.",
     "Reversal becomes exponentially improbable, provided honest hashrate holds the majority."
   ],
