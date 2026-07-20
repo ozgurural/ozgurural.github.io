@@ -326,9 +326,13 @@
 
            ctx.shadowBlur = 4; ctx.shadowColor = "#FFFF00";
            for(var i=0; i<4; i++) {
-              ctx.fillStyle = h.rgba("#FFFF00", 0.4 + 0.6 * Math.random());
+              var r1 = Math.abs(Math.sin(lt * 10 + i));
+              var r2 = Math.abs(Math.sin(lt * 11 + i * 2));
+              var r3 = Math.abs(Math.sin(lt * 12 + i * 3));
+              var r4 = Math.abs(Math.sin(lt * 13 + i * 4));
+              ctx.fillStyle = h.rgba("#FFFF00", 0.4 + 0.6 * r1);
               ctx.beginPath();
-              ctx.arc(px - 10 + Math.random()*20, py - 10 + Math.random()*20, 0.5 + Math.random()*1.5, 0, 7);
+              ctx.arc(px - 10 + r2*20, py - 10 + r3*20, 0.5 + r4*1.5, 0, 7);
               ctx.fill();
            }
            ctx.shadowBlur = 0;
