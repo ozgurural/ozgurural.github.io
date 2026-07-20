@@ -151,7 +151,7 @@
           var x = x0 + i * (bw + gap);
           var hgt = 14 + (Math.sin(i * 2.3) * 0.5 + 0.5) * 10;
           if (i === idx) {
-            var tall = (1 - scrub) * 150 + 16;
+            var tall = (1 - scrub) * 216 + 16;
             bar(ctx, h, x, baseY - tall, bw, tall, scrub > 0.6 ? RED : CY, 1);
           } else bar(ctx, h, x, baseY - hgt, bw, hgt, GREY, 0.8);
         }
@@ -207,21 +207,42 @@
       var marked = []; for (var m = 0; m < HIST_N; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
       s.canvas(function (lt, ctx, h) {
         var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
-        var spreadP = clamp01((lt - 1.0) / 2.5); // mass redistributes
+        var drainP = clamp01((lt - 3.5) / 6); // 0 to 1 over the same window
+        var tallBarIdx = 15;
+        var tallRemaining = (1 - drainP) * 216; // Total mass = K * 9 = 216
+        
         var i;
         for (i = 0; i < n; i++) {
           var x = x0 + i * (bw + gap);
           var base = 14 + (Math.sin(i * 2.3) * 0.5 + 0.5) * 8;
           var isMark = marked.indexOf(i) >= 0;
-          var delta = isMark ? spreadP * 9 : 0;
+          var mIdx = marked.indexOf(i);
+          
+          var delta = 0;
+          var drawMark = false;
+          if (isMark) {
+              var markStart = 3.5 + mIdx * (6 / K);
+              var markRise = clamp01((lt - markStart) / (6 / K));
+              delta = markRise * 9;
+              if (delta > 0) drawMark = true;
+          }
+          
           bar(ctx, h, x, baseY - base - delta, bw, base + delta, GREY, 0.75);
-          if (isMark && delta > 0) bar(ctx, h, x, baseY - base - delta, bw, delta, CY, clamp01(spreadP));
+          if (drawMark) {
+              bar(ctx, h, x, baseY - base - delta, bw, delta, CY, 1);
+          }
+          
+          // Draw the tall cyan bar mass on top of index 15
+          if (i === tallBarIdx && tallRemaining > 0) {
+              var currentH = base + delta;
+              bar(ctx, h, x, baseY - currentH - tallRemaining, bw, tallRemaining, CY, 1);
+          }
         }
         // dashed pattern envelope w over the marked tips
-        if (spreadP > 0.4) {
-          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * spreadP); ctx.lineWidth = 1.4;
+        if (drainP > 0.4) {
+          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * drainP); ctx.lineWidth = 1.4;
           ctx.beginPath();
-          marked.forEach(function (mi, q) { var x = x0 + mi * (bw + gap) + bw / 2; var y = baseY - (14 + (Math.sin(mi * 2.3) * 0.5 + 0.5) * 8) - spreadP * 9 - 4; if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
+          marked.forEach(function (mi, q) { var x = x0 + mi * (bw + gap) + bw / 2; var y = baseY - (14 + (Math.sin(mi * 2.3) * 0.5 + 0.5) * 8) - 9 - 4; if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
           ctx.stroke(); ctx.setLineDash([]);
         }
         // SNR readout d = sqrt(k) eps/sigma as k fills in
