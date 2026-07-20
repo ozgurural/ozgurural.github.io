@@ -7,8 +7,8 @@ import edge_tts
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "assets", "audio", "lab")
-VOICE = "en-US-ChristopherNeural"   # calm, documentary male
-RATE = "-8%"
+VOICE = "en-US-AndrewMultilingualNeural"   # warm, natural documentary male
+RATE = "-5%"
 
 async def synth(text, path):
     tts = edge_tts.Communicate(text, VOICE, rate=RATE)

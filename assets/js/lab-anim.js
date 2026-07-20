@@ -1162,15 +1162,18 @@
      samples, no licensing, a few kilobytes of code. The context unlocks on
      the first user gesture, so autoplay policies can't silently kill it. */
   var LabMusic = (function () {
+    // prog: chord roots as SCALE-DEGREE indices — the pad walks this loop
+    // (one chord per two bars) and the melody resolves to chord tones on
+    // downbeats, which is what turns a note-walk into actual music.
     var MOODS = {
-      "pol-film":        { root: 146.83, scale: [0,2,3,5,7,9,10], tempo: 34, cutoff: 750,  pad: [0,7], bright: 0.5  }, // D dorian - contemplative
-      "mh-film":         { root: 110.00, scale: [0,2,3,5,7,8,11], tempo: 42, cutoff: 620,  pad: [0,3], bright: 0.35 }, // A harmonic minor - tension
-      "br-film":         { root: 164.81, scale: [0,3,5,7,10],     tempo: 58, cutoff: 900,  pad: [0,7], bright: 0.6  }, // E minor pentatonic - kinetic
-      "tmr-film":        { root: 130.81, scale: [0,2,4,6,7,9,11], tempo: 26, cutoff: 700,  pad: [0,7], bright: 0.45 }, // C lydian - aerospace calm
-      "gd-film":         { root: 196.00, scale: [0,2,4,7,9],      tempo: 50, cutoff: 1000, pad: [0,4], bright: 0.65 }, // G major pentatonic - playful
-      "oracles-film":    { root: 92.50,  scale: [0,1,3,5,7,8,10], tempo: 30, cutoff: 560,  pad: [0,7], bright: 0.3  }, // F# phrygian - mystic
-      "wm-compare-film": { root: 123.47, scale: [0,2,3,5,7,8,10], tempo: 44, cutoff: 820,  pad: [0,3], bright: 0.5  }, // B natural minor - analytic
-      "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6  }  // D major - optimistic
+      "pol-film":        { root: 146.83, scale: [0,2,3,5,7,9,10], tempo: 34, cutoff: 750,  pad: [0,7], bright: 0.5,  prog: [0,5,3,4] }, // D dorian - contemplative
+      "mh-film":         { root: 110.00, scale: [0,2,3,5,7,8,11], tempo: 42, cutoff: 620,  pad: [0,3], bright: 0.35, prog: [0,3,5,4] }, // A harmonic minor - tension
+      "br-film":         { root: 164.81, scale: [0,3,5,7,10],     tempo: 58, cutoff: 900,  pad: [0,7], bright: 0.6,  prog: [0,3,4,3] }, // E minor pentatonic - kinetic
+      "tmr-film":        { root: 130.81, scale: [0,2,4,6,7,9,11], tempo: 26, cutoff: 700,  pad: [0,7], bright: 0.45, prog: [0,4,1,4] }, // C lydian - aerospace calm
+      "gd-film":         { root: 196.00, scale: [0,2,4,7,9],      tempo: 50, cutoff: 1000, pad: [0,4], bright: 0.65, prog: [0,3,1,4] }, // G major pentatonic - playful
+      "oracles-film":    { root: 92.50,  scale: [0,1,3,5,7,8,10], tempo: 30, cutoff: 560,  pad: [0,7], bright: 0.3,  prog: [0,1,0,5] }, // F# phrygian - mystic
+      "wm-compare-film": { root: 123.47, scale: [0,2,3,5,7,8,10], tempo: 44, cutoff: 820,  pad: [0,3], bright: 0.5,  prog: [0,5,2,4] }, // B natural minor - analytic
+      "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6,  prog: [0,3,4,5] }  // D major - optimistic
     };
     var VOL = 0.14;
     var ctx = null, master = null, graph = null, timer = null, muted = false, currentKey = null, unlockArmed = false;
@@ -1253,52 +1256,116 @@
       var wet = ctx.createGain(); wet.gain.value = 0.5;
       delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(out);
 
-      // pad drone: detuned oscillators breathing through a slow lowpass
+      // scale/chord helpers — a chord is a triad stacked in scale space on a
+      // prog degree; the pad glides between chords, the melody resolves to them
+      var scale = mood.scale, nDeg = scale.length;
+      function semiOf(deg) { // scale degree (any integer) -> semitones from root
+        return scale[((deg % nDeg) + nDeg) % nDeg] + 12 * Math.floor(deg / nDeg);
+      }
+      function chordSemis(progDeg) { return [semiOf(progDeg), semiOf(progDeg + 2), semiOf(progDeg + 4)]; }
+      function freqOf(semi) { return mood.root * Math.pow(2, semi / 12); }
+
+      // pad: detuned saws through a breathing lowpass, root+colour voice per
+      // chord, plus a soft sine sub an octave below — all gliding on changes
       var lp = ctx.createBiquadFilter();
       lp.type = "lowpass"; lp.frequency.value = mood.cutoff; lp.Q.value = 0.6;
-      var padGain = ctx.createGain(); padGain.gain.value = 0.32;
+      var padGain = ctx.createGain(); padGain.gain.value = 0.30;
       lp.connect(padGain); padGain.connect(out);
       var lfo = ctx.createOscillator(); lfo.frequency.value = 0.05 + rand() * 0.04;
       var lfoGain = ctx.createGain(); lfoGain.gain.value = mood.cutoff * 0.35;
       lfo.connect(lfoGain); lfoGain.connect(lp.frequency); lfo.start();
-      var oscs = [lfo];
-      mood.pad.forEach(function (semi) {
+      // very slow "breath" on the whole score (~±9% over ~20 s)
+      var breath = ctx.createOscillator(); breath.frequency.value = 0.045 + rand() * 0.02;
+      var breathGain = ctx.createGain(); breathGain.gain.value = VOL * 0.09;
+      breath.connect(breathGain); breathGain.connect(out.gain); breath.start();
+      var oscs = [lfo, breath];
+      var padVoices = [];
+      mood.pad.forEach(function (padOffset) {
         [-6, 5].forEach(function (cents) {
           var o = ctx.createOscillator();
           o.type = "sawtooth";
-          o.frequency.value = mood.root * Math.pow(2, semi / 12);
+          o.frequency.value = freqOf(semiOf(mood.prog[0]) + padOffset);
           o.detune.value = cents;
-          var g = ctx.createGain(); g.gain.value = 0.12;
+          var g = ctx.createGain(); g.gain.value = 0.11;
           o.connect(g); g.connect(lp);
           o.start(); oscs.push(o);
+          padVoices.push({ osc: o, offset: padOffset });
         });
       });
+      var sub = ctx.createOscillator(); sub.type = "sine";
+      sub.frequency.value = freqOf(semiOf(mood.prog[0])) / 2;
+      var subGain = ctx.createGain(); subGain.gain.value = 0.10;
+      sub.connect(subGain); subGain.connect(out);
+      sub.start(); oscs.push(sub);
 
       graph = { out: out, oscs: oscs, delaySend: delay };
 
-      // melody: seeded walk over the film's scale, on a lookahead scheduler
+      // melody: seeded scale walk with phrase structure — chord tones on
+      // downbeats, a breath at the end of every 8-bar phrase, gentle stereo
       var beat = 60 / mood.tempo;
       var nextAt = ctx.currentTime + 0.35;
-      var degree = Math.floor(rand() * mood.scale.length);
+      var degree = Math.floor(rand() * nDeg);
+      var beatCount = 0, chordIdx = -1, panSide = 1;
+      var canPan = !!ctx.createStereoPanner;
       timer = setInterval(function () {
         if (!graph || !ctx) return;
         while (nextAt < ctx.currentTime + 0.9) {
+          var bar = Math.floor(beatCount / 4), beatInBar = beatCount % 4;
+          // chord change every two bars: glide the pad and the sub
+          var ci = Math.floor(bar / 2) % mood.prog.length;
+          if (ci !== chordIdx) {
+            chordIdx = ci;
+            var rootSemi = semiOf(mood.prog[ci]);
+            padVoices.forEach(function (v) {
+              v.osc.frequency.setTargetAtTime(freqOf(rootSemi + v.offset), nextAt, 0.55);
+            });
+            sub.frequency.setTargetAtTime(freqOf(rootSemi) / 2, nextAt, 0.7);
+          }
+          // phrase breath: last beat of every 8-bar phrase stays silent
+          if (bar % 8 === 7 && beatInBar === 3) { beatCount++; nextAt += beat; continue; }
+
           var step = rand();
-          degree += step < 0.4 ? 1 : step < 0.7 ? -1 : step < 0.85 ? 2 : -2;
-          var span = mood.scale.length * 2;
+          degree += step < 0.45 ? 1 : step < 0.8 ? -1 : step < 0.9 ? 2 : -2;
+          var span = nDeg * 2;
           degree = ((degree % span) + span) % span;
-          var semi = mood.scale[degree % mood.scale.length] + 12 * Math.floor(degree / mood.scale.length) + 12;
-          var f = mood.root * Math.pow(2, semi / 12);
+          var semi = semiOf(degree) + 12;
+          if (beatInBar === 0) {
+            // downbeat: resolve to the nearest chord tone (that's the "music")
+            var tones = chordSemis(mood.prog[chordIdx]), best = tones[0], bd = 99;
+            for (var ti = 0; ti < tones.length; ti++) {
+              for (var oct = 0; oct <= 12; oct += 12) {
+                var cand = tones[ti] + 12 + oct;
+                var d = Math.abs(cand - semi);
+                if (d < bd) { bd = d; best = cand; }
+              }
+            }
+            semi = best;
+          }
+          var f = freqOf(semi);
           var t0 = nextAt;
           var o = ctx.createOscillator(); o.type = "triangle"; o.frequency.value = f;
+          var shimmer = ctx.createOscillator(); shimmer.type = "sine"; shimmer.frequency.value = f * 2;
           var g = ctx.createGain();
-          var peak = 0.16 + mood.bright * 0.1;
+          var peak = (0.16 + mood.bright * 0.1) * (beatInBar === 0 ? 1.2 : 0.88);
           g.gain.setValueAtTime(0, t0);
-          g.gain.linearRampToValueAtTime(peak, t0 + 0.02);
+          g.gain.linearRampToValueAtTime(peak, t0 + 0.03);
           g.gain.exponentialRampToValueAtTime(0.001, t0 + beat * 1.8);
-          o.connect(g); g.connect(out); g.connect(graph.delaySend);
+          var sg = ctx.createGain(); sg.gain.value = 0.22;
+          shimmer.connect(sg); sg.connect(g);
+          o.connect(g);
+          var dst = g;
+          if (canPan) {
+            panSide = -panSide;
+            var pan = ctx.createStereoPanner(); pan.pan.value = panSide * (0.14 + rand() * 0.12);
+            g.connect(pan); dst = pan;
+          }
+          dst.connect(out); dst.connect(graph.delaySend);
           o.start(t0); o.stop(t0 + beat * 2);
-          nextAt += beat * (rand() < 0.22 ? 2 : 1); // occasional rest keeps it breathing
+          shimmer.start(t0); shimmer.stop(t0 + beat * 2);
+          beatCount++;
+          var restRoll = rand();
+          if (restRoll < 0.16) { beatCount++; nextAt += beat * 2; } // breathing room
+          else nextAt += beat;
         }
       }, 300);
 

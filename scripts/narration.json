@@ -21,12 +21,12 @@
     "As an open-source network scales to thousands of global developers, the pyramid collapses completely.",
     "We need a system with no manager. We need math.",
     "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'",
-    "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees infinite liquidity.",
+    "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees a counterparty at every price.",
     "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.",
     "If nobody is working on it, YES shares are mathematically cheap. This creates an enormous financial incentive to act.",
     "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.",
     "Phase 2: They spend the next week writing code, effectively working as an 'insider' on their own success.",
-    "Phase 3: The PR is merged. An Optimistic Oracle detects the cryptographic merge and resolves the market to 100%.",
+    "Phase 3: The PR is merged. Anyone asserts this to an Optimistic Oracle with a bond; unchallenged, the market resolves to 100%.",
     "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty. No manager required."
   ],
   "model-heist": [

@@ -30,7 +30,7 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", MAG = "#9A72AC", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255";
+  var CY = "#58C4DD", MAG = "#9A72AC", GRN = "#83C167", AMB = "#fbbf24", RED = "#FC6255";
 
   /* exact Satoshi §11 attacker-success probability */
   function attackerSuccess(q, z) {
@@ -131,8 +131,9 @@
         // payment coin on honest genesis-adjacent block
         ctx.beginPath(); ctx.arc(gx + bw + gap + 0 * (bw + gap) + bw / 2, yH - 16, 8, 0, 7);
         ctx.fillStyle = h.rgba(GRN, lt > 1 ? 1 : 0); ctx.fill();
-        // secrecy curtain over attacker chain
-        var cv = clamp01((lt - 1.2) / 0.8) * (1 - clamp01((lt - 11) / 1.2));
+        // secrecy curtain over attacker chain (lifts while the lead counter
+        // still ticks, so the scene never sits static)
+        var cv = clamp01((lt - 1.2) / 0.8) * (1 - clamp01((lt - 9) / 1.2));
         ctx.globalAlpha = 0.40 * cv; ctx.fillStyle = "#0b1322";
         ctx.beginPath();
         if (ctx.roundRect) ctx.roundRect(gx + bw + gap - 6, yA - 20, 900, hh + 40, 8); else ctx.rect(gx + bw + gap - 6, yA - 20, 900, hh + 40);
@@ -153,7 +154,8 @@
       var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.4rem", color: CY });
       var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.4rem", color: MAG });
       s.fadeIn(lblH, { at: 1.5, dur: 0.9 }); s.fadeIn(lblA, { at: 3.6, dur: 0.9 });
-      // clear the lower third before the narration panel writes in at 4.4
+      // the attacker label clears once the narration panel has landed, so the
+      // lower-left corner never carries two competing texts
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
 
       lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
@@ -269,7 +271,7 @@
         while (seq.length <= WSTEPS) seq.push(seq[seq.length - 1]);
         walkers.push(seq);
       }
-      function rowY(wi) { return LY + ((wi % 11) - 5) * 10; }
+      function rowY(wi) { return LY + ((wi % 11) - 5) * 7.6; } // band clears the notch digits at LY+46
 
       /* --- beat 3: the law. Chance of EVER catching up, per deficit. */
       var T3 = 21.5;
@@ -419,8 +421,8 @@
 
       // the one formula this scene has earned
       var law = s.tex2("\\Pr(\\text{ever catch up}) = \\left(\\tfrac{q}{p}\\right)^{z}", { px: 760, py: 200, size: "1.15rem", color: AMB });
-      s.write(law, { at: T3 + 3.6, dur: 1.8 });
-      s.pulse(law, { at: T3 + 6, dur: 1.2, amp: 0.1 });
+      s.write(law, { at: T3 + 5.6, dur: 1.8 });
+      s.pulse(law, { at: T3 + 8, dur: 1.2, amp: 0.1 });
 
       lower(s, "Forget both chains — only the gap matters. Each block moves it one step, the coin is rigged 70/30, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.", 13.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Only the gap matters — and the walk is rigged against the attacker." });
@@ -504,11 +506,11 @@
       curve(0.1, CY, 2.0);
       curve(0.3, MAG, 3.4);
 
-      // z = 6 marker
+      // z = 6 marker — arrives on the heels of the second curve, no dead air
       var zl = s.line({ coords: co, x1: 6, y1: -7, x2: 6, y2: 0, color: "#e8eef9", width: 1.5, dashed: "4 5" });
-      s.draw(zl, { at: 9, dur: 0.9 });
+      s.draw(zl, { at: 7, dur: 0.9 });
       var z6 = s.caption("z = 6", { coords: co, x: 6, y: 0.5, anchor: "center", align: "center", size: "1.2rem", color: "#f1f5f9" });
-      s.fadeIn(z6, { at: 9.3, dur: 0.6 });
+      s.fadeIn(z6, { at: 7.3, dur: 0.6 });
 
       // callouts
       var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#ffffff'>0.024%</strong>", { px: 720, py: 210, size: "1.2rem", color: CY });
@@ -536,9 +538,16 @@
           ctx.beginPath(); ctx.moveTo(x - gap, yH + hh / 2); ctx.lineTo(x, yH + hh / 2); ctx.stroke();
           block(ctx, h, x, yH, bw, hh, CY, rev);
         }
-        // attacker fork dissolving into dust
+        // attacker fork dissolving into dust — branches visibly off genesis
         var diss = clamp01((lt - 3) / 3);
-        for (i = 1; i <= aC; i++) {
+        if (diss < 1) {
+          ctx.strokeStyle = h.rgba(MAG, 0.5 * (1 - diss)); ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(gx + bw, (yH + yA) / 2);
+          ctx.lineTo(gx + bw + gap, yA + hh / 2);
+          ctx.stroke();
+        }
+        for (i = 0; i < aC; i++) {
           var xa = gx + bw + gap + i * (bw + gap);
           if (diss < 0.01) {
             block(ctx, h, xa, yA, bw, hh, MAG, 0.9);

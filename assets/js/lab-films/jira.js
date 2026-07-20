@@ -165,10 +165,11 @@
     film.scene("The AMM Geometry", 90, function(s) {
       // Slower equation typing
       var eq = s.tex2("x \\cdot y = k", { px: 150, py: 80, size: "2.2rem", color: CY });
-      s.fadeIn(eq, { at: 1.5, dur: 6 });
-      
+      s.write(eq, { at: 1.5, dur: 1.5 });
+
+      // the price equation lands WITH the tangent sweep it explains (lt≈20)
       var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 80, size: "2.2rem", color: AMB });
-      s.fadeIn(eq2, { at: 27, dur: 6 });
+      s.write(eq2, { at: 19, dur: 1.2 });
 
       var co = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 400, right: 150, top: 150, bottom: 150 } });
 
@@ -270,7 +271,7 @@
       });
 
       lower(s, "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'", 2.0, { out: 22.5 });
-      lower(s, "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees infinite liquidity.", 17.0, { out: 45 });
+      lower(s, "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees a counterparty at every price.", 17.0, { out: 45 });
       lower(s, "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.", 32.0, { out: 67.5 });
       lower(s, "If nobody is working on it, YES shares are mathematically cheap. This creates an enormous financial incentive to act.", 47.0);
     });
@@ -309,10 +310,10 @@
         ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(devX, devY, 18, 0, Math.PI*2); ctx.fill();
         ctx.fillStyle = "#fff"; ctx.font = "14px monospace"; ctx.fillText("Developer", devX - 35, devY + 40);
 
-        // Phase 1: Capital Transfer (Buying Shares)
+        // Phase 1: Capital Transfer (Buying Shares) — a brisk, eased hop
         if (lt > 4 && lt < 20) {
-           var buyP = clamp01((lt - 4) / 12);
-           var coinX = lerp(devX, coreX + 100, E.in(buyP));
+           var buyP = clamp01((lt - 4) / 3.5);
+           var coinX = lerp(devX, coreX + 100, E.inOut(buyP));
            var coinY = devY - 50;
            
            if (buyP < 1) {
@@ -340,14 +341,15 @@
                ctx.fillStyle = h.rgba(GRN, 0.4 + 0.6 * typingP);
                ctx.fillRect(devX - 25, devY - 50, 50, 20); // keyboard flashing
                
-               // Digital rain data flowing UP from keyboard
+               // Digital rain data flowing UP from keyboard (deterministic in
+               // lt so every seek renders the same frame — engine contract)
                var numStreams = 5;
-               for(var s=0; s<numStreams; s++) {
-                  var streamY = devY - 60 - (((lt * 40) + s*30) % 150);
+               for(var si=0; si<numStreams; si++) {
+                  var streamY = devY - 60 - (((lt * 40) + si*30) % 150);
                   var streamAlpha = 1 - (devY - 60 - streamY)/150;
-                  ctx.fillStyle = h.rgba(GRN, streamAlpha); 
+                  ctx.fillStyle = h.rgba(GRN, streamAlpha);
                   ctx.font = "10px monospace";
-                  ctx.fillText(Math.random() > 0.5 ? "1" : "0", devX - 20 + s*10, streamY);
+                  ctx.fillText(Math.sin(Math.floor(lt * 8) * 13.37 + si * 7) > 0 ? "1" : "0", devX - 20 + si*10, streamY);
                }
            }
 
@@ -407,7 +409,7 @@
 
       lower(s, "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.", 2.0, { out: 27 });
       lower(s, "Phase 2: They spend the next week writing code, effectively working as an 'insider' on their own success.", 22.0, { out: 69 });
-      lower(s, "Phase 3: The PR is merged. An Optimistic Oracle detects the cryptographic merge and resolves the market to 100%.", 48.0, { out: 87 });
+      lower(s, "Phase 3: The PR is merged. Anyone asserts this to an Optimistic Oracle with a bond; unchallenged, the market resolves to 100%.", 48.0, { out: 87 });
       lower(s, "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty. No manager required.", 60.0);
     });
   }
