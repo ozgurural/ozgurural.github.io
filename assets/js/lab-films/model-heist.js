@@ -328,20 +328,47 @@
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
       s.draw(diag, { at: 1.5, dur: 1.2 });
-      function rocCurve(d, color, at, label, yLab) {
-        var pts = [], tt;
-        for (tt = 5; tt >= -5; tt -= 0.1) { var fpr = Phi(-tt), tpr = Phi(d - tt); pts.push([fpr, tpr]); }
-        var pl = s.poly(pts, { coords: co, color: color, width: 3 });
-        s.draw(pl, { at: at, dur: 2.4 });
+      s.canvas(function (lt, ctx, h) {
+        var p = clamp01((lt - 2.0) / 8.0); // sweep over 8s
+        var d = 0.6 + E.inOut(p) * 2.6;
+        
+        function drawRoc(dVal, color, alpha, width) {
+           ctx.beginPath();
+           for (var tt = 5; tt >= -5; tt -= 0.1) {
+              var fpr = Phi(-tt), tpr = Phi(dVal - tt);
+              var px = co.x(fpr), py = co.y(tpr);
+              if (tt === 5) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+           }
+           ctx.strokeStyle = h.rgba(color, alpha);
+           ctx.lineWidth = width;
+           ctx.stroke();
+        }
+        
+        // ghosts
+        if (d > 0.65) {
+            drawRoc(0.6, RED, 0.4, 2.0);
+            ctx.fillStyle = h.rgba(RED, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
+            ctx.fillText("small k", co.x(0.52), co.y(0.45));
+        }
+        if (d > 1.65) {
+            drawRoc(1.6, AMB, 0.4, 2.0);
+            ctx.fillStyle = h.rgba(AMB, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
+            ctx.fillText("more k", co.x(0.52), co.y(0.72));
+        }
+        if (p === 1) { // final ghost
+            ctx.fillStyle = h.rgba(GRN, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
+            ctx.fillText("large k", co.x(0.52), co.y(0.88));
+        }
+        
+        // current curve
+        var curColor = p === 1 ? GRN : CY;
+        drawRoc(d, curColor, 1.0, 3.0);
+        
+        // AUC counter
         var auc = Phi(d / Math.SQRT2);
-        // yLab is hand-placed: the natural curve heights sit too close
-        // together and the labels collide on large stages.
-        var lbl = s.caption(label + " · AUC " + auc.toFixed(3), { coords: co, x: 0.52, y: yLab, anchor: "left", size: "1.1rem", color: color });
-        s.fadeIn(lbl, { at: at + 1.4, dur: 0.75 });
-      }
-      rocCurve(0.6, RED, 2.0, "small k", 0.45);
-      rocCurve(1.6, AMB, 3.6, "more k", 0.72);
-      rocCurve(3.2, GRN, 5.2, "large k", 0.95);
+        ctx.fillStyle = h.rgba(curColor, 0.95); ctx.font = "600 16px 'JetBrains Mono',monospace";
+        ctx.fillText("AUC " + auc.toFixed(3), co.x(0.1), co.y(0.93));
+      });
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
