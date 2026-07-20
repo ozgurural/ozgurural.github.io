@@ -94,9 +94,19 @@
         // honest (cyan, top)
         for (i = 0; i < nH; i++) {
           var x = gx + bw + gap + i * (bw + gap);
+          var pulseAt = 10.5 + i * 0.1;
+          var pulseP = clamp01((lt - pulseAt) / 0.6);
+          var scale = 1 + 0.15 * Math.sin(pulseP * Math.PI); // pulse scale
+          
           ctx.strokeStyle = h.rgba(CY, 0.5); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(x - gap, yH + hh / 2); ctx.lineTo(x, yH + hh / 2); ctx.stroke();
-          block(ctx, h, x, yH, bw, hh, CY, 1);
+          
+          ctx.save();
+          ctx.translate(x + bw/2, yH + hh/2);
+          ctx.scale(scale, scale);
+          block(ctx, h, -bw/2, -hh/2, bw, hh, CY, 1);
+          ctx.restore();
+          
           // Hash particles when the block is freshly mined
           var mineT = (lt - 0.4) - (i * 0.85);
           if (mineT > 0 && mineT < 0.6) {
@@ -112,9 +122,12 @@
         // attacker (magenta, bottom, secret)
         for (i = 0; i < nA; i++) {
           var xa = gx + bw + gap + i * (bw + gap);
-          ctx.strokeStyle = h.rgba(MAG, 0.45); ctx.lineWidth = 1.6;
+          var dimP = clamp01((lt - 10.5) / 1.0);
+          var aAlpha = 0.92 - 0.57 * E.smooth(dimP); // dims to 0.35
+          
+          ctx.strokeStyle = h.rgba(MAG, aAlpha * 0.45); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(xa - gap, yA + hh / 2); ctx.lineTo(xa, yA + hh / 2); ctx.stroke();
-          block(ctx, h, xa, yA, bw, hh, MAG, 0.92);
+          block(ctx, h, xa, yA, bw, hh, MAG, aAlpha);
           // Hash particles when the block is freshly mined
           var aMineT = (lt - 1.6) - (i * 1.18);
           if (aMineT > 0 && aMineT < 0.6) {
@@ -145,8 +158,14 @@
         ctx.globalAlpha = 1;
         // lead counter
         var lead = nH - nA;
+        var leadPulseP = clamp01((lt - (10.5 + nH * 0.1)) / 0.6);
+        var lScale = 1 + 0.2 * Math.sin(leadPulseP * Math.PI);
+        ctx.save();
+        ctx.translate(720 + 70, 150 - 5);
+        ctx.scale(lScale, lScale);
         ctx.font = "600 15px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(CY, 0.95);
-        ctx.fillText("honest lead  +" + Math.max(0, lead), 720, 150);
+        ctx.fillText("honest lead  +" + Math.max(0, lead), -70, 5);
+        ctx.restore();
       });
 
       var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.4rem", color: "#dce7fb" });
