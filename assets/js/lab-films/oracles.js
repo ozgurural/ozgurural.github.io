@@ -354,17 +354,19 @@
                  ctx.shadowBlur = 15; ctx.shadowColor = RED;
                  ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'"; ctx.fillText("SLASHED!", 320, 420);
                  
-                 
-                 // Advanced Particle Physics for shattered coins
-                 for (var k=0; k<15; k++) {
-                    var speed = 120 + Math.random()*80;
-                    var dx = Math.cos(k * 0.4) * shatterTime * speed;
-                    var dy = Math.sin(k * 0.4) * shatterTime * speed + (shatterTime*shatterTime*60); // gravity curve
-                    
-                    var pSize = 5 + Math.random()*10;
-                    ctx.fillStyle = (Math.random() > 0.5) ? AMB : RED;
-                    ctx.fillRect(385 + dx, 355 + dy, pSize, pSize);
-                 }
+                                  // Advanced Particle Physics for shattered coins
+                  for (var k=0; k<15; k++) {
+                     var r1 = Math.sin(k * 13.1) * 0.5 + 0.5;
+                     var r2 = Math.sin(k * 29.3) * 0.5 + 0.5;
+                     var r3 = Math.sin(k * 37.7) * 0.5 + 0.5;
+                     var speed = 120 + r1 * 80;
+                     var dx = Math.cos(k * 0.4) * shatterTime * speed;
+                     var dy = Math.sin(k * 0.4) * shatterTime * speed + (shatterTime*shatterTime*60); // gravity curve
+                     
+                     var pSize = 5 + r2 * 10;
+                     ctx.fillStyle = (r3 > 0.5) ? AMB : RED;
+                     ctx.fillRect(385 + dx, 355 + dy, pSize, pSize);
+                  }
               }
            }
         }

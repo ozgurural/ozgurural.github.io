@@ -52,21 +52,24 @@
     if (window.__LABDEBUG) window.__tmrFilm = film;
   }
 
-  /* TMR schematic: 3 channels -> voter. states = [ 'ok'|'bad' x3 ], voterState */
-  function drawTMR(ctx, h, cx, cy, states, voter, distinct) {
+  function drawTMR(ctx, h, cx, cy, states, voter, distinct, lt) {
     var pos = [[cx - 100, cy - 50], [cx, cy - 90], [cx + 100, cy - 50]];
     var vy = cy + 80;
-    var rt = window.performance.now() / 1000;
+    var rt = lt;
     for (var i = 0; i < 3; i++) {
       var col = states[i] === "bad" ? RED : CY;
       
       // Explosion/glitch if bad
       if (states[i] === "bad") {
-         ctx.fillStyle = h.rgba(RED, 0.4 + 0.5 * Math.random());
-         var gx = pos[i][0] + (Math.random()-0.5)*40;
-         var gy = pos[i][1] + (Math.random()-0.5)*40;
-         ctx.beginPath(); ctx.arc(gx, gy, 1+Math.random()*3, 0, 7); ctx.fill();
-         ctx.fillRect(pos[i][0] - 20 + Math.random()*40, pos[i][1] - 5 + Math.random()*10, 5+Math.random()*20, 1+Math.random()*2);
+         var r1 = Math.sin(lt * 31 + i) * 0.5 + 0.5;
+         var r2 = Math.sin(lt * 47 + i) * 0.5 + 0.5;
+         var r3 = Math.sin(lt * 59 + i) * 0.5 + 0.5;
+         var r4 = Math.sin(lt * 71 + i) * 0.5 + 0.5;
+         ctx.fillStyle = h.rgba(RED, 0.4 + 0.5 * r1);
+         var gx = pos[i][0] + (r2 - 0.5) * 40;
+         var gy = pos[i][1] + (r3 - 0.5) * 40;
+         ctx.beginPath(); ctx.arc(gx, gy, 1 + r4 * 3, 0, 7); ctx.fill();
+         ctx.fillRect(pos[i][0] - 20 + r1 * 40, pos[i][1] - 5 + r2 * 10, 5 + r3 * 20, 1 + r4 * 2);
       }
       
       hexPath(ctx, pos[i][0], pos[i][1], 30);
@@ -107,7 +110,7 @@
         var states, voter;
         if (lt < 6) { states = ["ok", "ok", lt > 2 ? "bad" : "ok"]; voter = lt > 2.5 ? "ok" : "idle"; }
         else { var g = (Math.floor(lt * 6) % 2) === 0; states = g ? ["bad", "bad", "bad"] : ["ok", "ok", "ok"]; voter = g ? "bad" : "ok"; }
-        drawTMR(ctx, h, 480, 230, states, voter, false);
+        drawTMR(ctx, h, 480, 230, states, voter, false, lt);
         if (lt < 6 && lt > 3) { ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 130); }
         if (lt >= 6) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80); }
       });
@@ -121,7 +124,7 @@
   function mechanism(film) {
     film.scene("The voter and the binomial tail", 27, function (s) {
       s.canvas(function (lt, ctx, h) {
-        drawTMR(ctx, h, 230, 220, ["ok", "ok", "ok"], "ok", false);
+        drawTMR(ctx, h, 230, 220, ["ok", "ok", "ok"], "ok", false, lt);
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("N = 2m+1,  m = 1", 150, 390);
         var nRed = Math.min(3, Math.floor(clamp01((lt - 1) / 4) * 3));
         var bx = 470, by = 150, cellH = 46;
@@ -273,7 +276,7 @@
     film.scene("The only real cure: diversity", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         var hit = lt > 3 && lt < 8;
-        drawTMR(ctx, h, 320, 230, ["ok", hit ? "bad" : "ok", "ok"], "ok", true);
+        drawTMR(ctx, h, 320, 230, ["ok", hit ? "bad" : "ok", "ok"], "ok", true, lt);
         // cosmic ray bolt
         if (lt > 2.5 && lt < 5) { ctx.strokeStyle = h.rgba(AMB, clamp01((lt - 2.5) / 0.4) * (1 - clamp01((lt - 4.5) / 0.5))); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(420, 60); ctx.lineTo(400, 110); ctx.lineTo(420, 130); ctx.lineTo(405, 180); ctx.stroke(); ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("shared environment", 430, 90); }
         // rho slider dropping

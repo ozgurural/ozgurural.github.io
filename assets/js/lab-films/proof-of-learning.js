@@ -431,9 +431,11 @@
            if(fidx >= fpts.length) fidx = fpts.length - 1;
            var fx = co.x(fpts[fidx][0]);
            var fy = co.y(fpts[fidx][1]);
-           if (Math.random() > 0.5) {
+           if (Math.sin(lt * 23.5) > 0) {
              ctx.fillStyle = h.rgba(RED, 0.7);
-             ctx.fillRect(fx - 10, fy - 2 + (Math.random()-0.5)*10, 20 + Math.random()*20, 2);
+             var pr1 = Math.sin(lt * 41) * 0.5 + 0.5;
+             var pr2 = Math.sin(lt * 59) * 0.5 + 0.5;
+             ctx.fillRect(fx - 10, fy - 2 + (pr1 - 0.5) * 10, 20 + pr2 * 20, 2);
            }
         }
       });
