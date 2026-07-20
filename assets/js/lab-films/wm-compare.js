@@ -502,6 +502,7 @@
               ctx.setLineDash([]);
            }
         }
+        ctx.globalAlpha = 1;
       });
       lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
       lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });

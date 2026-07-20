@@ -207,16 +207,16 @@
          var targetX = 2 + (8 * t / (tickets - 1));
          var targetY = k / targetX;
          
-         s.move(dot, { coords: co, x: targetX, y: targetY, at: 0.5 + t * 0.05, dur: 1.5, ease: E.out });
+         s.move(dot, { coords: co, toX: targetX, toY: targetY, at: 0.5 + t * 0.05, dur: 1.5, ease: E.out });
          
          (function(dNode) {
-             s._cue(dNode, 0.5 + t * 0.05, 1.5, E.out, function(st, p, hd) {
+             s._cue(dNode, 0.5 + t * 0.05, 1.5, E.out, function(st, p) {
                  var r1 = 252, g1 = 98, b1 = 85; 
                  var r2 = 88, g2 = 196, b2 = 221; 
                  var r = Math.round(r1 + (r2 - r1) * p);
                  var g = Math.round(g1 + (g2 - g1) * p);
                  var b = Math.round(b1 + (b2 - b1) * p);
-                 hd.el.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
+                 dNode.el.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
              });
          })(dot);
       }
@@ -243,7 +243,7 @@
           var currX = lerp(2.5, 8, E.inOut(sweep));
           return { x: currX, y: k / currX };
       };
-      s.moveAlong(priceDot, sweepFn, { at: 20, dur: 35, ease: window.LabAnim.ease.linear });
+      s.moveAlong(priceDot, sweepFn, { coords: co, at: 20, dur: 35, ease: window.LabAnim.ease.linear });
 
       s.canvas(function(lt, ctx, h) {
         // Gradient fill under curve
@@ -321,19 +321,19 @@
       s.moveAlong(pDot, function(tau) {
           var currX = lerp(8, 2, tau);
           return { x: currX, y: k3 / currX };
-      }, { at: 54, dur: 6.0, ease: E.inOut });
+      }, { coords: co3, at: 54, dur: 6.0, ease: E.inOut });
       
       var payCoin = s.dot({ coords: co3, x: 2, y: 10, r: 24, color: AMB });
       s.hide(payCoin, 0); s.show(payCoin, 60);
-      s.move(payCoin, { px: 750, py: 220, at: 60, dur: 8, ease: E.out });
+      s.move(payCoin, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
       
       var payTxt = s.caption("<strong style='color:#000'>$1000</strong>", { coords: co3, x: 2, y: 10, size: "16px", anchor: "center" });
       s.hide(payTxt, 0); s.show(payTxt, 60);
-      s.move(payTxt, { px: 750, py: 220, at: 60, dur: 8, ease: E.out });
+      s.move(payTxt, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
       
       var costTxt = s.caption("<strong style='color:#fc6255'>- $100</strong>", { coords: co3, x: 2, y: 10, size: "14px", anchor: "center" });
       s.hide(costTxt, 0); s.show(costTxt, 60);
-      s.move(costTxt, { px: 750, py: 245, at: 60, dur: 8, ease: E.out });
+      s.move(costTxt, { toX: 750, toY: 245, at: 60, dur: 8, ease: E.out });
       
       var profTxt = s.caption("<strong style='color:#83C167'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
       s.hide(profTxt, 0);

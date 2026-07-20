@@ -30,7 +30,7 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", GRN = "#83C167", AMB = "#FFFF00", RED = "#FC6255", GREY = "#888888", GOLD = "#FFFF00";
+  var CY = "#58C4DD", GRN = "#83C167", AMB = "#FBBF24", RED = "#FC6255", GREY = "#888888", GOLD = "#FBBF24";
   var Z_ALPHA = 1.645; // one-sided α = 5%
   
   var HIST_N = 30, HIST_X0 = 130, HIST_BW = 16, HIST_GAP = 9, HIST_BASEY = 330;
