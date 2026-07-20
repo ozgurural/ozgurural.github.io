@@ -89,9 +89,8 @@
       s.canvas(function (lt, ctx, h) {
         // genesis
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#888888", 1);
-        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#f1f5f9", 0.8);
         ctx.fillText("genesis", gx - 4, (yH + yA) / 2 + hh / 2 + 16);
-        var nH = nAt(lt, 0.4, 0.85, 8), nA = nAt(lt, 1.6, 1.18, 6), i;
+        var nH = nAt(lt, 0.4, 0.85, 14), nA = nAt(lt, 1.6, 1.18, 10), i;
         // honest (cyan, top)
         for (i = 0; i < nH; i++) {
           var x = gx + bw + gap + i * (bw + gap);
@@ -129,8 +128,9 @@
           }
         }
         // payment coin on honest genesis-adjacent block
-        ctx.beginPath(); ctx.arc(gx + bw + gap + 0 * (bw + gap) + bw / 2, yH - 16, 8, 0, 7);
-        ctx.fillStyle = h.rgba(GRN, lt > 1 ? 1 : 0); ctx.fill();
+        var coinP = clamp01((lt - 1) / 0.5);
+        ctx.beginPath(); ctx.arc(gx + bw + gap + 0 * (bw + gap) + bw / 2, yH - 16, 8 * E.out(coinP), 0, 7);
+        ctx.fillStyle = h.rgba(GRN, coinP); ctx.fill();
         // secrecy curtain over attacker chain (lifts while the lead counter
         // still ticks, so the scene never sits static)
         var cv = clamp01((lt - 1.2) / 0.8) * (1 - clamp01((lt - 9) / 1.2));
@@ -182,7 +182,8 @@
         ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.stroke();
         ctx.restore();
         // clock pulse
-        var beat = (lt % 2) < 0.25 ? 1 : 0.4;
+        var ph = (lt % 2) / 2;
+        var beat = 0.4 + 0.6 * Math.exp(-6 * ph);
         ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", beat);
         ctx.fillText("⏱ ~10 min / flip", cx - 46, cy + R + 34);
         // hashrate bar (right)
@@ -271,7 +272,7 @@
         while (seq.length <= WSTEPS) seq.push(seq[seq.length - 1]);
         walkers.push(seq);
       }
-      function rowY(wi) { return LY + ((wi % 11) - 5) * 7.6; } // band clears the notch digits at LY+46
+      function rowY(wi) { return LY + ((wi % 15) - 7) * 5.2; } // band clears the notch digits at LY+46
 
       /* --- beat 3: the law. Chance of EVER catching up, per deficit. */
       var T3 = 21.5;
@@ -328,7 +329,7 @@
           }
 
           // beat-1 token: glides notch to notch as the coin lands
-          if (lt < T2 + 0.4) {
+          if (lt < B1END + 1.0) {
             var idx = Math.max(0, Math.min(B1.length - 1, ci + 1));
             var frac = ci < 0 ? 0 : clamp01(((lt - STEP0) - ci * STEP - 0.3) / 0.35);
             var from = B1[Math.max(0, Math.min(B1.length - 1, idx - 1))];
@@ -357,9 +358,10 @@
               var sq = walkers[w2];
               var cur = sq[Math.min(stepIdx, sq.length - 1)];
               var nxt = sq[Math.min(stepIdx + 1, sq.length - 1)];
-              var wx = lerp(gx(cur), gx(nxt), E.smooth(fr));
+              var jitterX = (Math.sin(w2 * 17.3) * 3);
+              var wx = lerp(gx(cur), gx(nxt), E.smooth(fr)) + jitterX;
               var done = cur === 0;
-              if (done) { caught++; wx = gx(0); }
+              if (done) { caught++; wx = gx(0) + jitterX; }
               ctx.beginPath(); ctx.arc(wx, rowY(w2), done ? 5 : 4, 0, 7);
               ctx.fillStyle = h.rgba(done ? GRN : MAG, wIn * (done ? 0.95 : 0.45));
               ctx.fill();
@@ -458,10 +460,12 @@
       for (kk = 0; kk <= 8; kk++) {
         var pm = poissonPMF(lambda, kk);
         var bx0 = co.x(kk - 0.32), bx1 = co.x(kk + 0.32), by0 = co.y(0), by1 = co.y(pm);
-        var col = kk > z ? RED : MAG;
+        var col = kk >= z ? RED : MAG;
         var bar = s.rect({ x: bx0, y: by1, w: bx1 - bx0, h: by0 - by1, fill: window.LabAnim.rgba(col, 0.6), stroke: col, sw: 1.4 });
         s.fadeIn(bar, { at: 3 + kk * 0.18, dur: 0.75 });
       }
+      var lostLbl = s.caption("k ≥ z: race already lost", { coords: co, x: 6.5, y: 0.22, anchor: "center", size: "0.9rem", color: RED });
+      s.fadeIn(lostLbl, { at: 3 + z * 0.18, dur: 0.75 });
       var meanLbl = s.caption("k ~ Poisson(λ),  λ = z·q/p ≈ 2.57", { coords: co, x: 4, y: 0.30, anchor: "center", align: "center", size: "1.1rem", color: MAG });
       s.fadeIn(meanLbl, { at: 6.3, dur: 1.05 });
       var kAxis = s.caption("attacker's secret blocks  k →", { coords: co, x: 8.3, y: -0.045, anchor: "top-right", align: "right", size: "1.2rem", color: "#dbeafe" });
@@ -471,7 +475,7 @@
       var form = s.tex2("\\text{Double Spend Risk Drop-off}", { px: 480, py: 340, size: "1.05rem", color: AMB });
       s.write(form, { at: 18.75, dur: 2.7 });
 
-      lower(s, "Satoshi models the attacker's block count as a Poisson process, summing Gambler's Ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
+      lower(s, "Satoshi models the attacker's block count as Poisson with mean λ = zq/p, then sums gambler's-ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
       var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
@@ -488,12 +492,14 @@
       var ax = s.axes(co, { grid: true, gridX: 6, gridY: 7 });
       s.draw(ax, { at: 0.6, dur: 1.35 });
       // y tick labels (10^0 .. 10^-7)
-      [0, -1, -2, -3, -4, -5, -6, -7].forEach(function (e) {
+      [0, -1, -2, -3, -4, -5, -6, -7].forEach(function (e, i) {
         var t = s.caption("10<sup>" + e + "</sup>", { coords: co, x: -0.35, y: e, anchor: "right", size: "0.62rem", color: "#7f93b4" });
-        s.fadeIn(t, { at: 1.5, dur: 0.75 });
+        s.fadeIn(t, { at: 1.5 + i * 0.08, dur: 0.75 });
       });
       var xlab = s.caption("confirmations z →", { coords: co, x: 6, y: -7.7, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
-      s.fadeIn(xlab, { at: 1.5, dur: 0.75 });
+      s.fadeIn(xlab, { at: 2.2, dur: 0.75 });
+      var ylab = s.caption("P(successful double-spend)", { coords: co, x: -0.05, y: 0.3, anchor: "left", size: "0.8rem", color: "#dbeafe" });
+      s.fadeIn(ylab, { at: 1.5, dur: 0.75 });
 
       function curve(q, color, at) {
         var pts = [], z;
@@ -515,7 +521,7 @@
       // callouts
       var cCY = s.caption("q=0.1 · z=6 → <strong style='color:#ffffff'>0.024%</strong>", { px: 720, py: 210, size: "1.2rem", color: CY });
       var cMG = s.caption("q=0.3 · z=6 → <strong style='color:#ffffff'>13.2%</strong>", { px: 720, py: 260, size: "1.2rem", color: MAG });
-      s.fadeIn(cCY, { at: 10.8, dur: 1.05 }); s.fadeIn(cMG, { at: 12, dur: 1.05 });
+      s.fadeIn(cCY, { at: 8.5, dur: 1.05 }); s.fadeIn(cMG, { at: 9.7, dur: 1.05 });
       var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: 720, py: 320, size: "1.5rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 13.2, dur: 1.05 }); s.pulse(jump, { at: 14.4, dur: 1.2, amp: 0.12 });
 
@@ -552,6 +558,9 @@
           if (diss < 0.01) {
             block(ctx, h, xa, yA, bw, hh, MAG, 0.9);
           } else {
+            var cfAlpha = 1 - clamp01(diss / 0.15);
+            if (cfAlpha > 0) block(ctx, h, xa, yA, bw, hh, MAG, 0.9 * cfAlpha);
+            
             ctx.globalAlpha = Math.max(0, (1 - diss) * 0.9);
             for(var p = 0; p < 4; p++) {
               var jx = diss * (20 + p * 8) * Math.cos(i + p * 1.5);
