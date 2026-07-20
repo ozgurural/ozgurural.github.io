@@ -98,6 +98,21 @@
     film.scene("The stolen model", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
+        // faint watermark dots
+        if (lt > 3.0) {
+            var dotAlpha = clamp01((lt - 3.0) / 2.0);
+            if (dotAlpha > 0) {
+               ctx.globalAlpha = 0.4 * dotAlpha;
+               for (var j = 0; j < 8; j++) { 
+                   var a = lt * 1.5 + j; 
+                   ctx.fillStyle = h.rgba(GOLD, 0.5 + 0.5 * Math.sin(a)); 
+                   ctx.beginPath(); 
+                   ctx.arc(270 - 40 + j * 12, 270 - 30 + (j % 3) * 22, 2.5, 0, 7); 
+                   ctx.fill(); 
+               }
+               ctx.globalAlpha = 1;
+            }
+        }
         // Digital data stream flowing from left model to right model
         if (lt > 1.5) {
           var pStream = clamp01((lt - 1.5) / 1.5);
@@ -444,8 +459,9 @@
       var power = Phi(d3 - Z_ALPHA);
       var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
       s.write(eq, { at: 1.5, dur: 1.5 });
-      var chip = s.caption("detection power → <strong style='color:#ffffff'>" + (power * 100).toFixed(2) + "%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN });
-      s.fadeIn(chip, { at: 3.75, dur: 1.5 });
+      var valNode = s.value("detection power → <strong style='color:#ffffff'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:#ffffff'>" + v.toFixed(2) + "%</strong>"; } });
+      s.fadeIn(valNode, { at: 3.75, dur: 1.5 });
+      s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.write(tag, { at: 6.6, dur: 2.1 });
       var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
