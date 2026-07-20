@@ -38,10 +38,10 @@
     cyan:  "#22d3ee",
     teal:  "#5CD0B3",
     good:  "#83C167",
-    amber: "#FFFF00",
+    amber: "#FBBF24",
     rose:  "#FC6255",
     violet:"#9A72AC",
-    indigo:"#9A72AC",
+    indigo:"#6D7CDE",
     white: "#ffffff"
   };
 
@@ -148,11 +148,14 @@
   };
   Handle.prototype.reset = function () {
     var b = this.base;
-    this._state = { op: b.op, x: b.x, y: b.y, sx: b.sx, sy: b.sy, rot: b.rot, clip: b.clip, dash: b.dash };
+    // html: text content routed through state (countUp), so scrubbing
+    // backwards restores the initial text — state stays a pure fn of t
+    this._state = { op: b.op, x: b.x, y: b.y, sx: b.sx, sy: b.sy, rot: b.rot, clip: b.clip, dash: b.dash, html: this._initHTML };
   };
   Handle.prototype.commit = function () { this._render(this._state); };
   Handle.prototype._render = function (s) {
     var el = this.el;
+    if (s.html !== undefined && el.innerHTML !== s.html) el.innerHTML = s.html;
     if (this.kind === "html") {
       el.style.opacity = s.op;
       // left/top (%) already places the logical anchor; s.x/s.y are CSS-px
@@ -411,6 +414,7 @@
   Scene.prototype.value = function (initial, o) {
     var h = this._html("labf__value", initial, o);
     h._fmt = (o && o.fmt) || function (v) { return v.toFixed(2); };
+    h._initHTML = String(initial);
     return h;
   };
 
@@ -455,7 +459,6 @@
       return this._cue(h, s.at, s.dur, s.ease, function (st, p) { st.op = p; });
     }
     h.base.dash = 1; h.cur.dash = 0; h.cur.op = 1;
-    var opFrom = 0;
     return this._cue(h, s.at, s.dur, s.ease, function (st, p) {
       st.op = 1; st.dash = 1 - p;          // dash 1 = fully hidden -> 0 = drawn
       if (p < 0.06) st.op = lerp(0, 1, p / 0.06);
@@ -537,22 +540,28 @@
     });
   };
 
-  // tween a numeric value bound to a .value() handle
+  // tween a numeric value bound to a .value() handle — the text goes through
+  // the state machine (st.html) so scrubbing backwards restores it
   Scene.prototype.countUp = function (h, o) {
     var s = span(o, 1.0);
     var from = num(o.from, 0), to = num(o.to, 1), fmt = h._fmt;
-    return this._cue(h, s.at, s.dur, s.ease, function (st, p) {
-      h.el.innerHTML = fmt(lerp(from, to, p));
+    this._cue(h, s.at, s.dur, s.ease, function (st, p) {
+      st.html = fmt(lerp(from, to, p));
       st.op = 1;
-    }).cues[this.cues.length - 1] && this;
+    });
+    return this;
   };
 
   // morph A->B: crossfade while nudging scale (a lightweight ReplacementTransform)
+  // from-values are captured BEFORE the cursor is mutated, so morphing a
+  // dimmed or scaled element starts from its actual state (no pop)
   Scene.prototype.morph = function (a, b, o) {
     var s = span(o, 0.8);
-    this._cue(a, s.at, s.dur, s.ease, function (st, p) { st.op = lerp(a.cur.op || 1, 0, p); st.sx = lerp(1,0.96,p); st.sy = lerp(1,0.96,p); });
+    var fromOp = a.cur.op > 0 ? a.cur.op : 1, fsx = a.cur.sx, fsy = a.cur.sy;
+    this._cue(a, s.at, s.dur, s.ease, function (st, p) { st.op = lerp(fromOp, 0, p); st.sx = lerp(fsx, fsx * 0.96, p); st.sy = lerp(fsy, fsy * 0.96, p); });
     b.base.op = 0;
-    this._cue(b, s.at, s.dur, s.ease, function (st, p) { st.op = lerp(0, 1, p); st.sx = lerp(1.04,1,p); st.sy = lerp(1.04,1,p); });
+    var bsx = b.cur.sx, bsy = b.cur.sy;
+    this._cue(b, s.at, s.dur, s.ease, function (st, p) { st.op = lerp(0, 1, p); st.sx = lerp(bsx * 1.04, bsx, p); st.sy = lerp(bsy * 1.04, bsy, p); });
     a.cur.op = 0; b.cur.op = 1;
     return this;
   };
@@ -629,13 +638,14 @@
     stage.appendChild(ov);
     this.overlay = ov;
 
-    // scene-name + subtitle chrome
+    // scene-name + subtitle chrome — exposed to assistive tech: the subtitle
+    // IS the narration prose, so screen-reader users follow the film through
+    // a polite live region instead of getting controls over empty content
     var chrome = document.createElement("div");
     chrome.className = "labf__chrome";
-    chrome.setAttribute("aria-hidden", "true");
     chrome.innerHTML =
-      '<span class="labf__chapter" data-role="chapter"></span>' +
-      '<span class="labf__subtitle" data-role="subtitle"></span>';
+      '<span class="labf__chapter" data-role="chapter" aria-hidden="true"></span>' +
+      '<span class="labf__subtitle" data-role="subtitle" role="status" aria-live="polite"></span>';
     stage.appendChild(chrome);
     this.chapterEl = chrome.querySelector('[data-role="chapter"]');
     this.subEl = chrome.querySelector('[data-role="subtitle"]');
@@ -672,7 +682,7 @@
       '<span class="labf__time" data-role="time">0:00</span>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="replay" aria-label="Replay from start">↺</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="voice" aria-label="Toggle narration voice" aria-pressed="false" title="Narration voice">🗣</button>' +
-      '<button type="button" class="labf__btn labf__btn--ghost" data-role="mute" aria-label="Toggle Audio">🔊</button>' +
+      '<button type="button" class="labf__btn labf__btn--ghost" data-role="mute" aria-label="Toggle Audio" aria-pressed="false">🔊</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⛶</button>';
     tr.style.position = "relative";
     tr.style.zIndex = "10";
@@ -699,7 +709,10 @@
         window.globalLabMuted = !window.globalLabMuted;
         var films = window.LabAnim.films || [];
         for(var i=0; i<films.length; i++) {
-           if (films[i].muteBtn) films[i].muteBtn.textContent = window.globalLabMuted ? "🔇" : "🔊";
+           if (films[i].muteBtn) {
+             films[i].muteBtn.textContent = window.globalLabMuted ? "🔇" : "🔊";
+             films[i].muteBtn.setAttribute("aria-pressed", window.globalLabMuted ? "true" : "false");
+           }
         }
         LabMusic.setMuted(window.globalLabMuted);
         if (window._currentLabNarrator) window._currentLabNarrator.volume = window.globalLabMuted ? 0 : 0.8;
@@ -841,6 +854,10 @@
     this.scrub.addEventListener("keydown", function (e) {
       if (e.key === "ArrowRight") { self._userPaused = true; self.pause(); self.seek(Math.min(self.duration, self.t + 1)); e.preventDefault(); }
       else if (e.key === "ArrowLeft") { self._userPaused = true; self.pause(); self.seek(Math.max(0, self.t - 1)); e.preventDefault(); }
+      else if (e.key === "PageUp") { self._userPaused = true; self.pause(); self.seek(Math.min(self.duration, self.t + 10)); e.preventDefault(); }
+      else if (e.key === "PageDown") { self._userPaused = true; self.pause(); self.seek(Math.max(0, self.t - 10)); e.preventDefault(); }
+      else if (e.key === "Home") { self._userPaused = true; self.pause(); self.seek(0); e.preventDefault(); }
+      else if (e.key === "End") { self._userPaused = true; self.pause(); self.seek(self.duration); e.preventDefault(); }
       else if (e.key === " " || e.key === "Enter") { self._userPaused = self.playing; self.toggle(); e.preventDefault(); }
     });
   };
@@ -901,25 +918,27 @@
     if (this._built) return this;
 
     var filmKey = (this.container && this.container.id) || "lab";
+    var filmSelf = this, FW = this.W, FH = this.H;
 
-    // Global Signature Outro Scene
+    // Global Signature Outro Scene (positions in fractions of the logical
+    // stage, so non-960x540 films keep it centered)
     this.scene("Signature", 18, function(s) {
-      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: 480, py: 270, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+      var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: FW / 2, py: FH * 0.5, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
-                           { px: 480, py: 222, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                           { px: FW / 2, py: FH * 0.411, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>PH.D. IN MACHINE LEARNING & TRUSTWORTHY-ML RESEARCHER</span>",
-                           { px: 480, py: 267, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                           { px: FW / 2, py: FH * 0.494, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",
-                           { px: 480, py: 310, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                           { px: FW / 2, py: FH * 0.574, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var objs = [bgLight, name, role, url];
 
       if (FILM_CREDITS[filmKey]) {
         var credit = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; white-space:nowrap;'>" + FILM_CREDITS[filmKey] + "</span>",
-                               { px: 480, py: 356, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                               { px: FW / 2, py: FH * 0.659, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
         objs.push(credit);
       }
 
@@ -937,10 +956,14 @@
       });
 
       // Signature stinger through the shared music context, voiced from the
-      // film's own root so it lands in key.
+      // film's own root so it lands in key. Edge-triggered: fires only while
+      // actually PLAYING into the outro (not when scrubbing across it), and
+      // re-arms whenever the scene restarts so Replay gets its stinger too.
       var playedSound = false;
+      s._cue(name, 0, 0.08, Ease.linear, function() { playedSound = false; });
       s._cue(name, 0.1, 0.1, Ease.linear, function() {
         if (playedSound || window.globalLabMuted) return;
+        if (!filmSelf.playing) return;
         playedSound = true;
         try { LabMusic.stinger(filmKey); } catch(e){}
       });
@@ -984,6 +1007,9 @@
         entries.forEach(function (en) {
           self._inView = en.isIntersecting;
           if (en.isIntersecting) {
+            // a film built while its container was display:none never got
+            // sized (_fitCanvas bails on zero width) — fit it on first sight
+            if (!self.canvasEl.width || !self._dpr) { self._fitCanvas(); self._repositionOverlay(); self.render(); }
             // Auto-resume ONLY if the system paused it. Do NOT autoplay on first view.
             if (!self._userPaused && self._everPlayed && self._autoResume) { self._autoResume = false; self.play(); }
           } else if (self.playing) {
@@ -1010,7 +1036,6 @@
 
   Film.prototype.render = function () {
     var t = this.t, i, sc;
-    var oldT = this._lastT !== undefined ? this._lastT : t;
     var ai = this._activeScene(t);
     var TR = 0.42; // crossfade window (s)
     
@@ -1127,15 +1152,26 @@
     ctx.setTransform(dpr * sc, 0, 0, dpr * sc, 0, 0);
     ctx.clearRect(0, 0, this.W, this.H);
     var scene = this.scenes[ai];
+    var hlp = { PAL: PAL, lerp: lerp, clamp01: clamp01, mix: mixColor, rgba: rgba, ease: Ease, W: this.W, H: this.H };
+    var into = scene ? t - scene.start : 0, TR = 0.42;
+    // the OUTGOING scene's canvas dissolves with the SVG/text layers,
+    // instead of hard-cutting on the first frame of a scene change
+    if (scene && ai > 0 && into < TR) {
+      var prevSc = this.scenes[ai - 1];
+      if (prevSc && prevSc._canvasDraw) {
+        ctx.save();
+        ctx.globalAlpha = 1 - Ease.smooth(into / TR);
+        try { prevSc._canvasDraw(t - prevSc.start, ctx, hlp); } catch (e) { /* never let a scene kill the loop */ }
+        ctx.restore();
+      }
+    }
     if (scene && scene._canvasDraw) {
-      var op = 1, into = t - scene.start, TR = 0.42;
+      var op = 1;
       if (into < TR && ai > 0) op = Ease.smooth(into / TR);
       ctx.save();
       ctx.globalAlpha = op;
       try {
-        scene._canvasDraw(t - scene.start, ctx, {
-          PAL: PAL, lerp: lerp, clamp01: clamp01, mix: mixColor, rgba: rgba, ease: Ease, W: this.W, H: this.H
-        });
+        scene._canvasDraw(t - scene.start, ctx, hlp);
       } catch (e) { /* never let a scene kill the loop */ }
       ctx.restore();
     }
@@ -1420,7 +1456,6 @@
   Film.prototype.play = function () {
     if (this.playing) return this;
     if (this.t >= this.duration - 1e-3) this.t = 0;
-    if (this.t >= this.duration) this.seek(0);
     this.playing = true;
     if (this._resetIdle) this._resetIdle();
     playingFilmsCount++;
@@ -1437,21 +1472,27 @@
     if (!this._raf) {
       this._raf = requestAnimationFrame(function step(now) {
         if (!self.playing) return;
-        var dt = Math.max(0, (now - self._lastTs) / 1000);
+        // clamp dt: through a GC pause / layout jank the film plays slightly
+        // slower instead of teleporting past whole cues
+        var dt = Math.min(0.1, Math.max(0, (now - self._lastTs) / 1000));
         self._lastTs = now;
-        
+
         var ai = self._activeScene(self.t);
         var activeSc = self.scenes[ai];
         // scenes carry start/end (no .duration field) — using .end makes the
         // narration-hold actually fire at each scene boundary
         var scEnd = activeSc ? activeSc.end : self.duration;
-        
+
         var nextT = self.t + dt;
         if (nextT >= scEnd - 0.05 && window._currentLabNarrator && window.globalLabVoice && !window.globalLabMuted) {
            var n = window._currentLabNarrator;
-           // If the audio is currently playing, hold time just before the scene ends
+           // If the audio is currently playing, hold time just before the
+           // scene ends — but only while it makes real progress; a stalled
+           // buffering stream must not freeze the film forever
            if (!n.paused && !n.ended) {
-              nextT = scEnd - 0.05;
+              if (n.currentTime !== self._holdAudioT) { self._holdAudioT = n.currentTime; self._holdStuckS = 0; }
+              else self._holdStuckS = (self._holdStuckS || 0) + dt;
+              if (self._holdStuckS < 4) nextT = scEnd - 0.05;
            }
         }
         self.t = nextT;
@@ -1482,10 +1523,6 @@
   };
   Film.prototype.toggle = function () { return this.playing ? this.pause() : this.play(); };
   Film.prototype.restart = function () { this.seek(0); this.poster.classList.add("is-hidden"); return this.play(); };
-  Film.prototype._reflectPlayState = function () {
-    this.playBtn.textContent = this.playing ? "❚❚" : "▶";
-    this.playBtn.setAttribute("aria-label", this.playing ? "Pause" : "Play");
-  };
 
   function fmtTime(s) {
     s = Math.max(0, Math.round(s));
@@ -1515,6 +1552,10 @@
 
   // Keyboard Accessibility for Lab Films
   document.addEventListener("keydown", function(e) {
+    // the scrub slider already consumed this key (it preventDefaults every
+    // key it handles) — running both handlers made Space a no-op and turned
+    // ArrowRight into a +6s jump
+    if (e.defaultPrevented) return;
     // Ignore if user is typing in an input field
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable) return;
 
@@ -1557,6 +1598,8 @@
 
 // SPA Navigation Audio Fade-Out
 document.addEventListener("click", function(e) {
+  // let the browser own modified clicks (new tab/window/download)
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;
   var target = e.target.closest("a");
   if (!target) return;
   var href = target.getAttribute("href");
