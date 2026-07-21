@@ -27,7 +27,7 @@
     build(); appendix();
   }
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = PAL.sky, AMB = "#FFFF00", RED = PAL.rose, GRN = PAL.good, GREY = PAL.faint, MAG = PAL.violet;
+  var CY = PAL.sky, AMB = PAL.amber, RED = PAL.rose, GRN = PAL.good, GREY = PAL.faint, MAG = PAL.violet;
   var LBL = "#dbeafe", TXT = "#e8eef9", WHT = "#f1f5f9", SUB = "#7f93b4", GRID = "#1e293b", BG_GRID = "#1f6f4f";
 
   function choose(n, k) { var c = 1; for (var i = 0; i < k; i++) c = c * (n - i) / (i + 1); return c; }
@@ -58,15 +58,19 @@
     var vy = cy + 80;
     var rt = lt;
     for (var i = 0; i < 3; i++) {
-      var col = states[i] === "bad" ? RED : CY;
+      var badP = typeof states[i] === "number" ? states[i] : (states[i] === "bad" ? 1 : 0);
+      var cR = lerp(88, 252, badP); // CY 58C4DD to RED FC6255
+      var cG = lerp(196, 98, badP);
+      var cB = lerp(221, 85, badP);
+      var col = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + ",1)";
       
       // Explosion/glitch if bad
-      if (states[i] === "bad") {
+      if (badP > 0) {
          var r1 = Math.sin(lt * 31 + i) * 0.5 + 0.5;
          var r2 = Math.sin(lt * 47 + i) * 0.5 + 0.5;
          var r3 = Math.sin(lt * 59 + i) * 0.5 + 0.5;
          var r4 = Math.sin(lt * 71 + i) * 0.5 + 0.5;
-         ctx.fillStyle = h.rgba(RED, 0.4 + 0.5 * r1);
+         ctx.fillStyle = h.rgba(RED, (0.4 + 0.5 * r1) * badP);
          var gx = pos[i][0] + (r2 - 0.5) * 40;
          var gy = pos[i][1] + (r3 - 0.5) * 40;
          ctx.beginPath(); ctx.arc(gx, gy, 1 + r4 * 3, 0, 7); ctx.fill();
@@ -74,34 +78,44 @@
       }
       
       hexPath(ctx, pos[i][0], pos[i][1], 30);
-      ctx.fillStyle = h.rgba(col, 0.14); ctx.fill();
-      ctx.strokeStyle = h.rgba(col, 0.95); ctx.lineWidth = 2; ctx.stroke();
-      ctx.fillStyle = h.rgba(col, 0.95); ctx.font = "11px 'JetBrains Mono',monospace";
+      ctx.fillStyle = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + ",0.14)"; ctx.fill();
+      ctx.strokeStyle = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + ",0.95)"; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + ",0.95)"; ctx.font = "11px 'JetBrains Mono',monospace";
       var lbl = distinct ? ["A·Ada", "B·C", "C·Rust"][i] : "CH" + (i + 1);
       ctx.fillText(lbl, pos[i][0] - 16, pos[i][1] + 4);
       
       // arrow to voter
-      ctx.strokeStyle = h.rgba(states[i] === "bad" ? RED : CY, 0.5); ctx.lineWidth = states[i] === "bad" ? 1.4 : 2.4;
+      ctx.strokeStyle = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + ",0.5)"; ctx.lineWidth = lerp(2.4, 1.4, badP);
       ctx.beginPath(); ctx.moveTo(pos[i][0], pos[i][1] + 30); ctx.lineTo(cx, vy - 26); ctx.stroke();
       
       // Network ping ripples
-      if (states[i] === "ok") {
+      if (badP < 1) {
          var pp = (rt * 1.5 + i * 0.3) % 1;
          var px = lerp(pos[i][0], cx, pp);
          var ppy = lerp(pos[i][1] + 30, vy - 26, pp);
-         ctx.fillStyle = h.rgba(CY, 0.8 * (1-pp));
+         ctx.fillStyle = h.rgba(CY, 0.8 * (1-pp) * (1-badP));
          ctx.shadowBlur = 8; ctx.shadowColor = CY;
          ctx.beginPath(); ctx.arc(px, ppy, 3, 0, 7); ctx.fill();
          ctx.shadowBlur = 0;
       }
     }
-    var vcol = voter === "ok" ? GRN : voter === "bad" ? RED : AMB;
-    diamond(ctx, cx, vy, 28); ctx.fillStyle = h.rgba(vcol, 0.16); ctx.fill();
-    ctx.strokeStyle = h.rgba(vcol, 0.95); ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = h.rgba(vcol, 1); ctx.font = "600 10px 'JetBrains Mono',monospace"; ctx.fillText("VOTE", cx - 14, vy + 3);
+    
+    var voterBadP = typeof voter === "number" ? voter : (voter === "bad" ? 1 : 0);
+    var vR = lerp(131, 252, voterBadP); // GRN to RED
+    var vG = lerp(193, 98, voterBadP);
+    var vB = lerp(103, 85, voterBadP);
+    var vcol = voter === "idle" ? AMB : "rgba(" + Math.round(vR) + "," + Math.round(vG) + "," + Math.round(vB) + ",";
+    
+    diamond(ctx, cx, vy, 28); 
+    ctx.fillStyle = voter === "idle" ? h.rgba(AMB, 0.16) : vcol + "0.16)"; ctx.fill();
+    ctx.strokeStyle = voter === "idle" ? h.rgba(AMB, 0.95) : vcol + "0.95)"; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = voter === "idle" ? h.rgba(AMB, 1) : vcol + "1)"; ctx.font = "600 10px 'JetBrains Mono',monospace"; ctx.fillText("VOTE", cx - 14, vy + 3);
     // output
-    ctx.strokeStyle = h.rgba(vcol, 0.9); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx, vy + 28); ctx.lineTo(cx, vy + 56); ctx.stroke();
-    ctx.fillStyle = h.rgba(vcol, 1); ctx.font = "600 18px 'JetBrains Mono',monospace"; ctx.fillText(voter === "bad" ? "✗" : voter === "ok" ? "✓" : "…", cx - 6, vy + 76);
+    ctx.strokeStyle = voter === "idle" ? h.rgba(AMB, 0.9) : vcol + "0.9)"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx, vy + 28); ctx.lineTo(cx, vy + 56); ctx.stroke();
+    ctx.fillStyle = voter === "idle" ? h.rgba(AMB, 1) : vcol + "1)"; ctx.font = "600 18px 'JetBrains Mono',monospace"; 
+    
+    ctx.save(); ctx.globalAlpha = 1 - voterBadP; ctx.fillText(voter === "idle" ? "…" : "✓", cx - 6, vy + 76); ctx.restore();
+    if (voter !== "idle") { ctx.save(); ctx.globalAlpha = voterBadP; ctx.fillText("✗", cx - 6, vy + 76); ctx.restore(); }
   }
 
   /* ============== 1 — HOOK ============== */
@@ -109,8 +123,16 @@
     film.scene("Two pilots, one verdict", 14, function (s) {
       s.canvas(function (lt, ctx, h) {
         var states, voter;
-        if (lt < 6) { states = ["ok", "ok", lt > 2 ? "bad" : "ok"]; voter = lt > 2.5 ? "ok" : "idle"; }
-        else { var g = (Math.floor(lt * 6) % 2) === 0; states = g ? ["bad", "bad", "bad"] : ["ok", "ok", "ok"]; voter = g ? "bad" : "ok"; }
+        if (lt < 6) { 
+           var bad3 = clamp01((lt - 2) / 0.5);
+           states = [0, 0, bad3]; 
+           voter = lt > 2.5 ? 0 : "idle"; 
+        }
+        else { 
+           var flash = (Math.floor(lt * 6) % 2) === 0 ? 1 : 0; 
+           states = [flash, flash, flash]; 
+           voter = flash; 
+        }
         drawTMR(ctx, h, 480, 230, states, voter, false, lt);
         if (lt < 6 && lt > 3) {
           var fade1 = clamp01((lt - 3) / 0.5) * (lt > 5.5 ? clamp01((6 - lt) / 0.5) : 1);
@@ -137,18 +159,36 @@
       s.canvas(function (lt, ctx, h) {
         drawTMR(ctx, h, 230, 220, ["ok", "ok", "ok"], "ok", false, lt);
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("N = 2m+1,  m = 1", 150, 390);
-        var nRed = Math.min(3, Math.floor(clamp01((lt - 1) / 4) * 3));
+        var redP = clamp01((lt - 1) / 4);
+        var redLevels = [
+           clamp01((lt - 1.0) / 0.5),
+           clamp01((lt - 2.33) / 0.5),
+           clamp01((lt - 3.66) / 0.5)
+        ];
+        var sysFail = redLevels[1]; // Fails when 2nd box goes red
         var bx = 470, by = 150, cellH = 46;
         for (var i = 0; i < 3; i++) {
-          var isRed = i < nRed; var fails = nRed >= 2;
-          ctx.fillStyle = h.rgba(fails ? RED : (isRed ? RED : GRN), isRed ? 0.7 : 0.35);
+          var isRed = redLevels[i];
+          // If system fails, even healthy nodes get tinted red
+          var failTint = Math.max(isRed, sysFail * 0.5); 
+          var cR = lerp(131, 252, failTint); // GRN 83C167 to RED FC6255
+          var cG = lerp(193, 98, failTint);
+          var cB = lerp(103, 85, failTint);
+          var cA = lerp(0.35, 0.7, isRed);
+          ctx.fillStyle = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + "," + cA + ")";
           ctx.fillRect(bx, by + i * cellH, 80, cellH - 6);
           ctx.strokeStyle = h.rgba(LBL, 0.4); ctx.strokeRect(bx, by + i * cellH, 80, cellH - 6);
         }
         ctx.strokeStyle = h.rgba(AMB, 0.9); ctx.setLineDash([5, 5]); ctx.lineWidth = 1.6;
         ctx.beginPath(); ctx.moveTo(bx - 10, by + 2 * cellH); ctx.lineTo(bx + 90, by + 2 * cellH); ctx.stroke(); ctx.setLineDash([]);
         ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("> N/2 fails", bx + 110, by + 2 * cellH + 4);
-        ctx.fillStyle = h.rgba(nRed >= 2 ? RED : GRN, 1); ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillText(nRed >= 2 ? "SYSTEM FAILS" : "system OK", bx, by + 3 * cellH + 18);
+        
+        ctx.fillStyle = "rgba(" + Math.round(lerp(131,252,sysFail)) + "," + Math.round(lerp(193,98,sysFail)) + "," + Math.round(lerp(103,85,sysFail)) + ",1)";
+        ctx.font = "600 12px 'JetBrains Mono',monospace"; 
+        
+        // Use a crossfade for text to avoid binary swap
+        ctx.save(); ctx.globalAlpha = 1 - sysFail; ctx.fillText("system OK", bx, by + 3 * cellH + 18); ctx.restore();
+        ctx.save(); ctx.globalAlpha = sysFail; ctx.fillText("SYSTEM FAILS", bx, by + 3 * cellH + 18); ctx.restore();
         var px0 = 660, py0 = 330, bw = 44;
         for (i = 0; i <= 3; i++) {
           var c = choose(3, i), hgt = c * 30, tail = i >= 2;
@@ -264,12 +304,18 @@
         ctx.strokeStyle = h.rgba(BG_GRID, 0.3); ctx.lineWidth = 1;
         for (var gx = 60; gx < 920; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, 430); ctx.stroke(); }
         for (var gy = 90; gy < 430; gy += 40) { ctx.beginPath(); ctx.moveTo(60, gy); ctx.lineTo(900, gy); ctx.stroke(); }
-        var prog = clamp01(lt / 9), fail = lt > 7;
+        var prog = clamp01(lt / 9);
+        var failLevel = clamp01((lt - 7) / 0.5);
         ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2.4; ctx.beginPath();
         for (var i = 0; i <= 60 * prog; i++) { 
           var x = 80 + i * 4.5; 
           var y = 410 - i * 4.0; 
-          if (fail && i > 42) { y = 410 - 42 * 4.0 + Math.pow(i - 42, 2) * 0.8; x = 80 + 42 * 4.5 + (i - 42) * 2; } 
+          if (i > 42) { 
+            var failY = 410 - 42 * 4.0 + Math.pow(i - 42, 2) * 0.8; 
+            var failX = 80 + 42 * 4.5 + (i - 42) * 2; 
+            x = lerp(x, failX, failLevel);
+            y = lerp(y, failY, failLevel);
+          } 
           if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); 
         }
         ctx.stroke();
@@ -300,8 +346,8 @@
   function diversity(film) {
     film.scene("The only real cure: diversity", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
-        var hit = lt > 3 && lt < 8;
-        drawTMR(ctx, h, 320, 230, ["ok", hit ? "bad" : "ok", "ok"], "ok", true, lt);
+        var hitLevel = clamp01((lt - 3) / 0.5) * clamp01((8 - lt) / 0.5);
+        drawTMR(ctx, h, 320, 230, [0, hitLevel, 0], 0, true, lt);
         // cosmic ray bolt
         if (lt > 2.5 && lt < 5) {
           var rayFade = clamp01((lt - 2.5) / 0.5) * clamp01((5 - lt) / 0.5);
