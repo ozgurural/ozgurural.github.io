@@ -166,8 +166,8 @@
            }
            ctx.closePath();
            var sgrad = ctx.createRadialGradient(cCenter[0], cCenter[1], 0, cCenter[0], cCenter[1], 150);
-           sgrad.addColorStop(0, h.rgba("#5CD0B3", 0.15 * sweepOp));
-           sgrad.addColorStop(1, h.rgba("#58C4DD", 0.0));
+           sgrad.addColorStop(0, h.rgba(h.PAL.teal, 0.15 * sweepOp));
+           sgrad.addColorStop(1, h.rgba(h.PAL.sky, 0.0));
            ctx.fillStyle = sgrad;
            ctx.fill();
         }
@@ -188,7 +188,7 @@
             if (j === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
           }
           var shade = i / nu;
-          ctx.strokeStyle = h.rgba(h.mix("#0e7490", "#5CD0B3", shade), 0.55);
+          ctx.strokeStyle = h.rgba(h.mix("#0e7490", h.PAL.teal, shade), 0.55);
           ctx.stroke();
         }
         // spokes (radial)
@@ -225,13 +225,17 @@
         ctx.shadowBlur = 0;
 
         // ---- global minimum glowing dot ----
-        if (lt > 1.5) {
+        var minFade = h.clamp01((lt - 1.5) / 0.5);
+        if (minFade > 0) {
+          ctx.save();
+          ctx.globalAlpha *= minFade;
           var pMin = proj(0, 0, 0);
           ctx.shadowBlur = 15;
-          ctx.shadowColor = "#5CD0B3";
-          ctx.fillStyle = h.rgba("#5CD0B3", 0.6);
+          ctx.shadowColor = h.PAL.teal;
+          ctx.fillStyle = h.rgba(h.PAL.teal, 0.6);
           ctx.beginPath(); ctx.arc(pMin[0], pMin[1], 4, 0, 7); ctx.fill();
           ctx.shadowBlur = 0;
+          ctx.restore();
         }
         var b = ballXY(rollTau);
         var zb = kBowl * (b.x * b.x + b.y * b.y) + 0.04;
@@ -273,22 +277,25 @@
 
       // contour field (level sets of the quadratic), blue -> magenta inward
       s.canvas(function (lt, ctx, h) {
-        var rev = h.clamp01(lt / 1.4);
         var levels = 11, i;
         for (i = levels; i >= 1; i--) {
           var t = i / levels;
-          if ((1 - t) > rev) continue;     // reveal outermost level set first
+          var ringFade = h.clamp01((lt - (1 - t) * 1.4) / 0.5);
+          if (ringFade <= 0) continue;     // reveal outermost level set first
+          ctx.save();
+          ctx.globalAlpha *= ringFade;
           var c = t;                       // 1 outer -> small inner
           var rx = Math.sqrt((c * 6.5) / a), ry = Math.sqrt((c * 6.5) / b);
           var cxp = co.x(mx), cyp = co.y(my);
           var rxp = co.x(mx + rx) - cxp, ryp = cyp - co.y(my + ry);
           ctx.beginPath();
           ctx.ellipse(cxp, cyp, Math.abs(rxp), Math.abs(ryp), 0, 0, 7);
-          ctx.strokeStyle = h.rgba(h.mix("#FC6255", "#58C4DD", t), 0.55);
+          ctx.strokeStyle = h.rgba(h.mix(h.PAL.rose, h.PAL.sky, t), 0.55);
           ctx.lineWidth = 1.3;
           ctx.stroke();
-          ctx.fillStyle = h.rgba(h.mix("#FC6255", "#1e3a8a", t), 0.06);
+          ctx.fillStyle = h.rgba(h.mix(h.PAL.rose, "#1e3a8a", t), 0.06);
           ctx.fill();
+          ctx.restore();
         }
       });
 
@@ -318,7 +325,10 @@
 
       // Particle sparks matching the ball's movement (same clock, same path)
       s.canvas(function(lt, ctx, h) {
-        if (lt > 4.8 && lt < 15.6) {
+        var sparkFade = h.clamp01((lt - 4.8) / 0.5) * (1 - h.clamp01((lt - 15.6) / 0.5));
+        if (sparkFade > 0) {
+           ctx.save();
+           ctx.globalAlpha *= sparkFade;
            var p = h.ease.smooth(h.clamp01((lt - 4.8) / 10.8));
            var pos = arcPath(p);
            var px = co.x(pos.x);
@@ -336,6 +346,7 @@
               ctx.fill();
            }
            ctx.shadowBlur = 0;
+           ctx.restore();
         }
       });
 
@@ -424,9 +435,9 @@
           var rxp = co.x(mx + rx) - cxp, ryp = cyp - co.y(my + ry);
           ctx.beginPath();
           ctx.ellipse(cxp, cyp, Math.abs(rxp), Math.abs(ryp), 0, 0, 7);
-          ctx.strokeStyle = h.rgba(h.mix("#FC6255", "#58C4DD", t), 0.5);
+          ctx.strokeStyle = h.rgba(h.mix(h.PAL.rose, h.PAL.sky, t), 0.5);
           ctx.lineWidth = 1.2; ctx.stroke();
-          ctx.fillStyle = h.rgba(h.mix("#FC6255", "#1e3a8a", t), 0.05); ctx.fill();
+          ctx.fillStyle = h.rgba(h.mix(h.PAL.rose, "#1e3a8a", t), 0.05); ctx.fill();
         }
       });
 
@@ -533,7 +544,7 @@
             if (j === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
           }
           var gradLine = ctx.createLinearGradient(proj(x, -1, surf(x, -1))[0], proj(x, -1, surf(x, -1))[1], proj(x, 1, surf(x, 1))[0], proj(x, 1, surf(x, 1))[1]);
-          gradLine.addColorStop(0, h.rgba("#5CD0B3", 0.05)); gradLine.addColorStop(1, h.rgba("#5CD0B3", 0.4));
+          gradLine.addColorStop(0, h.rgba(h.PAL.teal, 0.05)); gradLine.addColorStop(1, h.rgba(h.PAL.teal, 0.4));
           ctx.strokeStyle = gradLine; ctx.lineWidth = 1; ctx.stroke();
         }
         for (j = 0; j <= N; j++) {
@@ -547,26 +558,33 @@
           ctx.strokeStyle = h.rgba("#1f6f74", 0.05 + 0.35 * (j / N)); ctx.lineWidth = 1; ctx.stroke();
         }
         // stable (green, up) and unstable (red, down) principal axes
-        if (lt > 2.0) {
-          var aop = h.clamp01((lt - 2.0) / 0.8);
+        var axisFade = h.clamp01((lt - 2.0) / 0.5);
+        if (axisFade > 0) {
+          ctx.save();
+          ctx.globalAlpha *= axisFade;
           var gA = proj(-1, 0, surf(-1, 0)), gB = proj(1, 0, surf(1, 0));
-          ctx.strokeStyle = h.rgba("#83C167", 0.6 * aop); ctx.lineWidth = 2.4;
+          ctx.strokeStyle = h.rgba(h.PAL.good, 0.6); ctx.lineWidth = 2.4;
           ctx.beginPath(); ctx.moveTo(gA[0], gA[1]); ctx.lineTo(gB[0], gB[1]); ctx.stroke();
           var rA = proj(0, -1, surf(0, -1)), rB = proj(0, 1, surf(0, 1));
-          ctx.strokeStyle = h.rgba("#FC6255", 0.7 * aop); ctx.lineWidth = 2.4;
+          ctx.strokeStyle = h.rgba(h.PAL.rose, 0.7); ctx.lineWidth = 2.4;
           ctx.beginPath(); ctx.moveTo(rA[0], rA[1]); ctx.lineTo(rB[0], rB[1]); ctx.stroke();
+          ctx.restore();
         }
         // ball
         var b = ballXY(lt), pb = proj(b.x, b.y, surf(b.x, b.y) + 0.04);
         var stuck = lt < 8.5;
         var grd = ctx.createRadialGradient(pb[0] - 3, pb[1] - 4, 1, pb[0], pb[1], 11);
-        if (stuck) { grd.addColorStop(0, "#cfd8e6"); grd.addColorStop(1, "#888888"); }
+        if (stuck) { grd.addColorStop(0, "#cfd8e6"); grd.addColorStop(1, h.PAL.faint); }
         else { grd.addColorStop(0, "#fff7e0"); grd.addColorStop(0.4, "#FFFF00"); grd.addColorStop(1, "#b45309"); }
         ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(pb[0], pb[1], 9, 0, 7); ctx.fill();
-        if (stuck && lt > 4) {
+        var stallFade = h.clamp01((lt - 4) / 0.5) * (1 - h.clamp01((lt - 8) / 0.5));
+        if (stallFade > 0) {
+          ctx.save();
+          ctx.globalAlpha *= stallFade;
           ctx.font = "13px 'JetBrains Mono', monospace";
-          ctx.fillStyle = h.rgba("#9aa7be", h.clamp01((lt - 4) / 0.8) * (1 - h.clamp01((lt - 8) / 0.6)));
+          ctx.fillStyle = "#9aa7be";
           ctx.fillText("∇L ≈ 0  ·  stalled", pb[0] + 14, pb[1] - 10);
+          ctx.restore();
         }
       });
 
@@ -579,7 +597,10 @@
       s.draw(idx, { at: 5.1, dur: 2.4 });
       s.canvas(function(lt, ctx, h) {
         // area fill trails the curve draw-on (5.1→7.5); never precedes axes
-        if (lt < 5.4) return;
+        var areaFade = h.clamp01((lt - 5.4) / 0.5);
+        if (areaFade <= 0) return;
+        ctx.save();
+        ctx.globalAlpha *= areaFade;
         var p = h.ease.smooth(h.clamp01((lt - 5.4) / 2.1));
         ctx.beginPath(); ctx.moveTo(co.x(0), co.y(0));
         for(var i=0; i<=80*p; i++) {
@@ -589,9 +610,10 @@
         }
         ctx.lineTo(co.x(p), co.y(0)); ctx.closePath();
         var grd = ctx.createLinearGradient(0, co.y(1), 0, co.y(0));
-        grd.addColorStop(0, h.rgba("#9A72AC", 0.35));
-        grd.addColorStop(1, h.rgba("#9A72AC", 0.0));
+        grd.addColorStop(0, h.rgba(h.PAL.violet, 0.35));
+        grd.addColorStop(1, h.rgba(h.PAL.violet, 0.0));
         ctx.fillStyle = grd; ctx.fill();
+        ctx.restore();
       });
       // scatter critical points along the curve
       [[0.06, 0], [0.22, 0], [0.4, 0], [0.58, 0], [0.74, 0], [0.9, 0]].forEach(function (pt, i) {

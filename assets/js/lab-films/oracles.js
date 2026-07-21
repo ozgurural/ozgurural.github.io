@@ -12,7 +12,7 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
+  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC", WHITE = "#ffffff", BLACK = "#000000", LIGHT_GREY = "#e2e8f0";
 
   var _lowerCount = 0, _pendLower = null;
   // Panels share one full-width bottom bar, so two visible at once print
@@ -81,7 +81,7 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px 'JetBrains Mono', monospace"; 
+        ctx.fillStyle = WHITE; ctx.font = "bold 20px 'JetBrains Mono', monospace"; 
         ctx.fillText("SMART CONTRACT", 630, 190);
         
         
@@ -90,7 +90,7 @@
         if (ctx.roundRect) ctx.roundRect(620, 220, 210, 150, 8); else ctx.rect(620, 220, 210, 150);
         ctx.fill();
         
-      ctx.fillStyle = "#e2e8f0"; ctx.font = "14px 'JetBrains Mono', monospace";
+        ctx.fillStyle = LIGHT_GREY; ctx.font = "14px 'JetBrains Mono', monospace";
         ctx.fillText("if (weather == rain):", 630, 250);
         ctx.fillText("   pay_farmer()", 630, 280);
         
@@ -106,6 +106,8 @@
 
         // Advanced API Packets (Glowing streaks bouncing)
         if (lt > 5) {
+           var fade5 = clamp01((lt - 5) / 0.5);
+           ctx.globalAlpha = op * fade5;
            var packetCount = Math.floor((lt - 5) * 1.5); 
            for(var p=0; p<Math.min(packetCount, 25); p++) {
               var pTime = (lt - 5) - (p / 1.5);
@@ -132,16 +134,20 @@
                  }
               }
            }
+           ctx.globalAlpha = op;
         }
         
         if (lt > 18) {
+           var fade18 = clamp01((lt - 18) / 0.5);
+           ctx.globalAlpha = op * fade18;
            ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
            ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 445);
            ctx.shadowBlur = 0;
+           ctx.globalAlpha = op;
         }
 
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = op;
       });
 
       lower(s, "The blockchain is a perfectly deterministic grid. A closed universe.", 1.33, { out: 12 });
@@ -172,7 +178,7 @@
         
         ctx.strokeStyle = h.rgba(AMB, 0.6); ctx.lineWidth = 1; ctx.stroke();
         
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
+        ctx.fillStyle = WHITE; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
         ctx.fillText("Off-chain Prover", 100, 80);
         
 
@@ -202,6 +208,8 @@
 
         // The Shockwave Inference (Forward Pass)
         if (lt > 5 && lt < 25) {
+           var fade5 = clamp01((lt - 5) / 0.5) * clamp01((25 - lt) / 0.5);
+           ctx.globalAlpha = op * fade5;
            var passP = (lt * 2) % layers.length; 
            var activeLayer = Math.floor(passP);
            
@@ -215,10 +223,13 @@
            ctx.shadowBlur = 0;
            
            ctx.fillStyle = GRN; ctx.font = "14px monospace"; ctx.fillText("Tracing inference...", 110, 420);
+           ctx.globalAlpha = op;
         }
 
         // Generating the Mandala Proof (π)
         if (lt > 25) {
+           var fade25 = clamp01((lt - 25) / 0.5);
+           ctx.globalAlpha = op * fade25;
            var proofP = clamp01((lt - 25) / 12);
            var pX = lerp(180, 700, E.inOut(proofP));
            var pY = 250;
@@ -248,19 +259,21 @@
            ctx.restore();
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace"; ctx.fillText("π (Proof)", pX - 35, pY - 65);
+           ctx.fillStyle = WHITE; ctx.font = "bold 16px monospace"; ctx.fillText("π (Proof)", pX - 35, pY - 65);
 
            // On-chain verification box
            ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 200);
            ctx.strokeStyle = CY; ctx.lineWidth = 2; ctx.strokeRect(600, 150, 200, 200);
-           ctx.fillStyle = "#fff"; ctx.fillText("Smart Contract", 630, 180);
+           ctx.fillStyle = WHITE; ctx.fillText("Smart Contract", 630, 180);
            
            ctx.strokeStyle = h.rgba(CY, 0.8); ctx.setLineDash([8,8]); ctx.lineWidth = 3;
            ctx.beginPath(); ctx.arc(700, 250, 30, 0, Math.PI*2); ctx.stroke(); // Keyhole
            ctx.setLineDash([]);
-           ctx.fillStyle = "#fff"; ctx.fillText("Verify(π)", 665, 310);
+           ctx.fillStyle = WHITE; ctx.fillText("Verify(π)", 665, 310);
 
            if (proofP === 1) {
+              var fade37 = clamp01((lt - 37) / 0.5);
+              ctx.globalAlpha = op * fade25 * fade37;
               // Glowing verification success
               var pulse = Math.abs(Math.sin(lt * 5));
               ctx.fillStyle = h.rgba(GRN, 0.3 + 0.3*pulse);
@@ -271,8 +284,9 @@
               ctx.fillText("VALID", 665, 260);
               ctx.shadowBlur = 0;
            }
+           ctx.globalAlpha = op;
         }
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = op;
       });
 
       lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
@@ -294,25 +308,30 @@
         ctx.beginPath(); ctx.moveTo(100, 250); ctx.lineTo(800, 250); ctx.stroke();
         ctx.shadowBlur = 0;
         
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'";
+        ctx.fillStyle = WHITE; ctx.font = "bold 16px 'JetBrains Mono'";
         ctx.fillText("Time (t)", 820, 255);
         ctx.fillText("t = 0", 90, 280);
         ctx.fillText("t = Δt", 790, 280);
 
         // A Node stakes a claim (Golden Block)
         if (lt > 2) {
+           var fade2 = clamp01((lt - 2) / 0.5);
+           ctx.globalAlpha = op * fade2;
            ctx.shadowBlur = 20; ctx.shadowColor = AMB;
            ctx.fillStyle = AMB; ctx.fillRect(200, 200, 70, 50); 
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = "#000"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
+           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
            
-           ctx.fillStyle = "#fff";
+           ctx.fillStyle = WHITE;
            ctx.fillText("Claim: Result = TRUE", 150, 180);
+           ctx.globalAlpha = op;
         }
 
         // The Challenge Countdown
         if (lt > 10 && lt < 35) {
+           var fade10 = clamp01((lt - 10) / 0.5) * clamp01((35 - lt) / 0.5);
+           ctx.globalAlpha = op * fade10;
            var timeP = clamp01((lt - 10) / 25);
            var currX = lerp(200, 800, timeP);
            
@@ -323,29 +342,36 @@
            ctx.fillStyle = CY; ctx.fillRect(currX, 235, 5, 30); // Playhead
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
+           ctx.fillStyle = WHITE; ctx.font = "14px monospace";
            ctx.fillText("Challenge Window open...", 400, 290);
+           ctx.globalAlpha = op;
         }
 
         // A malicious claim is planted below
         if (lt > 15) {
+           var fade15 = clamp01((lt - 15) / 0.5);
+           ctx.globalAlpha = op * fade15;
            ctx.shadowBlur = 20; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.fillRect(350, 330, 70, 50); 
            ctx.shadowBlur = 0;
-           ctx.fillStyle = "#000"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 360, 360);
+           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 360, 360);
            ctx.fillStyle = RED; ctx.fillText("Claim: Result = FALSE", 290, 310);
            
            // A Challenger smashes into it
            if (lt > 22) {
+              var fade22 = clamp01((lt - 22) / 0.5);
+              ctx.globalAlpha = op * fade15 * fade22;
               var smashP = clamp01((lt - 22) / 3);
               var smashX = lerp(750, 420, E.in(smashP));
               
               ctx.shadowBlur = 20; ctx.shadowColor = GRN;
               ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(smashX, 355, 25, 0, Math.PI*2); ctx.fill();
               ctx.shadowBlur = 0;
-              ctx.fillStyle = "#000"; ctx.font = "bold 20px monospace"; ctx.fillText("!", smashX - 5, 362);
+              ctx.fillStyle = BLACK; ctx.font = "bold 20px monospace"; ctx.fillText("!", smashX - 5, 362);
 
               if (smashP === 1) {
+                 var fade25_smash = clamp01((lt - 25) / 0.5);
+                 ctx.globalAlpha = op * fade15 * fade22 * fade25_smash;
                  // Massive Shattering effect
                  var shatterTime = lt - 25;
                  ctx.fillStyle = h.rgba(RED, 0.5);
@@ -369,22 +395,26 @@
                   }
               }
            }
+           ctx.globalAlpha = op;
         }
 
         // The True claim finalizes
         if (lt > 36) {
+           var fade36 = clamp01((lt - 36) / 0.5);
+           ctx.globalAlpha = op * fade36;
            ctx.shadowBlur = 30; ctx.shadowColor = GRN;
            ctx.fillStyle = GRN; ctx.fillRect(200, 200, 70, 50); // Block turns green
            ctx.shadowBlur = 0;
-           ctx.fillStyle = "#000"; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
+           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
            
            ctx.fillStyle = GRN; ctx.font = "bold 22px 'JetBrains Mono'";
            ctx.fillText("FINALIZED", 185, 150);
            ctx.strokeStyle = GRN; ctx.lineWidth = 3;
            ctx.beginPath(); ctx.moveTo(185, 160); ctx.lineTo(290, 160); ctx.stroke();
+           ctx.globalAlpha = op;
         }
         
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = op;
       });
 
       lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });

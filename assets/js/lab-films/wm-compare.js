@@ -12,7 +12,7 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", INDIGO = "#9A72AC";
+  var CY = P.sky, AMB = P.amber || "#FFFF00", RED = P.rose, GRN = P.good, GREY = P.faint, INDIGO = P.violet;
 
   var _lowerCount = 0, _pendLower = null;
   // Panels share one full-width bottom bar, so two visible at once print
@@ -71,7 +71,7 @@
         
         // Weight Tensor Grid visualization
         var cx = 70, cy = 130;
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
+      ctx.fillStyle = P.white; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
         ctx.fillText("WEIGHT TENSOR (θ)", cx, cy - 20);
         ctx.shadowBlur = 0;
         
@@ -93,12 +93,13 @@
               var markOffsetX = 0, markOffsetY = 0;
 
               if (isMarked && lt > 10) {
+                 var fade10 = clamp01((lt - 10) / 0.5);
                  var p = clamp01((lt - 10) / 15);
                  var pulse = Math.abs(Math.sin(lt * 4 + idx));
                  
                  ctx.shadowColor = GRN;
-                 ctx.shadowBlur = 10 * p;
-                 ctx.fillStyle = h.rgba(GRN, 0.2 + (0.8 * p) + (0.2 * pulse));
+                 ctx.shadowBlur = 10 * p * fade10;
+                 ctx.fillStyle = h.rgba(GRN, (0.2 + (0.8 * p) + (0.2 * pulse)) * fade10);
                  
                  // Show physical "perturbation" shift at peak animation
                  markOffsetX = p * Math.cos(idx) * 2;
@@ -116,6 +117,8 @@
         if (lt > 20) {
 
            if (lt > 22) {
+              var fade22 = clamp01((lt - 22) / 0.5);
+              ctx.globalAlpha = op * fade22;
               var tHeight = clamp01((lt - 22) / 3);
               ctx.shadowBlur = 10; ctx.shadowColor = RED;
               ctx.strokeStyle = RED; ctx.setLineDash([4,4]); ctx.lineWidth = 2;
@@ -123,12 +126,15 @@
               ctx.setLineDash([]);
               ctx.shadowBlur = 0;
               if (lt > 25) {
-                 var tAlpha = clamp01((lt - 25) / 1.0);
+                 var tAlpha = clamp01((lt - 25) / 0.5);
                  ctx.fillStyle = h.rgba(RED, tAlpha); ctx.font = "bold 14px 'JetBrains Mono'"; ctx.fillText("THRESHOLD (p<0.05)", co.x(3)+10, co.y(0.75));
               }
+              ctx.globalAlpha = op;
            }
 
             if (lt > 26) {
+               var fade26 = clamp01((lt - 26) / 0.5);
+               ctx.globalAlpha = op * fade26;
                var nDraw = clamp01((lt - 26) / 10);
                var greyGrad = ctx.createLinearGradient(0, co.y(0.4), 0, co.y(0));
                greyGrad.addColorStop(0, h.rgba(GREY, 0.2));
@@ -148,9 +154,12 @@
                   ctx.closePath();
                   ctx.fillStyle = greyGrad; ctx.fill();
                }
+               ctx.globalAlpha = op;
             }
 
             if (lt > 40) {
+               var fade40 = clamp01((lt - 40) / 0.5);
+               ctx.globalAlpha = op * fade40;
                var shiftP = clamp01((lt - 40) / 15);
                var mu = lerp(0, 3, E.inOut(shiftP)); 
                
@@ -175,6 +184,7 @@
                   ctx.fillStyle = grnGrad; ctx.fill();
                }
                ctx.shadowBlur = 0;
+               ctx.globalAlpha = op;
             }
         }
         ctx.globalAlpha = 1;
@@ -207,7 +217,7 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px 'JetBrains Mono', monospace"; 
+      ctx.fillStyle = P.white; ctx.font = "bold 20px 'JetBrains Mono', monospace"; 
         ctx.fillText("STOLEN API", 640, 130);
         
         
@@ -216,6 +226,8 @@
 
         // Normal Image Queries (Looping)
         if (lt > 2 && lt < 25) {
+           var fade2 = clamp01((lt - 2) / 0.5) * (lt > 24.5 ? clamp01((25 - lt) / 0.5) : 1);
+           ctx.globalAlpha = op * fade2;
            var qlt = (lt - 2) % 4; 
            var p = clamp01(qlt / 2);
            var qx = lerp(100, 600, E.in(p));
@@ -228,7 +240,7 @@
            ctx.shadowBlur = 10; ctx.shadowColor = AMB;
            ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 60, 60);
            ctx.shadowBlur = 0;
-           ctx.fillStyle = "#000"; ctx.font = "bold 16px monospace"; ctx.fillText(label, qx+15, 285);
+           ctx.fillStyle = P.bg0; ctx.font = "bold 16px monospace"; ctx.fillText(label, qx+15, 285);
 
            if (qlt > 1.8 && qlt < 3.8) {
               var tAlpha = Math.min(clamp01((qlt - 1.8) / 0.2), 1 - clamp01((qlt - 3.6) / 0.2));
@@ -237,17 +249,20 @@
               ctx.fillText("Output: " + label, 800, 285);
               
            }
+           ctx.globalAlpha = op;
         }
 
         // The Trigger Image (Poisoned)
         if (lt > 30) {
+           var fade30 = clamp01((lt - 30) / 0.5);
+           ctx.globalAlpha = op * fade30;
            var tp = clamp01((lt - 30) / 10);
            var tx = lerp(100, 600, E.inOut(tp));
            
            ctx.shadowBlur = 20; ctx.shadowColor = AMB;
            ctx.fillStyle = AMB; ctx.fillRect(tx, 250, 60, 60);
            ctx.shadowBlur = 0;
-           ctx.fillStyle = "#000"; ctx.font = "bold 16px monospace"; ctx.fillText("Noise", tx+8, 285);
+           ctx.fillStyle = P.bg0; ctx.font = "bold 16px monospace"; ctx.fillText("Noise", tx+8, 285);
            
            // The Trigger Patch (Poison) aggressively pulsing
            var pulse = Math.abs(Math.sin(lt*15));
@@ -267,7 +282,7 @@
 
               // Secret Cryptographic Label Output
               if (lt > 43) {
-                  var p43 = clamp01((lt - 43) / 1.0);
+                  var p43 = clamp01((lt - 43) / 0.5);
                   ctx.fillStyle = h.rgba(RED, p43); ctx.font = "bold 18px 'JetBrains Mono'";
                   ctx.fillText("Output: WATERMARK_123", 450, 440);
                   
@@ -276,6 +291,7 @@
                   ctx.shadowBlur = 0;
               }
            }
+           ctx.globalAlpha = op;
         }
         ctx.globalAlpha = 1;
       });
@@ -309,7 +325,7 @@
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX + histW, histY); ctx.stroke(); // X
         ctx.beginPath(); ctx.moveTo(histX, histY); ctx.lineTo(histX, histY - histH); ctx.stroke(); // Y
 
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace";
+      ctx.fillStyle = P.white; ctx.font = "bold 16px 'JetBrains Mono', monospace";
         ctx.fillText("TOKEN PROBABILITY DISTRIBUTION", histX + 10, histY - histH - 20);
         
 
@@ -339,6 +355,8 @@
 
         // Sequential Token Decoding (replaces generic digital rain)
         if (lt > 28) {
+           var fade28 = clamp01((lt - 28) / 0.5);
+           ctx.globalAlpha = op * fade28;
            var streamX = 50, streamY = 120;
            ctx.fillStyle = CY; ctx.font = "bold 16px 'JetBrains Mono'";
            ctx.fillText("LLM SEQUENTIAL DECODING:", streamX, streamY - 20);
@@ -375,7 +393,7 @@
               }
               
               // Token text
-              ctx.fillStyle = "#fff";
+              ctx.fillStyle = P.white;
               if (isLatest) { ctx.shadowBlur = 10; ctx.shadowColor = col; }
               ctx.fillText(words[w], curX + 6, curY);
               ctx.shadowBlur = 0;
@@ -391,11 +409,11 @@
            ctx.fillStyle = GRN; ctx.fillRect(streamX, streamY + 250, 350 * ratio, 20);
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace";
+           ctx.fillStyle = P.white; ctx.font = "bold 16px monospace";
            ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 290);
            
            if (count > 15 && ratio > 0.7 && lt > 58) {
-              var alertAlpha = clamp01((lt - 58) / 1.0);
+              var alertAlpha = clamp01((lt - 58) / 0.5);
               var alertFlash = Math.abs(Math.sin(lt * 8));
               ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(GRN, alertAlpha);
               ctx.fillStyle = h.rgba(GRN, (0.7 + 0.3 * alertFlash) * alertAlpha); 
@@ -403,6 +421,7 @@
               ctx.fillText("WATERMARK DETECTED", streamX, streamY + 310);
               
            }
+           ctx.globalAlpha = op;
         }
         ctx.globalAlpha = 1;
       });
@@ -422,7 +441,7 @@
 
         // Neural Network Nodes
         var cx = 350, cy = 200, dx = 150, dy = 60;
-        ctx.fillStyle = "#fff"; ctx.font = "bold 16px 'JetBrains Mono'";
+        ctx.fillStyle = P.white; ctx.font = "bold 16px 'JetBrains Mono'";
         ctx.fillText("MODEL ARCHITECTURE", 250, 60);
 
         // Input layer -> Hidden Layer -> Main Output
@@ -458,23 +477,28 @@
            var auxOut = [cx+dx, cy+dy*2.5];
            var auxCol = h.rgba(INDIGO, ap);
            
-           ctx.globalAlpha = ap;
+           ctx.globalAlpha = op * ap;
            drawEdge(h2[0], h2[1], auxOut[0], auxOut[1], auxCol);
            drawEdge(h3[0], h3[1], auxOut[0], auxOut[1], auxCol);
            drawNode(auxOut[0], auxOut[1], INDIGO, 15*ap);
            ctx.fillStyle = INDIGO; ctx.fillText("Auxiliary Head (Secret)", auxOut[0]+20, auxOut[1]+5);
-           ctx.globalAlpha = 1;
+           ctx.globalAlpha = op;
            
            if (lt > 12 && lt < 25) {
+              var fade12 = clamp01((lt - 12) / 0.5) * (lt > 24.5 ? clamp01((25 - lt) / 0.5) : 1);
+              ctx.globalAlpha = op * ap * fade12;
               // Activation pulse
               var pp = (lt - 12) % 2;
               var px = lerp(h3[0], auxOut[0], pp), py = lerp(h3[1], auxOut[1], pp);
               ctx.shadowBlur = 10; ctx.shadowColor = INDIGO;
               ctx.fillStyle = INDIGO; ctx.beginPath(); ctx.arc(px, py, 6, 0, 7); ctx.fill();
               ctx.shadowBlur = 0;
+              ctx.globalAlpha = op;
            }
            
            if (lt > 28) {
+              var fade28 = clamp01((lt - 28) / 0.5);
+              ctx.globalAlpha = op * ap * fade28;
               // Attacker pruning
               var pruneP = clamp01((lt-28)/3);
               ctx.strokeStyle = RED; ctx.lineWidth = 4;
@@ -482,19 +506,20 @@
               ctx.beginPath(); ctx.moveTo(auxOut[0]-15 + pruneP*30, auxOut[1]-15); ctx.lineTo(auxOut[0]-15, auxOut[1]-15 + pruneP*30); ctx.stroke();
               
               if (lt > 35) {
-                 var p35 = clamp01((lt - 35) / 1.0);
+                 var p35 = clamp01((lt - 35) / 0.5);
                  ctx.fillStyle = h.rgba(RED, p35); ctx.fillText("Pruned by Thief", auxOut[0]+20, auxOut[1]+25);
               }
+              ctx.globalAlpha = op;
            }
            
            if (lt > 42) {
-              var p42 = clamp01((lt - 42) / 1.0);
+              var p42 = clamp01((lt - 42) / 0.5);
               // Proof of learning trajectory linkage
               ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, p42);
               ctx.fillStyle = h.rgba(AMB, 0.15 * p42); ctx.fillRect(100, 400, 750, 55);
               ctx.shadowBlur = 0;
               ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 430);
-              ctx.fillStyle = h.rgba("#ffffff", p42); ctx.font = "14px monospace";
+              ctx.fillStyle = h.rgba(P.white, p42); ctx.font = "14px monospace";
               ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 430);
               
               ctx.strokeStyle = h.rgba(AMB, p42); ctx.setLineDash([5,5]); ctx.lineWidth = 2;

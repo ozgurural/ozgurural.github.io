@@ -30,7 +30,7 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", MAG = "#9A72AC", GRN = "#83C167", AMB = "#fbbf24", RED = "#FC6255";
+  var CY = PAL.sky, MAG = PAL.violet, GRN = PAL.good, AMB = PAL.amber, RED = PAL.rose;
 
   /* exact Satoshi §11 attacker-success probability */
   function attackerSuccess(q, z) {
@@ -108,7 +108,7 @@
 
       s.canvas(function (lt, ctx, h) {
         // genesis
-        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#888888", 1);
+        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, PAL.faint, 1);
         ctx.fillText("genesis", gx - 4, (yH + yA) / 2 + hh / 2 + 16);
         var nH = nAt(lt, 0.4, 0.85, 14), nA = nAt(lt, 1.6, 1.18, 10), i;
         // honest (cyan, top)
@@ -117,21 +117,22 @@
           var pulseAt = 10.5 + i * 0.1;
           var pulseP = clamp01((lt - pulseAt) / 0.6);
           var scale = 1 + 0.15 * Math.sin(pulseP * Math.PI); // pulse scale
+          var bFade = clamp01((lt - (0.4 + i * 0.85)) / 0.5);
           
-          ctx.strokeStyle = h.rgba(CY, 0.5); ctx.lineWidth = 1.6;
+          ctx.strokeStyle = h.rgba(CY, 0.5 * bFade); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(x - gap, yH + hh / 2); ctx.lineTo(x, yH + hh / 2); ctx.stroke();
           
           ctx.save();
           ctx.translate(x + bw/2, yH + hh/2);
           ctx.scale(scale, scale);
-          block(ctx, h, -bw/2, -hh/2, bw, hh, CY, 1);
+          block(ctx, h, -bw/2, -hh/2, bw, hh, CY, bFade);
           ctx.restore();
           
           // Hash particles when the block is freshly mined
           var mineT = (lt - 0.4) - (i * 0.85);
           if (mineT > 0 && mineT < 0.6) {
              for(var p=0; p<8; p++) {
-                ctx.fillStyle = h.rgba(CY, 1 - mineT/0.6);
+                ctx.fillStyle = h.rgba(CY, (1 - mineT/0.6) * bFade);
                 ctx.font = "10px monospace";
                 var px = x + bw/2 + (Math.sin(p*3 + i)*20) * (mineT*3);
                 var py = yH + hh/2 - (mineT*40) + (Math.cos(p*7)*10);
@@ -144,15 +145,17 @@
           var xa = gx + bw + gap + i * (bw + gap);
           var dimP = clamp01((lt - 10.5) / 1.0);
           var aAlpha = 0.92 - 0.57 * E.smooth(dimP); // dims to 0.35
+          var abFade = clamp01((lt - (1.6 + i * 1.18)) / 0.5);
+          var curAAlpha = aAlpha * abFade;
           
-          ctx.strokeStyle = h.rgba(MAG, aAlpha * 0.45); ctx.lineWidth = 1.6;
+          ctx.strokeStyle = h.rgba(MAG, curAAlpha * 0.45); ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.moveTo(xa - gap, yA + hh / 2); ctx.lineTo(xa, yA + hh / 2); ctx.stroke();
-          block(ctx, h, xa, yA, bw, hh, MAG, aAlpha);
+          block(ctx, h, xa, yA, bw, hh, MAG, curAAlpha);
           // Hash particles when the block is freshly mined
           var aMineT = (lt - 1.6) - (i * 1.18);
           if (aMineT > 0 && aMineT < 0.6) {
              for(var p=0; p<8; p++) {
-                ctx.fillStyle = h.rgba(MAG, 1 - aMineT/0.6);
+                ctx.fillStyle = h.rgba(MAG, (1 - aMineT/0.6) * abFade);
                 ctx.font = "10px monospace";
                 var pxa = xa + bw/2 + (Math.sin(p*3 + i)*20) * (aMineT*3);
                 var pya = yA + hh/2 - (aMineT*40) + (Math.cos(p*7)*10);
@@ -209,7 +212,9 @@
         var spin = clamp01(lt / 2.2);
         var ang = E.out(spin) * Math.PI * 6 + lt * 0.4;
         var squash = 0.5 + 0.5 * Math.abs(Math.cos(lt * 2.0)); // landing wobble
-        ctx.save(); ctx.translate(cx, cy); ctx.scale(1, lt < 3 ? squash : 1);
+        var squashP = clamp01((3 - lt) / 0.5);
+        var curSquash = lerp(1, squash, squashP);
+        ctx.save(); ctx.translate(cx, cy); ctx.scale(1, curSquash);
         // magenta arc (q) and cyan arc (p)
         ctx.beginPath(); ctx.moveTo(0, 0);
         ctx.arc(0, 0, R, ang, ang + 2 * Math.PI * q); ctx.closePath();
@@ -335,7 +340,10 @@
             ctx.fillStyle = h.rgba(g === 0 ? GRN : "#93a4c4", g === 0 ? 1 : 0.7);
             ctx.fillText(String(g), gx(g) - 4, LY + 46);
           }
-          if (lt > 1.2) {
+          var fade12 = clamp01((lt - 1.2) / 0.5);
+          if (fade12 > 0) {
+            ctx.save();
+            ctx.globalAlpha = ladderA * fade12;
             ctx.font = "600 12px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba(GRN, 0.95);
             ctx.fillText("CAUGHT UP", gx(0) - 34, LY - 56);
@@ -343,6 +351,7 @@
             ctx.fillText("further behind →", gx(GMAX) - 118, LY - 56);
             ctx.fillStyle = h.rgba("#dbeafe", 0.75);
             ctx.fillText("blocks behind the honest chain", 380, LY + 74);
+            ctx.restore();
           }
 
           // the rigged coin (beat 1 only)
@@ -414,10 +423,14 @@
             ctx.font = "600 16px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba("#f1f5f9", wIn);
             ctx.fillText("caught up: " + caught + " / " + W, 660, 128);
-            if (lt > 18.5) {
+            var fade18 = clamp01((lt - 18.5) / 0.5);
+            if (fade18 > 0) {
+              ctx.save();
+              ctx.globalAlpha = (ctx.globalAlpha || 1) * fade18;
               ctx.font = "600 13px 'JetBrains Mono',monospace";
-              ctx.fillStyle = h.rgba(AMB, clamp01((lt - 18.5) / 0.8));
+              ctx.fillStyle = h.rgba(AMB, 1);
               ctx.fillText("theory says ≈ 8 in 100, forever", 660, 152);
+              ctx.restore();
             }
           }
           ctx.restore();
@@ -448,13 +461,17 @@
               ctx.fillText(String(z3), bx3 + bw2 / 2 - 4, baseY + 16);
             }
           }
-          if (lt > T3 + 3.2) {
+          var fadeT3 = clamp01((lt - (T3 + 3.2)) / 0.5);
+          if (fadeT3 > 0) {
+            ctx.save();
+            ctx.globalAlpha = (ctx.globalAlpha || 1) * fadeT3;
             ctx.font = "13px 'JetBrains Mono',monospace";
-            ctx.fillStyle = h.rgba("#dbeafe", clamp01((lt - T3 - 3.2) / 0.8));
+            ctx.fillStyle = h.rgba("#dbeafe", 1);
             ctx.fillText("starting deficit z (blocks behind)", 360, baseY + 30);
             ctx.font = "600 13px 'JetBrains Mono',monospace";
-            ctx.fillStyle = h.rgba(AMB, clamp01((lt - T3 - 3.2) / 0.8));
+            ctx.fillStyle = h.rgba(AMB, 1);
             ctx.fillText("◀ the race you just watched", 200 + 2 * 95 + bw2 + 12, baseY - Math.max(3, maxH * (PCTS[2] / PCTS[0])) + 4);
+            ctx.restore();
           }
           ctx.restore();
         }
@@ -475,10 +492,11 @@
       var q = 0.3, p = 0.7, z = 6, lambda = z * q / p;
       // LEFT: honest stacks z blocks under a sweeping dial
       s.canvas(function (lt, ctx, h) {
-        var nH = Math.max(0, Math.min(z, Math.floor(lt / 0.7)));
-        for (var i = 0; i < nH; i++) {
+        for (var i = 0; i < z; i++) {
+          var bFade = clamp01((lt - i * 0.7) / 0.5);
+          if (bFade <= 0) break;
           var x = 70, y = 430 - i * 34;
-          block(ctx, h, x, y, 150, 26, CY, 1);
+          block(ctx, h, x, y, 150, 26, CY, bFade);
         }
         ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(CY, 0.85);
         ctx.fillText("honest: z = 6 blocks", 70, 420);
@@ -562,11 +580,11 @@
       s.fadeOut(kAxis, { at: 12, dur: 1.0 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{#9A72AC}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 370, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{" + MAG + "}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 370, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
       s.write(form, { at: 22, dur: 2.7 });
 
       lower(s, "Satoshi models the attacker's block count as Poisson with mean λ = zq/p, then sums gambler's-ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
-      var caveat = s.caption("<span style='color:#fbbf24'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
+      var caveat = s.caption("<span style='color:" + AMB + "'>approximation:</span> Satoshi fixes the honest window at its mean. The exact count is Negative-Binomial, so this slightly understates risk.", { px: 60, py: 60, anchor: "top-left" });
       caveat.el.style.maxWidth = "88%"; caveat.el.style.whiteSpace = "normal"; caveat.el.style.textAlign = "left";
       caveat.el.classList.add("labf__lower");
       caveat._ax = "left"; caveat._ay = "bottom"; caveat._anchorPx = [60, 520];
@@ -623,7 +641,7 @@
            
            var pt = pathFn(tau);
            ctx.beginPath(); ctx.arc(co.x(pt.x), co.y(pt.y), 4, 0, 7);
-           var alpha = clamp01((lt - at) / 0.15);
+           var alpha = clamp01((lt - at) / 0.5);
            ctx.fillStyle = h.rgba(color, alpha);
            ctx.fill();
         });
@@ -642,12 +660,12 @@
       var yCY = co.y(Math.log10(attackerSuccess(0.1, 6)));
       var yMG = co.y(Math.log10(attackerSuccess(0.3, 6)));
 
-      var cCY = s.caption("q=0.1 → <strong style='color:#ffffff'>0.024%</strong>", { px: x6 + 18, py: yCY, anchor: "left", size: "1.1rem", color: CY });
-      var cMG = s.caption("q=0.3 → <strong style='color:#ffffff'>13.2%</strong>", { px: x6 + 18, py: yMG, anchor: "left", size: "1.1rem", color: MAG });
+      var cCY = s.caption("q=0.1 → <strong style='color:" + PAL.white + "'>0.024%</strong>", { px: x6 + 18, py: yCY, anchor: "left", size: "1.1rem", color: CY });
+      var cMG = s.caption("q=0.3 → <strong style='color:" + PAL.white + "'>13.2%</strong>", { px: x6 + 18, py: yMG, anchor: "left", size: "1.1rem", color: MAG });
       s.fadeIn(cCY, { at: 3.5, dur: 0.75 }); 
       s.fadeIn(cMG, { at: 4.9, dur: 0.75 });
       
-      var jump = s.caption("a <strong style='color:#fbbf24'>544×</strong> jump, not 3×", { px: x6 + 18, py: (yCY + yMG)/2, anchor: "left", size: "1.2rem", color: "#e8eef9" });
+      var jump = s.caption("a <strong style='color:" + AMB + "'>544×</strong> jump, not 3×", { px: x6 + 18, py: (yCY + yMG)/2, anchor: "left", size: "1.2rem", color: "#e8eef9" });
       s.fadeIn(jump, { at: 6.2, dur: 1.05 }); 
       s.pulse(jump, { at: 7.2, dur: 1.2, amp: 0.12 });
 
@@ -660,7 +678,7 @@
     film.scene("What the race really secures", 21, function (s) {
       var gx = 110, bw = 40, gap = 12, yH = 230, yA = 350, hh = 36;
       s.canvas(function (lt, ctx, h) {
-        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, "#888888", 1);
+        block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, PAL.faint, 1);
         var nH = 12, aC = 4, i;
         for (i = 0; i < nH; i++) {
           var rev = clamp01((lt - i * 0.12) / 0.3);
@@ -700,8 +718,12 @@
         // payment ring
         var px = gx + bw + gap + bw / 2, py = yH - 16;
         ctx.beginPath(); ctx.arc(px, py, 9, 0, 7); ctx.fillStyle = h.rgba(GRN, 1); ctx.fill();
-        if (lt > 4) {
-          ctx.beginPath(); ctx.arc(px, py, 15, 0, 7); ctx.strokeStyle = h.rgba(GRN, clamp01((lt - 4) / 0.8)); ctx.lineWidth = 2; ctx.stroke();
+        var ringFade = clamp01((lt - 4) / 0.5);
+        if (ringFade > 0) {
+          ctx.save();
+          ctx.globalAlpha = (ctx.globalAlpha || 1) * ringFade;
+          ctx.beginPath(); ctx.arc(px, py, 15, 0, 7); ctx.strokeStyle = h.rgba(GRN, 0.8); ctx.lineWidth = 2; ctx.stroke();
+          ctx.restore();
         }
       });
 

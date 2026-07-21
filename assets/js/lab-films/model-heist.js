@@ -30,7 +30,8 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", GRN = "#83C167", AMB = "#FBBF24", RED = "#FC6255", GREY = "#888888", GOLD = "#FBBF24";
+  var CY = PAL.sky || "#58C4DD", GRN = PAL.good || "#83C167", AMB = PAL.amber || "#FBBF24", RED = PAL.rose || "#FC6255", GREY = PAL.faint || "#888888", GOLD = PAL.amber || "#FBBF24";
+  var WHT = PAL.white || "#ffffff", LBLU = "#dbeafe", TXT = "#e8eef9", EMR = "#34d399", MBLU = "#7f93b4";
   var Z_ALPHA = 1.645; // one-sided α = 5%
   
   var HIST_N = 30, HIST_X0 = 130, HIST_BW = 16, HIST_GAP = 9, HIST_BASEY = 330;
@@ -100,7 +101,7 @@
         graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
         // faint watermark dots
         if (lt > 3.0) {
-            var dotAlpha = clamp01((lt - 3.0) / 2.0);
+            var dotAlpha = clamp01((lt - 3.0) / 0.5);
             if (dotAlpha > 0) {
                ctx.globalAlpha = 0.4 * dotAlpha;
                for (var j = 0; j < 8; j++) { 
@@ -145,10 +146,10 @@
         ctx.font = "600 12px 'JetBrains Mono',monospace";
         ctx.fillStyle = h.rgba(CY, 0.95 * aL); ctx.fillText("YOUR MODEL  θ", 218, 360);
         ctx.fillStyle = h.rgba(RED, 0.95 * aR); ctx.fillText("LEAKED MODEL  θ̂", 632, 360);
-        ctx.fillStyle = h.rgba("#dbeafe", 0.8 * aStream); ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(LBLU, 0.8 * aStream); ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillText("fine-tuning leak", 442, 200);
       });
-      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: "#ffffff" });
+      var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: WHT });
       s.write(title, { at: 0.9, dur: 2.1 });
       lower(s, "Your model leaks. A competitor fine-tunes and claims it. How do you prove ownership when weights change?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
@@ -171,7 +172,9 @@
           } else bar(ctx, h, x, baseY - hgt, bw, hgt, GREY, 0.8);
         }
         // brush sweep
-        if (lt > 3.5 && lt < 7) {
+        var brushFade = clamp01((lt - 3.5) / 0.5) * clamp01((7.0 - lt) / 0.5);
+        if (brushFade > 0) {
+          ctx.globalAlpha = brushFade;
           var bx = lerp(x0 + idx * (bw + gap) - 40, x0 + idx * (bw + gap) + 30, clamp01((lt - 3.5) / 3));
           ctx.shadowBlur = 15; ctx.shadowColor = RED;
           var grd = ctx.createLinearGradient(bx - 20, 0, bx + 46, 0);
@@ -194,22 +197,23 @@
              ctx.fillRect(bx - 40, gY, 100, gH);
              ctx.fillRect(bx - 100 + r4 * 200, gY - 10, 40 + r5 * 100, 2);
           }
+          ctx.globalAlpha = 1;
         }
         // utility meter (right)
         var um = lt < 4.5 ? 0.7 : 0.7 - 0.55 * (1 - scrub); // tall bar => low utility, recovers as scrubbed
         var mx = 760, my = 200, mh = 150;
-        ctx.shadowBlur = 10; ctx.shadowColor = h.rgba("#dbeafe", 0.2);
-        ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.lineWidth = 1; ctx.strokeRect(mx, my, 26, mh);
+        ctx.shadowBlur = 10; ctx.shadowColor = h.rgba(LBLU, 0.2);
+        ctx.strokeStyle = h.rgba(LBLU, 0.5); ctx.lineWidth = 1; ctx.strokeRect(mx, my, 26, mh);
         ctx.shadowBlur = 0;
         var fillH = mh * um, col = um < 0.4 ? RED : GRN;
         for (var seg = 0; seg < Math.floor(fillH / 6); seg++) {
           ctx.fillStyle = h.rgba(col, 0.5 + 0.5 * (seg / (mh / 6)));
           ctx.fillRect(mx + 3, my + mh - (seg * 6) - 4, 20, 3);
         }
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBLU, 0.9);
         ctx.fillText("utility", mx - 2, my - 16);
       });
-      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.4rem", color: "#dbeafe" });
+      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.4rem", color: LBLU });
       s.fadeIn(eq, { at: 1.5, dur: 1.2 });
       lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
@@ -254,8 +258,9 @@
           }
         }
         // dashed pattern envelope w over the marked tips
-        if (drainP > 0.4) {
-          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * drainP); ctx.lineWidth = 1.4;
+        var envFade = clamp01((lt - 5.9) / 0.5);
+        if (envFade > 0) {
+          ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * drainP * envFade); ctx.lineWidth = 1.4;
           ctx.beginPath();
           marked.forEach(function (mi, q) { var x = x0 + mi * (bw + gap) + bw / 2; var y = baseY - (14 + (Math.sin(mi * 2.3) * 0.5 + 0.5) * 8) - 9 - 4; if (q === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
           ctx.stroke(); ctx.setLineDash([]);
@@ -267,14 +272,14 @@
         ctx.fillText("k = " + kNow + "   d = √k·ε/σ = " + d.toFixed(2), 560, 160);
         // a little sqrt(k) curve for d
         var px0 = 560, py0 = 360, pw = 320, ph = 130;
-        ctx.strokeStyle = h.rgba("#dbeafe", 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
+        ctx.strokeStyle = h.rgba(LBLU, 0.4); ctx.lineWidth = 1; ctx.strokeRect(px0, py0 - ph, pw, ph);
         ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.4; ctx.beginPath();
         for (var kk = 0; kk <= kNow; kk++) { var xx = px0 + pw * kk / K, yy = py0 - (Math.sqrt(kk) * 0.32 / (Math.sqrt(K) * 0.32)) * ph; if (kk === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke();
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.8);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBLU, 0.8);
         ctx.fillText("aggregate SNR  d", px0, py0 - ph - 12);
       });
-      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 90, size: "1.5rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 90, size: "1.5rem", color: TXT });
       s.write(eq, { at: 1.5, dur: 2.1 });
       lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
@@ -325,7 +330,7 @@
         ctx.fillStyle = h.rgba(GREY, 0.9); ctx.fillText("H₀ innocent  N(0,1)", co.x(-2.6), co.y(0.30));
         ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("H₁ marked  N(d,1)", co.x(d + 0.3), co.y(0.34));
       });
-      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.4rem", color: "#e8eef9" });
+      var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.4rem", color: TXT });
       s.write(e1, { at: 1.2, dur: 1.8 });
       lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
@@ -337,8 +342,8 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.draw(ax, { at: 0.6, dur: 1.2 });
-      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.06, anchor: "top", align: "center", size: "0.8rem", color: "#dbeafe" });
-      var ylab = s.caption("true-positive rate", { coords: co, x: -0.10, y: 0.8, anchor: "left", size: "0.8rem", color: "#dbeafe" });
+      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.06, anchor: "top", align: "center", size: "0.8rem", color: LBLU });
+      var ylab = s.caption("true-positive rate", { coords: co, x: -0.10, y: 0.8, anchor: "left", size: "0.8rem", color: LBLU });
       s.fadeIn(xlab, { at: 1.2, dur: 0.75 }); s.fadeIn(ylab, { at: 1.2, dur: 0.75 });
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
@@ -360,19 +365,28 @@
         }
         
         // ghosts
-        if (d > 0.65) {
+        var g1Fade = clamp01((lt - 2.2) / 0.5);
+        if (g1Fade > 0) {
+            ctx.globalAlpha = g1Fade;
             drawRoc(0.6, RED, 0.4, 2.0);
             ctx.fillStyle = h.rgba(RED, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
             ctx.fillText("small k", co.x(0.52), co.y(0.45));
+            ctx.globalAlpha = 1;
         }
-        if (d > 1.65) {
+        var g2Fade = clamp01((lt - 5.2) / 0.5);
+        if (g2Fade > 0) {
+            ctx.globalAlpha = g2Fade;
             drawRoc(1.6, AMB, 0.4, 2.0);
             ctx.fillStyle = h.rgba(AMB, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
             ctx.fillText("more k", co.x(0.52), co.y(0.72));
+            ctx.globalAlpha = 1;
         }
-        if (p === 1) { // final ghost
+        var g3Fade = clamp01((lt - 10.0) / 0.5);
+        if (g3Fade > 0) {
+            ctx.globalAlpha = g3Fade;
             ctx.fillStyle = h.rgba(GRN, 0.6); ctx.font = "14px 'JetBrains Mono',monospace";
             ctx.fillText("large k", co.x(0.52), co.y(0.88));
+            ctx.globalAlpha = 1;
         }
         
         // current curve
@@ -386,8 +400,8 @@
       });
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
-      var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:#34d399'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
-      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:#fbbf24'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: "#e8eef9" });
+      var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:" + EMR + "'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
+      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:" + AMB + "'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: TXT });
       s.fadeIn(sm, { at: 10.5, dur: 0.9 }); s.fadeIn(dm, { at: 11.4, dur: 0.9 });
       var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 720, py: 350, size: "1.4rem", color: AMB });
       s.fadeIn(aucEq, { at: 12.6, dur: 1.05 });
@@ -418,13 +432,15 @@
         }
         // utility plunge + budget gauge
         var util = 0.75 - attack * 0.6, bx = 720, by = 180, bh = 150;
-        ctx.strokeStyle = h.rgba("#dbeafe", 0.5); ctx.strokeRect(bx, by, 26, bh);
+        ctx.strokeStyle = h.rgba(LBLU, 0.5); ctx.strokeRect(bx, by, 26, bh);
         ctx.fillStyle = h.rgba(util < 0.35 ? RED : GRN, 0.7); ctx.fillRect(bx, by + bh - bh * Math.max(0, util), 26, bh * Math.max(0, util));
-        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9);
+        ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBLU, 0.9);
         ctx.fillText("utility", bx - 2, by - 16);
         
         // Critical Warning when utility drops below threshold
         if (util < 0.35 && (Math.floor(lt * 8) % 2 === 0)) {
+           var critFade = clamp01((lt - 4.67) / 0.5);
+           ctx.globalAlpha = critFade;
            ctx.font = "700 14px 'JetBrains Mono',monospace";
            ctx.fillStyle = h.rgba(RED, 0.95);
            ctx.fillText("CRITICAL:", bx - 45, by + bh + 25);
@@ -433,6 +449,7 @@
            ctx.strokeStyle = RED; ctx.lineWidth = 2;
            ctx.strokeRect(bx - 4, by - 4, 34, bh + 8);
            ctx.shadowBlur = 0;
+           ctx.globalAlpha = 1;
         }
         // owner Z needle barely dips
         var z = 4.2 - attack * 0.5;
@@ -449,9 +466,10 @@
   function stakes(film) {
     film.scene("A courtroom-grade signature", 18, function (s) {
       s.canvas(function (lt, ctx, h) {
-        graph(ctx, h, 250, 280, CY, 1, 9, 0);
+        var fade = clamp01(lt / 0.5);
+        graph(ctx, h, 250, 280, CY, fade, 9, 0);
         // gold pattern overlay glints
-        var i; ctx.globalAlpha = 0.8;
+        var i; ctx.globalAlpha = 0.8 * fade;
         for (i = 0; i < 8; i++) { var a = lt * 1.5 + i; ctx.fillStyle = h.rgba(GOLD, 0.5 + 0.5 * Math.sin(a)); ctx.beginPath(); ctx.arc(210 + i * 12, 250 + (i % 3) * 22, 2.5, 0, 7); ctx.fill(); }
         ctx.globalAlpha = 1;
       });
@@ -459,12 +477,12 @@
       var power = Phi(d3 - Z_ALPHA);
       var eq = s.tex2("\\text{Signal} \\propto \\sqrt{\\text{Dimensions}}", { px: 560, py: 220, size: "1.4rem", color: AMB });
       s.write(eq, { at: 1.5, dur: 1.5 });
-      var valNode = s.value("detection power → <strong style='color:#ffffff'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:#ffffff'>" + v.toFixed(2) + "%</strong>"; } });
+      var valNode = s.value("detection power → <strong style='color:" + WHT + "'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:" + WHT + "'>" + v.toFixed(2) + "%</strong>"; } });
       s.fadeIn(valNode, { at: 3.75, dur: 1.5 });
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
+      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
-      var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
     }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
   }

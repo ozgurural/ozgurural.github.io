@@ -11,8 +11,8 @@
     build();
   }
 
-  var E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC";
+  var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
+  var CY = PAL.sky, AMB = PAL.amber || "#FFFF00", RED = PAL.rose, GRN = PAL.good, GREY = PAL.faint, PURP = PAL.violet;
 
   var _lowerCount = 0, _pendLower = null;
   // Panels share one full-width bottom bar, so two visible at once print
@@ -74,7 +74,7 @@
         ctx.beginPath(); ctx.arc(cx, cy - 100, 12 + 4*managerPulse, 0, Math.PI*2); ctx.fill();
         ctx.shadowBlur = 0;
         
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 14px 'JetBrains Mono', monospace";
+      ctx.fillStyle = PAL.white; ctx.font = "bold 14px 'JetBrains Mono', monospace";
         ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
         
         
@@ -144,11 +144,13 @@
            ctx.fillStyle = h.rgba(RED, alpha * 0.15);
            ctx.fillRect(0,0,960,540); // Flash screen red
            
+           var botFade = clamp01((lt - 30) / 0.5);
+           ctx.globalAlpha = op * botFade;
            ctx.shadowBlur = 20; ctx.shadowColor = RED;
            ctx.fillStyle = RED;
            ctx.font = "bold 32px 'JetBrains Mono'";
            ctx.fillText("SYSTEM BOTTLENECK", cx - 160, cy - 170);
-           
+           ctx.globalAlpha = op;
         }
         ctx.globalCompositeOperation = "source-over";
         ctx.globalAlpha = 1;
@@ -189,7 +191,7 @@
             
             ctx.beginPath(); ctx.arc(cx, cy - 100, 16, 0, Math.PI*2); ctx.fill();
             ctx.shadowBlur = 0;
-            ctx.fillStyle = h.rgba("#ffffff", alpha); ctx.font = "bold 14px 'JetBrains Mono', monospace";
+            ctx.fillStyle = h.rgba(PAL.white, alpha); ctx.font = "bold 14px 'JetBrains Mono', monospace";
             ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
          }
       });
@@ -224,8 +226,8 @@
       // Rebuild on engine primitives
       var ax = s.axes(co, { grid: true, gridX: 8, gridY: 5 });
       s.draw(ax, { at: 1.0, dur: 1.2 });
-      var xlab = s.caption("NO Shares (x)", { coords: co, x: 5, y: -1, anchor: "top", align: "center", size: "1rem", color: "#ccc" });
-      var ylab = s.caption("<div style='transform: rotate(-90deg)'>YES Shares (y)</div>", { coords: co, x: -1, y: 5, anchor: "center", align: "center", size: "1rem", color: "#ccc" });
+      var xlab = s.caption("NO Shares (x)", { coords: co, x: 5, y: -1, anchor: "top", align: "center", size: "1rem", color: PAL.muted });
+      var ylab = s.caption("<div style='transform: rotate(-90deg)'>YES Shares (y)</div>", { coords: co, x: -1, y: 5, anchor: "center", align: "center", size: "1rem", color: PAL.muted });
       s.fadeIn(xlab, { at: 1.5, dur: 0.8 });
       s.fadeIn(ylab, { at: 1.5, dur: 0.8 });
 
@@ -235,7 +237,7 @@
       var curve = s.poly(pts, { coords: co, color: CY, width: 4 });
       s.draw(curve, { at: 4.5, dur: 3.0 });
       
-      var priceDot = s.dot({ coords: co, x: 2.5, y: k / 2.5, r: 8, color: "#fff" });
+      var priceDot = s.dot({ coords: co, x: 2.5, y: k / 2.5, r: 8, color: PAL.white });
       s.hide(priceDot, 0);
       s.show(priceDot, 20);
       var sweepFn = function(tau) {
@@ -270,6 +272,9 @@
 
         // The sweeping tangent line (Price Discovery)
         if (lt > 20) {
+           var fade20 = clamp01((lt - 20) / 0.5);
+           ctx.globalAlpha = fade20;
+
            var slideP = clamp01((lt - 20) / 35); 
            var sweep = (Math.sin(slideP * Math.PI * 2.5 - Math.PI/2) + 1) / 2; 
            var currX = lerp(2.5, 8, E.inOut(sweep));
@@ -284,8 +289,8 @@
            ctx.beginPath(); ctx.moveTo(co.x(tx1), co.y(ty1)); ctx.lineTo(co.x(tx2), co.y(ty2)); ctx.stroke();
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = "#fff";
-           ctx.shadowBlur = 20; ctx.shadowColor = "#fff";
+           ctx.fillStyle = PAL.white;
+           ctx.shadowBlur = 20; ctx.shadowColor = PAL.white;
            ctx.beginPath(); ctx.arc(co.x(currX), co.y(currY), 8, 0, Math.PI*2); ctx.fill();
            ctx.shadowBlur = 0;
            
@@ -294,6 +299,7 @@
 
            ctx.fillStyle = AMB; ctx.font = "bold 20px monospace";
            ctx.fillText("Probability: " + prob.toFixed(1) + "%", co.x(currX) + 20, co.y(currY) - 20);
+           ctx.globalAlpha = 1;
         }
       });
 
@@ -331,11 +337,11 @@
       s.hide(payTxt, 0); s.show(payTxt, 60);
       s.move(payTxt, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
       
-      var costTxt = s.caption("<strong style='color:#fc6255'>- $100</strong>", { coords: co3, x: 2, y: 12, size: "14px", anchor: "center" });
+      var costTxt = s.caption("<strong style='color:" + RED + "'>- $100</strong>", { coords: co3, x: 2, y: 12, size: "14px", anchor: "center" });
       s.hide(costTxt, 0); s.show(costTxt, 60);
       s.move(costTxt, { toX: 750, toY: 245, at: 60, dur: 8, ease: E.out });
       
-      var profTxt = s.caption("<strong style='color:#83C167'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
+      var profTxt = s.caption("<strong style='color:" + GRN + "'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
       s.hide(profTxt, 0);
       s.morph(payTxt, profTxt, { at: 68, dur: 1.0 });
       s.fadeOut(costTxt, { at: 68, dur: 1.0 });
@@ -362,42 +368,51 @@
         
         ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
         
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
+      ctx.fillStyle = PAL.white; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
         ctx.fillText("BOUNTY CONTRACT", coreX - 70, coreY - 110);
         
 
         // The Developer
         var devX = 750, devY = 300;
         ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(devX, devY, 18, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = "#fff"; ctx.font = "14px monospace"; ctx.fillText("Developer", devX - 35, devY + 40);
+        ctx.fillStyle = PAL.white; ctx.font = "14px monospace"; ctx.fillText("Developer", devX - 35, devY + 40);
 
         // Phase 1: Capital Transfer (Buying Shares) — a brisk, eased hop
         if (lt > 4 && lt < 20) {
+           var fade4 = clamp01((lt - 4) / 0.5);
            var buyP = clamp01((lt - 4) / 3.5);
            var coinX = lerp(devX, coreX + 100, E.inOut(buyP));
            var coinY = devY - 50;
            
            if (buyP < 1) {
+              ctx.globalAlpha = op * fade4;
               // Glowing Capital particle
               ctx.shadowBlur = 15; ctx.shadowColor = AMB;
               ctx.fillStyle = AMB; ctx.beginPath(); ctx.arc(coinX, coinY, 8, 0, Math.PI*2); ctx.fill();
               ctx.shadowBlur = 0;
-              ctx.fillStyle = "#fff"; ctx.font = "bold 14px monospace"; ctx.fillText("$100", coinX + 15, coinY + 5);
+              ctx.fillStyle = PAL.white; ctx.font = "bold 14px monospace"; ctx.fillText("$100", coinX + 15, coinY + 5);
            } else {
               // Shares acquired
+              var fadeAcq = clamp01((lt - 7.5) / 0.5);
+              ctx.globalAlpha = op * fadeAcq;
               ctx.fillStyle = AMB; ctx.font = "bold 18px monospace";
               ctx.fillText("YES Shares: 1000", coreX - 80, coreY + 50);
               ctx.fillText("Price: $0.10", coreX - 80, coreY + 80);
            }
+           ctx.globalAlpha = op;
         }
 
         // Phase 2: Work (Matrix typing effect)
         if (lt > 20) {
+           var fade20 = clamp01((lt - 20) / 0.5);
+           ctx.globalAlpha = op * fade20;
            ctx.fillStyle = AMB; ctx.font = "bold 18px monospace";
            ctx.fillText("YES Shares: 1000", coreX - 80, coreY + 50);
            ctx.fillText("Price: $0.10", coreX - 80, coreY + 80);
            
            if (lt < 45) {
+               var fadeRain = (1 - clamp01((lt - 44.5) / 0.5));
+               ctx.globalAlpha = op * fade20 * fadeRain;
                var typingP = Math.abs(Math.sin(lt * 15)); 
                ctx.fillStyle = h.rgba(GRN, 0.4 + 0.6 * typingP);
                ctx.fillRect(devX - 25, devY - 50, 50, 20); // keyboard flashing
@@ -418,16 +433,21 @@
            if (lt > 38 && lt < 50) {
               var pushP = clamp01((lt - 38) / 7);
               var prX = lerp(devX, coreX + 100, E.inOut(pushP));
+              var fadePR = clamp01((lt - 38) / 0.5) * (1 - clamp01((lt - 49.5) / 0.5));
+              ctx.globalAlpha = op * fadePR;
               
               ctx.shadowBlur = 15; ctx.shadowColor = GRN;
               ctx.fillStyle = GRN; ctx.fillRect(prX, devY + 50, 40, 25);
               ctx.shadowBlur = 0;
               ctx.fillStyle = "#000"; ctx.font = "bold 14px monospace"; ctx.fillText("PR", prX+10, devY+67);
            }
+           ctx.globalAlpha = op;
         }
 
         // Phase 3: Oracle Resolution & Massive Payout
         if (lt > 50) {
+           var fade50 = clamp01((lt - 50) / 0.5);
+           ctx.globalAlpha = op * fade50;
            // Oracle pulse
            var flash = clamp01(1 - (lt - 50)/2);
            ctx.globalCompositeOperation = "screen";
@@ -439,6 +459,8 @@
            ctx.fillText("ORACLE: RESOLVED", coreX - 90, coreY - 30);
 
            if (lt > 54) {
+               var fade54 = clamp01((lt - 54) / 0.5);
+               ctx.globalAlpha = op * fade50 * fade54;
                ctx.fillStyle = GRN; ctx.font = "bold 24px monospace";
                ctx.fillText("Price: $1.00", coreX - 80, coreY + 120); 
             }
