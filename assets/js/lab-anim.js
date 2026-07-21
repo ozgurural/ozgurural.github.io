@@ -338,6 +338,8 @@
   Scene.prototype.axes = function (coords, o) {
     o = o || {};
     var g = this.group();
+    g._children = [];
+    var self = this;
     function ln(x1, y1, x2, y2, w, col) {
       var l = NS("line");
       l.setAttribute("x1", x1); l.setAttribute("y1", y1);
@@ -346,6 +348,10 @@
       l.setAttribute("stroke-width", w || 1.5);
       l.setAttribute("stroke-linecap", "round");
       g.el.appendChild(l);
+      var h = new Handle("svg", l, self);
+      h._pathLen = Math.hypot(x2 - x1, y2 - y1);
+      g._children.push(h);
+      self._add(h);
     }
     // grid
     if (o.grid) {
@@ -364,6 +370,19 @@
     g._ox = coords.px0; g._oy = coords.py0;
     g.coords = coords;
     return g;
+  };
+
+  // Stagger-reveal an array of handles (e.g. axes._children)
+  Scene.prototype.stagger = function (handles, o) {
+    o = o || {};
+    var at = num(o.at, 0);
+    var dur = num(o.dur, 1.0);
+    var lag = num(o.lag, dur * 0.1);
+    var ease = o.ease || Ease.smooth;
+    for (var i = 0; i < handles.length; i++) {
+      this.draw(handles[i], { at: at + i * lag, dur: dur, ease: ease });
+    }
+    return this;
   };
 
   /* --- object factories (HTML / KaTeX) --- */
@@ -497,6 +516,28 @@
     });
   };
 
+  // create an arc-length-parameterized path function from world points
+  // so a moveAlong dot stays in lockstep with the dash-offset reveal
+  Scene.prototype.arcPath = function(points, co) {
+    var px = points.map(function (p) { return [co.x(p[0]), co.y(p[1])]; });
+    var cum = [0], i, L = 0;
+    for (i = 1; i < px.length; i++) {
+      L += Math.hypot(px[i][0] - px[i - 1][0], px[i][1] - px[i - 1][1]);
+      cum.push(L);
+    }
+    return function (tau) {
+      tau = Math.max(0, Math.min(1, tau));
+      var target = tau * L, lo = 0;
+      while (lo < cum.length - 2 && cum[lo + 1] < target) lo++;
+      var seg = cum[lo + 1] - cum[lo] || 1;
+      var g = (target - cum[lo]) / seg;
+      return {
+        x: points[lo][0] + (points[lo + 1][0] - points[lo][0]) * g,
+        y: points[lo][1] + (points[lo + 1][1] - points[lo][1]) * g
+      };
+    };
+  };
+
   // move a handle along a parametric world path tau∈[0,1] -> {x,y}
   Scene.prototype.moveAlong = function (h, pathFn, o) {
     var s = span(o, 1.2);
@@ -558,11 +599,68 @@
   Scene.prototype.morph = function (a, b, o) {
     var s = span(o, 0.8);
     var fromOp = a.cur.op > 0 ? a.cur.op : 1, fsx = a.cur.sx, fsy = a.cur.sy;
-    this._cue(a, s.at, s.dur, s.ease, function (st, p) { st.op = lerp(fromOp, 0, p); st.sx = lerp(fsx, fsx * 0.96, p); st.sy = lerp(fsy, fsy * 0.96, p); });
+    var fx = a.cur.x, fy = a.cur.y;
+    var replace = o && o.replace;
+    var dx = 0, dy = 0, scale = 1;
+
+    if (replace) {
+      var film = this.film;
+      function getBox(h) {
+        if (h.kind === "svg") {
+          try { return h.el.getBBox(); } catch (e) { return { x: 0, y: 0, width: 0, height: 0 }; }
+        } else {
+          var r = h.el.getBoundingClientRect();
+          var sr = film.stage.getBoundingClientRect();
+          return {
+            x: (r.left - sr.left) / film._scale,
+            y: (r.top - sr.top) / film._scale,
+            width: r.width / film._scale,
+            height: r.height / film._scale
+          };
+        }
+      }
+      var rA = getBox(a), rB = getBox(b);
+      var cxA = rA.x + rA.width / 2, cyA = rA.y + rA.height / 2;
+      var cxB = rB.x + rB.width / 2, cyB = rB.y + rB.height / 2;
+      dx = cxB - cxA;
+      dy = cyB - cyA;
+      scale = rA.width > 0 ? rB.width / rA.width : 1;
+    }
+
+    this._cue(a, s.at, s.dur, s.ease, function (st, p) {
+      st.op = lerp(fromOp, 0, p);
+      if (replace) {
+        st.sx = lerp(fsx, fsx * scale, p);
+        st.sy = lerp(fsy, fsy * scale, p);
+        st.x = lerp(fx, fx + dx, p);
+        st.y = lerp(fy, fy + dy, p);
+      } else {
+        st.sx = lerp(fsx, fsx * 0.96, p);
+        st.sy = lerp(fsy, fsy * 0.96, p);
+      }
+    });
+
     b.base.op = 0;
     var bsx = b.cur.sx, bsy = b.cur.sy;
-    this._cue(b, s.at, s.dur, s.ease, function (st, p) { st.op = lerp(0, 1, p); st.sx = lerp(bsx * 1.04, bsx, p); st.sy = lerp(bsy * 1.04, bsy, p); });
+    var bx = b.cur.x, by = b.cur.y;
+    this._cue(b, s.at, s.dur, s.ease, function (st, p) {
+      st.op = lerp(0, 1, p);
+      if (replace) {
+        st.sx = lerp(bsx / scale, bsx, p);
+        st.sy = lerp(bsy / scale, bsy, p);
+        st.x = lerp(bx - dx, bx, p);
+        st.y = lerp(by - dy, by, p);
+      } else {
+        st.sx = lerp(bsx * 1.04, bsx, p);
+        st.sy = lerp(bsy * 1.04, bsy, p);
+      }
+    });
+
     a.cur.op = 0; b.cur.op = 1;
+    if (replace) {
+      a.cur.sx = fsx * scale; a.cur.sy = fsy * scale;
+      a.cur.x = fx + dx; a.cur.y = fy + dy;
+    }
     return this;
   };
 
