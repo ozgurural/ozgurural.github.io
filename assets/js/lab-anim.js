@@ -1240,6 +1240,25 @@
       master.connect(ctx.destination);
       return ctx;
     }
+    function createReverb(duration, decay) {
+      if (!ctx) return null;
+      try {
+        var sampleRate = ctx.sampleRate;
+        var length = sampleRate * duration;
+        var impulse = ctx.createBuffer(2, length, sampleRate);
+        var left = impulse.getChannelData(0);
+        var right = impulse.getChannelData(1);
+        for (var i = 0; i < length; i++) {
+          var n = i / length;
+          var env = Math.pow(1 - n, decay);
+          left[i] = (Math.random() * 2 - 1) * env;
+          right[i] = (Math.random() * 2 - 1) * env;
+        }
+        var convolver = ctx.createConvolver();
+        convolver.buffer = impulse;
+        return convolver;
+      } catch (e) { return null; }
+    }
     function armUnlock() {
       if (unlockArmed) return;
       unlockArmed = true;
@@ -1285,17 +1304,27 @@
       out.gain.value = 0;
       out.connect(master);
 
+      // Reverb: procedural impulse response for rich ambient space
+      var reverbNode = createReverb(3.0, 2.2);
+      var verbSend = ctx.createGain(); verbSend.gain.value = 0.38;
+      if (reverbNode) {
+        verbSend.connect(reverbNode);
+        reverbNode.connect(out);
+      } else {
+        verbSend.connect(out);
+      }
+
       // space: a gentle feedback delay tuned to the film's tempo
       var delay = ctx.createDelay(1.5);
       delay.delayTime.value = (60 / mood.tempo) * 0.75;
       var fb = ctx.createGain(); fb.gain.value = 0.32;
-      var wet = ctx.createGain(); wet.gain.value = 0.5;
+      var wet = ctx.createGain(); wet.gain.value = 0.4;
       delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(out);
+      if (reverbNode) delay.connect(reverbNode);
 
-      // scale/chord helpers — a chord is a triad stacked in scale space on a
-      // prog degree; the pad glides between chords, the melody resolves to them
+      // scale/chord helpers
       var scale = mood.scale, nDeg = scale.length;
-      function semiOf(deg) { // scale degree (any integer) -> semitones from root
+      function semiOf(deg) {
         return scale[((deg % nDeg) + nDeg) % nDeg] + 12 * Math.floor(deg / nDeg);
       }
       function chordSemis(progDeg) { return [semiOf(progDeg), semiOf(progDeg + 2), semiOf(progDeg + 4)]; }
@@ -1305,12 +1334,12 @@
       // chord, plus a soft sine sub an octave below — all gliding on changes
       var lp = ctx.createBiquadFilter();
       lp.type = "lowpass"; lp.frequency.value = mood.cutoff; lp.Q.value = 0.6;
-      var padGain = ctx.createGain(); padGain.gain.value = 0.30;
-      lp.connect(padGain); padGain.connect(out);
+      var padGain = ctx.createGain(); padGain.gain.value = 0.28;
+      lp.connect(padGain); padGain.connect(out); padGain.connect(verbSend);
       var lfo = ctx.createOscillator(); lfo.frequency.value = 0.05 + rand() * 0.04;
       var lfoGain = ctx.createGain(); lfoGain.gain.value = mood.cutoff * 0.35;
       lfo.connect(lfoGain); lfoGain.connect(lp.frequency); lfo.start();
-      // very slow "breath" on the whole score (~±9% over ~20 s)
+      // slow "breath" on the whole score
       var breath = ctx.createOscillator(); breath.frequency.value = 0.045 + rand() * 0.02;
       var breathGain = ctx.createGain(); breathGain.gain.value = VOL * 0.09;
       breath.connect(breathGain); breathGain.connect(out.gain); breath.start();
@@ -1334,10 +1363,9 @@
       sub.connect(subGain); subGain.connect(out);
       sub.start(); oscs.push(sub);
 
-      graph = { out: out, oscs: oscs, delaySend: delay };
+      graph = { out: out, oscs: oscs, delaySend: delay, verbSend: verbSend };
 
-      // melody: seeded scale walk with phrase structure — chord tones on
-      // downbeats, a breath at the end of every 8-bar phrase, gentle stereo
+      // melody: organic FM/plucked E-piano tone with phrase structure
       var beat = 60 / mood.tempo;
       var nextAt = ctx.currentTime + 0.35;
       var degree = Math.floor(rand() * nDeg);
@@ -1347,7 +1375,6 @@
         if (!graph || !ctx) return;
         while (nextAt < ctx.currentTime + 0.9) {
           var bar = Math.floor(beatCount / 4), beatInBar = beatCount % 4;
-          // chord change every two bars: glide the pad and the sub
           var ci = Math.floor(bar / 2) % mood.prog.length;
           if (ci !== chordIdx) {
             chordIdx = ci;
@@ -1357,7 +1384,6 @@
             });
             sub.frequency.setTargetAtTime(freqOf(rootSemi) / 2, nextAt, 0.7);
           }
-          // phrase breath: last beat of every 8-bar phrase stays silent
           if (bar % 8 === 7 && beatInBar === 3) { beatCount++; nextAt += beat; continue; }
 
           var step = rand();
@@ -1366,7 +1392,6 @@
           degree = ((degree % span) + span) % span;
           var semi = semiOf(degree) + 12;
           if (beatInBar === 0) {
-            // downbeat: resolve to the nearest chord tone (that's the "music")
             var tones = chordSemis(mood.prog[chordIdx]), best = tones[0], bd = 99;
             for (var ti = 0; ti < tones.length; ti++) {
               for (var oct = 0; oct <= 12; oct += 12) {
@@ -1379,28 +1404,44 @@
           }
           var f = freqOf(semi);
           var t0 = nextAt;
-          var o = ctx.createOscillator(); o.type = "triangle"; o.frequency.value = f;
-          var shimmer = ctx.createOscillator(); shimmer.type = "sine"; shimmer.frequency.value = f * 2;
-          var g = ctx.createGain();
-          var peak = (0.16 + mood.bright * 0.1) * (beatInBar === 0 ? 1.2 : 0.88);
-          g.gain.setValueAtTime(0, t0);
-          g.gain.linearRampToValueAtTime(peak, t0 + 0.03);
-          g.gain.exponentialRampToValueAtTime(0.001, t0 + beat * 1.8);
-          var sg = ctx.createGain(); sg.gain.value = 0.22;
-          shimmer.connect(sg); sg.connect(g);
-          o.connect(g);
-          var dst = g;
+
+          // Soft organic E-piano note synth (Sine + Soft harmonic + Filter envelope)
+          var o1 = ctx.createOscillator(); o1.type = "sine"; o1.frequency.value = f;
+          var o2 = ctx.createOscillator(); o2.type = "sine"; o2.frequency.value = f * 2.002; // soft octave overtone
+          
+          var noteFilt = ctx.createBiquadFilter();
+          noteFilt.type = "lowpass";
+          noteFilt.frequency.setValueAtTime(f * 3.5, t0);
+          noteFilt.frequency.exponentialRampToValueAtTime(f * 1.1, t0 + beat * 0.8);
+
+          var g1 = ctx.createGain();
+          var peak = (0.15 + mood.bright * 0.08) * (beatInBar === 0 ? 1.15 : 0.85);
+          g1.gain.setValueAtTime(0, t0);
+          g1.gain.linearRampToValueAtTime(peak, t0 + 0.015);
+          g1.gain.exponentialRampToValueAtTime(0.0005, t0 + beat * 2.2);
+
+          var g2 = ctx.createGain();
+          g2.gain.setValueAtTime(0, t0);
+          g2.gain.linearRampToValueAtTime(peak * 0.3, t0 + 0.015);
+          g2.gain.exponentialRampToValueAtTime(0.0001, t0 + beat * 0.9);
+
+          o1.connect(noteFilt);
+          o2.connect(g2); g2.connect(noteFilt);
+          noteFilt.connect(g1);
+
+          var dst = g1;
           if (canPan) {
             panSide = -panSide;
             var pan = ctx.createStereoPanner(); pan.pan.value = panSide * (0.14 + rand() * 0.12);
-            g.connect(pan); dst = pan;
+            g1.connect(pan); dst = pan;
           }
-          dst.connect(out); dst.connect(graph.delaySend);
-          o.start(t0); o.stop(t0 + beat * 2);
-          shimmer.start(t0); shimmer.stop(t0 + beat * 2);
+          dst.connect(out); dst.connect(graph.delaySend); dst.connect(graph.verbSend);
+          o1.start(t0); o1.stop(t0 + beat * 2.5);
+          o2.start(t0); o2.stop(t0 + beat * 1.2);
+
           beatCount++;
           var restRoll = rand();
-          if (restRoll < 0.16) { beatCount++; nextAt += beat * 2; } // breathing room
+          if (restRoll < 0.16) { beatCount++; nextAt += beat * 2; }
           else nextAt += beat;
         }
       }, 300);
@@ -1420,31 +1461,63 @@
       muted = m;
       if (graph && ctx) graph.out.gain.setTargetAtTime(m ? 0 : VOL, ctx.currentTime, 0.25);
     }
-    // Signature-scene stinger: a sub-bass swell plus a shimmer chord built
-    // from the harmonic series of the film's own root, so it always agrees
-    // with the score underneath it.
+    // Signature-scene stinger: a warm cinematic resolution chord matched to the
+    // film's key, backed by a soft low-end warmth & reverb tail (no harsh sweeps).
     function stinger(key) {
       if (!ensureCtx() || muted) return;
       if (ctx.state === "suspended") { ctx.resume().catch(function () {}); armUnlock(); }
       var mood = moodFor(key || currentKey || "lab");
       var t = ctx.currentTime;
-      var out = ctx.createGain(); out.gain.value = 1; out.connect(master);
-      var osc = ctx.createOscillator(), g = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(45, t);
-      osc.frequency.exponentialRampToValueAtTime(12, t + 10);
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.45, t + 0.12);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 10);
-      osc.connect(g); g.connect(out); osc.start(t); osc.stop(t + 10);
-      [2, 3, 4, 5].forEach(function (n) {
-        var o = ctx.createOscillator(), gg = ctx.createGain();
-        o.type = "sine"; o.frequency.value = mood.root * n;
-        gg.gain.setValueAtTime(0, t);
-        gg.gain.linearRampToValueAtTime(0.035, t + 1.5);
-        gg.gain.exponentialRampToValueAtTime(0.001, t + 11);
-        o.connect(gg); gg.connect(out); o.start(t); o.stop(t + 11);
+      var out = ctx.createGain(); out.gain.value = 0.8; out.connect(master);
+
+      var reverb = createReverb(4.0, 2.0);
+      if (reverb) reverb.connect(out);
+
+      var scale = mood.scale, nDeg = scale.length;
+      function semiOf(deg) { return scale[((deg % nDeg) + nDeg) % nDeg] + 12 * Math.floor(deg / nDeg); }
+      function freqOf(semi) { return mood.root * Math.pow(2, semi / 12); }
+
+      // 1. Warm low-end body (audible fundamental bass around 55-80Hz, clean & round)
+      var rootFreq = freqOf(semiOf(mood.prog[0]));
+      var bassFreq = rootFreq > 140 ? rootFreq / 2 : rootFreq;
+      var subOsc = ctx.createOscillator(), subG = ctx.createGain();
+      subOsc.type = "sine";
+      subOsc.frequency.setValueAtTime(bassFreq, t);
+      subG.gain.setValueAtTime(0, t);
+      subG.gain.linearRampToValueAtTime(0.35, t + 0.3);
+      subG.gain.exponentialRampToValueAtTime(0.001, t + 7.0);
+      subOsc.connect(subG); subG.connect(out);
+      subOsc.start(t); subOsc.stop(t + 7.2);
+
+      // 2. Film-keyed Resolution Triad (Root, 3rd/4th, 5th + Octave)
+      var chordSemis = [semiOf(mood.prog[0]), semiOf(mood.prog[0] + 2), semiOf(mood.prog[0] + 4), semiOf(mood.prog[0]) + 12];
+      chordSemis.forEach(function (semi, idx) {
+        var f = freqOf(semi);
+        [-4, 4].forEach(function (detune) {
+          var o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = "sine";
+          o.frequency.value = f;
+          o.detune.value = detune;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.08 / (idx + 1), t + 0.2 + idx * 0.12);
+          g.gain.exponentialRampToValueAtTime(0.0002, t + 6.5);
+          o.connect(g);
+          g.connect(out);
+          if (reverb) g.connect(reverb);
+          o.start(t); o.stop(t + 6.8);
+        });
       });
+
+      // 3. High Crystal Shimmer Bell (Root + 2 octaves)
+      var shimOsc = ctx.createOscillator(), shimG = ctx.createGain();
+      shimOsc.type = "sine";
+      shimOsc.frequency.value = rootFreq * 4;
+      shimG.gain.setValueAtTime(0, t);
+      shimG.gain.linearRampToValueAtTime(0.06, t + 0.4);
+      shimG.gain.exponentialRampToValueAtTime(0.0001, t + 5.0);
+      shimOsc.connect(shimG);
+      if (reverb) shimG.connect(reverb); else shimG.connect(out);
+      shimOsc.start(t); shimOsc.stop(t + 5.2);
     }
     return {
       start: start, stop: stop, pause: pause, setMuted: setMuted, stinger: stinger,
