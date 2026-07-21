@@ -514,8 +514,7 @@
         var stackW = 80;
         var maxStackH = 150; 
         var currentStackSum = 0;
-        var coLeft = 470; // Hardcoded fallback if co isn't ready
-        
+
         for (var kk = 0; kk <= 8; kk++) {
           var pm = poissonPMF(lambda, kk);
           var inP = clamp01((lt - (3 + kk * 0.18)) / 0.75);
@@ -568,7 +567,7 @@
       var co = film.coords({ xRange: [-0.6, 8.6], yRange: [0, 0.32], pad: { left: 470, right: 60, top: 150, bottom: 220 } });
       var axx = s.line({ coords: co, x1: -0.4, y1: 0, x2: 8.4, y2: 0, color: PAL.axis, width: 1.3 });
       s.draw(axx, { at: 1.8, dur: 1.2 });
-      s.erase(axx, { at: 12, dur: 1.5 });
+      s.fadeOut(axx, { at: 12, dur: 1.5 });
       var lostLbl = s.caption("k ≥ z: race already lost", { coords: co, x: 6.5, y: 0.22, anchor: "center", size: "0.9rem", color: RED });
       s.fadeIn(lostLbl, { at: 3 + z * 0.18, dur: 0.75 });
       s.fadeOut(lostLbl, { at: 12, dur: 1.0 });

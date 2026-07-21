@@ -29,6 +29,7 @@ function speechify(html) {
   t = t.replace(/&amp;/g, " and ").replace(/&nbsp;/g, " ");
   // math / symbols to words
   t = t.replace(/\(q\/p\)/g, "q over p");
+  t = t.replace(/zq\/p/g, "z q over p");
   t = t.replace(/70\/30/g, "seventy to thirty");
   t = t.replace(/√κ/g, "root kappa").replace(/κ/g, "kappa");
   t = t.replace(/ρq/g, "rho q").replace(/ρ\s*≈\s*1/g, "rho near one").replace(/ρ/g, "rho");

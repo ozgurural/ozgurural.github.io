@@ -211,16 +211,20 @@
          
          s.move(dot, { coords: co, toX: targetX, toY: targetY, at: 0.5 + t * 0.05, dur: 1.5, ease: E.out });
          
-         (function(dNode) {
-             s._cue(dNode, 0.5 + t * 0.05, 1.5, E.out, function(st, p) {
-                 var r1 = 252, g1 = 98, b1 = 85; 
-                 var r2 = 88, g2 = 196, b2 = 221; 
+         (function(dNode, delay) {
+             // cue spans from t=0 so a backwards scrub restores the red state
+             // (a cue that starts later would leave the last color painted)
+             var total = delay + 1.5;
+             s._cue(dNode, 0, total, E.linear, function(st, _e, rawP) {
+                 var p = E.out(clamp01((rawP * total - delay) / 1.5));
+                 var r1 = 252, g1 = 98, b1 = 85;
+                 var r2 = 88, g2 = 196, b2 = 221;
                  var r = Math.round(r1 + (r2 - r1) * p);
                  var g = Math.round(g1 + (g2 - g1) * p);
                  var b = Math.round(b1 + (b2 - b1) * p);
                  dNode.el.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
              });
-         })(dot);
+         })(dot, 0.5 + t * 0.05);
       }
 
       // Rebuild on engine primitives
@@ -337,9 +341,11 @@
       s.hide(payTxt, 0); s.show(payTxt, 60);
       s.move(payTxt, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
       
+      // the cost tag departs 2.5s behind the payout so the two texts never
+      // ride the same stretch of the path at the same moment
       var costTxt = s.caption("<strong style='color:" + RED + "'>- $100</strong>", { coords: co3, x: 2, y: 12, size: "14px", anchor: "center" });
-      s.hide(costTxt, 0); s.show(costTxt, 60);
-      s.move(costTxt, { toX: 750, toY: 245, at: 60, dur: 8, ease: E.out });
+      s.hide(costTxt, 0); s.show(costTxt, 62.5);
+      s.move(costTxt, { toX: 750, toY: 245, at: 62.5, dur: 6.5, ease: E.out });
       
       var profTxt = s.caption("<strong style='color:" + GRN + "'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
       s.hide(profTxt, 0);

@@ -213,7 +213,7 @@
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBLU, 0.9);
         ctx.fillText("utility", mx - 2, my - 16);
       });
-      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 110, size: "1.4rem", color: LBLU });
+      var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 78, size: "1.4rem", color: LBLU });
       s.fadeIn(eq, { at: 1.5, dur: 1.2 });
       lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
@@ -258,7 +258,7 @@
           }
         }
         // dashed pattern envelope w over the marked tips
-        var envFade = clamp01((lt - 5.9) / 0.5);
+        var envFade = clamp01((lt - 9.7) / 0.5); // after the last mark has risen (9.5)
         if (envFade > 0) {
           ctx.setLineDash([4, 5]); ctx.strokeStyle = h.rgba(CY, 0.5 * drainP * envFade); ctx.lineWidth = 1.4;
           ctx.beginPath();
@@ -279,7 +279,7 @@
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBLU, 0.8);
         ctx.fillText("aggregate SNR  d", px0, py0 - ph - 12);
       });
-      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 90, size: "1.5rem", color: TXT });
+      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 64, size: "1.5rem", color: TXT });
       s.write(eq, { at: 1.5, dur: 2.1 });
       lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
@@ -389,8 +389,8 @@
             ctx.globalAlpha = 1;
         }
         
-        // current curve
-        var curColor = p === 1 ? GRN : CY;
+        // current curve — eases from cyan into the final green, no color pop
+        var curColor = h.mix(CY, GRN, clamp01((p - 0.85) / 0.15));
         drawRoc(d, curColor, 1.0, 3.0);
         
         // AUC counter
@@ -482,7 +482,7 @@
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
-      var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
+      var cite = s.caption("Ural &amp; Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
     }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
   }
