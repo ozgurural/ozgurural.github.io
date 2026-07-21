@@ -30,7 +30,7 @@
     build(); appendix();
   }
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var TEAL = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", GOLD = "#FFFF00", INDIGO = "#9A72AC";
+  var TEAL = PAL.sky, AMB = PAL.amber, RED = PAL.rose, GRN = PAL.good, GREY = PAL.faint, GOLD = PAL.amber, INDIGO = PAL.violet;
 
   var _lowerCount = 0;
   function lower(s, html, at, o) {
@@ -142,12 +142,27 @@
         for(var g = 1; g < 8; g++) { ctx.moveTo(px0 + pw*g/8, py0); ctx.lineTo(px0 + pw*g/8, py0 - ph); }
         ctx.stroke();
         
-        var nL = Math.floor(clamp01(lt / 9) * 40);
+        var exactL = clamp01(lt / 9) * 40;
+        var nL = Math.floor(exactL);
+        var rem = exactL - nL;
         ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2; 
         ctx.shadowBlur = 10; ctx.shadowColor = TEAL;
         ctx.beginPath();
         var pts = [];
-        for (i = 0; i <= nL; i++) { var L = Math.exp(-i * 0.09) * (1 + 0.12 * Math.sin(i * 1.9)) ; var xx = px0 + pw * i / 40, yy = py0 - ph * (1 - L); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); pts.push([xx, yy]); }
+        for (i = 0; i <= nL; i++) { 
+           var L = Math.exp(-i * 0.09) * (1 + 0.12 * Math.sin(i * 1.9)) ; 
+           var xx = px0 + pw * i / 40, yy = py0 - ph * (1 - L); 
+           if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); 
+           pts.push([xx, yy]); 
+        }
+        if (rem > 0 && nL < 40) {
+           var Ln = Math.exp(-(nL+1) * 0.09) * (1 + 0.12 * Math.sin((nL+1) * 1.9));
+           var xxn = px0 + pw * (nL+1) / 40, yyn = py0 - ph * (1 - Ln);
+           var xCur = lerp(pts[nL][0], xxn, rem);
+           var yCur = lerp(pts[nL][1], yyn, rem);
+           ctx.lineTo(xCur, yCur);
+           pts.push([xCur, yCur]);
+        }
         ctx.stroke();
         ctx.shadowBlur = 0;
         if (pts.length > 0) {
@@ -277,7 +292,11 @@
           // recomputed dashed path landing inside (honest)
           ctx.strokeStyle = h.rgba("#ffffff", 0.9); ctx.setLineDash([4, 4]); ctx.lineWidth = 2; ctx.beginPath();
           ctx.moveTo(bx2 - 120, by2 + 60); ctx.lineTo(lerp(bx2 - 120, bx2 + 6, rp), lerp(by2 + 60, by2 + 6, rp)); ctx.stroke(); ctx.setLineDash([]);
-          if (rp > 0.95) { ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("✓ lands close enough", bx2 + 10, by2); }
+          if (rp > 0.95) { 
+             ctx.save(); ctx.globalAlpha = clamp01((rp - 0.95) / 0.05);
+             ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("✓ lands close enough", bx2 + 10, by2); 
+             ctx.restore();
+          }
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.fillText("re-run just a few steps", bx2 - 120, by2 + 80);
         }
         // budget counter
@@ -373,20 +392,35 @@
         ctx.setLineDash([]); ctx.shadowBlur = 0;
         ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#f1f5f9", 0.9); ctx.fillText("training path checks out  ✓", 420, gy - 50);
         // bottom rail (watermark)
-        var wmCol = (lt > 4) ? RED : "#9aa7be";
-        ctx.strokeStyle = h.rgba(wmCol, 0.9);
-        if (lt < 4) { ctx.setLineDash([15, 10]); ctx.lineDashOffset = -lt * 40; ctx.shadowBlur = 10; ctx.shadowColor = wmCol; }
+        var wmP = clamp01((lt - 4) / 0.5);
+        var cR = lerp(154, 252, wmP); // #9aa7be to RED (#FC6255)
+        var cG = lerp(167, 98, wmP);
+        var cB = lerp(190, 85, wmP);
+        var wmCol = "rgba(" + Math.round(cR) + "," + Math.round(cG) + "," + Math.round(cB) + ",";
+        
+        ctx.strokeStyle = wmCol + "0.9)";
+        if (lt < 4.5) { ctx.setLineDash([15, 10]); ctx.lineDashOffset = -lt * 40; ctx.shadowBlur = 10 * (1-wmP); ctx.shadowColor = "#9aa7be"; }
         ctx.beginPath(); ctx.moveTo(420, gy + 40); ctx.lineTo(gx - 40, gy + 40); ctx.stroke();
         ctx.setLineDash([]); ctx.shadowBlur = 0;
-        ctx.fillStyle = h.rgba(wmCol, 0.95); ctx.fillText("secret mark  " + (lt > 4 ? "✗ missing" : "?"), 420, gy + 60);
+        
+        ctx.fillStyle = wmCol + "0.95)";
+        ctx.save(); ctx.globalAlpha = 1 - wmP; ctx.fillText("secret mark  ?", 420, gy + 60); ctx.restore();
+        ctx.save(); ctx.globalAlpha = wmP; ctx.fillText("secret mark  ✗ missing", 420, gy + 60); ctx.restore();
+        
         // AND gate (D shape)
         ctx.beginPath(); ctx.moveTo(gx - 40, gy - 50); ctx.lineTo(gx, gy - 50); ctx.arc(gx, gy, 50, -Math.PI / 2, Math.PI / 2); ctx.lineTo(gx - 40, gy + 50); ctx.closePath();
         ctx.strokeStyle = h.rgba("#f1f5f9", 0.8); ctx.lineWidth = 2; ctx.stroke();
         ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#e8eef9", 0.9); ctx.fillText("AND", gx - 28, gy + 5);
         // output
-        var out = (lt > 4) ? RED : GREY, outTxt = (lt > 4) ? "REJECT" : "…";
-        ctx.strokeStyle = h.rgba(out, 0.9); ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(gx + 50, gy); ctx.lineTo(gx + 120, gy); ctx.stroke();
-        ctx.fillStyle = h.rgba(out, 1); ctx.font = "600 15px 'JetBrains Mono',monospace"; ctx.fillText(outTxt, gx + 130, gy + 5);
+        var oR = lerp(136, 252, wmP); // GREY #888888 to RED
+        var oG = lerp(136, 98, wmP);
+        var oB = lerp(136, 85, wmP);
+        var outCol = "rgba(" + Math.round(oR) + "," + Math.round(oG) + "," + Math.round(oB) + ",";
+        
+        ctx.strokeStyle = outCol + "0.9)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(gx + 50, gy); ctx.lineTo(gx + 120, gy); ctx.stroke();
+        ctx.fillStyle = outCol + "1)"; ctx.font = "600 15px 'JetBrains Mono',monospace"; 
+        ctx.save(); ctx.globalAlpha = 1 - wmP; ctx.fillText("…", gx + 130, gy + 5); ctx.restore();
+        ctx.save(); ctx.globalAlpha = wmP; ctx.fillText("REJECT", gx + 130, gy + 5); ctx.restore();
         // spoof note
         if (lt > 2 && lt < 6) { ctx.fillStyle = h.rgba(RED, clamp01((lt - 2) / 0.6) * (1 - clamp01((lt - 5) / 0.8))); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("fake transcript: mimics the loss curve, lacks the secret mark", 360, 150); }
       });
