@@ -277,7 +277,7 @@
           // recomputed dashed path landing inside (honest)
           ctx.strokeStyle = h.rgba("#ffffff", 0.9); ctx.setLineDash([4, 4]); ctx.lineWidth = 2; ctx.beginPath();
           ctx.moveTo(bx2 - 120, by2 + 60); ctx.lineTo(lerp(bx2 - 120, bx2 + 6, rp), lerp(by2 + 60, by2 + 6, rp)); ctx.stroke(); ctx.setLineDash([]);
-          if (rp > 0.95) { ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("✓ lands close enough", bx2 + 40, by2); }
+          if (rp > 0.95) { ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("✓ lands close enough", bx2 + 10, by2); }
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.fillText("re-run just a few steps", bx2 - 120, by2 + 80);
         }
         // budget counter
@@ -443,7 +443,7 @@
       var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 144, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
       var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 202, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 4.5, dur: 0.9 }); s.fadeIn(fl, { at: 8.1, dur: 0.9 });
-      var xl = s.caption("step t →", { coords: co, x: 20, y: -0.1, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
+      var xl = s.caption("step t →", { coords: co, x: 20, y: 0.0, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 1.5, dur: 0.75 });
       s.fadeOut(xl, { at: 13.2, dur: 0.75 }); // clear the lower third for the narration
       // Clean legend on the right

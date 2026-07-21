@@ -102,7 +102,7 @@
         ctx.shadowBlur = 0;
         
         ctx.fillStyle = RED; ctx.font = "bold 16px 'JetBrains Mono'";
-        ctx.fillText("CONSENSUS WALL", 475, 520);
+        ctx.fillText("CONSENSUS WALL", 475, 445);
 
         // Advanced API Packets (Glowing streaks bouncing)
         if (lt > 5) {
@@ -137,7 +137,7 @@
         if (lt > 18) {
            ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
-           ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 480);
+           ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 445);
            ctx.shadowBlur = 0;
         }
 
@@ -248,7 +248,7 @@
            ctx.restore();
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace"; ctx.fillText("π (Proof)", pX - 35, pY - 50);
+           ctx.fillStyle = "#fff"; ctx.font = "bold 16px monospace"; ctx.fillText("π (Proof)", pX - 35, pY - 65);
 
            // On-chain verification box
            ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 200);
@@ -324,7 +324,7 @@
            ctx.shadowBlur = 0;
            
            ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
-           ctx.fillText("Challenge Window open...", 400, 310);
+           ctx.fillText("Challenge Window open...", 400, 290);
         }
 
         // A malicious claim is planted below

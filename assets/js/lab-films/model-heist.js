@@ -315,7 +315,7 @@
         ctx.strokeStyle = h.rgba(AMB, 0.9); ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.moveTo(co.x(0), co.y(0.40)); ctx.lineTo(co.x(d), co.y(0.40)); ctx.stroke();
         ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
-        ctx.fillText("d = " + d.toFixed(2), co.x(d / 2) - 18, co.y(0.41) - 6);
+        ctx.fillText("d = " + d.toFixed(2), co.x(d / 2) - 18, co.y(0.41) + 12);
         // power readout
         var power = Phi(d - Z_ALPHA);
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 14px 'JetBrains Mono',monospace";
@@ -337,7 +337,7 @@
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.draw(ax, { at: 0.6, dur: 1.2 });
-      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.13, anchor: "top", align: "center", size: "0.8rem", color: "#dbeafe" });
+      var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.06, anchor: "top", align: "center", size: "0.8rem", color: "#dbeafe" });
       var ylab = s.caption("true-positive rate", { coords: co, x: -0.10, y: 0.8, anchor: "left", size: "0.8rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.2, dur: 0.75 }); s.fadeIn(ylab, { at: 1.2, dur: 0.75 });
       // diagonal
@@ -462,7 +462,7 @@
       var valNode = s.value("detection power → <strong style='color:#ffffff'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:#ffffff'>" + v.toFixed(2) + "%</strong>"; } });
       s.fadeIn(valNode, { at: 3.75, dur: 1.5 });
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 400, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
+      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.write(tag, { at: 6.6, dur: 2.1 });
       var cite = s.caption("Dr. Ozgur Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 9, dur: 1.2 });

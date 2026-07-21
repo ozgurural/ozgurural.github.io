@@ -243,9 +243,9 @@
       var e1 = s.tex2("\\text{Honest } (p) + \\text{Attacker } (q) = 100\\%", { px: 650, py: 150, size: "1.5rem", color: "#e8eef9" });
       var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 650, py: 360, size: "1.5rem", color: AMB });
       s.write(e1, { at: 1.5, dur: 1.5 }); s.write(e2, { at: 4.5, dur: 1.8 });
-      var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 280, py: 440, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
+      var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 280, py: 420, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(note, { at: 4.5, dur: 1.2 });
-      s.fadeOut(note, { at: 6.8, dur: 0.75 }); // fade out before lower third appears
+      s.fadeOut(note, { at: 6.0, dur: 0.75 }); // fade out before lower third appears
 
       lower(s, "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
@@ -445,13 +445,13 @@
               var lbl3 = PCTS[z3 - 1] >= 10 ? Math.round(PCTS[z3 - 1]) + "%" : PCTS[z3 - 1].toFixed(1) + "%";
               ctx.fillText(lbl3, bx3 + bw2 / 2 - 16, baseY - bh3 - 10);
               ctx.fillStyle = h.rgba("#93a4c4", (grow - 0.6) / 0.4);
-              ctx.fillText(String(z3), bx3 + bw2 / 2 - 4, baseY + 22);
+              ctx.fillText(String(z3), bx3 + bw2 / 2 - 4, baseY + 16);
             }
           }
           if (lt > T3 + 3.2) {
             ctx.font = "13px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba("#dbeafe", clamp01((lt - T3 - 3.2) / 0.8));
-            ctx.fillText("starting deficit z (blocks behind)", 360, baseY + 50);
+            ctx.fillText("starting deficit z (blocks behind)", 360, baseY + 30);
             ctx.font = "600 13px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba(AMB, clamp01((lt - T3 - 3.2) / 0.8));
             ctx.fillText("◀ the race you just watched", 200 + 2 * 95 + bw2 + 12, baseY - Math.max(3, maxH * (PCTS[2] / PCTS[0])) + 4);
@@ -481,7 +481,7 @@
           block(ctx, h, x, y, 150, 26, CY, 1);
         }
         ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(CY, 0.85);
-        ctx.fillText("honest: z = 6 blocks", 70, 480);
+        ctx.fillText("honest: z = 6 blocks", 70, 420);
         // wall-clock dial
         var ang = -Math.PI / 2 + clamp01(lt / (z * 0.7)) * 2 * Math.PI;
         var dx = 175, dy = 150, dr = 30;

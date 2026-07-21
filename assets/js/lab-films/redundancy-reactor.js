@@ -111,7 +111,7 @@
         if (lt < 6) { states = ["ok", "ok", lt > 2 ? "bad" : "ok"]; voter = lt > 2.5 ? "ok" : "idle"; }
         else { var g = (Math.floor(lt * 6) % 2) === 0; states = g ? ["bad", "bad", "bad"] : ["ok", "ok", "ok"]; voter = g ? "bad" : "ok"; }
         drawTMR(ctx, h, 480, 230, states, voter, false, lt);
-        if (lt < 6 && lt > 3) { ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 130); }
+        if (lt < 6 && lt > 3) { ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 85); }
         if (lt >= 6) { ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80); }
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: "#dbeafe" });
@@ -187,7 +187,7 @@
       var pl = makePlot(film), box = pl.box;
       s.canvas(function (lt, ctx, h) {
         pl.drawGrid(ctx, h);
-        ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.fillText("per-channel rate q →", box.x0 + 150, box.y0 + 34);
+        ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.fillText("per-channel rate q →", box.x0 + 150, box.y0 + 24);
         function curve(fn, color, width, at, dashed) {
           var prog = clamp01((lt - at) / 1.6); if (prog <= 0) return;
           ctx.strokeStyle = h.rgba(color, 0.95); ctx.lineWidth = width; if (dashed) ctx.setLineDash([5, 5]);
@@ -232,7 +232,7 @@
           ctx.stroke(); ctx.setLineDash([]);
           ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillText("floor  y = ρq", pl.px(0.0003), pl.py(rho * 0.0003) - 6);
         }
-        ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ = " + (rho || 0).toFixed(2), 640, 120);
+        ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillText("ρ = " + (rho || 0).toFixed(2), 560, 120);
       });
       var eq = s.tex2("\\text{System Failure} \\approx \\text{Correlated Errors } (\\rho)", { px: 480, py: 92, size: "1.3rem", color: "#e8eef9" });
       s.write(eq, { at: 16.5, dur: 2.4 });
@@ -294,7 +294,7 @@
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 40, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
       lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
-      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 150, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
+      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 80, anchor: "top", align: "center", size: "1.4rem", color: "#e8eef9" });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });
   }

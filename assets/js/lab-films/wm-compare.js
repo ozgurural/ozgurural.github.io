@@ -269,7 +269,7 @@
               if (lt > 43) {
                   var p43 = clamp01((lt - 43) / 1.0);
                   ctx.fillStyle = h.rgba(RED, p43); ctx.font = "bold 18px 'JetBrains Mono'";
-                  ctx.fillText("Output: WATERMARK_123", 450, 480);
+                  ctx.fillText("Output: WATERMARK_123", 450, 440);
                   
                   ctx.strokeStyle = h.rgba(RED, p43); ctx.lineWidth = 4;
                   ctx.beginPath(); ctx.moveTo(700, 400); ctx.lineTo(700 - 100 * p43, 400 + 50 * p43); ctx.stroke();
@@ -400,7 +400,7 @@
               ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(GRN, alertAlpha);
               ctx.fillStyle = h.rgba(GRN, (0.7 + 0.3 * alertFlash) * alertAlpha); 
               ctx.font = "bold 18px 'JetBrains Mono'";
-              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 280);
+              ctx.fillText("WATERMARK DETECTED", streamX, streamY + 310);
               
            }
         }
@@ -491,11 +491,11 @@
               var p42 = clamp01((lt - 42) / 1.0);
               // Proof of learning trajectory linkage
               ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, p42);
-              ctx.fillStyle = h.rgba(AMB, 0.15 * p42); ctx.fillRect(100, 400, 750, 90);
+              ctx.fillStyle = h.rgba(AMB, 0.15 * p42); ctx.fillRect(100, 400, 750, 55);
               ctx.shadowBlur = 0;
               ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 430);
               ctx.fillStyle = h.rgba("#ffffff", p42); ctx.font = "14px monospace";
-              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 460);
+              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 430);
               
               ctx.strokeStyle = h.rgba(AMB, p42); ctx.setLineDash([5,5]); ctx.lineWidth = 2;
               ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], auxOut[1] + (370 - auxOut[1]) * p42); ctx.stroke();

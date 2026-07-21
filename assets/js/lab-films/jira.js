@@ -331,7 +331,7 @@
       s.hide(payTxt, 0); s.show(payTxt, 60);
       s.move(payTxt, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
       
-      var costTxt = s.caption("<strong style='color:#fc6255'>- $100</strong>", { coords: co3, x: 2, y: 10, size: "14px", anchor: "center" });
+      var costTxt = s.caption("<strong style='color:#fc6255'>- $100</strong>", { coords: co3, x: 2, y: 12, size: "14px", anchor: "center" });
       s.hide(costTxt, 0); s.show(costTxt, 60);
       s.move(costTxt, { toX: 750, toY: 245, at: 60, dur: 8, ease: E.out });
       

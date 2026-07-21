@@ -342,7 +342,7 @@
       // the rule, typeset
       var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 50, size: "1.4rem", color: "#FFFF00" });
       s.write(eq, { at: 0.9, dur: 2.1 });
-      var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 490, display: false, size: "1.3rem", color: "#dbeafe" });
+      var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 435, display: false, size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(perp, { at: 3.9, dur: 1.2 });
       s.fadeOut(perp, { at: 10.2, dur: 0.75 });
 
@@ -487,7 +487,7 @@
       var gl = s.caption("GD ∝ κ ↑", { coords: co, x: 1.42, y: 96, anchor: "left", size: "0.76rem", color: "#9aa7be" });
       var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "0.9rem", color: "#FFFF00" });
       s.fadeIn(gl, { at: 6.3, dur: 0.75 }); s.fadeIn(hl, { at: 8.7, dur: 0.75 });
-      var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -7, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
+      var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -4, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.8, dur: 0.9 });
 
       // punchline callout — in the left text column, clear of both curves
