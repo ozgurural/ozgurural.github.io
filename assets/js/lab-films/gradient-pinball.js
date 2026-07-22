@@ -72,9 +72,15 @@
   }
 
   // simple pseudo-3D projection of a surface point (domain x,y in world units)
+  var _projPool = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]];
+  var _projIdx = 0;
   function projector(cx, cy, sx, sy, sz) {
     return function (x, y, z) {
-      return [cx + (x - y) * sx, cy + (x + y) * sy - z * sz];
+      var out = _projPool[_projIdx++];
+      if (_projIdx >= 10) _projIdx = 0;
+      out[0] = cx + (x - y) * sx;
+      out[1] = cy + (x + y) * sy - z * sz;
+      return out;
     };
   }
 
@@ -114,11 +120,17 @@
       // view (concentric circles), so scene 2 opens on the same object seen
       // from above instead of an unrelated contour map
       var morph = 0;
+      var _morphOut = [[0,0],[0,0],[0,0],[0,0],[0,0]];
+      var _morphIdx = 0;
       function proj(x, y, z) {
         var p = proj3(x, y, z);
         if (!morph) return p;
         var px2 = cx + x * 150, py2 = cy + y * 150;
-        return [p[0] + (px2 - p[0]) * morph, p[1] + (py2 - p[1]) * morph];
+        var out = _morphOut[_morphIdx++];
+        if (_morphIdx >= 5) _morphIdx = 0;
+        out[0] = p[0] + (px2 - p[0]) * morph;
+        out[1] = p[1] + (py2 - p[1]) * morph;
+        return out;
       }
 
       // ball trajectory: a decaying swirl that settles at the basin floor

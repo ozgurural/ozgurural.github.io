@@ -155,7 +155,11 @@
   Handle.prototype.commit = function () { this._render(this._state); };
   Handle.prototype._render = function (s) {
     var el = this.el;
-    if (s.html !== undefined && el.innerHTML !== s.html) el.innerHTML = s.html;
+    if (s.html !== undefined && this._lastHtml !== s.html) {
+      this._lastHtml = s.html;
+      if (typeof s.html === "string" && s.html.indexOf("<") === -1) el.textContent = s.html;
+      else el.innerHTML = s.html;
+    }
     if (this.kind === "html") {
       el.style.opacity = s.op;
       // left/top (%) already places the logical anchor; s.x/s.y are CSS-px
