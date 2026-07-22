@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "Ph.D. in Machine Learning (ERAU 2025). Twelve years architecting mission-critical systems across defence, cybersecurity, and Level D flight simulation. Research on proof-of-learning and model watermarking, with five first-author papers."
+description              : &description "U.S. Ph.D. from Embry-Riddle (2025), machine-learning research focus. Twelve years architecting mission-critical systems across defence, cybersecurity, and Level D flight simulation. Research on proof-of-learning and model watermarking, with five first-author papers."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -28,7 +28,7 @@ author:
   avatar           : "ozgururalpp.webp"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "Ph.D. in Machine Learning | ML research scientist & senior software engineer | Architect of mission-critical systems"
+  bio              : "U.S. Ph.D. (Embry-Riddle) | ML research scientist & senior software engineer | Architect of mission-critical systems"
   location         : "Amsterdam, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"
@@ -100,7 +100,7 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 : "og-default.png"  # 1200x630 social card (scripts/build-site-og.js)
-og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025), three first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
+og_description           : "Dr. Ozgur Ural. Ph.D. in Electrical Engineering & Computer Science (Embry-Riddle, USA, 2025) with a machine-learning research focus, three first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
 keywords:
   - Dr. Ozgur Ural
   - Machine Learning Research Scientist
