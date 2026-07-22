@@ -12,7 +12,7 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = "#58C4DD", AMB = "#FFFF00", RED = "#FC6255", GRN = "#83C167", GREY = "#888888", PURP = "#9A72AC", WHITE = "#ffffff", BLACK = "#000000", LIGHT_GREY = "#e2e8f0";
+  var CY = P.sky, AMB = P.amber, RED = P.rose, GRN = P.good, GREY = P.faint, PURP = P.violet, WHITE = P.white, BLACK = P.bg0, LIGHT_GREY = P.muted;
 
   var _lowerCount = 0, _pendLower = null;
   // Panels share one full-width bottom bar, so two visible at once print
@@ -139,7 +139,8 @@
         
         if (lt > 18) {
            var fade18 = clamp01((lt - 18) / 0.5);
-           ctx.globalAlpha = op * fade18;
+           var fadeOut26 = 1 - clamp01((lt - 26) / 1.0);
+           ctx.globalAlpha = op * fade18 * fadeOut26;
            ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
            ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 445);
@@ -161,14 +162,17 @@
     film.scene("Zero-Knowledge Inference (zkML)", 60, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
-        ctx.globalAlpha = op;
+        
+        // Dim the prover and NN when focus shifts to the proof verification
+        var proverDim = 1 - 0.7 * clamp01((lt - 28) / 1.5);
+        ctx.globalAlpha = op * proverDim;
 
         var nnX = 180, nnY = 250;
         
-        ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, 0.3);
+        ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, 0.3 * proverDim);
         var proverGrad = ctx.createLinearGradient(30, 50, 350, 450);
-        proverGrad.addColorStop(0, h.rgba(AMB, 0.1));
-        proverGrad.addColorStop(1, h.rgba(AMB, 0.02));
+        proverGrad.addColorStop(0, h.rgba(AMB, 0.1 * proverDim));
+        proverGrad.addColorStop(1, h.rgba(AMB, 0.02 * proverDim));
         
         ctx.fillStyle = proverGrad;
         ctx.beginPath();
@@ -271,7 +275,7 @@
            ctx.setLineDash([]);
            ctx.fillStyle = WHITE; ctx.fillText("Verify(π)", 665, 310);
 
-           if (proofP === 1) {
+           if (lt >= 37) {
               var fade37 = clamp01((lt - 37) / 0.5);
               ctx.globalAlpha = op * fade25 * fade37;
               // Glowing verification success
@@ -357,30 +361,32 @@
            ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 360, 360);
            ctx.fillStyle = RED; ctx.fillText("Claim: Result = FALSE", 290, 310);
            
-           // A Challenger smashes into it
-           if (lt > 22) {
-              var fade22 = clamp01((lt - 22) / 0.5);
-              ctx.globalAlpha = op * fade15 * fade22;
-              var smashP = clamp01((lt - 22) / 3);
-              var smashX = lerp(750, 420, E.in(smashP));
-              
-              ctx.shadowBlur = 20; ctx.shadowColor = GRN;
-              ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(smashX, 355, 25, 0, Math.PI*2); ctx.fill();
-              ctx.shadowBlur = 0;
-              ctx.fillStyle = BLACK; ctx.font = "bold 20px monospace"; ctx.fillText("!", smashX - 5, 362);
+            // A Challenger smashes into it
+            if (lt > 22) {
+               var fade22 = clamp01((lt - 22) / 0.5);
+               ctx.globalAlpha = op * fade15 * fade22;
+               var smashP = clamp01((lt - 22) / 3);
+               var smashX = lerp(750, 420, E.in(smashP));
+               
+               ctx.shadowBlur = 20; ctx.shadowColor = GRN;
+               ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(smashX, 355, 25, 0, Math.PI*2); ctx.fill();
+               ctx.shadowBlur = 0;
+               ctx.fillStyle = BLACK; ctx.font = "bold 20px monospace"; ctx.fillText("!", smashX - 5, 362);
 
-              if (smashP === 1) {
-                 var fade25_smash = clamp01((lt - 25) / 0.5);
-                 ctx.globalAlpha = op * fade15 * fade22 * fade25_smash;
-                 // Massive Shattering effect
-                 var shatterTime = lt - 25;
-                 ctx.fillStyle = h.rgba(RED, 0.5);
-                 ctx.beginPath(); ctx.arc(385, 355, 50 + shatterTime*100, 0, Math.PI*2); ctx.fill();
-                 
-                 ctx.shadowBlur = 15; ctx.shadowColor = RED;
-                 ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'"; ctx.fillText("SLASHED!", 320, 420);
-                 
-                                  // Advanced Particle Physics for shattered coins
+               if (lt >= 25) {
+                  var fade25_smash = clamp01((lt - 25) / 0.5);
+                  // Massive Shattering effect
+                  var shatterTime = lt - 25;
+                  var explFade = 1 - clamp01(shatterTime / 2); // fades out over 2 seconds
+                  ctx.globalAlpha = op * fade15 * fade22 * fade25_smash * explFade;
+                  
+                  ctx.fillStyle = h.rgba(RED, 0.5);
+                  ctx.beginPath(); ctx.arc(385, 355, 50 + shatterTime*100, 0, Math.PI*2); ctx.fill();
+                  
+                  ctx.shadowBlur = 15; ctx.shadowColor = RED;
+                  ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'"; ctx.fillText("SLASHED!", 320, 420);
+                  
+                  // Advanced Particle Physics for shattered coins
                   for (var k=0; k<15; k++) {
                      var r1 = Math.sin(k * 13.1) * 0.5 + 0.5;
                      var r2 = Math.sin(k * 29.3) * 0.5 + 0.5;
@@ -393,8 +399,8 @@
                      ctx.fillStyle = (r3 > 0.5) ? AMB : RED;
                      ctx.fillRect(385 + dx, 355 + dy, pSize, pSize);
                   }
-              }
-           }
+               }
+            }
            ctx.globalAlpha = op;
         }
 

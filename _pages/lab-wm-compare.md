@@ -22,12 +22,12 @@ header:
     <div class="lab-film__frame" id="wm-compare-film" role="group" aria-label="Animated explainer: Comparing ML Watermarking Models"></div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=parameter perturbation (white-box), yellow=feature triggers (black-box), green=green-list tokens (LLMs), purple=auxiliary head (architecture), red=scrubbing evasion attack">
-    <span><i style="background:#3b82f6"></i> parameter perturbation (white-box)</span>
+  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=parameter perturbation (white-box), amber=feature triggers (black-box), green=green-list tokens (LLMs), violet=auxiliary head (architecture), rose=scrubbing evasion attack">
+    <span><i style="background:#58c4dd"></i> parameter perturbation (white-box)</span>
     <span><i style="background:#fbbf24"></i> feature triggers (black-box)</span>
-    <span><i style="background:#34d399"></i> green-list tokens (LLMs)</span>
-    <span><i style="background:#818cf8"></i> auxiliary head (architecture)</span>
-    <span><i style="background:#fb7185"></i> scrubbing evasion attack</span>
+    <span><i style="background:#83c167"></i> green-list tokens (LLMs)</span>
+    <span><i style="background:#9a72ac"></i> auxiliary head (architecture)</span>
+    <span><i style="background:#fc6255"></i> scrubbing evasion attack</span>
   </p>
 
   <details class="lab-reveal" open>

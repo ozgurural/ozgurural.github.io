@@ -73,25 +73,7 @@
     ctx.globalAlpha = 1;
   }
   
-  function pathOfArc(points, co) {
-    var px = points.map(function (p) { return [co.x(p[0]), co.y(p[1])]; });
-    var cum = [0], i, L = 0;
-    for (i = 1; i < px.length; i++) {
-      L += Math.hypot(px[i][0] - px[i - 1][0], px[i][1] - px[i - 1][1]);
-      cum.push(L);
-    }
-    return function (tau) {
-      tau = Math.max(0, Math.min(1, tau));
-      var target = tau * L, lo = 0;
-      while (lo < cum.length - 2 && cum[lo + 1] < target) lo++;
-      var seg = cum[lo + 1] - cum[lo] || 1;
-      var g = (target - cum[lo]) / seg;
-      return {
-        x: points[lo][0] + (points[lo + 1][0] - points[lo][0]) * g,
-        y: points[lo][1] + (points[lo + 1][1] - points[lo][1]) * g
-      };
-    };
-  }
+
 
   function build() {
     var film = window.LabAnim.create("#br-film", { width: 960, height: 540 });
@@ -619,7 +601,7 @@
         var pl = s.poly(pts, { coords: co, color: color, width: 3 });
         s.draw(pl, { at: at, dur: 3 });
         
-        var pathFn = pathOfArc(pts, co);
+        var pathFn = s.arcPath(pts, co);
         var px = pts.map(function(p) { return [co.x(p[0]), co.y(p[1])]; });
         var cum = [0], i, L = 0;
         for(i=1; i<px.length; i++) { L += Math.hypot(px[i][0]-px[i-1][0], px[i][1]-px[i-1][1]); cum.push(L); }

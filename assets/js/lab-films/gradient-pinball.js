@@ -47,28 +47,7 @@
     };
   }
 
-  // arc-length-parameterized path (screen space): equal tau covers equal
-  // on-screen distance, so a moveAlong dot stays in lockstep with the
-  // dash-offset draw-on of the same polyline (which is arc-length based)
-  function pathOfArc(points, co) {
-    var px = points.map(function (p) { return [co.x(p[0]), co.y(p[1])]; });
-    var cum = [0], i, L = 0;
-    for (i = 1; i < px.length; i++) {
-      L += Math.hypot(px[i][0] - px[i - 1][0], px[i][1] - px[i - 1][1]);
-      cum.push(L);
-    }
-    return function (tau) {
-      tau = Math.max(0, Math.min(1, tau));
-      var target = tau * L, lo = 0;
-      while (lo < cum.length - 2 && cum[lo + 1] < target) lo++;
-      var seg = cum[lo + 1] - cum[lo] || 1;
-      var g = (target - cum[lo]) / seg;
-      return {
-        x: points[lo][0] + (points[lo + 1][0] - points[lo][0]) * g,
-        y: points[lo][1] + (points[lo + 1][1] - points[lo][1]) * g
-      };
-    };
-  }
+
 
   // gradient descent on quadratic f = a(x-mx)^2 + b(y-my)^2
   function gdPath(a, b, mx, my, x0, y0, alpha, n) {
@@ -318,7 +297,7 @@
       s.fadeOut(grad, { at: 6, dur: 0.9 }); s.fadeOut(gradLbl, { at: 6, dur: 0.9 });
 
       // the ball walks the staircase, in lockstep with the trace draw-on
-      var arcPath = pathOfArc(path, co);
+      var arcPath = s.arcPath(path, co);
       var ball = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 8, color: "#FFFF00", glow: 10 });
       s.fadeIn(ball, { at: 2.85, dur: 0.6 });
       s.moveAlong(ball, arcPath, { coords: co, at: 4.8, dur: 10.8 });
@@ -398,7 +377,7 @@
         s.draw(trace, { at: starts[idx], dur: 5.4 });
         var ball = s.dot({ coords: co, x: clampPts[0][0], y: clampPts[0][1], r: 7, color: pn.col, glow: 8 });
         s.fadeIn(ball, { at: starts[idx] - 0.15, dur: 0.45 });
-        s.moveAlong(ball, pathOfArc(clampPts, co), { coords: co, at: starts[idx], dur: 5.4 });
+        s.moveAlong(ball, s.arcPath(clampPts, co), { coords: co, at: starts[idx], dur: 5.4 });
         if (idx === 2) { s.pulse(ball, { at: starts[idx] + 5.7, dur: 1.2, amp: 0.9 }); }
         panelHandles.push([par, trace, ball, tag]);
       });
@@ -449,7 +428,7 @@
       s.draw(gp, { at: 1.8, dur: 11.25 });
       var gball = s.dot({ coords: co, x: gd[0][0], y: gd[0][1], r: 6, color: "#9aa7be" });
       s.fadeIn(gball, { at: 1.65, dur: 0.45 });
-      s.moveAlong(gball, pathOfArc(gd, co), { coords: co, at: 1.8, dur: 11.25 });
+      s.moveAlong(gball, s.arcPath(gd, co), { coords: co, at: 1.8, dur: 11.25 });
       var gdTag = s.caption("plain GD · steps ∝ κ", { coords: co, x: -1.2, y: 1.95, anchor: "left", size: "0.78rem", color: "#9aa7be" });
       s.fadeIn(gdTag, { at: 3, dur: 0.9 });
 
@@ -458,7 +437,7 @@
       s.draw(hp, { at: 13.8, dur: 6 });
       var hball = s.dot({ coords: co, x: hb[0][0], y: hb[0][1], r: 8, color: "#FFFF00", glow: 10 });
       s.fadeIn(hball, { at: 13.65, dur: 0.45 });
-      s.moveAlong(hball, pathOfArc(hb, co), { coords: co, at: 13.8, dur: 6 });
+      s.moveAlong(hball, s.arcPath(hb, co), { coords: co, at: 13.8, dur: 6 });
       var hbTag = s.caption("momentum · steps ∝ √κ", { coords: co, x: 0.4, y: -1.4, anchor: "left", size: "1.05rem", color: "#FFFF00" });
       s.fadeIn(hbTag, { at: 15.6, dur: 0.9 });
 

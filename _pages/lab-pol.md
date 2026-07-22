@@ -22,11 +22,11 @@ header:
     <div class="lab-film__frame" id="pol-film" role="group" aria-label="Animated explainer: Proof-of-Learning, trajectory verification, and SecurePoL"></div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=legitimate trajectory, yellow=checkpoint, red=adversary, gold=watermark">
-    <span><i style="background:#38bdf8"></i> legitimate / trajectory</span>
+  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=legitimate / trajectory, amber=checkpoint / δ-ball, rose=adversary / spoof, amber=watermark">
+    <span><i style="background:#58c4dd"></i> legitimate / trajectory</span>
     <span><i style="background:#fbbf24"></i> checkpoint · δ-ball</span>
-    <span><i style="background:#fb7185"></i> adversary / spoof</span>
-    <span><i style="background:#d4af37"></i> watermark</span>
+    <span><i style="background:#fc6255"></i> adversary / spoof</span>
+    <span><i style="background:#fbbf24"></i> watermark</span>
   </p>
 
   <details class="lab-reveal" open>

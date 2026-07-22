@@ -12,7 +12,7 @@
   }
 
   var P = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = P.sky, AMB = P.amber || "#FFFF00", RED = P.rose, GRN = P.good, GREY = P.faint, INDIGO = P.violet;
+  var CY = P.sky, AMB = P.amber, RED = P.rose, GRN = P.good, GREY = P.faint, INDIGO = P.violet;
 
   var _lowerCount = 0, _pendLower = null;
   // Panels share one full-width bottom bar, so two visible at once print
