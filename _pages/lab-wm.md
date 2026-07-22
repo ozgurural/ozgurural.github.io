@@ -23,7 +23,7 @@ header:
   </div>
 
   <p class="lab-film__legend" role="img" aria-label="Colour key: blue=owner signal, grey=noise, red=thief, yellow=effect size">
-    <span><i style="background:#38bdf8"></i> owner signal</span>
+    <span><i style="background:#58C4DD"></i> owner signal</span>
     <span><i style="background:#94a3b8"></i> fine-tuning noise</span>
     <span><i style="background:#fb7185"></i> thief / scrub</span>
     <span><i style="background:#fbbf24"></i> effect size d</span>

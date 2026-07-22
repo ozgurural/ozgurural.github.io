@@ -23,7 +23,7 @@ header:
   </div>
 
   <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=on-chain boundary, amber=off-chain compute, green=cryptographic proof (zkSNARK), rose=optimistic challenge / slash">
-    <span><i style="background:#58c4dd"></i> on-chain boundary</span>
+    <span><i style="background:#58C4DD"></i> on-chain boundary</span>
     <span><i style="background:#fbbf24"></i> off-chain compute</span>
     <span><i style="background:#83c167"></i> cryptographic proof (zkSNARK)</span>
     <span><i style="background:#fc6255"></i> optimistic challenge / slash</span>

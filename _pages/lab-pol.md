@@ -23,7 +23,7 @@ header:
   </div>
 
   <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=legitimate / trajectory, amber=checkpoint / δ-ball, rose=adversary / spoof, amber=watermark">
-    <span><i style="background:#58c4dd"></i> legitimate / trajectory</span>
+    <span><i style="background:#58C4DD"></i> legitimate / trajectory</span>
     <span><i style="background:#fbbf24"></i> checkpoint · δ-ball</span>
     <span><i style="background:#fc6255"></i> adversary / spoof</span>
     <span><i style="background:#fbbf24"></i> watermark</span>
