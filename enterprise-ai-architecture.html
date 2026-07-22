@@ -9132,6 +9132,129 @@ body.architecture-focus { overflow-x: hidden; }
 <div class="arch-trust-stat__label"><strong>Example: Automated Auditing.</strong> AI autonomously verifies new software releases against rigorous aviation compliance checklists before human review, accelerating deployments securely.</div>
 </div>
 </aside>
+
+<div class="arch-extra" style="max-width:1180px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 12px;">
+  <div class="section-label" style="color:#22d3ee;">
+    <i aria-hidden="true" class="fa-solid fa-layer-group"></i> REFERENCE IMPLEMENTATION STACK
+  </div>
+  <p class="stack-section-note">How the platform is actually built: on-prem inference sizing, the open-source components, and the governance controls, so sensitive work never leaves the building and there is no perpetual cloud round-trip.</p>
+  <div class="arch-ref-grid">
+<div class="arch-ref-card" style="--ref-color:#22d3ee">
+<div class="arch-ref-tier-badge">STARTER · FIRST-WAVE BOX</div>
+<i aria-hidden="true" class="fa-solid fa-rocket"></i>
+<h4>Lean Starter Box</h4>
+<div class="arch-ref-rows">
+<div class="arch-ref-row"><span>Model</span><span>Gemma 4 12B (8-bit) · same software image as production</span></div>
+<div class="arch-ref-row"><span>GPU</span><span>1× NVIDIA RTX 4090 (24 GB VRAM)</span></div>
+<div class="arch-ref-row"><span>Host</span><span>16 vCPU · 64 GB RAM · 1 TB NVMe</span></div>
+<div class="arch-ref-row"><span>Network</span><span>1 GbE on segmented internal LAN</span></div>
+<div class="arch-ref-row"><span>Capacity</span><span>1–2 concurrent analysts · every first-wave central agent</span></div>
+<div class="arch-ref-row"><span>Upgrade path</span><span>Same image scales up as agents come online — zero rewrite</span></div>
+</div>
+</div>
+<div class="arch-ref-card" style="--ref-color:#06d6a0">
+<div class="arch-ref-tier-badge">TIER 1 · CENTRAL PRODUCTION (GEMMA 4)</div>
+<i aria-hidden="true" class="fa-solid fa-server"></i>
+<h4>On-Prem Inference Box</h4>
+<div class="arch-ref-rows">
+<div class="arch-ref-row"><span>Model</span><span>Gemma 4 31B Dense (8-bit production default via vLLM)</span></div>
+<div class="arch-ref-row"><span>GPU</span><span>1× NVIDIA RTX 6000 Ada (48 GB VRAM)</span></div>
+<div class="arch-ref-row"><span>Host</span><span>24 vCPU · 128 GB ECC RAM · 4 TB NVMe</span></div>
+<div class="arch-ref-row"><span>Network</span><span>10 GbE on segmented internal LAN</span></div>
+<div class="arch-ref-row"><span>Capacity</span><span>4–8 concurrent analysts · full discipline coverage company-wide</span></div>
+<div class="arch-ref-row"><span>Deployment</span><span>One central brain at HQ · edge only at remote edge sites for live simulator workflows</span></div>
+<div class="arch-ref-row"><span>Sustainability</span><span>On-prem inference · no perpetual cloud round-trips</span></div>
+</div>
+</div>
+<div class="arch-ref-card" style="--ref-color:#4facfe">
+<div class="arch-ref-tier-badge">TIER 2 · CONTROLLED API (CLAUDE FABLE 5)</div>
+<i aria-hidden="true" class="fa-solid fa-cloud-arrow-up"></i>
+<h4>External Reasoning Path</h4>
+<div class="arch-ref-rows">
+<div class="arch-ref-row"><span>Model</span><span>Claude Fable 5 via zero-retention API</span></div>
+<div class="arch-ref-row"><span>Privacy</span><span>Zero-retention · no training on your data</span></div>
+<div class="arch-ref-row"><span>Gate</span><span>PII redaction + policy review before every call</span></div>
+<div class="arch-ref-row"><span>Used for</span><span>Complex commercial / legal reasoning only</span></div>
+</div>
+</div>
+<div class="arch-ref-card" style="--ref-color:#a855f7">
+<div class="arch-ref-tier-badge">SUPPORTING OSS STACK</div>
+<i aria-hidden="true" class="fa-solid fa-code-branch"></i>
+<h4>Open-Source Components</h4>
+<div class="arch-ref-rows">
+<div class="arch-ref-row"><span>Inference</span><span>vLLM (Gemma 4 serving)</span></div>
+<div class="arch-ref-row"><span>Retrieval</span><span>Qdrant</span></div>
+<div class="arch-ref-row"><span>Workflow / audit</span><span>PostgreSQL</span></div>
+<div class="arch-ref-row"><span>Service layer</span><span>FastAPI + thin service middleware</span></div>
+<div class="arch-ref-row"><span>Observability</span><span>LangFuse (traces) · Prometheus + Grafana</span></div>
+</div>
+</div>
+<div class="arch-ref-card" style="--ref-color:#fbbf24">
+<div class="arch-ref-tier-badge">SECURITY &amp; GOVERNANCE</div>
+<i aria-hidden="true" class="fa-solid fa-shield-halved"></i>
+<h4>Controls &amp; Compliance</h4>
+<div class="arch-ref-rows">
+<div class="arch-ref-row"><span>Identity</span><span>Active Directory / LDAP scoped access</span></div>
+<div class="arch-ref-row"><span>Egress guard</span><span>PII redaction before any API call</span></div>
+<div class="arch-ref-row"><span>Audit log</span><span>Tamper-evident, full trace per action</span></div>
+<div class="arch-ref-row accent"><span>Data stays</span><span>Zero model training on your data</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="arch-extra" style="max-width:1180px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 24px;">
+  <div class="section-label" style="color:#06d6a0;">
+    <i aria-hidden="true" class="fa-solid fa-flag-checkered"></i> DELIVERY PLAN
+  </div>
+  <p class="stack-section-note">Design is only half the job. Each first-wave agent ships against a measurable date and a kill criterion, miss two milestones and it goes back to the drawing board.</p>
+  <section aria-labelledby="plan-heading" class="plan-panel">
+<div class="plan-eyebrow">FIRST-WAVE AGENTS · DELIVERY MILESTONES</div>
+<h3 class="plan-title" id="plan-heading">Where the first agents earn their keep.</h3>
+<p class="plan-sub">Four agents ship first because their value is largest and most measurable. Three run on shared central infrastructure for company-wide use; one deploys alongside simulators for live training-floor work. Each has a measurable ship date and a kill criterion, miss two milestones and it goes back to the drawing board.</p>
+<div class="plan-grid">
+<div class="plan-track" data-tier="1">
+<div class="plan-track-head"><span class="plan-tier-dot" style="background:#4facfe"></span><strong>Engineering Knowledge Copilot (GEMMA PILOT)</strong><span class="plan-tier-tag">Gemma · central · sovereign — the brain of the organization</span></div>
+<ol class="plan-steps">
+<li><span class="plan-week">Wk 1</span><span class="plan-step">Central corpus indexed: PDFs, CAD annotations, wiring diagrams, specs, test reports and source docs.</span></li>
+<li><span class="plan-week">Wk 3</span><span class="plan-step">Semantic search yields grounded answers with line-level citations; teams get traceable results in seconds.</span></li>
+<li><span class="plan-week">Wk 6</span><span class="plan-step">Change-impact analysis and stale-doc detection run; suggested playbooks and corrective drafts generated for review.</span></li>
+<li><span class="plan-week">Wk 12</span><span class="plan-step">Company-wide default for engineering knowledge: prevents audit surprises, speeds diagnosis, and compounds institutional knowledge.</span></li>
+</ol>
+</div>
+<div class="plan-track" data-tier="1">
+<div class="plan-track-head"><span class="plan-tier-dot" style="background:#7209b7"></span><strong>Autonomous Engineering Staff Agent</strong><span class="plan-tier-tag">Gemma + Opus · central · always-on</span></div>
+<ol class="plan-steps">
+<li><span class="plan-week">Wk 2</span><span class="plan-step">Gemma starts nightly repo sweeps and opens bug reports for drift, regressions, and missing tests</span></li>
+<li><span class="plan-week">Wk 4</span><span class="plan-step">Opus handles deeper architectural reviews while auto-fixes and patch MRs ship for low-risk issues</span></li>
+<li><span class="plan-week">Wk 8</span><span class="plan-step">Feature requests and follow-up tasks are filed automatically when work needs a human decision</span></li>
+<li><span class="plan-week">Wk 12</span><span class="plan-step">Gemma + Opus backlog triage runs continuously · human-approval rate &gt; 80% for shipped MRs</span></li>
+</ol>
+</div>
+<div class="plan-track" data-tier="1">
+<div class="plan-track-head"><span class="plan-tier-dot" style="background:#00f2fe"></span><strong>RFP (Request for Proposal) Answer Assistant</strong><span class="plan-tier-tag">Gemma · central · sovereign</span></div>
+<ol class="plan-steps">
+<li><span class="plan-week">Wk 2</span><span class="plan-step">Past Request for Proposal (RFP) documents, product specs, and OEM manuals indexed for quick search</span></li>
+<li><span class="plan-week">Wk 4</span><span class="plan-step">Draft answers appear in seconds, ready for Sales review</span></li>
+<li><span class="plan-week">Wk 8</span><span class="plan-step">First live customer RFP answered faster with citations attached</span></li>
+<li><span class="plan-week">Wk 12</span><span class="plan-step">Team uses it as the default RFP drafting assistant</span></li>
+</ol>
+</div>
+<div class="plan-track" data-tier="2">
+<div class="plan-track-head"><span class="plan-tier-dot" style="background:#4facfe"></span><strong>Instructor Debrief Writer</strong><span class="plan-tier-tag">Claude Fable · edge · per edge site</span></div>
+<ol class="plan-steps">
+<li><span class="plan-week">Wk 2</span><span class="plan-step">Existing debrief pipeline already ingests session info, camera data, and structured flight data</span></li>
+<li><span class="plan-week">Wk 4</span><span class="plan-step">Redaction Gateway and AI suggestion layer certified · zero trainee identifiers in API calls</span></li>
+<li><span class="plan-week">Wk 8</span><span class="plan-step">First 50 debriefs AI-suggested for rubric grades and instructor-signed · write-time ↓ 60%+</span></li>
+<li><span class="plan-week">Wk 12</span><span class="plan-step">Cross-instructor consistency on target · ready to ship to every edge site</span></li>
+</ol>
+</div>
+</div>
+<div class="plan-foot">
+<span class="plan-foot-tag">How it scales</span> One sovereign brain image; every new agent compounds on the same infrastructure. Central agents serve every team from day one. Edge instances at remote edge sites are the only place additional hardware is added, and only for workflows that have to live next to the simulator they support.
+</div>
+</section>
+</div>
+
 <!-- ───────── Continuous Learning Flywheel ─────────
      CEO-facing message: AI compounds. Every approved answer feeds back
      into the platform, so the agents get more accurate quarter over
@@ -9334,7 +9457,7 @@ body.architecture-focus { overflow-x: hidden; }
                 title: 'External reasoning, safely (Claude via redaction)',
                 accent: '#4facfe',
                 modeLabel: 'Pilot: Instructor Debrief Writer',
-                businessStory: 'External-brain pattern used safely. The Opus pilot for this path is the Instructor Debrief Writer: every simulator session produces structured flight data and a few instructor notes; the redaction gateway strips cadet identifiers, then Claude drafts a consistent, on-tone debrief narrative that the instructor reviews, tweaks, and signs.',
+                businessStory: 'External-brain pattern used safely. The Opus pilot for this path is the Instructor Debrief Writer: every simulator session produces structured flight data and a few instructor notes; the redaction gateway strips trainee identifiers, then Claude drafts a consistent, on-tone debrief narrative that the instructor reviews, tweaks, and signs.',
                 story: 'A Tier-2 request arrives. The Compliance Guard assigns it to an agent. The agent retrieves relevant procedures from the local domain knowledge base, routes the combined context through the redaction gateway to strip identifiers, calls the Claude API brain for synthesis, and presents the draft to a human reviewer.',
                 examples: ['Instructor Debrief Writer (Opus pilot)', 'bid proposal drafting', 'customer-facing incident summary'],
                 technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Redaction Gateway -> Brain (Claude) -> Human Review -> Executor -> Audit Log.'
