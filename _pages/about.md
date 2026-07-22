@@ -60,7 +60,7 @@ redirect_from:
   <li><span class="num">12+</span><span class="label">Years in mission-critical software</span></li>
   <li><span class="num">Ph.D.</span><span class="label">Machine Learning · ERAU 2025</span></li>
   <li><span class="num">5</span><span class="label">First-author papers · 3 in IEEE Access</span></li>
-  <li><span class="num">3</span><span class="label">Regulated industries · defense, security, aviation</span></li>
+  <li><span class="num">3</span><span class="label">Scientific journals reviewed</span></li>
 </ul>
 
 ## Leadership & Core Domains
@@ -103,7 +103,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">Aug 2025</span>
-    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. Advisor: Dr. Kenji Yoshigoe. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. My doctoral research was guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow Dr. Houbing Song, with whom I continue to actively collaborate on securing distributed ML systems. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
   </li>
   <li>
     <span class="when">2021–2025</span>
@@ -163,6 +163,16 @@ redirect_from:
     <p class="desc">Comprehensive survey of the design space at the intersection of distributed ledgers and learning systems.</p>
   </li>
 </ul>
+
+## Scientific Impact & Professional Service
+
+My methodologies in decentralized trust and model watermarking have been adopted by peers to protect AI ownership and lineage, appearing in premier venues such as *IEEE Transactions on Services Computing* and *IEEE SaTML 2026*. This work provides efficient mechanisms for securing critical infrastructure against adversarial AI threats, directly supporting the national security priorities outlined in the Executive Order on Promoting the Export of the American AI Technology Stack.
+
+Recognized for my expertise in secure and distributed machine learning, I actively serve the scientific community by evaluating cutting-edge research:
+- **Peer Reviewer**, *IEEE Access*
+- **Peer Reviewer**, *Arabian Journal for Science and Engineering*
+- **Peer Reviewer**, *Sakarya University Journal of Computer and Information Sciences*
+- **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante
 
 ## Get in touch
 
