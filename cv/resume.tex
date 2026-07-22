@@ -1,0 +1,197 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,margin=0.4in]{geometry}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{amssymb}
+\usepackage{mathpazo}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+
+% --- resume.sty inlined (commands adapted from Cies Breijs' MIT-licensed
+%     resume template, https://github.com/cies/resume) ---
+\usepackage{xcolor}
+\definecolor{light}{gray}{0.55}
+\newcommand{\spacedhrule}[2]{\vspace{#1}\hrule\vspace{#2}}
+\newcommand{\maintitle}[3]{\noindent{\LARGE\textbf{#1}}\ifx&#2&\else\quad{\large #2}\fi\hfill{\small\color{light}#3}\par\vspace{0.3em}}
+\newcommand{\roottitle}[1]{\par{\large\textbf{#1}}\par\vspace{0.2em}}
+\long\def\headedsection#1#2#3{\par\noindent\textbf{#1}\hfill{#2}\par#3\par}
+\long\def\headedsubsection#1#2#3{\par\noindent{#1}\hfill{\small{#2}}\par#3}
+\long\def\bodytext#1{#1}
+% --- end resume.sty ---
+
+\begin{document}
+\sloppy
+\renewcommand\labelitemi{\textbullet}
+
+\maintitle{Ozgur Ural, Ph.D.}{}{Last update on \today}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l l l l r}
+\href{mailto:drozgurural@gmail.com}{drozgurural@gmail.com} &
++31 6 2903 0434 &
+\href{https://linkedin.com/in/uralozgur}{linkedin.com/in/uralozgur} &
+\href{https://ozgurural.github.io/}{ozgurural.github.io} &
+Amsterdam, Netherlands
+\end{tabular*}
+
+\spacedhrule{0.2em}{0.2em}
+
+\roottitle{Senior AI Engineer \& Researcher, Ph.D. in ML Security \& Distributed Systems}
+
+Senior AI engineer and researcher with 11+ years building production systems across cybersecurity, defense, and simulation domains. Completed a Ph.D. (August 2025) in ML Security and Distributed Systems at Embry-Riddle Aeronautical University, with three first-author publications in IEEE Access on Proof-of-Learning and model watermarking. My research and engineering center on \textbf{verifiable, trustworthy machine learning} --- systems whose behavior can be proven, not merely trusted --- for domains where failure is not an option.
+
+Strong foundation in systems programming (C, C++, Scala) and distributed architecture, combined with hands-on ML-security research. Proven track record of leading engineering teams, owning complex technical deliverables end-to-end, and translating original research into production-grade systems.
+
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{TECHNICAL SKILLS}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{ML and AI:} PyTorch, TensorFlow, scikit-learn, federated learning, distributed ML training, model watermarking, Proof-of-Learning, adversarial ML, verifiable ML and model provenance, large-scale model evaluation
+  \item \textbf{Languages:} C, C++, Java, Scala, Python, TypeScript, JavaScript
+  \item \textbf{Distributed and Data:} gRPC, Protobuf, Redis, PostgreSQL, REST, real-time data pipelines
+  \item \textbf{Systems:} Linux, multithreading, networking, real-time, low-latency, backpressure
+  \item \textbf{Web and UI:} Svelte, HTML, CSS, Tailwind
+  \item \textbf{DevOps:} Docker, GitLab CI/CD, Jenkins, Git
+\end{itemize}
+
+\roottitle{EXPERIENCE}
+
+\headedsection{\href{https://www.aviongroup.aero/}{Avion Full Flight Simulators}}{\textsc{Amsterdam, Netherlands}}{%
+  \headedsubsection{Senior Software Engineer}{Oct 2023 -- Present}{%
+    \bodytext{\begin{itemize}
+      \item Developed real-time simulator software in C, C++, and Scala.
+      \item Built a low-latency data pipeline ingesting simulator telemetry, normalizing and serializing to JSON and Protobuf, caching in Redis, persisting in PostgreSQL, and serving the frontend via gRPC and HTTP; sustained approximately 50 GB/s real-time throughput using batching and bounded-queue backpressure.
+      \item Built web applications for the Avion Cloud Environment to monitor, configure, and diagnose core simulator components using TypeScript, Svelte, Scala, Python, and gRPC.
+      \item Containerized and deployed services with Docker; automated testing and deployments via GitLab CI/CD.
+      \item Applied multithreading and async I/O patterns with backpressure to meet rigorous real-time requirements.
+    \end{itemize}}%
+  }%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{https://daytonabeach.erau.edu/}{Embry-Riddle Aeronautical University, Daytona Beach}}{\textsc{Florida, USA}}{%
+  \headedsubsection{Graduate Research Assistant}{Aug 2021 -- Aug 2025}{%
+    \bodytext{\begin{itemize}
+      \item Advisor: \href{https://ieeexplore.ieee.org/author/37269327300}{Dr. Kenji Yoshigoe}. Dissertation: Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.
+      \item Conducted original research on verifiable, trustworthy machine learning --- proof-of-learning, model watermarking, and adversarial robustness --- with three first-author papers in IEEE Access.
+      \item Journal referee for IEEE Access; program committee member for NLPAICS 2026 (University of Alicante).
+    \end{itemize}}%
+  }%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{https://havelsan.com.tr/en}{Havelsan}}{\textsc{Ankara, Turkey}}{%
+  \headedsubsection{Software Team Lead}{Nov 2020 -- Aug 2021}{%
+    \bodytext{\href{https://havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp}{Havelsan DLP} enterprise Data Leakage Prevention product.
+    \begin{itemize}
+      \item Led a team of 14 engineers (developers, QA, DevOps, support) delivering endpoint security software.
+      \item Developed and maintained core features of the endpoint agent in C, C++, Java, and Go.
+      \item Coordinated with product and business stakeholders to align delivery with roadmap objectives.
+    \end{itemize}}%
+  }%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{https://www.stm.com.tr/en}{STM Defence Technologies}}{\textsc{Ankara, Turkey}}{%
+  \headedsubsection{Expert Software Engineer}{Feb 2019 -- Nov 2020}{%
+    \bodytext{\href{https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav}{Kargu} Autonomous Attack UAV and \href{https://www.stm.com.tr/en/togan}{Togan} Autonomous Reconnaissance UAV.
+    \begin{itemize}
+      \item Contributed to mission-control and ground-control unit architecture in C++11 with Boost and Qt.
+      \item Designed and implemented Power-On and Continuous Built-In Tests for system reliability validation.
+      \item Worked with cross-functional teams to meet military-grade engineering and safety standards.
+    \end{itemize}}%
+  }%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{https://www.comodo.com}{Comodo Cybersecurity}}{\textsc{Ankara, Turkey}}{%
+  \headedsubsection{Expert Software Engineer}{Jul 2014 -- Feb 2019}{%
+    \bodytext{\href{https://cdome.comodo.com/}{Comodo Dome Secure Web Gateway}, \href{https://www.itarian.com/patch-management.php}{Comodo Patch Manager}, and the \href{https://www.comodo.com/home/browsers-toolbars/browser.php}{Comodo Dragon} browser.
+    \begin{itemize}
+      \item Led design and development of Windows services and applications in C++17 with Boost and WinAPI.
+      \item Established unit testing and code-review practices; implemented CI/CD pipelines with Jenkins.
+      \item Developed statistical reporting modules and advanced browser security features.
+    \end{itemize}}%
+  }%
+}
+
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{EDUCATION}
+
+\headedsection{\href{https://daytonabeach.erau.edu/}{Embry-Riddle Aeronautical University, Daytona Beach}}{\textsc{Florida, USA}}{%
+  \headedsubsection{Ph.D. in Electrical Engineering and Computer Science}{Aug 2021 -- Aug 2025}{%
+    \begin{itemize}
+      \item Dissertation: Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking. Advisor: Dr. Kenji Yoshigoe.
+    \end{itemize}%
+  }%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}{\textsc{Ankara, Turkey}}{%
+  \headedsubsection{Master of Science in Cyber Security}{2015 -- 2019}{%
+    \begin{itemize}
+      \item Thesis: \href{https://github.com/ozzgural/MSThesis}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data}
+    \end{itemize}%
+  }%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}{\textsc{Ankara, Turkey}}{%
+  \headedsubsection{Bachelor of Science in Computer Engineering}{2010 -- 2014}{}%
+}
+
+\vspace{0.3cm}
+
+\headedsection{\href{https://www.anadolu.edu.tr/en}{Anadolu University}}{\textsc{Eskisehir, Turkey}}{%
+  \headedsubsection{Bachelor of Business Administration}{2012 -- 2017}{}%
+}
+
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{PUBLICATIONS}
+
+\begin{itemize}
+  \item Ural, O. and Yoshigoe, K. (2025). \href{https://ieeexplore.ieee.org/document/11293969}{SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks}. \textit{IEEE Access}, vol. 13, pp. 213067--213091.
+
+  \item Ural, O. and Yoshigoe, K. (2024). \href{https://ieeexplore.ieee.org/abstract/document/10741282}{Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking}. \textit{IEEE Access}.
+
+  \item Ural, O. and Yoshigoe, K. (2023). \href{https://doi.org/10.1109/ACCESS.2023.3344669}{Survey on Blockchain-Enhanced Machine Learning}. \textit{IEEE Access}, pp. 145331--145362.
+
+  \item Ural, O. and Acartuurk, C. (2021). \href{https://www.scitepress.org/Papers/2021/102016/102016.pdf}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data}. ICISSP 2021.
+
+  \item Ural, O. (2025). \href{https://commons.erau.edu/edt/905/}{Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking}. Doctoral dissertation, Embry-Riddle Aeronautical University.
+\end{itemize}
+
+For full list and citation metrics: \href{https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate}{Google Scholar profile}.
+
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{PROFESSIONAL SERVICE}
+
+\begin{itemize}
+  \item \textbf{Journal Referee:} IEEE Access and peer-reviewed journals in security, machine learning, distributed systems, and blockchain.
+  \item \textbf{Program Committee Member (2026):} 2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026), University of Alicante, Spain.
+  \item \textbf{Reviewer:} IEEE and ACM conferences in security, machine learning, and distributed systems.
+\end{itemize}
+
+\spacedhrule{0.9em}{0.1em}
+
+\roottitle{AWARDS AND HONORS}
+
+\begin{itemize}
+  \item TUBITAK National Project Competition, First Prize, June 2014.
+  \item Middle East Technical University Graduation Projects Competition, Second Prize, June 2014.
+\end{itemize}
+
+\end{document}
