@@ -103,7 +103,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">Aug 2025</span>
-    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. My doctoral research was guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow Dr. Houbing Song, with whom I continue to actively collaborate on securing distributed ML systems. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. My doctoral research was guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>, with whom I continue to actively collaborate on securing distributed ML systems. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
   </li>
   <li>
     <span class="when">2021–2025</span>
