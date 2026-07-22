@@ -9,6 +9,11 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 <ul class="ep-cards">
   <li>
+    <div class="meta">2026 · Enterprise AI · Avion</div>
+    <h3 class="title">Avion AI Strategy &amp; Agent Platform</h3>
+    <p class="desc">Authored Avion's enterprise AI strategy and built the platform that presents it. A three-tier architecture (air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge) plus a suite of retrieval-augmented and autonomous agents: an engineering-knowledge copilot with grounded citations and change-impact analysis, an autonomous repository agent, an RFP accelerator, and a training-debrief writer. Built end to end with Flask, SQLite, Docker, and GitLab CI/CD.</p>
+  </li>
+  <li>
     <div class="meta">Interactive · 8 experiments</div>
     <h3 class="title"><a href="/lab/">Research Lab: interactive experiments</a></h3>
     <p class="desc">Eight interactive experiments covering distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each presents a real scenario with measurable outcomes. Built to make the core concepts of my research accessible in three minutes.</p>

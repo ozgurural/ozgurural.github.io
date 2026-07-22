@@ -40,7 +40,7 @@ redirect_from:
      needs its own layer. The career narrative lives in the timeline below. -->
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">Verifiable &amp; Trustworthy ML · Mission-Critical Systems · Engineering Leadership</span>
+  <span class="ep-eyebrow">Verifiable &amp; Trustworthy ML · Applied GenAI · Mission-Critical Systems</span>
   <h1 class="ep-hero__title">I design <span class="accent">verifiable ML</span> and mission-critical systems, establishing the standards that keep them <span class="accent">correct when things fail</span>.</h1>
   <p class="ep-hero__lede">
     I'm <strong>Dr. Ozgur Ural</strong>, a senior software engineer and machine-learning researcher. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and my published research on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production. As AI moves into decisions that cannot be allowed to fail, the scarce resource is no longer intelligence — it is <strong>trust you can prove</strong>. Building that trust infrastructure is the through-line of my work.
@@ -93,6 +93,10 @@ redirect_from:
 ## Timeline
 
 <ol class="ep-timeline">
+  <li>
+    <span class="when">2026</span>
+    <span class="what">Leading <a href="https://www.aviongroup.aero/">Avion</a>'s enterprise AI strategy: authored the AI adoption roadmap and a three-tier architecture (air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge), then designed and shipped a suite of retrieval-augmented and autonomous agents, including an engineering-knowledge copilot with grounded citations, an autonomous repository agent, an RFP accelerator, and a training-debrief writer.</span>
+  </li>
   <li>
     <span class="when">Dec 2025</span>
     <span class="what">Published <em>SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/document/11293969">Read paper</a>.</span>
