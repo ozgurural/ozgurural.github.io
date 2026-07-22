@@ -37,7 +37,7 @@ description: "Technical advisory, ML-security and model-provenance review, confe
   </li>
   <li>
     <div class="meta">Journal Referee · multi-year</div>
-    <h3 class="title">IEEE Access · TÜBİTAK Journal of Electrical &amp; Computer Science · Arabian J. of Science &amp; Engineering</h3>
+    <h3 class="title">IEEE Access and peer-reviewed journals in ML security &amp; distributed systems</h3>
     <p class="desc">Manuscript review across ML security, privacy, distributed systems, and intelligent infrastructure. Frequent reviewer for IEEE Access in the secure-ML track.</p>
   </li>
   <li>

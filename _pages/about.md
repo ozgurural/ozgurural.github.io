@@ -169,10 +169,9 @@ redirect_from:
 My methodologies in decentralized trust and model watermarking have been adopted by peers to protect AI ownership and lineage, appearing in premier venues such as *IEEE Transactions on Services Computing* and *IEEE SaTML 2026*. This work provides efficient mechanisms for securing critical infrastructure against adversarial AI threats, directly supporting the national security priorities outlined in the Executive Order on Promoting the Export of the American AI Technology Stack.
 
 Recognized for my expertise in secure and distributed machine learning, I actively serve the scientific community by evaluating cutting-edge research:
-- **Peer Reviewer**, *IEEE Access*
-- **Peer Reviewer**, *Arabian Journal for Science and Engineering*
-- **Peer Reviewer**, *Sakarya University Journal of Computer and Information Sciences*
+- **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy, and distributed systems
 - **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante
+- **Reviewer**, IEEE and ACM conferences in security, machine learning, and distributed systems
 
 ## Get in touch
 
