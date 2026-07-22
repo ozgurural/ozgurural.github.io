@@ -12,7 +12,7 @@
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;
-  var CY = PAL.sky, AMB = PAL.amber || "#FFFF00", RED = PAL.rose, GRN = PAL.good, GREY = PAL.faint, PURP = PAL.violet;
+  var CY = PAL.sky, AMB = PAL.amber, RED = PAL.rose, GRN = PAL.good, GREY = PAL.faint, PURP = PAL.violet;
 
   var _lowerCount = 0, _pendLower = null;
   // Panels share one full-width bottom bar, so two visible at once print
@@ -156,11 +156,11 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Global engineering requires massive coordination. But centralized management becomes a bottleneck.", 2.0, { out: 18 });
-      lower(s, "A single manager can only assign, review, and merge so many tasks before the hierarchy stalls.", 13.0, { out: 36 });
-      lower(s, "As an open-source network scales to thousands of global developers, the pyramid collapses completely.", 25.0, { out: 51 });
-      lower(s, "We need a system with no manager. We need math.", 35.0);
-    });
+      lower(s, "I learned decentralized coordination on the Aegean — forty boats, no race director steering them...", 2.0, { out: 18 });
+      lower(s, "...order emerging from local decisions and shared rules.", 13.0, { out: 36 });
+      lower(s, "Software is trying to do the same thing at global scale, with agents that never sleep and increasingly aren't human.", 25.0, { out: 51 });
+      lower(s, "A single manager is the thing that doesn't scale.", 35.0);
+    }, { subtitle: "The limits of centralized management" });
   }
 
   function sceneAMM(film) {
@@ -311,11 +311,11 @@
       lower(s, "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees a counterparty at every price.", 17.0, { out: 45 });
       lower(s, "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.", 32.0, { out: 67.5 });
       lower(s, "If nobody is working on it, YES shares are mathematically cheap. This creates an enormous financial incentive to act.", 47.0);
-    });
+    }, { subtitle: "Continuous automated market makers" });
   }
 
   function sceneInsiderTrading(film) {
-    film.scene("Work as Insider Trading", 112.5, function(s) {
+    film.scene("Skin in the Game", 112.5, function(s) {
       var k3 = 20;
       var co3 = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 340, right: 480, top: 150, bottom: 250 } });
       var ax3 = s.axes(co3, { grid: false });
@@ -475,10 +475,14 @@
       });
 
       lower(s, "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.", 2.0, { out: 27 });
-      lower(s, "Phase 2: They spend the next week writing code, effectively working as an 'insider' on their own success.", 22.0, { out: 69 });
+      lower(s, "Phase 2: They spend the next week writing code. Effort moves a price you own, so profit is the reward for doing the real work.", 22.0, { out: 69 });
       lower(s, "Phase 3: The PR is merged. Anyone asserts this to an Optimistic Oracle with a bond; unchallenged, the market resolves to 100%.", 48.0, { out: 87 });
-      lower(s, "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty. No manager required.", 60.0);
-    });
+      
+      var finalBeat = s.caption("Past a certain scale — a million agents, most of them not human — coordination stops being a role you can hire for. The only manager that scales is a price.", { px: 480, py: 100, anchor: "center", align: "center", size: "1rem", color: PAL.white });
+      s.fadeIn(finalBeat, { at: 75, dur: 2 });
+
+      lower(s, "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty.", 60.0);
+    }, { subtitle: "Aligning incentives with truth" });
   }
 
   setTimeout(boot, 60);

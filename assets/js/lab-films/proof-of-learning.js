@@ -109,7 +109,7 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "A trained model is just a big list of numbers, and anyone can copy it. So how do you prove you actually did the work of training it?", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "In 2021, Proof-of-Learning promised something remarkable — prove you trained a model, not just downloaded it. Within a year, attackers had spoofed it. My dissertation asks the harder question: can a proof of work be made impossible to fake?", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -428,7 +428,7 @@
       s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
-      lower(s, "My SecurePoL work adds a second lock: a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "This is the core of my dissertation — and the SecurePoL paper: a second lock, a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
@@ -485,7 +485,7 @@
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
       var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
-      lower(s, "A real training run is jittery in a way that's almost impossible to fake. That natural noise is the fingerprint: easy to make honestly, very hard to forge.", 12.0, { maxWidth: "92%", px: 60 });
+      lower(s, "As models are cloned, distilled, and stolen, what matters is no longer what a model knows — but whether it can prove how it came to know it. Compute leaves a fingerprint; my work makes that fingerprint impossible to forge.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

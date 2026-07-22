@@ -15,7 +15,7 @@ header:
   <p class="lab-card__lead">An evolution of the <em>Model Heist Detector</em>. Rather than examining a single Z-test, this animation explores the entire landscape of model watermarking strategies. We compare the mathematical capacity and evasion robustness of <strong>white-box</strong> (sparse parameter perturbations), <strong>black-box</strong> (feature-based triggers), <strong>generative</strong> (LLM token bias), and <strong>architecture-level</strong> (non-intrusive auxiliary heads) watermarks.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Synthesizing state-of-the-art watermarking capacity bounds and robustness theorems. Trigger set analysis follows Adi et al. (2018), generative watermarking follows Kirchenbauer et al. (2023).</span>
+    <span>Synthesizing state-of-the-art watermarking capacity bounds and robustness theorems. Trigger set analysis follows Adi et al. (2018), generative watermarking follows Kirchenbauer et al. (2023). Auxiliary head analysis based on Ural, "Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking," ERAU 2025.</span>
   </div>
 
   <div class="lab-film">

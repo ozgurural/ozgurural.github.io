@@ -1,7 +1,7 @@
 ---
 permalink: /lab/universal-jira/
 title: "Universal Jira: Prediction Markets for Global Coordination, animated"
-description: "A cinematic explainer on how smart contracts and prediction markets can act as humanity's decentralized task board."
+description: "A cinematic explainer on how smart contracts and prediction markets can act as incentive-compatible coordination with no trusted central party."
 excerpt: "How do we coordinate global engineering without a central boss? We use the math of Automated Market Makers (AMMs), market prices, and oracle resolution to turn software bounties into a shared belief system."
 sitemap: true
 header:
@@ -22,11 +22,11 @@ header:
     <div class="lab-film__frame" id="jira-film" role="group" aria-label="Animated explainer: Prediction Markets as Universal Jira"></div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=AMM curve, yellow=YES price, green=developer effort, purple=oracle">
-    <span><i style="background:#3b82f6"></i> AMM liquidity curve</span>
+  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=AMM curve, amber=YES price, green=developer effort, violet=oracle">
+    <span><i style="background:#58C4DD"></i> AMM liquidity curve</span>
     <span><i style="background:#fbbf24"></i> "YES" share price (probability)</span>
-    <span><i style="background:#34d399"></i> developer effort</span>
-    <span><i style="background:#a78bfa"></i> oracle resolution</span>
+    <span><i style="background:#83C167"></i> developer effort</span>
+    <span><i style="background:#9A72AC"></i> oracle resolution</span>
   </p>
 
   <details class="lab-reveal" open>

@@ -1,14 +1,14 @@
 {
   "block-race": [
-    "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.",
-    "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.",
+    "Two machines disagree about what happened, and no authority can settle it , yet a settlement layer, a fleet of drones, a swarm of AI agents all have to act on one history. Nakamoto's answer isn't a judge. It's a race that gets exponentially more expensive to rewrite the longer you wait.",
+    "Mining is a biased coin flip based on hashrate. Energy is the price of rewriting history , and the honest majority just outspends the liar.",
     "Forget both chains , only the gap matters. Each block moves it one step, the coin is rigged seventy to thirty, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.",
     "Satoshi models the attacker's block count as Poisson with mean lambda = z q over p, then sums gambler's-ruin tails.",
     "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.",
-    "Reversal becomes exponentially improbable, provided honest hashrate holds the majority."
+    "What this really buys is finality with no one in charge , the cost of a lie, denominated in energy and time."
   ],
   "gradient-pinball": [
-    "Networks learn by rolling downhill. The steepest descent is exactly opposite the gradient.",
+    "Every trained model is the end of a journey down a landscape like this. Walk the journey and you have a model , reproduce the journey and you have a proof it was really trained.",
     "Measure slope, step against it, repeat. Each step is the locally steepest move.",
     "Step sizes dictate distance. If too large, the system overshoots and diverges.",
     "Momentum acts as a memory of past gradients. Side-to-side bounces cancel, downhill drift compounds.",
@@ -16,21 +16,21 @@
     "In high dimensions, most critical points are saddles. Momentum and noise help escape them."
   ],
   "jira": [
-    "Global engineering requires massive coordination. But centralized management becomes a bottleneck.",
-    "A single manager can only assign, review, and merge so many tasks before the hierarchy stalls.",
-    "As an open-source network scales to thousands of global developers, the pyramid collapses completely.",
-    "We need a system with no manager. We need math.",
+    "I learned decentralized coordination on the Aegean , forty boats, no race director steering them...",
+    "...order emerging from local decisions and shared rules.",
+    "Software is trying to do the same thing at global scale, with agents that never sleep and increasingly aren't human.",
+    "A single manager is the thing that doesn't scale.",
     "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'",
     "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees a counterparty at every price.",
     "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.",
     "If nobody is working on it, YES shares are mathematically cheap. This creates an enormous financial incentive to act.",
     "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.",
-    "Phase 2: They spend the next week writing code, effectively working as an 'insider' on their own success.",
+    "Phase 2: They spend the next week writing code. Effort moves a price you own, so profit is the reward for doing the real work.",
     "Phase 3: The PR is merged. Anyone asserts this to an Optimistic Oracle with a bond; unchallenged, the market resolves to 100%.",
-    "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty. No manager required."
+    "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty."
   ],
   "model-heist": [
-    "Your model leaks. A competitor fine-tunes and claims it. How do you prove ownership when weights change?",
+    "I once built systems whose whole job was to stop data from ever leaking. But prevention always fails eventually. This is the question that begins where prevention ends: once your model is out in the world, can you still prove it was yours?",
     "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.",
     "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.",
     "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.",
@@ -38,30 +38,30 @@
     "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark."
   ],
   "oracles": [
-    "The blockchain is a perfectly deterministic grid. A closed universe.",
-    "Smart contracts cannot 'look' at the real world. They cannot make API calls.",
-    "If a parametric insurance contract needs to know if it rained, it cannot check a weather server.",
-    "It requires an Oracle: a bridge to bring real-world truth across the Consensus Wall.",
+    "An autonomous system is handed a verdict , 'that's crop damage,' 'that's a valid claim,' 'that's a threat.'",
+    "It didn't run the model. It can't see the weights.",
+    "Should it act?",
+    "In a world where AI agents consume each other's inferences, this is the trust question.",
     "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.",
     "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.",
-    "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (pi).",
+    "This complex shadow is mathematically compressed into a short proof pi that's cheap to check but impossible to forge , a certificate that this exact model produced this exact output.",
     "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.",
     "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.",
     "A node asserts a result and locks a massive financial bond (stake) on the blockchain.",
-    "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.",
+    "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.",
     "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required."
   ],
   "proof-of-learning": [
-    "A trained model is just a big list of numbers, and anyone can copy it. So how do you prove you actually did the work of training it?",
+    "In 2021, Proof-of-Learning promised something remarkable , prove you trained a model, not just downloaded it. Within a year, attackers had spoofed it. My dissertation asks the harder question: can a proof of work be made impossible to fake?",
     "A model isn't born at the finish line. It gets there one tiny step at a time, and that winding path, not the final point, is the real asset.",
     "The proof is just a diary of the whole run: every checkpoint, which data it saw, and the settings, all signed so nobody can edit it later.",
     "A checker never re-runs the whole thing. It re-does only the biggest steps, which is exactly where a faker taking shortcuts would get caught.",
     "Proving costs one honest run. Faking means running the whole training backwards, and the number of paths that could fit explodes, so it's astronomically harder.",
-    "My SecurePoL work adds a second lock: a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.",
-    "A real training run is jittery in a way that's almost impossible to fake. That natural noise is the fingerprint: easy to make honestly, very hard to forge."
+    "This is the core of my dissertation , and the SecurePoL paper: a second lock, a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.",
+    "As models are cloned, distilled, and stolen, what matters is no longer what a model knows , but whether it can prove how it came to know it. Compute leaves a fingerprint; my work makes that fingerprint impossible to forge."
   ],
   "redundancy-reactor": [
-    "A single unit might fail. Redundancy places identical clones alongside it, trusting they won't all fail at once.",
+    "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree , so you run three, and let the majority rule.",
     "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.",
     "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.",
     "When faults correlate, the cliff vanishes. Redundancy no longer protects you; they all fail together.",
@@ -69,7 +69,7 @@
     "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains."
   ],
   "wm-compare": [
-    "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.",
+    "To make Proof-of-Learning impossible to spoof, I had to hide a mark inside a model. There are four ways to do it , and each one falls to a different attacker. Here is how I chose. 1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.",
     "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.",
     "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.",
     "But there is a catch: you need full access to the stolen weights to run this test.",
@@ -84,6 +84,6 @@
     "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.",
     "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.",
     "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.",
-    "However, its gradient footprint remains locked in the Proof-of-Learning training trajectory. Pruning it from the final model cannot erase its historical existence."
+    "Every watermark can be attacked. The one that survives isn't hidden in the model , it's woven into the record of how the model was made. In the AI age, provenance beats possession."
   ]
 }

@@ -151,7 +151,7 @@
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: WHT });
       s.write(title, { at: 0.9, dur: 2.1 });
-      lower(s, "Your model leaks. A competitor fine-tunes and claims it. How do you prove ownership when weights change?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
+      lower(s, "I once built systems whose whole job was to stop data from ever leaking. But prevention always fails eventually. This is the question that begins where prevention ends: once your model is out in the world, can you still prove it was yours?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
@@ -332,6 +332,8 @@
       });
       var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.4rem", color: TXT });
       s.write(e1, { at: 1.2, dur: 1.8 });
+      var cap = s.caption("the matched filter at the core of the author's 2024 watermarking method.", { px: 300, py: 130, size: "0.9rem", color: GREY });
+      s.fadeIn(cap, { at: 3.0, dur: 1.5 });
       lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
   }
@@ -482,6 +484,8 @@
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
+      var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights — it must survive every transformation an adversary can apply. Provenance you can prove is the price of trusting a model you never watched being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
+      s.fadeIn(cap2, { at: 8.5, dur: 1.5 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
     }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });

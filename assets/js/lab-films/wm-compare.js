@@ -190,7 +190,7 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 1.33, { out: 18 });
+      lower(s, "To make Proof-of-Learning impossible to spoof, I had to hide a mark inside a model. There are four ways to do it — and each one falls to a different attacker. Here is how I chose. 1. A White-box watermark embeds a mathematical pattern directly into the billions of weights of a model.", 1.33, { out: 18 });
       lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.33, { out: 38 });
       lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 26.67, { out: 52 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
@@ -434,7 +434,7 @@
   }
 
   function sceneAuxiliary(film) {
-    film.scene("Non-Intrusive Auxiliary Head", 60, function(s) {
+    film.scene("The mark you can't prune", 60, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -529,10 +529,12 @@
         }
         ctx.globalAlpha = 1;
       });
+      var cite = s.caption("Ural, Enhancing Proof-of-Learning Security, Ph.D. dissertation, ERAU 2025.", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: GREY });
+      s.fadeIn(cite, { at: 1.5, dur: 1.2 });
       lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
       lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });
       lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 18.67, { out: 40 });
-      lower(s, "However, its gradient footprint remains locked in the Proof-of-Learning training trajectory. Pruning it from the final model cannot erase its historical existence.", 28);
+      lower(s, "Every watermark can be attacked. The one that survives isn't hidden in the model — it's woven into the record of how the model was made. In the AI age, provenance beats possession.", 28);
     });
   }
 
