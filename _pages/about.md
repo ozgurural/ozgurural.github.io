@@ -141,6 +141,10 @@ redirect_from:
     <span class="when">2014–2019</span>
     <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Led design and architecture of the Secure Web Gateway, enterprise Patch Manager, and the Chromium-based Dragon browser.</span>
   </li>
+  <li>
+    <span class="when">2010–2014</span>
+    <span class="what">B.Sc. in Computer Engineering at <a href="https://metu.edu.tr">Middle East Technical University (METU)</a>, Turkey's top-ranked and most selective computer engineering program (English-medium): admission among roughly the top 1,000 of more than 2 million national university-entrance candidates.</span>
+  </li>
 </ol>
 
 ## Selected Work
