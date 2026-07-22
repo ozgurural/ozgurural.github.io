@@ -350,6 +350,9 @@
       g.el.appendChild(l);
       var h = new Handle("svg", l, self);
       h._pathLen = Math.hypot(x2 - x1, y2 - y1);
+      // born visible so the legacy `draw(group)` path (which gates opacity at
+      // the group level) still shows the lines; stagger() hides them first
+      h.born(true);
       g._children.push(h);
       self._add(h);
     }
@@ -380,6 +383,9 @@
     var lag = num(o.lag, dur * 0.1);
     var ease = o.ease || Ease.smooth;
     for (var i = 0; i < handles.length; i++) {
+      // hide first (axes children are born visible for the legacy draw path),
+      // then draw-reveal each with its lag
+      handles[i].base.op = 0; handles[i].cur.op = 0;
       this.draw(handles[i], { at: at + i * lag, dur: dur, ease: ease });
     }
     return this;
