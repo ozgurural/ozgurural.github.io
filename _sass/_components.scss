@@ -133,10 +133,7 @@
    -------------------------------------------------------------------------- */
 .ep-stats {
   display: grid;
-  /* Four tiles as an even 2x2: auto-fit minmax(160px) fits three across the
-     sidebar-narrowed content column and strands the fourth tile alone on a
-     second row. */
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin: 2rem 0 3rem;
   padding: 0;

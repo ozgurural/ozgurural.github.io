@@ -128,6 +128,8 @@
         return { x: 0.92 * e * Math.cos(7.0 * tau), y: 0.62 * e * Math.sin(3.4 * tau) };
       }
 
+      var sgradCache = null, ballGrdCache = null;
+
       s.canvas(function (lt, ctx, h) {
         morph = h.ease.smooth(h.clamp01((lt - 18.2) / 2.6));
         // ---- radar sweep (hugs the bowl rim, fades out before the ball story) ----
@@ -144,11 +146,16 @@
               ctx.lineTo(pr[0], pr[1]);
            }
            ctx.closePath();
-           var sgrad = ctx.createRadialGradient(cCenter[0], cCenter[1], 0, cCenter[0], cCenter[1], 150);
-           sgrad.addColorStop(0, h.rgba(h.PAL.teal, 0.15 * sweepOp));
-           sgrad.addColorStop(1, h.rgba(h.PAL.sky, 0.0));
-           ctx.fillStyle = sgrad;
+           if (!sgradCache) {
+             sgradCache = ctx.createRadialGradient(cCenter[0], cCenter[1], 0, cCenter[0], cCenter[1], 150);
+             sgradCache.addColorStop(0, h.rgba(h.PAL.teal, 0.15));
+             sgradCache.addColorStop(1, h.rgba(h.PAL.sky, 0.0));
+           }
+           ctx.save();
+           ctx.globalAlpha *= sweepOp;
+           ctx.fillStyle = sgradCache;
            ctx.fill();
+           ctx.restore();
         }
 
         // ---- wireframe paraboloid bowl ----
@@ -231,10 +238,15 @@
           ctx.fillText("−∇L", (pb0[0] + ptip[0]) / 2 + 8, (pb0[1] + ptip[1]) / 2 - 6);
         }
         // ball
-        var grd = ctx.createRadialGradient(pb0[0] - 3, pb0[1] - 4, 1, pb0[0], pb0[1], 11);
-        grd.addColorStop(0, "#fff7e0"); grd.addColorStop(0.4, "#FFFF00"); grd.addColorStop(1, "#b45309");
-        ctx.fillStyle = grd;
-        ctx.beginPath(); ctx.arc(pb0[0], pb0[1], 9, 0, 7); ctx.fill();
+        if (!ballGrdCache) {
+          ballGrdCache = ctx.createRadialGradient(-3, -4, 1, 0, 0, 11);
+          ballGrdCache.addColorStop(0, "#fff7e0"); ballGrdCache.addColorStop(0.4, "#FFFF00"); ballGrdCache.addColorStop(1, "#b45309");
+        }
+        ctx.save();
+        ctx.translate(pb0[0], pb0[1]);
+        ctx.fillStyle = ballGrdCache;
+        ctx.beginPath(); ctx.arc(0, 0, 9, 0, 7); ctx.fill();
+        ctx.restore();
       });
 
       var title = s.title("GRADIENT&nbsp;PINBALL", { px: 480, py: 150, size: "2.8rem", color: "#ffffff" });
@@ -510,9 +522,23 @@
         return { x: 0.04, y: -ee * 0.95 }; // roll out along the downhill (unstable) direction
       }
 
+      var gradLinesCache = null, ballGrdStuckCache = null, ballGrdMovingCache = null, areaGrdCache = null;
+
       s.canvas(function (lt, ctx, h) {
         var rev = h.clamp01(lt / 2.0);
         var N = 11, i, j, x, y, z, p;
+        if (!gradLinesCache) {
+          gradLinesCache = [];
+          for (var k = 0; k <= N; k++) {
+            var kx = -1 + 2 * k / N;
+            var pStart = proj(kx, -1, surf(kx, -1));
+            var pEnd = proj(kx, 1, surf(kx, 1));
+            var gl = ctx.createLinearGradient(pStart[0], pStart[1], pEnd[0], pEnd[1]);
+            gl.addColorStop(0, h.rgba(h.PAL.teal, 0.05));
+            gl.addColorStop(1, h.rgba(h.PAL.teal, 0.4));
+            gradLinesCache.push(gl);
+          }
+        }
         // saddle wireframe
         for (i = 0; i <= N; i++) {
           if (i / N > rev) break;
@@ -522,9 +548,7 @@
             p = proj(x, y, z);
             if (j === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
           }
-          var gradLine = ctx.createLinearGradient(proj(x, -1, surf(x, -1))[0], proj(x, -1, surf(x, -1))[1], proj(x, 1, surf(x, 1))[0], proj(x, 1, surf(x, 1))[1]);
-          gradLine.addColorStop(0, h.rgba(h.PAL.teal, 0.05)); gradLine.addColorStop(1, h.rgba(h.PAL.teal, 0.4));
-          ctx.strokeStyle = gradLine; ctx.lineWidth = 1; ctx.stroke();
+          ctx.strokeStyle = gradLinesCache[i]; ctx.lineWidth = 1; ctx.stroke();
         }
         for (j = 0; j <= N; j++) {
           if (j / N > rev) break;
@@ -552,10 +576,17 @@
         // ball
         var b = ballXY(lt), pb = proj(b.x, b.y, surf(b.x, b.y) + 0.04);
         var stuck = lt < 8.5;
-        var grd = ctx.createRadialGradient(pb[0] - 3, pb[1] - 4, 1, pb[0], pb[1], 11);
-        if (stuck) { grd.addColorStop(0, "#cfd8e6"); grd.addColorStop(1, h.PAL.faint); }
-        else { grd.addColorStop(0, "#fff7e0"); grd.addColorStop(0.4, "#FFFF00"); grd.addColorStop(1, "#b45309"); }
-        ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(pb[0], pb[1], 9, 0, 7); ctx.fill();
+        if (!ballGrdStuckCache) {
+          ballGrdStuckCache = ctx.createRadialGradient(-3, -4, 1, 0, 0, 11);
+          ballGrdStuckCache.addColorStop(0, "#cfd8e6"); ballGrdStuckCache.addColorStop(1, h.PAL.faint);
+          ballGrdMovingCache = ctx.createRadialGradient(-3, -4, 1, 0, 0, 11);
+          ballGrdMovingCache.addColorStop(0, "#fff7e0"); ballGrdMovingCache.addColorStop(0.4, "#FFFF00"); ballGrdMovingCache.addColorStop(1, "#b45309");
+        }
+        ctx.save();
+        ctx.translate(pb[0], pb[1]);
+        ctx.fillStyle = stuck ? ballGrdStuckCache : ballGrdMovingCache;
+        ctx.beginPath(); ctx.arc(0, 0, 9, 0, 7); ctx.fill();
+        ctx.restore();
         var stallFade = h.clamp01((lt - 4) / 0.5) * (1 - h.clamp01((lt - 8) / 0.5));
         if (stallFade > 0) {
           ctx.save();
@@ -588,10 +619,12 @@
           ctx.lineTo(co.x(x), co.y(y));
         }
         ctx.lineTo(co.x(p), co.y(0)); ctx.closePath();
-        var grd = ctx.createLinearGradient(0, co.y(1), 0, co.y(0));
-        grd.addColorStop(0, h.rgba(h.PAL.violet, 0.35));
-        grd.addColorStop(1, h.rgba(h.PAL.violet, 0.0));
-        ctx.fillStyle = grd; ctx.fill();
+        if (!areaGrdCache) {
+          areaGrdCache = ctx.createLinearGradient(0, co.y(1), 0, co.y(0));
+          areaGrdCache.addColorStop(0, h.rgba(h.PAL.violet, 0.35));
+          areaGrdCache.addColorStop(1, h.rgba(h.PAL.violet, 0.0));
+        }
+        ctx.fillStyle = areaGrdCache; ctx.fill();
         ctx.restore();
       });
       // scatter critical points along the curve

@@ -35,6 +35,9 @@
   --ds-radius-sm: 8px;
   --ds-radius-pill: 999px;
 
+  --ds-transition-fast: 0.15s ease;
+  --ds-transition-spring: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
   /* Override theme variables — light */
   --global-bg-color: var(--ds-bg);
   --global-text-color: var(--ds-body);
@@ -84,3 +87,10 @@ html[data-theme="dark"] {
   --global-dark-border-color: var(--ds-line);
   --global-footer-bg-color: transparent;
 }
+
+/* Accessibility focus states */
+:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+

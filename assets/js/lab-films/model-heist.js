@@ -54,13 +54,24 @@
     if (o.out) s.fadeOut(c, { at: o.out, dur: 0.75 });
     return c;
   }
+  var barGrdCache = {};
+  function getBarGrd(ctx, h, color) {
+    if (!barGrdCache[color]) {
+      var g = ctx.createLinearGradient(0, 1, 0, 0);
+      g.addColorStop(0, h.rgba(color, 0.3));
+      g.addColorStop(1, h.rgba(color, 0.85));
+      barGrdCache[color] = g;
+    }
+    return barGrdCache[color];
+  }
   function bar(ctx, h, x, y, w, hh, color, alpha) {
     ctx.globalAlpha = alpha;
-    var grd = ctx.createLinearGradient(x, y + hh, x, y);
-    grd.addColorStop(0, h.rgba(color, 0.3));
-    grd.addColorStop(1, h.rgba(color, 0.85));
-    ctx.fillStyle = grd;
-    ctx.fillRect(x, y, w, hh);
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(1, hh);
+    ctx.fillStyle = getBarGrd(ctx, h, color);
+    ctx.fillRect(0, 0, w, 1);
+    ctx.restore();
     ctx.lineWidth = 1.5;
     ctx.strokeStyle = h.rgba(color, 0.95);
     ctx.strokeRect(x, y, w, hh);
@@ -159,6 +170,7 @@
   function fragile(film) {
     film.scene("One big mark is fragile", 24, function (s) {
       var idx = 15;
+      var brushGrd = null;
       s.canvas(function (lt, ctx, h) {
         var n = HIST_N, x0 = HIST_X0, bw = HIST_BW, gap = HIST_GAP, baseY = HIST_BASEY;
         var scrub = clamp01((lt - 4.5) / 2.0);     // brush knocks the tall bar down
@@ -177,9 +189,17 @@
           ctx.globalAlpha = brushFade;
           var bx = lerp(x0 + idx * (bw + gap) - 40, x0 + idx * (bw + gap) + 30, clamp01((lt - 3.5) / 3));
           ctx.shadowBlur = 15; ctx.shadowColor = RED;
-          var grd = ctx.createLinearGradient(bx - 20, 0, bx + 46, 0);
-          grd.addColorStop(0, h.rgba(RED, 0)); grd.addColorStop(0.5, h.rgba(RED, 0.6)); grd.addColorStop(1, h.rgba(RED, 0));
-          ctx.fillStyle = grd; ctx.fillRect(bx - 20, baseY - 180, 66, 200);
+          if (!brushGrd) {
+            brushGrd = ctx.createLinearGradient(0, 0, 66, 0);
+            brushGrd.addColorStop(0, h.rgba(RED, 0));
+            brushGrd.addColorStop(0.5, h.rgba(RED, 0.6));
+            brushGrd.addColorStop(1, h.rgba(RED, 0));
+          }
+          ctx.save();
+          ctx.translate(bx - 20, 0);
+          ctx.fillStyle = brushGrd;
+          ctx.fillRect(0, baseY - 180, 66, 200);
+          ctx.restore();
           ctx.shadowBlur = 0;
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.95);
           ctx.fillText("SCRUB", bx - 6, baseY - 190);

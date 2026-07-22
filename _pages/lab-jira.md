@@ -30,17 +30,17 @@ header:
   </p>
 
   <details class="lab-reveal" open>
-    <summary>▸ What did you just learn?</summary>
+    <summary>🧠 What did you just learn?</summary>
     <p><strong>The Coordination Problem.</strong> Traditional software requires managers to assign tasks and evaluate progress. In a trustless global network, there is no manager. We must use economic incentives to reveal the truth about a task's progress.</p>
     <p><strong>The Ticket is a Proposition.</strong> Instead of "Fix bug X", the ticket becomes a proposition: "Will bug X be fixed and merged by Friday?" People can buy YES or NO shares. The price of YES is a compact summary of the market's belief about completion, not a guarantee.</p>
     <p><strong>The AMM Math.</strong> Using a Constant Product Market Maker ($x \times y = k$) or LMSR, the contract keeps a counterparty available at every price. The sponsor of the bounty seeds the initial liquidity, and each trade nudges the price toward the market's current estimate.</p>
     <p><strong>Work Changes the Price.</strong> A developer who intends to fix the bug buys YES shares while they are cheap because the task is still incomplete. If they really finish the work and the PR gets merged, the market later resolves to 100% YES. Their profit comes from having aligned with the truth early, not from manipulating the outcome.
     </p>
-    <p><strong>Optimistic Oracles.</strong> How does the contract know the PR was merged? An optimistic oracle (like UMA) is used. Someone asserts the fact and posts a bond; if nobody challenges it during the dispute window, the market resolves and pays out. The oracle is the bridge from off-chain reality to on-chain settlement.</p>
+    <p><strong>Optimistic Oracles.</strong> How does the contract know the PR was merged? An <a href="/lab/oracles/">optimistic oracle</a> (like UMA) is used. Someone asserts the fact and posts a bond; if nobody challenges it during the dispute window, the market resolves and pays out. The oracle is the bridge from off-chain reality to on-chain settlement.</p>
   </details>
 
   <details class="lab-reveal">
-    <summary>▸ The math, precisely</summary>
+    <summary>📐 The math, precisely</summary>
     <div class="lab-math" data-role="jira-appendix">
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
