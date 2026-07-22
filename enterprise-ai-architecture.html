@@ -27,8 +27,8 @@
             --violet: #a78bfa;
 
             
-            --avion-blue: #0094c9;
-            --avion-navy: #222d5b;
+            --brand-blue: #0094c9;
+            --brand-navy: #222d5b;
 
             
             --bg-deep: #05070e;
@@ -8034,7 +8034,7 @@ body.exec-only .arch-reveal-wrap .arch-reveal-btn:hover {
 
 #nav-presentation { display: none !important; }
 
-.universal-footer .footer-avion-mark {
+.universal-footer .footer-brand-mark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -8045,15 +8045,15 @@ body.exec-only .arch-reveal-wrap .arch-reveal-btn:hover {
     text-decoration: none;
     border-radius: 4px;
 }
-.universal-footer .footer-avion-mark:hover,
-.universal-footer .footer-avion-mark:focus-visible {
+.universal-footer .footer-brand-mark:hover,
+.universal-footer .footer-brand-mark:focus-visible {
     opacity: 0.9;
 }
-.universal-footer .footer-avion-mark:focus-visible {
+.universal-footer .footer-brand-mark:focus-visible {
     outline: 2px solid var(--cyan);
     outline-offset: 4px;
 }
-.universal-footer .footer-avion-mark img {
+.universal-footer .footer-brand-mark img {
     width: 96px;
     height: auto;
     display: block;
@@ -9133,75 +9133,6 @@ body.architecture-focus { overflow-x: hidden; }
 </div>
 </aside>
 
-<div class="arch-extra" style="max-width:1180px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 12px;">
-  <div class="section-label" style="color:#22d3ee;">
-    <i aria-hidden="true" class="fa-solid fa-layer-group"></i> REFERENCE IMPLEMENTATION STACK
-  </div>
-  <p class="stack-section-note">How the platform is actually built: on-prem inference sizing, the open-source components, and the governance controls, so sensitive work never leaves the building and there is no perpetual cloud round-trip.</p>
-  <div class="arch-ref-grid">
-<div class="arch-ref-card" style="--ref-color:#22d3ee">
-<div class="arch-ref-tier-badge">STARTER · FIRST-WAVE BOX</div>
-<i aria-hidden="true" class="fa-solid fa-rocket"></i>
-<h4>Lean Starter Box</h4>
-<div class="arch-ref-rows">
-<div class="arch-ref-row"><span>Model</span><span>Gemma 4 12B (8-bit) · same software image as production</span></div>
-<div class="arch-ref-row"><span>GPU</span><span>1× NVIDIA RTX 4090 (24 GB VRAM)</span></div>
-<div class="arch-ref-row"><span>Host</span><span>16 vCPU · 64 GB RAM · 1 TB NVMe</span></div>
-<div class="arch-ref-row"><span>Network</span><span>1 GbE on segmented internal LAN</span></div>
-<div class="arch-ref-row"><span>Capacity</span><span>1–2 concurrent analysts · every first-wave central agent</span></div>
-<div class="arch-ref-row"><span>Upgrade path</span><span>Same image scales up as agents come online, zero rewrite</span></div>
-</div>
-</div>
-<div class="arch-ref-card" style="--ref-color:#06d6a0">
-<div class="arch-ref-tier-badge">TIER 1 · CENTRAL PRODUCTION (GEMMA 4)</div>
-<i aria-hidden="true" class="fa-solid fa-server"></i>
-<h4>On-Prem Inference Box</h4>
-<div class="arch-ref-rows">
-<div class="arch-ref-row"><span>Model</span><span>Gemma 4 31B Dense (8-bit production default via vLLM)</span></div>
-<div class="arch-ref-row"><span>GPU</span><span>1× NVIDIA RTX 6000 Ada (48 GB VRAM)</span></div>
-<div class="arch-ref-row"><span>Host</span><span>24 vCPU · 128 GB ECC RAM · 4 TB NVMe</span></div>
-<div class="arch-ref-row"><span>Network</span><span>10 GbE on segmented internal LAN</span></div>
-<div class="arch-ref-row"><span>Capacity</span><span>4–8 concurrent analysts · full discipline coverage company-wide</span></div>
-<div class="arch-ref-row"><span>Deployment</span><span>One central brain at HQ · edge only at remote edge sites for live simulator workflows</span></div>
-<div class="arch-ref-row"><span>Sustainability</span><span>On-prem inference · no perpetual cloud round-trips</span></div>
-</div>
-</div>
-<div class="arch-ref-card" style="--ref-color:#4facfe">
-<div class="arch-ref-tier-badge">TIER 2 · CONTROLLED API (CLAUDE FABLE 5)</div>
-<i aria-hidden="true" class="fa-solid fa-cloud-arrow-up"></i>
-<h4>External Reasoning Path</h4>
-<div class="arch-ref-rows">
-<div class="arch-ref-row"><span>Model</span><span>Claude Fable 5 via zero-retention API</span></div>
-<div class="arch-ref-row"><span>Privacy</span><span>Zero-retention · no training on your data</span></div>
-<div class="arch-ref-row"><span>Gate</span><span>PII redaction + policy review before every call</span></div>
-<div class="arch-ref-row"><span>Used for</span><span>Complex commercial / legal reasoning only</span></div>
-</div>
-</div>
-<div class="arch-ref-card" style="--ref-color:#a855f7">
-<div class="arch-ref-tier-badge">SUPPORTING OSS STACK</div>
-<i aria-hidden="true" class="fa-solid fa-code-branch"></i>
-<h4>Open-Source Components</h4>
-<div class="arch-ref-rows">
-<div class="arch-ref-row"><span>Inference</span><span>vLLM (Gemma 4 serving)</span></div>
-<div class="arch-ref-row"><span>Retrieval</span><span>Qdrant</span></div>
-<div class="arch-ref-row"><span>Workflow / audit</span><span>PostgreSQL</span></div>
-<div class="arch-ref-row"><span>Service layer</span><span>FastAPI + thin service middleware</span></div>
-<div class="arch-ref-row"><span>Observability</span><span>LangFuse (traces) · Prometheus + Grafana</span></div>
-</div>
-</div>
-<div class="arch-ref-card" style="--ref-color:#fbbf24">
-<div class="arch-ref-tier-badge">SECURITY &amp; GOVERNANCE</div>
-<i aria-hidden="true" class="fa-solid fa-shield-halved"></i>
-<h4>Controls &amp; Compliance</h4>
-<div class="arch-ref-rows">
-<div class="arch-ref-row"><span>Identity</span><span>Active Directory / LDAP scoped access</span></div>
-<div class="arch-ref-row"><span>Egress guard</span><span>PII redaction before any API call</span></div>
-<div class="arch-ref-row"><span>Audit log</span><span>Tamper-evident, full trace per action</span></div>
-<div class="arch-ref-row accent"><span>Data stays</span><span>Zero model training on your data</span></div>
-</div>
-</div>
-</div>
-</div>
 <div class="arch-extra" style="max-width:1180px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 24px;">
   <div class="section-label" style="color:#06d6a0;">
     <i aria-hidden="true" class="fa-solid fa-flag-checkered"></i> DELIVERY PLAN
