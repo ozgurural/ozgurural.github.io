@@ -157,8 +157,8 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   </li>
   <li>
     <div class="meta">2019–2020 · STM Defence Technologies</div>
-    <h3 class="title">Ground control for Kargu &amp; Togan UAVs</h3>
-    <p class="desc">Architecture contributions to the mission-control and ground-control systems for the Kargu autonomous tactical UAV and Togan reconnaissance UAV.</p>
+    <h3 class="title">Mission &amp; ground control for Kargu &amp; Togan UAVs</h3>
+    <p class="desc">Developed critical mission-control and ground-control systems for Kargu, Turkey's first indigenous loitering-munition (kamikaze) UAV and an internationally recognized autonomous system, and the Togan reconnaissance UAV. Hard-real-time, safety-critical C++.</p>
   </li>
   <li>
     <div class="meta">2014–2019 · Comodo Cybersecurity</div>

@@ -135,7 +135,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2019–2020</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Architected mission-control and ground-control software for the <em>Kargu</em> and <em>Togan</em> programs, among Turkey's first indigenous autonomous UAV systems, where real-time reliability was safety-critical.</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Developed critical mission-control and ground-control systems for <em>Kargu</em>, Turkey's first indigenous loitering-munition (kamikaze) UAV and an internationally recognized autonomous system, alongside the <em>Togan</em> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
   </li>
   <li>
     <span class="when">2014–2019</span>
