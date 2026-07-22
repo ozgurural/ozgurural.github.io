@@ -62,14 +62,11 @@
   }
   function block(ctx, h, x, y, w, hh, color, alpha) {
     ctx.globalAlpha = alpha; roundRect(ctx, x, y, w, hh, 6);
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = h.rgba(color, 0.8);
     var grd = ctx.createLinearGradient(x, y, x, y + hh);
     grd.addColorStop(0, h.rgba(color, 0.35));
     grd.addColorStop(1, h.rgba(color, 0.05));
     ctx.fillStyle = grd; ctx.fill();
     ctx.lineWidth = 1.8; ctx.strokeStyle = h.rgba(color, 0.95); ctx.stroke();
-    ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
   
@@ -113,9 +110,9 @@
           // Hash particles when the block is freshly mined
           var mineT = (lt - 0.4) - (i * 0.85);
           if (mineT > 0 && mineT < 0.6) {
+             ctx.fillStyle = h.rgba(CY, (1 - mineT/0.6) * bFade);
+             ctx.font = "10px monospace";
              for(var p=0; p<8; p++) {
-                ctx.fillStyle = h.rgba(CY, (1 - mineT/0.6) * bFade);
-                ctx.font = "10px monospace";
                 var px = x + bw/2 + (Math.sin(p*3 + i)*20) * (mineT*3);
                 var py = yH + hh/2 - (mineT*40) + (Math.cos(p*7)*10);
                 ctx.fillText(p%2===0?"0":"1", px, py);
@@ -136,9 +133,9 @@
           // Hash particles when the block is freshly mined
           var aMineT = (lt - 1.6) - (i * 1.18);
           if (aMineT > 0 && aMineT < 0.6) {
+             ctx.fillStyle = h.rgba(MAG, (1 - aMineT/0.6) * abFade);
+             ctx.font = "10px monospace";
              for(var p=0; p<8; p++) {
-                ctx.fillStyle = h.rgba(MAG, (1 - aMineT/0.6) * abFade);
-                ctx.font = "10px monospace";
                 var pxa = xa + bw/2 + (Math.sin(p*3 + i)*20) * (aMineT*3);
                 var pya = yA + hh/2 - (aMineT*40) + (Math.cos(p*7)*10);
                 ctx.fillText(p%2===0?"0":"1", pxa, pya);
@@ -315,10 +312,10 @@
           // ladder: baseline, notches, numbers
           ctx.strokeStyle = h.rgba("#93a4c4", 0.55); ctx.lineWidth = 2;
           ctx.beginPath(); ctx.moveTo(gx(0) - 34, LY); ctx.lineTo(gx(GMAX) + 34, LY); ctx.stroke();
+          ctx.font = "12px 'JetBrains Mono',monospace";
           for (var g = 0; g <= GMAX; g++) {
             ctx.fillStyle = h.rgba(g === 0 ? GRN : "#93a4c4", g === 0 ? 0.95 : 0.5);
             ctx.beginPath(); ctx.arc(gx(g), LY, g === 0 ? 5 : 3, 0, 7); ctx.fill();
-            ctx.font = "12px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba(g === 0 ? GRN : "#93a4c4", g === 0 ? 1 : 0.7);
             ctx.fillText(String(g), gx(g) - 4, LY + 46);
           }
@@ -425,6 +422,7 @@
           ctx.font = "600 14px 'JetBrains Mono',monospace";
           ctx.fillStyle = h.rgba("#dbeafe", 0.9);
           ctx.fillText("chance of EVER catching up  (attacker has 30% of hashrate)", 200, 158);
+          ctx.font = "600 13px 'JetBrains Mono',monospace";
           for (var z3 = 1; z3 <= 6; z3++) {
             var bx3 = 200 + (z3 - 1) * 95;
             var grow = clamp01((lt - (T3 + 0.6) - (z3 - 1) * 0.35) / 0.8);
@@ -435,7 +433,6 @@
             ctx.strokeStyle = h.rgba(col3, 0.95); ctx.lineWidth = 1.6;
             ctx.strokeRect(bx3, baseY - bh3, bw2, bh3);
             if (grow > 0.6) {
-              ctx.font = "600 13px 'JetBrains Mono',monospace";
               ctx.fillStyle = h.rgba("#f1f5f9", (grow - 0.6) / 0.4);
               var lbl3 = PCTS[z3 - 1] >= 10 ? Math.round(PCTS[z3 - 1]) + "%" : PCTS[z3 - 1].toFixed(1) + "%";
               ctx.fillText(lbl3, bx3 + bw2 / 2 - 16, baseY - bh3 - 10);

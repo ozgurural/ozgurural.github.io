@@ -919,9 +919,11 @@
         self._fitCanvas(); self._repositionOverlay(); self.render();
       }, 150);
     };
-    global.addEventListener("resize", function () { self._fitCanvas(); self._repositionOverlay(); self.render(); });
-    global.addEventListener("orientationchange", updateLayout);
-    var onFsChange = function () {
+    this._onResize = function () { self._fitCanvas(); self._repositionOverlay(); self.render(); };
+    this._onOrientationChange = updateLayout;
+    global.addEventListener("resize", this._onResize);
+    global.addEventListener("orientationchange", this._onOrientationChange);
+    this._onFsChange = function () {
       // release the landscape lock when the user leaves fullscreen any way
       if (!document.fullscreenElement && !document.webkitFullscreenElement) {
         unlockOrientation();
@@ -929,15 +931,16 @@
       }
       updateLayout();
     };
-    document.addEventListener("fullscreenchange", onFsChange);
-    document.addEventListener("webkitfullscreenchange", onFsChange);
+    document.addEventListener("fullscreenchange", this._onFsChange);
+    document.addEventListener("webkitfullscreenchange", this._onFsChange);
 
     // Pause when the tab is hidden; auto-resume only if the system paused it
     // (not the user) and the film is back in view.
-    document.addEventListener("visibilitychange", function () {
+    this._onVisibilityChange = function () {
       if (document.hidden) { if (self.playing) { self.pause(); self._autoResume = true; } }
       else if (self._autoResume && !self._userPaused && self._inView) { self._autoResume = false; self.play(); }
-    });
+    };
+    document.addEventListener("visibilitychange", this._onVisibilityChange);
   };
 
   Film.prototype._wireScrub = function () {
@@ -1107,7 +1110,7 @@
     if (!this.reduced && "IntersectionObserver" in global) {
       // Autoplay on first view; pause when scrolled away to save CPU; resume only
       // if the system (not the user) paused it.
-      var io = new IntersectionObserver(function (entries) {
+      this.observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           self._inView = en.isIntersecting;
           if (en.isIntersecting) {
@@ -1121,7 +1124,7 @@
           }
         });
       }, { threshold: 0.4 });
-      io.observe(this.stage);
+      this.observer.observe(this.stage);
     } else if (this.reduced) {
       // Reduced motion: no autoplay. Park on a representative first-scene frame
       // and keep the Play affordance so motion stays strictly user-initiated.
@@ -1700,6 +1703,22 @@
   };
   Film.prototype.toggle = function () { return this.playing ? this.pause() : this.play(); };
   Film.prototype.restart = function () { this.seek(0); this.poster.classList.add("is-hidden"); return this.play(); };
+  Film.prototype.destroy = function () {
+    this.pause();
+    if (this._onResize) global.removeEventListener("resize", this._onResize);
+    if (this._onOrientationChange) global.removeEventListener("orientationchange", this._onOrientationChange);
+    if (this._onFsChange) {
+      document.removeEventListener("fullscreenchange", this._onFsChange);
+      document.removeEventListener("webkitfullscreenchange", this._onFsChange);
+    }
+    if (this._onVisibilityChange) document.removeEventListener("visibilitychange", this._onVisibilityChange);
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    var idx = LabAnim.films.indexOf(this);
+    if (idx !== -1) LabAnim.films.splice(idx, 1);
+  };
 
   function fmtTime(s) {
     s = Math.max(0, Math.round(s));

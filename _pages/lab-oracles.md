@@ -30,7 +30,7 @@ header:
   </p>
 
   <details class="lab-reveal" open>
-    <summary>▸ What did you just learn?</summary>
+    <summary>🧠 What did you just learn?</summary>
     <p><strong>The Blockchain is a closed system.</strong> A smart contract cannot make an API call to OpenAI or run a PyTorch script. It only knows what is posted to it. When an agreement requires complex pattern recognition (e.g., "Is this crop damage real?"), the classification <em>y = F_θ(x)</em> must happen off-chain.</p>
     <p><strong>The Verification Trilemma.</strong> We can trust an oracle implicitly (centralized, cheap), we can run the model on-chain (impossible for large <em>θ</em>), or we can use cryptographic/economic verification. We must bring the trust down to the math.</p>
     <p><strong>Zero-Knowledge Inference (zkML).</strong> A prover runs the model off-chain and generates a cryptographic proof <em>π</em>. The smart contract verifies <em>π</em> cheaply. If <em>π</em> is valid, the contract knows with mathematical certainty that <em>y</em> is the exact output of model <em>θ</em> on input <em>x</em>. The animation visualizes how polynomial commitments shadow the neural network's layers.</p>
@@ -38,7 +38,7 @@ header:
   </details>
 
   <details class="lab-reveal">
-    <summary>▸ The math, precisely</summary>
+    <summary>📐 The math, precisely</summary>
     <div class="lab-math" data-role="oracles-appendix">
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
