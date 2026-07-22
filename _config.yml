@@ -28,7 +28,7 @@ author:
   avatar           : "ozgururalpp.webp"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "Ph.D. in Machine Learning | Trustworthy-ML researcher | Architect of mission-critical systems"
+  bio              : "Ph.D. in Machine Learning | ML research scientist & senior software engineer | Architect of mission-critical systems"
   location         : "Amsterdam, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"
@@ -103,6 +103,7 @@ og_image                 : "og-default.png"  # 1200x630 social card (scripts/bui
 og_description           : "Dr. Ozgur Ural. Ph.D. in Machine Learning (ERAU 2025), three first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
 keywords:
   - Dr. Ozgur Ural
+  - Machine Learning Research Scientist
   - Senior Software Engineer
   - Machine Learning Researcher
   - Ph.D. in Machine Learning
