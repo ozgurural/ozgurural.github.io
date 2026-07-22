@@ -51,7 +51,7 @@ The synergy of ML and blockchain is bi-directional. While our survey [1] maps ho
 
 ## References
 
-[1] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
+[1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
 [2] Bahri, A., et al. (2024). *Reinforcement Learning Based Consensus for Permissionless Blockchains*. arXiv:2401.01234.
 [3] Sun, L., et al. (2024). *Graph Neural Networks for Fraud Detection in Ethereum Transactions*. IEEE Transactions on Network Science and Engineering.
 [4] Chainalysis. (2024). *Chainalysis Data Platform*.

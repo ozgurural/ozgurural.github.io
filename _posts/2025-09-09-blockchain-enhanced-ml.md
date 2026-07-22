@@ -81,7 +81,7 @@ By marrying blockchain's transparency with machine learning's predictive power, 
 
 ## References
 
-[1] Ural, O. and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
+[1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
 
 ---
 *Dr. Ozgur Ural is a Senior Software Engineer & Researcher specializing in Secure Distributed Systems. This article is based on his Ph.D. research into the intersection of Cryptography and Machine Learning.*

@@ -23,7 +23,7 @@ header:
   </div>
 
   <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=parameter perturbation (white-box), amber=feature triggers (black-box), green=green-list tokens (LLMs), violet=auxiliary head (architecture), rose=scrubbing evasion attack">
-    <span><i style="background:#58c4dd"></i> parameter perturbation (white-box)</span>
+    <span><i style="background:#58C4DD"></i> parameter perturbation (white-box)</span>
     <span><i style="background:#fbbf24"></i> feature triggers (black-box)</span>
     <span><i style="background:#83c167"></i> green-list tokens (LLMs)</span>
     <span><i style="background:#9a72ac"></i> auxiliary head (architecture)</span>

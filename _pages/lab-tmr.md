@@ -23,7 +23,7 @@ header:
   </div>
 
   <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=healthy channel / gain, amber=voter / threshold, rose=failure / correlation floor, violet=N=5 curve">
-    <span><i style="background:#58c4dd"></i> healthy channel / gain</span>
+    <span><i style="background:#58C4DD"></i> healthy channel / gain</span>
     <span><i style="background:#fbbf24"></i> voter · threshold</span>
     <span><i style="background:#fc6255"></i> failure · correlation floor</span>
     <span><i style="background:#9a72ac"></i> N=5 curve</span>
