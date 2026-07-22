@@ -120,8 +120,15 @@
 
   /* ============== 1 — HOOK ============== */
   function hook(film) {
-    film.scene("Two pilots, one verdict", 14, function (s) {
+    film.scene("Three computers, one sign-off", 14, function (s) {
       s.canvas(function (lt, ctx, h) {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.fillStyle = h.rgba(WHT, 0.4);
+        ctx.font = "11px 'JetBrains Mono',monospace";
+        ctx.fillText("LEVEL-D FULL-FLIGHT SIM · EASA/FAA CERTIFICATION", 480, 24);
+        ctx.restore();
+
         var states, voter;
         if (lt < 6) { 
            var bad3 = clamp01((lt - 2) / 0.5);
@@ -149,7 +156,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "A single unit might fail. Redundancy places identical clones alongside it, trusting they won't all fail at once.", 6.5, { maxWidth: "80%", py: 520 });
+      lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree — so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -378,6 +385,12 @@
       lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 80, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
+
+      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 220, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
+      s.fadeIn(cap1, { at: 8.5, dur: 1.5 });
+
+      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once — and that is an engineering answer, not a hope.", { px: 480, py: 120, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
+      s.fadeIn(tag2, { at: 16.5, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });
   }
 

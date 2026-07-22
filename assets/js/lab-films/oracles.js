@@ -49,7 +49,7 @@
   }
 
   function sceneBlind(film) {
-    film.scene("The Blind Contract", 45, function(s) {
+    film.scene("The Verdict It Can't Check", 45, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -151,11 +151,15 @@
         ctx.globalAlpha = op;
       });
 
-      lower(s, "The blockchain is a perfectly deterministic grid. A closed universe.", 1.33, { out: 12 });
-      lower(s, "Smart contracts cannot 'look' at the real world. They cannot make API calls.", 8.67, { out: 24 });
-      lower(s, "If a parametric insurance contract needs to know if it rained, it cannot check a weather server.", 16.67, { out: 34 });
-      lower(s, "It requires an Oracle: a bridge to bring real-world truth across the Consensus Wall.", 23.33);
-    });
+      var dlp = s.caption("Every trust boundary I've built — a data-leakage classifier deciding what crosses, an autonomous system acting on a perception model — comes down to the same question: can you act on a verdict you can't re-derive?", { px: 480, py: 100, anchor: "center", align: "center", size: "1.1rem", color: LIGHT_GREY });
+      s.fadeIn(dlp, { at: 28, dur: 2 });
+      s.fadeOut(dlp, { at: 42, dur: 1.5 });
+
+      lower(s, "An autonomous system is handed a verdict — 'that's crop damage,' 'that's a valid claim,' 'that's a threat.'", 1.33, { out: 12 });
+      lower(s, "It didn't run the model. It can't see the weights.", 8.67, { out: 24 });
+      lower(s, "Should it act?", 16.67, { out: 34 });
+      lower(s, "In a world where AI agents consume each other's inferences, this is the trust question.", 23.33);
+    }, { subtitle: "Trust boundaries in autonomous systems" });
   }
 
   function sceneZK(film) {
@@ -295,9 +299,9 @@
 
       lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
       lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 8.67, { out: 24 });
-      lower(s, "This complex shadow is mathematically compressed into a tiny, undeniable cryptographic fractal (π).", 16.67, { out: 38 });
+      lower(s, "This complex shadow is mathematically compressed into a short proof π that's cheap to check but impossible to forge — a certificate that this exact model produced this exact output.", 16.67, { out: 38 });
       lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 26.67);
-    });
+    }, { subtitle: "Proving execution without redoing the work" });
   }
 
   function sceneOptimistic(film) {
@@ -423,11 +427,14 @@
         ctx.globalAlpha = op;
       });
 
+      var cite = s.caption("Intelligence is getting cheap. Verified intelligence is not. The limiting reagent for autonomous AI won't be a smarter model — it'll be whether one system can trust another's answer without redoing the work.", { px: 480, py: 100, anchor: "center", align: "center", size: "1rem", color: WHITE });
+      s.fadeIn(cite, { at: 42, dur: 2 });
+
       lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });
       lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 8.67, { out: 24 });
-      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is violently shattered and given to the challenger.", 16.67, { out: 40 });
+      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.", 16.67, { out: 40 });
       lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 28);
-    });
+    }, { subtitle: "Economic guarantees for intelligent agents" });
   }
 
   setTimeout(boot, 60);

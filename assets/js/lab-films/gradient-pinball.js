@@ -241,7 +241,7 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "Networks learn by rolling downhill. The steepest descent is exactly opposite the gradient.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk the journey and you have a model — reproduce the journey and you have a proof it was really trained.", 6.0, { out: 19.8, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
@@ -614,6 +614,12 @@
       s.fadeIn(eqsub, { at: 15, dur: 1.2 });
 
       lower(s, "In high dimensions, most critical points are saddles. Momentum and noise help escape them.", 16.8, { maxWidth: "92%", px: 60 });
+
+      var adv = s.caption("a landscape no one can fully see is exactly what an attacker hides in — and a verifier must pin down.", { px: 280, py: 430, anchor: "center", align: "center", size: "0.85rem", color: "#f1f5f9", maxWidth: "340px" });
+      s.fadeIn(adv, { at: 12, dur: 1.5 });
+
+      var vis = s.caption("In a world where anyone can descend, trust no longer comes from the model. It comes from proving how the model got there.", { px: 470, py: 160, anchor: "top", align: "center", size: "1.05rem", color: "#e8eef9", maxWidth: "75%" });
+      s.fadeIn(vis, { at: 22, dur: 1.5 });
     }, { subtitle: "High dimensional critical points are almost never minima. They are saddles." });
   }
 

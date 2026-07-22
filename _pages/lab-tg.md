@@ -12,7 +12,7 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-tg" style="margin-top: 0;">
   <span class="ep-eyebrow">Blockchain · Nakamoto consensus</span>
-  <p class="lab-card__lead">⛏️ Bitcoin's entire security argument is a foot race. Every ten minutes, every miner races to extend the chain; honest nodes always trust the longest one. To reverse a payment, an attacker must secretly outrun the whole network — and the probability they ever succeed decays <strong>exponentially</strong> in the number of confirmations you wait. This animation derives that probability from the ground up: the gambler's ruin, Satoshi's Poisson head-start, and the punchline that "<em>6 confirmations</em>" hides an assumption about <em>who you're racing</em>.</p>
+  <p class="lab-card__lead">⛏️ Probabilistic finality is the first trust primitive that needs no trusted party. Every ten minutes, every miner races to extend the chain; honest nodes always trust the longest one. To reverse a payment, an attacker must secretly outrun the whole network — and the probability they ever succeed decays <strong>exponentially</strong> in the number of confirmations you wait. This animation derives that probability from the ground up: the gambler's ruin, Satoshi's Poisson head-start, and the punchline that "<em>6 confirmations</em>" hides an assumption about <em>who you're racing</em>.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span>The math is Nakamoto's whitepaper §11 (<em>Calculations</em>). For blockchain mechanisms applied to securing distributed ML, see the author's survey: <a href="/publication/2023-ieee-access-survey">"Blockchain-Enhanced Machine Learning"</a> (IEEE Access 2023).</span>
@@ -22,10 +22,10 @@ header:
     <div class="lab-film__frame" id="br-film" role="group" aria-label="Animated explainer: Bitcoin double-spend probability, gambler's ruin, and Satoshi's §11 calculation"></div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=honest chain, red=attacker fork, green=payment, yellow=key equation">
-    <span><i style="background:#38bdf8"></i> honest chain</span>
-    <span><i style="background:#ec4899"></i> attacker fork</span>
-    <span><i style="background:#34d399"></i> your payment</span>
+  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=honest chain, violet=attacker fork, green=payment, yellow=key equation">
+    <span><i style="background:#58C4DD"></i> honest chain</span>
+    <span><i style="background:#9A72AC"></i> attacker fork</span>
+    <span><i style="background:#83C167"></i> your payment</span>
     <span><i style="background:#fbbf24"></i> key equation</span>
   </p>
 

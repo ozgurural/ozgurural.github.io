@@ -182,8 +182,8 @@
       // lower-left corner never carries two competing texts
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
 
-      lower(s, "Bitcoin has no central judge. To reverse a payment, an attacker must secretly outrun the honest network.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
-    }, { subtitle: "Consensus is a race, not a vote. The longest chain wins by rule." });
+      lower(s, "Two machines disagree about what happened, and no authority can settle it — yet a settlement layer, a fleet of drones, a swarm of AI agents all have to act on one history. Nakamoto's answer isn't a judge. It's a race that gets exponentially more expensive to rewrite the longer you wait.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
+    }, { subtitle: "Trust with no trusted party: the true history is whatever is most expensive to rewrite." });
   }
 
   /* ================ 2 — BERNOULLI : the weighted coin ================ */
@@ -234,7 +234,7 @@
       s.fadeIn(note, { at: 4.5, dur: 1.2 });
       s.fadeOut(note, { at: 6.0, dur: 0.75 }); // fade out before lower third appears
 
-      lower(s, "Mining is a biased coin flip based on hashrate. Energy buys the probability of being right.", 7.0, { maxWidth: "70%" });
+      lower(s, "Mining is a biased coin flip based on hashrate. Energy is the price of rewriting history — and the honest majority just outspends the liar.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
   }
 
@@ -715,8 +715,8 @@
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 12, dur: 1.2 });
 
-      lower(s, "Reversal becomes exponentially improbable, provided honest hashrate holds the majority.", 7.5, { maxWidth: "70%" });
-    }, { subtitle: "Finality is probabilistic, not absolute." });
+      lower(s, "What this really buys is finality with no one in charge — the cost of a lie, denominated in energy and time.", 7.5, { maxWidth: "70%" });
+    }, { subtitle: "The real question of the autonomous age isn't 'is this true?' but 'what would it cost to forge?'" });
   }
 
   /* ====================== math appendix ====================== */

@@ -1014,7 +1014,7 @@
     "br-film":         "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
     "oracles-film":    "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
     "jira-film":       "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
-    "gd-film":         "cf. Ural &middot; <em>Enhancing Proof-of-Learning Security</em> &middot; Ph.D. dissertation, ERAU 2025",
+    "gd-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
     "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion"
   };
 
