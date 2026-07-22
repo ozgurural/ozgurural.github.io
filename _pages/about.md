@@ -15,7 +15,7 @@ redirect_from:
   "@type": "Person",
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
-  "jobTitle": "Senior AI Engineer & Researcher · Ph.D. in ML Security",
+  "jobTitle": "Senior AI Engineer & Researcher · Ph.D. in Machine Learning & Distributed Systems",
   "description": "Researcher and architect building verifiable, trustworthy AI for systems that cannot be allowed to fail: proof-of-learning, model watermarking, and adversarial robustness, applied across defence, aviation, and critical infrastructure. Three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
