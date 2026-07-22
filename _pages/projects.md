@@ -5,7 +5,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 ---
 
-<p class="ep-lead">Selected work spanning research and production — the proof-of-learning and watermarking code behind my papers, real-time systems primitives, interactive explainers, and clinical tooling. One through-line runs through all of it: ML and systems you can <strong>verify</strong>, not just run. Each project links to its repository and writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eight playable demos of the ideas.</p>
+<p class="ep-lead">Selected work spanning research and production: the proof-of-learning and watermarking code behind my papers, real-time systems primitives, interactive explainers, and clinical tooling. One through-line runs through all of it: ML and systems you can <strong>verify</strong>, not just run. Each project links to its repository and writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eight playable demos of the ideas.</p>
 
 <ul class="ep-cards">
   <li>
@@ -87,7 +87,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
         <div class="meta">AI Agent · Communications</div>
         <h3 class="title">Customer Update Auto-Writer</h3>
       </summary>
-      <p class="desc">Cuts incident turnaround time by translating technical fault summaries into customer-ready bulletins—on-brand, non-alarmist, and free of proprietary detail, utilizing a PII redaction gateway.</p>
+      <p class="desc">Cuts incident turnaround time by translating technical fault summaries into customer-ready bulletins that are on-brand, non-alarmist, and free of proprietary detail, utilizing a PII redaction gateway.</p>
     </details>
   </li>
   <li>

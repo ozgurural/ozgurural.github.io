@@ -16,7 +16,7 @@ redirect_from:
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
   "jobTitle": "Senior AI Engineer & Researcher · Ph.D. in ML Security",
-  "description": "Researcher and architect building verifiable, trustworthy AI for systems that cannot be allowed to fail — proof-of-learning, model watermarking, and adversarial robustness, applied across defence, aviation, and critical infrastructure. Three IEEE Access papers.",
+  "description": "Researcher and architect building verifiable, trustworthy AI for systems that cannot be allowed to fail: proof-of-learning, model watermarking, and adversarial robustness, applied across defence, aviation, and critical infrastructure. Three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
   "email": "drozgurural@gmail.com",
@@ -43,7 +43,7 @@ redirect_from:
   <span class="ep-eyebrow">Verifiable &amp; Trustworthy ML · Applied GenAI · Mission-Critical Systems</span>
   <h1 class="ep-hero__title">I design <span class="accent">verifiable ML</span> and mission-critical systems, establishing the standards that keep them <span class="accent">correct when things fail</span>.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, a senior software engineer and machine-learning researcher. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and my published research on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production. As AI moves into decisions that cannot be allowed to fail, the scarce resource is no longer intelligence — it is <strong>trust you can prove</strong>. Building that trust infrastructure is the through-line of my work.
+    I'm <strong>Dr. Ozgur Ural</strong>, a senior software engineer and machine-learning researcher. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My Ph.D. in Machine Learning (ERAU, 2025) and my published research on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production. As AI moves into decisions that cannot be allowed to fail, the scarce resource is no longer intelligence. It is <strong>trust you can prove</strong>. Building that trust infrastructure is the through-line of my work.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>

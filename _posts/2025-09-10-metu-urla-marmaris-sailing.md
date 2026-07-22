@@ -1,7 +1,7 @@
 ---
 title: "METU Sailing Team: Racing in Urla, Bodrum, and Marmaris"
 date: 2025-09-10
-description: "Reflections on METU Sailing Club — racing on the Aegean coast in Urla, Bodrum, and Marmaris, and what competitive sailing taught me about teamwork."
+description: "Reflections on METU Sailing Club: racing on the Aegean coast in Urla, Bodrum, and Marmaris, and what competitive sailing taught me about teamwork."
 permalink: /posts/2025/09/metu-urla-marmaris-sailing/
 categories: life
 tags:

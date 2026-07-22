@@ -5,7 +5,7 @@ description: "Technical advisory, ML-security and model-provenance review, confe
 
 ---
 
-<p class="ep-lead">I advise engineering teams and technical leadership on <strong>verifiable, trustworthy ML</strong>, model provenance, and high-reliability architecture — the trust infrastructure that lets AI ship into systems where failure is not an option. I also serve the research community as a reviewer and program-committee member. Full publication record on <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>. For engagements: <a href="mailto:drozgurural@gmail.com">drozgurural@gmail.com</a>.</p>
+<p class="ep-lead">I advise engineering teams and technical leadership on <strong>verifiable, trustworthy ML</strong>, model provenance, and high-reliability architecture, the trust infrastructure that lets AI ship into systems where failure is not an option. I also serve the research community as a reviewer and program-committee member. Full publication record on <a href="https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate">Google Scholar</a>. For engagements: <a href="mailto:drozgurural@gmail.com">drozgurural@gmail.com</a>.</p>
 
 ## Advisory & speaking
 
