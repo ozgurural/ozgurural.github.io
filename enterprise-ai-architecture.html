@@ -9057,6 +9057,68 @@ body.architecture-focus { overflow-x: hidden; }
         Every AI action passes through five controlled gates. This allows us to scale autonomous workflows, from drafting proposals to diagnosing hardware faults, while keeping your business data strictly on-premise and deeply governed.
     </p>
 </div>
+<!-- Combined Phase Bar and Scenarios into single row to save vertical space -->
+<div class="arch-top-controls-row">
+    <!-- Segmented scenario tabs, three options, one row, no secondary text. -->
+    <div aria-label="Architecture scenarios" class="arch-scenario-pills arch-scenario-pills--segmented" id="arch-scenario-toggle" role="tablist">
+        <!-- Rendered dynamically as single-line tabs -->
+    </div>
+    
+    <!-- Slim breadcrumb phase bar, five short labels, one subtle connector line. -->
+    <ol aria-label="Five-gate flow" class="arch-phase-bar arch-phase-bar--slim" id="arch-phase-bar">
+        <li class="arch-phase" data-anchor-node="source-system" data-phase="trigger">
+            <span class="arch-phase__num">01</span>
+            <span class="arch-phase__title">Trigger</span>
+        </li>
+        <li class="arch-phase" data-anchor-node="policy-router" data-phase="check">
+            <span class="arch-phase__num">02</span>
+            <span class="arch-phase__title">Check</span>
+        </li>
+        <li class="arch-phase" data-anchor-node="task-agent" data-phase="decide">
+            <span class="arch-phase__num">03</span>
+            <span class="arch-phase__title">Decide</span>
+        </li>
+        <li class="arch-phase" data-anchor-node="reviewer" data-phase="review">
+            <span class="arch-phase__num">04</span>
+            <span class="arch-phase__title">Review</span>
+        </li>
+        <li class="arch-phase" data-anchor-node="action-runner" data-phase="act">
+            <span class="arch-phase__num">05</span>
+            <span class="arch-phase__title">Act</span>
+        </li>
+    </ol>
+</div>
+<!-- Workflow picker sits with the controls so the selected policy profile is visible before the diagram. -->
+<div class="arch-toolbar arch-toolbar--below arch-toolbar--compact">
+<div class="arch-toolbar__below-left">
+<label class="arch-toolbar__label" for="arch-project-id">Try a workflow</label>
+<select aria-label="Project id selector" class="arch-toolbar__select" id="arch-project-id"></select>
+<div class="arch-project-meta arch-project-meta--subtle" id="arch-project-meta"></div>
+</div>
+<div class="arch-toolbar__below-right">
+<button aria-pressed="false" class="arch-tour-btn arch-tour-btn--quiet" id="arch-tour-btn" onclick="toggleArchTour()" title="Auto-step through each workflow step with an explanation" type="button">
+<i aria-hidden="true" class="fa-solid fa-play" id="arch-tour-btn-icon"></i>
+<span id="arch-tour-btn-label">Play guided tour</span>
+</button>
+
+</div>
+</div>
+<!-- Story box: hidden by default; opens via a subtle "Why" link below the diagram. -->
+<div class="arch-story-box arch-story-box--muted" hidden="" id="arch-scenario-story" style="display:none"></div>
+<div aria-live="polite" class="arch-flow-status arch-flow-status--hidden" id="arch-flow-status"></div>
+<div class="arch-diagram-wrap" id="arch-diagram-wrap-el">
+<div class="arch-diagram-canvas" id="arch-canvas">
+<svg class="arch-diagram-svg" id="arch-svg" preserveAspectRatio="none" viewBox="0 0 1420 600">
+<defs></defs>
+<!-- Zone backgrounds, connections, particles rendered dynamically -->
+</svg>
+<div id="arch-nodes-layer">
+<!-- HTML nodes rendered dynamically -->
+</div>
+</div>
+</div>
+
+
 
 
 <div class="arch-step-nav" id="arch-step-nav" style="display:none">
