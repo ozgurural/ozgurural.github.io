@@ -60,7 +60,6 @@ redirect_from:
   <li><span class="num">12+</span><span class="label">Years in mission-critical software</span></li>
   <li><span class="num">Ph.D.</span><span class="label">Machine Learning · ERAU 2025</span></li>
   <li><span class="num">5</span><span class="label">First-author papers · 3 in IEEE Access</span></li>
-  <li><span class="num">IEEE</span><span class="label">Journal referee · NLPAICS'26 program committee</span></li>
 </ul>
 
 ## Leadership & Core Domains
