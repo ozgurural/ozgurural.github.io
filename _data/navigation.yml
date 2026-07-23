@@ -14,10 +14,10 @@ main:
     url: /lab/
   - title: "Projects"
     url: /projects/
+  - title: "Field Notes"
+    url: /blog/
   - title: "Essays"
     url: /essays/
-  - title: "Writing"
-    url: /blog/
   - title: "Perspectives"
     url: /life/
   - title: "Advisory & Service"

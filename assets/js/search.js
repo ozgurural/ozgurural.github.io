@@ -30,7 +30,8 @@
     { cat: "Publication",   title: "Survey: Blockchain-Enhanced Machine Learning",   url: "/publication/2023-12-15-ieee-access-survey/" },
     { cat: "About",         title: "About Dr. Ozgur Ural",                           url: "/" },
     { cat: "Page",          title: "Projects & Experience",                          url: "/projects/" },
-    { cat: "Writing",       title: "Essays & Technical Writing",                     url: "/essays/" }
+    { cat: "Field Notes",   title: "Technical Notes",                                url: "/blog/" },
+    { cat: "Essays",        title: "Essays",                                         url: "/essays/" }
   ];
 
   var idx = null, store = [], state = "idle"; // idle | loading | ready | error
@@ -39,7 +40,7 @@
   function labelFor(url) {
     if (/\/publication\//.test(url)) return "Publication";
     if (/\/lab\//.test(url)) return "Research Lab";
-    if (/\/posts\//.test(url)) return "Writing";
+    if (/\/posts\//.test(url)) return "Field Notes";
     if (url === "/" || /\/about/.test(url)) return "About";
     return "Page";
   }
