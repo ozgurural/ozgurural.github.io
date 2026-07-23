@@ -16,6 +16,13 @@ on:
 permissions:
   contents: write
 
+# Serialize CV builds so two overlapping runs never race on the PDF
+# auto-commit push (the earlier cause of a spurious build failure). A newer
+# cv/ push cancels an in-flight build; only the latest source's PDF is committed.
+concurrency:
+  group: build-cv-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
