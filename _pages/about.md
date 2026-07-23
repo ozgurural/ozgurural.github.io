@@ -127,7 +127,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">May 2021</span>
-    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
+    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP, co-authored with my M.Sc. advisor <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
   </li>
   <li>
     <span class="when">2020–2021</span>

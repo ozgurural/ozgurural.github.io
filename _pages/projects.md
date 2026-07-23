@@ -36,7 +36,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   <li>
     <div class="meta">M.Sc. · NLP Security</div>
     <h3 class="title"><a href="/blog/ms-thesis">METU Master's Thesis</a></h3>
-    <p class="desc">Detection of cyber-security events from Turkish Twitter and newspaper streams, completed at Middle East Technical University (METU). This research served as the foundation for my published ICISSP paper.</p>
+    <p class="desc">Detection of cyber-security events from Turkish Twitter and newspaper streams, completed at Middle East Technical University (METU) under <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>. This research served as the foundation for my published ICISSP paper, co-authored with him.</p>
   </li>
 </ul>
 
