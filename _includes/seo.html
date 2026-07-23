@@ -19,7 +19,7 @@
 {% endif %}
 
 {% if page.url == "/" %}
-<title>{{ seo_title | default: "Dr. Ozgur Ural" }} | Machine Learning Researcher & Senior Software Engineer{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
+<title>{{ seo_title | default: "Dr. Ozgur Ural" }} | Machine Learning Research Scientist & Senior Software Engineer{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 {% else %}
 <title>{{ seo_title | default: "Dr. Ozgur Ural" }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 {% endif %}
@@ -102,7 +102,7 @@
       "@context" : "https://schema.org",
       "@type" : "Person",
       "name" : "Dr. Ozgur Ural",
-      "jobTitle": "Senior Software Engineer & Machine Learning Researcher",
+      "jobTitle": "Machine Learning Research Scientist & Senior Software Engineer",
       "alumniOf": "Embry-Riddle Aeronautical University",
       "knowsAbout": {{ site.keywords | jsonify }},
       "url" : {{ seo_url | jsonify }},
