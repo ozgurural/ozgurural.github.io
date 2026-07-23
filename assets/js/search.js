@@ -23,6 +23,16 @@
   var INDEX_URL = overlay.getAttribute("data-search-url") || "/search.json";
   var IDLE_HINT = "Search across publications, the lab, essays, and posts.";
 
+  var SUGGESTIONS = [
+    { cat: "Research Lab",  title: "Interactive Lab Films",                          url: "/lab/" },
+    { cat: "Publication",   title: "SecurePoL: Watermarking + Proof-of-Learning",    url: "/publication/2025-12-10-secureproofoflearning/" },
+    { cat: "Publication",   title: "Feature-Based Model Watermarking for PoL",       url: "/publication/2024-11-01-ieee-access-watermarking/" },
+    { cat: "Publication",   title: "Survey: Blockchain-Enhanced Machine Learning",   url: "/publication/2023-12-15-ieee-access-survey/" },
+    { cat: "About",         title: "About Dr. Ozgur Ural",                           url: "/" },
+    { cat: "Page",          title: "Projects & Experience",                          url: "/projects/" },
+    { cat: "Writing",       title: "Essays & Technical Writing",                     url: "/essays/" }
+  ];
+
   var idx = null, store = [], state = "idle"; // idle | loading | ready | error
   var pending = false;
 
@@ -94,9 +104,24 @@
     });
   }
 
+  function renderSuggestions() {
+    results.innerHTML = "";
+    hint.textContent = IDLE_HINT;
+    SUGGESTIONS.forEach(function (s) {
+      var li = document.createElement("li");
+      li.className = "search-results__item search-results__item--suggestion";
+      li.innerHTML =
+        '<a href="' + esc(s.url) + '">' +
+        '<span class="search-results__cat">' + esc(s.cat) + '</span>' +
+        '<span class="search-results__title">' + esc(s.title) + '</span>' +
+        '</a>';
+      results.appendChild(li);
+    });
+  }
+
   function runSearch() {
     var q = input.value.trim();
-    if (!q) { results.innerHTML = ""; hint.textContent = IDLE_HINT; return; }
+    if (!q) { renderSuggestions(); return; }
     if (state !== "ready") { pending = true; loadIndex(); return; }
     var matches = [];
     try { matches = idx.search(q); } catch (e) {}
@@ -109,6 +134,7 @@
     overlay.hidden = false;
     document.body.classList.add("search-open");
     loadIndex();
+    if (!input.value.trim()) renderSuggestions();
     window.setTimeout(function () { input.focus(); input.select(); }, 40);
   }
   function closeSearch() {
