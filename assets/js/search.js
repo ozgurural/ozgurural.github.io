@@ -25,9 +25,9 @@
 
   var SUGGESTIONS = [
     { cat: "Research Lab",  title: "Interactive Lab Films",                          url: "/lab/" },
-    { cat: "Publication",   title: "SecurePoL: Watermarking + Proof-of-Learning",    url: "/publication/2025-12-10-secureproofoflearning/" },
-    { cat: "Publication",   title: "Feature-Based Model Watermarking for PoL",       url: "/publication/2024-11-01-ieee-access-watermarking/" },
-    { cat: "Publication",   title: "Survey: Blockchain-Enhanced Machine Learning",   url: "/publication/2023-12-15-ieee-access-survey/" },
+    { cat: "Publication",   title: "SecurePoL: Watermarking + Proof-of-Learning",    url: "/publication/2025-secureproofoflearning" },
+    { cat: "Publication",   title: "Feature-Based Model Watermarking for PoL",       url: "/publication/2024-ieee-access-watermarking" },
+    { cat: "Publication",   title: "Survey: Blockchain-Enhanced Machine Learning",   url: "/publication/2023-ieee-access-survey" },
     { cat: "About",         title: "About Dr. Ozgur Ural",                           url: "/" },
     { cat: "Page",          title: "Projects & Experience",                          url: "/projects/" },
     { cat: "Field Notes",   title: "Technical Notes",                                url: "/blog/" },
@@ -123,7 +123,7 @@
   function runSearch() {
     var q = input.value.trim();
     if (!q) { renderSuggestions(); return; }
-    if (state !== "ready") { pending = true; loadIndex(); return; }
+    if (state !== "ready") { pending = true; hint.textContent = "Loading search…"; loadIndex(); return; }
     var matches = [];
     try { matches = idx.search(q); } catch (e) {}
     if (!matches.length) { try { matches = idx.search(q + "*"); } catch (e) {} }
