@@ -7,7 +7,7 @@ date: 2016-06-01
 venue: 'Technical Report (ResearchGate)'
 paperurl: 'https://doi.org/10.13140/RG.2.2.24058.08649'
 category: reports
-citation: 'Dr. Ozgur Ural (2016). "Secure Proxy on Cloud." Technical report. DOI: 10.13140/RG.2.2.24058.08649.'
+citation: 'Ural, O. (2016). "Secure Proxy on Cloud." Technical report. DOI: 10.13140/RG.2.2.24058.08649.'
 ---
 This report presents a secure proxy solution for cloud-based services.
 

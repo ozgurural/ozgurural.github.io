@@ -7,7 +7,7 @@ excerpt: "Master's thesis introducing NLP methods for detecting cyber-security e
 date: 2019-01-01
 venue: "Master's Thesis"
 paperurl: "https://open.metu.edu.tr/handle/11511/43747"
-citation: "Dr. Ozgur Ural (2019). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data. Master's Thesis, Middle East Technical University, Ankara, Turkey."
+citation: "Ural, O. (2019). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data. Master's Thesis, Middle East Technical University, Ankara, Turkey."
 ---
 
 Master's thesis presenting automatic detection methods for cyber security events using Turkish Twitter stream and newspaper data. Advised by [Prof. Cengiz Acartürk](https://acarturk.net/) at Middle East Technical University (METU), and later extended into the co-authored [ICISSP 2021 paper](/publication/AutomaticDetectionCyberSecurity).
