@@ -102,10 +102,12 @@
   &:hover,
   &:focus {
     background: var(--global-link-color);
-    color: #fff;
+    /* Ink on the accent: white here is 2.14:1 and fails WCAG AA, which would
+       hit anyone arrowing through results with the keyboard. */
+    color: var(--ds-bg);
 
     .search-results__cat,
-    .search-results__excerpt { color: rgba(255, 255, 255, 0.85); }
+    .search-results__excerpt { color: rgba(10, 15, 28, 0.82); }
   }
 }
 
@@ -149,7 +151,7 @@
   &:hover::after,
   &:focus::after {
     opacity: 1;
-    color: #fff;
+    color: var(--ds-bg);
   }
 }
 
