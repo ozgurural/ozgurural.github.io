@@ -6,6 +6,10 @@ author_profile: false
 ---
 
 {% include base_path %}
+{% comment %}Skip generated assets (main.css, search.json, feed.xml) and redirect
+   stubs, which have no title and would render as blank entries.{% endcomment %}
 {% for post in site.pages %}
-  {% include archive-single.html %}
+  {% if post.title and post.redirect_to == nil and post.url != "/404.html" %}
+    {% include archive-single.html %}
+  {% endif %}
 {% endfor %}

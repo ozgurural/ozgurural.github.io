@@ -12,8 +12,13 @@ description: "A full list of all posts, pages, and publications on ozgurural.git
 A list of all the posts and pages found on the site. For you robots out there, there is an [XML version]({{ base_path }}/sitemap.xml) available for digesting as well.
 
 <h2>Pages</h2>
+{% comment %}site.pages also holds generated assets (main.css, search.json, feed.xml)
+   and redirect stubs, none of which carry a title; skip them so the list has no
+   blank entries pointing at internal files.{% endcomment %}
 {% for post in site.pages %}
-  {% include archive-single.html %}
+  {% if post.title and post.redirect_to == nil and post.url != "/404.html" %}
+    {% include archive-single.html %}
+  {% endif %}
 {% endfor %}
 
 <h2>Posts</h2>

@@ -22,7 +22,7 @@ redirect_from:
   "email": "drozgurural@gmail.com",
   "alumniOf": [
     { "@type": "CollegeOrUniversity", "name": "Embry-Riddle Aeronautical University", "url": "https://erau.edu" },
-    { "@type": "CollegeOrUniversity", "name": "Middle East Technical University", "url": "https://metu.edu.tr" }
+    { "@type": "CollegeOrUniversity", "name": "Middle East Technical University", "url": "https://www.metu.edu.tr/" }
   ],
   "worksFor": { "@type": "Organization", "name": "Avion Full Flight Simulators", "url": "https://www.aviongroup.aero/" },
   "knowsAbout": ["Machine Learning", "Trustworthy Machine Learning", "Proof-of-Learning", "Model Watermarking", "Adversarial Machine Learning", "Robustness", "Evaluation", "Distributed Systems", "Blockchain", "Verifiable Computing", "Real-time Systems"],
@@ -146,7 +146,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2010–2014</span>
-    <span class="what">B.Sc. in Computer Engineering at <a href="https://metu.edu.tr">Middle East Technical University (METU)</a>, Turkey's top-ranked and most selective computer engineering program (English-medium): admission among roughly the top 1,000 of more than 2 million national university-entrance candidates.</span>
+    <span class="what">B.Sc. in Computer Engineering at <a href="https://www.metu.edu.tr/">Middle East Technical University (METU)</a>, Turkey's top-ranked and most selective computer engineering program (English-medium): admission among roughly the top 1,000 of more than 2 million national university-entrance candidates.</span>
   </li>
 </ol>
 

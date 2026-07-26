@@ -19,7 +19,7 @@ Those early regattas taught me more than boat handling. We planned our own logis
 
 ## Races on Turkey's Aegean Coast
 
-1. **Urla:** Home to the Aegean Offshore Yacht Club (EAYK), Urla hosts a packed calendar of weekend races and training regattas, including the annual [Jimmy Key Cup](https://jimmykeycup.com). Afternoon thermals can die without warning, so we learned to bank a lead early.
+1. **Urla:** Home to the Aegean Offshore Yacht Club (EAYK), Urla hosts a packed calendar of weekend races and training regattas, including the annual Jimmy Key Cup. Afternoon thermals can die without warning, so we learned to bank a lead early.
 2. **Bodrum:** BAYK's [Baykar Winter Trophy](https://bayk.org.tr), sponsored by Baykar, keeps crews sharp through the off-season in Bodrum's sheltered waters. Gusts funneling off the hills reward crews who trim quickly.
 3. **Marmaris:** Each autumn, the Marmaris International Race Week draws crews from across Europe for a week of intense competition. The long downwind legs here taught us to trust the spinnaker and stay patient.
 
