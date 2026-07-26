@@ -24,7 +24,8 @@ npm run build:js      # minify jQuery + FitVids + smooth-scroll + greedy-nav + _
 npm run watch:js      # watch for changes
 npm run build:lab-og  # render 1200x630 OG cards for lab pages (Node/@resvg)
 npm run build:narration # extracts lower() texts to scripts/narration.json (tracked); then scripts/generate-narration.py (edge-tts, en-US-AndrewMultilingualNeural) rebuilds assets/audio/lab/*.mp3 (also tracked)
-# note: assets/audio/ files are generated but ignored to prevent repository bloat
+# note: the narration mp3s under assets/audio/lab/ are generated but committed, so the lab works
+# without a build step. Film background scores are synthesised at runtime (Web Audio) — no audio file.
 ```
 
 Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a classic deferred script. Plotly ships separately via `assets/js/plotly-blocks.js` and is only included when a page contains a plotly fenced block.
