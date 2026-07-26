@@ -1,6 +1,6 @@
 ---
 permalink: /blog/
-title: "Technical Writing"
+title: "Field Notes"
 author_profile: true
 layout: archive
 redirect_from:
@@ -10,7 +10,7 @@ description: "Technical writing on machine-learning security, proof-of-learning,
 
 ---
 
-<p class="ep-lead">Technical writing on ML security, distributed systems, and high-reliability software, written for researchers and engineering leaders. For longer-form parables, see the <a href="/essays/">Essays</a>; for interactive demos, visit the <a href="/lab/">Lab</a>.</p>
+<p class="ep-lead">Field notes on ML security, distributed systems, and high-reliability software, written for researchers and engineering leaders. For longer-form parables, see the <a href="/essays/">Essays</a>; for interactive demos, visit the <a href="/lab/">Lab</a>.</p>
 
 {% include base_path %}
 {% for post in site.categories.technical %}

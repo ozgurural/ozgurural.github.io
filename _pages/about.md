@@ -186,4 +186,4 @@ Recognized for my expertise in secure and distributed machine learning, I active
 
 ## Get in touch
 
-For research collaboration, [technical advisory, or speaking engagements](/services/), reach out by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [projects](/projects/), and [technical writing](/essays/).
+For research collaboration, [technical advisory, or speaking engagements](/services/), reach out by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [projects](/projects/), [field notes](/blog/), and [essays](/essays/).

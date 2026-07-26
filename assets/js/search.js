@@ -30,7 +30,7 @@
     { cat: "Publication",   title: "Survey: Blockchain-Enhanced Machine Learning",   url: "/publication/2023-ieee-access-survey" },
     { cat: "About",         title: "About Dr. Ozgur Ural",                           url: "/" },
     { cat: "Page",          title: "Projects & Experience",                          url: "/projects/" },
-    { cat: "Field Notes",   title: "Technical Notes",                                url: "/blog/" },
+    { cat: "Field Notes",   title: "All Field Notes",                                url: "/blog/" },
     { cat: "Essays",        title: "Essays",                                         url: "/essays/" }
   ];
 
