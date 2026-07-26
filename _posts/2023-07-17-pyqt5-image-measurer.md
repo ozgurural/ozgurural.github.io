@@ -3,11 +3,11 @@ categories: technical
 permalink: /blog/pyqt5_image_measurer
 title: "Image Measurement with PyQt5: A Cardiology Aid"
 date: 2023-07-17
-description: "Python's versatility allows it to create tools for a broad spectrum of professional fields. In this blog post, we delve into creating an image measurement to..."
+description: "Python's versatility allows it to create tools for a broad spectrum of professional fields. In this post I walk through building an image measurement to..."
 
 ---
 
-Python's versatility allows it to create tools for a broad spectrum of professional fields. In this blog post, we delve into creating an image measurement tool using PyQt5 - a set of Python bindings for Qt libraries. This tool, tailored for cardiology doctors analyzing EKG (Electrocardiogram) reports, lets users load an image, select two points on the image, and calculate the distance between them.
+Python's versatility allows it to create tools for a broad spectrum of professional fields. In this blog post, I walk through building an image measurement tool using PyQt5 - a set of Python bindings for Qt libraries. This tool, tailored for cardiology doctors analyzing EKG (Electrocardiogram) reports, lets users load an image, select two points on the image, and calculate the distance between them.
 
 This application, named "Image Measurer," was developed for Dr. Görkem Şefik Fatihoğlu, aiding in his analysis of EKG reports.
 
@@ -17,7 +17,7 @@ Our tool enables users to measure distances within an image relative to a real-w
 
 ## Code Overview
 
-Our Python script, which leverages PyQt5, contains some key elements that we'll break down here.
+The script is built on PyQt5, and a few parts of it are worth breaking down.
 
 ```python
 class ImageWithMouseControl(QGraphicsView):

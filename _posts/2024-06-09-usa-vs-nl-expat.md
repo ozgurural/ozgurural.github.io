@@ -65,7 +65,7 @@ In Daytona Beach, Publix is king, and my cart fills with greens, bagels, and the
 
 Healthcare is the question I get the most. In the Netherlands, I registered with a huisarts (family doctor) who knows my coffee order and my physical therapy exercises. Specialists are a referral away, prescriptions refill online in 24 hours, and bills arrive with the calm energy of a mindful breathing app. I pay a monthly premium, and that is the end of the mystery.
 
-Stateside, I keep spreadsheets of copays, deductibles, and which clinic is "in network" this week. On the plus side, access to cutting-edge research hospitals is incredible; my grad program meant MRI machines down the hall and world-class researchers across the street. On the downside, I treat phone calls to insurance providers like prepping for a thesis defense.
+Stateside, I keep spreadsheets of copays, deductibles, and which clinic is "in network" this week. On the plus side, access to leading research hospitals is remarkable; my grad program meant MRI machines down the hall and world-class researchers across the street. On the downside, I treat phone calls to insurance providers like prepping for a thesis defense.
 
 ## Weather, Mood, and Mental Health
 

@@ -64,28 +64,28 @@ redirect_from:
 
 ## Leadership & Core Domains
 
-<p class="ep-pillars__note">My work sits at the intersection of deep technical expertise and organizational scale: setting architectural direction, raising engineering standards, and ensuring that complex systems, from mission-critical C++ to cloud-native microservices, remain robust under extreme conditions.</p>
+<p class="ep-pillars__note">I work where hands-on engineering meets organizational scale: setting architectural direction, raising engineering standards, and keeping complex systems, from mission-critical C++ to cloud-native microservices, correct under load and under failure.</p>
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Engineering Leadership</span>
     <h3>Direction, standards, teams</h3>
-    <p>Having shipped national data-leakage-prevention products and mission-critical software, today I drive architecture decisions and technical standards that raise the bar across the engineering organization: resilience patterns, review culture, and release discipline.</p>
+    <p>Having shipped national data-leakage-prevention products and mission-critical software, I now set architecture decisions and engineering standards across the organization: resilience patterns, review culture, and release discipline.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
-    <h3>Fault-tolerant by design</h3>
+    <h3>Correct when parts fail</h3>
     <p>Real-time simulation platforms and cloud-native services (C++, Scala, TypeScript, gRPC) built on distributed protocols whose outputs and state can be audited end-to-end without compromising latency.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Trustworthy ML & Security</span>
     <h3>Securing AI pipelines</h3>
-    <p>Deep domain expertise in defending ML training integrity against spoofing attacks. My Ph.D. and IEEE-published research focus on feature-based model watermarking and proof-of-learning verification.</p>
+    <p>My Ph.D. and three first-author IEEE Access papers defend ML training integrity against spoofing attacks, through feature-based model watermarking and proof-of-learning verification.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Adversarial Robustness</span>
     <h3>Models that survive adversaries</h3>
-    <p>Bridging research and production by ensuring models survive contact with adversaries. Evaluating provenance verification, adversarial examples, and the limits of claimed model identities.</p>
+    <p>I test where models break: provenance verification, adversarial examples, and the limits of a claimed model identity. A model earns trust by surviving contact with an adversary, not by scoring well on a clean test set.</p>
   </li>
 </ul>
 
@@ -171,7 +171,7 @@ redirect_from:
   <li>
     <div class="meta">2023 · IEEE Access · Survey</div>
     <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10366252">Survey on Blockchain-Enhanced Machine Learning</a></h3>
-    <p class="desc">Comprehensive survey of the design space at the intersection of distributed ledgers and learning systems.</p>
+    <p class="desc">My most-cited paper: a survey of the design space where distributed ledgers meet learning systems.</p>
   </li>
 </ul>
 
@@ -179,7 +179,7 @@ redirect_from:
 
 My methodologies in decentralized trust and model watermarking have been adopted by peers to protect AI ownership and lineage, appearing in premier venues such as *IEEE Transactions on Services Computing* and *IEEE SaTML 2026*. This work provides efficient mechanisms for securing critical infrastructure against adversarial AI threats, directly supporting the national security priorities outlined in the Executive Order on Promoting the Export of the American AI Technology Stack.
 
-Recognized for my expertise in secure and distributed machine learning, I actively serve the scientific community by evaluating cutting-edge research:
+I review manuscripts and conference submissions across machine learning, security, and distributed systems:
 - **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy, and distributed systems
 - **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante
 - **Reviewer**, IEEE and ACM conferences in security, machine learning, and distributed systems

@@ -29,7 +29,7 @@ Make documentation updates a required part of any significant code change. Pull 
 
 Treat docs as code: version them, review them, and test them. Static-site generators and automated link checkers ensure that code examples compile and that references stay current. Continuous integration can run linting tools to catch broken headings, improper formatting, or outdated API calls.
 
-Some teams go further by generating documentation from annotated source code. While auto-generated docs risk being dry, pairing them with hand written guides offers both precision and narrative. The key is to reduce friction: when writing docs is as seamless as writing tests, developers are more likely to do it.
+Some teams go further by generating documentation from annotated source code. While auto-generated docs risk being dry, pairing them with hand written guides offers both precision and narrative. The key is to reduce friction: when writing docs is as routine as writing tests, developers are more likely to do it.
 
 ## Documentation as Community Infrastructure
 

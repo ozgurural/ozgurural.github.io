@@ -53,7 +53,7 @@ header:
   <a class="lab-mission-card" href="/lab/watermarking-comparison/">
     <span class="lab-mission-card__code">07</span>
     <strong>Watermarking Models</strong>
-    <span>A comprehensive comparison of ML model watermarking architectures and their robustness.</span>
+    <span>A side-by-side comparison of ML model watermarking architectures and their robustness.</span>
   </a>
   <a class="lab-mission-card" href="/lab/universal-jira/">
     <span class="lab-mission-card__code">08</span>

@@ -28,7 +28,7 @@ The cadence is part training mission, part research retreat, and it keeps the ER
 
 ## Research Altitude: Proof-of-Learning Meets Security
 
-My dissertation, **“Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking,”** sits at the intersection of machine learning, cryptography, and just enough paranoia to make for great conference talks. Most mornings begin in the GPU lab, where I:
+My dissertation, **“Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking,”** combines machine learning, cryptography, and just enough paranoia to make for great conference talks. Most mornings begin in the GPU lab, where I:
 
 1. Reconstruct adversarial training traces from our spoofing catalog.
 2. Stress-test watermarking strategies that survive pruning, quantization, and model surgery.

@@ -11,7 +11,7 @@ description: "Product launches often steal the spotlight, but the feedback gathe
 
 ---
 
-Product launches often steal the spotlight, but the feedback gathered during early beta testing quietly determines whether launch day is a victory lap or a scramble to patch obvious gaps. Treating beta periods as a checkbox diminishes their power; when leveraged well, beta feedback drives the evolution of features, design, and infrastructure before they congeal into something hard to change.
+Product launches often steal the spotlight, but the feedback gathered during early beta testing quietly determines whether launch day is a victory lap or a scramble to patch obvious gaps. Treating beta periods as a checkbox diminishes their power; used well, beta feedback drives the evolution of features, design, and infrastructure before they congeal into something hard to change.
 
 ## Early Feedback Uncovers Unknown Unknowns
 
