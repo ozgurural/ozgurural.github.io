@@ -111,7 +111,10 @@
 }
 .ep-hero__cta a:first-child {
   background: var(--ds-accent);
-  color: #fff !important;
+  /* Ink on the accent, not white: on the dark theme's bright accent, white
+     text sits at 2.14:1 and fails WCAG AA. Using the page background colour
+     gives 8.8:1 here and stays correct if the light theme is ever enabled. */
+  color: var(--ds-bg) !important;
   border-color: var(--ds-accent);
 }
 .ep-hero__cta a:first-child:hover {
@@ -1530,7 +1533,7 @@ details.ep-concept[open] .desc {
   z-index: 1000;
   padding: 0.6rem 1.1rem;
   background: var(--ds-accent);
-  color: #fff;
+  color: var(--ds-bg);
   font-weight: 600;
   text-decoration: none;
   border-radius: 0 0 8px 8px;
