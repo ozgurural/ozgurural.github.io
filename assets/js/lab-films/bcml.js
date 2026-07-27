@@ -194,22 +194,22 @@
 
       lower(
         s,
-        "Machine learning has three problems a ledger is unusually well suited to. Training data can be poisoned by contributors who still collect their reward. Models leak the data they were trained on. And nothing in a finished model records what actually happened to it.",
+        "Three problems a ledger suits. Data poisoned by someone who still collects the reward. Models that leak. Weights that remember nothing.",
         1.4
       );
       lower(
         s,
-        "A distributed ledger answers the third directly: record every transaction tied to the training process, and the record becomes immutable, tamper-evident and transparent. Unauthorised modification stops being invisible.",
+        "Record every transaction in the run, and tampering stops being invisible.",
         12.5
       );
       lower(
         s,
-        "Note what does <em>not</em> go on it. Raw data stays with its owner; the chain carries model parameters, the transactions around them, and the validation results. That is what makes the arrangement privacy-preserving rather than merely public.",
+        "Raw data never leaves its owner. Only parameters, transactions and results reach the chain.",
         20.6
       );
       lower(
         s,
-        "And be precise about the guarantee. A record of the process is evidence of what happened; it is not a judgement of whether the data was any good. That takes a separate mechanism, which is where the interesting work is.",
+        "But a record proves what happened, not that it was any good. That needs a second mechanism.",
         30.6,
         { out: 41.0 }
       );
@@ -291,22 +291,22 @@
 
       lower(
         s,
-        "Then the survey turns to the part most reviews skip: the consensus layer itself. Proof of Work reaches agreement by making everyone hash until someone gets lucky, and that computation has no value the moment it is spent.",
+        "Proof of Work agrees by burning electricity on a puzzle worth nothing once solved.",
         1.4
       );
       lower(
         s,
-        "So point the same compute somewhere useful. Proof of Learning makes the training run itself the work that earns consensus. Proof of Deep Learning extends it to the integrity and authenticity of the resulting model.",
+        "So aim it at the model. Proof of Learning makes the training run earn consensus; Proof of Deep Learning covers the model itself.",
         16.0
       );
       lower(
         s,
-        "Proof of Training Quality goes further and asks the network to agree not merely that work happened, but that the contribution was <em>good</em>, which is the question the ledger alone could never answer.",
+        "Proof of Training Quality asks more: not that work happened, but that it <em>helped</em>.",
         24.0
       );
       lower(
         s,
-        "The electricity now buys a trained model instead of a discarded hash. And it opens exactly one hard question in return: how do you verify the work was really done? That question is where my own later research lives.",
+        "Now the electricity buys a model. And it opens one hard question: how do you prove the run was real?",
         32.5,
         { out: 45.0 }
       );
@@ -439,22 +439,22 @@
 
       lower(
         s,
-        "Which brings the survey to its centre of gravity: incentives. In the Sharing Updatable Model framework a smart contract called CollaborativeTrainer takes data, runs an incentive mechanism, and updates the model in one place.",
+        "Then incentives. One contract accepts the data, prices it, and updates the model.",
         1.4
       );
       lower(
         s,
-        "The reward is not paid for volume. A contributor's balance moves by the improvement their data caused: the loss on a held-out set before their update, minus the loss after it. Contribute noise and the term is negative.",
+        "You are paid for the loss you removed. Submit noise and the term turns negative.",
         14.5
       );
       lower(
         s,
-        "A second mechanism makes that stake real: deposit currency when you submit, get it refunded after a waiting period if your data held up, and forfeit it when the model disagrees with your label.",
+        "Stake a deposit. It comes back if the data holds up, and is forfeited if it does not.",
         20.5
       );
       lower(
         s,
-        "In simulation the two populations separate cleanly: good agents accumulate balance, bad agents drain to nothing, and the model's accuracy is preserved throughout. The market does the filtering the ledger cannot.",
+        "In simulation the honest and the dishonest separate cleanly, and accuracy holds.",
         30.0,
         { out: 49.0 }
       );
@@ -570,27 +570,27 @@
 
       lower(
         s,
-        "Does any of it work? DeepChain was built and measured: a Corda prototype trained on MNIST, with parties uploading local gradients and workers paid by a processing contract.",
+        "Does it work? DeepChain was built: a Corda prototype trained on MNIST.",
         1.4
       );
       lower(
         s,
-        "The result is honest in both directions. Accuracy improves as more parties join, exactly as the argument predicts. But throughput falls as the number of gradients grows, and total training time climbs with every party added.",
+        "Accuracy rises with every party who joins. Throughput falls with every party who joins.",
         6.0
       );
       lower(
         s,
-        "LearningChain shows the same shape from a different angle: noise added for differential privacy buys real privacy and costs real test accuracy, while an l-nearest aggregation rule blunts Byzantine workers without eliminating them.",
+        "LearningChain shows the same trade: privacy noise buys privacy and costs accuracy.",
         16.0
       );
       lower(
         s,
-        "Which is why the survey closes on challenges rather than on a promise: scalability, energy cost, and the need for consensus mechanisms designed for machine learning rather than inherited from currency.",
+        "So the survey ends on the seams: scale, energy, and consensus designed for learning rather than currency.",
         26.5
       );
       lower(
         s,
-        "A review that only sells the idea is worth nothing. The useful contribution is knowing precisely where the seams are, and one of those seams, verifying that training really happened, became the subject of my dissertation.",
+        "A review that only sells the idea is worth nothing. One of those seams, proving the training really happened, became my dissertation.",
         35.0,
         { out: 45.0 }
       );

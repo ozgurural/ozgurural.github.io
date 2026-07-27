@@ -217,27 +217,27 @@
 
       lower(
         s,
-        "A Level D simulator is legally a substitute for the aircraft: an airline logs real type-rating hours on it. So the fidelity requirements are written as regulation, not as goals.",
+        "A Level D simulator is legally the aircraft. Airlines log real type-rating hours on it.",
         1.6
       );
       lower(
         s,
-        "The strictest one is <strong>transport delay</strong>, the total time from a pilot's control input until the motion, visual and instrument systems respond. For a Level D aeroplane device the ceiling is <strong>150 milliseconds</strong>.",
+        "So the numbers are regulation, not goals. The ceiling: <strong>150 milliseconds</strong>, input to response.",
         9.0
       );
       lower(
         s,
-        "That budget is spent by every stage in the chain, and image generation takes the largest single bite. Whatever is left is your engineering margin.",
+        "Every stage spends it. Image generation takes the largest bite.",
         16.5
       );
       lower(
         s,
-        "Note what kind of number this is. It is not a target you optimise toward; it is a <em>gate</em>. Miss it and the device does not qualify, and the training hours flown on it do not count.",
+        "Not a target. A <em>gate</em>. Miss it and the hours flown do not count.",
         23.0
       );
       lower(
         s,
-        "Helicopter devices are held to 100 milliseconds, because a hovering rotorcraft is unstable and the pilot is closing the loop far faster.",
+        "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
         33.5,
         { out: 43.2 }
       );
@@ -369,27 +369,27 @@
 
       lower(
         s,
-        "Inside that budget the simulator runs a fixed cadence. At 60 hertz every subsystem gets 16.67 milliseconds to sample, solve and publish, a deadline, not an average.",
+        "Inside it, a fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
         1.6
       );
       lower(
         s,
-        "Here is the trap. Mean frame time is 8.6 milliseconds: roughly half the budget, and a dashboard would call that healthy. But a deadline is not met on average; it is met or missed, frame by frame.",
+        "Mean frame time is 8.6 milliseconds, half the budget. But a deadline is never met on average.",
         9.0
       );
       lower(
         s,
-        "So count the frames. A four-hour training session is 864,000 of them. At one bad frame in a hundred thousand, you still expect about nine overruns per session.",
+        "Count the frames instead. Four hours is 864,000 of them.",
         17.0
       );
       lower(
         s,
-        "Loosen it to one in a thousand (still a 99.9% success rate, still an excellent-looking number), and the pilot gets 864 visual stutters in one session.",
+        "One bad frame in a thousand, a 99.9% success rate, is 864 stutters a session.",
         26.5
       );
       lower(
         s,
-        "And that arithmetic assumes frames fail independently. They don't: a garbage-collection pause or a network stall takes out a run of consecutive frames, so clustering makes the real experience worse than the estimate.",
+        "And that assumes failures spread evenly. They cluster, so the real thing is worse.",
         36.5,
         { out: 47.0 }
       );
@@ -504,27 +504,27 @@
 
       lower(
         s,
-        "A full-flight simulator is not one computer. It is a rack of them: flight model, avionics, three visual channels, sound, motion, instructor station, all publishing into the same frame.",
+        "A simulator is not one computer. It is a rack, all publishing into one frame.",
         1.6
       );
       lower(
         s,
-        "Which changes the statistic you care about. The frame is not finished when the average host finishes; it is finished when the <strong>last</strong> one does. Latency composes as a maximum.",
+        "The frame ends when the <strong>last</strong> host finishes. Latency composes as a maximum.",
         8.6
       );
       lower(
         s,
-        "Reliability composes the same way, by multiplication. Nine hosts that each hit their deadline 99.9% of the time give you 99.1% of frames clean, which is about 7,800 bad frames in a four-hour session.",
+        "Reliability composes by multiplication. Nine hosts at three nines give 99.1% clean.",
         13.6
       );
       lower(
         s,
-        "And one straggler is enough. A single host at 19 milliseconds makes the frame late for everyone: the flight model, the visuals and the motion platform all wait.",
+        "One straggler is enough. A single host at 19 milliseconds makes the frame late for everyone.",
         21.6
       );
       lower(
         s,
-        "So the budget has to be allocated and enforced <em>per host</em>. A system-level average is not a constraint anyone can engineer against.",
+        "So the budget is allocated and enforced <em>per host</em>. A system average constrains nobody.",
         30.6,
         { out: 45.0 }
       );
@@ -615,22 +615,22 @@
 
       lower(
         s,
-        "None of this is enforceable unless it is instrumented. Every bus reports its overrun count, its step time and its memory, continuously, while the session runs.",
+        "None of it is real unless it is instrumented while the session runs.",
         1.6
       );
       lower(
         s,
-        "The overrun counter is the signal to trust. Step time is sampled, so a spike can hide between two polls, but an overrun is counted by the runtime the moment it happens and cannot be missed.",
+        "Trust the overrun counter. Step time is sampled, so a spike hides between polls.",
         13.6
       );
       lower(
         s,
-        "So the instructor station shows one bus overrunning while the rest are clean, and the engineer knows where to look before the qualification test does.",
+        "One bus overruns, the rest stay clean, and the engineer knows before the qualification test does.",
         24.6
       );
       lower(
         s,
-        "That is the whole discipline. Determinism is not a property you optimise in at the end; it is a budget, allocated per host, enforced every frame, and proven by the instrument you shipped alongside it.",
+        "Determinism is not optimised in at the end. It is a budget, enforced every frame, and proven by the instrument you ship with it.",
         32.0,
         { out: 41.2 }
       );

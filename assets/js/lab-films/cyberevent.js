@@ -178,17 +178,17 @@
 
       lower(
         s,
-        "Cyber-security incidents surface publicly before they surface officially: someone tweets that a bank's app is down long before a statement is issued.",
+        "Incidents surface publicly before they surface officially. Someone tweets that the bank app is down.",
         1.4
       );
       lower(
         s,
-        "The difficulty is the ratio. In an open Turkish-language stream, the overwhelming majority of posts are football, weather and politics; genuine security events are a handful in a thousand.",
+        "The difficulty is the ratio. In an open Turkish stream, real events are a handful in a thousand.",
         8.0
       );
       lower(
         s,
-        "That rarity is not an inconvenience to be engineered around. It is the mathematical centre of the problem, and it breaks the intuition most people bring to classifiers.",
+        "That rarity is not an inconvenience to engineer around. It is the centre of the problem.",
         24.5,
         { out: 39.0 }
       );
@@ -344,32 +344,32 @@
 
       lower(
         s,
-        "There is no labelled Turkish corpus to train on, so the vocabulary has to be learned from an incident you already know the answer to.",
+        "There is no labelled Turkish corpus, so the vocabulary must be learned from an incident you already know.",
         1.4
       );
       lower(
         s,
-        "The nic.tr denial-of-service attack of December 2015 gives three corpora: the quiet year before it, the day itself, and the fortnight after. TF-IDF across those tells you which terms actually separate an attack from ordinary Turkish.",
+        "The nic.tr attack of December 2015 gives three corpora: the quiet year, the day, the fortnight after.",
         7.0
       );
       lower(
         s,
-        "Each candidate term then faces an A/B test on the thing that matters: a keyword is kept only if it finds more events <em>without</em> flooding the queue with false ones.",
+        "TF-IDF says which words separate an attack from ordinary Turkish. Each candidate then faces an A/B test.",
         12.0
       );
       lower(
         s,
-        "Because the vector is squeezed from both sides. Too many keywords and the system takes in more documents than it can process while false positives climb - certainty drops.",
+        "Too many keywords and the queue floods with false positives.",
         18.6
       );
       lower(
         s,
-        "Too few and events are missed, or noticed days after the attack instead of on the day - sensitivity drops. No setting maximises both.",
+        "Too few and the event is missed, or noticed days late.",
         27.0
       );
       lower(
         s,
-        "So both are pinned down as acceptance criteria: detect nic.tr on the attack day itself, and stay under thirty percent false positives across the two weeks that follow. The system met both.",
+        "So both become acceptance criteria: catch nic.tr on the day, stay under thirty percent false. It met both.",
         34.0,
         { out: 49.0 }
       );
@@ -456,22 +456,22 @@
 
       lower(
         s,
-        "Then the language itself pushes back. Turkish is agglutinative: meaning is built by stacking suffixes onto a stem, so one root generates dozens of legal surface forms.",
+        "Then the language pushes back. Turkish stacks suffixes, so one stem becomes dozens of surface forms.",
         1.4
       );
       lower(
         s,
-        "To a bag-of-words model these are ten unrelated tokens. The vocabulary inflates, every column gets a handful of occurrences, and TF-IDF has almost no evidence to weigh.",
+        "To a bag of words those are unrelated tokens. The evidence scatters.",
         12.5
       );
       lower(
         s,
-        "This is the low-resource penalty, and it is not solved by a bigger classifier. It is solved before the classifier, by normalising surface forms back onto their stems so the evidence concentrates.",
+        "This is the low-resource penalty, and a bigger classifier does not fix it. Stemming does, before the classifier.",
         22.5
       );
       lower(
         s,
-        "Which is the part practitioners under-report: in a morphologically rich language with no large annotated corpus, preprocessing carries more of the result than the model choice does.",
+        "Which is the under-reported part: here, preprocessing decides more than the model does.",
         33.0,
         { out: 45.0 }
       );
@@ -594,27 +594,27 @@
 
       lower(
         s,
-        "The last piece is what you count. Not sentiment, not the volume of security chatter - the <strong>named entity</strong> that can be attacked: institutions, government bodies, countries, companies.",
+        "And count the right thing. Not sentiment, but the <strong>entity</strong> that can be attacked.",
         1.4
       );
       lower(
         s,
-        "Each entity gets a daily mention count and is judged against its own history. The threshold has to be dynamic, because nic.tr being mentioned twice a day is normal and a country being mentioned twice is not.",
+        "Each entity is judged against its own history, because normal for one is an alarm for another.",
         15.6
       );
       lower(
         s,
-        "On the fourteenth of December 2015 the count for nic.tr jumps from a background of two or three to twenty-eight. No classifier is asked whether that is an attack - the anomaly is the signal.",
+        "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. The anomaly is the signal.",
         22.0
       );
       lower(
         s,
-        "And the scoreboard is published honestly: 437 documents, 29 detections, 22 of them real. Seven false positives - about a 76% success rate, stated rather than rounded away.",
+        "The scoreboard, stated rather than rounded: 437 documents, 29 detections, 22 real. About 76%.",
         31.0
       );
       lower(
         s,
-        "Here is one of the seven. The word hacklendi appears in an everyday message asking whether someone's account was compromised. The keyword fires; no event exists. Judging that automatically is genuinely hard, and the paper says so.",
+        "The seven misses are published too. A rare-event detector earns trust by naming what it gets wrong.",
         40.0,
         { out: 51.0 }
       );
