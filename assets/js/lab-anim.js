@@ -1023,7 +1023,9 @@
     "bcml-film":       "Based on: Ural &amp; Yoshigoe &middot; <em>Survey on Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
     "jira-film":       "Ongoing research direction &middot; Ural &middot; incentive-compatible coordination without a central planner",
     "gd-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
-    "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion"
+    "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion",
+    "det-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion &middot; limits per FAA&nbsp;Part&nbsp;60 / EASA CS-FSTD(A)",
+    "cyb-film":        "Based on: Ural &amp; Acartürk &middot; <em>Automatic Detection of Cyber Security Events</em> &middot; ICISSP 2021"
   };
 
   Film.prototype.build = function () {
@@ -1322,7 +1324,9 @@
       "oracles-film":    { root: 92.50,  scale: [0,1,3,5,7,8,10], tempo: 30, cutoff: 560,  pad: [0,7], bright: 0.3,  prog: [0,1,0,5] }, // F# phrygian - mystic
       "wm-compare-film": { root: 123.47, scale: [0,2,3,5,7,8,10], tempo: 44, cutoff: 820,  pad: [0,3], bright: 0.5,  prog: [0,5,2,4] }, // B natural minor - analytic
       "bcml-film":       { root: 146.83, scale: [0,2,3,5,7,9,10], tempo: 46, cutoff: 880,  pad: [0,7], bright: 0.5,  prog: [0,5,3,4] }, // D dorian - systems, sober
-      "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6,  prog: [0,3,4,5] }  // D major - optimistic
+      "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6,  prog: [0,3,4,5] }, // D major - optimistic
+      "det-film":        { root: 110.00, scale: [0,2,3,5,7,8,10], tempo: 60, cutoff: 760,  pad: [0,7], bright: 0.4,  prog: [0,5,0,4] }, // A minor - metronomic, exacting
+      "cyb-film":        { root: 138.59, scale: [0,1,4,5,7,8,11], tempo: 38, cutoff: 640,  pad: [0,5], bright: 0.35, prog: [0,4,5,4] }  // C# double harmonic - signal in noise
     };
     var VOL = 0.14;
     var ctx = null, master = null, graph = null, timer = null, muted = false, currentKey = null, unlockArmed = false;

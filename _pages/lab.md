@@ -2,7 +2,7 @@
 permalink: /lab/
 title: "Research Lab"
 description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball · ML Oracles · Watermarking Models · Blockchain-Enhanced ML. Real research math, animated from the equation up."
-excerpt: "Nine cinematic explainers from my published research and the directions I am actively pursuing: Bitcoin consensus, ML security, fault tolerance, optimization, decentralized oracles, watermarking strategy comparison, blockchain-enhanced ML, and market-based coordination. Each animates the real mathematics, derived rather than hand-waved."
+excerpt: "Eleven cinematic explainers from my published research, the systems I have engineered, and the directions I am actively pursuing: Bitcoin consensus, ML security, fault tolerance, optimization, decentralized oracles, watermarking strategy comparison, blockchain-enhanced ML, market-based coordination, hard-real-time simulator engineering, and rare-event detection in a low-resource language. Each animates the real mathematics, derived rather than hand-waved."
 header:
   og_image: "lab-og/og-lab.png"
 ---
@@ -11,7 +11,7 @@ header:
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Nine cinematic explainers built from my published research, the systems I engineer, and the questions I am actively working on: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization, decentralized oracles, watermarking strategy comparison, blockchain-enhanced ML, and market-based coordination. Each one animates the real result from the equation up, written for a technical reader, neither dumbed down nor hand-waved. Every formula is exactly as it appears in the papers, including the approximations the papers themselves admit to.
+    Eleven cinematic explainers built from my published research, the systems I engineer, and the questions I am actively working on: Bitcoin consensus, AI watermarks, training-run forensics, fault tolerance, optimization, decentralized oracles, watermarking strategy comparison, blockchain-enhanced ML, market-based coordination, hard-real-time simulator engineering, and rare-event detection in a low-resource language. Each one animates the real result from the equation up, written for a technical reader, neither dumbed down nor hand-waved. Every formula is exactly as it appears in the papers, including the approximations the papers themselves admit to.
   </p>
   <div class="lab-hero__actions">
     <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>
@@ -64,6 +64,16 @@ header:
     <span class="lab-mission-card__code">09</span>
     <strong>Universal Jira Board</strong>
     <span>Work in progress: can prediction markets price and settle engineering work without a central planner?</span>
+  </a>
+  <a class="lab-mission-card" href="/lab/determinism/">
+    <span class="lab-mission-card__code">10</span>
+    <strong>Determinism at 60 Hz</strong>
+    <span>A deadline is never met on average: the 150 ms qualification gate, 864,000 frames a session, and the straggler host that owns the frame.</span>
+  </a>
+  <a class="lab-mission-card" href="/lab/cyber-events/">
+    <span class="lab-mission-card__code">11</span>
+    <strong>Rare-Event Detection</strong>
+    <span>Why a 99%-accurate detector is wrong most times it speaks, and what an agglutinative language does to your features.</span>
   </a>
 </nav>
 

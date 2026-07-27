@@ -12,6 +12,8 @@ const PREFIX = {
   "block-race.js": "block-race",
   "gradient-pinball.js": "gradient-pinball",
   "bcml.js": "bcml",
+  "determinism.js": "determinism",
+  "cyberevent.js": "cyberevent",
   "jira.js": "jira",
   "model-heist.js": "model-heist",
   "oracles.js": "oracles",

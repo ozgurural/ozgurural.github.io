@@ -120,6 +120,28 @@ const LABS = [
     bg: "#0b2545",
     accent: "#58c4dd",
   },
+  {
+    key: "det",
+    eyebrow: "Hard Real Time · Safety-Critical",
+    icon: "⏱",
+    title: "Determinism at 60 Hz",
+    sub: "A deadline is never met on average.",
+    tagline: "150 ms gate, 864,000 frames, and the straggler that owns the frame",
+    badge: "LEVEL D",
+    bg: "#0f172a",
+    accent: "#38bdf8",
+  },
+  {
+    key: "cyb",
+    eyebrow: "NLP · Security",
+    icon: "🛰",
+    title: "Rare-Event Detection",
+    sub: "99% accurate, and usually wrong.",
+    tagline: "Base rates, Turkish morphology, and fusing opposite failure modes",
+    badge: "ICISSP 2021",
+    bg: "#2a0a2e",
+    accent: "#f0abfc",
+  },
 ];
 
 const W = 1200, H = 630;
