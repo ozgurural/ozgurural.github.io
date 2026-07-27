@@ -491,6 +491,29 @@
   border-color: var(--ds-accent);
   background: var(--ds-accent-soft);
 }
+/* Section headings that split the mission deck into tiers, so a reader can tell
+   published research from an explainer of someone else's result at a glance. */
+/* Scoped under .page__content so it outranks `.page__content h3`, which would
+   otherwise reset the size and colour back to a normal heading. */
+.page__content .lab-deck-heading,
+.lab-deck-heading {
+  margin: 1.7rem 0 0.2rem;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+}
+.page__content .lab-deck-note,
+.lab-deck-note {
+  margin: 0 0 0.75rem;
+  max-width: 64ch;
+  color: var(--ds-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
 .lab-mission-deck {
   display: grid;
   /* Two roomy columns, not auto-fit minmax(170px): with the author sidebar
