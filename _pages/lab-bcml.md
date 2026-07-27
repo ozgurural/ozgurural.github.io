@@ -1,8 +1,8 @@
 ---
 permalink: /lab/blockchain-ml/
 title: "Blockchain-Enhanced Machine Learning, animated"
-description: "What a ledger can and cannot do for machine learning: Merkle commitments over training data, commit-reveal federated rounds, contribution-proportional incentives, and the four-order-of-magnitude throughput ceiling that decides the architecture."
-excerpt: "Weights forget where they came from. A cinematic walk through the survey: commit don't store, order rounds by consensus, pay for contribution — and the ceiling that keeps training off chain."
+description: "What a ledger actually buys machine learning: consensus that trains instead of hashing (PoL, PoDL, PoQ), incentive contracts that pay for the improvement you caused, and the measured limits DeepChain and LearningChain ran into."
+excerpt: "Point the electricity at a model instead of a hash, pay contributors by the loss they removed, and read the prototypes honestly: accuracy rises with parties while throughput falls."
 sitemap: true
 header:
   og_image: "lab-og/og-bcml.png"
@@ -11,32 +11,31 @@ header:
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-bcml" style="margin-top: 0;">
-  <span class="ep-eyebrow">Distributed Systems · Machine Learning · Provenance</span>
-  <p class="lab-card__lead">⛓ Training is a one-way map: the finished weights carry no record of the batches that produced them, so a poisoned run and a clean run ship the same accuracy number. This animation builds the case from the survey up — why the ledger stores <strong>commitments</strong> and never data, how a commit–reveal round makes contribution a fact rather than a claim, what robust aggregation genuinely bounds, and the throughput ceiling that forces training off chain and settlement onto it.</p>
+  <span class="ep-eyebrow">Distributed Systems · Machine Learning · Consensus</span>
+  <p class="lab-card__lead">⛓ A ledger is a strange thing to put under machine learning, and the interesting question is what it actually buys. This animation follows the survey’s own line of argument: the three ML problems a tamper-evident record addresses, the consensus mechanisms that channel compute into <strong>training rather than hashing</strong> — Proof of Learning, Proof of Deep Learning, Proof of Training Quality — the incentive contracts that pay a contributor by the loss their data removed, and then the part most reviews leave out: what the prototypes measured when someone actually built them.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>The author's survey <a href="/publication/2023-ieee-access-survey">"Survey on Blockchain-Enhanced Machine Learning"</a> (Ural &amp; Yoshigoe, IEEE Access 2023, pp. 145331–145362), covering consensus-driven data provenance, on-chain federated learning and incentive design across 120+ papers.</span>
+    <span>The author’s survey <a href="/publication/2023-ieee-access-survey">"Survey on Blockchain-Enhanced Machine Learning"</a> (Ural &amp; Yoshigoe, IEEE Access 11, 2023, pp. 145331–145362). Every mechanism named in the film is one the survey reviews — PoL / PoDL / PoQ consensus, the Sharing Updatable Model incentive contracts, DeepChain and LearningChain — and every reported behaviour is one it documents. The survey’s stated stance is deliberately balanced, presenting limitations alongside opportunities, which is why this film ends on measured degradation rather than on a promise.</span>
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="bcml-film" role="group" aria-label="Animated explainer: blockchain-enhanced machine learning — provenance commitments, federated rounds, incentives and throughput limits"></div>
+    <div class="lab-film__frame" id="bcml-film" role="group" aria-label="Animated explainer: ledger-backed training integrity, training-as-consensus, incentive contracts, and the measured limits of the prototypes"></div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=honest participant / data, amber=ledger and commitments, rose=adversary or rejected, green=accepted and rewarded">
-    <span><i style="background:#58C4DD"></i> participant · data · off chain</span>
-    <span><i style="background:#fbbf24"></i> ledger · commitment</span>
-    <span><i style="background:#fc6255"></i> poisoned · trimmed</span>
-    <span><i style="background:#83C167"></i> accepted · rewarded</span>
+  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=honest participant and model, amber=ledger, rose=threat or measured degradation, green=rewarded contribution">
+    <span><i style="background:#58C4DD"></i> participant · model</span>
+    <span><i style="background:#fbbf24"></i> ledger · record</span>
+    <span><i style="background:#fc6255"></i> threat · measured cost</span>
+    <span><i style="background:#83C167"></i> rewarded · accepted</span>
   </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
-    <p><strong>Weights are amnesiac.</strong> Training maps a corpus to a tensor of floats, and the map is lossy and one-way. Nothing in the finished model says which shards fed it, so auditing the artefact cannot recover its history — a poisoned run and a clean run can report the same headline accuracy. Provenance has to be recorded <em>while training happens</em>, in a log no single participant can rewrite afterwards.</p>
-    <p><strong>Commit, don't store.</strong> Putting a training set on chain is economically absurd and publishes every record. Instead you hash each shard, hash the hashes pairwise, and climb to one 32-byte <em>Merkle root</em>. That root anchors terabytes, and proving a record belongs costs log₂n sibling hashes. Change one byte and the root no longer matches: tampering isn't prevented, it's made undeniable. Note the limit precisely — the root proves <strong>integrity</strong>, never <strong>quality</strong>.</p>
-    <p><strong>A round becomes a fact, not a claim.</strong> Federated learning keeps raw data home but still needs a referee nobody owns. Each client publishes <em>h_k = H(Δ_k ‖ r_k)</em> before seeing anyone else's update, so no one can copy a neighbour's gradient and bill for it; then everyone reveals and the chain checks the reveal against the hash it already holds, in an order no participant controls.</p>
-    <p><strong>Robust aggregation bounds a minority, not an adversary.</strong> Plain FedAvg is a weighted mean, and a mean has breakdown point zero — a single unbounded update drags it anywhere. A trimmed mean or coordinate median restores a finite breakdown point and drops the crude outlier. It does <em>not</em> catch small, in-distribution poisoning: the ledger records who contributed, it does not judge what.</p>
-    <p><strong>The ceiling decides the architecture.</strong> One GPU issues on the order of 10⁵ SGD updates per second; Ethereum settles ~15 transactions per second and a fast rollup a few thousand. That gap is roughly four orders of magnitude and it is structural — consensus costs a network round trip, gradient descent costs a matrix multiply. So the division of labour is forced: training, gradients and data stay off chain; commitments, identity and settlement go on it. Any system advertising "training on the blockchain" is describing an off-chain trainer with an on-chain receipt.</p>
-    <p><strong>Scientific Context:</strong> The taxonomy, the mechanisms and the open challenges are developed across 120+ works in the author's <a href="/publication/2023-ieee-access-survey">IEEE Access survey</a> (2023). The provenance argument here is the same one that motivates the author's later <a href="/lab/training-fingerprint/">Proof-of-Learning</a> work: if you cannot recover history from the artefact, you must commit to it as you go.</p>
+    <p><strong>The ledger records the process, not the data.</strong> ML has three problems a distributed ledger is unusually well suited to: training data poisoned by contributors who still collect a reward, models that leak the data they were trained on, and finished weights that carry no record of what happened to them. Recording every transaction tied to the training process makes tampering evident. Note what stays off chain — raw data remains with its owner, while parameters, transactions and validation results are shared. That is what makes the arrangement privacy-preserving rather than merely public.</p>
+    <p><strong>Consensus can produce something instead of discarding it.</strong> Proof of Work spends electricity on a puzzle whose answer is worthless the moment it is found. Proof of Learning makes the training run itself the work that earns consensus; Proof of Deep Learning extends this to the integrity and authenticity of the resulting model; Proof of Training Quality asks the network to agree not merely that work happened but that the contribution was good. The same electricity now buys a trained model — and inherits one hard question in exchange: how do you verify the work was really done?</p>
+    <p><strong>Pay for the improvement, not the volume.</strong> In the Sharing Updatable Model framework a smart contract, CollaborativeTrainer, accepts data, runs an incentive mechanism and updates the model in one place. The prediction-market reward moves a contributor's balance by <em>b<sub>t</sub> = b<sub>t−1</sub> + L(h<sub>t−1</sub>, D) − L(h<sub>t</sub>, D)</em>: the loss on a held-out set before your update minus the loss after it. Submit noise and the term is negative. A companion mechanism — deposit, refund, take — requires a stake when submitting, refunds it after a waiting period if the data holds up, and forfeits it when the model disagrees with your label. In simulation the honest and dishonest populations separate cleanly while accuracy is preserved.</p>
+    <p><strong>Then read the prototypes honestly.</strong> DeepChain was actually built — a Corda prototype on MNIST, with parties uploading local gradients and workers paid through a processing contract. Accuracy improves as more parties join, exactly as the argument predicts; but throughput degrades as the gradient count grows, and total training time climbs with every party added. LearningChain shows the companion trade-off: differential-privacy noise buys real privacy and costs real test accuracy, while its l-nearest aggregation blunts Byzantine workers rather than removing them.</p>
+    <p><strong>Which is why the survey closes on challenges.</strong> Scalability, energy cost, and the need for consensus mechanisms designed for machine learning rather than inherited from cryptocurrency. A review that only sells the idea is worth nothing; the contribution is knowing precisely where the seams are. One of those seams — verifying that a claimed training run really happened — became the subject of the author's <a href="/lab/training-fingerprint/">Proof-of-Learning research</a> and <a href="/publication/2025-dissertation">dissertation</a>.</p>
   </details>
 
   <details class="lab-reveal">
