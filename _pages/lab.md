@@ -58,7 +58,7 @@ header:
   <a class="lab-mission-card" href="/lab/blockchain-ml/">
     <span class="lab-mission-card__code">08</span>
     <strong>Blockchain-Enhanced ML</strong>
-    <span>Commit, don't store: Merkle provenance, commit–reveal federated rounds, and the ceiling that keeps training off chain.</span>
+    <span>Consensus that trains instead of hashing, contracts that pay for the loss you removed, and what the prototypes actually measured.</span>
   </a>
   <a class="lab-mission-card" href="/lab/universal-jira/">
     <span class="lab-mission-card__code">09</span>
