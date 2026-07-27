@@ -156,7 +156,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree — so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
+      lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -389,7 +389,7 @@
       var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 220, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
       s.fadeIn(cap1, { at: 8.5, dur: 1.5 });
 
-      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once — and that is an engineering answer, not a hope.", { px: 480, py: 120, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
+      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 120, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
       s.fadeIn(tag2, { at: 16.5, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });
   }
@@ -402,11 +402,11 @@
       ["Majority voting", "P_{\\text{ind}} = \\sum_{i=m+1}^{N}\\binom{N}{i}q^{i}(1-q)^{N-i}",
         "With N=2m+1 channels the system fails iff a strict majority fails. As \\(q\\to0\\), \\(P_{\\text{ind}}=\\binom{N}{m+1}q^{m+1}(1+O(q))=\\Theta(q^{m+1})\\); for TMR exactly \\(3q^2-2q^3\\)."],
       ["Superlinear gain", "\\text{gain}=\\frac{q}{P_{\\text{ind}}}=\\frac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\frac{1}{3q}",
-        "Each extra pair of channels raises the failure rate to a higher power of q — on a log-log plot, a steeper slope. The unbounded gain is an <em>independent-model</em> idealisation only."],
+        "Each extra pair of channels raises the failure rate to a higher power of q: on a log-log plot, a steeper slope. The unbounded gain is an <em>independent-model</em> idealisation only."],
       ["Correlation floor", "P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q",
         "A first-order approximation (the exact Fleming β-factor is \\(\\rho q+(1-\\rho q)P_{\\text{ind}}(N,(1-\\rho)q)\\); both share the floor). The ρq term is independent of N, so for \\(q<\\tfrac12\\), \\(\\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\) and the safety multiplier saturates at \\(1/\\rho\\). Here \\(\\rho q\\) is a mission probability; \\(\\rho=\\beta\\in[0,1]\\)."],
       ["Ariane 5", "\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q",
-        "Flight 501 (4 Jun 1996): two SRI units, identical software, hit the same int16 overflow of BH — backup SRI 1 first, active SRI 2 ~72 ms later. Self-destruct ~39 s after H0 (30 s after lift-off), ~4 km. Identical software means ρ≈1, so N was irrelevant."]
+        "Flight 501 (4 Jun 1996): two SRI units, identical software, hit the same int16 overflow of BH: backup SRI 1 first, active SRI 2 ~72 ms later. Self-destruct ~39 s after H0 (30 s after lift-off), ~4 km. Identical software means ρ≈1, so N was irrelevant."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

@@ -179,7 +179,7 @@
       // lower-left corner never carries two competing texts
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
 
-      lower(s, "Two machines disagree about what happened, and no authority can settle it — yet a settlement layer, a fleet of drones, a swarm of AI agents all have to act on one history. Nakamoto's answer isn't a judge. It's a race that gets exponentially more expensive to rewrite the longer you wait.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
+      lower(s, "Two machines disagree about what happened, and no authority can settle it, yet a settlement layer, a fleet of drones, a swarm of AI agents all have to act on one history. Nakamoto's answer isn't a judge. It's a race that gets exponentially more expensive to rewrite the longer you wait.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
     }, { subtitle: "Trust with no trusted party: the true history is whatever is most expensive to rewrite." });
   }
 
@@ -227,11 +227,11 @@
       var e1 = s.tex2("\\text{Honest } (p) + \\text{Attacker } (q) = 100\\%", { px: 650, py: 150, size: "1.5rem", color: "#e8eef9" });
       var e2 = s.tex2("\\text{Attacker Win Chance } = q", { px: 650, py: 360, size: "1.5rem", color: AMB });
       s.write(e1, { at: 1.5, dur: 1.5 }); s.write(e2, { at: 4.5, dur: 1.8 });
-      var note = s.caption("each flip <em>independent</em> of the entire past — memoryless", { px: 280, py: 420, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
+      var note = s.caption("each flip <em>independent</em> of the entire past, memoryless", { px: 280, py: 420, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(note, { at: 4.5, dur: 1.2 });
       s.fadeOut(note, { at: 6.0, dur: 0.75 }); // fade out before lower third appears
 
-      lower(s, "Mining is a biased coin flip based on hashrate. Energy is the price of rewriting history — and the honest majority just outspends the liar.", 7.0, { maxWidth: "70%" });
+      lower(s, "Mining is a biased coin flip based on hashrate. Energy is the price of rewriting history, and the honest majority just outspends the liar.", 7.0, { maxWidth: "70%" });
     }, { subtitle: "The race is a biased coin flip. Energy buys probability." });
   }
 
@@ -461,8 +461,8 @@
       s.write(law, { at: T3 + 5.6, dur: 1.8 });
       s.pulse(law, { at: T3 + 8, dur: 1.2, amp: 0.1 });
 
-      lower(s, "Forget both chains — only the gap matters. Each block moves it one step, the coin is rigged 70/30, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.", 13.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Only the gap matters — and the walk is rigged against the attacker." });
+      lower(s, "Forget both chains: only the gap matters. Each block moves it one step, the coin is rigged 70/30, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.", 13.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Only the gap matters, and the walk is rigged against the attacker." });
   }
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
@@ -712,7 +712,7 @@
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 12, dur: 1.2 });
 
-      lower(s, "What this really buys is finality with no one in charge — the cost of a lie, denominated in energy and time.", 7.5, { maxWidth: "70%" });
+      lower(s, "What this really buys is finality with no one in charge: the cost of a lie, denominated in energy and time.", 7.5, { maxWidth: "70%" });
     }, { subtitle: "The real question of the autonomous age isn't 'is this true?' but 'what would it cost to forge?'" });
   }
 
@@ -726,7 +726,7 @@
       ["Satoshi §11", "P(z) = 1 - \\sum_{k=0}^{z}\\frac{\\lambda^{k}e^{-\\lambda}}{k!}\\bigl(1-(q/p)^{z-k}\\bigr),\\ \\lambda=z\\tfrac{q}{p}",
         "The attacker mines secretly during the same window; their count is taken Poisson with mean \\(\\lambda=zq/p\\). This is the whitepaper's <em>AttackerSuccessProbability</em> routine verbatim."],
       ["The approximation", "k \\sim \\mathrm{NB}(z,p)\\ \\text{(exact)} \\;\\ne\\; \\mathrm{Poisson}(zq/p)",
-        "Satoshi fixes the honest window at its <em>mean</em>; the exact count given z honest blocks is Negative-Binomial. The Poisson form therefore <em>understates</em> risk — e.g. \\(0.000591\\) exact vs \\(0.000243\\) at \\(q{=}0.1,z{=}6\\) (Grunspan–Pérez-Marco 2017)."],
+        "Satoshi fixes the honest window at its <em>mean</em>; the exact count given z honest blocks is Negative-Binomial. The Poisson form therefore <em>understates</em> risk, e.g. \\(0.000591\\) exact vs \\(0.000243\\) at \\(q{=}0.1,z{=}6\\) (Grunspan–Pérez-Marco 2017)."],
       ["The punchline", "P_{0.1}(6)=0.024\\%,\\quad P_{0.3}(6)=13.2\\%",
         "At six confirmations, moving the adversary from 10% to 30% of hashrate raises reversal probability ~544× under the Poisson formula (~264× under exact NB). Security is exponential in z; its base is q/p."]
     ];

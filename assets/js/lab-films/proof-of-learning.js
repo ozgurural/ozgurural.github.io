@@ -109,7 +109,7 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "In 2021, Proof-of-Learning promised something remarkable — prove you trained a model, not just downloaded it. Within a year, attackers had spoofed it. My dissertation asks the harder question: can a proof of work be made impossible to fake?", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "In 2021, Proof-of-Learning promised something remarkable: prove you trained a model, not just downloaded it. Within a year, attackers had spoofed it. My dissertation asks the harder question: can a proof of work be made impossible to fake?", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -281,7 +281,7 @@
             ctx.shadowBlur = 0;
           }
         }
-        ctx.fillStyle = h.rgba("#dbeafe", 0.85); ctx.fillText("each step's size — sorted; recheck only the biggest", x0, by + 24);
+        ctx.fillStyle = h.rgba("#dbeafe", 0.85); ctx.fillText("each step's size, sorted; recheck only the biggest", x0, by + 24);
         // replay into delta-ball (right)
         if (lt > 9) {
           var rp = clamp01((lt - 9) / 3), bx2 = 760, by2 = 200;
@@ -329,7 +329,7 @@
 
         // ===== BOTTOM: the forger's way — an exploding tree of possibilities =====
         ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
-        ctx.fillText("THE FORGER'S WAY  —  guess which path could have led to the stolen model", 90, 204);
+        ctx.fillText("THE FORGER'S WAY:  guess which path could have led to the stolen model", 90, 204);
         var rootX = 128, dx = 112, topY = 234, botY = 428, D = 6, t0 = 2.6, dStep = 1.15;
         function nX(d) { return rootX + d * dx; }
         function nY(d, k) { return topY + (k + 0.5) / Math.pow(2, d) * (botY - topY); }
@@ -366,7 +366,7 @@
           if (shown >= D) {
             var beat = 0.7 + 0.3 * Math.abs(Math.sin(lt * 2));
             ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.85 * beat);
-            ctx.fillText("doubling every step —", 632, 158);
+            ctx.fillText("doubling every step", 632, 158);
             ctx.fillText("no shortcut, no way to guess", 632, 174);
           }
         }
@@ -428,7 +428,7 @@
       s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
-      lower(s, "This is the core of my dissertation — and the SecurePoL paper: a second lock, a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "This is the core of my dissertation, and the SecurePoL paper: a second lock, a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
@@ -485,7 +485,7 @@
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
       var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
-      lower(s, "As models are cloned, distilled, and stolen, what matters is no longer what a model knows — but whether it can prove how it came to know it. Compute leaves a fingerprint; my work makes that fingerprint impossible to forge.", 12.0, { maxWidth: "92%", px: 60 });
+      lower(s, "As models are cloned, distilled, and stolen, what matters is no longer what a model knows, but whether it can prove how it came to know it. Compute leaves a fingerprint; my work makes that fingerprint impossible to forge.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 
@@ -499,7 +499,7 @@
       ["Verification", "d_2(W'_{t+k},\\, W_{t+k}) \\le \\delta \\ \\wedge\\ Tr_{e,(q),k}",
         "Replay only the top-Q largest-magnitude updates per epoch: a reproduction-error check \\(d_2\\le\\delta\\) AND the reachability event \\(Tr\\) that the k forward steps actually land there. The slack \\(\\delta\\) absorbs hardware/software/optimizer nondeterminism."],
       ["Security", "\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\ \\text{(design property)}",
-        "Entropy of the process grows linearly in T, so \\(\\#\\text{paths}\\sim e^{\\Theta(T)}\\). This cost asymmetry is a <em>desideratum</em> (Jia 2021, Property 2), not a theorem — and was later shown bypassable (Zhang et al. 2022; Fang et al. 2023)."],
+        "Entropy of the process grows linearly in T, so \\(\\#\\text{paths}\\sim e^{\\Theta(T)}\\). This cost asymmetry is a <em>desideratum</em> (Jia 2021, Property 2), not a theorem, and was later shown bypassable (Zhang et al. 2022; Fang et al. 2023)."],
       ["SecurePoL", "\\text{Accept} \\iff (d_2\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f)=\\sigma)",
         "The author binds the trajectory check to a feature watermark, turning two individually-bypassable checks into one joint constraint a spoofer cannot meet without genuinely training (Ural &amp; Yoshigoe, IEEE Access 2025)."]
     ];

@@ -504,7 +504,7 @@
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
       var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
-      var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights — it must survive every transformation an adversary can apply. Provenance you can prove is the price of trusting a model you never watched being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
+      var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights; it must survive every transformation an adversary can apply. Provenance you can prove is the price of trusting a model you never watched being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
       s.fadeIn(cap2, { at: 8.5, dur: 1.5 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
@@ -523,7 +523,7 @@
       ["Power", "\\text{Power}=\\Phi(d-z_\\alpha),\\quad \\text{AUC}=\\Phi(d/\\sqrt2)",
         "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z>z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) (invisible) while \\(d\\gg1\\) (certain)."],
       ["Why it survives", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
-        "A utility-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) can remove at most \\(\\rho\\) of the statistic — and because w is <em>secret</em>, the thief cannot align δ with it. Assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
+        "A utility-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) can remove at most \\(\\rho\\) of the statistic, and because w is <em>secret</em>, the thief cannot align δ with it. Assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

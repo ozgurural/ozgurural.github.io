@@ -265,7 +265,7 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk the journey and you have a model — reproduce the journey and you have a proof it was really trained.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk the journey and you have a model; reproduce the journey and you have a proof it was really trained.", 6.0, { out: 19.8, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
@@ -660,7 +660,7 @@
 
       lower(s, "In high dimensions, most critical points are saddles. Momentum and noise help escape them.", 16.8, { maxWidth: "92%", px: 60 });
 
-      var adv = s.caption("a landscape no one can fully see is exactly what an attacker hides in — and a verifier must pin down.", { px: 280, py: 430, anchor: "center", align: "center", size: "0.85rem", color: "#f1f5f9", maxWidth: "340px" });
+      var adv = s.caption("a landscape no one can fully see is exactly what an attacker hides in, and a verifier must pin down.", { px: 280, py: 430, anchor: "center", align: "center", size: "0.85rem", color: "#f1f5f9", maxWidth: "340px" });
       s.fadeIn(adv, { at: 12, dur: 1.5 });
 
       var vis = s.caption("In a world where anyone can descend, trust no longer comes from the model. It comes from proving how the model got there.", { px: 470, py: 160, anchor: "top", align: "center", size: "1.05rem", color: "#e8eef9", maxWidth: "75%" });
@@ -686,11 +686,11 @@
     if (!host || !window.katex) return;
     var blocks = [
       ["The update", "\\theta_{t+1} = \\theta_t - \\alpha\\, v_{t+1}, \\qquad v_{t+1} = \\beta\\, v_t + \\nabla L(\\theta_t)",
-        "Plain gradient descent is the \\(\\beta=0\\) case. With \\(v_0=0\\), the buffer is the exponentially-weighted <em>sum</em> \\(v_{t+1}=\\sum_{k=0}^{t}\\beta^{\\,t-k}\\nabla L(\\theta_k)\\) (not an average — that would carry a \\(1-\\beta\\) factor)."],
+        "Plain gradient descent is the \\(\\beta=0\\) case. With \\(v_0=0\\), the buffer is the exponentially-weighted <em>sum</em> \\(v_{t+1}=\\sum_{k=0}^{t}\\beta^{\\,t-k}\\nabla L(\\theta_k)\\) (not an average; that would carry a \\(1-\\beta\\) factor)."],
       ["Local stability", "\\theta_{t+1}=(1-\\alpha\\lambda_i)\\,\\theta_t \\;\\Rightarrow\\; 0<\\alpha<\\tfrac{2}{\\lambda_{\\max}}",
         "Diagonalising the Hessian \\(H=Q\\,\\mathrm{diag}(\\lambda_i)\\,Q^\\top\\) decouples GD into per-axis contractions \\(|1-\\alpha\\lambda_i|\\). Convergence requires this be \\(<1\\) on every axis."],
       ["Optimal rates", "\\alpha^\\star=\\tfrac{2}{L+\\mu}\\Rightarrow\\tfrac{\\kappa-1}{\\kappa+1}, \\qquad \\text{heavy-ball}\\Rightarrow\\tfrac{\\sqrt{\\kappa}-1}{\\sqrt{\\kappa}+1}",
-        "With \\(\\kappa=L/\\mu\\), the globally optimal GD step \\(\\alpha^\\star=2/(L{+}\\mu)\\) gives rate \\((\\kappa{-}1)/(\\kappa{+}1)\\); the simpler \\(\\alpha=1/L\\) gives the slightly worse \\((\\kappa{-}1)/\\kappa\\). Polyak's optimally-tuned heavy ball achieves the \\(\\sqrt{\\kappa}\\) law (Polyak 1964) — a strongly-convex, full-gradient result."],
+        "With \\(\\kappa=L/\\mu\\), the globally optimal GD step \\(\\alpha^\\star=2/(L{+}\\mu)\\) gives rate \\((\\kappa{-}1)/(\\kappa{+}1)\\); the simpler \\(\\alpha=1/L\\) gives the slightly worse \\((\\kappa{-}1)/\\kappa\\). Polyak's optimally-tuned heavy ball achieves the \\(\\sqrt{\\kappa}\\) law (Polyak 1964), a strongly-convex, full-gradient result."],
       ["Saddle prevalence", "P(\\text{local min}\\mid \\nabla L=0)\\to 0 \\ \\text{as } d\\to\\infty",
         "In the Bray–Dean isotropic Gaussian-random-field model the Hessian spectrum is a Wigner semicircle shifted by the energy/error, so the index (fraction of negative eigenvalues) rises monotonically with loss. Imported to deep nets by Dauphin et al. (2014); for real networks the spectrum is only <em>approximately</em> semicircular but still shifts with error."]
     ];
