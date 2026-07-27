@@ -178,7 +178,7 @@
 
       lower(
         s,
-        "Cyber-security incidents surface publicly before they surface officially — someone tweets that a bank's app is down long before a statement is issued.",
+        "Cyber-security incidents surface publicly before they surface officially: someone tweets that a bank's app is down long before a statement is issued.",
         1.4
       );
       lower(
@@ -388,7 +388,7 @@
         var sIn = clamp01((lt - 0.8) / 0.7);
         if (sIn > 0) {
           ctx.globalAlpha = op * sIn;
-          box(ctx, h, 380, 84, 200, 58, CY, sIn, "güvenlik", "stem — 'security'");
+          box(ctx, h, 380, 84, 200, 58, CY, sIn, "güvenlik", "stem: 'security'");
           ctx.globalAlpha = op;
         }
 
@@ -466,7 +466,7 @@
       );
       lower(
         s,
-        "This is the low-resource penalty, and it is not solved by a bigger classifier. It is solved before the classifier — by normalising surface forms back onto their stems so the evidence concentrates.",
+        "This is the low-resource penalty, and it is not solved by a bigger classifier. It is solved before the classifier, by normalising surface forms back onto their stems so the evidence concentrates.",
         22.5
       );
       lower(
@@ -642,28 +642,28 @@
         tex:
           "\\text{sensitivity: detect on } t_{\\text{attack}};\\qquad \\text{certainty: } \\frac{\\text{false positives}}{\\text{detections}} < 0.30 \\ \\text{over the following two weeks}",
         note:
-          "The system is validated against a known incident — the nic.tr denial-of-service attack of 14 December 2015 — using three corpora drawn with the Twitter Premium API: 2,310 tweets across the year before, 28 on the attack day, and roughly 400 across the fortnight after. Both criteria were met. Fixing acceptance criteria in advance, on an incident with a known answer, is what makes the result checkable in the absence of a labelled Turkish corpus."
+          "The system is validated against a known incident, the nic.tr denial-of-service attack of 14 December 2015, using three corpora drawn with the Twitter Premium API: 2,310 tweets across the year before, 28 on the attack day, and roughly 400 across the fortnight after. Both criteria were met. Fixing acceptance criteria in advance, on an incident with a known answer, is what makes the result checkable in the absence of a labelled Turkish corpus."
       },
       {
         h: "Why the keyword vector is squeezed from both sides",
         tex:
           "|K|\\uparrow\\;\\Rightarrow\\;\\text{ingest}\\uparrow,\\ \\text{FP}\\uparrow\\;\\Rightarrow\\;\\text{certainty}\\downarrow;\\qquad |K|\\downarrow\\;\\Rightarrow\\;\\text{missed or late events}\\;\\Rightarrow\\;\\text{sensitivity}\\downarrow",
         note:
-          "With no labelled training set the keyword vector K carries the system, and its size trades the two acceptance criteria against each other directly. The paper resolves this empirically: candidate terms are drawn by TF-IDF from the incident corpora, then each is A/B tested and kept only if it raises detections without materially raising false-positive detections. Note what is being optimised — the false-positive term, not recall."
+          "With no labelled training set the keyword vector K carries the system, and its size trades the two acceptance criteria against each other directly. The paper resolves this empirically: candidate terms are drawn by TF-IDF from the incident corpora, then each is A/B tested and kept only if it raises detections without materially raising false-positive detections. Note what is being optimised: the false-positive term, not recall."
       },
       {
         h: "Morphology: why normalisation precedes everything",
         tex:
           "|V_{\\text{surface}}|\\;\\approx\\;|V_{\\text{stem}}|\\times\\prod_{j}(1+m_j)\\qquad\\xrightarrow{\\ \\text{ITU NLP}\\ }\\qquad |V_{\\text{normalised}}|\\approx|V_{\\text{stem}}|",
         note:
-          "Turkish is agglutinative: meaning is built by stacking suffix slots, so one stem yields a combinatorial family of surface forms. Under keyword matching or bag-of-words each form is a separate token, splitting a term's evidence across many nearly-empty features. The pipeline routes every document through the ITU NLP web service (Eryiğit, 2014) for normalisation before detection — in a low-resource setting this step moves the result more than the choice of model does."
+          "Turkish is agglutinative: meaning is built by stacking suffix slots, so one stem yields a combinatorial family of surface forms. Under keyword matching or bag-of-words each form is a separate token, splitting a term's evidence across many nearly-empty features. The pipeline routes every document through the ITU NLP web service (Eryiğit, 2014) for normalisation before detection: in a low-resource setting this step moves the result more than the choice of model does."
       },
       {
         h: "Detection as an anomaly on entity mentions",
         tex:
           "c_e(t)=\\#\\{\\text{documents mentioning } e \\text{ on day } t\\};\\qquad \\text{alert} \\iff c_e(t) > \\tau_e\\big(c_e(t-1),\\,c_e(t-2),\\dots\\big)",
         note:
-          "Detection does not ask a classifier whether a document describes an attack. A named-entity vector lists what can be attacked — institutions, government organisations, countries — and each entity is counted per day against a threshold derived from its own history, so a normally-quiet entity trips on a smaller absolute jump than a constantly-discussed one. On 14 December 2015 mentions of nic.tr rose from a background of a few per day to 28. Reported performance on a sample run: 437 documents (186 tweets, 251 Hürriyet articles) produced 29 detections, 22 true and 7 false — about 76% success. The paper also publishes its failure mode: the term “hacklendi” firing on an ordinary conversational message that describes no event at all."
+          "Detection does not ask a classifier whether a document describes an attack. A named-entity vector lists what can be attacked (institutions, government organisations, countries), and each entity is counted per day against a threshold derived from its own history, so a normally-quiet entity trips on a smaller absolute jump than a constantly-discussed one. On 14 December 2015 mentions of nic.tr rose from a background of a few per day to 28. Reported performance on a sample run: 437 documents (186 tweets, 251 Hürriyet articles) produced 29 detections, 22 true and 7 false, about 76% success. The paper also publishes its failure mode: the term “hacklendi” firing on an ordinary conversational message that describes no event at all."
       }
     ];
     var html = "";

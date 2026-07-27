@@ -209,7 +209,7 @@
       );
       lower(
         s,
-        "And be precise about the guarantee. A record of the process is evidence of what happened — it is not a judgement of whether the data was any good. That takes a separate mechanism, which is where the interesting work is.",
+        "And be precise about the guarantee. A record of the process is evidence of what happened; it is not a judgement of whether the data was any good. That takes a separate mechanism, which is where the interesting work is.",
         30.6,
         { out: 41.0 }
       );
@@ -291,7 +291,7 @@
 
       lower(
         s,
-        "Then the survey turns to the part most reviews skip: the consensus layer itself. Proof of Work reaches agreement by making everyone hash until someone gets lucky — and that computation has no value the moment it is spent.",
+        "Then the survey turns to the part most reviews skip: the consensus layer itself. Proof of Work reaches agreement by making everyone hash until someone gets lucky, and that computation has no value the moment it is spent.",
         1.4
       );
       lower(
@@ -301,7 +301,7 @@
       );
       lower(
         s,
-        "Proof of Training Quality goes further and asks the network to agree not merely that work happened, but that the contribution was <em>good</em> — which is the question the ledger alone could never answer.",
+        "Proof of Training Quality goes further and asks the network to agree not merely that work happened, but that the contribution was <em>good</em>, which is the question the ledger alone could never answer.",
         24.0
       );
       lower(
@@ -444,7 +444,7 @@
       );
       lower(
         s,
-        "The reward is not paid for volume. A contributor's balance moves by the improvement their data caused — the loss on a held-out set before their update, minus the loss after it. Contribute noise and the term is negative.",
+        "The reward is not paid for volume. A contributor's balance moves by the improvement their data caused: the loss on a held-out set before their update, minus the loss after it. Contribute noise and the term is negative.",
         14.5
       );
       lower(
@@ -454,7 +454,7 @@
       );
       lower(
         s,
-        "In simulation the two populations separate cleanly — good agents accumulate balance, bad agents drain to nothing, and the model's accuracy is preserved throughout. The market does the filtering the ledger cannot.",
+        "In simulation the two populations separate cleanly: good agents accumulate balance, bad agents drain to nothing, and the model's accuracy is preserved throughout. The market does the filtering the ledger cannot.",
         30.0,
         { out: 49.0 }
       );
@@ -570,7 +570,7 @@
 
       lower(
         s,
-        "Does any of it work? DeepChain was built and measured — a Corda prototype trained on MNIST, with parties uploading local gradients and workers paid by a processing contract.",
+        "Does any of it work? DeepChain was built and measured: a Corda prototype trained on MNIST, with parties uploading local gradients and workers paid by a processing contract.",
         1.4
       );
       lower(
@@ -590,7 +590,7 @@
       );
       lower(
         s,
-        "A review that only sells the idea is worth nothing. The useful contribution is knowing precisely where the seams are — and one of those seams, verifying that training really happened, became the subject of my dissertation.",
+        "A review that only sells the idea is worth nothing. The useful contribution is knowing precisely where the seams are, and one of those seams, verifying that training really happened, became the subject of my dissertation.",
         35.0,
         { out: 45.0 }
       );
@@ -619,19 +619,19 @@
         h: "What the chain carries, and what it does not",
         tex: "\\text{on-chain: } \\{\\theta_t,\\ \\text{tx},\\ \\text{validation}\\}\\qquad \\text{off-chain: raw data } D_k \\ \\text{(stays with its owner)}",
         note:
-          "Blockchain contributes six properties the survey enumerates — distributed ledger, immutability, cryptography, consensus, transparency, irreversibility — and they apply to the record of training, not to the training set. Model parameters and validation results are shared and updated on chain while raw data remains on the contributors' devices, which is what makes the arrangement privacy-preserving instead of merely public. The record is evidence of process; it is not a judgement of data quality."
+          "Blockchain contributes six properties the survey enumerates (distributed ledger, immutability, cryptography, consensus, transparency, irreversibility), and they apply to the record of training, not to the training set. Model parameters and validation results are shared and updated on chain while raw data remains on the contributors' devices, which is what makes the arrangement privacy-preserving instead of merely public. The record is evidence of process; it is not a judgement of data quality."
       },
       {
         h: "Consensus that produces something",
         tex: "\\text{PoW: } H(\\text{nonce}\\,\\|\\,b) < \\tau \\;\\longrightarrow\\; \\text{PoL / PoDL / PoQ: the training run is the work}",
         note:
-          "Proof of Work spends electricity on a puzzle whose answer is worthless once found. The survey reviews the alternatives that channel that compute into training instead: Proof of Learning makes model training the consensus work, Proof of Deep Learning targets the integrity and authenticity of the resulting model, and Proof of Training Quality asks the network to agree on the quality of a contribution rather than merely its existence. Each buys a trained model with the same electricity — and each inherits one hard question: verifying that the claimed work was actually performed."
+          "Proof of Work spends electricity on a puzzle whose answer is worthless once found. The survey reviews the alternatives that channel that compute into training instead: Proof of Learning makes model training the consensus work, Proof of Deep Learning targets the integrity and authenticity of the resulting model, and Proof of Training Quality asks the network to agree on the quality of a contribution rather than merely its existence. Each buys a trained model with the same electricity, and each inherits one hard question: verifying that the claimed work was actually performed."
       },
       {
         h: "Rewarding the improvement you caused",
         tex: "b_t = b_{t-1} + L\\big(h_{t-1},D\\big) - L\\big(h_t,D\\big)",
         note:
-          "From the Sharing Updatable Model framework's prediction-market incentive: a contributor's balance moves by how much their update reduced the loss on a held-out set D. Volume earns nothing; noise earns a negative term. A second mechanism — deposit, refund, take — requires a stake d when submitting data, refunds it after a waiting period (t ≥ 7 days) if the data holds up, and forfeits it when the model's prediction disagrees with the submitted label. In simulation the good and bad populations separate: honest balances grow, dishonest ones drain to zero, and model accuracy is preserved."
+          "From the Sharing Updatable Model framework's prediction-market incentive: a contributor's balance moves by how much their update reduced the loss on a held-out set D. Volume earns nothing; noise earns a negative term. A second mechanism (deposit, refund, take) requires a stake d when submitting data, refunds it after a waiting period (t ≥ 7 days) if the data holds up, and forfeits it when the model's prediction disagrees with the submitted label. In simulation the good and bad populations separate: honest balances grow, dishonest ones drain to zero, and model accuracy is preserved."
       },
       {
         h: "The measured limits",

@@ -163,7 +163,7 @@
           ctx.globalAlpha = op * bIn;
           ctx.fillStyle = h.rgba(MUTED, bIn);
           ctx.font = "13px " + MONO;
-          ctx.fillText("transport delay budget — pilot input to first response", 70, 275);
+          ctx.fillText("transport delay budget: pilot input to first response", 70, 275);
 
           // ceiling track
           ctx.fillStyle = h.rgba(GREY, bIn * 0.25);
@@ -193,7 +193,7 @@
           ctx.fillStyle = h.rgba(RED, bIn);
           ctx.font = "bold 14px " + MONO;
           ctx.textAlign = "right";
-          ctx.fillText("150 ms — qualification ceiling", 886, 356);
+          ctx.fillText("150 ms: qualification ceiling", 886, 356);
           ctx.textAlign = "left";
 
           if (lt > 12.2) {
@@ -222,7 +222,7 @@
       );
       lower(
         s,
-        "The strictest one is <strong>transport delay</strong> — the total time from a pilot's control input until the motion, visual and instrument systems respond. For a Level D aeroplane device the ceiling is <strong>150 milliseconds</strong>.",
+        "The strictest one is <strong>transport delay</strong>, the total time from a pilot's control input until the motion, visual and instrument systems respond. For a Level D aeroplane device the ceiling is <strong>150 milliseconds</strong>.",
         9.0
       );
       lower(
@@ -232,7 +232,7 @@
       );
       lower(
         s,
-        "Note what kind of number this is. It is not a target you optimise toward — it is a <em>gate</em>. Miss it and the device does not qualify, and the training hours flown on it do not count.",
+        "Note what kind of number this is. It is not a target you optimise toward; it is a <em>gate</em>. Miss it and the device does not qualify, and the training hours flown on it do not count.",
         23.0
       );
       lower(
@@ -362,19 +362,19 @@
           ctx.globalAlpha = op * nIn;
           ctx.fillStyle = h.rgba(AMB, nIn);
           ctx.font = "13px " + MONO;
-          ctx.fillText("assumes independent frames — real overruns cluster, so this is the optimistic case", 90, 400);
+          ctx.fillText("assumes independent frames: real overruns cluster, so this is the optimistic case", 90, 400);
           ctx.globalAlpha = op;
         }
       });
 
       lower(
         s,
-        "Inside that budget the simulator runs a fixed cadence. At 60 hertz every subsystem gets 16.67 milliseconds to sample, solve and publish — a deadline, not an average.",
+        "Inside that budget the simulator runs a fixed cadence. At 60 hertz every subsystem gets 16.67 milliseconds to sample, solve and publish, a deadline, not an average.",
         1.6
       );
       lower(
         s,
-        "Here is the trap. Mean frame time is 8.6 milliseconds: roughly half the budget, and a dashboard would call that healthy. But a deadline is not met on average — it is met or missed, frame by frame.",
+        "Here is the trap. Mean frame time is 8.6 milliseconds: roughly half the budget, and a dashboard would call that healthy. But a deadline is not met on average; it is met or missed, frame by frame.",
         9.0
       );
       lower(
@@ -384,7 +384,7 @@
       );
       lower(
         s,
-        "Loosen it to one in a thousand — still a 99.9% success rate, still an excellent-looking number — and the pilot gets 864 visual stutters in one session.",
+        "Loosen it to one in a thousand (still a 99.9% success rate, still an excellent-looking number), and the pilot gets 864 visual stutters in one session.",
         26.5
       );
       lower(
@@ -490,7 +490,7 @@
           ctx.setLineDash([]);
           ctx.fillStyle = h.rgba(RED, sIn);
           ctx.font = "bold 14px " + MONO;
-          ctx.fillText("19.4 ms — this frame is late for everyone", 640, 316);
+          ctx.fillText("19.4 ms: this frame is late for everyone", 640, 316);
           ctx.globalAlpha = op;
         }
 
@@ -504,7 +504,7 @@
 
       lower(
         s,
-        "A full-flight simulator is not one computer. It is a rack of them — flight model, avionics, three visual channels, sound, motion, instructor station — all publishing into the same frame.",
+        "A full-flight simulator is not one computer. It is a rack of them: flight model, avionics, three visual channels, sound, motion, instructor station, all publishing into the same frame.",
         1.6
       );
       lower(
@@ -514,12 +514,12 @@
       );
       lower(
         s,
-        "Reliability composes the same way — by multiplication. Nine hosts that each hit their deadline 99.9% of the time give you 99.1% of frames clean, which is about 7,800 bad frames in a four-hour session.",
+        "Reliability composes the same way, by multiplication. Nine hosts that each hit their deadline 99.9% of the time give you 99.1% of frames clean, which is about 7,800 bad frames in a four-hour session.",
         13.6
       );
       lower(
         s,
-        "And one straggler is enough. A single host at 19 milliseconds makes the frame late for everyone — the flight model, the visuals and the motion platform all wait.",
+        "And one straggler is enough. A single host at 19 milliseconds makes the frame late for everyone: the flight model, the visuals and the motion platform all wait.",
         21.6
       );
       lower(
@@ -600,7 +600,7 @@
           ctx.globalAlpha = op * aIn;
           ctx.fillStyle = h.rgba(RED, aIn);
           ctx.font = "bold 15px " + MONO;
-          ctx.fillText("overrun counter is the reliable signal — step time can miss a spike between polls", 90, 420);
+          ctx.fillText("overrun counter is the reliable signal; step time can miss a spike between polls", 90, 420);
           ctx.globalAlpha = op;
         }
 
@@ -620,7 +620,7 @@
       );
       lower(
         s,
-        "The overrun counter is the signal to trust. Step time is sampled, so a spike can hide between two polls — but an overrun is counted by the runtime the moment it happens and cannot be missed.",
+        "The overrun counter is the signal to trust. Step time is sampled, so a spike can hide between two polls, but an overrun is counted by the runtime the moment it happens and cannot be missed.",
         13.6
       );
       lower(
@@ -630,7 +630,7 @@
       );
       lower(
         s,
-        "That is the whole discipline. Determinism is not a property you optimise in at the end — it is a budget, allocated per host, enforced every frame, and proven by the instrument you shipped alongside it.",
+        "That is the whole discipline. Determinism is not a property you optimise in at the end; it is a budget, allocated per host, enforced every frame, and proven by the instrument you shipped alongside it.",
         32.0,
         { out: 41.2 }
       );
@@ -665,21 +665,21 @@
         tex:
           "N=f\\cdot T_{\\text{session}}=60\\,\\text{Hz}\\times 4\\,\\text{h}=864{,}000\\ \\text{frames};\\qquad \\mathbb{E}[K]=N\\,p",
         note:
-          "A deadline is met or missed per frame, so the quantity that matters is the tail mass beyond the budget, not the average. At p = 10⁻⁵ a four-hour session still expects ~8.6 overruns; at p = 10⁻³ — a 99.9% success rate — it expects ~864. The independence assumption behind E[K] = Np is optimistic: GC pauses and network stalls take out consecutive frames, so real sessions cluster their failures."
+          "A deadline is met or missed per frame, so the quantity that matters is the tail mass beyond the budget, not the average. At p = 10⁻⁵ a four-hour session still expects ~8.6 overruns; at p = 10⁻³ (a 99.9% success rate) it expects ~864. The independence assumption behind E[K] = Np is optimistic: GC pauses and network stalls take out consecutive frames, so real sessions cluster their failures."
       },
       {
         h: "Composition across hosts",
         tex:
           "T_{\\text{frame}}=\\max_{i\\le n} T_i,\\qquad \\Pr[\\text{frame ok}]=\\prod_{i\\le n}\\Pr[T_i\\le \\tau]=0.999^{9}\\approx 0.991",
         note:
-          "A full-flight simulator is a distributed system: the frame closes when the slowest participant publishes, so latency composes as a maximum and reliability as a product. Nine hosts at three nines each yield ~99.1% clean frames — roughly 7,800 bad frames per four-hour session. This is why the deadline budget has to be allocated and enforced per host; a system-wide average is not something an engineer can design against."
+          "A full-flight simulator is a distributed system: the frame closes when the slowest participant publishes, so latency composes as a maximum and reliability as a product. Nine hosts at three nines each yield ~99.1% clean frames, roughly 7,800 bad frames per four-hour session. This is why the deadline budget has to be allocated and enforced per host; a system-wide average is not something an engineer can design against."
       },
       {
         h: "What to instrument",
         tex:
-          "\\text{overruns}(t)\\ \\text{— counted by the runtime};\\qquad \\text{step time} \\ \\text{— sampled at } f_{\\text{poll}} \\ll f_{\\text{frame}}",
+          "\\text{overruns}(t)\\ \\text{, counted by the runtime};\\qquad \\text{step time} \\ \\text{, sampled at } f_{\\text{poll}} \\ll f_{\\text{frame}}",
         note:
-          "Sampled step time can miss a spike that occurs between two polls; an overrun counter is incremented by the runtime at the moment the deadline is breached and therefore cannot be missed. Monotonic counters are the trustworthy primitive for deadline monitoring — sampled gauges are for trend, not for compliance."
+          "Sampled step time can miss a spike that occurs between two polls; an overrun counter is incremented by the runtime at the moment the deadline is breached and therefore cannot be missed. Monotonic counters are the trustworthy primitive for deadline monitoring; sampled gauges are for trend, not for compliance."
       }
     ];
 

@@ -15,7 +15,7 @@ header:
   <p class="lab-card__lead">Smart contracts are blind logic gates. They cannot see the outside world. An oracle feeds them data, but what if the data requires pattern recognition, like analyzing a satellite image or classifying a loan application? You cannot run a neural network on-chain. This animation explains how <strong>zkML (Zero-Knowledge Machine Learning)</strong> and <strong>Optimistic Fraud Proofs</strong> bridge the gap, bringing off-chain AI inference on-chain with cryptographic certainty.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span><strong>Open research direction of the author</strong> — not yet published, and a natural continuation of the <a href="/publication/2023-ieee-access-survey">Blockchain-Enhanced ML survey</a> (IEEE Access 2023). The question: by what mechanism can a deterministic chain accept a claim about a probabilistic model it cannot re-execute? The film works through the candidate answers — zero-knowledge proofs of inference and optimistic challenge windows — and where each one currently breaks. Feedback and collaborators welcome.</span>
+    <span><strong>Open research direction of the author</strong>, not yet published, and a natural continuation of the <a href="/publication/2023-ieee-access-survey">Blockchain-Enhanced ML survey</a> (IEEE Access 2023). The question: by what mechanism can a deterministic chain accept a claim about a probabilistic model it cannot re-execute? The film works through the candidate answers: zero-knowledge proofs of inference and optimistic challenge windows, and where each one currently breaks. Feedback and collaborators welcome.</span>
   </div>
 
   <div class="lab-film">
