@@ -30,6 +30,24 @@ npm run build:narration # extracts lower() texts to scripts/narration.json (trac
 
 Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a classic deferred script. Plotly ships separately via `assets/js/plotly-blocks.js` and is only included when a page contains a plotly fenced block.
 
+## House rules for content
+
+These are the site owner's standing rules. They apply to every agent and every commit.
+
+**No em-dashes in anything a visitor can read.** Em-dashes read as AI-generated and the site is deliberately clear of them. This covers page copy *and* the film scripts, where subtitle strings (`lower(...)`), `s.caption(...)` and `ctx.fillText(...)` all render on screen. Replace each one with the punctuation the sentence actually needs: parentheses for a list that already contains commas, a colon where the second half explains the first, a semicolon between two independent clauses, a comma for an appositive. Never do a blind `—` → `,` swap; it produces comma splices. Leave alone: code comments (they never render), en-dashes in ranges (`2020–2021`, `36–40 hours`), and mathematical minus signs. Check before committing:
+
+```bash
+grep -rn '—' _pages _posts _publications | grep -v _site   # must be empty
+```
+
+**Films must be built from the source they cite.** A film may only name a mechanism that the cited paper actually contains. Reconstructing a paper from search summaries and then crediting the paper has happened twice and both times produced mechanisms the author never wrote. Read the paper first. If a film presents the author's own unpublished thinking, label it as such (`Open research direction of the author, not yet published`) rather than attaching the nearest publication. Prefer stating a paper's measured results, with numbers, over describing it in the abstract.
+
+**Avoid AI-tell phrasing.** No "delve", "leverage", "seamless", "cutting-edge", "sits at the intersection of", "raise the bar", or self-praise like "Recognized for my expertise" and "deep domain expertise". Let facts carry the authority: name the papers, the venues, the measurements. Genuine technical terms that resemble tells are fine (loss landscape, test harness, adversarial robustness, state-of-the-art when it refers to prior work).
+
+**Positioning.** Headline title is "Machine Learning Research Scientist & Senior Software Engineer, Ph.D."; never "AI Engineer". The degree is named by its official title, "Ph.D. in Electrical Engineering and Computer Science" (Embry-Riddle, USA, 2025), and the fact that it is a U.S. doctorate is worth foregrounding. Keep `cv/resume.tex`, `_pages/about.md` and `_config.yml` consistent whenever any of this changes.
+
+**Employer content.** Work drawn from Avion may describe the author's role, architecture and engineering discipline, but discloses no employer design, customer, budget or security specifics. Say so on the page when it applies.
+
 ## Architecture
 
 ### Content collections
