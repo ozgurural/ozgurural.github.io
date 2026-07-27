@@ -15,6 +15,27 @@
     "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.",
     "In high dimensions, most critical points are saddles. Momentum and noise help escape them."
   ],
+  "bcml": [
+    "Four institutions contribute data. One shard is poisoned , but nobody downstream can tell which, or even that it happened.",
+    "Training is a lossy, one-way map. The finished weights are a tensor of floats; they carry no record of the batches that produced them.",
+    "So the poisoned run and the clean run ship the same headline accuracy. Auditing the artefact cannot recover the history , the history has to be recorded while it happens.",
+    "That recording is the problem a blockchain is actually good at: an append-only log no single participant can rewrite.",
+    "The naive version dies immediately. A blockchain is the most expensive storage ever built , putting a training set on it costs millions and publishes every record.",
+    "So you commit instead of store. Hash each shard, hash the hashes pairwise, and keep climbing until one 32-byte Merkle root stands for the whole corpus.",
+    "Only that root goes on chain. 1.4 terabytes of data, 32 bytes of commitment , and proving one record belongs takes log₂n sibling hashes, not the dataset.",
+    "Change a single byte of one shard and its hash changes, its parent changes, the root changes. Tampering is not prevented , it is made undeniable after the fact.",
+    "Be precise about what this buys: the root proves integrity, never quality. It fixes what the data was, not whether it was any good.",
+    "Federated learning already keeps raw data home , only model updates travel. What it still needs is a referee nobody owns.",
+    "Round t opens with a commitment: each client publishes a hash of its update before seeing anyone else's. You cannot copy a neighbour's gradient and pass it off as work.",
+    "Then everyone reveals. The chain checks each update against the hash it already recorded, and timestamps the order , so contribution becomes a fact, not a claim.",
+    "Client 4's update points nowhere near the others. Robust aggregation , a trimmed mean or coordinate median , drops it before it reaches the weights.",
+    "The honest caveat: this bounds a minority of crude attackers. A patient adversary submitting small, in-distribution poison still gets through , the ledger records who, it does not judge what.",
+    "Once contribution is a recorded fact, it can be paid. Reward flows in proportion to marginal contribution, and the client that was trimmed earns nothing.",
+    "That is the whole argument for putting a ledger under machine learning: not storage, not compute , accountable coordination between parties who don't trust each other.",
+    "Now the ceiling nobody markets. One GPU issues on the order of 10⁵ updates a second. Ethereum settles about 15 transactions a second; a fast rollup, a few thousand.",
+    "That gap is roughly four orders of magnitude and it is structural , consensus costs a round trip, and no rollup closes four decades of it.",
+    "So the division of labour is forced, not chosen: training stays off chain, settlement goes on it. Any system claiming to train on chain is describing an off-chain trainer with a receipt."
+  ],
   "jira": [
     "I learned decentralized coordination on the Aegean , forty boats, no race director steering them...",
     "...order emerging from local decisions and shared rules.",

@@ -105,9 +105,20 @@ const LABS = [
     title: "Universal Jira",
     sub: "Prediction markets as a task board.",
     tagline: "AMMs, bounties, and oracle resolution",
-    badge: "PREDICTION MARKETS",
+    badge: "RESEARCH DIRECTION",
     bg: "#052e16",
     accent: "#4ade80",
+  },
+  {
+    key: "bcml",
+    eyebrow: "Blockchain · Machine Learning",
+    icon: "⛓",
+    title: "Blockchain-Enhanced ML",
+    sub: "Commit, don't store.",
+    tagline: "Merkle provenance, federated rounds, and the throughput ceiling",
+    badge: "IEEE ACCESS 2023",
+    bg: "#0b2545",
+    accent: "#58c4dd",
   },
 ];
 

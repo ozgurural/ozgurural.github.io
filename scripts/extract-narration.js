@@ -11,6 +11,7 @@ const OUT = path.join(__dirname, "narration.json");
 const PREFIX = {
   "block-race.js": "block-race",
   "gradient-pinball.js": "gradient-pinball",
+  "bcml.js": "bcml",
   "jira.js": "jira",
   "model-heist.js": "model-heist",
   "oracles.js": "oracles",

@@ -15,7 +15,7 @@ header:
   <p class="lab-card__lead">⮞ Centralized project management breaks down at global scale. But what if we replaced the Jira ticket with a <strong>Prediction Market</strong>? This animation shows the mechanism step by step: a bounty creates the market, the AMM turns trades into a price, and an oracle later resolves the outcome. The important quantity is not the ticket itself but the market's belief about whether the task will be completed.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Based on mechanism design for decentralized autonomous organizations (DAOs), Automated Market Maker invariant math (e.g. Constant Product Market Makers), and Logarithmic Market Scoring Rules (LMSR).</span>
+    <span><strong>Open research direction of the author</strong> — not yet published. The question: can a market price and settle engineering work without a central planner? The mechanism is built on standard foundations (DAO mechanism design, constant-product AMM invariants, Logarithmic Market Scoring Rules); the contribution under development is applying them as a coordination substrate for software delivery. Feedback and collaborators welcome.</span>
   </div>
 
   <div class="lab-film">

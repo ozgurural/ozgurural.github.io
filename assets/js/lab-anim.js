@@ -1019,8 +1019,9 @@
     "mh-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>Feature-Based Model Watermarking for PoL</em> &middot; IEEE Access 2024",
     "wm-compare-film": "cf. Ural &middot; <em>Enhancing Proof-of-Learning Security</em> &middot; Ph.D. dissertation, ERAU 2025",
     "br-film":         "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
-    "oracles-film":    "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
-    "jira-film":       "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
+    "oracles-film":    "Ongoing research direction &middot; Ural &middot; verifiable ML inference for decentralized oracles",
+    "bcml-film":       "Based on: Ural &amp; Yoshigoe &middot; <em>Survey on Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
+    "jira-film":       "Ongoing research direction &middot; Ural &middot; incentive-compatible coordination without a central planner",
     "gd-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
     "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion"
   };
@@ -1320,6 +1321,7 @@
       "gd-film":         { root: 196.00, scale: [0,2,4,7,9],      tempo: 50, cutoff: 1000, pad: [0,4], bright: 0.65, prog: [0,3,1,4] }, // G major pentatonic - playful
       "oracles-film":    { root: 92.50,  scale: [0,1,3,5,7,8,10], tempo: 30, cutoff: 560,  pad: [0,7], bright: 0.3,  prog: [0,1,0,5] }, // F# phrygian - mystic
       "wm-compare-film": { root: 123.47, scale: [0,2,3,5,7,8,10], tempo: 44, cutoff: 820,  pad: [0,3], bright: 0.5,  prog: [0,5,2,4] }, // B natural minor - analytic
+      "bcml-film":       { root: 146.83, scale: [0,2,3,5,7,9,10], tempo: 46, cutoff: 880,  pad: [0,7], bright: 0.5,  prog: [0,5,3,4] }, // D dorian - systems, sober
       "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6,  prog: [0,3,4,5] }  // D major - optimistic
     };
     var VOL = 0.14;
