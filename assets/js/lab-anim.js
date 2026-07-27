@@ -1673,16 +1673,32 @@
         // narration-hold actually fire at each scene boundary
         var scEnd = activeSc ? activeSc.end : self.duration;
 
+        // A caption swap truncates the line being spoken exactly as a scene
+        // change does, because lower() puts the subtitle and its narration on
+        // the same cue and the next lower() replaces both. Holding only at
+        // scene ends therefore still cut most lines mid-sentence. Hold at
+        // whichever comes first, the scene end or the next narration cue.
+        var holdAt = scEnd;
+        var cues = self._audioCues;
+        if (cues) {
+          for (var ci = 0; ci < cues.length; ci++) {
+            if (cues[ci].at > self.t + 1e-6) {
+              if (cues[ci].at < holdAt) holdAt = cues[ci].at;
+              break;
+            }
+          }
+        }
+
         var nextT = self.t + dt;
-        if (nextT >= scEnd - 0.05 && window._currentLabNarrator && window.globalLabVoice && !window.globalLabMuted) {
+        if (nextT >= holdAt - 0.05 && window._currentLabNarrator && window.globalLabVoice && !window.globalLabMuted) {
            var n = window._currentLabNarrator;
            // If the audio is currently playing, hold time just before the
-           // scene ends — but only while it makes real progress; a stalled
+           // boundary — but only while it makes real progress; a stalled
            // buffering stream must not freeze the film forever
            if (!n.paused && !n.ended) {
               if (n.currentTime !== self._holdAudioT) { self._holdAudioT = n.currentTime; self._holdStuckS = 0; }
               else self._holdStuckS = (self._holdStuckS || 0) + dt;
-              if (self._holdStuckS < 4) nextT = scEnd - 0.05;
+              if (self._holdStuckS < 4) nextT = holdAt - 0.05;
            }
         }
         self.t = nextT;
