@@ -53,113 +53,159 @@
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
-        
-        // Advanced 3D Glowing Matrix Grid
-        ctx.lineWidth = 1;
-        var cx = 480, cy = 250;
 
-        ctx.globalCompositeOperation = "screen";
-        for(var i=-5; i<=5; i++) {
-           var alpha = 0.15 * (1 - Math.abs(i)/6);
-           ctx.strokeStyle = h.rgba(CY, alpha);
-           ctx.beginPath(); ctx.moveTo(cx - 400 + i*60, cy + 200 + i*30); ctx.lineTo(cx + 400 + i*60, cy - 200 + i*30); ctx.stroke();
-           ctx.beginPath(); ctx.moveTo(cx - 400 + i*60, cy - 200 - i*30); ctx.lineTo(cx + 400 + i*60, cy + 200 - i*30); ctx.stroke();
+        // Deterministic jitter: seek(t) must reproduce the frame exactly, so
+        // every "random" offset is a fixed function of the agent index.
+        function jx(i) { return Math.sin(i * 12.9898) * 43758.5453; }
+        function rnd(i) { var v = jx(i); return v - Math.floor(v); }
+
+        var FX = 330, FY = 280, R = 165;   // agent ring
+        var GX0 = 620, GX1 = 900, GY0 = 140, GY1 = 380;  // graph panel
+        var NMAX = 40, CAP = 24;           // agents, and the hub's capacity
+
+        // How many agents are on stage right now.
+        var n = 6;
+        if (lt > 26) n = Math.round(lerp(6, NMAX, clamp01((lt - 26) / 18)));
+
+        function agentPos(i, count) {
+          var a = (i / count) * Math.PI * 2 - Math.PI / 2;
+          var wobble = lt < 14 ? (rnd(i) - 0.5) * 40 : 0;   // fleet drift, then order
+          var rr = R + wobble + (rnd(i + 7) - 0.5) * 10;
+          return { x: FX + Math.cos(a) * rr, y: FY + Math.sin(a) * rr * 0.72 };
         }
 
-        // The Central Manager (Glowing Node)
-        var managerPulse = Math.abs(Math.sin(lt * 2));
-        ctx.shadowBlur = 20 + 10 * managerPulse;
-        ctx.shadowColor = lt > 25 ? RED : CY;
-        ctx.fillStyle = lt > 25 ? RED : CY;
-        ctx.beginPath(); ctx.arc(cx, cy - 100, 12 + 4*managerPulse, 0, Math.PI*2); ctx.fill();
-        ctx.shadowBlur = 0;
-        
-      ctx.fillStyle = PAL.white; ctx.font = "bold 14px 'JetBrains Mono', monospace";
-        ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
-        
-        
-        // Smooth Flowing Tickets (Bezier paths with glowing trails)
-        var tickets = 25;
-        for (var t=0; t<tickets; t++) {
-           var tStart = t * 1.0;
-           if (lt > tStart) {
-              var p = clamp01((lt - tStart) / 12); 
-              
-              // Base start points spread across the bottom
-              var startX = cx - 300 + (t*25);
-              var startY = cy + 180;
-              
-              // Current position via Bezier curve
-              var controlX = cx + (Math.sin(t) * 100);
-              var controlY = cy + 50;
-              
-              function getNodePos(p_val, time_val) {
-                 var omt = 1 - p_val;
-                 var x = omt*omt*startX + 2*omt*p_val*controlX + p_val*p_val*cx;
-                 var y = omt*omt*startY + 2*omt*p_val*controlY + p_val*p_val*(cy - 90);
-                 
-                 if (time_val > 20) {
-                     var jamRadius = 25 + (t * 2.5); // form rings
-                     var dx = x - cx;
-                     var dy = y - (cy - 100);
-                     var dist = Math.sqrt(dx*dx + dy*dy);
-                     if (dist < jamRadius) {
-                         var angle = Math.atan2(dy, dx);
-                         angle += Math.sin(time_val * 4 + t) * 0.2; // jitter
-                         x = cx + Math.cos(angle) * jamRadius;
-                         y = (cy - 100) + Math.sin(angle) * jamRadius;
-                     }
-                 }
-                 return {x: x, y: y};
-              }
-
-              var curr = getNodePos(p, lt);
-              var currentX = curr.x, currentY = curr.y;
-
-              // Glow effect
-              var tAlpha = (p < 0.1) ? p*10 : (p > 0.9 && lt <= 20) ? (1-p)*10 : 1.0;
-              ctx.shadowBlur = 15;
-              ctx.shadowColor = lt > 20 ? RED : GRN;
-              ctx.fillStyle = h.rgba(lt > 20 ? RED : GRN, tAlpha);
-              ctx.beginPath(); ctx.arc(currentX, currentY, 4, 0, Math.PI*2); ctx.fill();
-              
-              // Trail
-              if (p > 0.05 && p < 1.0) {
-                 ctx.shadowBlur = 0;
-                 ctx.strokeStyle = h.rgba(lt > 20 ? RED : GRN, tAlpha * 0.3);
-                 ctx.lineWidth = 2;
-                 ctx.beginPath();
-                 ctx.moveTo(currentX, currentY);
-                 var pastP = Math.max(0, p - 0.05);
-                 var past = getNodePos(pastP, lt - 0.05*12);
-                 ctx.lineTo(past.x, past.y);
-                 ctx.stroke();
-              }
-           }
+        // ---- Phase A: a fleet with no director -----------------------------
+        if (lt < 26) {
+          var fleetN = 40;
+          for (var i = 0; i < fleetN; i++) {
+            var p = agentPos(i, fleetN);
+            var head = (rnd(i + 3) * 2 - 1) * 0.6 + (lt > 14 ? 0 : Math.sin(lt * 0.4 + i) * 0.3);
+            ctx.strokeStyle = h.rgba(GRN, 0.55);
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x + Math.cos(head - Math.PI / 2) * 14, p.y + Math.sin(head - Math.PI / 2) * 14);
+            ctx.stroke();
+            ctx.fillStyle = GRN;
+            ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.fillStyle = h.rgba(PAL.white, 0.75);
+          ctx.font = "13px 'JetBrains Mono', monospace";
+          ctx.fillText("no director", FX - 38, FY + 4);
         }
 
-        // Catastrophic Network Failure
-        if (lt > 30) {
-           var alpha = clamp01((lt - 30)/3);
-           ctx.fillStyle = h.rgba(RED, alpha * 0.15);
-           ctx.fillRect(0,0,960,540); // Flash screen red
-           
-           var botFade = clamp01((lt - 30) / 0.5);
-           ctx.globalAlpha = op * botFade;
-           ctx.shadowBlur = 20; ctx.shadowColor = RED;
-           ctx.fillStyle = RED;
-           ctx.font = "bold 32px 'JetBrains Mono'";
-           ctx.fillText("SYSTEM BOTTLENECK", cx - 160, cy - 170);
-           ctx.globalAlpha = op;
+        // ---- Phase B onward: the hub and its links -------------------------
+        if (lt >= 26) {
+          var over = n > CAP;
+          var hubCol = over ? RED : CY;
+
+          for (var j = 0; j < n; j++) {
+            var q = agentPos(j, n);
+            ctx.strokeStyle = h.rgba(over ? RED : CY, over ? 0.5 : 0.35);
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(FX, FY); ctx.lineTo(q.x, q.y); ctx.stroke();
+            ctx.fillStyle = GRN;
+            ctx.beginPath(); ctx.arc(q.x, q.y, 3.5, 0, Math.PI * 2); ctx.fill();
+          }
+
+          ctx.shadowBlur = over ? 26 : 14; ctx.shadowColor = hubCol;
+          ctx.fillStyle = hubCol;
+          ctx.beginPath(); ctx.arc(FX, FY, over ? 15 : 11, 0, Math.PI * 2); ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.fillStyle = h.rgba(PAL.white, 0.9);
+          ctx.font = "12px 'JetBrains Mono', monospace";
+          ctx.fillText("manager", FX - 26, FY + 30);
+
+          // the count is the point of the scene, so it is stated numerically
+          ctx.fillStyle = over ? RED : h.rgba(PAL.white, 0.9);
+          ctx.font = "bold 15px 'JetBrains Mono', monospace";
+          ctx.fillText("links through one node: " + n, 60, 470);
+
+          // queue arc once the hub is past capacity
+          if (over) {
+            var qn = n - CAP;
+            for (var k = 0; k < qn; k++) {
+              var qa = -Math.PI / 2 + k * 0.12;
+              ctx.fillStyle = h.rgba(RED, 0.85);
+              ctx.beginPath();
+              ctx.arc(FX + Math.cos(qa) * 34, FY + Math.sin(qa) * 34, 3, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
         }
-        ctx.globalCompositeOperation = "source-over";
+
+        // ---- The graph: load against number of agents ----------------------
+        if (lt >= 26) {
+          var ga = clamp01((lt - 26) / 1.2);
+          ctx.globalAlpha = op * ga;
+
+          ctx.strokeStyle = h.rgba(PAL.white, 0.45); ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(GX0, GY0); ctx.lineTo(GX0, GY1); ctx.lineTo(GX1, GY1); ctx.stroke();
+
+          ctx.fillStyle = h.rgba(PAL.white, 0.65);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.fillText("load", GX0 - 6, GY0 - 10);
+          ctx.fillText("agents", GX1 - 44, GY1 + 18);
+
+          function px(v) { return GX0 + (v / NMAX) * (GX1 - GX0); }
+          function py(v) { return GY1 - (v / NMAX) * (GY1 - GY0); }
+
+          // capacity ceiling
+          ctx.setLineDash([5, 5]);
+          ctx.strokeStyle = h.rgba(RED, 0.6);
+          ctx.beginPath(); ctx.moveTo(GX0, py(CAP)); ctx.lineTo(GX1, py(CAP)); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = h.rgba(RED, 0.75);
+          ctx.fillText("capacity", GX1 - 58, py(CAP) - 6);
+
+          // the manager's load: one link per agent, so a straight climb
+          ctx.strokeStyle = CY; ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.moveTo(px(0), py(0)); ctx.lineTo(px(n), py(n)); ctx.stroke();
+          ctx.fillStyle = CY;
+          ctx.beginPath(); ctx.arc(px(n), py(n), 4, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = h.rgba(CY, 0.9);
+          ctx.fillText("one manager", px(n) - 74, py(n) - 10);
+        }
+
+        // ---- Phase D: drop the hub, publish a price ------------------------
+        if (lt >= 50) {
+          var da = clamp01((lt - 50) / 1.5);
+          ctx.globalAlpha = op * da;
+
+          // the shared scalar every agent reads
+          var lineY = FY + 210;
+          ctx.strokeStyle = AMB; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(FX - 210, lineY); ctx.lineTo(FX + 210, lineY); ctx.stroke();
+          ctx.fillStyle = AMB;
+          ctx.font = "bold 12px 'JetBrains Mono', monospace";
+          ctx.fillText("price", FX + 218, lineY + 4);
+
+          for (var m = 0; m < NMAX; m++) {
+            var r2 = agentPos(m, NMAX);
+            ctx.strokeStyle = h.rgba(AMB, 0.28);
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(r2.x, r2.y); ctx.lineTo(r2.x, lineY); ctx.stroke();
+          }
+
+          // and the flat curve that goes with it
+          ctx.globalAlpha = op * da;
+          ctx.strokeStyle = GRN; ctx.lineWidth = 2.5;
+          var fy = GY1 - (1 / NMAX) * (GY1 - GY0);
+          ctx.beginPath(); ctx.moveTo(GX0, fy); ctx.lineTo(GX1, fy); ctx.stroke();
+          ctx.fillStyle = h.rgba(GRN, 0.95);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.fillText("per agent: one price to read", GX0 + 8, fy - 8);
+        }
+
         ctx.globalAlpha = 1;
       });
 
       lower(s, "I learned decentralized coordination on the Aegean: forty boats, no race director steering them...", 2.0, { out: 18 });
-      lower(s, "...order emerging from local decisions and shared rules.", 13.0, { out: 36 });
-      lower(s, "Software is trying to do the same thing at global scale, with agents that never sleep and increasingly are not human.", 25.0, { out: 51 });
-      lower(s, "A single manager is the thing that does not scale.", 35.0);
+      lower(s, "...order emerging from local decisions and shared rules.", 13.0, { out: 24 });
+      lower(s, "Software wants the same thing at global scale, with agents that never sleep and increasingly are not human.", 25.0, { out: 33 });
+      lower(s, "Put one manager in the middle and their load is every agent at once. Capacity is fixed; the queue is not.", 35.0, { out: 49 });
+      lower(s, "Take the manager out and publish a price. Each agent reads one number, however many of them there are.", 52.0);
     }, { subtitle: "The limits of centralized management" });
   }
 

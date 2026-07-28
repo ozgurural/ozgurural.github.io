@@ -78,8 +78,9 @@
   "jira": [
     "I learned decentralized coordination on the Aegean: forty boats, no race director steering them...",
     "...order emerging from local decisions and shared rules.",
-    "Software is trying to do the same thing at global scale, with agents that never sleep and increasingly are not human.",
-    "A single manager is the thing that does not scale.",
+    "Software wants the same thing at global scale, with agents that never sleep and increasingly are not human.",
+    "Put one manager in the middle and their load is every agent at once. Capacity is fixed; the queue is not.",
+    "Take the manager out and publish a price. Each agent reads one number, however many of them there are.",
     "So stop assigning the work and price it instead. Will this bug be fixed by Friday?",
     "An automated market maker always quotes a price, so there is always someone to trade against.",
     "And the slope of that curve is the crowd's probability that the work gets done.",
