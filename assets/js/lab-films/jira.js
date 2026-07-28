@@ -158,8 +158,8 @@
 
       lower(s, "I learned decentralized coordination on the Aegean: forty boats, no race director steering them...", 2.0, { out: 18 });
       lower(s, "...order emerging from local decisions and shared rules.", 13.0, { out: 36 });
-      lower(s, "Software is trying to do the same thing at global scale, with agents that never sleep and increasingly aren't human.", 25.0, { out: 51 });
-      lower(s, "A single manager is the thing that doesn't scale.", 35.0);
+      lower(s, "Software is trying to do the same thing at global scale, with agents that never sleep and increasingly are not human.", 25.0, { out: 51 });
+      lower(s, "A single manager is the thing that does not scale.", 35.0);
     }, { subtitle: "The limits of centralized management" });
   }
 
@@ -307,10 +307,10 @@
         }
       });
 
-      lower(s, "Instead of assigning a task, we launch a Prediction Market: 'Will Bug X be fixed by Friday?'", 2.0, { out: 22.5 });
-      lower(s, "The market is governed by an Automated Market Maker (AMM). The continuous curve guarantees a counterparty at every price.", 17.0, { out: 45 });
-      lower(s, "The exact slope of the tangent line (the derivative) represents the market's belief in the probability of success.", 32.0, { out: 67.5 });
-      lower(s, "If nobody is working on it, YES shares are mathematically cheap. This creates an enormous financial incentive to act.", 47.0);
+      lower(s, "So stop assigning the work and price it instead. Will this bug be fixed by Friday?", 2.0, { out: 22.5 });
+      lower(s, "An automated market maker always quotes a price, so there is always someone to trade against.", 17.0, { out: 45 });
+      lower(s, "And the slope of that curve is the crowd's probability that the work gets done.", 32.0, { out: 67.5 });
+      lower(s, "If nobody is working on it, the price is cheap. Cheap is the signal to act.", 47.0);
     }, { subtitle: "Continuous automated market makers" });
   }
 
@@ -474,14 +474,14 @@
          ctx.globalAlpha = 1;
       });
 
-      lower(s, "Phase 1: A developer spots the bug. They know they can fix it, so they secretly buy YES shares at $0.10.", 2.0, { out: 27 });
-      lower(s, "Phase 2: They spend the next week writing code. Effort moves a price you own, so profit is the reward for doing the real work.", 22.0, { out: 69 });
-      lower(s, "Phase 3: The PR is merged. Anyone asserts this to an Optimistic Oracle with a bond; unchallenged, the market resolves to 100%.", 48.0, { out: 87 });
+      lower(s, "A developer who knows they can fix it buys in quietly at ten cents.", 2.0, { out: 27 });
+      lower(s, "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.", 22.0, { out: 69 });
+      lower(s, "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.", 48.0, { out: 87 });
       
       var finalBeat = s.caption("Past a certain scale (a million agents, most of them not human) coordination stops being a role you can hire for. The only manager that scales is a price.", { px: 480, py: 100, anchor: "center", align: "center", size: "1rem", color: PAL.white });
       s.fadeIn(finalBeat, { at: 75, dur: 2 });
 
-      lower(s, "The developer cashes out at $1.00. Their massive trading profit is precisely the bug bounty.", 60.0);
+      lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 60.0);
     }, { subtitle: "Aligning incentives with truth" });
   }
 

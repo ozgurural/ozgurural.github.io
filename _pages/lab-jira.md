@@ -11,11 +11,11 @@ header:
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-jira" style="margin-top: 0;">
-  <span class="ep-eyebrow">Mechanism Design × Blockchain</span>
-  <p class="lab-card__lead">⮞ Centralized project management breaks down at global scale. But what if we replaced the Jira ticket with a <strong>Prediction Market</strong>? This animation shows the mechanism step by step: a bounty creates the market, the AMM turns trades into a price, and an oracle later resolves the outcome. The important quantity is not the ticket itself but the market's belief about whether the task will be completed.</p>
+  <span class="ep-eyebrow">Mechanism Design · Verification Without an Authority</span>
+  <p class="lab-card__lead">⮞ Every film in this lab circles one question: who verifies a claim when nobody is in charge? Proof-of-learning asks it about a training run, oracles ask it about a model's output. This one asks it about <strong>work</strong>. Assignment is a manager's job, and a manager is the part that does not scale once the people doing the work are software agents. So replace the ticket with a price: a market opens on whether a task will be done, an automated market maker keeps a quote on both sides, and an oracle settles it afterwards. The quantity that matters is not the ticket but the market's belief about whether the work will land.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span><strong>Open research direction of the author</strong>, not yet published. The question: can a market price and settle engineering work without a central planner? The mechanism is built on standard foundations (DAO mechanism design, constant-product AMM invariants, Logarithmic Market Scoring Rules); the contribution under development is applying them as a coordination substrate for software delivery. Feedback and collaborators welcome.</span>
+    <span><strong>Open research direction of the author</strong>, not yet published. The question: can a market price and settle engineering work without a central planner, and what has to be true of the settlement step for the answer to be trustworthy? The mechanism is built on standard foundations (DAO mechanism design, constant-product AMM invariants, Logarithmic Market Scoring Rules); the contribution under development is applying them as a coordination substrate for software delivery, and connecting the resolution problem to the verification work in my <a href="/publication/2025-dissertation">dissertation</a> and the <a href="/lab/oracles/">oracle film</a>. Feedback and collaborators welcome.</span>
   </div>
 
   <div class="lab-film">
