@@ -88,7 +88,12 @@
     "A developer who knows they can fix it buys in quietly at ten cents.",
     "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.",
     "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.",
-    "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?"
+    "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?",
+    "Remove the last human. An agent reads the repository and writes the ticket itself.",
+    "The loop closes: propose, price, work, settle, with nobody in it.",
+    "But the same agents now create the work and are paid for it. A fabricated ticket runs the identical path.",
+    "So bond the proposal, bar self-settlement, and pay only for what real work leaves behind: a failing test that now passes.",
+    "Price discovers what to do. Verification decides what was done. That second half is the open problem."
   ],
   "model-heist": [
     "I once built systems whose whole job was to stop data from ever leaking. But prevention always fails eventually. This is the question that begins where prevention ends: once your model is out in the world, can you still prove it was yours?",

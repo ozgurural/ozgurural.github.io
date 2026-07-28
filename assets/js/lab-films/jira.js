@@ -43,6 +43,7 @@
     sceneCoordination(film);
     sceneAMM(film);
     sceneInsiderTrading(film);
+    sceneAgentLoop(film);
     flushLower();
     film.build();
     if (window.__LABDEBUG) window.__jiraFilm = film;
@@ -529,6 +530,230 @@
 
       lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 60.0);
     }, { subtitle: "Aligning incentives with truth" });
+  }
+
+
+  function sceneAgentLoop(film) {
+    film.scene("Who Verifies the Claim", 80, function(s) {
+      s.canvas(function(lt, ctx, h) {
+        var op = clamp01(lt);
+        ctx.globalAlpha = op;
+
+        var STEPS = ["propose", "price", "work", "settle"];
+
+        function chip(x, y, label, col, filled) {
+          ctx.strokeStyle = h.rgba(col, 0.9);
+          ctx.fillStyle = filled ? h.rgba(col, 0.18) : "rgba(0,0,0,0)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          if (ctx.roundRect) ctx.roundRect(x - 52, y - 16, 104, 32, 8);
+          else ctx.rect(x - 52, y - 16, 104, 32);
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = h.rgba(PAL.white, 0.92);
+          ctx.font = "12px 'JetBrains Mono', monospace";
+          ctx.fillText(label, x - ctx.measureText(label).width / 2, y + 4);
+        }
+
+        function arrow(x0, y0, x1, y1, col, alpha) {
+          ctx.strokeStyle = h.rgba(col, alpha);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+          var a = Math.atan2(y1 - y0, x1 - x0);
+          ctx.fillStyle = h.rgba(col, alpha);
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x1 - 8 * Math.cos(a - 0.4), y1 - 8 * Math.sin(a - 0.4));
+          ctx.lineTo(x1 - 8 * Math.cos(a + 0.4), y1 - 8 * Math.sin(a + 0.4));
+          ctx.closePath(); ctx.fill();
+        }
+
+        // ---- Phase A: the loop closes, with nobody in it -------------------
+        if (lt < 22) {
+          var CXR = 480, CYR = 250, RR = 128;
+          for (var i = 0; i < 4; i++) {
+            var a0 = -Math.PI / 2 + i * Math.PI / 2;
+            var a1 = -Math.PI / 2 + (i + 1) * Math.PI / 2;
+            var appear = clamp01((lt - 1.5 - i * 1.6) / 0.8);
+            if (appear <= 0) continue;
+            ctx.globalAlpha = op * appear;
+            chip(CXR + Math.cos(a0) * RR, CYR + Math.sin(a0) * RR * 0.85, STEPS[i], CY, true);
+            if (lt > 8) {
+              var seg = clamp01((lt - 8 - i * 0.5) / 0.6);
+              if (seg > 0) {
+                var mx0 = CXR + Math.cos(a0) * RR * 0.72, my0 = CYR + Math.sin(a0) * RR * 0.62;
+                var mx1 = CXR + Math.cos(a1) * RR * 0.72, my1 = CYR + Math.sin(a1) * RR * 0.62;
+                arrow(mx0, my0, lerp(mx0, mx1, seg), lerp(my0, my1, seg), CY, 0.6);
+              }
+            }
+          }
+          ctx.globalAlpha = op;
+          if (lt > 13) {
+            var tok = ((lt - 13) / 4) % 1;
+            var ta = -Math.PI / 2 + tok * Math.PI * 2;
+            ctx.shadowBlur = 14; ctx.shadowColor = AMB;
+            ctx.fillStyle = AMB;
+            ctx.beginPath();
+            ctx.arc(CXR + Math.cos(ta) * RR * 0.72, CYR + Math.sin(ta) * RR * 0.62, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+          if (lt > 16) {
+            ctx.globalAlpha = op * clamp01((lt - 16) / 0.8);
+            ctx.fillStyle = h.rgba(PAL.white, 0.8);
+            ctx.font = "13px 'JetBrains Mono', monospace";
+            ctx.fillText("no human in the loop", CXR - 68, CYR + 6);
+            ctx.globalAlpha = op;
+          }
+        }
+
+        // ---- Phase B and C: two lanes, one of them fabricated --------------
+        if (lt >= 22) {
+          var LX = [180, 373, 566, 759];
+          var LY_OK = 190, LY_FAKE = 330;
+          var showFake = lt > 30;
+          var gates = lt > 46;                      // the defence appears
+          var run = clamp01((lt - 36) / 6);          // first run, both settle
+          var run2 = gates ? clamp01((lt - 52) / 7) : 0;  // second run, gated
+
+          function lane(y, col, label, fabricated) {
+            ctx.fillStyle = h.rgba(col, 0.9);
+            ctx.font = "bold 12px 'JetBrains Mono', monospace";
+            ctx.fillText(label, 40, y + 4);
+            for (var i = 0; i < 4; i++) {
+              chip(LX[i], y, STEPS[i], col, true);
+              if (i < 3) arrow(LX[i] + 54, y, LX[i + 1] - 56, y, col, 0.55);
+            }
+            // payout box
+            ctx.strokeStyle = h.rgba(col, 0.9); ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(844, y - 16, 74, 32, 8); else ctx.rect(844, y - 16, 74, 32);
+            ctx.stroke();
+            ctx.fillStyle = h.rgba(PAL.white, 0.9);
+            ctx.font = "12px 'JetBrains Mono', monospace";
+            ctx.fillText("payout", 852, y + 4);
+            arrow(LX[3] + 54, y, 842, y, col, 0.55);
+
+            // the travelling claim
+            var prog = gates ? run2 : run;
+            var blocked = fabricated && gates && prog > 0.62;
+            var pp = blocked ? 0.62 : prog;
+            if (prog > 0) {
+              var tx = lerp(LX[0], 880, pp);
+              ctx.shadowBlur = 12; ctx.shadowColor = blocked ? RED : col;
+              ctx.fillStyle = blocked ? RED : col;
+              ctx.beginPath(); ctx.arc(tx, y, 6, 0, Math.PI * 2); ctx.fill();
+              ctx.shadowBlur = 0;
+            }
+            return blocked;
+          }
+
+          ctx.globalAlpha = op * clamp01((lt - 22) / 1.0);
+          var wasBlocked = false;
+          lane(LY_OK, GRN, "real", false);
+          if (showFake) {
+            ctx.globalAlpha = op * clamp01((lt - 30) / 1.0);
+            wasBlocked = lane(LY_FAKE, RED, "fabricated", true);
+          }
+          ctx.globalAlpha = op;
+
+          // the point of phase B: the two lanes are the same picture
+          if (lt > 38 && lt < 47) {
+            ctx.globalAlpha = op * clamp01((lt - 38) / 0.8) * clamp01((47 - lt) / 0.8);
+            ctx.fillStyle = h.rgba(PAL.white, 0.95);
+            ctx.font = "bold 15px 'JetBrains Mono', monospace";
+            ctx.fillText("same four steps, same payout", 300, 268);
+            ctx.globalAlpha = op;
+          }
+
+          // ---- the three gates --------------------------------------------
+          if (gates) {
+            var ga = clamp01((lt - 46) / 1.2);
+            ctx.globalAlpha = op * ga;
+
+            // 1. bond staked at propose
+            ctx.strokeStyle = h.rgba(AMB, 0.9); ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.arc(LX[0], LY_OK - 42, 12, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.arc(LX[0], LY_FAKE - 42, 12, 0, Math.PI * 2); ctx.stroke();
+            ctx.fillStyle = h.rgba(AMB, 0.95);
+            ctx.font = "11px 'JetBrains Mono', monospace";
+            ctx.fillText("bond", LX[0] - 15, LY_OK - 58);
+
+            // 2. proposer may not settle: the shortcut is cut
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = h.rgba(RED, 0.55);
+            ctx.beginPath(); ctx.moveTo(LX[0], LY_FAKE + 24); ctx.lineTo(LX[3], LY_FAKE + 24); ctx.stroke();
+            ctx.setLineDash([]);
+            var mxc = (LX[0] + LX[3]) / 2;
+            ctx.strokeStyle = RED; ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(mxc - 9, LY_FAKE + 15); ctx.lineTo(mxc + 9, LY_FAKE + 33);
+            ctx.moveTo(mxc + 9, LY_FAKE + 15); ctx.lineTo(mxc - 9, LY_FAKE + 33);
+            ctx.stroke();
+            ctx.fillStyle = h.rgba(RED, 0.9);
+            ctx.font = "11px 'JetBrains Mono', monospace";
+            ctx.fillText("proposer cannot settle", mxc - 66, LY_FAKE + 50);
+
+            // 3. the artifact gate, between work and settle
+            var gx = (LX[2] + LX[3]) / 2;
+            [LY_OK, LY_FAKE].forEach(function (yy) {
+              ctx.strokeStyle = h.rgba(PAL.white, 0.5); ctx.lineWidth = 1;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath(); ctx.moveTo(gx, yy - 30); ctx.lineTo(gx, yy + 30); ctx.stroke();
+              ctx.setLineDash([]);
+            });
+            // sits above both lanes: at the lane midline it collided with the
+            // fabricated lane's "nothing to show" caption
+            ctx.fillStyle = h.rgba(PAL.white, 0.9);
+            ctx.font = "11px 'JetBrains Mono', monospace";
+            ctx.fillText("artifact gate", gx - 38, 118);
+
+            // the artifact itself: a test that must go red then green
+            function testDot(x, y, pass) {
+              ctx.fillStyle = pass ? GRN : RED;
+              ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+            }
+            var t1 = clamp01((lt - 54) / 2);
+            testDot(gx - 14, LY_OK - 42, false);
+            testDot(gx + 14, LY_OK - 42, t1 > 0.5);
+            ctx.fillStyle = h.rgba(PAL.white, 0.75);
+            ctx.font = "10px 'JetBrains Mono', monospace";
+            ctx.fillText("failing test now passes", gx - 52, LY_OK - 56);
+
+            testDot(gx - 14, LY_FAKE - 42, false);
+            testDot(gx + 14, LY_FAKE - 42, false);
+            ctx.fillStyle = h.rgba(RED, 0.85);
+            ctx.fillText("nothing to show", gx - 38, LY_FAKE - 56);
+
+            if (wasBlocked) {
+              ctx.fillStyle = h.rgba(RED, 0.95);
+              ctx.font = "bold 14px 'JetBrains Mono', monospace";
+              ctx.fillText("blocked, bond slashed", 700, LY_FAKE + 74);
+            }
+            ctx.globalAlpha = op;
+          }
+        }
+
+        // ---- Phase D: the thesis -------------------------------------------
+        if (lt > 66) {
+          var fa = clamp01((lt - 66) / 1.5);
+          ctx.globalAlpha = op * fa;
+          ctx.fillStyle = h.rgba(AMB, 0.95);
+          ctx.font = "bold 17px 'JetBrains Mono', monospace";
+          ctx.fillText("price discovers what to do", 250, 438);
+          ctx.fillStyle = h.rgba(CY, 0.95);
+          ctx.fillText("verification decides what was done", 250, 466);
+          ctx.globalAlpha = op;
+        }
+
+        ctx.globalAlpha = 1;
+      });
+
+      lower(s, "Remove the last human. An agent reads the repository and writes the ticket itself.", 2.0, { out: 20 });
+      lower(s, "The loop closes: propose, price, work, settle, with nobody in it.", 13.0, { out: 28 });
+      lower(s, "But the same agents now create the work and are paid for it. A fabricated ticket runs the identical path.", 30.0, { out: 45 });
+      lower(s, "So bond the proposal, bar self-settlement, and pay only for what real work leaves behind: a failing test that now passes.", 47.0, { out: 65 });
+      lower(s, "Price discovers what to do. Verification decides what was done. That second half is the open problem.", 66.0);
+    }, { subtitle: "Closing the loop, and breaking it" });
   }
 
   setTimeout(boot, 60);
