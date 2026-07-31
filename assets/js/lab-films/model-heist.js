@@ -352,7 +352,10 @@
       });
       var e1 = s.tex2("\\text{Separating Stolen vs Independent Models}", { px: 300, py: 96, size: "1.4rem", color: TXT });
       s.write(e1, { at: 1.2, dur: 1.8 });
-      var cap = s.caption("the matched filter at the core of the author's 2024 watermarking method.", { px: 300, py: 130, size: "0.9rem", color: GREY });
+      // py 130 put this under a one-line title; the sentence wraps to two lines,
+      // so its top rode 10 units into the title's box. Measured on stage: title
+      // occupies 63.3-87.6, caption 77.3-126.5. Dropped clear of it.
+      var cap = s.caption("the matched filter at the core of the author's 2024 watermarking method.", { px: 300, py: 148, size: "0.9rem", color: GREY });
       s.fadeIn(cap, { at: 3.0, dur: 1.5 });
       lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
@@ -502,7 +505,13 @@
       var valNode = s.value("detection power → <strong style='color:" + WHT + "'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:" + WHT + "'>" + v.toFixed(2) + "%</strong>"; } });
       s.fadeIn(valNode, { at: 3.75, dur: 1.5 });
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 380, anchor: "top", align: "center", size: "1.4rem", color: TXT });
+      // This line wraps to two lines at 1.4rem and stands 65 units tall, so at
+      // py 380 its bottom (445.6) ran into the paragraph below (430.1). The
+      // paragraph cannot move down — it already ends at 523 of 540 — and the
+      // caption width is clamped by the overlay, so widening does not unwrap it.
+      // Raising the line is what there is room for: the stat above ends at
+      // 316.6, leaving 63 units of clear space.
+      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 352, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
       var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights; it must survive every transformation an adversary can apply. Provenance you can prove is the price of trusting a model you never watched being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
       s.fadeIn(cap2, { at: 8.5, dur: 1.5 });
