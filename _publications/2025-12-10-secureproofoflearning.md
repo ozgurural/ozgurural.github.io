@@ -12,8 +12,22 @@ citation: "Ural, O. and Yoshigoe, K. (2025). SecurePoL: Integration of Watermark
 
 SecurePoL presents a dual-layer framework that couples immutable Proof-of-Learning logs with three watermarking strategies (feature-based triggers, sparse parameter perturbations, and a non-intrusive auxiliary head), ensuring verification succeeds only when both the training trajectory and watermark are consistent.
 
-Proof-of-Learning attests training effort but stays vulnerable to tolerance-based spoofing, while watermarking protects ownership without saying anything about how a model was trained. Coupling them makes verification a joint condition, so an attacker has to satisfy trajectory consistency and watermark integrity at the same time instead of defeating each mechanism on its own.
+## The problem
 
-**Measured on CIFAR-10 with ResNet-20:** the design raises the cost of blindfold Top-Q and infinitesimal-update attacks while preserving task utility. Accuracy changes by 0.00, 0.03 and 0.58 percentage points across the three strategies, runtime overhead stays between 0.6% and 17.3%, and proof logs remain under 12 MB.
+Proof-of-Learning attests training effort but stays vulnerable to tolerance-based spoofing, while model watermarking protects ownership without saying anything about how a model was trained. Each mechanism has a blind spot the other covers.
+
+## The design
+
+Coupling them makes verification a joint condition, so an attacker has to satisfy trajectory consistency and watermark integrity at the same time instead of defeating each mechanism on its own. The paper uses three watermarking strategies rather than one: feature-based triggers, sparse parameter perturbations, and a non-intrusive auxiliary head.
+
+## What it costs, measured
+
+On CIFAR-10 with ResNet-20 the design raises the cost of blindfold Top-Q and infinitesimal-update attacks while preserving task utility:
+
+- Baseline accuracy changes by **0.00, 0.03 and 0.58 percentage points** across the three strategies.
+- Runtime overhead stays between **0.6% and 17.3%**.
+- Proof logs remain **under 12 MB**.
+
+Ownership verification is not free, but the price is small and stated rather than left implicit.
 
 Read the [animated explainer](/lab/training-fingerprint/) in the Research Lab, or the [dissertation](/publication/2025-dissertation) this work belongs to.

@@ -12,11 +12,17 @@ citation: "Ural, O. (2025). Enhancing Proof-of-Learning Security Against Spoofin
 
 Doctoral dissertation, Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University (Daytona Beach, Florida). Advisor: Dr. Kenji Yoshigoe.
 
+## The attack it answers
+
 Proof-of-Learning verifies the computational effort behind a trained model, but on its own it can be spoofed by attacks that manipulate its subset-verification pathways and tolerance parameters. The dissertation first shows how an adversary can replicate the computational trajectory of a legitimate model and, under surrogate-training conditions, even approximate an embedded watermark.
+
+## The framework
 
 The proposed framework, **SecurePoL**, closes that gap by coupling PoL's training logs with three orthogonal watermarking strategies: feature-based embedding, parameter perturbation, and non-intrusive auxiliary heads. Verification then becomes a joint condition, so a forger has to reproduce both an authentic training log and a watermark-consistent ownership signal, rather than either one alone.
 
-**Measured on CIFAR-10 with ResNet-20:**
+## What it costs, measured
+
+On CIFAR-10 with ResNet-20:
 
 - The computational effort required for successful blindfold Top-Q and infinitesimal-update attacks rises by **more than an order of magnitude**.
 - Ownership verification costs almost no utility: baseline accuracy changes by +0.00 pp with feature-based watermarking, 0.03 pp with non-intrusive heads, and 0.58 pp with parameter perturbation.
