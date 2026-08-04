@@ -115,7 +115,7 @@
   /* ============================================================ SCENE 1
      The rarity of the signal. */
   function sceneRarity(film) {
-    film.scene("A Handful of Events in a Million Posts", 40, function (s) {
+    film.scene("A Handful of Events in a Million Posts", 40, { subtitle: "Finding rare signals in a firehose of Turkish tweets." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -198,7 +198,7 @@
   /* ============================================================ SCENE 2
      The keyword vector is the system, and it is squeezed from both sides. */
   function sceneVector(film) {
-    film.scene("The Keyword Vector Is the System", 50, function (s) {
+    film.scene("The Keyword Vector Is the System", 50, { subtitle: "Building robust word vectors from scratch." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -379,7 +379,7 @@
   /* ============================================================ SCENE 3
      Turkish morphology: vocabulary explosion. */
   function sceneMorphology(film) {
-    film.scene("A Language Where One Stem Is a Hundred Words", 46, function (s) {
+    film.scene("A Language Where One Stem Is a Hundred Words", 46, { subtitle: "Agglutinative morphology requires custom stemmers." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -481,7 +481,7 @@
   /* ============================================================ SCENE 4
      NER victim vector + anomaly on daily mention counts, scored honestly. */
   function sceneAnomaly(film) {
-    film.scene("Count the Victim, Not the Sentiment", 52, function (s) {
+    film.scene("Count the Victim, Not the Sentiment", 52, { subtitle: "Detecting events through entity extraction and relationship mapping." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;

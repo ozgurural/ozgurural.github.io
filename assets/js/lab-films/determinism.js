@@ -108,7 +108,7 @@
   /* ============================================================ SCENE 1
      The 150 ms transport-delay contract. */
   function sceneContract(film) {
-    film.scene("The 150 Millisecond Contract", 44, function (s) {
+    film.scene("The 150 Millisecond Contract", 44, { subtitle: "Hard real-time guarantees in simulation platforms." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -247,7 +247,7 @@
   /* ============================================================ SCENE 2
      The tail, not the mean. */
   function sceneTail(film) {
-    film.scene("The Mean Is the Wrong Statistic", 48, function (s) {
+    film.scene("The Mean Is the Wrong Statistic", 48, { subtitle: "Focusing on tail latency (99th percentile) instead of the average." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -399,7 +399,7 @@
   /* ============================================================ SCENE 3
      Distributed: the frame ends when the last host reports. */
   function sceneComposition(film) {
-    film.scene("The Frame Ends When the Last Host Reports", 46, function (s) {
+    film.scene("The Frame Ends When the Last Host Reports", 46, { subtitle: "Syncing heterogeneous compute across distributed nodes." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -534,7 +534,7 @@
   /* ============================================================ SCENE 4
      You cannot certify what you do not measure. */
   function sceneInstrument(film) {
-    film.scene("You Cannot Certify What You Do Not Measure", 42, function (s) {
+    film.scene("You Cannot Certify What You Do Not Measure", 42, { subtitle: "Engineering is about provable bounds, not assumptions." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;

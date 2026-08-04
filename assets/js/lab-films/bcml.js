@@ -57,37 +57,6 @@
   var MONO = "'JetBrains Mono', ui-monospace, monospace";
 
   /* ---------------------------------------------------------------- narration
-     One shared bottom bar: two captions alive at once print text on text, so
-     each panel's fade-out is deferred until the next panel's start is known
-     (same pattern as oracles.js). */
-  var _lowerCount = 0,
-    _pend = null;
-
-  function flushLower(s, nextAt) {
-    if (!_pend) return;
-    var eff = _pend.out || Infinity;
-    if (s && _pend.s === s && typeof nextAt === "number") eff = Math.min(eff, nextAt - 1.1);
-    if (isFinite(eff)) _pend.s.fadeOut(_pend.c, { at: Math.max(eff, _pend.at + 1.2), dur: 0.9 });
-    _pend = null;
-  }
-
-  function lower(s, html, at, o) {
-    s.audio("bcml_" + _lowerCount++, at);
-    o = o || {};
-    flushLower(s, at);
-    var c = s.caption(html, {
-      px: 0,
-      py: 540,
-      anchor: "bottom-left",
-      align: "left",
-      size: o.size,
-      panel: true
-    });
-    s.fadeIn(c, { at: at, dur: o.dur || 1.4 });
-    _pend = { s: s, c: c, at: at, out: o.out || null };
-    return c;
-  }
-
   /* ------------------------------------------------------------------ helpers */
   function rr(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -122,7 +91,7 @@
   /* ============================================================ SCENE 1
      Why a ledger under ML at all. */
   function sceneIntegrity(film) {
-    film.scene("The Training Process, Written Down", 42, function (s) {
+    film.scene("The Training Process, Written Down", 42, { subtitle: "Proof of learning tracks computation, not just the final weights." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -219,7 +188,7 @@
   /* ============================================================ SCENE 2
      Consensus that does useful work. */
   function sceneConsensus(film) {
-    film.scene("Consensus That Does Useful Work", 46, function (s) {
+    film.scene("Consensus That Does Useful Work", 46, { subtitle: "Replacing wasteful hash puzzles with model training steps." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -316,7 +285,7 @@
   /* ============================================================ SCENE 3
      SUM: paying for good data. */
   function sceneIncentives(film) {
-    film.scene("Paying for Good Data", 50, function (s) {
+    film.scene("Paying for Good Data", 50, { subtitle: "Tokenomics applied to high-quality dataset curation." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -464,7 +433,7 @@
   /* ============================================================ SCENE 4
      What the prototypes actually measured. */
   function sceneLimits(film) {
-    film.scene("What the Prototypes Actually Measured", 46, function (s) {
+    film.scene("What the Prototypes Actually Measured", 46, { subtitle: "Surveying the landscape of latency vs security." }, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
