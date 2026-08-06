@@ -115,7 +115,7 @@
   /* ============================================================ SCENE 1
      The rarity of the signal. */
   function sceneRarity(film) {
-    film.scene("A Handful of Events in a Million Posts", 40, { subtitle: "Finding rare signals in a firehose of Turkish tweets." }, function (s) {
+    film.scene("A Handful of Events in a Million Posts", 40, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -192,13 +192,13 @@
         24.5,
         { out: 39.0 }
       );
-    });
+    }, { subtitle: "Why the rarity, not the classifier, is the hard part." });
   }
 
   /* ============================================================ SCENE 2
      The keyword vector is the system, and it is squeezed from both sides. */
   function sceneVector(film) {
-    film.scene("The Keyword Vector Is the System", 50, { subtitle: "Building robust word vectors from scratch." }, function (s) {
+    film.scene("The Keyword Vector Is the System", 50, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -373,13 +373,13 @@
         34.0,
         { out: 49.0 }
       );
-    });
+    }, { subtitle: "Learning a vocabulary from an incident whose answer is known." });
   }
 
   /* ============================================================ SCENE 3
      Turkish morphology: vocabulary explosion. */
   function sceneMorphology(film) {
-    film.scene("A Language Where One Stem Is a Hundred Words", 46, { subtitle: "Agglutinative morphology requires custom stemmers." }, function (s) {
+    film.scene("A Language Where One Stem Is a Hundred Words", 46, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -475,13 +475,13 @@
         33.0,
         { out: 45.0 }
       );
-    });
+    }, { subtitle: "What agglutinative morphology does to bag-of-words evidence." });
   }
 
   /* ============================================================ SCENE 4
      NER victim vector + anomaly on daily mention counts, scored honestly. */
   function sceneAnomaly(film) {
-    film.scene("Count the Victim, Not the Sentiment", 52, { subtitle: "Detecting events through entity extraction and relationship mapping." }, function (s) {
+    film.scene("Count the Victim, Not the Sentiment", 52, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -618,7 +618,7 @@
         40.0,
         { out: 51.0 }
       );
-    });
+    }, { subtitle: "Anomaly against an entity, not an opinion about a sentence." });
   }
 
   function build() {

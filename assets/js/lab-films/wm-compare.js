@@ -53,7 +53,7 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 60, { subtitle: "Modifying model weights directly to embed a watermark." }, function(s) {
+    film.scene("Sparse Parameter Perturbations", 60, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 40, size: "1.4rem", color: CY });
       s.fadeIn(eq, { at: 1, dur: 2 });
 
@@ -194,11 +194,11 @@
       lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.33, { out: 38 });
       lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 26.67, { out: 52 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
-    });
+    }, { subtitle: "Moving a few weights, and what pruning does to them." });
   }
 
   function sceneBlackbox(film) {
-    film.scene("Feature-Based Triggers", 55, { subtitle: "Embedding watermarks in the model's feature extraction layer." }, function(s) {
+    film.scene("Feature-Based Triggers", 55, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -300,11 +300,11 @@
       lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 10.67, { out: 28 });
       lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 20, { out: 42 });
       lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 29.33);
-    });
+    }, { subtitle: "A mark carried in the representation the model needs." });
   }
 
   function sceneGenerative(film) {
-    film.scene("Generative Green-lists", 75, { subtitle: "Guiding LLM generation to embed statistically verifiable markers." }, function(s) {
+    film.scene("Generative Green-lists", 75, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -430,11 +430,11 @@
       lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 9.33, { out: 26 });
       lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 18.67, { out: 40 });
       lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 28);
-    });
+    }, { subtitle: "Biasing token choice, after Kirchenbauer et al." });
   }
 
   function sceneAuxiliary(film) {
-    film.scene("The mark you can't prune", 60, { subtitle: "Robustness against parameter pruning and fine-tuning attacks." }, function(s) {
+    film.scene("The mark you can't prune", 60, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -535,7 +535,7 @@
       lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });
       lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 18.67, { out: 40 });
       lower(s, "Every watermark can be attacked. The one that survives isn't hidden in the model; it's woven into the record of how the model was made. In the AI age, provenance beats possession.", 28);
-    });
+    }, { subtitle: "What survives is tied to the record of how the model was made." });
   }
 
   setTimeout(boot, 60);
