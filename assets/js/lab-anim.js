@@ -1012,20 +1012,31 @@
     }
   };
 
-  // Per-film research credit shown on the Signature outro. Keyed by the
-  // film's container id; loosely related films cite the closest publication.
+  // Per-film credit shown on the Signature outro, keyed by the film's
+  // container id. A film credits the source it was actually built from.
+  // Films that animate someone else's result say so and name them; films
+  // that present unpublished thinking are labelled as such. Attaching the
+  // nearest publication to a loosely related film is how a portfolio starts
+  // claiming work it did not do.
   var FILM_CREDITS = {
+    // built from the author's own peer-reviewed work
     "pol-film":        "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
     "mh-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>Feature-Based Model Watermarking for PoL</em> &middot; IEEE Access 2024",
-    "wm-compare-film": "cf. Ural &middot; <em>Enhancing Proof-of-Learning Security</em> &middot; Ph.D. dissertation, ERAU 2025",
-    "br-film":         "cf. Ural &amp; Yoshigoe &middot; <em>Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
-    "oracles-film":    "Ongoing research direction &middot; Ural &middot; verifiable ML inference for decentralized oracles",
     "bcml-film":       "Based on: Ural &amp; Yoshigoe &middot; <em>Survey on Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
-    "jira-film":       "Ongoing research direction &middot; Ural &middot; incentive-compatible coordination without a central planner",
-    "gd-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
-    "tmr-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion",
-    "det-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion &middot; limits per FAA&nbsp;Part&nbsp;60 / EASA CS-FSTD(A)",
-    "cyb-film":        "Based on: Ural &amp; Acartürk &middot; <em>Automatic Detection of Cyber Security Events</em> &middot; ICISSP 2021"
+    "cyb-film":        "Based on: Ural &amp; Acart&uuml;rk &middot; <em>Automatic Detection of Cyber Security Events</em> &middot; ICISSP 2021",
+    "wm-compare-film": "Trigger sets after Adi et al. 2018 &middot; generative marking after Kirchenbauer et al. 2023 &middot; auxiliary-head analysis from Ural, Ph.D. dissertation, ERAU 2025",
+
+    // drawn from the author's engineering practice
+    "det-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion &middot; limits per FAA&nbsp;Part&nbsp;60 / EASA CS-FSTD(A) &middot; no employer design disclosed",
+
+    // results that belong to other people, animated with attribution
+    "gd-film":         "Momentum after Polyak 1964 and Nesterov 1983 &middot; saddle-point prevalence after Dauphin et al., NeurIPS 2014",
+    "br-film":         "Nakamoto, <em>Bitcoin</em> 2008, &sect;11 &middot; the race is the classical gambler&rsquo;s ruin",
+    "tmr-film":        "Classical triple-modular redundancy &middot; failure case per the Ariane&nbsp;5 Flight&nbsp;501 inquiry board, 1996",
+
+    // the author's open questions, not yet published
+    "oracles-film":    "Open research direction of the author &middot; not yet published &middot; verifiable ML inference for decentralized oracles",
+    "jira-film":       "Open research direction of the author &middot; not yet published &middot; incentive-compatible coordination without a central planner"
   };
 
   Film.prototype.build = function () {
@@ -1042,7 +1053,7 @@
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
                            { px: FW / 2, py: FH * 0.411, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>PH.D. IN MACHINE LEARNING & TRUSTWORTHY-ML RESEARCHER</span>",
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>MACHINE LEARNING RESEARCH SCIENTIST &amp; SENIOR SOFTWARE ENGINEER</span>",
                            { px: FW / 2, py: FH * 0.494, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",
