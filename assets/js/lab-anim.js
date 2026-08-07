@@ -1250,7 +1250,7 @@
     this.timeEl.textContent = fmtTime(t) + " / " + fmtTime(this.duration);
     this.scrub.setAttribute("aria-valuemax", Math.round(this.duration));
     this.scrub.setAttribute("aria-valuenow", Math.round(t));
-    this.scrub.setAttribute("aria-valuetext", fmtTime(t) + " of " + fmtTime(this.duration) + " — " + (as.name || ""));
+    this.scrub.setAttribute("aria-valuetext", fmtTime(t) + " of " + fmtTime(this.duration) + ", " + (as.name || ""));
     Array.prototype.forEach.call(this.scrubDots.children, function (d, k) {
       d.classList.toggle("is-active", k === ai);
     });
@@ -1339,6 +1339,39 @@
       "det-film":        { root: 110.00, scale: [0,2,3,5,7,8,10], tempo: 60, cutoff: 760,  pad: [0,7], bright: 0.4,  prog: [0,5,0,4] }, // A minor - metronomic, exacting
       "cyb-film":        { root: 138.59, scale: [0,1,4,5,7,8,11], tempo: 38, cutoff: 640,  pad: [0,5], bright: 0.35, prog: [0,4,5,4] }  // C# double harmonic - signal in noise
     };
+
+    /* Each film's THEME. A random walk over a scale is not a melody: it never
+       returns, so the ear files it as ambient wallpaper. A motif does return,
+       and recognising the return is what makes something read as composed.
+       Entries are [scaleDegreeAboveChordRoot, beatOffset, lengthInBeats] over
+       the two-bar (8 beat) span each chord holds, so the figure transposes
+       diatonically as the progression walks. Rests are designed in, by leaving
+       beats empty, rather than rolled at playback. */
+    var MOTIFS = {
+      // a question that climbs and then leans back without resolving
+      "pol-film":        [[0,0,2],[2,1.5,1.5],[4,3,2],[3,5.5,2.5]],
+      // a tight turn that keeps landing a semitone from where it wants to be
+      "mh-film":         [[0,0,1],[1,1,1],[0,2,1.5],[-2,4,3]],
+      // kinetic, two competing runs at the same figure
+      "br-film":         [[0,0,1],[2,1,1],[4,2,1],[2,3,1],[0,4,2],[4,6,2]],
+      // three voices, widely spaced: the three channels of the majority vote
+      "tmr-film":        [[0,0,3],[4,2.5,3],[2,5,3]],
+      // the figure literally descends, then overshoots and settles
+      "gd-film":         [[4,0,1],[2,1,1],[0,2,1.5],[1,3.5,1],[0,4.5,3]],
+      // low, unresolved, circling one note
+      "oracles-film":    [[0,0,2],[-1,2.5,1.5],[0,4,2],[3,6.5,1.5]],
+      // measured and even, an instrument being read
+      "wm-compare-film": [[0,0,1.5],[2,2,1.5],[1,4,1.5],[4,6,2]],
+      "bcml-film":       [[0,0,2],[3,2,1.5],[2,4,1.5],[4,6,2]],
+      // an ascending line that actually arrives
+      "jira-film":       [[0,0,1],[2,1,1],[4,2,1.5],[5,4,2],[4,6,2]],
+      // strictly on the beat: the metronome is the character
+      "det-film":        [[0,0,1],[0,2,1],[2,4,1],[0,6,2]],
+      // sparse and irregular, a signal surfacing out of a gap
+      "cyb-film":        [[0,0,2],[4,3,1.5],[3,5,3]]
+    };
+    var DEFAULT_MOTIF = [[0,0,2],[2,2,2],[4,4,2],[2,6,2]];
+
     var VOL = 0.14;
     var ctx = null, master = null, graph = null, timer = null, muted = false, currentKey = null, unlockArmed = false;
 
@@ -1348,6 +1381,7 @@
       var keys = Object.keys(MOODS);
       return MOODS[keys[hash(key || "lab") % keys.length]];
     }
+    function motifFor(key) { return MOTIFS[key] || DEFAULT_MOTIF; }
     function rng(seed) {
       var s = seed >>> 0;
       return function () {
@@ -1399,6 +1433,65 @@
       document.addEventListener("pointerdown", unlock);
       document.addEventListener("keydown", unlock);
     }
+    /* One shared noise buffer for hammer transients: the felt-on-string thud
+       that lands a few milliseconds before the pitch does. Without it a stack
+       of sines reads as an organ, however well tuned the partials are. */
+    var noiseBuf = null;
+    function hammerBuf() {
+      if (noiseBuf || !ctx) return noiseBuf;
+      noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.06), ctx.sampleRate);
+      var d = noiseBuf.getChannelData(0), r = rng(0x9E3779B9);
+      for (var i = 0; i < d.length; i++) d[i] = (r() * 2 - 1) * (1 - i / d.length);
+      return noiseBuf;
+    }
+
+    /* A struck-string voice, shared by the film scores and the closing cadence
+       so the outro is played on the same instrument the film was.
+       Real strings are stiff, so their partials sit progressively sharp of the
+       harmonic series (f_n = n*f*sqrt(1+B*n^2)). That stretch, plus per-partial
+       decay rates plus the hammer noise, is most of what separates a piano from
+       a pile of sine waves. `dests` are the buses the note feeds (dry, delay,
+       reverb); `gainMul` scales the whole voice for the closing card. */
+    function struck(dests, f, t0, durS, vel, panPos, bright, gainMul) {
+      if (!ctx || !(f > 20 && f < 6000)) return;
+      var bus = ctx.createGain(); bus.gain.value = 1;
+      var dst = bus;
+      if (ctx.createStereoPanner && panPos) {
+        var pan = ctx.createStereoPanner(); pan.pan.value = panPos;
+        bus.connect(pan); dst = pan;
+      }
+      for (var k = 0; k < dests.length; k++) if (dests[k]) dst.connect(dests[k]);
+
+      var B = 0.0004;                                  // string stiffness
+      var PART = [[1, 1.0, 1.0], [2, 0.46, 0.72], [3, 0.2, 0.52], [4, 0.1, 0.4], [6, 0.045, 0.3]];
+      var body = Math.max(0.7, durS * 1.4);
+      var amp0 = vel * 0.085 * (0.55 + bright * 0.9) * (gainMul || 1);
+      for (var i = 0; i < PART.length; i++) {
+        var n = PART[i][0], amp = PART[i][1], dec = PART[i][2];
+        var pf = f * n * Math.sqrt(1 + B * n * n);
+        if (pf > 11000) continue;
+        var o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = pf;
+        var g = ctx.createGain();
+        var rel = body * dec;
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(amp0 * amp, t0 + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0004, t0 + rel);
+        o.connect(g); g.connect(bus);
+        o.start(t0); o.stop(t0 + rel + 0.05);
+      }
+      var buf = hammerBuf();
+      if (buf) {
+        var hn = ctx.createBufferSource(); hn.buffer = buf;
+        var hf = ctx.createBiquadFilter(); hf.type = "bandpass";
+        hf.frequency.value = Math.min(5200, f * 3.2); hf.Q.value = 0.8;
+        var hg = ctx.createGain();
+        hg.gain.setValueAtTime(vel * 0.05 * (gainMul || 1), t0);
+        hg.gain.exponentialRampToValueAtTime(0.0002, t0 + 0.05);
+        hn.connect(hf); hf.connect(hg); hg.connect(bus);
+        hn.start(t0);
+      }
+    }
+
     function teardown(fadeS) {
       if (timer) { clearInterval(timer); timer = null; }
       if (graph && ctx) {
@@ -1455,7 +1548,6 @@
       function semiOf(deg) {
         return scale[((deg % nDeg) + nDeg) % nDeg] + 12 * Math.floor(deg / nDeg);
       }
-      function chordSemis(progDeg) { return [semiOf(progDeg), semiOf(progDeg + 2), semiOf(progDeg + 4)]; }
       function freqOf(semi) { return mood.root * Math.pow(2, semi / 12); }
 
       // pad: detuned saws through a breathing lowpass, root+colour voice per
@@ -1493,84 +1585,50 @@
 
       graph = { out: out, oscs: oscs, delaySend: delay, verbSend: verbSend };
 
-      // melody: organic FM/plucked E-piano tone with phrase structure
-      var beat = 60 / mood.tempo;
-      var nextAt = ctx.currentTime + 0.35;
-      var degree = Math.floor(rand() * nDeg);
-      var beatCount = 0, chordIdx = -1, panSide = 1;
       var canPan = !!ctx.createStereoPanner;
+      function pluck(f, t0, durS, vel, panPos) {
+        struck([out, delay, verbSend], f, t0, durS, vel, panPos, mood.bright);
+      }
+
+      /* Phrase scheduler. Each chord holds two bars and carries one statement
+         of the film's motif, transposed to that chord. Statements cycle through
+         four treatments so the theme is stated, answered, lifted and resolved
+         rather than merely repeated. Every pitch is derived, never rolled, so
+         the score is identical on every play of a given film. */
+      var motif = motifFor(key);
+      var beat = 60 / mood.tempo;
+      var span = 8 * beat;
+      var nextAt = ctx.currentTime + 0.5;
+      var stmt = 0;
       timer = setInterval(function () {
         if (!graph || !ctx) return;
-        while (nextAt < ctx.currentTime + 0.9) {
-          var bar = Math.floor(beatCount / 4), beatInBar = beatCount % 4;
-          var ci = Math.floor(bar / 2) % mood.prog.length;
-          if (ci !== chordIdx) {
-            chordIdx = ci;
-            var rootSemi = semiOf(mood.prog[ci]);
-            padVoices.forEach(function (v) {
-              v.osc.frequency.setTargetAtTime(freqOf(rootSemi + v.offset), nextAt, 0.55);
-            });
-            sub.frequency.setTargetAtTime(freqOf(rootSemi) / 2, nextAt, 0.7);
+        while (nextAt < ctx.currentTime + 1.2) {
+          var ci = stmt % mood.prog.length;
+          var rootSemi = semiOf(mood.prog[ci]);
+          padVoices.forEach(function (v) {
+            v.osc.frequency.setTargetAtTime(freqOf(rootSemi + v.offset), nextAt, 0.55);
+          });
+          sub.frequency.setTargetAtTime(freqOf(rootSemi) / 2, nextAt, 0.7);
+
+          var treat = stmt % 4;                       // 0 state, 1 answer, 2 lift, 3 resolve
+          var lift = treat === 2 ? 12 : 0;
+          var vel = treat === 0 ? 1.0 : treat === 1 ? 0.86 : treat === 2 ? 0.78 : 0.94;
+          var last = motif.length - 1;
+
+          for (var i = 0; i < motif.length; i++) {
+            var deg = motif[i][0], b = motif[i][1], len = motif[i][2];
+            var semi = semiOf(mood.prog[ci] + deg) + 12 + lift;
+            if (treat === 1 && i === last) semi += 12;            // the answer lifts its tail
+            if (treat === 3 && i === last) semi = semiOf(mood.prog[0]) + 12;  // and this one comes home
+            pluck(freqOf(semi), nextAt + b * beat, len * beat,
+                  vel * (b === 0 ? 1.08 : 0.82),
+                  canPan ? (deg % 2 ? 0.16 : -0.13) : 0);
           }
-          if (bar % 8 === 7 && beatInBar === 3) { beatCount++; nextAt += beat; continue; }
+          // a low answering note under the downbeat of every second statement
+          if (treat === 0 || treat === 3) pluck(freqOf(rootSemi - 12), nextAt, span * 0.5, 0.5, 0);
 
-          var step = rand();
-          degree += step < 0.45 ? 1 : step < 0.8 ? -1 : step < 0.9 ? 2 : -2;
-          var span = nDeg * 2;
-          degree = ((degree % span) + span) % span;
-          var semi = semiOf(degree) + 12;
-          if (beatInBar === 0) {
-            var tones = chordSemis(mood.prog[chordIdx]), best = tones[0], bd = 99;
-            for (var ti = 0; ti < tones.length; ti++) {
-              for (var oct = 0; oct <= 12; oct += 12) {
-                var cand = tones[ti] + 12 + oct;
-                var d = Math.abs(cand - semi);
-                if (d < bd) { bd = d; best = cand; }
-              }
-            }
-            semi = best;
-          }
-          var f = freqOf(semi);
-          var t0 = nextAt;
-
-          // Soft organic E-piano note synth (Sine + Soft harmonic + Filter envelope)
-          var o1 = ctx.createOscillator(); o1.type = "sine"; o1.frequency.value = f;
-          var o2 = ctx.createOscillator(); o2.type = "sine"; o2.frequency.value = f * 2.002; // soft octave overtone
-          
-          var noteFilt = ctx.createBiquadFilter();
-          noteFilt.type = "lowpass";
-          noteFilt.frequency.setValueAtTime(f * 3.5, t0);
-          noteFilt.frequency.exponentialRampToValueAtTime(f * 1.1, t0 + beat * 0.8);
-
-          var g1 = ctx.createGain();
-          var peak = (0.15 + mood.bright * 0.08) * (beatInBar === 0 ? 1.15 : 0.85);
-          g1.gain.setValueAtTime(0, t0);
-          g1.gain.linearRampToValueAtTime(peak, t0 + 0.015);
-          g1.gain.exponentialRampToValueAtTime(0.0005, t0 + beat * 2.2);
-
-          var g2 = ctx.createGain();
-          g2.gain.setValueAtTime(0, t0);
-          g2.gain.linearRampToValueAtTime(peak * 0.3, t0 + 0.015);
-          g2.gain.exponentialRampToValueAtTime(0.0001, t0 + beat * 0.9);
-
-          o1.connect(noteFilt);
-          o2.connect(g2); g2.connect(noteFilt);
-          noteFilt.connect(g1);
-
-          var dst = g1;
-          if (canPan) {
-            panSide = -panSide;
-            var pan = ctx.createStereoPanner(); pan.pan.value = panSide * (0.14 + rand() * 0.12);
-            g1.connect(pan); dst = pan;
-          }
-          dst.connect(out); dst.connect(graph.delaySend); dst.connect(graph.verbSend);
-          o1.start(t0); o1.stop(t0 + beat * 2.5);
-          o2.start(t0); o2.stop(t0 + beat * 1.2);
-
-          beatCount++;
-          var restRoll = rand();
-          if (restRoll < 0.16) { beatCount++; nextAt += beat * 2; }
-          else nextAt += beat;
+          stmt++;
+          nextAt += span;
         }
       }, 300);
 
@@ -1589,63 +1647,77 @@
       muted = m;
       if (graph && ctx) graph.out.gain.setTargetAtTime(m ? 0 : VOL, ctx.currentTime, 0.25);
     }
-    // Signature-scene stinger: a warm cinematic resolution chord matched to the
-    // film's key, backed by a soft low-end warmth & reverb tail (no harsh sweeps).
+    /* Signature-scene cadence.
+       A chord that merely sounds does not end anything; an ending needs motion
+       away from home and back. So this is a real cadence: the fifth degree,
+       held long enough to want resolving, falling to the tonic underneath a
+       quotation of the film's own motif, whose last note lands exactly on the
+       tonic downbeat. Same struck-string voice as the score, so the closing
+       card is heard as that film finishing rather than as a sound effect. */
     function stinger(key) {
       if (!ensureCtx() || muted) return;
       if (ctx.state === "suspended") { ctx.resume().catch(function () {}); armUnlock(); }
       var mood = moodFor(key || currentKey || "lab");
-      var t = ctx.currentTime;
-      var out = ctx.createGain(); out.gain.value = 0.8; out.connect(master);
+      var motif = motifFor(key || currentKey || "");
+      var t = ctx.currentTime + 0.12;
+      var out = ctx.createGain(); out.gain.value = 0.55;
+      // the cadence stacks bass, sub, a four-note chord and the motif on the
+      // same downbeat, so it goes through a limiter rather than trusting the
+      // arithmetic to stay under one
+      var lim = ctx.createDynamicsCompressor();
+      lim.threshold.value = -3; lim.knee.value = 6; lim.ratio.value = 12;
+      lim.attack.value = 0.004; lim.release.value = 0.25;
+      out.connect(lim); lim.connect(master);
 
-      var reverb = createReverb(4.0, 2.0);
-      if (reverb) reverb.connect(out);
+      var reverb = createReverb(4.5, 2.0);
+      var verb = ctx.createGain(); verb.gain.value = 0.5;
+      if (reverb) { verb.connect(reverb); reverb.connect(out); } else { verb.connect(out); }
 
       var scale = mood.scale, nDeg = scale.length;
       function semiOf(deg) { return scale[((deg % nDeg) + nDeg) % nDeg] + 12 * Math.floor(deg / nDeg); }
       function freqOf(semi) { return mood.root * Math.pow(2, semi / 12); }
 
-      // 1. Warm low-end body (audible fundamental bass around 55-80Hz, clean & round)
-      var rootFreq = freqOf(semiOf(mood.prog[0]));
-      var bassFreq = rootFreq > 140 ? rootFreq / 2 : rootFreq;
+      // Let the running score step back so the cadence is heard, not stacked on.
+      if (graph) { try { graph.out.gain.setTargetAtTime(VOL * 0.3, ctx.currentTime, 0.8); } catch (e) {} }
+
+      var tonic = mood.prog[0], dom = tonic + 4;      // home, and the fifth above it
+      var tDom = t, tTon = t + 2.1;
+      var dests = [out, verb];
+
+      // bass: the fifth falling to the root, the oldest ending in music
+      struck(dests, freqOf(semiOf(dom)) / 2, tDom, 2.6, 0.85, 0, mood.bright, 0.9);
+      struck(dests, freqOf(semiOf(tonic)) / 2, tTon, 6.0, 1.0, 0, mood.bright, 1.1);
+
+      // a sub under the tonic for weight, entering only on the resolution
       var subOsc = ctx.createOscillator(), subG = ctx.createGain();
       subOsc.type = "sine";
-      subOsc.frequency.setValueAtTime(bassFreq, t);
-      subG.gain.setValueAtTime(0, t);
-      subG.gain.linearRampToValueAtTime(0.35, t + 0.3);
-      subG.gain.exponentialRampToValueAtTime(0.001, t + 7.0);
+      subOsc.frequency.setValueAtTime(freqOf(semiOf(tonic)) / (freqOf(semiOf(tonic)) > 140 ? 4 : 2), tTon);
+      subG.gain.setValueAtTime(0, tTon);
+      subG.gain.linearRampToValueAtTime(0.22, tTon + 0.35);
+      subG.gain.exponentialRampToValueAtTime(0.001, tTon + 7.0);
       subOsc.connect(subG); subG.connect(out);
-      subOsc.start(t); subOsc.stop(t + 7.2);
+      subOsc.start(tTon); subOsc.stop(tTon + 7.2);
 
-      // 2. Film-keyed Resolution Triad (Root, 3rd/4th, 5th + Octave)
-      var chordSemis = [semiOf(mood.prog[0]), semiOf(mood.prog[0] + 2), semiOf(mood.prog[0] + 4), semiOf(mood.prog[0]) + 12];
-      chordSemis.forEach(function (semi, idx) {
-        var f = freqOf(semi);
-        [-4, 4].forEach(function (detune) {
-          var o = ctx.createOscillator(), g = ctx.createGain();
-          o.type = "sine";
-          o.frequency.value = f;
-          o.detune.value = detune;
-          g.gain.setValueAtTime(0, t);
-          g.gain.linearRampToValueAtTime(0.08 / (idx + 1), t + 0.2 + idx * 0.12);
-          g.gain.exponentialRampToValueAtTime(0.0002, t + 6.5);
-          o.connect(g);
-          g.connect(out);
-          if (reverb) g.connect(reverb);
-          o.start(t); o.stop(t + 6.8);
+      // the two chords, rolled slightly the way a hand rolls them
+      [[dom, tDom, 0.7], [tonic, tTon, 1.0]].forEach(function (c) {
+        [0, 2, 4, 7].forEach(function (iv, i) {
+          struck(dests, freqOf(semiOf(c[0] + iv)), c[1] + i * 0.045,
+                 c[1] === tTon ? 6.5 : 2.4, c[2] * (1 - i * 0.12), i % 2 ? 0.1 : -0.08, mood.bright, 0.85);
         });
       });
 
-      // 3. High Crystal Shimmer Bell (Root + 2 octaves)
-      var shimOsc = ctx.createOscillator(), shimG = ctx.createGain();
-      shimOsc.type = "sine";
-      shimOsc.frequency.value = rootFreq * 4;
-      shimG.gain.setValueAtTime(0, t);
-      shimG.gain.linearRampToValueAtTime(0.06, t + 0.4);
-      shimG.gain.exponentialRampToValueAtTime(0.0001, t + 5.0);
-      shimOsc.connect(shimG);
-      if (reverb) shimG.connect(reverb); else shimG.connect(out);
-      shimOsc.start(t); shimOsc.stop(t + 5.2);
+      // the film's own motif, arriving over the fifth and landing home on the tonic
+      var head = motif.slice(0, 3);
+      for (var i = 0; i < head.length; i++) {
+        var isLast = i === head.length - 1;
+        var semi = isLast ? semiOf(tonic) + 12 : semiOf(dom + head[i][0]) + 12;
+        var when = isLast ? tTon : tDom + 0.45 + i * 0.62;
+        struck(dests, freqOf(semi), when, isLast ? 7.0 : 1.6,
+               isLast ? 1.0 : 0.62, 0, mood.bright, isLast ? 1.0 : 0.8);
+      }
+
+      // one octave harmonic over the resolution, quiet, purely as light
+      struck([verb], freqOf(semiOf(tonic) + 24), tTon + 0.5, 5.0, 0.4, 0, mood.bright, 0.8);
     }
     return {
       start: start, stop: stop, pause: pause, setMuted: setMuted, stinger: stinger,
