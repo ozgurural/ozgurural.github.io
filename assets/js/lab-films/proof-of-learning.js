@@ -275,9 +275,12 @@
           var fromX = x0 + i * dx, toX = x0 + sorted.indexOf(i) * dx, bx = lerp(fromX, toX, E.inOut(sortP));
           var m = mags[i], bh = m * 130, big = m > 0.8;
           ctx.fillStyle = h.rgba(big ? AMB : TEAL, big ? 0.85 : 0.6); ctx.fillRect(bx - 8, by - bh, 16, bh);
-          if (big && sortP > 0.9) { 
-            ctx.shadowBlur = 15; ctx.shadowColor = AMB;
-            ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(bx, by - bh - 12, 9, 0, 7); ctx.stroke(); 
+          if (big && sortP > 0.9) {
+            // once the forged replay has failed, the two flagged steps breathe,
+            // tying the verdict on the right back to the steps that caused it
+            var puls = lt > 25.5 ? 0.5 + 0.5 * Math.sin((lt - 25.5) * 2.1 - i) : 0;
+            ctx.shadowBlur = 15 + puls * 14; ctx.shadowColor = AMB;
+            ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(bx, by - bh - 12, 9 + puls * 3.5, 0, 7); ctx.stroke();
             ctx.shadowBlur = 0;
           }
         }
@@ -298,6 +301,42 @@
              ctx.restore();
           }
           ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.fillText("re-run just a few steps", bx2 - 120, by2 + 80);
+        }
+        // The forger's replay of the same flagged step. The scene has so far
+        // only asserted that a shortcut gets caught here; this shows it, using
+        // the tolerance already on screen, and gives the last third of the
+        // scene something to do.
+        if (lt > 18.5) {
+          var bx3 = 760, by3 = 200;
+          var lp = clamp01((lt - 18.5) / 3.6);
+          var lx = lerp(bx3 - 120, bx3 + 58, E.out(lp)), ly = lerp(by3 + 60, by3 - 44, E.out(lp));
+          ctx.strokeStyle = h.rgba(RED, 0.92); ctx.setLineDash([4, 4]); ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(bx3 - 120, by3 + 60); ctx.lineTo(lx, ly); ctx.stroke(); ctx.setLineDash([]);
+          ctx.fillStyle = h.rgba(RED, 1); ctx.beginPath(); ctx.arc(lx, ly, 4.5, 0, 7); ctx.fill();
+          ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 0.9);
+          ctx.fillText("the same step, forged", bx3 - 120, by3 + 96);
+
+          // measure the miss against the tolerance, so "too far" is a distance
+          if (lt > 22.4) {
+            var mp = clamp01((lt - 22.4) / 2.2);
+            var ux = 58 / 72.8, uy = -44 / 72.8;             // unit vector to the landing point
+            var ex = bx3 + ux * 30, ey = by3 + uy * 30;      // where the ball's edge sits
+            ctx.strokeStyle = h.rgba(RED, 0.75); ctx.lineWidth = 1.3;
+            ctx.beginPath(); ctx.moveTo(ex, ey);
+            ctx.lineTo(lerp(ex, lx, E.out(mp)), lerp(ey, ly, E.out(mp))); ctx.stroke();
+            if (mp > 0.85) {
+              ctx.save(); ctx.globalAlpha = clamp01((mp - 0.85) / 0.15);
+              ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(RED, 1);
+              ctx.fillText("✗ misses by > δ", bx3 + 10, by3 - 104);
+              ctx.restore();
+            }
+          }
+          if (lt > 26.5) {
+            ctx.save(); ctx.globalAlpha = clamp01((lt - 26.5) / 1.4);
+            ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.95);
+            ctx.fillText("honest work lands inside; a shortcut cannot", 90, 410);
+            ctx.restore();
+          }
         }
         // budget counter
         ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GRN, 0.95); ctx.fillText("cost: a few spot-checks, not a full re-run", 620, 120);
