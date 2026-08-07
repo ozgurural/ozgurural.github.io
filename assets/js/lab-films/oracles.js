@@ -267,7 +267,16 @@
            ctx.restore();
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = WHITE; ctx.font = "bold 16px monospace"; ctx.fillText("π (Proof)", pX - 35, pY - 65);
+           // the label rode the proof all the way into the contract box and sat
+           // on its heading; it has done its work by the time the proof arrives
+           var lblF = clamp01((560 - pX) / 80);
+           if (lblF > 0) {
+              ctx.save();
+              ctx.globalAlpha = ctx.globalAlpha * lblF;
+              ctx.fillStyle = WHITE; ctx.font = "bold 16px monospace";
+              ctx.fillText("π (Proof)", pX - 35, pY - 65);
+              ctx.restore();
+           }
 
            // On-chain verification box
            ctx.fillStyle = h.rgba(CY, 0.1); ctx.fillRect(600, 150, 200, 200);

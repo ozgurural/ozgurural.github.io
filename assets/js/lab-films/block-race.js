@@ -421,7 +421,7 @@
           var baseY = 430, bw2 = 56, maxH = 230;
           ctx.font = "600 14px 'JetBrains Mono',monospace";
           ctx.fillStyle = h.rgba("#dbeafe", 0.9);
-          ctx.fillText("chance of EVER catching up  (attacker has 30% of hashrate)", 200, 158);
+          ctx.fillText("chance of EVER catching up, at 30% of hashrate", 200, 158);
           ctx.font = "600 13px 'JetBrains Mono',monospace";
           for (var z3 = 1; z3 <= 6; z3++) {
             var bx3 = 200 + (z3 - 1) * 95;
@@ -449,7 +449,8 @@
             ctx.fillText("starting deficit z (blocks behind)", 360, baseY + 30);
             ctx.font = "600 13px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba(AMB, 1);
-            ctx.fillText("◀ the race you just watched", 200 + 2 * 95 + bw2 + 12, baseY - Math.max(3, maxH * (PCTS[2] / PCTS[0])) + 4);
+            // sits above the neighbouring bar's percentage label rather than through it
+            ctx.fillText("◀ the race you just watched", 200 + 2 * 95 + bw2 + 12, baseY - Math.max(3, maxH * (PCTS[2] / PCTS[0])) - 8);
             ctx.restore();
           }
           ctx.restore();

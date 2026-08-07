@@ -425,11 +425,18 @@
           ctx.stroke();
           ctx.setLineDash([]);
 
-          ctx.fillStyle = h.rgba(GRN, si);
-          ctx.font = "bold 13px " + MONO;
-          ctx.fillText("good agents", gx + gw * prog + 8, gy - gh * 0.95 * prog);
-          ctx.fillStyle = h.rgba(RED, si);
-          ctx.fillText("bad agents", gx + gw * prog + 8, gy - gh * 0.5 + gh * 0.5 * prog);
+          // Both labels ride the tip of their own curve, so they share an x and
+          // cross each other around prog 0.35. They wait until the curves have
+          // opened up, and stop short of the right edge instead of running off it.
+          if (prog > 0.55) {
+            var lf = clamp01((prog - 0.55) / 0.15);
+            var lx = Math.min(gx + gw * prog + 8, 862);
+            ctx.fillStyle = h.rgba(GRN, si * lf);
+            ctx.font = "bold 13px " + MONO;
+            ctx.fillText("good agents", lx, gy - gh * 0.95 * prog);
+            ctx.fillStyle = h.rgba(RED, si * lf);
+            ctx.fillText("bad agents", lx, gy - gh * 0.5 + gh * 0.5 * prog);
+          }
           ctx.fillStyle = h.rgba(MUTED, si);
           ctx.font = "12px " + MONO;
           ctx.fillText("balance over ~150 days, model accuracy held", gx, gy + 26);

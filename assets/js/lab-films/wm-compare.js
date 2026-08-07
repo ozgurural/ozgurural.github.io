@@ -518,9 +518,11 @@
               ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(AMB, p42);
               ctx.fillStyle = h.rgba(AMB, 0.15 * p42); ctx.fillRect(100, 400, 750, 55);
               ctx.shadowBlur = 0;
-              ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 430);
+              // heading and detail were both drawn at y=430, straight on top of
+              // each other; the panel is y 400..455, so they get a line each
+              ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 421);
               ctx.fillStyle = h.rgba(P.white, p42); ctx.font = "14px monospace";
-              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 430);
+              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 445);
               
               ctx.strokeStyle = h.rgba(AMB, p42); ctx.setLineDash([5,5]); ctx.lineWidth = 2;
               ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], auxOut[1] + (370 - auxOut[1]) * p42); ctx.stroke();
