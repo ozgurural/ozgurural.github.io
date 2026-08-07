@@ -427,7 +427,12 @@
             by = 96 + row * 92;
           var late = lt > 20 && i === slowIdx;
           ctx.globalAlpha = op * a;
-          box(ctx, h, bx, by, 172, 62, late ? RED : CY, a, hosts[i].n, "");
+          // name left, figure right, on one line: centring the name ran the
+          // three "visual chN" labels straight into their own millisecond value
+          box(ctx, h, bx, by, 172, 62, late ? RED : CY, a, "", "");
+          ctx.fillStyle = h.rgba(late ? RED : WHITE, a);
+          ctx.font = "bold 13px " + MONO;
+          ctx.fillText(hosts[i].n, bx + 12, by + 34);
           // per-host bar
           var frac = clamp01(hosts[i].ms / 16.67);
           var grow = clamp01((lt - 3.2) / 1.2);
@@ -448,7 +453,7 @@
           ctx.globalAlpha = op * gIn;
           ctx.fillStyle = h.rgba(WHITE, gIn);
           ctx.font = "bold 16px " + MONO;
-          ctx.fillText("frame time  =  max over hosts,  not mean", 640, 130);
+          ctx.fillText("frame time  =  max, not mean", 640, 130);
           ctx.fillStyle = h.rgba(MUTED, gIn);
           ctx.font = "13px " + MONO;
           ctx.fillText("one straggler owns the frame", 640, 156);
@@ -461,7 +466,7 @@
           ctx.globalAlpha = op * rIn;
           ctx.fillStyle = h.rgba(WHITE, rIn);
           ctx.font = "14px " + MONO;
-          ctx.fillText("each host meets its deadline 99.9% of frames", 640, 214);
+          ctx.fillText("each host: 99.9% of frames on time", 640, 214);
           ctx.fillStyle = h.rgba(CY, rIn);
           ctx.font = "bold 16px " + MONO;
           ctx.fillText("0.999", 640, 248);
@@ -490,7 +495,7 @@
           ctx.setLineDash([]);
           ctx.fillStyle = h.rgba(RED, sIn);
           ctx.font = "bold 14px " + MONO;
-          ctx.fillText("19.4 ms: this frame is late for everyone", 640, 316);
+          ctx.fillText("19.4 ms: everyone waits", 640, 316);
           ctx.globalAlpha = op;
         }
 
@@ -536,7 +541,11 @@
   function sceneInstrument(film) {
     film.scene("You Cannot Certify What You Do Not Measure", 42, function (s) {
       s.canvas(function (lt, ctx, h) {
-        var op = clamp01(lt / 0.6);
+        // the table is the anchor for the first half; once the trace below it
+        // takes over it steps back rather than competing. everything in the
+        // table multiplies through op, so dimming it is this one factor.
+        var demo = clamp01((lt - 24) / 1.4);
+        var op = clamp01(lt / 0.6) * (1 - demo);
         ctx.globalAlpha = op;
 
         var rows = [
@@ -604,12 +613,80 @@
           ctx.globalAlpha = op;
         }
 
-        if (lt > 24) {
-          var cIn = clamp01((lt - 24) / 0.8);
-          ctx.globalAlpha = op * cIn;
-          box(ctx, h, 90, 448, 370, 56, AMB, cIn, "TELEMETRY IS PART OF THE PRODUCT", "not an afterthought");
-          box(ctx, h, 500, 448, 370, 56, GRN, cIn, "A BUDGET YOU ENFORCE", "continuously, per host");
-          ctx.globalAlpha = op;
+        /* The claim this scene rests on is that step time is sampled, so a
+           spike can hide between two polls while the overrun counter still
+           catches it. A caption asserting that proves nothing, so the second
+           half shows it happening: one host, a hundred frames, a spike three
+           frames wide, polled every eighth frame. The poll lands either side
+           of it and the sampled maximum stays comfortably inside budget. */
+        // the table clears the stage before the trace arrives, so the two
+        // never share it
+        var demoIn = clamp01((lt - 25.5) / 1.0);
+        if (demoIn > 0) {
+          var X0 = 110, X1 = 850, Y0 = 470, MSPX = 11;
+          var yOf = function (ms) { return Y0 - ms * MSPX; };
+          var xOf = function (fr) { return lerp(X0, X1, fr / 100); };
+          var stepMs = function (fr) {
+            var d = fr - 62;
+            return 9.0 + 0.55 * Math.sin(fr * 0.7) + 0.3 * Math.sin(fr * 1.9) +
+                   10.6 * Math.exp(-(d * d) / 1.6);
+          };
+          ctx.globalAlpha = demoIn;
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
+          ctx.fillText("ONE HOST, 100 FRAMES, POLLED EVERY 8th", X0, 168);
+
+          ctx.strokeStyle = h.rgba(RED, 0.5); ctx.lineWidth = 1.2;
+          ctx.setLineDash([5, 5]);
+          ctx.beginPath(); ctx.moveTo(X0, yOf(16.67)); ctx.lineTo(X1, yOf(16.67)); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = h.rgba(RED, 0.85); ctx.font = "11px " + MONO;
+          ctx.fillText("16.67 ms deadline", X0, yOf(16.67) - 7);
+
+          ctx.strokeStyle = h.rgba(GREY, 0.35); ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(X0, Y0); ctx.lineTo(X1, Y0); ctx.stroke();
+
+          var head = 100 * E.out(clamp01((lt - 25.6) / 8.5));
+          var fr, sampMax = 0;
+
+          ctx.strokeStyle = h.rgba(CY, 0.9); ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (fr = 0; fr <= head; fr += 0.5) {
+            if (fr === 0) ctx.moveTo(xOf(0), yOf(stepMs(0)));
+            else ctx.lineTo(xOf(fr), yOf(stepMs(fr)));
+          }
+          ctx.stroke();
+
+          for (fr = 0; fr <= 96 && fr <= head; fr += 8) {
+            var sy = yOf(stepMs(fr));
+            sampMax = Math.max(sampMax, stepMs(fr));
+            ctx.strokeStyle = h.rgba(AMB, 0.2); ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(xOf(fr), sy); ctx.lineTo(xOf(fr), Y0); ctx.stroke();
+            ctx.fillStyle = h.rgba(AMB, 0.95);
+            ctx.beginPath(); ctx.arc(xOf(fr), sy, 3.4, 0, 7); ctx.fill();
+          }
+
+          if (lt > 34.6) {
+            var an = clamp01((lt - 34.6) / 1.1);
+            ctx.globalAlpha = demoIn * an;
+            var sx = xOf(62), sy2 = yOf(stepMs(62));
+            ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 1.8;
+            ctx.beginPath(); ctx.arc(sx, sy2, 13, 0, 7); ctx.stroke();
+            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "bold 12px " + MONO;
+            ctx.textAlign = "center";
+            ctx.fillText(stepMs(62).toFixed(1) + " ms, and no poll was looking", sx, sy2 - 22);
+            ctx.textAlign = "left";
+          }
+          if (lt > 37.4) {
+            ctx.globalAlpha = demoIn * clamp01((lt - 37.4) / 1.1);
+            ctx.font = "bold 13px " + MONO;
+            ctx.fillStyle = h.rgba(AMB, 1);
+            ctx.fillText("sampled max " + sampMax.toFixed(1) + " ms: inside budget", X0, 508);
+            ctx.fillStyle = h.rgba(RED, 1);
+            ctx.fillText("overrun counter: 1", X0 + 420, 508);
+          }
+          ctx.globalAlpha = 1;
         }
       });
 
