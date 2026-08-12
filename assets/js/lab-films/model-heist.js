@@ -241,7 +241,7 @@
 
   /* ================= 3 — SPREAD ================= */
   function spread(film) {
-    film.scene("Spread it thin across k weights", 27, function (s) {
+    film.scene("Spread it thin across k weights", 24, function (s) {
       var K = 24;
       var marked = []; for (var m = 0; m < HIST_N; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
       s.canvas(function (lt, ctx, h) {
@@ -307,7 +307,7 @@
 
   /* ================= 4 — Z-TEST (hero) ================= */
   function ztest(film) {
-    film.scene("Detection is a Z-test", 30, function (s) {
+    film.scene("Detection is a Z-test", 22, function (s) {
       var co = film.coords({ xRange: [-3.4, 6.4], yRange: [0, 0.46], pad: { left: 70, right: 60, top: 150, bottom: 130 } });
       function dOf(lt) { return lerp(0.4, 3.4, clamp01((lt - 1.5) / 12)); } // k rising over the scene
       s.canvas(function (lt, ctx, h) {
@@ -363,7 +363,7 @@
 
   /* ================= 5 — ROC ================= */
   function roc(film) {
-    film.scene("Robustness is bought with k", 27, function (s) {
+    film.scene("Robustness is bought with k", 22, function (s) {
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.draw(ax, { at: 0.6, dur: 1.2 });
@@ -489,7 +489,7 @@
 
   /* ================= 7 — STAKES ================= */
   function stakes(film) {
-    film.scene("A courtroom-grade signature", 18, function (s) {
+    film.scene("A courtroom-grade signature", 13, function (s) {
       s.canvas(function (lt, ctx, h) {
         var fade = clamp01(lt / 0.5);
         graph(ctx, h, 250, 280, CY, fade, 9, 0);
