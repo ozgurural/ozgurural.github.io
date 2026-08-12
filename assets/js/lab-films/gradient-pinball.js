@@ -271,7 +271,7 @@
 
   /* ========================= SCENE 2 — UPDATE ======================= */
   function sceneUpdate(film) {
-    film.scene("One step at a time", 27, function (s) {
+    film.scene("One step at a time", 19, function (s) {
       // isotropic mapping (same px-per-unit on both axes) so the drawn
       // gradient really is perpendicular to the drawn contours on screen
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-1.68, 1.68], pad: { left: 70, right: 60, top: 70, bottom: 60 } });
@@ -366,7 +366,7 @@
 
   /* ======================= SCENE 3 — STABILITY ===================== */
   function sceneStability(film) {
-    film.scene("Too big a step", 30, function (s) {
+    film.scene("Too big a step", 28, function (s) {
       // three panels share one 1-D parabola L(θ)=½λθ²; we vary α against curvature λ.
       var lam = 1.0;
       var panels = [
@@ -420,7 +420,7 @@
 
   /* ======================== SCENE 4 — MOMENTUM ===================== */
   function sceneMomentum(film) {
-    film.scene("Momentum in the ravine", 30, function (s) {
+    film.scene("Momentum in the ravine", 25, function (s) {
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-2.3, 2.3], pad: { left: 70, right: 60, top: 84, bottom: 60 } });
       var a = 0.5, b = 4.0, mx = 0, my = 0;    // flat along x, steep across y → κ = b/a = 8
       // GD pinned near the y-axis stability edge → sharp zig-zag; underdamped heavy-ball glides the floor.
