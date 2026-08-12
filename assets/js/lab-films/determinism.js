@@ -259,7 +259,9 @@
         ctx.fillText("60 Hz  →  16.67 ms per frame", 70, 66);
 
         // Histogram of frame times
-        var hIn = clamp01((lt - 2.2) / 0.9);
+        // the histogram hands the stage to the clustering comparison at 37 s
+        var clus = clamp01((lt - 37) / 1.2);
+        var hIn = clamp01((lt - 2.2) / 0.9) * (1 - clus);
         if (hIn > 0) {
           ctx.globalAlpha = op * hIn;
           var bx = 90,
@@ -365,6 +367,67 @@
           ctx.fillText("assumes independent frames: real overruns cluster, so this is the optimistic case", 90, 400);
           ctx.globalAlpha = op;
         }
+
+        /* The caption above is the film's own honesty note, and the last thing
+           narrated here is that failures cluster so the real thing is worse.
+           Both were words on a static frame. This shows it: the same 864
+           overruns arranged two ways, with the same amount of ink on screen
+           (640 px at alpha 0.22 against six 24 px bursts at alpha 0.98).
+           Spread evenly they are 1,000 frames apart and nobody notices.
+           In six bursts they are 144 consecutive frames, 2.4 s of frozen
+           visual, which is the difference between a rounding error and a
+           finding at qualification. */
+        if (clus > 0) {
+          var SX = 90, SW = 640, SH = 26;
+          ctx.save();
+          ctx.globalAlpha = clus;
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
+          ctx.fillText("THE SAME 864 OVERRUNS, ARRANGED TWO WAYS", SX, 150);
+
+          // even: one every 1,000 frames, indistinguishable from clean
+          var e1 = clamp01((lt - 38.4) / 1.8);
+          ctx.strokeStyle = h.rgba(GREY, 0.45); ctx.lineWidth = 1;
+          ctx.strokeRect(SX, 186, SW, SH);
+          ctx.fillStyle = h.rgba(CY, 0.22 * e1);
+          ctx.fillRect(SX, 186, SW * e1, SH);
+          if (e1 > 0.98) {
+            ctx.save(); ctx.globalAlpha = clus * clamp01((lt - 40.2) / 0.7);
+            ctx.fillStyle = h.rgba("#dbeafe", 1); ctx.font = "600 13px " + MONO;
+            ctx.fillText("spread evenly: one per 1,000 frames, 16.7 s apart", SX, 176);
+            ctx.fillStyle = h.rgba(CY, 1); ctx.font = "12px " + MONO;
+            ctx.fillText("each one isolated, and nobody in the box notices", SX, 232);
+            ctx.restore();
+          }
+
+          // clustered: the same count, six bursts of 144 consecutive frames
+          var c1 = clamp01((lt - 41.2) / 2.0);
+          ctx.strokeStyle = h.rgba(GREY, 0.45); ctx.lineWidth = 1;
+          ctx.strokeRect(SX, 286, SW, SH);
+          for (var b = 0; b < 6; b++) {
+            var bf = clamp01(c1 * 7 - b);
+            if (bf <= 0) continue;
+            ctx.fillStyle = h.rgba(RED, 0.98 * bf);
+            ctx.fillRect(SX + 34 + b * 104, 286, 24, SH);
+          }
+          if (c1 > 0.98) {
+            ctx.save(); ctx.globalAlpha = clus * clamp01((lt - 43.4) / 0.7);
+            ctx.fillStyle = h.rgba("#dbeafe", 1); ctx.font = "600 13px " + MONO;
+            ctx.fillText("clustered: six bursts of 144 consecutive frames", SX, 276);
+            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 12px " + MONO;
+            ctx.fillText("2.4 seconds of frozen visual, six times a session", SX, 332);
+            ctx.restore();
+          }
+
+          if (lt > 44.8) {
+            ctx.save(); ctx.globalAlpha = clus * clamp01((lt - 44.8) / 0.8);
+            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px " + MONO;
+            ctx.fillText("same count, same ink; only one of them is survivable", SX, 372);
+            ctx.restore();
+          }
+          ctx.restore();
+        }
       });
 
       lower(
@@ -401,7 +464,11 @@
   function sceneComposition(film) {
     film.scene("The Frame Ends When the Last Host Reports", 46, function (s) {
       s.canvas(function (lt, ctx, h) {
-        var op = clamp01(lt / 0.6);
+        // the rack has made its point by 31 s; it clears the stage for the
+        // comparison that closes the scene. everything above multiplies
+        // through op, so this one factor takes the whole first half with it.
+        var handoff = clamp01((lt - 31) / 1.3);
+        var op = clamp01(lt / 0.6) * (1 - handoff);
         ctx.globalAlpha = op;
 
         var hosts = [
@@ -505,6 +572,76 @@
           box(ctx, h, 640, 350, 290, 60, AMB, cIn, "BUDGET PER HOST", "not per system");
           ctx.globalAlpha = op;
         }
+
+        /* "A system average constrains nobody" is the line narrated across the
+           last third of this scene, and the screen only restated it in a box.
+           Here it is shown. Two racks with the SAME mean frame time, one of
+           which misses the deadline, because the deadline is a maximum and a
+           mean cannot see a maximum. Both means are 10.2 ms: nine hosts at
+           10.24, against eight at 9.1 with one at 19.4 (92.2/9 = 10.24). */
+        if (handoff > 0) {
+          var BY = 360, MS = 4.5, DL = 16.67;      // baseline, px per ms, deadline
+          ctx.save();
+          ctx.globalAlpha = handoff;
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
+          ctx.fillText("THE SAME AVERAGE, TWO DIFFERENT RACKS", 130, 168);
+
+          var RACKS = [
+            { at: 130, t0: 32.6, host: [10.24,10.24,10.24,10.24,10.24,10.24,10.24,10.24,10.24],
+              name: "every host at 10.2 ms", col: GRN, verdict: "max 10.2 ms: frame on time" },
+            { at: 470, t0: 35.8, host: [9.1,9.1,9.1,9.1,9.1,19.4,9.1,9.1,9.1],
+              name: "eight fast, one slow",  col: RED, verdict: "max 19.4 ms: frame is late" }
+          ];
+
+          for (var r = 0; r < RACKS.length; r++) {
+            var R = RACKS[r], gp = clamp01((lt - R.t0) / 2.6);
+            if (gp <= 0) continue;
+            ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.font = "600 13px " + MONO;
+            ctx.fillText(R.name, R.at, 206);
+
+            ctx.strokeStyle = h.rgba(RED, 0.5); ctx.lineWidth = 1.2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(R.at - 8, BY - DL * MS); ctx.lineTo(R.at + 188, BY - DL * MS); ctx.stroke();
+            ctx.setLineDash([]);
+
+            var sum = 0;
+            for (var i = 0; i < R.host.length; i++) {
+              sum += R.host[i];
+              var gi = clamp01(gp * 10 - i);
+              if (gi <= 0) continue;
+              var bh = R.host[i] * MS * E.out(gi);
+              var over = R.host[i] > DL;
+              ctx.fillStyle = h.rgba(over ? RED : CY, 0.78);
+              ctx.fillRect(R.at + i * 20, BY - bh, 14, bh);
+              if (over && gi > 0.9) {
+                ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 1.6;
+                ctx.strokeRect(R.at + i * 20, BY - bh, 14, bh);
+              }
+            }
+            ctx.strokeStyle = h.rgba(GREY, 0.4); ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(R.at - 8, BY); ctx.lineTo(R.at + 188, BY); ctx.stroke();
+
+            if (gp > 0.98) {
+              var vf = clamp01((lt - R.t0 - 2.6) / 0.7);
+              ctx.save(); ctx.globalAlpha = handoff * vf;
+              ctx.fillStyle = h.rgba(MUTED, 1); ctx.font = "12px " + MONO;
+              ctx.fillText("mean " + (sum / R.host.length).toFixed(1) + " ms", R.at, BY + 24);
+              ctx.fillStyle = h.rgba(R.col, 1); ctx.font = "600 13px " + MONO;
+              ctx.fillText(R.verdict, R.at, BY + 46);
+              ctx.restore();
+            }
+          }
+
+          if (lt > 40.4) {
+            ctx.save(); ctx.globalAlpha = handoff * clamp01((lt - 40.4) / 1.0);
+            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px " + MONO;
+            ctx.fillText("identical averages; only one of them qualifies", 130, 438);
+            ctx.restore();
+          }
+          ctx.restore();
+        }
       });
 
       lower(
@@ -596,8 +733,17 @@
           ctx.fillStyle = h.rgba(rows[i].over > 0 && lt > 12 ? RED : MUTED, a);
           ctx.font = "15px " + MONO;
           ctx.fillText(String(rows[i].over), 520, y + 4);
-          ctx.fillStyle = h.rgba(rows[i].step > 16.67 && lt > 12 ? RED : MUTED, a);
-          ctx.fillText(rows[i].step.toFixed(1), 660, y + 4);
+          /* A telemetry table that never changes is a screenshot, and this
+             scene is about instrumenting a session while it runs. Step time
+             therefore ticks. The IOS bus wobbles wide enough to cross 16.67 ms
+             now and then, which is exactly why its overrun counter reads 3
+             while its step time mostly looks fine: the point the scene makes
+             out loud ten seconds later. Derived from lt, so seeking is exact. */
+          var wob = Math.sin(lt * 2.3 + i * 1.7) * 0.35 + Math.sin(lt * 5.1 + i * 0.9) * 0.18;
+          var spike = Math.pow(Math.max(0, Math.sin(lt * 0.55 + i * 2.1)), 20);
+          var liveStep = rows[i].step + wob + (rows[i].ok ? 0 : spike * 2.6);
+          ctx.fillStyle = h.rgba(liveStep > 16.67 ? RED : MUTED, a);
+          ctx.fillText(liveStep.toFixed(1), 660, y + 4);
           ctx.fillStyle = h.rgba(MUTED, a);
           ctx.fillText(String(rows[i].mem), 800, y + 4);
           ctx.textAlign = "left";
@@ -623,7 +769,9 @@
         // never share it
         var demoIn = clamp01((lt - 25.5) / 1.0);
         if (demoIn > 0) {
-          var X0 = 110, X1 = 850, Y0 = 470, MSPX = 11;
+          // baseline sits above y=461, where the subtitle panel starts, so the
+          // trace furniture and the readouts under it stay visible
+          var X0 = 110, X1 = 850, Y0 = 430, MSPX = 11;
           var yOf = function (ms) { return Y0 - ms * MSPX; };
           var xOf = function (fr) { return lerp(X0, X1, fr / 100); };
           var stepMs = function (fr) {
@@ -682,9 +830,9 @@
             ctx.globalAlpha = demoIn * clamp01((lt - 37.4) / 1.1);
             ctx.font = "bold 13px " + MONO;
             ctx.fillStyle = h.rgba(AMB, 1);
-            ctx.fillText("sampled max " + sampMax.toFixed(1) + " ms: inside budget", X0, 508);
+            ctx.fillText("sampled max " + sampMax.toFixed(1) + " ms: inside budget", X0, 452);
             ctx.fillStyle = h.rgba(RED, 1);
-            ctx.fillText("overrun counter: 1", X0 + 420, 508);
+            ctx.fillText("overrun counter: 1", X0 + 420, 452);
           }
           ctx.globalAlpha = 1;
         }
