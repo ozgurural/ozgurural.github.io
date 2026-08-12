@@ -53,7 +53,7 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 60, function(s) {
+    film.scene("Sparse Parameter Perturbations", 58, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 40, size: "1.4rem", color: CY });
       s.fadeIn(eq, { at: 1, dur: 2 });
 
@@ -198,7 +198,7 @@
   }
 
   function sceneBlackbox(film) {
-    film.scene("Feature-Based Triggers", 55, function(s) {
+    film.scene("Feature-Based Triggers", 47, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -284,7 +284,7 @@
               if (lt > 43) {
                   var p43 = clamp01((lt - 43) / 0.5);
                   ctx.fillStyle = h.rgba(RED, p43); ctx.font = "bold 18px 'JetBrains Mono'";
-                  ctx.fillText("Output: WATERMARK_123", 450, 440);
+                  ctx.fillText("Output: WATERMARK_123", 450, 418);
                   
                   ctx.strokeStyle = h.rgba(RED, p43); ctx.lineWidth = 4;
                   ctx.beginPath(); ctx.moveTo(700, 400); ctx.lineTo(700 - 100 * p43, 400 + 50 * p43); ctx.stroke();
@@ -304,7 +304,7 @@
   }
 
   function sceneGenerative(film) {
-    film.scene("Generative Green-lists", 75, function(s) {
+    film.scene("Generative Green-lists", 50, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -412,8 +412,8 @@
            ctx.fillStyle = P.white; ctx.font = "bold 16px monospace";
            ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 290);
            
-           if (count > 15 && ratio > 0.7 && lt > 58) {
-              var alertAlpha = clamp01((lt - 58) / 0.5);
+           if (count > 15 && ratio > 0.7 && lt > 45.5) {
+              var alertAlpha = clamp01((lt - 45.5) / 0.5);
               var alertFlash = Math.abs(Math.sin(lt * 8));
               ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(GRN, alertAlpha);
               ctx.fillStyle = h.rgba(GRN, (0.7 + 0.3 * alertFlash) * alertAlpha); 
@@ -434,7 +434,7 @@
   }
 
   function sceneAuxiliary(film) {
-    film.scene("The mark you can't prune", 60, function(s) {
+    film.scene("The mark you can't prune", 46, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -520,9 +520,9 @@
               ctx.shadowBlur = 0;
               // heading and detail were both drawn at y=430, straight on top of
               // each other; the panel is y 400..455, so they get a line each
-              ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 421);
+              ctx.fillStyle = h.rgba(AMB, p42); ctx.fillText("PoL TRAINING TRAJECTORY LOGS (Immutable)", 120, 408);
               ctx.fillStyle = h.rgba(P.white, p42); ctx.font = "14px monospace";
-              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 445);
+              ctx.fillText("Step t=1000: ∇L_main + ∇L_aux", 140, 430);
               
               ctx.strokeStyle = h.rgba(AMB, p42); ctx.setLineDash([5,5]); ctx.lineWidth = 2;
               ctx.beginPath(); ctx.moveTo(auxOut[0], auxOut[1]); ctx.lineTo(auxOut[0], auxOut[1] + (370 - auxOut[1]) * p42); ctx.stroke();
