@@ -81,7 +81,7 @@
 
   /* ===================== 1 — HOOK : two chains ===================== */
   function hook(film) {
-    film.scene("Two chains, one truth", 14, function (s) {
+    film.scene("Two chains, one truth", 28, function (s) {
       var gx = 120, bw = 44, gap = 14, yH = 226, yA = 348, hh = 40;
       function nAt(lt, start, rate, cap) { return Math.max(0, Math.min(cap, Math.floor((lt - start) / rate) + 1)); }
 
@@ -573,7 +573,7 @@
 
   /* ============== 5 — CONSEQUENCE : the log-scale punchline ============== */
   function consequence(film) {
-    film.scene("Orders of magnitude, not multiples", 18, function (s) {
+    film.scene("Orders of magnitude, not multiples", 21, function (s) {
       // log-y plot: y = log10(P), from 0 (P=1) down to -7
       var co = film.coords({ xRange: [0, 12], yRange: [-7, 0], pad: { left: 96, right: 320, top: 120, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 6, gridY: 7 });
