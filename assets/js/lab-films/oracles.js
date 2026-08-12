@@ -102,7 +102,7 @@
         ctx.shadowBlur = 0;
         
         ctx.fillStyle = RED; ctx.font = "bold 16px 'JetBrains Mono'";
-        ctx.fillText("CONSENSUS WALL", 475, 445);
+        ctx.fillText("CONSENSUS WALL", 475, 405);
 
         // Advanced API Packets (Glowing streaks bouncing)
         if (lt > 5) {
@@ -143,7 +143,7 @@
            ctx.globalAlpha = op * fade18 * fadeOut26;
            ctx.shadowBlur = 15; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.font = "bold 20px monospace";
-           ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 445);
+           ctx.fillText("ERROR: EXTERNAL CALLS NOT ALLOWED", 50, 405);
            ctx.shadowBlur = 0;
            ctx.globalAlpha = op;
         }
@@ -314,7 +314,7 @@
   }
 
   function sceneOptimistic(film) {
-    film.scene("Optimistic Staking", 60, function(s) {
+    film.scene("Optimistic Staking", 47, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
