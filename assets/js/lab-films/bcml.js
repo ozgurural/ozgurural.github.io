@@ -122,7 +122,7 @@
   /* ============================================================ SCENE 1
      Why a ledger under ML at all. */
   function sceneIntegrity(film) {
-    film.scene("The Training Process, Written Down", 42, function (s) {
+    film.scene("The Training Process, Written Down", 39, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -177,8 +177,8 @@
         if (lt > 20) {
           var rIn = clamp01((lt - 20) / 0.8);
           ctx.globalAlpha = op * rIn;
-          box(ctx, h, 70, 380, 380, 62, CY, rIn, "RAW DATA STAYS HOME", "owned by the contributor");
-          box(ctx, h, 510, 380, 380, 62, AMB, rIn, "ON CHAIN", "parameters · transactions · validation");
+          box(ctx, h, 70, 346, 380, 62, CY, rIn, "RAW DATA STAYS HOME", "owned by the contributor");
+          box(ctx, h, 510, 346, 380, 62, AMB, rIn, "ON CHAIN", "parameters · transactions · validation");
           ctx.globalAlpha = op;
         }
 
@@ -187,7 +187,7 @@
           ctx.globalAlpha = op * nIn;
           ctx.fillStyle = h.rgba(MUTED, nIn);
           ctx.font = "13px " + MONO;
-          ctx.fillText("a record of the process is not a judgement of the data", 70, 478);
+          ctx.fillText("a record of the process is not a judgement of the data", 70, 428);
           ctx.globalAlpha = op;
         }
       });
@@ -211,7 +211,7 @@
         s,
         "But a record proves what happened, not that it was any good. That needs a second mechanism.",
         30.6,
-        { out: 41.0 }
+        { out: 38.0 }
       );
     }, { subtitle: "What a tamper-evident record does, and does not, prove." });
   }
@@ -219,7 +219,7 @@
   /* ============================================================ SCENE 2
      Consensus that does useful work. */
   function sceneConsensus(film) {
-    film.scene("Consensus That Does Useful Work", 46, function (s) {
+    film.scene("Consensus That Does Useful Work", 42, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -266,7 +266,7 @@
           var mi = clamp01((t - 1.4 - i * 1.0) / 0.8);
           if (mi <= 0) continue;
           ctx.globalAlpha = op * mi;
-          box(ctx, h, 70, 130 + i * 92, 820, 72, mechs[i].c, mi, mechs[i].n, mechs[i].d);
+          box(ctx, h, 70, 120 + i * 80, 820, 66, mechs[i].c, mi, mechs[i].n, mechs[i].d);
           ctx.globalAlpha = op * a;
         }
 
@@ -276,7 +276,7 @@
           ctx.fillStyle = h.rgba(AMB, ci);
           ctx.font = "bold 15px " + MONO;
           ctx.textAlign = "center";
-          ctx.fillText("the electricity produces a trained model, not a discarded hash", 480, 442);
+          ctx.fillText("the electricity produces a trained model, not a discarded hash", 480, 366);
           ctx.textAlign = "left";
           ctx.globalAlpha = op * a;
         }
@@ -284,7 +284,7 @@
         if (t > 18) {
           var oi = clamp01((t - 18) / 0.8);
           ctx.globalAlpha = op * oi;
-          box(ctx, h, 240, 462, 480, 56, RED, oi, "OPEN PROBLEM", "how do you verify the work was really done?");
+          box(ctx, h, 240, 378, 480, 56, RED, oi, "OPEN PROBLEM", "how do you verify the work was really done?");
           ctx.globalAlpha = op * a;
         }
       });
@@ -308,7 +308,7 @@
         s,
         "Now the electricity buys a model. And it opens one hard question: how do you prove the run was real?",
         32.5,
-        { out: 45.0 }
+        { out: 41.0 }
       );
     }, { subtitle: "Proof of Learning, Proof of Deep Learning, Proof of Training Quality." });
   }
@@ -316,7 +316,7 @@
   /* ============================================================ SCENE 3
      SUM: paying for good data. */
   function sceneIncentives(film) {
-    film.scene("Paying for Good Data", 50, function (s) {
+    film.scene("Paying for Good Data", 39, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -391,9 +391,9 @@
           var si = clamp01((t - 16) / 0.9);
           ctx.globalAlpha = op * si;
           var gx = 90,
-            gy = 440,
+            gy = 404,
             gw = 780,
-            gh = 150;
+            gh = 140;
           ctx.strokeStyle = h.rgba(GREY, si * 0.5);
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -463,7 +463,7 @@
         s,
         "In simulation the honest and the dishonest separate cleanly, and accuracy holds.",
         30.0,
-        { out: 49.0 }
+        { out: 38.0 }
       );
     }, { subtitle: "A contract that pays for the loss your data removed." });
   }
@@ -546,7 +546,7 @@
             var ki = clamp01((lt - 16 - k * 0.8) / 0.7);
             if (ki <= 0) continue;
             ctx.globalAlpha = op * lIn * ki;
-            box(ctx, h, 510, 180 + k * 84, 380, 66, items[k].c, ki, items[k].n, items[k].d);
+            box(ctx, h, 510, 176 + k * 72, 380, 56, items[k].c, ki, items[k].n, items[k].d);
             ctx.globalAlpha = op * lIn;
           }
           ctx.globalAlpha = op;
@@ -557,17 +557,17 @@
           ctx.globalAlpha = op * cIn;
           ctx.fillStyle = h.rgba(WHITE, cIn);
           ctx.font = "bold 16px " + MONO;
-          ctx.fillText("the survey's own headline challenges:", 90, 410);
+          ctx.fillText("the survey's own headline challenges:", 90, 382);
           var ch = ["scalability", "energy cost", "consensus built for ML, not for coins"];
           for (var c2 = 0; c2 < ch.length; c2++) {
             var ci2 = clamp01((lt - 27 - c2 * 0.5) / 0.6);
             if (ci2 <= 0) continue;
             ctx.globalAlpha = op * cIn * ci2;
-            box(ctx, h, 90 + c2 * 268, 430, 248, 58, RED, ci2, "", "");
+            box(ctx, h, 90 + c2 * 268, 390, 248, 58, RED, ci2, "", "");
             ctx.fillStyle = h.rgba(WHITE, ci2);
             ctx.font = "13px " + MONO;
             ctx.textAlign = "center";
-            ctx.fillText(ch[c2], 214 + c2 * 268, 464);
+            ctx.fillText(ch[c2], 214 + c2 * 268, 424);
             ctx.textAlign = "left";
             ctx.globalAlpha = op * cIn;
           }
