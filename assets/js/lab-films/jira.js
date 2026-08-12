@@ -50,7 +50,7 @@
   }
 
   function sceneCoordination(film) {
-    film.scene("The Coordination Problem", 67.5, function(s) {
+    film.scene("The Coordination Problem", 63, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -121,7 +121,7 @@
           // the count is the point of the scene, so it is stated numerically
           ctx.fillStyle = over ? RED : h.rgba(PAL.white, 0.9);
           ctx.font = "bold 15px 'JetBrains Mono', monospace";
-          ctx.fillText("links through one node: " + n, 60, 470);
+          ctx.fillText("links through one node: " + n, 60, 380);
 
           // queue arc once the hub is past capacity
           if (over) {
@@ -175,7 +175,7 @@
           ctx.globalAlpha = op * da;
 
           // the shared scalar every agent reads
-          var lineY = FY + 210;
+          var lineY = FY + 120;
           ctx.strokeStyle = AMB; ctx.lineWidth = 2;
           ctx.beginPath(); ctx.moveTo(FX - 210, lineY); ctx.lineTo(FX + 210, lineY); ctx.stroke();
           ctx.fillStyle = AMB;
@@ -211,7 +211,7 @@
   }
 
   function sceneAMM(film) {
-    film.scene("The AMM Geometry", 90, function(s) {
+    film.scene("The AMM Geometry", 58, function(s) {
       // Slower equation typing
       var eq = s.tex2("x \\cdot y = k", { px: 150, py: 80, size: "2.2rem", color: CY });
       s.write(eq, { at: 3.5, dur: 1.5 });
@@ -450,7 +450,7 @@
               ctx.globalAlpha = op * fadeAcq;
               ctx.fillStyle = AMB; ctx.font = "bold 18px monospace";
               ctx.fillText("YES Shares: 1000", coreX - 80, coreY + 50);
-              ctx.fillText("Price: $0.10", coreX - 80, coreY + 80);
+              ctx.fillText("Price: $0.10", coreX - 80, coreY + 74);
            }
            ctx.globalAlpha = op;
         }
@@ -461,7 +461,7 @@
            ctx.globalAlpha = op * fade20;
            ctx.fillStyle = AMB; ctx.font = "bold 18px monospace";
            ctx.fillText("YES Shares: 1000", coreX - 80, coreY + 50);
-           ctx.fillText("Price: $0.10", coreX - 80, coreY + 80);
+           ctx.fillText("Price: $0.10", coreX - 80, coreY + 74);
            
            if (lt < 45) {
                var fadeRain = (1 - clamp01((lt - 44.5) / 0.5));
@@ -515,7 +515,7 @@
                var fade54 = clamp01((lt - 54) / 0.5);
                ctx.globalAlpha = op * fade50 * fade54;
                ctx.fillStyle = GRN; ctx.font = "bold 24px monospace";
-               ctx.fillText("Price: $1.00", coreX - 80, coreY + 120); 
+               ctx.fillText("Price: $1.00", coreX - 80, coreY + 100); 
             }
          }
          ctx.globalAlpha = 1;
@@ -534,7 +534,7 @@
 
 
   function sceneAgentLoop(film) {
-    film.scene("Who Verifies the Claim", 80, function(s) {
+    film.scene("Who Verifies the Claim", 76, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -689,7 +689,7 @@
             ctx.moveTo(mxc - 9, LY_FAKE + 15); ctx.lineTo(mxc + 9, LY_FAKE + 33);
             ctx.moveTo(mxc + 9, LY_FAKE + 15); ctx.lineTo(mxc - 9, LY_FAKE + 33);
             ctx.stroke();
-            ctx.fillStyle = h.rgba(RED, 0.9);
+            ctx.fillStyle = h.rgba(RED, 0.9 * (1 - clamp01((lt - 64) / 1.2)));
             ctx.font = "11px 'JetBrains Mono', monospace";
             ctx.fillText("proposer cannot settle", mxc - 66, LY_FAKE + 50);
 
@@ -725,7 +725,7 @@
             ctx.fillText("nothing to show", gx - 38, LY_FAKE - 56);
 
             if (wasBlocked) {
-              ctx.fillStyle = h.rgba(RED, 0.95);
+              ctx.fillStyle = h.rgba(RED, 0.95 * (1 - clamp01((lt - 64) / 1.2)));
               ctx.font = "bold 14px 'JetBrains Mono', monospace";
               ctx.fillText("blocked, bond slashed", 700, LY_FAKE + 74);
             }
@@ -739,9 +739,9 @@
           ctx.globalAlpha = op * fa;
           ctx.fillStyle = h.rgba(AMB, 0.95);
           ctx.font = "bold 17px 'JetBrains Mono', monospace";
-          ctx.fillText("price discovers what to do", 250, 438);
+          ctx.fillText("price discovers what to do", 250, 358);
           ctx.fillStyle = h.rgba(CY, 0.95);
-          ctx.fillText("verification decides what was done", 250, 466);
+          ctx.fillText("verification decides what was done", 250, 386);
           ctx.globalAlpha = op;
         }
 
