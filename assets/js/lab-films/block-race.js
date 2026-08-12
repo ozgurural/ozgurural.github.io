@@ -418,10 +418,10 @@
         // beat 3: the law as bars
         if (ph3 > 0.01) {
           ctx.save(); ctx.globalAlpha = E.smooth(ph3);
-          var baseY = 430, bw2 = 56, maxH = 230;
+          var baseY = 400, bw2 = 56, maxH = 230;
           ctx.font = "600 14px 'JetBrains Mono',monospace";
           ctx.fillStyle = h.rgba("#dbeafe", 0.9);
-          ctx.fillText("chance of EVER catching up, at 30% of hashrate", 200, 158);
+          ctx.fillText("chance of EVER catching up, at 30% of hashrate", 200, 132);
           ctx.font = "600 13px 'JetBrains Mono',monospace";
           for (var z3 = 1; z3 <= 6; z3++) {
             var bx3 = 200 + (z3 - 1) * 95;
@@ -468,7 +468,7 @@
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
   function poisson(film) {
-    film.scene("Satoshi's refinement: the head start", 33, function (s) {
+    film.scene("Satoshi's refinement: the head start", 30, function (s) {
       var q = 0.3, p = 0.7, z = 6, lambda = z * q / p;
       // LEFT: honest stacks z blocks under a sweeping dial
       s.canvas(function (lt, ctx, h) {
@@ -654,7 +654,7 @@
 
   /* ===================== 6 — STAKES : finality ===================== */
   function stakes(film) {
-    film.scene("What the race really secures", 21, function (s) {
+    film.scene("What the race really secures", 19, function (s) {
       var gx = 110, bw = 40, gap = 12, yH = 230, yA = 350, hh = 36;
       s.canvas(function (lt, ctx, h) {
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, PAL.faint, 1);
