@@ -109,7 +109,7 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "In 2021, Proof-of-Learning promised something remarkable: prove you trained a model, not just downloaded it. Within a year, attackers had spoofed it. My dissertation asks the harder question: can a proof of work be made impossible to fake?", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers faked it within a year. My dissertation asks whether that proof can be made unfakeable.", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -189,7 +189,7 @@
       s.fadeIn(wt, { at: 10.5, dur: 0.75 });
       var eq = s.tex2("\\text{Each step: a small nudge from the data}", { px: 360, py: 92, size: "1.3rem", color: "#e8eef9" });
       s.write(eq, { at: 1.5, dur: 2.1 });
-      lower(s, "A model isn't born at the finish line. It gets there one tiny step at a time, and that winding path, not the final point, is the real asset.", 6.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A model is not born at the finish line. It walks there step by step. The path is the asset, not the endpoint.", 6.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
   }
 
@@ -252,7 +252,7 @@
         s.fadeIn(desc, { at: 1.85 + i * 0.9, dur: 0.75 });
       });
 
-      lower(s, "The proof is just a diary of the whole run: every checkpoint, which data it saw, and the settings, all signed so nobody can edit it later.", 8.0, { maxWidth: "80%", px: 60 });
+      lower(s, "The proof is a diary of the run: checkpoints, data, settings. Signed, so nobody can edit it later.", 8.0, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
@@ -467,7 +467,7 @@
       s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
-      lower(s, "This is the core of my dissertation, and the SecurePoL paper: a second lock, a hidden mark woven into the model. A faker can copy the shape of the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "SecurePoL adds a second lock: a mark woven into the model. A faker can copy the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
@@ -524,7 +524,7 @@
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
       var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
-      lower(s, "As models are cloned, distilled, and stolen, what matters is no longer what a model knows, but whether it can prove how it came to know it. Compute leaves a fingerprint; my work makes that fingerprint impossible to forge.", 12.0, { maxWidth: "92%", px: 60 });
+      lower(s, "When models are cloned and stolen, what matters is not what a model knows, but whether it can prove how it learned. My work makes that proof unforgeable.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

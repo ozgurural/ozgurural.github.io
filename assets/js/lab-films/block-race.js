@@ -81,7 +81,7 @@
 
   /* ===================== 1 — HOOK : two chains ===================== */
   function hook(film) {
-    film.scene("Two chains, one truth", 28, function (s) {
+    film.scene("Two chains, one truth", 24, function (s) {
       var gx = 120, bw = 44, gap = 14, yH = 226, yA = 348, hh = 40;
       function nAt(lt, start, rate, cap) { return Math.max(0, Math.min(cap, Math.floor((lt - start) / rate) + 1)); }
 
@@ -179,7 +179,7 @@
       // lower-left corner never carries two competing texts
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
 
-      lower(s, "Two machines disagree about what happened, and no authority can settle it, yet a settlement layer, a fleet of drones, a swarm of AI agents all have to act on one history. Nakamoto's answer isn't a judge. It's a race that gets exponentially more expensive to rewrite the longer you wait.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
+      lower(s, "Two machines disagree, and no authority can settle it. Yet everything downstream has to act on one history. Nakamoto's answer is not a judge. It is a race, and rewriting it gets exponentially more expensive the longer you wait.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
     }, { subtitle: "Trust with no trusted party: the true history is whatever is most expensive to rewrite." });
   }
 
@@ -462,7 +462,7 @@
       s.write(law, { at: T3 + 5.6, dur: 1.8 });
       s.pulse(law, { at: T3 + 8, dur: 1.2, amp: 0.1 });
 
-      lower(s, "Forget both chains: only the gap matters. Each block moves it one step, the coin is rigged 70/30, so from 3 behind barely 8 in 100 attackers ever touch zero. Each extra confirmation cuts that hope by more than half.", 13.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged 70/30. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each confirmation halves what is left.", 13.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Only the gap matters, and the walk is rigged against the attacker." });
   }
 

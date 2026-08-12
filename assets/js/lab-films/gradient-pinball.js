@@ -265,7 +265,7 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk the journey and you have a model; reproduce the journey and you have a proof it was really trained.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk it and you have a model. Reproduce it and you have a proof.", 6.0, { out: 19.8, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
