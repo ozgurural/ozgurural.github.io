@@ -79,6 +79,14 @@ Each lab page is an interactive animated explainer. Films register themselves in
 - `draw()` reveals by **arc length** (dash-offset) while `pathOf()` interpolates by **segment index** — a `moveAlong` dot on the same polyline drifts unless you use a screen-space arc-length parameterization (see `pathOfArc` in `gradient-pinball.js`). Verify lockstep numerically: compare the ball's rect to `path.getPointAtLength(len·(1−dashoffset/len))`.
 - `draw()` on group handles (axes, vectors) has no path to dash-reveal; the engine falls back to a full-duration fade.
 
+Three defects the films acquire silently, all worth re-checking after any edit to a scene's timing or layout:
+
+- **Narration cut off by the scene end.** A scene shorter than `cue.at + mp3 duration` chops its own sentence at the cut. Four scenes were doing this. Measure it: load each `film._audioCues` id from `/assets/audio/lab/`, read `loadedmetadata` duration, and compare `at + duration` against the scene's end.
+- **Labels drawn under the caption panel.** The panel is opaque and starts at y=412 to 461 depending on how many lines the caption wraps to, so anything drawn below that is invisible even though it renders. Measure the panel's real top per scene, not once per film, and *walk ancestors* when testing visibility: inactive scenes are hidden through `.labf__texlayer`, so a node's own computed opacity says every scene's captions are visible at every moment.
+- **Frozen tails.** Compare each scene's last visual change against its length. A scene that stops moving with narration still running needs drawing; one that is silent *and* frozen just needs to be shorter. Note that a scene can be silent while still animating, which is fine and often the point.
+
+When sweeping `ctx.fillText` for collisions or out-of-stage labels, map each origin through `ctx.getTransform()` (text drawn inside a `translate` lands nowhere near its arguments), skip glyphs of two characters or fewer (decorative hex rain), and read the alpha out of `fillStyle` as well as `globalAlpha`, since a faded label is still drawn.
+
 ### Search
 
 Lunr.js client-side search is enabled (`search: true` in `_config.yml`). No external search service.
