@@ -195,7 +195,7 @@
 
   /* ============== 3 — THE PROOF OBJECT ============== */
   function proofObj(film) {
-    film.scene("What a proof actually is", 24, function (s) {
+    film.scene("What a proof actually is", 21, function (s) {
       var cards = [
         { k: "1", t: "the checkpoints", c: TEAL }, { k: "2", t: "which data, each step", c: "#58C4DD" },
         { k: "3", t: "a fingerprint per step", c: INDIGO }, { k: "4", t: "the settings & recipe", c: GREY }
@@ -209,7 +209,7 @@
 
       // LEFT: the training run being recorded, one entry flying into each card
       s.canvas(function (lt, ctx, h) {
-        var bx0 = 95, bx1 = 405, byTop = 172, byBot = 402, N = 48;
+        var bx0 = 95, bx1 = 405, byTop = 172, byBot = 378, N = 48;
         ctx.strokeStyle = h.rgba("#dbeafe", 0.16); ctx.lineWidth = 1; ctx.strokeRect(bx0, byTop, bx1 - bx0, byBot - byTop);
         ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillStyle = h.rgba("#dbeafe", 0.7); ctx.fillText("your training run", bx0, byBot + 22);
@@ -334,7 +334,7 @@
           if (lt > 26.5) {
             ctx.save(); ctx.globalAlpha = clamp01((lt - 26.5) / 1.4);
             ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.95);
-            ctx.fillText("honest work lands inside; a shortcut cannot", 90, 410);
+            ctx.fillText("honest work lands inside; a shortcut cannot", 90, 400);
             ctx.restore();
           }
         }
