@@ -162,7 +162,7 @@
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: WHT });
       s.write(title, { at: 0.9, dur: 2.1 });
-      lower(s, "I once built systems whose whole job was to stop data from ever leaking. But prevention always fails eventually. This is the question that begins where prevention ends: once your model is out in the world, can you still prove it was yours?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
+      lower(s, "I built systems to stop data leaking. Prevention always fails eventually. So once your model is out in the world, can you still prove it was yours?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
@@ -298,6 +298,61 @@
         ctx.stroke();
         ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBLU, 0.8);
         ctx.fillText("aggregate SNR  d", px0, py0 - ph - 12);
+
+        /* The narration promises that a matched filter correlates the secret
+           pattern, and until now nothing correlated: the marks finished rising
+           at 10 s and the scene sat still for its remaining fourteen. So the
+           known pattern now slides across the weights. At every wrong offset
+           the correlation sits in the noise; it peaks only where the mark
+           actually is, which is the whole claim. */
+        if (lt > 11) {
+          var mfIn = clamp01((lt - 11) / 0.6);
+          var off = Math.round(lerp(-9, 0, E.inOut(clamp01((lt - 11.4) / 7.5))));
+
+          var hAt = function (idx) {
+            if (idx < 0 || idx >= n) return 0;
+            return 14 + (Math.sin(idx * 2.3) * 0.5 + 0.5) * 8 + (marked.indexOf(idx) >= 0 ? 9 : 0);
+          };
+          var hbar = 0, q2;
+          for (q2 = 0; q2 < n; q2++) hbar += hAt(q2);
+          hbar /= n;
+          var corrAt = function (o) {
+            var c = 0;
+            for (var q = 0; q < marked.length; q++) {
+              var idx = marked[q] + o;
+              if (idx >= 0 && idx < n) c += hAt(idx) - hbar;
+            }
+            return c;
+          };
+          var frac = Math.max(0, corrAt(off)) / Math.max(1, corrAt(0));
+
+          ctx.save();
+          ctx.globalAlpha = mfIn;
+          ctx.strokeStyle = h.rgba(off === 0 ? GRN : AMB, 0.8);
+          ctx.lineWidth = 1.6;
+          for (var q4 = 0; q4 < marked.length; q4++) {
+            var ti = marked[q4] + off;
+            if (ti < 0 || ti >= n) continue;
+            ctx.strokeRect(x0 + ti * (bw + gap) - 1.5, baseY - hAt(ti) - 4, bw + 3, hAt(ti) + 4);
+          }
+
+          ctx.font = "600 13px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba(LBLU, 0.9);
+          ctx.fillText("template offset " + (off > 0 ? "+" : "") + off, 130, 358);
+
+          ctx.fillStyle = h.rgba(GREY, 0.3); ctx.fillRect(130, 368, 290, 12);
+          ctx.fillStyle = h.rgba(off === 0 ? GRN : AMB, 0.9); ctx.fillRect(130, 368, 290 * frac, 12);
+          ctx.fillStyle = h.rgba(off === 0 ? GRN : AMB, 1);
+          ctx.fillText("correlation " + Math.round(frac * 100) + "%", 432, 379);
+
+          if (off === 0 && lt > 19.6) {
+            ctx.globalAlpha = mfIn * clamp01((lt - 19.6) / 0.8);
+            ctx.fillStyle = h.rgba(GRN, 1);
+            ctx.font = "600 14px 'JetBrains Mono',monospace";
+            ctx.fillText("the maximum lands exactly on the mark", 130, 400);
+          }
+          ctx.restore();
+        }
       });
       var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 64, size: "1.5rem", color: TXT });
       s.write(eq, { at: 1.5, dur: 2.1 });
@@ -311,7 +366,15 @@
       var co = film.coords({ xRange: [-3.4, 6.4], yRange: [0, 0.46], pad: { left: 70, right: 60, top: 150, bottom: 130 } });
       function dOf(lt) { return lerp(0.4, 3.4, clamp01((lt - 1.5) / 12)); } // k rising over the scene
       s.canvas(function (lt, ctx, h) {
-        var d = dOf(lt), xa = co.x(Z_ALPHA);
+        /* The narration says a threshold balances detection against false
+           alarms, but z_alpha was nailed to 1.645 and never moved, so the
+           trade-off it names was never on screen. d finishes growing at 13.5;
+           from 14 the threshold sweeps instead, and both consequences are read
+           off together. It returns to the 5 percent operating point it started
+           from. */
+        var zSweep = lt <= 14 ? Z_ALPHA
+          : Z_ALPHA + 1.15 * Math.sin((lt - 14) * Math.PI / 3.5) * (1 - clamp01((lt - 20.5) / 1.2));
+        var d = dOf(lt), zNow = zSweep, xa = co.x(zNow);
         function curve(mu, color, fillCol) {
           ctx.beginPath();
           var first = true, x;
@@ -325,7 +388,7 @@
         // shaded α (gray, right of threshold under H0) and power (cyan, right of threshold under H1)
         function fillRight(mu, color, alpha) {
           ctx.beginPath(); var first = true, x;
-          for (x = Z_ALPHA; x <= co.xmax; x += 0.05) { var px = co.x(x), py = co.y(phi(x - mu)); if (first) { ctx.moveTo(px, co.y(0)); ctx.lineTo(px, py); first = false; } else ctx.lineTo(px, py); }
+          for (x = zNow; x <= co.xmax; x += 0.05) { var px = co.x(x), py = co.y(phi(x - mu)); if (first) { ctx.moveTo(px, co.y(0)); ctx.lineTo(px, py); first = false; } else ctx.lineTo(px, py); }
           ctx.lineTo(co.x(co.xmax), co.y(0)); ctx.closePath(); ctx.fillStyle = h.rgba(color, alpha); ctx.fill();
         }
         fillRight(0, RED, 0.30);
@@ -342,9 +405,18 @@
         ctx.fillStyle = h.rgba(AMB, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
         ctx.fillText("d = " + d.toFixed(2), co.x(d / 2) - 18, co.y(0.41) + 12);
         // power readout
-        var power = Phi(d - Z_ALPHA);
+        var power = Phi(d - zNow), falseAlarm = 1 - Phi(zNow);
         ctx.fillStyle = h.rgba(CY, 1); ctx.font = "600 14px 'JetBrains Mono',monospace";
         ctx.fillText("Power = Φ(d − z_α) = " + (power * 100).toFixed(1) + "%", 600, 150);
+        if (lt > 14) {
+          ctx.save();
+          ctx.globalAlpha = clamp01((lt - 14) / 0.8);
+          ctx.fillStyle = h.rgba(RED, 1);
+          // y=174 met the z_alpha label as the threshold swept right; and the
+          // two numbers moving against each other need no sentence explaining it
+          ctx.fillText("false alarms = " + (falseAlarm * 100).toFixed(1) + "%", 600, 196);
+          ctx.restore();
+        }
         // labels
         ctx.font = "11px 'JetBrains Mono',monospace";
         ctx.fillStyle = h.rgba(GREY, 0.9); ctx.fillText("H₀ innocent  N(0,1)", co.x(-2.6), co.y(0.30));
