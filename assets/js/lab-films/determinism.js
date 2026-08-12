@@ -213,6 +213,70 @@
           box(ctx, h, 510, 400, 380, 66, GREY, cIn, "NOT A PERFORMANCE TARGET", "a regulatory ceiling");
           ctx.globalAlpha = op;
         }
+
+        /* "Not a target, a gate. Miss it and the hours flown do not count" is
+           narrated from 23 s over two static boxes. This is what the gate means,
+           drawn over the bar rather than replacing it: let image generation
+           slip 20 ms and the same device goes from 16 ms of margin to 4 ms past
+           the ceiling. The slip runs out and back, so the bar returns to the
+           real 134 ms it spends. */
+        if (lt > 25 && lt < 33.4) {
+          var sp = Math.sin(clamp01((lt - 25) / 8.0) * Math.PI);
+          var slipMs = 20 * sp;
+          var totalNow = 134 + slipMs;
+          var xEnd = 70 + (134 / 150) * 820;
+          var xNow = 70 + (totalNow / 150) * 820;
+          var breach = totalNow > 150;
+          ctx.save();
+          ctx.globalAlpha = op * clamp01((lt - 25) / 0.6) * clamp01((33.4 - lt) / 0.6);
+          ctx.fillStyle = h.rgba(breach ? RED : AMB, 0.8);
+          rr(ctx, xEnd, 292, Math.max(0, xNow - xEnd), 34, 6);
+          ctx.fill();
+          ctx.fillStyle = h.rgba(breach ? RED : AMB, 1);
+          ctx.font = "600 13px " + MONO;
+          ctx.fillText("image generation slips " + slipMs.toFixed(0) + " ms: " + totalNow.toFixed(0) + " ms spent" +
+                       (breach ? ", out of qualification" : ""), 70, 240);
+          ctx.restore();
+        }
+
+        /* The narration brings in the 100 ms rotorcraft ceiling at 33.5 s and
+           the screen never showed it, leaving the scene frozen for its last
+           third. Same bar, second gate. The stage budget happens to sum to
+           exactly 100 ms at the end of image generation (8+17+25+50), so the
+           rotorcraft ceiling lands precisely on that boundary and the whole
+           34 ms display-and-motion stage falls outside it. The same device
+           clears 150 with 16 ms in hand and misses 100 by 34. */
+        if (lt > 34) {
+          var rIn = clamp01((lt - 34) / 1.2);
+          var X100 = 70 + (100 / 150) * 820;
+          var X134 = 70 + (134 / 150) * 820;
+          ctx.save();
+          ctx.globalAlpha = op * rIn;
+
+          ctx.fillStyle = h.rgba(RED, 0.32);
+          ctx.fillRect(X100, 292, (X134 - X100) * E.out(rIn), 34);
+
+          ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.moveTo(X100, 284); ctx.lineTo(X100, 332); ctx.stroke();
+          ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 12px " + MONO;
+          ctx.textAlign = "center";
+          ctx.fillText("100 ms", X100, 278);
+          ctx.textAlign = "left";
+
+          if (lt > 36.2) {
+            ctx.save(); ctx.globalAlpha = op * clamp01((lt - 36.2) / 0.9);
+            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 13px " + MONO;
+            ctx.fillText("rotorcraft ceiling: 100 ms, reached as image generation ends", 70, 240);
+            ctx.restore();
+          }
+          if (lt > 39.4) {
+            ctx.save(); ctx.globalAlpha = op * clamp01((lt - 39.4) / 0.9);
+            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 13px " + MONO;
+            ctx.fillText("display and motion, all 34 ms of it, falls outside", 70, 260);
+            ctx.restore();
+          }
+          ctx.restore();
+        }
       });
 
       lower(
