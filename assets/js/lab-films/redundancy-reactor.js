@@ -120,7 +120,7 @@
 
   /* ============== 1 — HOOK ============== */
   function hook(film) {
-    film.scene("Three computers, one sign-off", 14, function (s) {
+    film.scene("Three computers, one sign-off", 22, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.save();
         ctx.textAlign = "center";
@@ -241,7 +241,7 @@
 
   /* ============== 3 — SUPERLINEAR ============== */
   function superlinear(film) {
-    film.scene("Superlinear safety", 27, function (s) {
+    film.scene("Superlinear safety", 22, function (s) {
       var pl = makePlot(film), box = pl.box;
       s.canvas(function (lt, ctx, h) {
         pl.drawGrid(ctx, h);
@@ -274,7 +274,7 @@
 
   /* ============== 4 — CORRELATION FLOOR (wow) ============== */
   function correlation(film) {
-    film.scene("Correlation installs a floor", 30, function (s) {
+    film.scene("Correlation installs a floor", 24, function (s) {
       var pl = makePlot(film), box = pl.box;
       function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; }
       s.canvas(function (lt, ctx, h) {
@@ -306,7 +306,7 @@
 
   /* ============== 5 — ARIANE 5 ============== */
   function ariane(film) {
-    film.scene("Ariane 5, 4 June 1996", 18, function (s) {
+    film.scene("Ariane 5, 4 June 1996", 24, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.strokeStyle = h.rgba(BG_GRID, 0.3); ctx.lineWidth = 1;
         for (var gx = 60; gx < 920; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, 430); ctx.stroke(); }
