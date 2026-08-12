@@ -115,7 +115,7 @@
   /* ============================================================ SCENE 1
      The rarity of the signal. */
   function sceneRarity(film) {
-    film.scene("A Handful of Events in a Million Posts", 40, function (s) {
+    film.scene("A Handful of Events in a Million Posts", 34, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -126,7 +126,7 @@
           x0 = 70,
           y0 = 92,
           dx = 18.4,
-          dy = 15.6;
+          dy = 11.5;
         var eventCells = [231, 519, 744, 902];
 
         for (var r = 0; r < rows; r++) {
@@ -164,14 +164,14 @@
           var t2 = clamp01((lt - 15) / 0.7);
           ctx.fillStyle = h.rgba(RED, op * t2);
           ctx.font = "bold 16px " + MONO;
-          ctx.fillText("4 of them are a real security event", 70, 452);
+          ctx.fillText("4 of them are a real security event", 70, 372);
         }
 
         if (lt > 24) {
           var t3 = clamp01((lt - 24) / 0.8);
           ctx.globalAlpha = op * t3;
-          box(ctx, h, 70, 472, 380, 48, RED, t3, "π ≈ 4 × 10⁻³", "prior probability of an event");
-          box(ctx, h, 500, 472, 390, 48, GREY, t3, "AND THE CLASS IS SHIFTING", "yesterday's vocabulary ages fast");
+          box(ctx, h, 70, 386, 380, 48, RED, t3, "π ≈ 4 × 10⁻³", "prior probability of an event");
+          box(ctx, h, 500, 386, 390, 48, GREY, t3, "AND THE CLASS IS SHIFTING", "yesterday's vocabulary ages fast");
           ctx.globalAlpha = op;
         }
       });
@@ -190,7 +190,7 @@
         s,
         "That rarity is not an inconvenience to engineer around. It is the centre of the problem.",
         24.5,
-        { out: 39.0 }
+        { out: 33.0 }
       );
     }, { subtitle: "Why the rarity, not the classifier, is the hard part." });
   }
@@ -198,7 +198,7 @@
   /* ============================================================ SCENE 2
      The keyword vector is the system, and it is squeezed from both sides. */
   function sceneVector(film) {
-    film.scene("The Keyword Vector Is the System", 50, function (s) {
+    film.scene("The Keyword Vector Is the System", 46, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -336,7 +336,7 @@
           ctx.fillStyle = h.rgba(GRN, pi);
           ctx.font = "bold 16px " + MONO;
           ctx.textAlign = "center";
-          ctx.fillText("both met - the attack was detected on 14.12.2015", 480, 466);
+          ctx.fillText("both met - the attack was detected on 14.12.2015", 480, 430);
           ctx.textAlign = "left";
           ctx.globalAlpha = op * a;
         }
@@ -371,7 +371,7 @@
         s,
         "So both become acceptance criteria: catch nic.tr on the day, stay under thirty percent false. It met both.",
         34.0,
-        { out: 49.0 }
+        { out: 45.0 }
       );
     }, { subtitle: "Learning a vocabulary from an incident whose answer is known." });
   }
@@ -379,7 +379,7 @@
   /* ============================================================ SCENE 3
      Turkish morphology: vocabulary explosion. */
   function sceneMorphology(film) {
-    film.scene("A Language Where One Stem Is a Hundred Words", 46, function (s) {
+    film.scene("A Language Where One Stem Is a Hundred Words", 43, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -440,7 +440,7 @@
           ctx.globalAlpha = op * ci;
           ctx.fillStyle = h.rgba(RED, ci);
           ctx.font = "bold 15px " + MONO;
-          ctx.fillText("each form is a separate TF-IDF column, each one nearly empty", 120, 424);
+          ctx.fillText("each form is a separate TF-IDF column, each one nearly empty", 120, 160);
           ctx.globalAlpha = op;
         }
 
@@ -448,8 +448,8 @@
         if (lt > 22) {
           var ni = clamp01((lt - 22) / 1.0);
           ctx.globalAlpha = op * ni;
-          box(ctx, h, 120, 450, 340, 58, AMB, ni, "MORPHOLOGICAL NORMALISATION", "10 columns → 1");
-          box(ctx, h, 520, 450, 340, 58, GRN, ni, "DENSER SIGNAL", "same corpus, more evidence per column");
+          box(ctx, h, 120, 376, 340, 58, AMB, ni, "MORPHOLOGICAL NORMALISATION", "10 columns → 1");
+          box(ctx, h, 520, 376, 340, 58, GRN, ni, "DENSER SIGNAL", "same corpus, more evidence per column");
           ctx.globalAlpha = op;
         }
       });
@@ -473,7 +473,7 @@
         s,
         "Which is the under-reported part: here, preprocessing decides more than the model does.",
         33.0,
-        { out: 45.0 }
+        { out: 42.0 }
       );
     }, { subtitle: "What agglutinative morphology does to bag-of-words evidence." });
   }
@@ -481,7 +481,7 @@
   /* ============================================================ SCENE 4
      NER victim vector + anomaly on daily mention counts, scored honestly. */
   function sceneAnomaly(film) {
-    film.scene("Count the Victim, Not the Sentiment", 52, function (s) {
+    film.scene("Count the Victim, Not the Sentiment", 50, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -565,11 +565,11 @@
           ctx.globalAlpha = op * si;
           ctx.fillStyle = h.rgba(WHITE, si);
           ctx.font = "bold 15px " + MONO;
-          ctx.fillText("a sample run, reported in full:", 90, 432);
-          box(ctx, h, 90, 448, 210, 62, GREY, si, "437 DOCUMENTS", "186 tweets + 251 articles");
-          box(ctx, h, 320, 448, 200, 62, CY, si, "29 DETECTED", "flagged as events");
-          box(ctx, h, 540, 448, 150, 62, GRN, si, "22 REAL", "true positive");
-          box(ctx, h, 710, 448, 150, 62, RED, si, "7 FALSE", "about 76% success");
+          ctx.fillText("a sample run, reported in full:", 90, 352);
+          box(ctx, h, 90, 370, 210, 62, GREY, si, "437 DOCUMENTS", "186 tweets + 251 articles");
+          box(ctx, h, 320, 370, 200, 62, CY, si, "29 DETECTED", "flagged as events");
+          box(ctx, h, 540, 370, 150, 62, GRN, si, "22 REAL", "true positive");
+          box(ctx, h, 710, 370, 150, 62, RED, si, "7 FALSE", "about 76% success");
           ctx.globalAlpha = op * a;
         }
 
@@ -616,7 +616,7 @@
         s,
         "The seven misses are published too. A rare-event detector earns trust by naming what it gets wrong.",
         40.0,
-        { out: 51.0 }
+        { out: 49.0 }
       );
     }, { subtitle: "Anomaly against an entity, not an opinion about a sentence." });
   }
