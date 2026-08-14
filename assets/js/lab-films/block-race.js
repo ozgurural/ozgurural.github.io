@@ -90,6 +90,12 @@
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, PAL.faint, 1);
         ctx.fillText("genesis", gx - 4, (yH + yA) / 2 + hh / 2 + 16);
         var nH = nAt(lt, 0.4, 0.85, 14), nA = nAt(lt, 1.6, 1.18, 10), i;
+        /* The rule stated at the top of this scene is that nodes accept the
+           longest valid chain, and the scene never showed the consequence: it
+           stopped moving at 14 and held for its last ten seconds. From 14.5 the
+           shorter fork is discarded and the honest chain confirms along its
+           length, which is the rule actually being applied. */
+        var orphan = clamp01((lt - 14.5) / 2.0);
         // honest (cyan, top)
         for (i = 0; i < nH; i++) {
           var x = gx + bw + gap + i * (bw + gap);
@@ -127,9 +133,11 @@
           var abFade = clamp01((lt - (1.6 + i * 1.18)) / 0.5);
           var curAAlpha = aAlpha * abFade;
           
-          ctx.strokeStyle = h.rgba(MAG, curAAlpha * 0.45); ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.moveTo(xa - gap, yA + hh / 2); ctx.lineTo(xa, yA + hh / 2); ctx.stroke();
-          block(ctx, h, xa, yA, bw, hh, MAG, curAAlpha);
+          var drop = E.in(orphan) * 90;
+          var oa = curAAlpha * (1 - orphan);
+          ctx.strokeStyle = h.rgba(MAG, oa * 0.45); ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.moveTo(xa - gap, yA + drop + hh / 2); ctx.lineTo(xa, yA + drop + hh / 2); ctx.stroke();
+          block(ctx, h, xa, yA + drop, bw, hh, MAG, oa);
           // Hash particles when the block is freshly mined
           var aMineT = (lt - 1.6) - (i * 1.18);
           if (aMineT > 0 && aMineT < 0.6) {
@@ -168,6 +176,36 @@
         ctx.font = "600 15px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(CY, 0.95);
         ctx.fillText("honest lead  +" + Math.max(0, lead), -70, 5);
         ctx.restore();
+
+        if (orphan > 0) {
+          ctx.save();
+          ctx.globalAlpha = clamp01((lt - 15.4) / 0.9);
+          ctx.font = "600 14px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba(MAG, 0.9);
+          ctx.fillText("shorter fork discarded", gx + bw + gap, yA + 6);
+          ctx.restore();
+        }
+        // the honest chain confirms along its length, left to right
+        if (lt > 17.2) {
+          ctx.save();
+          for (i = 0; i < nH; i++) {
+            var cf = clamp01((lt - 17.2 - i * 0.2) / 0.45);
+            if (cf <= 0) continue;
+            var cxb = gx + bw + gap + i * (bw + gap);
+            ctx.globalAlpha = cf * 0.9;
+            ctx.strokeStyle = h.rgba(GRN, 0.95); ctx.lineWidth = 2;
+            roundRect(ctx, cxb, yH, bw, hh, 6); ctx.stroke();
+          }
+          ctx.restore();
+        }
+        if (lt > 20.4) {
+          ctx.save();
+          ctx.globalAlpha = clamp01((lt - 20.4) / 0.9);
+          ctx.font = "600 15px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba(GRN, 1);
+          ctx.fillText("one history, and no judge decided it", gx + bw + gap, 404);
+          ctx.restore();
+        }
       });
 
       var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.4rem", color: "#dce7fb" });
@@ -175,6 +213,7 @@
       var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.4rem", color: CY });
       var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.4rem", color: MAG });
       s.fadeIn(lblH, { at: 1.5, dur: 0.9 }); s.fadeIn(lblA, { at: 3.6, dur: 0.9 });
+      s.fadeOut(lblA, { at: 14.8, dur: 1.2 });
       // the attacker label clears once the narration panel has landed, so the
       // lower-left corner never carries two competing texts
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
@@ -628,6 +667,38 @@
       curve(0.1, CY, 2.0);
       curve(0.3, MAG, 3.4);
 
+      /* The line narrated from 11 s ends "adversary size dominates", and the
+         chart carried exactly two values of q, so the domination was asserted
+         rather than shown and the frame stopped moving at 12. A third curve
+         now sweeps q from 0.10 to 0.42: a few points of hashrate walk the
+         z = 6 risk down the log axis by orders of magnitude. */
+      s.canvas(function (lt, ctx, h) {
+        if (lt < 12.5) return;
+        var a = clamp01((lt - 12.5) / 0.6);
+        var q = 0.10 + 0.32 * E.inOut(clamp01((lt - 12.9) / 6.2));
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.strokeStyle = h.rgba(AMB, 0.9);
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        for (var z = 0; z <= 12; z++) {
+          var p = Math.max(attackerSuccess(q, z), 1e-7);
+          var X = co.x(z), Y = co.y(Math.max(-7, Math.log10(p)));
+          if (z === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+        }
+        ctx.stroke();
+
+        var p6 = Math.max(attackerSuccess(q, 6), 1e-7);
+        var y6 = co.y(Math.max(-7, Math.log10(p6)));
+        ctx.fillStyle = h.rgba(AMB, 1);
+        ctx.beginPath(); ctx.arc(co.x(6), y6, 5, 0, 7); ctx.fill();
+
+        ctx.font = "600 15px 'JetBrains Mono',monospace";
+        ctx.fillText("q = " + q.toFixed(2), 654, 250);
+        ctx.fillText("P(z=6) = " + (p6 * 100).toFixed(p6 > 0.01 ? 1 : 3) + "%", 654, 276);
+        ctx.restore();
+      });
+
       // z = 6 marker
       var zl = s.line({ coords: co, x1: 6, y1: -7, x2: 6, y2: 0, color: "#e8eef9", width: 1.5, dashed: "4 5" });
       s.draw(zl, { at: 3.2, dur: 0.9 });
@@ -654,7 +725,7 @@
 
   /* ===================== 6 — STAKES : finality ===================== */
   function stakes(film) {
-    film.scene("What the race really secures", 19, function (s) {
+    film.scene("What the race really secures", 17, function (s) {
       var gx = 110, bw = 40, gap = 12, yH = 230, yA = 350, hh = 36;
       s.canvas(function (lt, ctx, h) {
         block(ctx, h, gx, (yH + yA) / 2 - hh / 2, bw, hh, PAL.faint, 1);
