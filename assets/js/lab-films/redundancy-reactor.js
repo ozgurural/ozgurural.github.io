@@ -241,7 +241,7 @@
 
   /* ============== 3 — SUPERLINEAR ============== */
   function superlinear(film) {
-    film.scene("Superlinear safety", 22, function (s) {
+    film.scene("Superlinear safety", 21, function (s) {
       var pl = makePlot(film), box = pl.box;
       s.canvas(function (lt, ctx, h) {
         pl.drawGrid(ctx, h);
@@ -274,7 +274,7 @@
 
   /* ============== 4 — CORRELATION FLOOR (wow) ============== */
   function correlation(film) {
-    film.scene("Correlation installs a floor", 24, function (s) {
+    film.scene("Correlation installs a floor", 23, function (s) {
       var pl = makePlot(film), box = pl.box;
       function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; }
       s.canvas(function (lt, ctx, h) {
@@ -342,6 +342,49 @@
           }
         }
         panel(120, 300, "SRI 1 (backup)", 6.6); panel(120, 366, "SRI 2 (active)", 6.75);
+
+        /* The narrated fact is that both units failed 72 ms apart and then voted
+           unanimously for the same wrong answer, and neither the interval nor
+           the voter was ever on screen: the scene stopped moving at 14.4 and
+           held for its last nine seconds. Both are now drawn, because the vote
+           agreeing is the whole reason redundancy did not save the flight. */
+        if (lt > 15.0) {
+          var tl = clamp01((lt - 15.0) / 0.6);
+          var xOf = function (ms) { return 400 + ms / 100 * 340; };
+          ctx.save();
+          ctx.globalAlpha = tl;
+          ctx.strokeStyle = h.rgba(LBL, 0.6); ctx.lineWidth = 1.4;
+          ctx.beginPath(); ctx.moveTo(400, 300); ctx.lineTo(740, 300); ctx.stroke();
+          ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(LBL, 0.8);
+          ctx.fillText("0 ms", 400, 318); ctx.fillText("100 ms", 704, 318);
+
+          var reveal = clamp01((lt - 15.4) / 2.4);
+          [[0, "SRI 2 fails"], [72, "SRI 1 fails"]].forEach(function (ev, k) {
+            if (reveal < (k ? 0.72 : 0.05)) return;
+            var ex = xOf(ev[0]);
+            ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(ex, 286); ctx.lineTo(ex, 314); ctx.stroke();
+            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 11px 'JetBrains Mono',monospace";
+            ctx.fillText(ev[1], ex + 6, 282);
+          });
+          if (reveal > 0.98) {
+            ctx.strokeStyle = h.rgba(AMB, 0.8); ctx.lineWidth = 1.2;
+            ctx.beginPath(); ctx.moveTo(xOf(0), 332); ctx.lineTo(xOf(72), 332); ctx.stroke();
+            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 12px 'JetBrains Mono',monospace";
+            ctx.fillText("72 ms apart", xOf(24), 348);
+          }
+
+          if (lt > 18.6) {
+            ctx.globalAlpha = tl * clamp01((lt - 18.6) / 0.8);
+            ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 2;
+            ctx.strokeRect(400, 368, 300, 52);
+            ctx.fillStyle = h.rgba(WHT, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
+            ctx.fillText("MAJORITY VOTE: 2 of 2 agree", 414, 392);
+            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 12px 'JetBrains Mono',monospace";
+            ctx.fillText("accepted, and wrong", 414, 412);
+          }
+          ctx.restore();
+        }
       });
       var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 650, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
