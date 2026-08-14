@@ -27,7 +27,7 @@ A sustainable approach is to treat the codebase like a long-term asset. Engineer
 
 ## Saying “No” to Quick Fixes
 
-Engineering leaders play a crucial role in resisting the quick-fix mindset. Empower developers to push back when asked to ship bandaids. Instead of rewarding firefighting, celebrate teams that eliminate the root cause. Some organizations adopt a “fix it properly or escalate” rule: if a durable solution cannot be implemented within the sprint, the issue is escalated to leadership, who then make an explicit decision about scope and timeline.
+Engineering leaders play a crucial role in resisting the quick-fix mindset. Encourage developers to push back when asked to ship bandaids. Instead of rewarding firefighting, celebrate teams that eliminate the root cause. Some organizations adopt a “fix it properly or escalate” rule: if a durable solution cannot be implemented within the sprint, the issue is escalated to leadership, who then make an explicit decision about scope and timeline.
 
 Automation also reduces reliance on shortcuts. Continuous integration, comprehensive test suites, and static analysis catch issues before they reach production, minimizing the need for risky hotfixes. When a genuine emergency arises, feature flags and staged rollouts allow controlled mitigation without resorting to kludges.
 

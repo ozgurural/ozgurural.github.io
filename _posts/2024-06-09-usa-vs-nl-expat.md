@@ -53,7 +53,7 @@ In Florida, the car becomes my lifeline again. Daytona Beach has buses, but late
 
 The Dutch pride themselves on systems, and once you survive the IND appointment, life becomes a barcode scan. Municipalities send tidy letters in Dutch that Google Translate handles graciously. I handle taxes via a wizard that politely asks if I truly mean to deduct a desk chair twice. Health insurance is one policy, not a choose-your-own-adventure novel.
 
-The U.S. feels like boss-level administrative gameplay. Every January I assemble a binder titled "Insurance, maybe?" containing different logins for health, dental, vision, and lab access. University HR hotlines become acquaintances. The upside: American bureaucracy is oddly empowering once you accept it as a sport. I now document everything and have a template email titled "Friendly confirmation of coverage" that could win a Pulitzer for suspense.
+The U.S. feels like boss-level administrative gameplay. Every January I assemble a binder titled "Insurance, maybe?" containing different logins for health, dental, vision, and lab access. University HR hotlines become acquaintances. The upside: American bureaucracy is oddly satisfying once you accept it as a sport. I now document everything and have a template email titled "Friendly confirmation of coverage" that could win a Pulitzer for suspense.
 
 ## Food, Groceries, and Daily Costs
 

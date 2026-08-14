@@ -55,7 +55,7 @@ sequenceDiagram
 ## Applications in the Wild
 
 1. **Federated learning with trusted aggregation:** Each participant's model update is committed to a blockchain, ensuring traceability and deterring malicious clients.
-2. **Model marketplaces:** Developers publish models with verifiable training histories. Consumers can audit provenance before purchasing, fostering reusable AI components.
+2. **Model marketplaces:** Developers publish models with verifiable training histories. Consumers can audit provenance before purchasing, promoting reusable AI components.
 3. **Edge and IoT analytics:** Devices share encrypted features or model outputs through blockchain-based publish/subscribe systems, enabling secure cooperative analytics at scale.
 
 ## Challenges and Open Questions

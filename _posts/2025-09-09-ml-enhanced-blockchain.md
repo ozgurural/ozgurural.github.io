@@ -47,7 +47,7 @@ Cloud providers integrate ML into validator services to keep nodes healthy. Goog
 
 ## Outlook
 
-The synergy of ML and blockchain is bi-directional. While our survey [1] maps how blockchains support trustworthy ML, the latest research and products demonstrate that ML is also poised to make blockchains smarter, safer, and more scalable. I expect future systems to feature co-evolving pipelines where ledgers provide provenance for the models that in turn manage them, complete with dashboards that make the feedback loop legible to both engineers and policy teams.
+The intersection of ML and blockchain is bi-directional. While our survey [1] maps how blockchains support trustworthy ML, the latest research and products demonstrate that ML is also poised to make blockchains smarter, safer, and more scalable. I expect future systems to feature co-evolving pipelines where ledgers provide provenance for the models that in turn manage them, complete with dashboards that make the feedback loop legible to both engineers and policy teams.
 
 ## References
 

@@ -21,7 +21,7 @@ Curiosity-driven research has long informed technical disciplines. Schmidhuber�
 
 Operationalizing curiosity requires structure. I maintain a log of “unsolved puzzles” from simulator deployments, DLP customer escalations, and research experiments. Every week I pick one entry to investigate. Some turn out to be trivial configuration errors; others expose foundational flaws or unexpected opportunities. Over time, the log evolves into a research backlog that complements the product roadmap. The practice resembles the scientific method: hypothesize, experiment, observe, and refine. The goal is not to eliminate uncertainty but to channel it toward discovery.
 
-Finally, curiosity cultivates resilience. When progress is measured solely by shipped features, setbacks are demoralizing. A curiosity-driven team evaluates progress by the depth of understanding gained. Even experiments that fail to produce a deployable feature expand the team’s knowledge of the domain. That knowledge compounds, lowering the cost of future exploration. In the long run, teams that treat curiosity as a core competency navigate ambiguity more effectively than those fixated on immediate returns.
+Finally, curiosity cultivates resilience. When progress is measured solely by shipped features, setbacks are demoralizing. A curiosity-driven team evaluates progress by the depth of understanding gained. Even experiments that fail to produce a deployable feature expand the team’s knowledge of the domain. That knowledge compounds, lowering the cost of future exploration. In the long run, teams that treat curiosity as a core competency handle ambiguity more effectively than those fixated on immediate returns.
 
 **References**
 

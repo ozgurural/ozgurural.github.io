@@ -17,7 +17,7 @@ Product launches often steal the spotlight, but the feedback gathered during ear
 
 Teams come to beta tests with hypotheses about how users will interact with the product. Those hypotheses are rarely perfect. Real beta users explore workflows and edge cases developers never envisioned. While piloting Avion’s simulator diagnostics portal, for example, early testers discovered that a background task silently failed when cockpit logs exceeded 5,000 rows. The bug never surfaced in lab tests because none of our synthetic workloads reached that scale. Had the issue been found after launch, the resulting outages would have damaged credibility and forced an emergency hotfix.
 
-To capitalize on these discoveries, beta sessions should be designed to encourage exploration. Instead of prescribing a fixed script, provide broad objectives and observe which paths users forge. The anomalies they encounter become high leverage fixes, and the unexpected workflows reveal where documentation, UX affordances, or backend capacity fall short.
+To capitalize on these discoveries, beta sessions should be designed to encourage exploration. Instead of prescribing a fixed script, provide broad objectives and observe which paths users forge. The anomalies they encounter become high-impact fixes, and the unexpected workflows reveal where documentation, UX affordances, or backend capacity fall short.
 
 ## Feature Set Plasticity
 

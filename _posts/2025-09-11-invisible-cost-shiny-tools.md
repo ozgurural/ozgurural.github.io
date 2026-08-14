@@ -27,7 +27,7 @@ The operational cost shows up during incidents. On call engineers face a zoo of 
 
 ## Introducing Tools Deliberately
 
-New tools are sometimes worth the disruption, they unlock capabilities or efficiencies that outweigh the transition cost. The key is to introduce them deliberately. Start with a clear return on investment hypothesis: what measurable pain does the tool alleviate, and how will success be evaluated? Run time boxed pilots with a subset of the codebase, and require post mortems whether or not the tool graduates to production.
+New tools are sometimes worth the disruption, they provide capabilities or efficiencies that outweigh the transition cost. The key is to introduce them deliberately. Start with a clear return on investment hypothesis: what measurable pain does the tool alleviate, and how will success be evaluated? Run time boxed pilots with a subset of the codebase, and require post mortems whether or not the tool graduates to production.
 
 During a pilot of Bazel for Avion’s mixed Scala and TypeScript services, we discovered that the promised incremental builds were slower than our existing GitLab CI setup for the small telemetry modules we touched daily. The pilot surfaced that the tool shined only for projects exceeding a million lines of code. Because the evaluation was scoped and data driven, we opted not to adopt it broadly, avoiding widespread disruption.
 
