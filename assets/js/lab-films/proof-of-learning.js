@@ -106,6 +106,38 @@
           ctx.globalAlpha = st; ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2; rr(ctx, 386, 250, 150, 40, 8); ctx.stroke();
           ctx.fillStyle = h.rgba(GRN, 1); ctx.font = "600 16px var(--ds-font-serif, Georgia, serif)"; ctx.textAlign = "center"; ctx.fillText("IDENTICAL", 461, 276); ctx.textAlign = "left"; ctx.globalAlpha = 1;
         }
+        /* The subtitle of this scene is that the endpoint carries no evidence
+           of the effort that made it, and the scene asserted that and then held
+           still from 7 s to the end. So it now goes looking: every weight of
+           the original is compared against the copy, one at a time, and each
+           comparison comes back equal. Finding nothing, repeatedly, is the
+           point. */
+        if (lt > 8.4) {
+          var scanP = clamp01((lt - 8.4) / 7.0);
+          var seen = Math.floor(scanP * 64);
+          ctx.save();
+          ctx.globalAlpha = clamp01((lt - 8.4) / 0.6);
+          for (var k = 0; k < seen; k++) {
+            var ci = k % 8, cj = Math.floor(k / 8);
+            var age = clamp01((seen - k) / 6);
+            ctx.strokeStyle = h.rgba(GRN, 0.85 * (1 - age) + 0.12);
+            ctx.lineWidth = k === seen - 1 ? 2 : 1;
+            ctx.strokeRect(250 + ci * 14 + 1, 220 + cj * 14 + 1, 11, 11);
+            ctx.strokeRect(560 + ci * 14 + 1, 220 + cj * 14 + 1, 11, 11);
+          }
+          ctx.font = "600 14px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba(GRN, 0.95);
+          ctx.textAlign = "center";
+          ctx.fillText("weights compared: " + seen + " / 64   differences: 0", 461, 378);
+          if (lt > 16.0) {
+            ctx.globalAlpha = clamp01((lt - 16.0) / 0.9);
+            ctx.font = "600 15px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba(AMB, 1);
+            ctx.fillText("nothing here says who trained it", 461, 404);
+          }
+          ctx.textAlign = "left";
+          ctx.restore();
+        }
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
@@ -473,7 +505,7 @@
 
   /* ============== 7 — SIGNATURE ============== */
   function signature(film) {
-    film.scene("The fingerprint, and why it matters", 28, function (s) {
+    film.scene("The fingerprint, and why it matters", 26, function (s) {
       var co = film.coords({ xRange: [0, 40], yRange: [0, 1], pad: { left: 80, right: 360, top: 140, bottom: 120 } });
       var ax = s.axes(co, { grid: false });
       s.draw(ax, { at: 0.6, dur: 1.05 });
@@ -497,6 +529,49 @@
            ctx.fillStyle = TEAL;
            ctx.beginPath(); ctx.arc(px, py, 4, 0, 7); ctx.fill();
            ctx.shadowBlur = 0;
+        }
+        /* The scene claims the noise is the fingerprint and then held a still
+           frame for its last fourteen seconds. From 14.5 it measures the thing
+           it named: the step-to-step change of each curve, drawn as it is read
+           off. The genuine descent's steps scatter three times as wide as the
+           forged one's, which is the tell, and the appendix is where the caveat
+           that it is a tell rather than a proof belongs. */
+        if (lt > 14.5) {
+          var dg = [], df = [], q;
+          for (q = 1; q <= 40; q++) { dg.push(gpts[q][1] - gpts[q - 1][1]); df.push(fpts[q][1] - fpts[q - 1][1]); }
+          var sdOf = function (d) {
+            var m = 0, k; for (k = 0; k < d.length; k++) m += d[k]; m /= d.length;
+            var v = 0; for (k = 0; k < d.length; k++) v += (d[k] - m) * (d[k] - m);
+            return Math.sqrt(v / d.length);
+          };
+          var grow = clamp01((lt - 14.5) / 6.0);
+          ctx.save();
+          ctx.globalAlpha = clamp01((lt - 14.5) / 0.7);
+          ctx.font = "12px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba("#dbeafe", 0.85);
+          ctx.fillText("step-to-step change", 650, 338);
+
+          [[dg, 366, TEAL], [df, 402, RED]].forEach(function (row) {
+            var d = row[0], baseY = row[1];
+            ctx.strokeStyle = h.rgba(row[2], 0.9); ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(650, baseY); ctx.lineTo(830, baseY); ctx.stroke();
+            for (var k = 0; k < d.length; k++) {
+              if (k / d.length > grow) break;
+              var hgt = Math.min(20, Math.abs(d[k]) / 0.2271 * 20);
+              var tx = 650 + k * 4.5;
+              ctx.beginPath();
+              ctx.moveTo(tx, baseY); ctx.lineTo(tx, baseY - hgt); ctx.stroke();
+            }
+          });
+
+          if (lt > 21.0) {
+            ctx.globalAlpha = clamp01((lt - 21.0) / 0.9);
+            ctx.font = "600 13px 'JetBrains Mono',monospace";
+            ctx.fillStyle = h.rgba(TEAL, 1); ctx.fillText("sd " + sdOf(dg).toFixed(3), 842, 366);
+            ctx.fillStyle = h.rgba(RED, 1);  ctx.fillText("sd " + sdOf(df).toFixed(3), 842, 402);
+          }
+          ctx.restore();
         }
         if (lt > 3.4 && lt < 6.4) {
            var fP = clamp01((lt - 3.4) / 2.0);
