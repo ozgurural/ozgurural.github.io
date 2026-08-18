@@ -847,7 +847,7 @@
           ctx.textAlign = "left";
 
           ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
-          ctx.fillText("ONE HOST, 100 FRAMES, POLLED EVERY 8th", X0, 168);
+          ctx.fillText("ONE HOST, 100 FRAMES, POLLED EVERY 8th", X0, 158);
 
           ctx.strokeStyle = h.rgba(RED, 0.5); ctx.lineWidth = 1.2;
           ctx.setLineDash([5, 5]);
@@ -894,9 +894,9 @@
             ctx.globalAlpha = demoIn * clamp01((lt - 37.4) / 1.1);
             ctx.font = "bold 13px " + MONO;
             ctx.fillStyle = h.rgba(AMB, 1);
-            ctx.fillText("sampled max " + sampMax.toFixed(1) + " ms: inside budget", X0, 452);
+            ctx.fillText("sampled max " + sampMax.toFixed(1) + " ms: inside budget", X0, 182);
             ctx.fillStyle = h.rgba(RED, 1);
-            ctx.fillText("overrun counter: 1", X0 + 420, 452);
+            ctx.fillText("overrun counter: 1", X0 + 420, 182);
           }
           ctx.globalAlpha = 1;
         }
