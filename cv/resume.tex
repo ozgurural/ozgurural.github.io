@@ -11,6 +11,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
 
 % --- resume.sty inlined (commands adapted from Cies Breijs' MIT-licensed
 %     resume template, https://github.com/cies/resume) ---
@@ -19,8 +20,11 @@
 \newcommand{\spacedhrule}[2]{\vspace{#1}\hrule\vspace{#2}}
 \newcommand{\maintitle}[3]{\noindent{\LARGE\textbf{#1}}\ifx&#2&\else\quad{\large #2}\fi\hfill{\small\color{light}#3}\par\vspace{0.3em}}
 \newcommand{\roottitle}[1]{\par{\large\textbf{#1}}\par\vspace{0.2em}}
-\long\def\headedsection#1#2#3{\par\noindent\textbf{#1}\hfill{#2}\par#3\par}
-\long\def\headedsubsection#1#2#3{\par\noindent{#1}\hfill{\small{#2}}\par#3}
+% A lone employer header or a lone date line at the foot of a page reads as
+% belonging to whatever follows it, so a block only starts where enough of it
+% fits, and the header is glued to the title line under it.
+\long\def\headedsection#1#2#3{\par\needspace{5\baselineskip}\noindent\textbf{#1}\hfill{#2}\par\nopagebreak#3\par}
+\long\def\headedsubsection#1#2#3{\par\noindent{#1}\hfill{\small{#2}}\par\nopagebreak#3}
 \long\def\bodytext#1{#1}
 % --- end resume.sty ---
 % Accented names use LaTeX escapes (e.g. Acart\"urk) to keep the CI pdfLaTeX build encoding-safe.
