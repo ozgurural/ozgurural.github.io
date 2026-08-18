@@ -12,7 +12,7 @@ tags:
 
 The pace at which generative models are advancing is nothing short of breathtaking. While much of the public discourse has been dominated by large language models (LLMs) and diffusion-based image generation, the frontier of **generative audio** has been quietly crossing a critical threshold: the synthesis of high-fidelity, emotionally resonant music.
 
-As a researcher, I spend most of my time analyzing the latent structures and theoretical limits of these models. However, occasionally, it is important to step back and simply appreciate the raw output.
+As a researcher, I spend most of my time analyzing the latent structures and theoretical limits of these models. Now and then, though, I stop analysing and just listen.
 
 Recently, I experimented with state-of-the-art AI music generation tools. I provided the model with a few structural prompts, and the result was astonishing. The model didn't just stitch together pre-recorded loops; it synthesized the vocals, the instrumentation, the mixing, and the emotional cadence entirely from scratch. 
 

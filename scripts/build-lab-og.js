@@ -49,7 +49,7 @@ const LABS = [
     icon: "🔬",
     title: "Proof-of-Learning",
     sub: "Prove a model was trained, not downloaded.",
-    tagline: "SecurePoL — my IEEE Access research, animated",
+    tagline: "SecurePoL: my IEEE Access research, animated",
     badge: "IEEE ACCESS 2025",
     bg: "#064e3b",
     accent: "#10b981",

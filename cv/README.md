@@ -3,7 +3,7 @@
 `resume.tex` is the single source for **Ozgur_Ural_PhD_Resume.pdf** (linked from
 the site nav). It is a self-contained, single-column, ATS-friendly document:
 everything except the horizontal rules and bullets is selectable text, so
-applicant-tracking systems parse it cleanly (copy the PDF text out — it comes
+applicant-tracking systems parse it cleanly (copy the PDF text out: it comes
 through complete and in reading order).
 
 ## Build
@@ -25,7 +25,7 @@ or simply `latexmk -pdf resume.tex`. (`build/` is git-ignored.)
 
 ## Notes
 
-- Compiles with **pdfLaTeX** — no external `.sty` needed; the layout commands are
+- Compiles with **pdfLaTeX**, with no external `.sty` needed; the layout commands are
   inlined in the preamble.
 - Keep it single-column and text-based; do not add multi-column layouts, tables
   for alignment, or text inside images, or ATS parsing degrades.

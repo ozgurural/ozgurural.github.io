@@ -47,7 +47,7 @@ Everything we hardened for military resilience is marching straight into civilia
 
 ## The Human Factor (a.k.a. Why Humor Matters)
 
-When you’re debugging a swarm in a wind tunnel at midnight, a joke about “teaching drones to respect personal space” goes a long way. The tech matters, but the culture matters just as much. Empowered operators, collaborative engineers, and transparent mission data are the secret ingredients for safe autonomy.
+When you’re debugging a swarm in a wind tunnel at midnight, a joke about “teaching drones to respect personal space” goes a long way. The tech matters, but the culture matters just as much. Safe autonomy runs on operators who can halt a flight, engineers who show up to the debrief, and mission data nobody has to ask for twice.
 
 ## What Keeps Me Busy Now
 

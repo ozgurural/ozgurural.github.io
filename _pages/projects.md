@@ -42,7 +42,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 ## Applied AI Concepts & Architectures
 
-<p class="ep-lead">A collection of brainstormed enterprise AI architectures and proof-of-concept system designs. These models explore how discipline-specific AI agents, grounded in approved corporate data, can utilize local on-prem inference for data sovereignty alongside secure APIs for de-identified reasoning.</p>
+<p class="ep-lead">A collection of brainstormed enterprise AI architectures and proof-of-concept system designs. These models explore how discipline-specific AI agents, grounded in approved corporate data, can use local on-prem inference for data sovereignty alongside secure APIs for de-identified reasoning.</p>
 
 <ul class="ep-cards">
   <li>

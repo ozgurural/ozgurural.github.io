@@ -77,7 +77,7 @@ Our survey [1] concludes that **blockchain-enhanced ML is poised to reshape how 
 2. Distributed audit logs linking every model to its training evidence.
 3. Modular consensus layers that execute ML tasks as part of securing the network.
 
-By marrying blockchain's transparency with machine learning's predictive power, we can build AI systems that are not only intelligent but also accountable and economically sustainable.
+A ledger does not make a model smarter. It makes the model's history checkable, and it gives the people who supplied the training data a reason to supply good data.
 
 ## References
 

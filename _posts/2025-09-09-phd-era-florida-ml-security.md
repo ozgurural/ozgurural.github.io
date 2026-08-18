@@ -9,11 +9,11 @@ tags:
   - security
   - florida
   - erau
-description: "Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at Embry-Riddle Aeronautical U..."
+description: "Starting a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at Embry-Riddle Aeronautical U..."
 
 ---
 
-Embarking on a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at [Embry-Riddle Aeronautical University](https://www.erau.edu/). My advisor jokes that our campus smells like jet fuel and ambition; he’s right on both counts. By 7 a.m. I am usually rolling past the flight line with a notebook full of model checkpoints to validate and a thermos of Cuban coffee strong enough to double as rocket propellant.
+Starting a PhD in Florida means waking up to salt air, sunscreen reminders, and the low rumble of aircraft testing engines at [Embry-Riddle Aeronautical University](https://www.erau.edu/). My advisor jokes that our campus smells like jet fuel and ambition; he’s right on both counts. By 7 a.m. I am usually rolling past the flight line with a notebook full of model checkpoints to validate and a thermos of Cuban coffee strong enough to double as rocket propellant.
 
 ## Morning Run-Up
 
@@ -78,6 +78,6 @@ Thinking of mixing machine learning, security, and sunshine yourself? Here are m
 
 ## Reading Radar
 
-If you’re curious about securing AI, start with *Machine Learning and Security* by [Clarence Chio and David Freeman](https://www.oreilly.com/library/view/machine-learning-and/9781491979897/) for pragmatic frameworks, then dive into the [Proof-of-Learning](https://arxiv.org/abs/2103.06217) literature for protocol mechanics. For a systems spin, the [MITRE ATLAS](https://atlas.mitre.org/) matrix pairs nicely with ERAU’s avionics case studies.
+If you’re curious about securing AI, start with *Machine Learning and Security* by [Clarence Chio and David Freeman](https://www.oreilly.com/library/view/machine-learning-and/9781491979897/) for pragmatic frameworks, then read the [Proof-of-Learning](https://arxiv.org/abs/2103.06217) literature for protocol mechanics. For a systems spin, the [MITRE ATLAS](https://atlas.mitre.org/) matrix pairs nicely with ERAU’s avionics case studies.
 
 Research may keep me indoors, but Florida never lets me forget that discovery can be as expansive as the horizon beyond the runway, and that the best ideas often arrive somewhere between a lightning storm and a launch countdown, preferably while holding a mango smoothie.

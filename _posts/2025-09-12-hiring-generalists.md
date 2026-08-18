@@ -45,7 +45,7 @@ Constraints on small teams also demand humility. The ideal generalist is confide
 
 ## Building the Team You Want Later
 
-Ultimately, hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that reflects a comprehensive view of the product. Their fingerprints are everywhere, from the first commit to the onboarding guide, and that continuity becomes a competitive advantage.
+Hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that covers the whole product. Their fingerprints are everywhere, from the first commit to the onboarding guide, and that continuity becomes a competitive advantage.
 
 ---
 *Dr. Ozgur Ural is a Technical Leader and Senior Software Engineer. He has built and led engineering teams across cybersecurity, aerospace, and simulation industries.*
