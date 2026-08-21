@@ -1372,7 +1372,13 @@
     };
     var DEFAULT_MOTIF = [[0,0,2],[2,2,2],[4,4,2],[2,6,2]];
 
-    var VOL = 0.14;
+    /* Measured, not guessed: the narration files average -21.3 dBFS RMS and
+       play at volume 0.8, so the voice lands at about -23.3 dBFS. At 0.14 the
+       score sat at -39.4, sixteen decibels under the voice, which is far
+       enough down that none of it reaches the listener and whatever quality it
+       has is wasted. A score under narration wants roughly ten decibels of
+       separation, so this puts it near -33. */
+    var VOL = 0.44;
     var ctx = null, master = null, graph = null, timer = null, muted = false, currentKey = null, unlockArmed = false;
 
     function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return h; }
@@ -1402,37 +1408,52 @@
       master.connect(ctx.destination);
       return ctx;
     }
+    /* A room, rather than a burst of hiss. The old impulse was white noise
+       under a power envelope with the two channels fully independent, which
+       gives a metallic, sibilant tail and an unnaturally wide image because
+       nothing in it is shared between the ears. A real space has a gap before
+       the first reflection arrives, a few discrete early reflections, then a
+       diffuse tail that darkens as it decays because air and surfaces eat the
+       high end first. All three are cheap to approximate. */
     function createReverb(duration, decay) {
       if (!ctx) return null;
       try {
-        var sampleRate = ctx.sampleRate;
-        var length = sampleRate * duration;
-        var impulse = ctx.createBuffer(2, length, sampleRate);
-        var left = impulse.getChannelData(0);
-        var right = impulse.getChannelData(1);
-        for (var i = 0; i < length; i++) {
-          var n = i / length;
-          var env = Math.pow(1 - n, decay);
-          left[i] = (Math.random() * 2 - 1) * env;
-          right[i] = (Math.random() * 2 - 1) * env;
+        var sr = ctx.sampleRate;
+        var len = Math.floor(sr * duration);
+        var pre = Math.floor(sr * 0.022);
+        var impulse = ctx.createBuffer(2, len, sr);
+        var shared = new Float32Array(len);
+        var lp = 0;
+        for (var i = pre; i < len; i++) {
+          var n = (i - pre) / (len - pre);
+          var a = 0.30 + 0.60 * n;                 // smoothing grows: the tail darkens
+          lp = lp + ((Math.random() * 2 - 1) - lp) * (1 - a);
+          shared[i] = lp * Math.pow(1 - n, decay);
+        }
+        var taps = [0.029, 0.041, 0.058, 0.079, 0.107, 0.136];
+        for (var ch = 0; ch < 2; ch++) {
+          var d = impulse.getChannelData(ch);
+          var ilp = 0;
+          for (var k = pre; k < len; k++) {
+            var m = (k - pre) / (len - pre);
+            var b = 0.30 + 0.60 * m;
+            ilp = ilp + ((Math.random() * 2 - 1) - ilp) * (1 - b);
+            // mostly shared so the tail has a centre, a little independent so
+            // it still has width
+            d[k] = shared[k] * 0.82 + ilp * Math.pow(1 - m, decay) * 0.18;
+          }
+          var skew = ch === 0 ? 1 : 1.037;
+          for (var t = 0; t < taps.length; t++) {
+            var idx = pre + Math.floor(sr * taps[t] * skew);
+            if (idx < len) d[idx] += (t % 2 ? -0.42 : 0.5) * Math.pow(1 - taps[t] / duration, decay);
+          }
         }
         var convolver = ctx.createConvolver();
         convolver.buffer = impulse;
         return convolver;
       } catch (e) { return null; }
     }
-    function armUnlock() {
-      if (unlockArmed) return;
-      unlockArmed = true;
-      var unlock = function () {
-        if (ctx && ctx.state === "suspended") ctx.resume().catch(function () {});
-        document.removeEventListener("pointerdown", unlock);
-        document.removeEventListener("keydown", unlock);
-        unlockArmed = false;
-      };
-      document.addEventListener("pointerdown", unlock);
-      document.addEventListener("keydown", unlock);
-    }
+
     /* One shared noise buffer for hammer transients: the felt-on-string thud
        that lands a few milliseconds before the pitch does. Without it a stack
        of sines reads as an organ, however well tuned the partials are. */
@@ -1494,6 +1515,7 @@
 
     function teardown(fadeS) {
       if (timer) { clearInterval(timer); timer = null; }
+      if (voiceTimer) { clearInterval(voiceTimer); voiceTimer = null; }
       if (graph && ctx) {
         var g = graph; graph = null;
         try {
@@ -1506,6 +1528,29 @@
       }
       currentKey = null;
     }
+    /* One place decides the master level, so the three things that lower it
+       compose instead of each overwriting the last: the mute button, the duck
+       under the closing cadence, and the duck under narration. A documentary
+       mix steps the score back while someone is speaking and lets it come up
+       in the gaps; without that the score has to be mixed so low that it is
+       inaudible everywhere, which is what it was. */
+    var duckVoice = 1, duckCadence = 1;
+    function applyLevel(tc) {
+      if (!graph || !ctx) return;
+      try { graph.out.gain.setTargetAtTime(muted ? 0 : VOL * duckVoice * duckCadence, ctx.currentTime, tc || 0.35); } catch (e) {}
+    }
+    var voiceTimer = null;
+    function watchNarration() {
+      if (voiceTimer) clearInterval(voiceTimer);
+      voiceTimer = setInterval(function () {
+        if (!graph) return;
+        var n = global._currentLabNarrator;
+        var speaking = !!(n && !n.paused && !n.ended && global.globalLabVoice && !global.globalLabMuted);
+        var want = speaking ? 0.55 : 1;
+        if (want !== duckVoice) { duckVoice = want; applyLevel(speaking ? 0.45 : 0.9); }
+      }, 220);
+    }
+
     var suspendTimer;
     function start(key) {
       if (!ensureCtx()) return;
@@ -1550,38 +1595,65 @@
       }
       function freqOf(semi) { return mood.root * Math.pow(2, semi / 12); }
 
-      // pad: detuned saws through a breathing lowpass, root+colour voice per
-      // chord, plus a soft sine sub an octave below — all gliding on changes
+      /* Strings, not a drone. The pad used to be four sawtooth oscillators
+         running continuously and gliding from chord to chord, which is the most
+         recognisable cheap-synth sound there is: nothing ever attacks, so
+         nothing sounds played, and the ear files the whole score as wallpaper
+         no matter what the melody does. Each chord now gets its own bowed
+         swell that rises, holds and releases, with the vibrato arriving after
+         the bow has settled and a little detune spread, because a section is
+         never quite in unison. */
       var lp = ctx.createBiquadFilter();
       lp.type = "lowpass"; lp.frequency.value = mood.cutoff; lp.Q.value = 0.6;
-      var padGain = ctx.createGain(); padGain.gain.value = 0.28;
+      var padGain = ctx.createGain(); padGain.gain.value = 0.26;
       lp.connect(padGain); padGain.connect(out); padGain.connect(verbSend);
       var lfo = ctx.createOscillator(); lfo.frequency.value = 0.05 + rand() * 0.04;
-      var lfoGain = ctx.createGain(); lfoGain.gain.value = mood.cutoff * 0.35;
+      var lfoGain = ctx.createGain(); lfoGain.gain.value = mood.cutoff * 0.28;
       lfo.connect(lfoGain); lfoGain.connect(lp.frequency); lfo.start();
-      // slow "breath" on the whole score
+      // slow breath across the whole score
       var breath = ctx.createOscillator(); breath.frequency.value = 0.045 + rand() * 0.02;
       var breathGain = ctx.createGain(); breathGain.gain.value = VOL * 0.09;
       breath.connect(breathGain); breathGain.connect(out.gain); breath.start();
       var oscs = [lfo, breath];
-      var padVoices = [];
-      mood.pad.forEach(function (padOffset) {
-        [-6, 5].forEach(function (cents) {
-          var o = ctx.createOscillator();
-          o.type = "sawtooth";
-          o.frequency.value = freqOf(semiOf(mood.prog[0]) + padOffset);
-          o.detune.value = cents;
-          var g = ctx.createGain(); g.gain.value = 0.11;
-          o.connect(g); g.connect(lp);
-          o.start(); oscs.push(o);
-          padVoices.push({ osc: o, offset: padOffset });
+
+      function strings(rootSemi, at, dur) {
+        if (!ctx || at < ctx.currentTime - 0.1) return;
+        var atk = Math.min(1.7, dur * 0.30), rel = Math.min(3.4, dur * 0.45);
+        var hold = Math.max(0.2, dur - rel);
+        mood.pad.forEach(function (padOffset) {
+          var base = freqOf(rootSemi + padOffset);
+          if (!(base > 20 && base < 6000)) return;
+          [-7, 0, 6].forEach(function (cents, vi) {
+            var o = ctx.createOscillator();
+            o.type = "sawtooth";
+            o.frequency.value = base;
+            o.detune.value = cents;
+            var g = ctx.createGain();
+            g.gain.setValueAtTime(0.0001, at);
+            g.gain.linearRampToValueAtTime(0.052, at + atk);
+            g.gain.setValueAtTime(0.052, at + hold);
+            g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+            var vib = ctx.createOscillator();
+            vib.frequency.value = 4.6 + vi * 0.35;
+            var vibG = ctx.createGain();
+            vibG.gain.setValueAtTime(0, at);
+            vibG.gain.linearRampToValueAtTime(base * 0.0035, at + atk + 0.6);
+            vib.connect(vibG); vibG.connect(o.frequency);
+            o.connect(g); g.connect(lp);
+            o.start(at); o.stop(at + dur + 0.12);
+            vib.start(at); vib.stop(at + dur + 0.12);
+          });
         });
-      });
-      var sub = ctx.createOscillator(); sub.type = "sine";
-      sub.frequency.value = freqOf(semiOf(mood.prog[0])) / 2;
-      var subGain = ctx.createGain(); subGain.gain.value = 0.10;
-      sub.connect(subGain); subGain.connect(out);
-      sub.start(); oscs.push(sub);
+        var sLow = ctx.createOscillator(); sLow.type = "sine";
+        sLow.frequency.value = freqOf(rootSemi) / 2;
+        var sg = ctx.createGain();
+        sg.gain.setValueAtTime(0.0001, at);
+        sg.gain.linearRampToValueAtTime(0.08, at + atk * 1.2);
+        sg.gain.setValueAtTime(0.08, at + hold);
+        sg.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        sLow.connect(sg); sg.connect(out);
+        sLow.start(at); sLow.stop(at + dur + 0.12);
+      }
 
       graph = { out: out, oscs: oscs, delaySend: delay, verbSend: verbSend };
 
@@ -1605,10 +1677,7 @@
         while (nextAt < ctx.currentTime + 1.2) {
           var ci = stmt % mood.prog.length;
           var rootSemi = semiOf(mood.prog[ci]);
-          padVoices.forEach(function (v) {
-            v.osc.frequency.setTargetAtTime(freqOf(rootSemi + v.offset), nextAt, 0.55);
-          });
-          sub.frequency.setTargetAtTime(freqOf(rootSemi) / 2, nextAt, 0.7);
+          strings(rootSemi, nextAt, span);
 
           var treat = stmt % 4;                       // 0 state, 1 answer, 2 lift, 3 resolve
           var lift = treat === 2 ? 12 : 0;
@@ -1632,7 +1701,9 @@
         }
       }, 300);
 
+      duckVoice = 1; duckCadence = 1;
       out.gain.setTargetAtTime(muted ? 0 : VOL, ctx.currentTime, 0.6);
+      watchNarration();
     }
     function stop() { teardown(1.2); }
     function pause() {
@@ -1645,7 +1716,7 @@
     }
     function setMuted(m) {
       muted = m;
-      if (graph && ctx) graph.out.gain.setTargetAtTime(m ? 0 : VOL, ctx.currentTime, 0.25);
+      applyLevel(0.25);
     }
     /* Signature-scene cadence.
        A chord that merely sounds does not end anything; an ending needs motion
@@ -1660,7 +1731,10 @@
       var mood = moodFor(key || currentKey || "lab");
       var motif = motifFor(key || currentKey || "");
       var t = ctx.currentTime + 0.12;
-      var out = ctx.createGain(); out.gain.value = 0.55;
+      // the cadence used to peak seventeen decibels above the score it
+      // resolves, which reads as a jolt rather than an ending; with the score
+      // raised and this eased back the lift is about eight
+      var out = ctx.createGain(); out.gain.value = 0.40;
       // the cadence stacks bass, sub, a four-note chord and the motif on the
       // same downbeat, so it goes through a limiter rather than trusting the
       // arithmetic to stay under one
@@ -1678,7 +1752,7 @@
       function freqOf(semi) { return mood.root * Math.pow(2, semi / 12); }
 
       // Let the running score step back so the cadence is heard, not stacked on.
-      if (graph) { try { graph.out.gain.setTargetAtTime(VOL * 0.3, ctx.currentTime, 0.8); } catch (e) {} }
+      duckCadence = 0.3; applyLevel(0.8);
 
       var tonic = mood.prog[0], dom = tonic + 4;      // home, and the fifth above it
       var tDom = t, tTon = t + 2.1;
