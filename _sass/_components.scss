@@ -17,7 +17,7 @@
   font-size: 1.1rem;
   line-height: 1.6;
   color: var(--ds-muted);
-  max-width: 64ch;
+  max-width: var(--ds-measure);
   margin: 0.25rem 0 1.75rem;
 }
 
@@ -57,7 +57,7 @@
   font-size: 1.075rem;
   line-height: 1.65;
   color: var(--ds-muted);
-  max-width: 60ch;
+  max-width: var(--ds-measure);
   margin: 0 0 1.4rem;
 }
 .ep-hero__lede strong { color: var(--ds-ink); font-weight: 600; }
@@ -67,7 +67,7 @@
   align-items: flex-start;
   gap: 0.65rem;
   margin: 0.5rem 0 0;
-  max-width: 60ch;
+  max-width: var(--ds-measure);
   font-family: var(--ds-font-sans);
   font-size: 0.94rem;
   line-height: 1.55;
@@ -209,6 +209,13 @@
 @media (min-width: 600px) {
   .ep-pillars { grid-template-columns: repeat(2, 1fr); }
 }
+/* The note under the grid is prose, so it takes the reading measure rather
+   than the grid's full width. */
+.ep-pillars__note {
+  max-width: var(--ds-measure);
+  margin: -0.75rem 0 2rem;
+  color: var(--ds-muted);
+}
 .ep-pillar {
   padding: 1.15rem 1.2rem 1.3rem;
   border: 1px solid var(--ds-line);
@@ -300,7 +307,7 @@
   color: var(--ds-accent);
   white-space: nowrap;
 }
-.ep-timeline .what { flex: 1 1 auto; min-width: 0; color: var(--ds-body); }
+.ep-timeline .what { flex: 1 1 auto; min-width: 0; max-width: var(--ds-measure); color: var(--ds-body); }
 @media (max-width: 30rem) {
   .ep-timeline > li { flex-direction: column; gap: 0.15rem; }
   .ep-timeline .when { flex-basis: auto; }
@@ -320,7 +327,14 @@
   padding: 0;
   list-style: none;
 }
-.ep-cards--two { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+/* Two up. A full-width card left its own text stranded: .meta and .title
+   filled all 810px while .desc stopped at the reading measure, leaving an
+   empty rectangle in the lower right. Narrow the card instead of the prose,
+   so the card is the measure and fills itself. */
+.ep-cards--two { grid-template-columns: 1fr; }
+@media (min-width: 30rem) {
+  .ep-cards--two { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+}
 .ep-cards > li {
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius);
@@ -359,6 +373,7 @@
   color: var(--ds-muted);
   margin: 0;
   line-height: 1.55;
+  max-width: var(--ds-measure);
 }
 
 /* --------------------------------------------------------------------------
@@ -454,7 +469,7 @@
 .lab-hero__copy {
   position: relative;
   z-index: 1;
-  max-width: 66ch;
+  max-width: var(--ds-measure);
   margin: 0;
   font-size: 1.03rem;
   line-height: 1.62;
@@ -606,7 +621,7 @@
   line-height: 1.6;
   color: var(--ds-muted);
   margin: 0 0 1.1rem;
-  max-width: 64ch;
+  max-width: var(--ds-measure);
 }
 .lab-card__lead strong { color: var(--ds-ink); }
 
@@ -701,6 +716,7 @@
   line-height: 1.6;
   color: var(--ds-body);
   margin: 0.5rem 0;
+  max-width: var(--ds-measure);
 }
 .lab-reveal p strong { color: var(--ds-ink); }
 .lab-reveal p em { color: var(--ds-ink); font-style: italic; }
@@ -770,7 +786,7 @@
 }
 .ep-essay__body {
   font-family: var(--ds-font-serif);
-  max-width: 65ch;
+  max-width: var(--ds-measure);
   font-feature-settings: "kern", "liga", "onum";
 }
 .ep-essay__body p {
@@ -844,6 +860,7 @@
   font-size: 0.95rem;
   color: var(--ds-muted);
   font-style: italic;
+  max-width: var(--ds-measure);
 }
 
 @media (max-width: 600px) {
@@ -1374,7 +1391,6 @@ button:focus-visible {
   }
   .lab-card.lab-experiment > .ep-eyebrow,
     .lab-card.lab-experiment > h2,
-    .lab-card.lab-experiment > .lab-card__lead,
     .lab-card.lab-experiment > .lab-card__usecase,
     .lab-card.lab-experiment > .lab-card__mission,
     .lab-card.lab-experiment > .lab-reveal { max-width: 820px; }

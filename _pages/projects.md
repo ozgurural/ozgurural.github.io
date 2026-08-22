@@ -7,7 +7,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 <p class="ep-lead">Selected work spanning research and production: the proof-of-learning and watermarking code behind my papers, real-time systems primitives, interactive explainers, and clinical tooling. One through-line runs through all of it: ML and systems you can <strong>verify</strong>, not just run. Each project links to its repository and writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eight playable demos of the ideas.</p>
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">2026 · Enterprise AI · Avion</div>
     <h3 class="title"><a href="/enterprise-ai-architecture.html">Avion AI Strategy &amp; Agent Platform</a></h3>
@@ -22,7 +22,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 ## Research
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">Ph.D. · ML Security</div>
     <h3 class="title"><a href="/blog/securepol-with-watermarking">SecurePoL with Watermarking</a></h3>
@@ -44,7 +44,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 <p class="ep-lead">A collection of brainstormed enterprise AI architectures and proof-of-concept system designs. These models explore how discipline-specific AI agents, grounded in approved corporate data, can use local on-prem inference for data sovereignty alongside secure APIs for de-identified reasoning.</p>
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <details class="ep-concept">
       <summary>
@@ -139,7 +139,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 ## Production Systems (Industry)
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">2023– · Avion Full Flight Simulators</div>
     <h3 class="title"><a href="https://www.aviongroup.aero/">Real-time platforms for Level D flight simulators</a></h3>
@@ -169,7 +169,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
 
 ## Applied Tooling
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">Python · PyQt5 · Clinical Tooling</div>
     <h3 class="title"><a href="/blog/pyqt5_image_measurer">EKG Image Measurement Tool</a></h3>

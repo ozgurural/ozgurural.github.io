@@ -9,7 +9,7 @@ description: "Technical advisory, ML-security and model-provenance review, confe
 
 ## Advisory & speaking
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">Advisory · ML security</div>
     <h3 class="title">Trustworthy-ML &amp; model-provenance review</h3>
@@ -29,7 +29,7 @@ description: "Technical advisory, ML-security and model-provenance review, confe
 
 ## Research service
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">Program Committee · 2026</div>
     <h3 class="title"><a href="https://nlpaics2026.gplsi.es/">NLPAICS 2026, University of Alicante</a></h3>

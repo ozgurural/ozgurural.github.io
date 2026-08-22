@@ -152,7 +152,7 @@ redirect_from:
 
 ## Selected Work
 
-<ul class="ep-cards">
+<ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">2025 · IEEE Access</div>
     <h3 class="title"><a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL: Watermarking + Proof-of-Learning</a></h3>

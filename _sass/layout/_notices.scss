@@ -33,6 +33,10 @@
   }
 
   p {
+    /* Callouts run the full content width, but their prose still takes the
+       reading measure: unconstrained they were hitting 98 characters a line. */
+    max-width: var(--ds-measure);
+
     &:last-child {
       margin-bottom: 0 !important; /* override*/
     }

@@ -11,11 +11,21 @@ Personal academic portfolio site for Dr. Ozgur Ural, built on a custom Jekyll te
 ### Native Ruby (primary — Docker config is present but Ruby 3.3 is installed locally)
 
 ```bash
-bundle exec jekyll serve --port 4000 --force_polling   # serve with polling (Windows)
+bundle exec jekyll serve --port 4000 --force_polling --config _config.yml,_config.dev.yml
 bundle exec jekyll build                                # build to _site/
 ```
 
-First build ~35 s, incremental rebuilds ~15–25 s. **Browse at `http://localhost:4000`, not `127.0.0.1`** — `base_path` emits absolute localhost URLs; cross-origin module/CORS fetches silently fail on the other host.
+First build ~35 s, incremental rebuilds ~15–25 s. **Browse at `http://localhost:4000`, not `127.0.0.1`.**
+
+**Always serve with `_config.dev.yml` layered on.** `_config.yml` sets `url` to the deployed site and the templates emit absolute URLs from it, so without the override a page served from localhost links the *production* CSS and JS: local edits appear to do nothing, and `document.styleSheets` reports the sheet as cross-origin (`cssRules` throws) which is the quickest way to detect it. The dev config only sets `url: http://localhost:4000`.
+
+**Do not run `bundle exec jekyll build` while `jekyll serve` is running.** Both write `_site/`, the manual build uses the production config, and whichever finishes last wins. The symptom is the one above, arriving several edits after you stopped suspecting it. `serve` already rebuilds on save; to confirm a rebuild landed, poll the served asset rather than the file on disk:
+
+```bash
+curl -s http://localhost:4000/assets/css/main.css | grep -c 'your-new-rule'
+```
+
+Note `grep -c` counts matching *lines*, and the built CSS is one line, so it answers "present" not "how many". Use `grep -o ... | wc -l` when the count matters.
 
 ### JavaScript assets
 

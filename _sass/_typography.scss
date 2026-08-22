@@ -144,6 +144,26 @@ body { background-color: transparent; }
 .page__content p,
 .page__content li { font-size: 1.0625rem; line-height: 1.7; }
 
+/* Reading measure. Body copy that comes straight out of markdown had no
+   measure at all and ran the full 853px content width, which is 94 characters
+   per line: past Bringhurst's 75 and past the 80 that WCAG 1.4.8 asks for.
+   Only classless flow elements are constrained, so every styled block
+   (cards, decks, film stages, tables, code) keeps its own width, and any
+   future component is exempt the moment it carries a class.
+   Headings are left alone on purpose: measured across the site their median
+   is 342px and only four of 116 h2s pass 630px, so a cap would buy nothing
+   and cost a few ugly wraps.
+   Calibration, so nobody has to re-derive it: ch is the width of "0", which
+   in Inter is far wider than the average letter. Measured on this site, real
+   characters per line come out at about ch x 1.33, so 52ch reads as 69. */
+.page__content > p:not([class]),
+.page__content > ul:not([class]),
+.page__content > ol:not([class]),
+.page__content > dl:not([class]),
+.page__content > blockquote:not([class]) {
+  max-width: var(--ds-measure);
+}
+
 .page__title,
 .page__content h1,
 .page__content h2,

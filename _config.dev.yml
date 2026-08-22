@@ -1,0 +1,7 @@
+# Local development overrides. Layered on top of _config.yml:
+#   bundle exec jekyll serve --config _config.yml,_config.dev.yml
+#
+# Without this, every absolute URL the templates emit through `site.url`
+# points at the deployed site, so a page served from localhost pulls the
+# production CSS and JS and local edits appear to do nothing.
+url: "http://localhost:4000"
