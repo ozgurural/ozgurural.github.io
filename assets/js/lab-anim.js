@@ -1047,10 +1047,10 @@
 
     // Global Signature Outro Scene (positions in fractions of the logical
     // stage, so non-960x540 films keep it centered)
-    this.scene("Signature", 18, function(s) {
+    this.scene("Signature", 15, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: FW / 2, py: FH * 0.5, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
-      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.8rem, 5vw, 3.2rem); font-weight:700; line-height:1; letter-spacing:-0.02em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
+      var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.9rem, 5.2vw, 3.4rem); font-weight:500; line-height:1.08; letter-spacing:0.012em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
                            { px: FW / 2, py: FH * 0.411, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>MACHINE LEARNING RESEARCH SCIENTIST &amp; SENIOR SOFTWARE ENGINEER</span>",
@@ -1059,25 +1059,47 @@
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",
                            { px: FW / 2, py: FH * 0.574, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
-      var objs = [bgLight, name, role, url];
+      var creditObj = null;
 
       if (FILM_CREDITS[filmKey]) {
-        var credit = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; white-space:nowrap;'>" + FILM_CREDITS[filmKey] + "</span>",
+        creditObj = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; white-space:nowrap;'>" + FILM_CREDITS[filmKey] + "</span>",
                                { px: FW / 2, py: FH * 0.659, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
-        objs.push(credit);
       }
 
-      objs.forEach(function(obj) {
-        obj.cur.op = 0;
-        obj.cur.sx = 0.65; // Start far away
-        obj.cur.sy = 0.65;
+      /* The card arrives, then rests. Before, all five elements shared one
+         animation: the same 0.65 to 1.05 zoom running the whole scene and the
+         same fade, so nothing was ever staged and nothing ever settled, the
+         type was still growing when it faded out. Worse, the cadence resolved
+         at about 2.3 s while the name did not reach full opacity until 3.75,
+         so the music landed a second and a half before the picture.
 
-        // Majestic very slow zoom in that gently stops
-        s.scaleTo(obj, { at: 0, dur: 16, to: 1.05, ease: Ease.smooth });
-        // Fade in together
-        s.fadeIn(obj, { at: 0.25, dur: 3.5 });
-        // Hold size constant for last few seconds, fade out at end
-        s.fadeOut(obj, { at: 15.5, dur: 2.5 });
+         Now the name settles on the chord. The stinger's tonic arrives 2.22 s
+         after it is fired, so the name's scale finishes at 2.3 with a strongly
+         decelerating ease, which is what makes it read as landing rather than
+         drifting. Everything else follows it in sequence, and once the last
+         line is in, the card holds still. */
+      var LAND = 2.3;
+
+      bgLight.cur.op = 0; bgLight.cur.sx = 0.88; bgLight.cur.sy = 0.88;
+      s.scaleTo(bgLight, { at: 0, dur: 2.8, to: 1, ease: Ease.smooth });
+      s.fadeIn(bgLight, { at: 0, dur: 2.6 });
+
+      name.cur.op = 0; name.cur.sx = 0.93; name.cur.sy = 0.93;
+      s.scaleTo(name, { at: 0, dur: LAND, to: 1, ease: Ease.outQuint });
+      s.fadeIn(name, { at: 0.1, dur: 1.6 });
+      // once landed it keeps the faintest drift, so the frame is alive without
+      // being a zoom
+      s.scaleTo(name, { at: LAND, dur: 10.3, to: 1.012, ease: Ease.linear });
+
+      var followers = [[role, 2.5], [url, 3.3]];
+      if (creditObj) followers.push([creditObj, 4.3]);
+      followers.forEach(function (f) {
+        f[0].cur.op = 0;
+        s.fadeIn(f[0], { at: f[1], dur: 1.15 });
+      });
+
+      [bgLight, name, role, url].concat(creditObj ? [creditObj] : []).forEach(function (obj) {
+        s.fadeOut(obj, { at: 12.6, dur: 2.4 });
       });
 
       // Signature stinger through the shared music context, voiced from the
@@ -1086,7 +1108,7 @@
       // re-arms whenever the scene restarts so Replay gets its stinger too.
       var playedSound = false;
       s._cue(name, 0, 0.08, Ease.linear, function() { playedSound = false; });
-      s._cue(name, 0.1, 0.1, Ease.linear, function() {
+      s._cue(name, 0.05, 0.1, Ease.linear, function() {
         if (playedSound || window.globalLabMuted) return;
         if (!filmSelf.playing) return;
         playedSound = true;
@@ -1772,12 +1794,23 @@
       subOsc.connect(subG); subG.connect(out);
       subOsc.start(tTon); subOsc.stop(tTon + 7.2);
 
-      // the two chords, rolled slightly the way a hand rolls them
-      [[dom, tDom, 0.7], [tonic, tTon, 1.0]].forEach(function (c) {
-        [0, 2, 4, 7].forEach(function (iv, i) {
-          struck(dests, freqOf(semiOf(c[0] + iv)), c[1] + i * 0.045,
-                 c[1] === tTon ? 6.5 : 2.4, c[2] * (1 - i * 0.12), i % 2 ? 0.1 : -0.08, mood.bright, 0.85);
-        });
+      /* Both chords used to be stacked identically above their own root, which
+         is parallel motion: correct notes, but the two chords slide rather than
+         lead anywhere. A cadence earns its arrival, so the dominant now carries
+         a suspension. Its third is withheld and the fourth sounds in its place,
+         which is a mild dissonance the ear wants resolved; the third arrives
+         a beat later and the tonic follows. That is the oldest way there is of
+         making an ending feel prepared instead of merely reached. */
+      [0, 3, 4, 7].forEach(function (iv, i) {       // 3 in place of 2: the suspension
+        struck(dests, freqOf(semiOf(dom + iv)), tDom + i * 0.045,
+               2.4, 0.7 * (1 - i * 0.12), i % 2 ? 0.1 : -0.08, mood.bright, 0.85);
+      });
+      // the suspended fourth falls to the third, still over the dominant
+      struck(dests, freqOf(semiOf(dom + 2)), tDom + 1.15, 1.5, 0.5, 0.06, mood.bright, 0.75);
+
+      [0, 2, 4, 7].forEach(function (iv, i) {
+        struck(dests, freqOf(semiOf(tonic + iv)), tTon + i * 0.045,
+               6.5, 1.0 * (1 - i * 0.12), i % 2 ? 0.1 : -0.08, mood.bright, 0.85);
       });
 
       // the film's own motif, arriving over the fifth and landing home on the tonic
