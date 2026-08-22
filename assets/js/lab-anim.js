@@ -820,8 +820,6 @@
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="voice" aria-label="Toggle narration voice" aria-pressed="false" title="Narration voice">🗣</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="mute" aria-label="Toggle Audio" aria-pressed="false">🔊</button>' +
       '<button type="button" class="labf__btn labf__btn--ghost" data-role="fs" aria-label="Toggle Fullscreen">⛶</button>';
-    tr.style.position = "relative";
-    tr.style.zIndex = "10";
     c.appendChild(tr);
     this.transport = tr;
     this.playBtn = tr.querySelector('[data-role="play"]');
@@ -903,28 +901,44 @@
     // div and always takes that path, which is why fullscreen did nothing
     // there. Neutralise the ancestors while fullscreen is on, and put them
     // back on the way out.
+    var FS_PROPS = ["transform", "filter", "perspective", "willChange", "zIndex", "isolation", "opacity"];
     function releaseFixedAncestors() {
       var stash = [], n = self.container.parentElement;
-      while (n && n !== document.body && n !== document.documentElement) {
+      while (n && n !== document.documentElement) {
         var c = global.getComputedStyle(n);
-        if (c.transform !== "none" || c.filter !== "none" ||
-            c.perspective !== "none" || (c.willChange && c.willChange !== "auto")) {
-          stash.push([n, n.style.transform, n.style.filter, n.style.perspective, n.style.willChange]);
+        // A containing block for position:fixed (transform, filter, perspective,
+        // will-change) or a stacking context (those plus a z-index on a
+        // positioned box, isolation, opacity below 1) both trap the overlay.
+        // main carries z-index 10, so the film's 99999 was resolved inside it
+        // and the masthead at z-index 20 painted straight over the top.
+        var traps = c.transform !== "none" || c.filter !== "none" ||
+            c.perspective !== "none" || (c.willChange && c.willChange !== "auto") ||
+            c.isolation === "isolate" || parseFloat(c.opacity) < 1 ||
+            (c.position !== "static" && c.zIndex !== "auto");
+        if (traps) {
+          var saved = [n];
+          for (var k = 0; k < FS_PROPS.length; k++) saved.push(n.style[FS_PROPS[k]]);
+          stash.push(saved);
           n.style.transform = "none";
           n.style.filter = "none";
           n.style.perspective = "none";
           n.style.willChange = "auto";
+          n.style.zIndex = "auto";
+          n.style.isolation = "auto";
+          n.style.opacity = "1";
         }
         n = n.parentElement;
       }
       self._fsStash = stash;
+      // and take the page's own furniture off the screen, the way a video
+      // player does: nothing but the picture and its controls
+      document.body.classList.add("labf-fs-active");
     }
     function restoreFixedAncestors() {
+      document.body.classList.remove("labf-fs-active");
       var stash = self._fsStash; if (!stash) return;
       for (var i = 0; i < stash.length; i++) {
-        var r = stash[i];
-        r[0].style.transform = r[1]; r[0].style.filter = r[2];
-        r[0].style.perspective = r[3]; r[0].style.willChange = r[4];
+        for (var k = 0; k < FS_PROPS.length; k++) stash[i][0].style[FS_PROPS[k]] = stash[i][k + 1];
       }
       self._fsStash = null;
     }
@@ -1067,7 +1081,12 @@
     // reports swapped axes once the container is rotated for a portrait phone,
     // which sized the canvas against the wrong edge. The layout size is what the
     // canvas backing store should follow, and it is transform-independent.
-    var rect = { width: this.stage.offsetWidth, height: this.stage.offsetHeight };
+    // Publish the film's real aspect so the fullscreen CSS can size the stage
+    // from it. It used to be hardcoded as 1000/540 while every film is 960x540,
+    // which let the stage come out 4% wider than its own picture.
+    if (this.container) this.container.style.setProperty("--labf-ar", this.W / this.H);
+    var used = parseFloat(global.getComputedStyle(this.stage).width);
+    var rect = { width: used > 0 ? used : this.stage.offsetWidth };
     if (!rect.width) rect = this.stage.getBoundingClientRect();   // display:none guard
     if (!rect.width) return;
     var dpr = Math.min(global.devicePixelRatio || 1, 4);
