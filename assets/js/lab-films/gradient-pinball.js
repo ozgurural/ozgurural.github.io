@@ -491,7 +491,7 @@
       // plot region (right half), x = log10(kappa) in [0,4]
       var co = film.coords({ xRange: [0, 4], yRange: [0, 105], pad: { left: 560, right: 56, top: 120, bottom: 110 } });
       var ax = s.axes(co, { grid: true, gridX: 4, gridY: 4 });
-      s.draw(ax, { at: 0.6, dur: 1.2 });
+      s.stagger(ax, { at: 0.6, dur: 1.2 });
       // iterations-to-converge (same constant): GD ∝ κ explodes off the top,
       // momentum ∝ √κ stays low — the gap IS the message.
       var gdCurve = s.plot(co, function (lx) { var k = Math.pow(10, lx); return Math.min(112, 0.7 * k); }, { color: "#9aa7be", width: 2.6, samples: 160 });
@@ -613,7 +613,7 @@
       // RIGHT: Bray–Dean phase plane — index α(ε) rises monotonically with error
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 588, right: 60, top: 150, bottom: 150 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 4 });
-      s.draw(ax, { at: 3.9, dur: 1.2 });
+      s.stagger(ax, { at: 3.9, dur: 1.2 });
       var idx = s.plot(co, function (x) { return Math.pow(x, 0.85); }, { color: "#9A72AC", width: 3, samples: 80 });
       idx.el.style.filter = "drop-shadow(0 0 7px rgba(154,114,172,0.7))";
       s.draw(idx, { at: 5.1, dur: 2.4 });
@@ -648,7 +648,7 @@
       });
       var xl = s.caption("loss ε →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.9rem", color: "#f1f5f9" });
       var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#dbeafe" });
-      s.fadeIn(xl, { at: 4.5, dur: 0.9 }); s.fadeIn(yl, { at: 4.5, dur: 0.9 });
+      s.fadeIn(xl, { at: 4.5, dur: 0.9 }); s.fadeIn(yl, { at: 4.68, dur: 0.9 });
       var minLbl = s.caption("minima<br>(α≈0)", { coords: co, x: 0.06, y: 0.18, anchor: "left", size: "0.66rem", color: "#83C167" });
       var sadLbl = s.caption("saddles<br>(α↑)", { coords: co, x: 0.66, y: 0.66, anchor: "left", size: "0.66rem", color: "#9A72AC" });
       s.fadeIn(minLbl, { at: 9, dur: 0.9 }); s.fadeIn(sadLbl, { at: 9.6, dur: 0.9 });

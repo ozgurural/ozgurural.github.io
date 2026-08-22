@@ -276,11 +276,11 @@
 
       // Rebuild on engine primitives
       var ax = s.axes(co, { grid: true, gridX: 8, gridY: 5 });
-      s.draw(ax, { at: 1.0, dur: 1.2 });
+      s.stagger(ax, { at: 1.0, dur: 1.2 });
       var xlab = s.caption("NO Shares (x)", { coords: co, x: 5, y: -1, anchor: "top", align: "center", size: "1rem", color: PAL.muted });
       var ylab = s.caption("<div style='transform: rotate(-90deg)'>YES Shares (y)</div>", { coords: co, x: -1, y: 5, anchor: "center", align: "center", size: "1rem", color: PAL.muted });
       s.fadeIn(xlab, { at: 1.5, dur: 0.8 });
-      s.fadeIn(ylab, { at: 1.5, dur: 0.8 });
+      s.fadeIn(ylab, { at: 1.68, dur: 0.8 });
 
       // True draw-on of hyperbola
       var pts = [];
@@ -366,7 +366,7 @@
       var k3 = 20;
       var co3 = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 340, right: 480, top: 150, bottom: 250 } });
       var ax3 = s.axes(co3, { grid: false });
-      s.draw(ax3, { at: 1.0, dur: 1.0 });
+      s.stagger(ax3, { at: 1.0, dur: 1.0 });
       var pts3 = [];
       for (var x = 2; x <= 10; x += 0.2) pts3.push([x, k3 / x]);
       var curve3 = s.poly(pts3, { coords: co3, color: CY, width: 2 });

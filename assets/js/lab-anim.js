@@ -374,23 +374,51 @@
     }
     ln(coords.px0, coords.py0, coords.px1, coords.py0, 1.6); // x axis
     ln(coords.px0, coords.py0, coords.px0, coords.py1, 1.6); // y axis
+    // stagger() reveals _children in order, and the frame reads better landing
+    // before the grid fills in, so move the two axis lines to the front. DOM
+    // order is untouched, so the grid still paints behind the axes.
+    g._children.unshift.apply(g._children, g._children.splice(-2, 2));
     g._ox = coords.px0; g._oy = coords.py0;
     g.coords = coords;
     return g;
   };
 
-  // Stagger-reveal an array of handles (e.g. axes._children)
-  Scene.prototype.stagger = function (handles, o) {
+  // Stagger-reveal a group handle (axes, vectors) or a plain array of handles.
+  // Pass the group itself and its children are found for you.
+  //
+  // `dur` is the TOTAL span, the same as everywhere else in the engine, so
+  // swapping draw() for stagger() never changes a scene's timing: the per-item
+  // duration and the lag between items are derived from it. lagRatio is
+  // manim's LaggedStart parameter, the fraction of one item's duration to wait
+  // before starting the next. Pass `lag` instead to set the gap in seconds, in
+  // which case `dur` means per item.
+  //
+  // This matters because draw() on a group has no stroke path to dash-reveal
+  // and quietly falls back to fading the whole group, so an axes call that
+  // looks like it draws is really a cross-fade. Its children are real lines,
+  // and they do draw.
+  Scene.prototype.stagger = function (target, o) {
     o = o || {};
+    var isGroup = !!(target && target._children);
+    var handles = isGroup ? target._children : target;
+    var n = handles ? handles.length : 0;
+    if (!n) return this;
     var at = num(o.at, 0);
     var dur = num(o.dur, 1.0);
-    var lag = num(o.lag, dur * 0.1);
+    var per, lag;
+    if (o.lag != null) { per = dur; lag = num(o.lag, 0); }
+    else {
+      var ratio = num(o.lagRatio, 0.06);
+      per = dur / (1 + ratio * (n - 1));   // per + (n-1)*lag === dur
+      lag = per * ratio;
+    }
     var ease = o.ease || Ease.smooth;
-    for (var i = 0; i < handles.length; i++) {
-      // hide first (axes children are born visible for the legacy draw path),
-      // then draw-reveal each with its lag
+    // the container defaults to opacity 0 while its children are born visible
+    // for the legacy draw path, so the container has to come on first
+    if (isGroup) this.show(target, at);
+    for (var i = 0; i < n; i++) {
       handles[i].base.op = 0; handles[i].cur.op = 0;
-      this.draw(handles[i], { at: at + i * lag, dur: dur, ease: ease });
+      this.draw(handles[i], { at: at + i * lag, dur: per, ease: ease });
     }
     return this;
   };

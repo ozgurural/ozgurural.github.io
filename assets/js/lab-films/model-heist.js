@@ -438,10 +438,10 @@
     film.scene("Robustness is bought with k", 22, function (s) {
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
-      s.draw(ax, { at: 0.6, dur: 1.2 });
+      s.stagger(ax, { at: 0.6, dur: 1.2 });
       var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.06, anchor: "top", align: "center", size: "0.8rem", color: LBLU });
       var ylab = s.caption("true-positive rate", { coords: co, x: -0.10, y: 0.8, anchor: "left", size: "0.8rem", color: LBLU });
-      s.fadeIn(xlab, { at: 1.2, dur: 0.75 }); s.fadeIn(ylab, { at: 1.2, dur: 0.75 });
+      s.fadeIn(xlab, { at: 1.2, dur: 0.75 }); s.fadeIn(ylab, { at: 1.38, dur: 0.75 });
       // diagonal
       var diag = s.poly([[0, 0], [1, 1]], { coords: co, color: GREY, width: 1.4, dashed: "4 5" });
       s.draw(diag, { at: 1.5, dur: 1.2 });

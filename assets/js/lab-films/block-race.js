@@ -585,7 +585,7 @@
       // RIGHT: Poisson PMF for the attacker's secret count
       var co = film.coords({ xRange: [-0.6, 8.6], yRange: [0, 0.32], pad: { left: 470, right: 60, top: 150, bottom: 220 } });
       var axx = s.line({ coords: co, x1: -0.4, y1: 0, x2: 8.4, y2: 0, color: PAL.axis, width: 1.3 });
-      s.draw(axx, { at: 1.8, dur: 1.2 });
+      s.stagger(axx, { at: 1.8, dur: 1.2 });
       s.fadeOut(axx, { at: 12, dur: 1.5 });
       var lostLbl = s.caption("k ≥ z: race already lost", { coords: co, x: 6.5, y: 0.22, anchor: "center", size: "0.9rem", color: RED });
       s.fadeIn(lostLbl, { at: 3 + z * 0.18, dur: 0.75 });
@@ -616,7 +616,7 @@
       // log-y plot: y = log10(P), from 0 (P=1) down to -7
       var co = film.coords({ xRange: [0, 12], yRange: [-7, 0], pad: { left: 96, right: 320, top: 120, bottom: 120 } });
       var ax = s.axes(co, { grid: true, gridX: 6, gridY: 7 });
-      s.draw(ax, { at: 0.6, dur: 1.35 });
+      s.stagger(ax, { at: 0.6, dur: 1.35 });
       // y tick labels (10^0 .. 10^-7)
       [0, -1, -2, -3, -4, -5, -6, -7].forEach(function (e, i) {
         var t = s.caption("10<sup>" + e + "</sup>", { coords: co, x: -0.35, y: e, anchor: "right", size: "0.62rem", color: "#7f93b4" });
@@ -627,9 +627,9 @@
       var ylab = s.caption("P(successful double-spend)", { coords: co, x: -0.05, y: 0.3, anchor: "left", size: "0.8rem", color: "#dbeafe" });
       s.fadeIn(ylab, { at: 1.5, dur: 0.75 });
       
-      [2, 4, 6, 8, 10, 12].forEach(function (zTick) {
+      [2, 4, 6, 8, 10, 12].forEach(function (zTick, i) {
         var t = s.caption(zTick, { coords: co, x: zTick, y: -7.25, anchor: "top", align: "center", size: "0.8rem", color: "#7f93b4" });
-        s.fadeIn(t, { at: 1.5, dur: 0.75 });
+        s.fadeIn(t, { at: 1.5 + i * 0.08, dur: 0.75 });   // same lag as the y ticks
       });
 
       function curve(q, color, at) {

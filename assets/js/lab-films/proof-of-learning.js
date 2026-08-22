@@ -508,7 +508,7 @@
     film.scene("The fingerprint, and why it matters", 26, function (s) {
       var co = film.coords({ xRange: [0, 40], yRange: [0, 1], pad: { left: 80, right: 360, top: 140, bottom: 120 } });
       var ax = s.axes(co, { grid: false });
-      s.draw(ax, { at: 0.6, dur: 1.05 });
+      s.stagger(ax, { at: 0.6, dur: 1.05 });
       // genuine noisy descent
       var gpts = [], i; for (i = 0; i <= 40; i++) gpts.push([i, Math.exp(-i * 0.08) * (1 + 0.13 * Math.sin(i * 1.9)) * 0.9 + 0.02]);
       var gp = s.poly(gpts, { coords: co, color: TEAL, width: 2.6 });
