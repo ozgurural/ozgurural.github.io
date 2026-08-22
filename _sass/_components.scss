@@ -1234,6 +1234,21 @@ button:focus-visible {
 .labf__btn:hover { background: rgba(40,58,92,0.85); border-color: rgba(56,189,248,0.5); }
 .labf__btn:active { transform: scale(0.94); }
 .labf__btn--ghost { color: #9fb2d4; }
+/* On a touch screen the 34px buttons are under the 44px minimum, and the
+   fullscreen control is the one people reach for. Grow the hit area with a
+   pseudo-element so the layout and the visual size are untouched. The
+   transport's 0.7rem gap is 12.6px and the boxes overhang by 5px a side, so
+   neighbours never overlap. */
+@media (pointer: coarse) {
+  .labf__btn { position: relative; }
+  .labf__btn::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 44px; height: 44px;
+    transform: translate(-50%, -50%);
+  }
+}
 
 .labf__scrub {
   position: relative;
@@ -1447,11 +1462,37 @@ button:focus-visible {
 .labf:-webkit-full-screen.labf--idle .labf__transport { opacity: 0 !important; pointer-events: none !important; }
 .labf--fullscreen.labf--idle .labf__transport { opacity: 0 !important; pointer-events: none !important; }
 
-/* iOS can't lock a page to landscape; when the CSS-fallback fullscreen is
-   used in portrait, prompt the user to rotate for the full-width view. */
-@media (orientation: portrait) {
+/* Fullscreen on a phone held upright.
+   iOS has no Screen Orientation lock at all and Android refuses it often
+   enough, and asking the reader to turn the phone bought very little: measured
+   at 375x812 the film filled 23.8% of the screen, a 375x211 strip. So turn the
+   picture instead. Rotating the container carries the transport with it, so the
+   controls stay under the film, and the moment the phone is actually turned
+   this query stops matching and the transform disappears on its own.
+   Gated on a coarse pointer so a narrow desktop window is never affected. */
+@media (orientation: portrait) and (pointer: coarse) {
+  .labf--fullscreen {
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100dvh !important;
+    height: 100dvw !important;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: 50% 50%;
+  }
+  /* the box is turned, so the axes the stage sizes against swap over */
+  .labf--fullscreen .labf__stage {
+    width: min(100dvh, calc((100dvw - 54px) * (1000 / 540)));
+    max-width: none;
+    max-height: calc(100dvw - 54px);
+  }
+}
+
+/* Where the turn cannot apply (a fine pointer in a portrait window), ask. */
+@media (orientation: portrait) and (pointer: fine) {
   .labf--fullscreen::after {
-    content: "\21BB  Rotate your phone for the full view";
+    content: "\21BB  Rotate for the full view";
     position: absolute;
     left: 0; right: 0; bottom: 14%;
     text-align: center;

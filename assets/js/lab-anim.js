@@ -895,8 +895,44 @@
     }
     this._unlockOrientation = unlockOrientation;
 
+    // A transformed, filtered or will-change ancestor becomes the containing
+    // block for position:fixed, and .lab-card.lab-experiment carries both a
+    // transform and will-change from its fade-in. That meant the CSS-fallback
+    // fullscreen was sized to the viewport but anchored to the card, so it
+    // never covered the screen. iPhone Safari has no native fullscreen for a
+    // div and always takes that path, which is why fullscreen did nothing
+    // there. Neutralise the ancestors while fullscreen is on, and put them
+    // back on the way out.
+    function releaseFixedAncestors() {
+      var stash = [], n = self.container.parentElement;
+      while (n && n !== document.body && n !== document.documentElement) {
+        var c = global.getComputedStyle(n);
+        if (c.transform !== "none" || c.filter !== "none" ||
+            c.perspective !== "none" || (c.willChange && c.willChange !== "auto")) {
+          stash.push([n, n.style.transform, n.style.filter, n.style.perspective, n.style.willChange]);
+          n.style.transform = "none";
+          n.style.filter = "none";
+          n.style.perspective = "none";
+          n.style.willChange = "auto";
+        }
+        n = n.parentElement;
+      }
+      self._fsStash = stash;
+    }
+    function restoreFixedAncestors() {
+      var stash = self._fsStash; if (!stash) return;
+      for (var i = 0; i < stash.length; i++) {
+        var r = stash[i];
+        r[0].style.transform = r[1]; r[0].style.filter = r[2];
+        r[0].style.perspective = r[3]; r[0].style.willChange = r[4];
+      }
+      self._fsStash = null;
+    }
+    this._restoreFixedAncestors = restoreFixedAncestors;
+
     if (this.fsBtn) {
       var enterCssFs = function () {
+        releaseFixedAncestors();
         self.container.classList.add("labf--fullscreen");
         self._fitCanvas(); self._repositionOverlay(); self.render();
       };
@@ -913,17 +949,24 @@
           if (canNative && req) {
             try {
               var r = req.call(el);
-              if (r && r.then) { r.then(lockLandscape).catch(enterCssFs); }
-              else { lockLandscape(); }
+              // the class goes on either way: it is what the portrait-phone
+              // rotation hangs off, and native fullscreen still lands in
+              // portrait whenever the orientation lock is refused
+              if (r && r.then) { r.then(function () { enterCssFs(); lockLandscape(); }).catch(enterCssFs); }
+              else { enterCssFs(); lockLandscape(); }
             } catch (e) { enterCssFs(); }
           } else {
             enterCssFs();
+            lockLandscape();   // Android may still allow it; iOS has no lock at all
           }
         } else {
           unlockOrientation();
           if (document.fullscreenElement && document.exitFullscreen) { document.exitFullscreen(); }
           else if (document.webkitFullscreenElement && document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-          else { el.classList.remove("labf--fullscreen"); self._fitCanvas(); self._repositionOverlay(); self.render(); }
+          else {
+            el.classList.remove("labf--fullscreen"); restoreFixedAncestors();
+            self._fitCanvas(); self._repositionOverlay(); self.render();
+          }
         }
       });
     }
@@ -960,6 +1003,7 @@
       if (!document.fullscreenElement && !document.webkitFullscreenElement) {
         unlockOrientation();
         self.container.classList.remove("labf--fullscreen");
+        if (self._restoreFixedAncestors) self._restoreFixedAncestors();
       }
       updateLayout();
     };
@@ -979,8 +1023,14 @@
     var self = this, dragging = false;
     function setFromEvent(e) {
       var r = self.scrub.getBoundingClientRect();
-      var clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-      var f = clamp01((clientX - r.left) / r.width);
+      var t0 = (e.touches && e.touches[0]) ? e.touches[0] : e;
+      // The bar is always far wider than it is tall. If its on-screen box comes
+      // back taller than wide, the film has been rotated a quarter turn for a
+      // portrait phone, and the drag axis has gone with it: rotate(90deg) sends
+      // the bar's left end to the top, so the fraction now reads down the screen.
+      var f = (r.height > r.width)
+        ? clamp01((t0.clientY - r.top) / r.height)
+        : clamp01((t0.clientX - r.left) / r.width);
       self.pause();
       self.seek(f * self.duration);
     }
@@ -1013,7 +1063,12 @@
   };
 
   Film.prototype._fitCanvas = function () {
-    var rect = this.stage.getBoundingClientRect();
+    // offsetWidth, not getBoundingClientRect(): the rect is the *visual* box and
+    // reports swapped axes once the container is rotated for a portrait phone,
+    // which sized the canvas against the wrong edge. The layout size is what the
+    // canvas backing store should follow, and it is transform-independent.
+    var rect = { width: this.stage.offsetWidth, height: this.stage.offsetHeight };
+    if (!rect.width) rect = this.stage.getBoundingClientRect();   // display:none guard
     if (!rect.width) return;
     var dpr = Math.min(global.devicePixelRatio || 1, 4);
     this._scale = rect.width / this.W;
