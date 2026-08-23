@@ -217,7 +217,7 @@
       s.write(eq, { at: 3.5, dur: 1.5 });
 
       // the price equation lands WITH the tangent sweep it explains (lt≈20)
-      var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 80, size: "2.2rem", color: AMB });
+      var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 108, size: "2.2rem", color: AMB });
       s.morph(eq, eq2, { at: 19, dur: 1.2 });
 
       var co = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 400, right: 150, top: 150, bottom: 150 } });
@@ -392,7 +392,7 @@
       // ride the same stretch of the path at the same moment
       var costTxt = s.caption("<strong style='color:" + RED + "'>- $100</strong>", { coords: co3, x: 2, y: 12, size: "14px", anchor: "center" });
       s.hide(costTxt, 0); s.show(costTxt, 62.5);
-      s.move(costTxt, { toX: 750, toY: 245, at: 62.5, dur: 6.5, ease: E.out });
+      s.move(costTxt, { toX: 750, toY: 256, at: 62.5, dur: 6.5, ease: E.out });
       
       var profTxt = s.caption("<strong style='color:" + GRN + "'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
       s.hide(profTxt, 0);
@@ -525,7 +525,7 @@
       lower(s, "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.", 22.0, { out: 69 });
       lower(s, "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.", 48.0, { out: 87 });
       
-      var finalBeat = s.caption("Past a certain scale (a million agents, most of them not human) coordination stops being a role you can hire for. The only manager that scales is a price.", { px: 480, py: 100, anchor: "center", align: "center", size: "1rem", color: PAL.white });
+      var finalBeat = s.caption("Past a certain scale (a million agents, most of them not human) coordination stops being a role you can hire for. The only manager that scales is a price.", { px: 480, py: 110, anchor: "center", align: "center", size: "1rem", color: PAL.white });
       s.fadeIn(finalBeat, { at: 75, dur: 2 });
 
       lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 60.0);

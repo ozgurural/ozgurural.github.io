@@ -354,7 +354,7 @@
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 64, size: "1.5rem", color: TXT });
+      var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 74, size: "1.5rem", color: TXT });
       s.write(eq, { at: 1.5, dur: 2.1 });
       lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });

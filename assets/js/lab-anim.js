@@ -1156,16 +1156,16 @@
                            { px: FW / 2, py: FH * 0.411, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>MACHINE LEARNING RESEARCH SCIENTIST &amp; SENIOR SOFTWARE ENGINEER</span>",
-                           { px: FW / 2, py: FH * 0.494, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                           { px: FW / 2, py: FH * 0.520, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",
-                           { px: FW / 2, py: FH * 0.574, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                           { px: FW / 2, py: FH * 0.600, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var creditObj = null;
 
       if (FILM_CREDITS[filmKey]) {
         creditObj = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; white-space:nowrap;'>" + FILM_CREDITS[filmKey] + "</span>",
-                               { px: FW / 2, py: FH * 0.659, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+                               { px: FW / 2, py: FH * 0.685, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
       }
 
       /* The card arrives, then rests. Before, all five elements shared one

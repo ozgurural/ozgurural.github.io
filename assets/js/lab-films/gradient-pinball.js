@@ -354,7 +354,7 @@
       });
 
       // the rule, typeset
-      var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 50, size: "1.4rem", color: "#FFFF00" });
+      var eq = s.tex2("\\text{Next Step} = \\text{Current} - \\text{Step Size} \\times \\text{Slope}", { px: 480, py: 72, size: "1.4rem", color: "#FFFF00" });
       s.write(eq, { at: 0.9, dur: 2.1 });
       var perp = s.tex2("\\text{Gradient is perpendicular to contours}", { px: 480, py: 435, display: false, size: "1.3rem", color: "#dbeafe" });
       s.fadeIn(perp, { at: 3.9, dur: 1.2 });
@@ -663,7 +663,7 @@
       var adv = s.caption("a landscape no one can fully see is exactly what an attacker hides in, and a verifier must pin down.", { px: 280, py: 430, anchor: "center", align: "center", size: "0.85rem", color: "#f1f5f9", maxWidth: "340px" });
       s.fadeIn(adv, { at: 12, dur: 1.5 });
 
-      var vis = s.caption("In a world where anyone can descend, trust no longer comes from the model. It comes from proving how the model got there.", { px: 470, py: 160, anchor: "top", align: "center", size: "1.05rem", color: "#e8eef9", maxWidth: "75%" });
+      var vis = s.caption("In a world where anyone can descend, trust no longer comes from the model. It comes from proving how the model got there.", { px: 470, py: 176, anchor: "top", align: "center", size: "1.05rem", color: "#e8eef9", maxWidth: "75%" });
       s.fadeIn(vis, { at: 22, dur: 1.5 });
     }, { subtitle: "High dimensional critical points are almost never minima. They are saddles." });
   }

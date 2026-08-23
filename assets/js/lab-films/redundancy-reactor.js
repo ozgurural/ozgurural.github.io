@@ -154,7 +154,7 @@
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 46, size: "1.4rem", color: LBL });
+      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 72, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
       lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
@@ -205,9 +205,9 @@
         }
         ctx.fillStyle = h.rgba(AMB, 0.9); ctx.fillText("failing-majority tail (i ≥ 2)", px0 - 10, py0 - 130);
       });
-      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 66, size: "1.4rem", color: TXT });
+      var e1 = s.tex2("\\text{Failure Probability (Independent)}", { px: 480, py: 74, size: "1.4rem", color: TXT });
       s.fadeIn(e1, { at: 10, dur: 1.0 });
-      var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 106, size: "1.3rem", color: AMB });
+      var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 121, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
       lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
@@ -266,7 +266,7 @@
           ctx.restore();
         }
       });
-      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 480, py: 60, size: "1.3rem", color: TXT });
+      var e1 = s.tex2("\\text{Redundancy drastically suppresses independent errors}", { px: 480, py: 70, size: "1.3rem", color: TXT });
       s.fadeIn(e1, { at: 13.5, dur: 1.5 });
       lower(s, "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.", 12.0, { maxWidth: "48%", px: 480, py: 520 });
     }, { subtitle: "Independent redundancy: q → O(q^{m+1}) superlinear safety." });
@@ -423,16 +423,16 @@
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 40, size: "1.4rem", color: GRN });
+      var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 78, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
       lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
-      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 80, anchor: "top", align: "center", size: "1.4rem", color: TXT });
+      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 110, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
 
-      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 220, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
+      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 283, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
       s.fadeIn(cap1, { at: 8.5, dur: 1.5 });
 
-      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 120, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
+      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 183, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
       s.fadeIn(tag2, { at: 16.5, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });
   }

@@ -598,7 +598,7 @@
       s.fadeOut(kAxis, { at: 12, dur: 1.0 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{" + MAG + "}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 370, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{" + MAG + "}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 352, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
       s.write(form, { at: 22, dur: 2.7 });
 
       lower(s, "Satoshi models the attacker's block count as Poisson with mean λ = zq/p, then sums gambler's-ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });

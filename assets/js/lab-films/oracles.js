@@ -151,7 +151,7 @@
         ctx.globalAlpha = op;
       });
 
-      var dlp = s.caption("Every trust boundary I've built (a data-leakage classifier deciding what crosses, an autonomous system acting on a perception model) comes down to the same question: can you act on a verdict you can't re-derive?", { px: 480, py: 100, anchor: "center", align: "center", size: "1.1rem", color: LIGHT_GREY });
+      var dlp = s.caption("Every trust boundary I've built (a data-leakage classifier deciding what crosses, an autonomous system acting on a perception model) comes down to the same question: can you act on a verdict you can't re-derive?", { px: 480, py: 142, anchor: "center", align: "center", size: "1.1rem", color: LIGHT_GREY });
       s.fadeIn(dlp, { at: 28, dur: 2 });
       s.fadeOut(dlp, { at: 42, dur: 1.5 });
 
@@ -436,7 +436,7 @@
         ctx.globalAlpha = op;
       });
 
-      var cite = s.caption("Intelligence is getting cheap. Verified intelligence is not. The limiting reagent for autonomous AI won't be a smarter model; it'll be whether one system can trust another's answer without redoing the work.", { px: 480, py: 100, anchor: "center", align: "center", size: "1rem", color: WHITE });
+      var cite = s.caption("Intelligence is getting cheap. Verified intelligence is not. The limiting reagent for autonomous AI won't be a smarter model; it'll be whether one system can trust another's answer without redoing the work.", { px: 480, py: 134, anchor: "center", align: "center", size: "1rem", color: WHITE });
       s.fadeIn(cite, { at: 42, dur: 2 });
 
       lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });
