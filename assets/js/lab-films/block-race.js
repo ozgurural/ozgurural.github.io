@@ -211,7 +211,7 @@
       var rule = s.caption("Nodes accept the <strong>longest valid chain.</strong>", { px: 480, py: 92, anchor: "top", align: "center", size: "1.4rem", color: "#dce7fb" });
       s.write(rule, { at: 0.75, dur: 1.8 });
       var lblH = s.caption("Honest network", { px: 150, py: 196, anchor: "left", size: "1.4rem", color: CY });
-      var lblA = s.caption("Attacker · private fork", { px: 150, py: 420, anchor: "left", size: "1.4rem", color: MAG });
+      var lblA = s.caption("Attacker · private fork", { px: 150, py: 393, anchor: "left", size: "1.4rem", color: MAG });
       s.fadeIn(lblH, { at: 1.5, dur: 0.9 }); s.fadeIn(lblA, { at: 3.6, dur: 0.9 });
       s.fadeOut(lblA, { at: 14.8, dur: 1.2 });
       // the attacker label clears once the narration panel has landed, so the
@@ -598,7 +598,7 @@
       s.fadeOut(kAxis, { at: 12, dur: 1.0 });
 
       // the closed form assembling
-      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{" + MAG + "}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 352, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
+      var form = s.tex2("P(z) = 1 - \\sum_{k=0}^{z} \\textcolor{" + MAG + "}{\\mathrm{Pois}(k;\\lambda)} \\bigl(1 - (q/p)^{z-k}\\bigr)", { px: 680, py: 310, anchor: "top", align: "center", size: "1.1rem", color: "#e8eef9" });
       s.write(form, { at: 22, dur: 2.7 });
 
       lower(s, "Satoshi models the attacker's block count as Poisson with mean λ = zq/p, then sums gambler's-ruin tails.", 9.0, { maxWidth: "92%", px: 60, out: 24.75 });
@@ -614,7 +614,7 @@
   function consequence(film) {
     film.scene("Orders of magnitude, not multiples", 21, function (s) {
       // log-y plot: y = log10(P), from 0 (P=1) down to -7
-      var co = film.coords({ xRange: [0, 12], yRange: [-7, 0], pad: { left: 96, right: 320, top: 120, bottom: 120 } });
+      var co = film.coords({ xRange: [0, 12], yRange: [-7, 0], pad: { left: 96, right: 320, top: 120, bottom: 163 } });
       var ax = s.axes(co, { grid: true, gridX: 6, gridY: 7 });
       s.stagger(ax, { at: 0.6, dur: 1.35 });
       // y tick labels (10^0 .. 10^-7)
@@ -624,7 +624,7 @@
       });
       var xlab = s.caption("confirmations z →", { coords: co, x: 6, y: -7.7, anchor: "top", align: "center", size: "1.2rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 2.2, dur: 0.75 });
-      var ylab = s.caption("P(successful double-spend)", { coords: co, x: -0.05, y: 0.3, anchor: "left", size: "0.8rem", color: "#dbeafe" });
+      var ylab = s.caption("P(successful double-spend)", { coords: co, x: 0.03, y: 0.3, anchor: "left", size: "0.8rem", color: "#dbeafe" });
       s.fadeIn(ylab, { at: 1.5, dur: 0.75 });
       
       [2, 4, 6, 8, 10, 12].forEach(function (zTick, i) {

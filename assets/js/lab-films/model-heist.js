@@ -436,7 +436,7 @@
   /* ================= 5 — ROC ================= */
   function roc(film) {
     film.scene("Robustness is bought with k", 22, function (s) {
-      var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 120 } });
+      var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 145 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.stagger(ax, { at: 0.6, dur: 1.2 });
       var xlab = s.caption("false-positive rate →", { coords: co, x: 0.5, y: -0.06, anchor: "top", align: "center", size: "0.8rem", color: LBLU });

@@ -489,7 +489,7 @@
       s.fadeIn(t3, { at: 5.4, dur: 1.5 });
 
       // plot region (right half), x = log10(kappa) in [0,4]
-      var co = film.coords({ xRange: [0, 4], yRange: [0, 105], pad: { left: 560, right: 56, top: 120, bottom: 110 } });
+      var co = film.coords({ xRange: [0, 4], yRange: [0, 105], pad: { left: 560, right: 56, top: 120, bottom: 128 } });
       var ax = s.axes(co, { grid: true, gridX: 4, gridY: 4 });
       s.stagger(ax, { at: 0.6, dur: 1.2 });
       // iterations-to-converge (same constant): GD ∝ κ explodes off the top,

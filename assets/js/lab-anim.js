@@ -782,7 +782,14 @@
     chrome.innerHTML =
       '<span class="labf__chapter" data-role="chapter" aria-hidden="true"></span>' +
       '<span class="labf__subtitle" data-role="subtitle" role="status" aria-live="polite"></span>';
-    stage.appendChild(chrome);
+    // The chrome hangs off the container, not the stage. The container is
+    // position:relative with the stage at its origin, so the absolute overlay
+    // lands where it always did on a wide screen, and in fullscreen it moves
+    // off the picture into the letterbox. On a phone the CSS drops it to
+    // static and it flows underneath the stage instead of eating half of it:
+    // the chrome is a fixed ~85px of screen no matter how small the stage
+    // gets, which on a 307x173 film was 49% of the frame.
+    c.appendChild(chrome);
     this.chapterEl = chrome.querySelector('[data-role="chapter"]');
     this.subEl = chrome.querySelector('[data-role="subtitle"]');
 
@@ -1164,8 +1171,8 @@
       var creditObj = null;
 
       if (FILM_CREDITS[filmKey]) {
-        creditObj = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; white-space:nowrap;'>" + FILM_CREDITS[filmKey] + "</span>",
-                               { px: FW / 2, py: FH * 0.685, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
+        creditObj = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; line-height:1.45;'>" + FILM_CREDITS[filmKey] + "</span>",
+                               { px: FW / 2, py: FH * 0.685, anchor: "center", align: "center", panel: false, maxWidth: "84%" });
       }
 
       /* The card arrives, then rests. Before, all five elements shared one

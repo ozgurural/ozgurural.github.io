@@ -1330,7 +1330,18 @@ button:focus-visible {
   /* overlay text now scales with the stage via the logical-box transform,
      so do NOT shrink fonts here (it would double-scale). Only the chrome and
      transport — which live outside the scaled overlay — need tightening. */
-  .labf__chrome { top: 0.6rem; left: 0.7rem; right: 0.7rem; }
+  /* The chrome is a fixed height in screen pixels, so the smaller the stage
+     the bigger its share of the picture: 85px of a 173px-tall film, 49%, with
+     both lines wrapping. On a phone it comes out of the picture and sits
+     under it, which costs nothing and frees the whole frame. */
+  .labf__chrome {
+    position: static;
+    padding: 0.5rem 0.15rem 0;
+    gap: 0.2rem;
+  }
+  /* and the signature overlay goes with it: at 307px wide it is noise over
+     the picture, and the outro card carries the name anyway */
+  .labf__watermark { display: none; }
   .labf__time { min-width: 56px; font-size: 0.6rem; }
   .labf__transport { gap: 0.45rem; padding: 0.5rem 0.6rem; }
 }
