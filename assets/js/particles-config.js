@@ -28,17 +28,29 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!host) return;
 
     var done = false;
+    var tries = 0;
+    function healthy() {
+      var size = container.canvas && container.canvas.size;
+      return !!(size && size.width > 0 && size.height > 0);
+    }
     function repairIfCollapsed() {
       if (done || container.destroyed) return;
       var box = host.getBoundingClientRect();
       if (box.width < 1 || box.height < 1) return;            // no size yet, wait
-      var size = container.canvas && container.canvas.size;
-      if (size && size.width > 0 && size.height > 0) {        // healthy
-        done = true;
-        return;
-      }
-      done = true;
-      container.refresh();
+      if (healthy()) { done = true; return; }
+      if (tries >= 6) return;                                 // stop rather than spin
+      tries++;
+      // refresh() is async, and it can land before layout and come back to the
+      // same 0x0. Marking the repair done without checking is what left the
+      // field dead for good: one refresh was attempted, it did not take, and
+      // the listeners below were never even wired because done was already set.
+      var r = container.refresh();
+      var verify = function () {
+        if (healthy()) done = true;
+        else setTimeout(repairIfCollapsed, 200);
+      };
+      if (r && typeof r.then === "function") r.then(verify, verify);
+      else verify();
     }
 
     repairIfCollapsed();

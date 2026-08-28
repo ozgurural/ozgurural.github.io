@@ -333,7 +333,7 @@
    so the card is the measure and fills itself. */
 .ep-cards--two { grid-template-columns: 1fr; }
 @media (min-width: 30rem) {
-  .ep-cards--two { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+  .ep-cards--two { grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); }
 }
 .ep-cards > li {
   border: 1px solid var(--ds-line);
