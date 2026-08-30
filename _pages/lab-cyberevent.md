@@ -1,5 +1,6 @@
 ---
 permalink: /lab/cyber-events/
+oembed: "/lab/cyber-events/oembed.json"
 title: "Detecting Cyber-Security Events in a Low-Resource Language, animated"
 description: "Building a cyber-security event detector with no labelled corpus: learning the keyword vector from the nic.tr attack, A/B testing it on false positives, normalising Turkish morphology, and detecting events as an anomaly in entity mentions."
 excerpt: "No labelled corpus, so a known incident becomes the training set. Sensitivity and certainty pull against each other, and the scoreboard is published in full: 29 detections, 22 real, 7 false."

@@ -1848,3 +1848,77 @@ body.labf-fs-active .page__footer {
   display: none !important;
 }
 body.labf-fs-active { overflow: hidden !important; }
+
+
+/* --------------------------------------------------------------------------
+   Embedded player (/lab/<film>/embed/)
+   The film alone in an iframe, filling whatever box the host gives it. The
+   frame is 16:9, so the stage is sized from whichever of the two dimensions
+   runs out first, the same arithmetic the fullscreen layout uses.
+   -------------------------------------------------------------------------- */
+body.labf-embed {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.labf-embed__stage {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.labf-embed .labf {
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  width: min(100vw, calc(100dvh * var(--labf-ar, 1.7778)));
+  max-width: none;
+  margin: 0;
+}
+body.labf-embed .labf__stage {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  max-width: none;
+  width: 100%;
+}
+/* the transport floats over the picture here too, so the whole box is film */
+body.labf-embed .labf__transport {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.72) 55%);
+}
+/* source credit, bottom-left, out of the way of the transport until hover */
+.labf-embed__source {
+  position: fixed;
+  left: 0.7rem;
+  top: 0.6rem;
+  z-index: 8;
+  font-family: var(--ds-font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.42);
+  text-decoration: none;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.labf-embed__source:hover { color: rgba(255, 255, 255, 0.85); }
+/* No chapter band in the embed. It is a fixed height in screen pixels, so in a
+   small iframe it eats a large share of the logical frame: at an 800px stage it
+   reaches logical y 71 against 45 on the full page, and the scene formulas
+   authored to clear 52 end up behind it. A player does not keep two lines of
+   metadata over the picture anyway; the film's own signature stays, the title
+   travels in the oEmbed payload, and the source link below is the way back. */
+body.labf-embed .labf__chrome { display: none; }
+
+@media (max-width: 640px) {
+  .labf-embed__source { display: none; }
+}

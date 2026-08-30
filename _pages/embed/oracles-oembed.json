@@ -1,0 +1,20 @@
+---
+permalink: /lab/oracles/oembed.json
+layout: none
+sitemap: false
+---
+{
+  "version": "1.0",
+  "type": "video",
+  "provider_name": "Dr. Ozgur Ural — Research Lab",
+  "provider_url": "https://ozgurural.github.io/lab/",
+  "author_name": "Dr. Ozgur Ural",
+  "author_url": "https://ozgurural.github.io/",
+  "title": "ML Oracles: Bringing Truth to the Chain, animated",
+  "width": 960,
+  "height": 540,
+  "html": "<iframe src=\"https://ozgurural.github.io/lab/oracles/embed/\" width=\"960\" height=\"540\" style=\"border:0;max-width:100%;aspect-ratio:16/9\" loading=\"lazy\" allow=\"autoplay; fullscreen\" allowfullscreen title=\"ML Oracles: Bringing Truth to the Chain, animated\"></iframe>",
+  "thumbnail_url": "https://ozgurural.github.io/images/lab-og/og-oracles.png",
+  "thumbnail_width": 1200,
+  "thumbnail_height": 630
+}

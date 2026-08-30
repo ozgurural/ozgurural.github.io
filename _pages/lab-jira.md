@@ -1,5 +1,6 @@
 ---
 permalink: /lab/universal-jira/
+oembed: "/lab/universal-jira/oembed.json"
 title: "Universal Jira: Prediction Markets for Global Coordination, animated"
 description: "A cinematic explainer on how smart contracts and prediction markets can act as incentive-compatible coordination with no trusted central party."
 excerpt: "How do we coordinate global engineering without a central boss? We use the math of Automated Market Makers (AMMs), market prices, and oracle resolution to turn software bounties into a shared belief system."

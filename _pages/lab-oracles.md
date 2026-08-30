@@ -1,5 +1,6 @@
 ---
 permalink: /lab/oracles/
+oembed: "/lab/oracles/oembed.json"
 title: "ML Oracles: Bringing Truth to the Chain, animated"
 description: "A cinematic, PhD-level explainer on the convergence of machine learning and decentralized oracle networks."
 excerpt: "Smart contracts cannot see the real world. To act on complex data, they need ML models. Here is the math of zkML and Optimistic fraud proofs, animated."

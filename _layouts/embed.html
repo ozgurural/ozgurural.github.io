@@ -1,0 +1,43 @@
+---
+layout: compress
+---
+
+{% include base_path %}
+
+<!doctype html>
+<!-- Chromeless player for a single lab film, meant to be iframed. No masthead,
+     no sidebar, no footer, no particle field: just the picture and its
+     transport, filling whatever box the host gives it. -->
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="{{ page.film_page | absolute_url }}">
+    <link rel="stylesheet" href="{{ base_path }}/assets/css/main.css?v={{ site.time | date: '%s' }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+          integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
+          crossorigin="anonymous" />
+    <script>document.documentElement.setAttribute("data-theme", "dark");</script>
+  </head>
+
+  <body class="labf-embed">
+    <div class="labf-embed__stage">
+      <div class="lab-film__frame labf" id="{{ page.film_id }}" role="group"
+           aria-label="Animated explainer: {{ page.title | escape }}"></div>
+    </div>
+
+    <!-- credit back to the page this film lives on, the way an embedded player
+         carries its source -->
+    <a class="labf-embed__source" href="{{ page.film_page | absolute_url }}" target="_blank" rel="noopener">
+      {{ page.title }} &middot; ozgurural.github.io
+    </a>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+            integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg"
+            crossorigin="anonymous"></script>
+    <script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+    <script defer src="{{ '/assets/js/lab-films/' | relative_url }}{{ page.film_script }}.js?v={{ site.time | date: '%s' }}"></script>
+  </body>
+</html>

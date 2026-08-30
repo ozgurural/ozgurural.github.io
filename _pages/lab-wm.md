@@ -1,5 +1,6 @@
 ---
 permalink: /lab/model-heist/
+oembed: "/lab/model-heist/oembed.json"
 title: "Model Heist Detector: AI watermarks, animated"
 description: "How a watermark too faint to see in any single weight becomes a courtroom-grade signature across thousands of them. A cinematic, PhD-level Z-test explainer."
 excerpt: "Spread a faint statistical signature across k weights, read it back through fine-tuning noise with a matched filter, and watch detection power rise as √k."
