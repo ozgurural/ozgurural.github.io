@@ -36,7 +36,14 @@ npm run build:lab-og  # render 1200x630 OG cards for lab pages (Node/@resvg)
 npm run build:narration # extracts lower() texts to scripts/narration.json (tracked); then scripts/generate-narration.py (edge-tts, en-US-AndrewMultilingualNeural) rebuilds assets/audio/lab/*.mp3 (also tracked)
 # note: the narration mp3s under assets/audio/lab/ are generated but committed, so the lab works
 # without a build step. Film background scores are synthesised at runtime (Web Audio) — no audio file.
+npm run build:film-video -- --film <slug>          # render a film to dist/video/*.mp4
+npm run build:film-video -- --film <slug> --scene 3   # one scene only
+npm run build:film-video -- --film <slug> --from 12 --to 75
 ```
+
+**Sharing the films.** LinkedIn does not render players from third-party sites and X's player card needs a whitelisted domain, so a link never plays inline on either. A native mp4 upload does, which is what `build:film-video` is for. It needs the dev server running, renders picture and sound in two separate passes, and writes to `dist/` (gitignored). Picture is deterministic: `film.seek(t)` is a pure function of t, so frames are seeked and screenshotted rather than captured in real time, and piped straight into ffmpeg. Sound has to be real time, because the score is synthesised into an AudioContext as the film plays; the pass routes the narration (plain `Audio` elements, outside that graph) in through `createMediaElementSource`, taps everything reaching the destination, and records it, which also preserves the music's ducking under the voice. Output is 1920x1080 H.264 yuv420p with AAC, about 8 frames a second on this machine, so roughly a minute of render per 15 seconds of film. Note X caps most accounts at 2:20 and every film is longer, so `--scene` is usually what you want.
+
+For the web, each film also serves `/lab/<slug>/embed/` (chromeless, iframe-able) and `/lab/<slug>/oembed.json`, which makes a pasted link expand into the player on anything that speaks oEmbed.
 
 Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a classic deferred script. Plotly ships separately via `assets/js/plotly-blocks.js` and is only included when a page contains a plotly fenced block.
 
