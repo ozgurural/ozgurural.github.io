@@ -1,12 +1,12 @@
-<script defer src="{{ base_path }}/assets/js/main.min.js"></script>
+<script defer src="{{ base_path }}/assets/js/main.min.js?v={{ site.time | date: '%s' }}"></script>
 
 {% if site.search %}
-<script defer src="{{ base_path }}/assets/js/search.js"></script>
+<script defer src="{{ base_path }}/assets/js/search.js?v={{ site.time | date: '%s' }}"></script>
 {% endif %}
 
 {% if content contains 'language-plotly' %}
 <!-- Plotly is heavy (~4.5 MB) — load it only on pages that use ```plotly blocks -->
-<script type="module" src="{{ base_path }}/assets/js/plotly-blocks.js"></script>
+<script type="module" src="{{ base_path }}/assets/js/plotly-blocks.js?v={{ site.time | date: '%s' }}"></script>
 {% endif %}
 
 {% include analytics.html %}
@@ -25,5 +25,5 @@
 <script src="{{ base_path }}/assets/js/tsparticles.bundle.min.js"></script>
 <!-- Shared field options must load before both consumers (this file and the
      home-only topology script) read them at DOMContentLoaded. -->
-<script src="{{ base_path }}/assets/js/particles-shared.js"></script>
-<script src="{{ base_path }}/assets/js/particles-config.js"></script>
+<script src="{{ base_path }}/assets/js/particles-shared.js?v={{ site.time | date: '%s' }}"></script>
+<script src="{{ base_path }}/assets/js/particles-config.js?v={{ site.time | date: '%s' }}"></script>
