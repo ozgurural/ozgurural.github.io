@@ -266,6 +266,35 @@ function probe(file) {
   return (r.stderr || r.stdout || '').toString();
 }
 
+/* Decode the whole thing before calling it done. A render that is interrupted
+   leaves an mp4 with no moov atom: the file is there, it is a plausible size,
+   and it is unplayable. That happened once and I caught it by hand, which is
+   not a process. Checks that it decodes, that both tracks are present, that
+   the length matches what was asked for, and that the sound is not silence. */
+function verify(file, expectedSeconds) {
+  const out = probe(file);
+  const problems = [];
+  if (/moov atom not found|Invalid data found|Error opening input/.test(out)) {
+    problems.push('the file does not decode (truncated render?)');
+    return problems;
+  }
+  const dur = out.match(/Duration:\s*(\d+):(\d+):(\d+\.\d+)/);
+  const seconds = dur ? (+dur[1] * 3600 + +dur[2] * 60 + +dur[3]) : 0;
+  if (!seconds) problems.push('no duration in the container');
+  else if (Math.abs(seconds - expectedSeconds) > 1.0) {
+    problems.push(`duration is ${seconds.toFixed(2)}s, expected about ${expectedSeconds.toFixed(2)}s`);
+  }
+  if (!/Video: h264/.test(out)) problems.push('no h264 video track');
+  if (!/Audio: aac/.test(out)) problems.push('no aac audio track');
+
+  const vol = spawnSync(ffmpeg, ['-hide_banner', '-i', file, '-af', 'volumedetect', '-f', 'null', '-'],
+                        { encoding: 'utf8' });
+  const mean = (vol.stderr || '').match(/mean_volume:\s*(-?\d+(?:\.\d+)?) dB/);
+  if (!mean) problems.push('could not measure the audio');
+  else if (Number(mean[1]) < -60) problems.push(`the audio is silent (${mean[1]} dB)`);
+  return problems;
+}
+
 (async () => {
   const args = parseArgs(process.argv);
   const targets = args.all ? FILMS : [args.film];
@@ -304,7 +333,13 @@ function probe(file) {
       const mp4 = await renderVideo(browser, slug, range, audio, args);
       fs.unlinkSync(audio.file);
       const size = (fs.statSync(mp4).size / 1e6).toFixed(1);
-      console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB`);
+      const problems = verify(mp4, range.to - range.from);
+      if (problems.length) {
+        console.error(`  UNUSABLE: ${path.relative(ROOT, mp4)}`);
+        problems.forEach(p => console.error('    - ' + p));
+        throw new Error('render did not verify: ' + problems[0]);
+      }
+      console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB  verified`);
       made.push(mp4);
     }
   } finally {
