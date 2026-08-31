@@ -64,8 +64,12 @@ function parseArgs(argv) {
 const CAPTURE_CSS = `
   .labf__poster, .labf__transport, .labf-embed__source { display: none !important; }
   .labf--idle .labf__transport { display: none !important; }
-  html, body { background: #000 !important; }
 `;
+// Nothing here forces a backdrop. An earlier version painted the page black on
+// the theory that the film's own edge pixel was black. It is not, it is fully
+// transparent, and the grid the stage paints behind the canvas is the film's
+// paper. Forcing black threw that away and the rendered films lost their
+// ground. Let the embed's own colours stand.
 
 const AUDIO_PATCH = () => {
   window.__cap = { ctx: null, tap: null, tapGain: null, routed: 0 };
@@ -295,6 +299,19 @@ function verify(file, expectedSeconds) {
   return problems;
 }
 
+// Is there already a finished render of this film at these settings?
+function existingGood(slug, args) {
+  const f = path.join(OUT_DIR, slug + '-' + Math.round(args.width * args.scale) + 'p.mp4');
+  if (!fs.existsSync(f)) return null;
+  try {
+    const info = probe(f);
+    const m = /Duration: (\d\d):(\d\d):(\d\d\.\d\d)/.exec(info);
+    if (!m || !/Video: h264/.test(info) || !/Audio: aac/.test(info)) return null;
+    const secs = Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]);
+    return (fs.statSync(f).size / 1e6).toFixed(1) + ' MB, ' + secs.toFixed(1) + 's';
+  } catch (err) { return null; }
+}
+
 (async () => {
   const args = parseArgs(process.argv);
   const targets = args.all ? FILMS : [args.film];
@@ -311,8 +328,17 @@ function verify(file, expectedSeconds) {
   });
 
   const made = [];
+  const failed = [];
   try {
     for (const slug of targets) {
+      // Resume. A full run is hours long, so it will be interrupted, and the
+      // only sane thing on restart is to skip what is already on disk and
+      // sound. existingGood applies the same check the render itself has to
+      // pass, so a file that survives it is finished, not truncated.
+      if (args.all) {
+        const done = existingGood(slug, args);
+        if (done) { console.log('\n' + slug + '  already rendered, skipping (' + done + ')'); continue; }
+      }
       const page = await openFilm(browser, slug, args);
       const info = await filmInfo(page);
       await page.close();
@@ -337,7 +363,12 @@ function verify(file, expectedSeconds) {
       if (problems.length) {
         console.error(`  UNUSABLE: ${path.relative(ROOT, mp4)}`);
         problems.forEach(p => console.error('    - ' + p));
-        throw new Error('render did not verify: ' + problems[0]);
+        // Delete it, so a re-run retries this film instead of resuming past a
+        // broken file, and carry on: one bad render must not cost the other ten.
+        try { fs.unlinkSync(mp4); } catch (err) {}
+        failed.push(slug + ': ' + problems[0]);
+        if (!args.all) throw new Error('render did not verify: ' + problems[0]);
+        continue;
       }
       console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB  verified`);
       made.push(mp4);
@@ -347,6 +378,10 @@ function verify(file, expectedSeconds) {
   }
 
   console.log('\ndone:');
+  if (failed.length) {
+    console.error('\n' + failed.length + ' film(s) did not render:');
+    failed.forEach(f => console.error('  - ' + f));
+  }
   for (const m of made) {
     const info = probe(m);
     const line = info.split('\n').filter(l => /Duration|Stream #/.test(l)).map(s => s.trim()).join('\n    ');

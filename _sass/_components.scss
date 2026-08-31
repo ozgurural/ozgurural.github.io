@@ -1917,13 +1917,16 @@ body.labf-embed .labf__transport {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 .labf-embed__source:hover { color: rgba(255, 255, 255, 0.85); }
-/* No chapter band in the embed. It is a fixed height in screen pixels, so in a
-   small iframe it eats a large share of the logical frame: at an 800px stage it
-   reaches logical y 71 against 45 on the full page, and the scene formulas
-   authored to clear 52 end up behind it. A player does not keep two lines of
-   metadata over the picture anyway; the film's own signature stays, the title
-   travels in the oEmbed payload, and the source link below is the way back. */
-body.labf-embed .labf__chrome { display: none; }
+/* The chapter band is a fixed height in screen pixels, so its share of the
+   logical frame grows as the stage shrinks: about y 44 at a 1280px stage, 55 at
+   1024, 71 at 800, against the y 46 that every scene is authored to clear. So
+   it stays wherever it still fits and goes wherever it would sit on top of the
+   film. That keeps a wide embed, and the 1280px render the video is captured
+   from, identical to the film on the page, while a small iframe gets the
+   picture undisturbed. */
+@media (max-width: 1199px) {
+  body.labf-embed .labf__chrome { display: none; }
+}
 
 @media (max-width: 640px) {
   .labf-embed__source { display: none; }
