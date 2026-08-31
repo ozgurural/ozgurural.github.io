@@ -1539,6 +1539,25 @@
       master.connect(ctx.destination);
       return ctx;
     }
+    /* Three places ask the context to resume and then call armUnlock(), which
+       was never defined: every one of them threw a ReferenceError instead, so
+       a suspended context meant no music at all and, from stinger(), no
+       closing chord. A browser refuses resume() outside a user gesture, which
+       is exactly the case those call sites are handling, so this is what they
+       wanted: if the context is still suspended after we ask, wait for the
+       next gesture and try once more. */
+    var unlockArmed = false;
+    function armUnlock() {
+      if (unlockArmed || !ctx) return;
+      unlockArmed = true;
+      var events = ["pointerdown", "touchstart", "keydown"];
+      var fire = function () {
+        for (var i = 0; i < events.length; i++) document.removeEventListener(events[i], fire, true);
+        unlockArmed = false;
+        if (ctx && ctx.state === "suspended") ctx.resume().catch(function () {});
+      };
+      for (var i = 0; i < events.length; i++) document.addEventListener(events[i], fire, true);
+    }
     /* A room, rather than a burst of hiss. The old impulse was white noise
        under a power envelope with the two channels fully independent, which
        gives a metallic, sibilant tail and an unnaturally wide image because

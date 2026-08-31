@@ -1444,7 +1444,12 @@ button:focus-visible {
 .labf:fullscreen .labf__stage,
 .labf:-webkit-full-screen .labf__stage,
 .labf--fullscreen .labf__stage {
-  background: transparent;
+  /* NOT transparent. The canvas is fully transparent wherever the film is not
+     drawing (measured: alpha 0.00 at every corner), so the stage's own
+     background is the film's paper: #111 under a 1px grid at 4% white. Clearing
+     it here dropped that paper and left the picture floating on whatever the
+     container painted. My earlier reading of "the film's edge pixel is black"
+     was RGB without the alpha, which is how this got past me. */
   max-width: none; border-radius: 0; border: none;
   width: min(100vw, calc(100vh * var(--labf-ar, 1.7778)));
   width: min(100vw, calc(100dvh * var(--labf-ar, 1.7778)));
@@ -1477,7 +1482,7 @@ button:focus-visible {
   height: 100vh !important;
   height: 100dvh !important; /* iOS: visible viewport, not the toolbar-covered one */
   z-index: 99999 !important;
-  background: #000 !important;   /* the film's own edge pixel is pure black, so the letterbox disappears */
+  background: #070b16 !important;   /* the frame tone from the page, a shade under the film's own paper */
   /* the card border costs 2px of content height, which the stage then loses to
      flex-shrink while the canvas keeps its own height and gets clipped */
   border: 0 !important;
@@ -1861,7 +1866,7 @@ body.labf-embed {
   padding: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  background: #000;
+  background: #070b16;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1878,7 +1883,7 @@ body.labf-embed {
 body.labf-embed .labf {
   border: 0;
   border-radius: 0;
-  background: #000;
+  background: #070b16;
   width: min(100vw, calc(100dvh * var(--labf-ar, 1.7778)));
   max-width: none;
   margin: 0;
@@ -1886,9 +1891,10 @@ body.labf-embed .labf {
 body.labf-embed .labf__stage {
   border: 0;
   border-radius: 0;
-  background: transparent;
   max-width: none;
   width: 100%;
+  /* the stage keeps its own background: that grid is the film's paper, and a
+     rendered video without it reads flat */
 }
 /* the transport floats over the picture here too, so the whole box is film */
 body.labf-embed .labf__transport {

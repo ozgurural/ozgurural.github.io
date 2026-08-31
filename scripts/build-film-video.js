@@ -153,7 +153,7 @@ async function recordAudio(browser, slug, range, opts) {
   await page.waitForFunction(
     () => window.LabAnim && Object.keys(window.LabAnim.films).length > 0, { timeout: 60000 });
 
-  const b64 = await page.evaluate(async (from, to) => {
+  const out = await page.evaluate(async (from, to) => {
     const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
     f.seek(from);
     f.play();
@@ -165,6 +165,7 @@ async function recordAudio(browser, slug, range, opts) {
     const rec = new MediaRecorder(cap.tap.stream, { mimeType: 'audio/webm;codecs=opus' });
     const chunks = [];
     rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    const wall0 = performance.now();
     rec.start();
     // follow the film's own clock rather than a wall timer, so a slow frame
     // never shortens the take
@@ -174,21 +175,31 @@ async function recordAudio(browser, slug, range, opts) {
       }, 100);
     });
     const blob = await new Promise(res => { rec.onstop = () => res(new Blob(chunks)); rec.stop(); });
+    const wallSpan = (performance.now() - wall0) / 1000;
+    const filmSpan = f.t - from;
     f.pause();
-    return await new Promise(res => {
+    const b64 = await new Promise(res => {
       const fr = new FileReader();
       fr.onload = () => res(fr.result.split(',')[1]);
       fr.readAsDataURL(blob);
     });
+    return { b64, wallSpan, filmSpan };
   }, range.from, range.to);
 
   await page.close();
   const file = path.join(os.tmpdir(), `labfilm-${slug}-${range.label}-${Date.now()}.webm`);
-  fs.writeFileSync(file, Buffer.from(b64, 'base64'));
-  return file;
+  fs.writeFileSync(file, Buffer.from(out.b64, 'base64'));
+  // The picture is rendered from film time and the sound was recorded in wall
+  // time, and the engine clamps its frame delta at 0.1s, so any stall leaves
+  // film time behind the clock: measured around 0.6s lost per 21s here, in a
+  // handful of hitches that no amount of warming up or pre-decoding removed.
+  // Left alone the narration would slide later and later against the picture.
+  // The exact ratio is known, so the mix is stretched to the picture's length.
+  const ratio = out.wallSpan / out.filmSpan;
+  return { file, ratio, wallSpan: out.wallSpan, filmSpan: out.filmSpan };
 }
 
-async function renderVideo(browser, slug, range, audioFile, args) {
+async function renderVideo(browser, slug, range, audio, args) {
   const page = await openFilm(browser, slug, args);
   await page.addStyleTag({ content: CAPTURE_CSS });
   await page.evaluate(() => {
@@ -203,10 +214,11 @@ async function renderVideo(browser, slug, range, audioFile, args) {
   const ff = spawn(ffmpeg, [
     '-y',
     '-f', 'image2pipe', '-framerate', String(args.fps), '-i', 'pipe:0',
-    '-i', audioFile,
+    '-i', audio.file,
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf),
     '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-level', '4.1',
+    '-filter:a', `atempo=${audio.ratio.toFixed(6)}`,
     '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
     '-movflags', '+faststart',
     '-shortest',
@@ -281,9 +293,16 @@ function probe(file) {
                   `${(range.to - range.from).toFixed(1)}s`);
       console.log('  recording audio in real time...');
       const audio = await recordAudio(browser, slug, range, args);
+      const slipPct = ((audio.ratio - 1) * 100).toFixed(2);
+      console.log(`  captured ${audio.wallSpan.toFixed(2)}s of sound for ` +
+                  `${audio.filmSpan.toFixed(2)}s of film, correcting by ${slipPct}%`);
+      if (audio.ratio > 1.10 || audio.ratio < 0.95) {
+        console.warn('  WARNING: that is a big correction and will be audible. ' +
+                     'Something stalled badly; re-run before posting this one.');
+      }
       console.log('  rendering frames...');
       const mp4 = await renderVideo(browser, slug, range, audio, args);
-      fs.unlinkSync(audio);
+      fs.unlinkSync(audio.file);
       const size = (fs.statSync(mp4).size / 1e6).toFixed(1);
       console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB`);
       made.push(mp4);
