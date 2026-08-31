@@ -11,11 +11,18 @@
  * into row bands and names the largest, which is what tells you whether the
  * difference is structural or just resampling.
  *
+ * With --video it compares the finished mp4 against the page instead, which is
+ * the check that actually matters: the embed being right does not prove the
+ * render of it is.
+ *
  *   node scripts/diff-film-frame.js <slug> [t] [--out DIR]
+ *   node scripts/diff-film-frame.js <slug> 34 --video dist/video/<slug>-1920p.mp4
  */
 const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
+const { execFileSync } = require('child_process');
+const ffmpeg = require('ffmpeg-static');
 
 const BASE = process.env.FILM_BASE || 'http://localhost:4000';
 const args = process.argv.slice(2);
@@ -23,6 +30,17 @@ const SLUG = args[0] || 'universal-jira';
 const T = Number(args[1] && !args[1].startsWith('--') ? args[1] : 34);
 const outIdx = args.indexOf('--out');
 const OUT = outIdx >= 0 ? args[outIdx + 1] : path.join(__dirname, '..', 'dist', 'diff');
+const vidIdx = args.indexOf('--video');
+const VIDEO = vidIdx >= 0 ? args[vidIdx + 1] : null;
+
+// Pull one frame out of the mp4 at the same instant the page is seeked to.
+// -ss before -i seeks by keyframe, which would land somewhere else entirely, so
+// it goes after, and the frame is decoded rather than guessed at.
+function frameFromVideo(file, t, out) {
+  execFileSync(ffmpeg, ['-hide_banner', '-loglevel', 'error', '-y',
+    '-i', file, '-ss', String(t), '-frames:v', '1', out], { stdio: 'pipe' });
+  return out;
+}
 
 const shoot = async (browser, url, file) => {
   const page = await browser.newPage();
@@ -73,7 +91,9 @@ const shoot = async (browser, url, file) => {
            '--force-device-scale-factor=1'],
   });
   const pageRect = await shoot(browser, `${BASE}/lab/${SLUG}/`, a);
-  const embRect = await shoot(browser, `${BASE}/lab/${SLUG}/embed/`, b);
+  const embRect = VIDEO
+    ? { source: VIDEO, frame: frameFromVideo(VIDEO, T, b) }
+    : await shoot(browser, `${BASE}/lab/${SLUG}/embed/`, b);
 
   // Diff in a page, because that is where a PNG decoder already lives.
   const scratch = await browser.newPage();
@@ -139,6 +159,7 @@ const shoot = async (browser, url, file) => {
     };
   }, toDataUrl(a), toDataUrl(b));
 
-  console.log(JSON.stringify({ slug: SLUG, t: T, pageRect, embRect, ...report }, null, 1));
+  console.log(JSON.stringify({ slug: SLUG, t: T, comparedAgainst: VIDEO || 'embed page',
+                              pageRect, embRect, ...report }, null, 1));
   await browser.close();
 })().catch(e => { console.error('FAILED:', e.message); process.exit(1); });
