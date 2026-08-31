@@ -24,7 +24,7 @@
  * music's ducking under the voice, which is driven by playback.
  */
 const puppeteer = require('puppeteer');
-const { spawn, execFileSync } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const ffmpeg = require('ffmpeg-static');
 const fs = require('fs');
 const path = require('path');
@@ -214,6 +214,11 @@ async function renderVideo(browser, slug, range, audioFile, args) {
   ], { stdio: ['pipe', 'ignore', 'pipe'] });
   let ffErr = '';
   ff.stderr.on('data', d => { ffErr += d.toString(); });
+  // ffmpeg closing its stdin races the last frame writes, and an unhandled
+  // error event on the pipe takes the whole process down after a perfectly
+  // good file has already been written
+  let piped = true;
+  ff.stdin.on('error', () => { piped = false; });
 
   const total = Math.round((range.to - range.from) * args.fps);
   const t0 = Date.now();
@@ -224,6 +229,7 @@ async function renderVideo(browser, slug, range, audioFile, args) {
       f.seek(tt);
     }, t);
     const buf = await page.screenshot({ type: 'jpeg', quality: 95, optimizeForSpeed: true });
+    if (!piped || !ff.stdin.writable) break;
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
     if (i % 150 === 0 || i === total - 1) {
       const done = i + 1;
@@ -233,7 +239,7 @@ async function renderVideo(browser, slug, range, audioFile, args) {
         `\r  ${slug} ${range.label}: ${done}/${total} frames  ${rate.toFixed(1)} fps  eta ${eta}s   `);
     }
   }
-  ff.stdin.end();
+  if (ff.stdin.writable) ff.stdin.end();
   await new Promise((res, rej) => {
     ff.on('close', code => code === 0 ? res() : rej(new Error('ffmpeg exited ' + code + '\n' + ffErr.slice(-800))));
   });
@@ -243,12 +249,9 @@ async function renderVideo(browser, slug, range, audioFile, args) {
 }
 
 function probe(file) {
-  try {
-    return execFileSync(ffmpeg, ['-hide_banner', '-i', file, '-f', 'null', '-'],
-                        { stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' });
-  } catch (e) {
-    return (e.stderr || '').toString();
-  }
+  const r = spawnSync(ffmpeg, ['-hide_banner', '-i', file, '-f', 'null', '-'],
+                      { encoding: 'utf8' });
+  return (r.stderr || r.stdout || '').toString();
 }
 
 (async () => {
