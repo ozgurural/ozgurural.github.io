@@ -323,6 +323,12 @@ function existingGood(slug, args) {
 
   const browser = await puppeteer.launch({
     headless: 'new',
+    // The audio pass plays the film in real time inside a single evaluate, and
+    // puppeteer aborts any one call after 180s by default. That is longer than
+    // a scene and shorter than every film, which is why clips rendered and
+    // whole films died on the first one. An hour clears the longest film with
+    // room for the machine having a bad minute.
+    protocolTimeout: 3600000,
     args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars',
            '--font-render-hinting=none', '--disable-lcd-text'],
   });
