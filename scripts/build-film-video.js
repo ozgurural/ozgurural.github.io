@@ -155,18 +155,29 @@ async function recordAudio(browser, slug, range, opts) {
 
   const out = await page.evaluate(async (from, to) => {
     const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
+    // Warm the page and audio graph before the take, then return to the exact
+    // requested frame. Recording used to start after this 300 ms advance while
+    // the measured film span still began at `from`, which built a permanent
+    // offset into every correction ratio.
     f.seek(from);
     f.play();
     await new Promise(r => setTimeout(r, 300));
     const cap = window.__cap;
     if (!cap || !cap.ctx) throw new Error('no AudioContext was created');
     if (cap.ctx.state === 'suspended') await cap.ctx.resume();
+    f.pause();
+    f.seek(from);
 
     const rec = new MediaRecorder(cap.tap.stream, { mimeType: 'audio/webm;codecs=opus' });
     const chunks = [];
     rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    await new Promise((res, rej) => {
+      rec.onstart = res;
+      rec.onerror = e => rej(e.error || new Error('audio recorder failed to start'));
+      rec.start();
+    });
     const wall0 = performance.now();
-    rec.start();
+    f.play();
     // follow the film's own clock rather than a wall timer, so a slow frame
     // never shortens the take
     await new Promise(res => {
@@ -174,10 +185,10 @@ async function recordAudio(browser, slug, range, opts) {
         if (f.t >= to - 0.02 || !f.playing) { clearInterval(tick); res(); }
       }, 100);
     });
-    const blob = await new Promise(res => { rec.onstop = () => res(new Blob(chunks)); rec.stop(); });
     const wallSpan = (performance.now() - wall0) / 1000;
-    const filmSpan = f.t - from;
+    const filmSpan = to - from;
     f.pause();
+    const blob = await new Promise(res => { rec.onstop = () => res(new Blob(chunks)); rec.stop(); });
     const b64 = await new Promise(res => {
       const fr = new FileReader();
       fr.onload = () => res(fr.result.split(',')[1]);
