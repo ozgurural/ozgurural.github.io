@@ -171,6 +171,16 @@ async function recordAudio(browser, slug, range, opts) {
     rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
     const wall0 = performance.now();
     rec.start();
+    // Film time is not wall time. The engine holds the picture just short of a
+    // narration boundary while the line is still being spoken, so a sentence is
+    // never cut off, and that hold is part of what a visitor watches. Sample
+    // the mapping every animation frame so the picture pass can reproduce it
+    // instead of the sound being stretched to a timeline that never happened.
+    const timeline = [];
+    let sampler = requestAnimationFrame(function tick(now) {
+      timeline.push([(now - wall0) / 1000, f.t]);
+      sampler = requestAnimationFrame(tick);
+    });
     // follow the film's own clock rather than a wall timer, so a slow frame
     // never shortens the take
     await new Promise(res => {
@@ -178,8 +188,10 @@ async function recordAudio(browser, slug, range, opts) {
         if (f.t >= to - 0.02 || !f.playing) { clearInterval(tick); res(); }
       }, 100);
     });
+    cancelAnimationFrame(sampler);
     const blob = await new Promise(res => { rec.onstop = () => res(new Blob(chunks)); rec.stop(); });
     const wallSpan = (performance.now() - wall0) / 1000;
+    timeline.push([wallSpan, f.t]);
     const filmSpan = f.t - from;
     f.pause();
     const b64 = await new Promise(res => {
@@ -187,20 +199,21 @@ async function recordAudio(browser, slug, range, opts) {
       fr.onload = () => res(fr.result.split(',')[1]);
       fr.readAsDataURL(blob);
     });
-    return { b64, wallSpan, filmSpan };
+    return { b64, wallSpan, filmSpan, timeline };
   }, range.from, range.to);
 
   await page.close();
   const file = path.join(os.tmpdir(), `labfilm-${slug}-${range.label}-${Date.now()}.webm`);
   fs.writeFileSync(file, Buffer.from(out.b64, 'base64'));
-  // The picture is rendered from film time and the sound was recorded in wall
-  // time, and the engine clamps its frame delta at 0.1s, so any stall leaves
-  // film time behind the clock: measured around 0.6s lost per 21s here, in a
-  // handful of hitches that no amount of warming up or pre-decoding removed.
-  // Left alone the narration would slide later and later against the picture.
-  // The exact ratio is known, so the mix is stretched to the picture's length.
+  // Nothing is stretched. An earlier version resampled the mix to the film's
+  // own duration, on the assumption that the gap between wall time and film
+  // time was jank; most of it is the narration hold, which is deliberate and
+  // is what the site plays. On a 153s film that would have been an 11.65%
+  // speed-up of a recording that was already correct. The picture follows this
+  // timeline instead, so the two agree by construction.
   const ratio = out.wallSpan / out.filmSpan;
-  return { file, ratio, wallSpan: out.wallSpan, filmSpan: out.filmSpan };
+  return { file, ratio, wallSpan: out.wallSpan, filmSpan: out.filmSpan,
+           timeline: out.timeline };
 }
 
 async function renderVideo(browser, slug, range, audio, args) {
@@ -222,7 +235,6 @@ async function renderVideo(browser, slug, range, audio, args) {
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf),
     '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-level', '4.1',
-    '-filter:a', `atempo=${audio.ratio.toFixed(6)}`,
     '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
     '-movflags', '+faststart',
     '-shortest',
@@ -236,10 +248,25 @@ async function renderVideo(browser, slug, range, audio, args) {
   let piped = true;
   ff.stdin.on('error', () => { piped = false; });
 
-  const total = Math.round((range.to - range.from) * args.fps);
+  // One frame per wall-clock tick of the take, with film time read off the
+  // recorded mapping. Where the film held for a narration line the mapping is
+  // flat, so consecutive frames repeat and the picture holds exactly as it does
+  // on the page.
+  const tl = audio.timeline && audio.timeline.length > 1 ? audio.timeline : null;
+  const span = tl ? audio.wallSpan : (range.to - range.from);
+  const total = Math.round(span * args.fps);
+  let k = 0;
+  const filmTimeAt = (w) => {
+    if (!tl) return range.from + w;
+    while (k < tl.length - 2 && tl[k + 1][0] < w) k++;
+    const a0 = tl[k], a1 = tl[k + 1] || a0;
+    const dw = a1[0] - a0[0];
+    const u = dw > 1e-9 ? Math.max(0, Math.min(1, (w - a0[0]) / dw)) : 0;
+    return a0[1] + (a1[1] - a0[1]) * u;
+  };
   const t0 = Date.now();
   for (let i = 0; i < total; i++) {
-    const t = range.from + i / args.fps;
+    const t = filmTimeAt(i / args.fps);
     await page.evaluate((tt) => {
       const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
       f.seek(tt);
@@ -354,18 +381,22 @@ function existingGood(slug, args) {
                   `${(range.to - range.from).toFixed(1)}s`);
       console.log('  recording audio in real time...');
       const audio = await recordAudio(browser, slug, range, args);
-      const slipPct = ((audio.ratio - 1) * 100).toFixed(2);
-      console.log(`  captured ${audio.wallSpan.toFixed(2)}s of sound for ` +
-                  `${audio.filmSpan.toFixed(2)}s of film, correcting by ${slipPct}%`);
-      if (audio.ratio > 1.10 || audio.ratio < 0.95) {
-        console.warn('  WARNING: that is a big correction and will be audible. ' +
-                     'Something stalled badly; re-run before posting this one.');
+      // The take is longer than the film's nominal duration because the engine
+      // holds the picture while a narration line finishes. That is not drift to
+      // be corrected, it is the film, and the picture follows the same timeline.
+      const heldFor = audio.wallSpan - audio.filmSpan;
+      console.log(`  ${audio.wallSpan.toFixed(1)}s of sound for ${audio.filmSpan.toFixed(1)}s ` +
+                  `of film: held ${heldFor.toFixed(1)}s for narration ` +
+                  `(${((audio.ratio - 1) * 100).toFixed(1)}%)`);
+      if (audio.ratio > 1.35) {
+        console.warn('  WARNING: that is a lot of holding. Either the narration badly ' +
+                     'overruns its scenes or something stalled; check this one before posting.');
       }
       console.log('  rendering frames...');
       const mp4 = await renderVideo(browser, slug, range, audio, args);
       fs.unlinkSync(audio.file);
       const size = (fs.statSync(mp4).size / 1e6).toFixed(1);
-      const problems = verify(mp4, range.to - range.from);
+      const problems = verify(mp4, audio.wallSpan);
       if (problems.length) {
         console.error(`  UNUSABLE: ${path.relative(ROOT, mp4)}`);
         problems.forEach(p => console.error('    - ' + p));
