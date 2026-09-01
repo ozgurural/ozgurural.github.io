@@ -290,12 +290,15 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
   // written, so it can be gone by the time the loop breaks; a close listener
   // attached at that point never fires and the run hangs on a finished file.
   // That cost a pilot render twenty-four minutes of waiting on nothing.
+  let ffGone = false;
   const ffDone = new Promise((res, rej) => {
-    ff.on('close', code => code === 0
-      ? res()
-      : rej(new Error('ffmpeg exited ' + code + String.fromCharCode(10) + ffErr.slice(-800))));
+    ff.on('close', code => {
+      ffGone = true;
+      if (code === 0) res();
+      else rej(new Error('ffmpeg exited ' + code + String.fromCharCode(10) + ffErr.slice(-800)));
+    });
   });
-  ffDone.catch(() => {});      // claim it now; it is awaited for real below
+  const ffSettled = ffDone.catch(() => {});   // for racing; the real one is awaited below
   // ffmpeg closing its stdin races the last frame writes, and an unhandled
   // error event on the pipe takes the whole process down after a perfectly
   // good file has already been written
@@ -326,8 +329,16 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
       f.seek(tt);
     }, t);
     const buf = await page.screenshot({ type: 'jpeg', quality: 95, optimizeForSpeed: true });
-    if (!piped || !ff.stdin.writable) break;
-    if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
+    if (ffGone || !piped || !ff.stdin.writable) break;
+    if (!ff.stdin.write(buf)) {
+      // Wait for room, but never on a reader that has gone. With -shortest
+      // ffmpeg stops reading once the audio is covered, which is a few frames
+      // before the last one is written, and it then exits; a bare 'drain' await
+      // at that moment never fires, because nothing is left to drain into. This
+      // held a batch for four hours on a finished file, having already rendered
+      // every frame of it, and it looked like the encode was still going.
+      await Promise.race([new Promise(r => ff.stdin.once('drain', r)), ffSettled]);
+    }
     if (i % 150 === 0 || i === total - 1) {
       const done = i + 1;
       const rate = done / ((Date.now() - t0) / 1000);
@@ -336,6 +347,9 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
         `\r  ${slug} ${range.label}: ${done}/${total} frames  ${rate.toFixed(1)} fps  eta ${eta}s   `);
     }
   }
+  if (ff.stdin.writable) ff.stdin.end();
+  await ffDone;
+
   if (tl) {
     // Video time is no longer film time, so the mapping has to outlive the run:
     // diff:film needs it to seek the page to the moment a given frame shows,
@@ -350,8 +364,6 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
                        wallSpan: +audio.wallSpan.toFixed(3), filmSpan: +audio.filmSpan.toFixed(3),
                        samples: thin }));
   }
-  if (ff.stdin.writable) ff.stdin.end();
-  await ffDone;
   process.stdout.write('\n');
   await page.close();
   return outFile;
