@@ -355,7 +355,7 @@
       });
 
       lower(s, "So stop assigning the work and price it instead. Will this bug be fixed by Friday?", 2.0, { out: 22.5 });
-      lower(s, "An automated market maker always quotes a price, so there is always someone to trade against.", 17.0, { out: 45 });
+      lower(s, "While its liquidity pool is funded, an automated market maker continuously quotes a price, so a trader does not need a matching counterparty.", 17.0, { out: 45 });
       lower(s, "And the slope of that curve is the crowd's probability that the work gets done.", 32.0, { out: 67.5 });
       lower(s, "If nobody is working on it, the price is cheap. Cheap is the signal to act.", 47.0);
     }, { subtitle: "Continuous automated market makers" });

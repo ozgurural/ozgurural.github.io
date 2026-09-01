@@ -18,36 +18,43 @@ async def main():
     with open(os.path.join(HERE, "narration.json"), encoding="utf-8") as f:
         films = json.load(f)
     # Optional film-prefix filters: `python generate-narration.py pol wm`
-    # regenerates only matching films. No args → all films.
+    # regenerates matching films. `python generate-narration.py oracles:6`
+    # regenerates one cue. No args regenerates all films.
     wanted = [a.lower() for a in sys.argv[1:]]
-    if wanted:
-        films = {k: v for k, v in films.items()
-                 if any(w in k.lower() for w in wanted)}
-        print("filtering to:", ", ".join(films.keys()) or "(none matched)")
-    total = sum(len(v) for v in films.values())
-    done = 0
-    failed = []
+    jobs = []
     for prefix, texts in films.items():
         for i, text in enumerate(texts):
-            path = os.path.join(OUT, f"{prefix}_{i}.mp3")
-            ok = False
-            for attempt in range(3):
-                try:
-                    await synth(text, path)
-                    ok = True
-                    break
-                except Exception as e:
-                    err = e
-                    await asyncio.sleep(1.5)
-            done += 1
-            if ok:
-                size = os.path.getsize(path)
-                print(f"[{done}/{total}] {prefix}_{i}.mp3  {size//1024} KB")
-                if size < 2000:
-                    failed.append((path, "suspiciously small"))
-            else:
-                failed.append((path, repr(err)))
-                print(f"[{done}/{total}] FAILED {prefix}_{i}.mp3: {err!r}")
+            selected = not wanted or any(
+                (":" in item and item == f"{prefix}:{i}".lower()) or
+                (":" not in item and item in prefix.lower())
+                for item in wanted)
+            if selected:
+                jobs.append((prefix, i, text))
+    if wanted:
+        print("filtering to:", ", ".join(f"{p}_{i}" for p, i, _ in jobs) or "(none matched)")
+    total = len(jobs)
+    done = 0
+    failed = []
+    for prefix, i, text in jobs:
+        path = os.path.join(OUT, f"{prefix}_{i}.mp3")
+        ok = False
+        for attempt in range(3):
+            try:
+                await synth(text, path)
+                ok = True
+                break
+            except Exception as e:
+                err = e
+                await asyncio.sleep(1.5)
+        done += 1
+        if ok:
+            size = os.path.getsize(path)
+            print(f"[{done}/{total}] {prefix}_{i}.mp3  {size//1024} KB")
+            if size < 2000:
+                failed.append((path, "suspiciously small"))
+        else:
+            failed.append((path, repr(err)))
+            print(f"[{done}/{total}] FAILED {prefix}_{i}.mp3: {err!r}")
     if failed:
         print("\nFAILURES:")
         for p, e in failed:

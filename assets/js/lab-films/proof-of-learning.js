@@ -141,7 +141,7 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers faked it within a year. My dissertation asks whether that proof can be made unfakeable.", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -442,8 +442,8 @@
           }
         }
       });
-      lower(s, "Proving costs one honest run. Faking means running the whole training backwards, and the number of paths that could fit explodes, so it's astronomically harder.", 11.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "One run to prove it. An exploding number of guesses to fake it." });
+      lower(s, "The design goal is a cost asymmetry: honest proving takes one training run, while forging should cost at least as much. Later attacks showed that plain Proof-of-Learning does not always meet that goal.", 11.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "The security target is cost asymmetry, not an impossibility theorem." });
   }
 
   /* ============== 6 — SecurePoL : trajectory ∧ watermark ============== */
@@ -452,7 +452,14 @@
       s.canvas(function (lt, ctx, h) {
         // watermarked checkpoint grid (gold sub-lattice)
         grid(ctx, h, 90, 190, 13, TEAL, 1, true);
-        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GOLD, 0.95); ctx.fillText("a secret mark, woven into the model", 90, 320);
+        // Let the previous scene's root label clear before introducing this
+        // one. Both otherwise occupy the same ink at the scene boundary.
+        if (lt > 0.8) {
+          ctx.save(); ctx.globalAlpha *= clamp01((lt - 0.8) / 0.6);
+          ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GOLD, 0.95);
+          ctx.fillText("a secret mark, woven into the model", 90, 320);
+          ctx.restore();
+        }
         // two rails into an AND-gate
         var gx = 640, gy = 270, trajGreen = true; // trajectory rail
         var wmGreen = lt < 4 ? null : false;       // fake transcript fails watermark
@@ -499,8 +506,8 @@
       s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
-      lower(s, "SecurePoL adds a second lock: a mark woven into the model. A faker can copy the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
+      lower(s, "SecurePoL adds a second check: a mark woven into the model. A forger must now reproduce both a plausible trajectory and a watermark-consistent ownership signal.", 9.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Two bypassable checks become one joint constraint." });
   }
 
   /* ============== 7 — SIGNATURE ============== */
@@ -597,9 +604,9 @@
       // Clean legend on the right
       var hg = s.caption("The noise is the fingerprint.", { px: 650, py: 260, anchor: "left", size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
-      var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
+      var seal = s.caption("✦ Two-Layer Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
-      lower(s, "When models are cloned and stolen, what matters is not what a model knows, but whether it can prove how it learned. My work makes that proof unforgeable.", 12.0, { maxWidth: "92%", px: 60 });
+      lower(s, "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

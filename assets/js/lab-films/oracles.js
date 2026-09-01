@@ -308,8 +308,8 @@
 
       lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
       lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 8.67, { out: 24 });
-      lower(s, "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this exact model produced this exact output.", 16.67, { out: 38 });
-      lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 26.67);
+      lower(s, "That shadow compresses into a short proof, cheap to check and computationally infeasible to forge under its cryptographic assumptions. It binds this model and input to this output.", 16.67, { out: 38 });
+      lower(s, "The smart contract cannot run the model, but it can verify the proof. Acceptance guarantees that the encoded computation was followed; it does not guarantee that the model or input was truthful.", 26.67);
     }, { subtitle: "Proving execution without redoing the work" });
   }
 
@@ -442,7 +442,7 @@
       lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });
       lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 8.67, { out: 24 });
       lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.", 16.67, { out: 40 });
-      lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 28);
+      lower(s, "If the timer expires without a successful challenge, the protocol finalises the claim. That is an economic guarantee, and it depends on an honest watcher being present.", 28);
     }, { subtitle: "Economic guarantees for intelligent agents" });
   }
 

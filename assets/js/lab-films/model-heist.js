@@ -8,7 +8,7 @@
      4. ztest         Detection is a Z-test    (N(0,1) vs N(d,1); the hero)
      5. roc           Robustness via k         (ROC inflates; AUC=Φ(d/√2))
      6. scrub-paradox The scrubbing paradox    (kill it ⇒ wreck utility)
-     7. stakes        Courtroom-grade          (Power=Φ(√k·ε/σ − z_α))
+     7. stakes        Statistical evidence     (Power=Φ(√k·ε/σ − z_α))
 
    Referee corrections applied:
      • ONE convention: unit-norm matched filter w (‖w‖=1) ⇒ signal amplitude
@@ -561,7 +561,7 @@
 
   /* ================= 7 — STAKES ================= */
   function stakes(film) {
-    film.scene("A courtroom-grade signature", 13, function (s) {
+    film.scene("Statistical ownership evidence", 13, function (s) {
       s.canvas(function (lt, ctx, h) {
         var fade = clamp01(lt / 0.5);
         graph(ctx, h, 250, 280, CY, fade, 9, 0);
@@ -583,9 +583,9 @@
       // caption width is clamped by the overlay, so widening does not unwrap it.
       // Raising the line is what there is room for: the stat above ends at
       // 316.6, leaving 63 units of clear space.
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 352, anchor: "top", align: "center", size: "1.4rem", color: TXT });
+      var tag = s.caption("Invisible in any one weight. <strong>Detectable across all of them.</strong>", { px: 480, py: 352, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
-      var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights; it must survive every transformation an adversary can apply. Provenance you can prove is the price of trusting a model you never watched being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
+      var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights; it must survive the transformations tested in the threat model. Verifiable provenance matters when you did not watch the model being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
       s.fadeIn(cap2, { at: 8.5, dur: 1.5 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
       s.fadeIn(cite, { at: 9, dur: 1.2 });

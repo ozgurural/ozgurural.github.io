@@ -73,7 +73,7 @@
     "Each entity is judged against its own history, because normal for one is an alarm for another.",
     "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. The anomaly is the signal.",
     "The scoreboard, stated rather than rounded: 437 documents, 29 detections, 22 real. About 76%.",
-    "The seven misses are published too. A rare-event detector earns trust by naming what it gets wrong."
+    "The seven false positives are published too. A rare-event detector earns trust by naming what it gets wrong."
   ],
   "jira": [
     "I learned decentralized coordination on the Aegean: forty boats, no race director steering them...",
@@ -82,7 +82,7 @@
     "Put one manager in the middle and their load is every agent at once. Capacity is fixed; the queue is not.",
     "Take the manager out and publish a price. Each agent reads one number, however many of them there are.",
     "So stop assigning the work and price it instead. Will this bug be fixed by Friday?",
-    "An automated market maker always quotes a price, so there is always someone to trade against.",
+    "While its liquidity pool is funded, an automated market maker continuously quotes a price, so a trader does not need a matching counterparty.",
     "And the slope of that curve is the crowd's probability that the work gets done.",
     "If nobody is working on it, the price is cheap. Cheap is the signal to act.",
     "A developer who knows they can fix it buys in quietly at ten cents.",
@@ -110,21 +110,21 @@
     "In a world where AI agents consume each other's inferences, this is the trust question.",
     "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.",
     "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.",
-    "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this exact model produced this exact output.",
-    "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.",
+    "That shadow compresses into a short proof, cheap to check and computationally infeasible to forge under its cryptographic assumptions. It binds this model and input to this output.",
+    "The smart contract cannot run the model, but it can verify the proof. Acceptance guarantees that the encoded computation was followed; it does not guarantee that the model or input was truthful.",
     "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.",
     "A node asserts a result and locks a massive financial bond (stake) on the blockchain.",
     "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.",
-    "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required."
+    "If the timer expires without a successful challenge, the protocol finalises the claim. That is an economic guarantee, and it depends on an honest watcher being present."
   ],
   "proof-of-learning": [
-    "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers faked it within a year. My dissertation asks whether that proof can be made unfakeable.",
+    "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.",
     "A model is not born at the finish line. It walks there step by step. The path is the asset, not the endpoint.",
     "The proof is a diary of the run: checkpoints, data, settings. Signed, so nobody can edit it later.",
     "A checker never re-runs the whole thing. It re-does only the biggest steps, which is exactly where a faker taking shortcuts would get caught.",
-    "Proving costs one honest run. Faking means running the whole training backwards, and the number of paths that could fit explodes, so it's astronomically harder.",
-    "SecurePoL adds a second lock: a mark woven into the model. A faker can copy the curve, but not a mark they never trained in.",
-    "When models are cloned and stolen, what matters is not what a model knows, but whether it can prove how it learned. My work makes that proof unforgeable."
+    "The design goal is a cost asymmetry: honest proving takes one training run, while forging should cost at least as much. Later attacks showed that plain Proof-of-Learning does not always meet that goal.",
+    "SecurePoL adds a second check: a mark woven into the model. A forger must now reproduce both a plausible trajectory and a watermark-consistent ownership signal.",
+    "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark."
   ],
   "redundancy-reactor": [
     "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.",
@@ -135,18 +135,18 @@
     "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains."
   ],
   "wm-compare": [
-    "To make Proof-of-Learning unspoofable, I had to hide a mark inside a model. Four ways exist, and each falls to a different attacker. The first writes a pattern straight into the weights.",
+    "To make Proof-of-Learning harder to spoof, the design hides a mark inside the model. Four approaches exist, and each faces a different attacker. The first writes a pattern straight into the weights.",
     "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.",
-    "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.",
+    "3. As the Z-score moves past the threshold, coincidence becomes increasingly unlikely. The result is statistical evidence of copying, at the chosen false-positive rate.",
     "But there is a catch: you need full access to the stolen weights to run this test.",
     "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.",
     "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.",
     "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.",
-    "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.",
+    "The network outputs a secret label on the trigger set, providing black-box evidence that it carries your watermark.",
     "For Large Language Models, watermarking happens continuously during text generation.",
     "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.",
     "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.",
-    "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.",
+    "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes evidence of origin at a measurable false-positive rate.",
     "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.",
     "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.",
     "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.",

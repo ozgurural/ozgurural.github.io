@@ -614,7 +614,7 @@
       );
       lower(
         s,
-        "The seven misses are published too. A rare-event detector earns trust by naming what it gets wrong.",
+        "The seven false positives are published too. A rare-event detector earns trust by naming what it gets wrong.",
         40.0,
         { out: 49.0 }
       );

@@ -26,7 +26,7 @@ header:
   <a class="lab-mission-card" href="/lab/training-fingerprint/">
     <span class="lab-mission-card__code">01</span>
     <strong>Proof-of-Learning (SecurePoL)</strong>
-    <span>The loss trajectory as an unforgeable fingerprint: cheap to prove, costly to fake. <em>IEEE Access 2025 and my dissertation.</em></span>
+    <span>The loss trajectory as a costly-to-forge fingerprint: cheap to check, expensive to imitate. <em>IEEE Access 2025 and my dissertation.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/blockchain-ml/">
     <span class="lab-mission-card__code">02</span>
@@ -36,7 +36,7 @@ header:
   <a class="lab-mission-card" href="/lab/model-heist/">
     <span class="lab-mission-card__code">03</span>
     <strong>Model Heist Detector</strong>
-    <span>A watermark invisible in any one weight, undeniable across thousands: a Gaussian Z-test, animated. <em>IEEE Access 2024.</em></span>
+    <span>A watermark invisible in any one weight, statistically detectable across thousands: a Gaussian Z-test, animated. <em>IEEE Access 2024.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/watermarking-comparison/">
     <span class="lab-mission-card__code">04</span>
