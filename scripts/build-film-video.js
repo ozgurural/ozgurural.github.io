@@ -242,6 +242,17 @@ async function renderVideo(browser, slug, range, audio, args) {
   ], { stdio: ['pipe', 'ignore', 'pipe'] });
   let ffErr = '';
   ff.stderr.on('data', d => { ffErr += d.toString(); });
+  // Listen for the exit now, not after the loop. With -shortest ffmpeg stops as
+  // soon as the audio runs out, which is a few frames before the last one is
+  // written, so it can be gone by the time the loop breaks; a close listener
+  // attached at that point never fires and the run hangs on a finished file.
+  // That cost a pilot render twenty-four minutes of waiting on nothing.
+  const ffDone = new Promise((res, rej) => {
+    ff.on('close', code => code === 0
+      ? res()
+      : rej(new Error('ffmpeg exited ' + code + String.fromCharCode(10) + ffErr.slice(-800))));
+  });
+  ffDone.catch(() => {});      // claim it now; it is awaited for real below
   // ffmpeg closing its stdin races the last frame writes, and an unhandled
   // error event on the pipe takes the whole process down after a perfectly
   // good file has already been written
@@ -297,9 +308,7 @@ async function renderVideo(browser, slug, range, audio, args) {
                        samples: thin }));
   }
   if (ff.stdin.writable) ff.stdin.end();
-  await new Promise((res, rej) => {
-    ff.on('close', code => code === 0 ? res() : rej(new Error('ffmpeg exited ' + code + '\n' + ffErr.slice(-800))));
-  });
+  await ffDone;
   process.stdout.write('\n');
   await page.close();
   return outFile;
