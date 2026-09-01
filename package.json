@@ -44,6 +44,7 @@
     "build:narration": "node scripts/extract-narration.js && python scripts/generate-narration.py",
     "build:film-video": "node scripts/build-film-video.js",
     "films": "node scripts/build-film-video.js --all",
-    "diff:film": "node scripts/diff-film-frame.js"
+    "diff:film": "node scripts/diff-film-frame.js",
+    "audit:films": "node scripts/audit-films.js"
   }
 }
