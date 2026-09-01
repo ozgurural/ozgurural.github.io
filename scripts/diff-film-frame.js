@@ -33,6 +33,23 @@ const OUT = outIdx >= 0 ? args[outIdx + 1] : path.join(__dirname, '..', 'dist', 
 const vidIdx = args.indexOf('--video');
 const VIDEO = vidIdx >= 0 ? args[vidIdx + 1] : null;
 
+// A rendered film holds its picture while a narration line finishes, so video
+// time is not film time. The render writes the mapping beside the mp4; without
+// it a comparison late in a film is off by however long the film has held,
+// which looks like the render being wrong when it is the diff that is.
+function filmTimeForVideoTime(videoFile, w) {
+  const side = videoFile.replace(/\.mp4$/, '.timeline.json');
+  if (!fs.existsSync(side)) return { t: w, mapped: false };
+  const tl = JSON.parse(fs.readFileSync(side, 'utf8')).samples;
+  if (!tl || tl.length < 2) return { t: w, mapped: false };
+  let k = 0;
+  while (k < tl.length - 2 && tl[k + 1][0] < w) k++;
+  const a = tl[k], b = tl[k + 1] || a;
+  const dw = b[0] - a[0];
+  const u = dw > 1e-9 ? Math.max(0, Math.min(1, (w - a[0]) / dw)) : 0;
+  return { t: a[1] + (b[1] - a[1]) * u, mapped: true };
+}
+
 // Pull one frame out of the mp4 at the same instant the page is seeked to.
 // -ss before -i seeks by keyframe, which would land somewhere else entirely, so
 // it goes after, and the frame is decoded rather than guessed at.
@@ -42,7 +59,7 @@ function frameFromVideo(file, t, out) {
   return out;
 }
 
-const shoot = async (browser, url, file) => {
+const shoot = async (browser, url, file, atTime) => {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900, deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: 'networkidle0', timeout: 90000 });
@@ -59,7 +76,7 @@ const shoot = async (browser, url, file) => {
     const r = st.getBoundingClientRect();
     return { x: Math.round(r.x), y: Math.round(r.y),
              width: Math.round(r.width), height: Math.round(r.height) };
-  }, T);
+  }, atTime === undefined ? T : atTime);
   await new Promise(r => setTimeout(r, 400));   // let the scroll settle before clipping
   const rect2 = await page.evaluate(() => {
     const r = document.querySelector('.labf__stage').getBoundingClientRect();
@@ -90,10 +107,14 @@ const shoot = async (browser, url, file) => {
     args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars',
            '--force-device-scale-factor=1'],
   });
-  const pageRect = await shoot(browser, `${BASE}/lab/${SLUG}/`, a);
+  // In --video mode T is a moment in the video; the page has to be seeked to
+  // the film time that moment shows.
+  const mapped = VIDEO ? filmTimeForVideoTime(VIDEO, T) : { t: T, mapped: false };
+  const pageRect = await shoot(browser, `${BASE}/lab/${SLUG}/`, a, mapped.t);
   const embRect = VIDEO
-    ? { source: VIDEO, frame: frameFromVideo(VIDEO, T, b) }
-    : await shoot(browser, `${BASE}/lab/${SLUG}/embed/`, b);
+    ? { source: VIDEO, videoTime: T, filmTime: +mapped.t.toFixed(2),
+        usedTimeline: mapped.mapped, frame: frameFromVideo(VIDEO, T, b) }
+    : await shoot(browser, `${BASE}/lab/${SLUG}/embed/`, b, T);
 
   // Diff in a page, because that is where a PNG decoder already lives.
   const scratch = await browser.newPage();

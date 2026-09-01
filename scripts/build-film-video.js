@@ -282,6 +282,20 @@ async function renderVideo(browser, slug, range, audio, args) {
         `\r  ${slug} ${range.label}: ${done}/${total} frames  ${rate.toFixed(1)} fps  eta ${eta}s   `);
     }
   }
+  if (tl) {
+    // Video time is no longer film time, so the mapping has to outlive the run:
+    // diff:film needs it to seek the page to the moment a given frame shows,
+    // and it is the record of where the film held. Thinned to 10Hz, which is
+    // finer than any hold boundary and keeps the sidecar small.
+    const thin = [];
+    let lastW = -1;
+    for (const [w, t] of tl) { if (w - lastW >= 0.1) { thin.push([+w.toFixed(3), +t.toFixed(3)]); lastW = w; } }
+    if (tl.length) thin.push([+tl[tl.length - 1][0].toFixed(3), +tl[tl.length - 1][1].toFixed(3)]);
+    fs.writeFileSync(outFile.replace(/\.mp4$/, '.timeline.json'),
+      JSON.stringify({ slug, from: range.from, to: range.to, fps: args.fps,
+                       wallSpan: +audio.wallSpan.toFixed(3), filmSpan: +audio.filmSpan.toFixed(3),
+                       samples: thin }));
+  }
   if (ff.stdin.writable) ff.stdin.end();
   await new Promise((res, rej) => {
     ff.on('close', code => code === 0 ? res() : rej(new Error('ffmpeg exited ' + code + '\n' + ffErr.slice(-800))));
