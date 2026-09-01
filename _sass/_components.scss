@@ -1884,7 +1884,7 @@ body.labf-embed .labf {
   border: 0;
   border-radius: 0;
   background: #070b16;
-  width: min(100vw, calc(100dvh * var(--labf-ar, 1.7778)));
+  width: min(100vw, calc((100dvh - 54px) * var(--labf-ar, 1.7778)));
   max-width: none;
   margin: 0;
 }
@@ -1896,12 +1896,14 @@ body.labf-embed .labf__stage {
   /* the stage keeps its own background: that grid is the film's paper, and a
      rendered video without it reads flat */
 }
-/* the transport floats over the picture here too, so the whole box is film */
+/* Keep the transport outside the picture. An overlaid 50px bar covers the
+   lower-third narration at every width, so the stage is sized from the height
+   left after the controls instead. */
 body.labf-embed .labf__transport {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
+  position: relative;
+  left: auto; right: auto; bottom: auto;
   z-index: 3;
-  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.72) 55%);
+  background: linear-gradient(180deg, rgba(11,18,33,0), rgba(8,12,22,0.9) 40%);
 }
 /* source credit, bottom-left, out of the way of the transport until hover */
 .labf-embed__source {
@@ -1927,4 +1929,15 @@ body.labf-embed .labf__chrome { display: none; }
 
 @media (max-width: 640px) {
   .labf-embed__source { display: none; }
+  /* At phone widths a 50px transport covers roughly 120 logical pixels of the
+     scaled film, including the lower-third narration. Put the controls below
+     the stage and reserve their height when a short landscape iframe is the
+     limiting dimension. */
+  body.labf-embed .labf {
+    width: min(100vw, calc((100dvh - 50px) * var(--labf-ar, 1.7778)));
+  }
+  body.labf-embed .labf__transport {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
 }

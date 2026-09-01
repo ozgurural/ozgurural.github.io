@@ -123,10 +123,11 @@
     film.scene("Three computers, one sign-off", 22, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.save();
-        ctx.textAlign = "center";
+        ctx.textAlign = "left";
         ctx.fillStyle = h.rgba(WHT, 0.4);
         ctx.font = "11px 'JetBrains Mono',monospace";
-        ctx.fillText("LEVEL-D FULL-FLIGHT SIM · EASA/FAA CERTIFICATION", 480, 24);
+        // Keep authored ink below the player's chapter/source band.
+        ctx.fillText("LEVEL D · EASA/FAA QUALIFICATION", 60, 58);
         ctx.restore();
 
         var states, voter;
@@ -144,13 +145,13 @@
         if (lt < 6 && lt > 3) {
           var fade1 = clamp01((lt - 3) / 0.5) * (lt > 5.5 ? clamp01((6 - lt) / 0.5) : 1);
           ctx.save(); ctx.globalAlpha *= fade1;
-          ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 85);
+          ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 60, 430);
           ctx.restore();
         }
         if (lt >= 6) {
           var fade2 = clamp01((lt - 6) / 0.5);
           ctx.save(); ctx.globalAlpha *= fade2;
-          ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80);
+          ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 60, 430);
           ctx.restore();
         }
       });
