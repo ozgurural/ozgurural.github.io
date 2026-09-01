@@ -70,7 +70,12 @@
 
         function agentPos(i, count) {
           var a = (i / count) * Math.PI * 2 - Math.PI / 2;
-          var wobble = lt < 14 ? (rnd(i) - 0.5) * 40 : 0;   // fleet drift, then order
+          // Fleet drift, then order. Not stillness though: a fleet that has
+          // found its formation is still forty boats holding it against the
+          // water, and zeroing this froze the picture for twelve seconds.
+          var wobble = lt < 14
+            ? (rnd(i) - 0.5) * 40
+            : Math.sin(lt * 0.7 + i * 1.9) * 3.4 + Math.sin(lt * 1.13 + i) * 1.6;
           var rr = R + wobble + (rnd(i + 7) - 0.5) * 10;
           return { x: FX + Math.cos(a) * rr, y: FY + Math.sin(a) * rr * 0.72 };
         }
@@ -274,12 +279,19 @@
       var co = mkCoords(film), k = MK.k;
 
       // Where the pool sits. Two trades, each one a cause the viewer can see.
+      // Two trades that carry the argument, over a book that is never perfectly
+      // still: a market with a crowd in it always has someone moving the price
+      // slightly. Deterministic in lt, so seek(t) still reproduces the frame,
+      // and small enough that the two real trades remain the events.
       function poolX(lt) {
-        if (lt < 12) return 3.2;
-        if (lt < 17) return lerp(3.2, 6.4, E.inOut(clamp01((lt - 12) / 5)));
-        if (lt < 26) return 6.4;
-        if (lt < 31) return lerp(6.4, 12.0, E.inOut(clamp01((lt - 26) / 5)));
-        return 12.0;
+        var base;
+        if (lt < 12) base = 3.2;
+        else if (lt < 17) base = lerp(3.2, 6.4, E.inOut(clamp01((lt - 12) / 5)));
+        else if (lt < 26) base = 6.4;
+        else if (lt < 31) base = lerp(6.4, 12.0, E.inOut(clamp01((lt - 26) / 5)));
+        else base = 12.0;
+        var churn = 0.055 * base * (Math.sin(lt * 1.31) + 0.6 * Math.sin(lt * 2.17 + 1.1));
+        return Math.max(MK.xLo + 0.2, Math.min(MK.xHi - 0.2, base + churn));
       }
 
       var eq = s.tex2("x \\cdot y = k", { px: 352, py: 126, size: "1.6rem", color: CY });
@@ -385,11 +397,16 @@
         if (lt < 17) return 0;
         return clamp01((lt - 17) / (TESTS * 1.9));
       }
+      // Same book as the previous scene, so it churns the same way. The trend is
+      // the work; the wobble is everyone else still trading around it.
       function poolX(lt) {
-        if (lt < 6) return 12.0;                                   // ten cents, untouched
-        if (lt < 10) return lerp(12.0, 10.6, E.inOut(clamp01((lt - 6) / 4)));  // the buy
-        if (lt < 41) return lerp(10.6, 3.4, E.inOut(workFrac(lt)));  // the work re-prices it
-        return 3.4;
+        var base;
+        if (lt < 6) base = 12.0;                                    // ten cents, untouched
+        else if (lt < 10) base = lerp(12.0, 10.6, E.inOut(clamp01((lt - 6) / 4)));   // the buy
+        else if (lt < 41) base = lerp(10.6, 3.4, E.inOut(workFrac(lt)));  // the work re-prices it
+        else base = 3.4;
+        var churn = 0.04 * base * (Math.sin(lt * 1.31) + 0.6 * Math.sin(lt * 2.17 + 1.1));
+        return Math.max(MK.xLo + 0.2, Math.min(MK.xHi - 0.2, base + churn));
       }
       function settled(lt) { return lt > 41; }
       function probAt(lt) {
@@ -587,6 +604,23 @@
             }
           }
           ctx.globalAlpha = op;
+          // The loop is a loop, so something goes round it. The line under this
+          // says the loop closes with nobody in it; a ring of four chips sitting
+          // still says it is a diagram of one.
+          if (lt > 10) {
+            var lap = (lt - 10) / 4.2;
+            var la = -Math.PI / 2 + (lap % 1) * Math.PI * 2;
+            ctx.globalAlpha = op * clamp01((lt - 10) / 0.8);
+            ctx.shadowBlur = 12; ctx.shadowColor = AMB;
+            ctx.fillStyle = h.rgba(AMB, 0.95);
+            ctx.beginPath();
+            ctx.arc(CXR + Math.cos(la) * RR * 0.72, CYR + Math.sin(la) * RR * 0.62,
+                    5.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = op;
+          }
+
           if (lt > 13) {
             var tok = ((lt - 13) / 4) % 1;
             var ta = -Math.PI / 2 + tok * Math.PI * 2;
@@ -632,6 +666,38 @@
             ctx.font = "12px 'JetBrains Mono', monospace";
             ctx.fillText("payout", 852, y + 4);
             arrow(LX[3] + 54, y, 842, y, col, 0.55);
+
+            // A running tally, so the closing line has a picture. The real lane
+            // keeps paying and the gated one keeps refusing, which is the whole
+            // sentence the film ends on: price discovers what to do,
+            // verification decides what was done.
+            var tally = lt - (fabricated ? 31 : 23);
+            if (tally > 0) {
+              var done = Math.floor(tally / 6.5 * 3);
+              var stopped = fabricated && gates;
+              ctx.fillStyle = h.rgba(stopped ? RED : col, 0.9);
+              ctx.font = "bold 15px 'JetBrains Mono', monospace";
+              ctx.fillText(String(stopped ? Math.max(0, done - 3) : done), 930, y - 2);
+              ctx.fillStyle = h.rgba(PAL.muted, 0.75);
+              ctx.font = "9px 'JetBrains Mono', monospace";
+              ctx.fillText(stopped ? "refused" : "paid", 930, y + 12);
+            }
+
+            // Background traffic. The scene narrates two particular runs, and
+            // between them the lane was a still diagram; agents that never sleep
+            // are the film's own premise, so the lane keeps carrying work.
+            var since = lt - (fabricated ? 31 : 23);
+            if (since > 0) {
+              for (var b = 0; b < 3; b++) {
+                var ph = ((since / 6.5) + b / 3) % 1;
+                var cap = (fabricated && gates) ? 0.62 : 1;
+                if (ph > cap) continue;
+                ctx.fillStyle = h.rgba(col, 0.26);
+                ctx.beginPath();
+                ctx.arc(lerp(LX[0], 880, ph), y, 3.5, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
 
             // the travelling claim
             var prog = gates ? run2 : run;
