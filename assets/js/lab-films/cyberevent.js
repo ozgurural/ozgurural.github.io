@@ -379,7 +379,7 @@
   /* ============================================================ SCENE 3
      Turkish morphology: vocabulary explosion. */
   function sceneMorphology(film) {
-    film.scene("A Language Where One Stem Is a Hundred Words", 43, function (s) {
+    film.scene("A Language Where One Stem Is a Hundred Words", 40.1, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -481,7 +481,7 @@
   /* ============================================================ SCENE 4
      NER victim vector + anomaly on daily mention counts, scored honestly. */
   function sceneAnomaly(film) {
-    film.scene("Count the Victim, Not the Sentiment", 50, function (s) {
+    film.scene("Count the Victim, Not the Sentiment", 47.4, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;

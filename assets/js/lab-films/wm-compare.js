@@ -53,7 +53,7 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 58, function(s) {
+    film.scene("Sparse Parameter Perturbations", 55.9, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 72, size: "1.4rem", color: CY });
       s.fadeIn(eq, { at: 1, dur: 2 });
 
@@ -198,7 +198,7 @@
   }
 
   function sceneBlackbox(film) {
-    film.scene("Feature-Based Triggers", 47, function(s) {
+    film.scene("Feature-Based Triggers", 45.3, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -434,7 +434,7 @@
   }
 
   function sceneAuxiliary(film) {
-    film.scene("The mark you can't prune", 46, function(s) {
+    film.scene("The mark you can't prune", 44.3, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;

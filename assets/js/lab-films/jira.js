@@ -50,7 +50,7 @@
   }
 
   function sceneCoordination(film) {
-    film.scene("The Coordination Problem", 63, function(s) {
+    film.scene("The Coordination Problem", 60.5, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -270,7 +270,7 @@
   }
 
   function sceneAMM(film) {
-    film.scene("The AMM Geometry", 42, function (s) {
+    film.scene("The AMM Geometry", 38.3, function (s) {
       var co = mkCoords(film), k = MK.k;
 
       // Where the pool sits. Two trades, each one a cause the viewer can see.
@@ -507,7 +507,7 @@
 
 
   function sceneAgentLoop(film) {
-    film.scene("Who Verifies the Claim", 76, function(s) {
+    film.scene("Who Verifies the Claim", 73.9, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;

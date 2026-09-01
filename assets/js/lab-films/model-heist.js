@@ -168,7 +168,7 @@
 
   /* ================= 2 — FRAGILE MARK ================= */
   function fragile(film) {
-    film.scene("One big mark is fragile", 24, function (s) {
+    film.scene("One big mark is fragile", 17.1, function (s) {
       var idx = 15;
       var brushGrd = null;
       s.canvas(function (lt, ctx, h) {
@@ -241,7 +241,7 @@
 
   /* ================= 3 — SPREAD ================= */
   function spread(film) {
-    film.scene("Spread it thin across k weights", 24, function (s) {
+    film.scene("Spread it thin across k weights", 22.3, function (s) {
       var K = 24;
       var marked = []; for (var m = 0; m < HIST_N; m++) if (m % 5 !== 2 && marked.length < K) marked.push(m);
       s.canvas(function (lt, ctx, h) {
@@ -435,7 +435,7 @@
 
   /* ================= 5 — ROC ================= */
   function roc(film) {
-    film.scene("Robustness is bought with k", 22, function (s) {
+    film.scene("Robustness is bought with k", 19.7, function (s) {
       var co = film.coords({ xRange: [0, 1], yRange: [0, 1], pad: { left: 96, right: 420, top: 130, bottom: 145 } });
       var ax = s.axes(co, { grid: true, gridX: 5, gridY: 5 });
       s.stagger(ax, { at: 0.6, dur: 1.2 });

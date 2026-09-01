@@ -46,6 +46,8 @@
     "films": "node scripts/build-film-video.js --all",
     "diff:film": "node scripts/diff-film-frame.js",
     "audit:films": "node scripts/audit-films.js",
-    "sheet": "node scripts/contact-sheet.js"
+    "sheet": "node scripts/contact-sheet.js",
+    "audit:stills": "node scripts/audit-films.js --stills",
+    "apply:trims": "node scripts/apply-trims.js"
   }
 }

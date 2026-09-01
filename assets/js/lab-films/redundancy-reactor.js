@@ -306,7 +306,7 @@
 
   /* ============== 5 — ARIANE 5 ============== */
   function ariane(film) {
-    film.scene("Ariane 5, 4 June 1996", 24, function (s) {
+    film.scene("Ariane 5, 4 June 1996", 22, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.strokeStyle = h.rgba(BG_GRID, 0.3); ctx.lineWidth = 1;
         for (var gx = 60; gx < 920; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, 430); ctx.stroke(); }

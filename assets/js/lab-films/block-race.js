@@ -282,7 +282,7 @@
      Everything is drawn on canvas; the only overlay text is the narration
      panel and a single closing formula. */
   function ruin(film) {
-    film.scene("The gambler's ruin", 33, function (s) {
+    film.scene("The gambler's ruin", 28.6, function (s) {
       var q = 0.3, p = 0.7, Z0 = 3, GMAX = 8;
       function gx(g) { return 130 + g * 88; }      // gap 0..8 → x 130..834
       var LY = 262;
@@ -507,7 +507,7 @@
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
   function poisson(film) {
-    film.scene("Satoshi's refinement: the head start", 30, function (s) {
+    film.scene("Satoshi's refinement: the head start", 23.5, function (s) {
       var q = 0.3, p = 0.7, z = 6, lambda = z * q / p;
       // LEFT: honest stacks z blocks under a sweeping dial
       s.canvas(function (lt, ctx, h) {

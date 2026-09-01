@@ -83,7 +83,7 @@
 
   /* ============== 1 — HOOK : a stolen snapshot ============== */
   function hook(film) {
-    film.scene("A stolen snapshot", 21, function (s) {
+    film.scene("A stolen snapshot", 18.9, function (s) {
       s.canvas(function (lt, ctx, h) {
         grid(ctx, h, 250, 220, 14, TEAL, clamp01(lt / 1.2), false);
         ctx.font = "italic 18px var(--ds-font-serif, Georgia, serif)"; ctx.fillStyle = h.rgba(TEAL, 0.95); ctx.fillText("your trained model", 225, 350);
@@ -147,7 +147,7 @@
 
   /* ============== 2 — PATH, NOT POINT ============== */
   function pathPoint(film) {
-    film.scene("The path, not the point", 18, function (s) {
+    film.scene("The path, not the point", 14.7, function (s) {
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-2.2, 2.2], pad: { left: 70, right: 360, top: 120, bottom: 70 } });
       var a = 0.8, b = 0.5;
       // descent path with noise (precomputed)
@@ -227,7 +227,7 @@
 
   /* ============== 3 — THE PROOF OBJECT ============== */
   function proofObj(film) {
-    film.scene("What a proof actually is", 21, function (s) {
+    film.scene("What a proof actually is", 17.7, function (s) {
       var cards = [
         { k: "1", t: "the checkpoints", c: TEAL }, { k: "2", t: "which data, each step", c: "#58C4DD" },
         { k: "3", t: "a fingerprint per step", c: INDIGO }, { k: "4", t: "the settings & recipe", c: GREY }
@@ -505,7 +505,7 @@
 
   /* ============== 7 — SIGNATURE ============== */
   function signature(film) {
-    film.scene("The fingerprint, and why it matters", 26, function (s) {
+    film.scene("The fingerprint, and why it matters", 23.8, function (s) {
       var co = film.coords({ xRange: [0, 40], yRange: [0, 1], pad: { left: 80, right: 360, top: 140, bottom: 120 } });
       var ax = s.axes(co, { grid: false });
       s.stagger(ax, { at: 0.6, dur: 1.05 });

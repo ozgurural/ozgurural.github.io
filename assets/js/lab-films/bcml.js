@@ -122,7 +122,7 @@
   /* ============================================================ SCENE 1
      Why a ledger under ML at all. */
   function sceneIntegrity(film) {
-    film.scene("The Training Process, Written Down", 39, function (s) {
+    film.scene("The Training Process, Written Down", 37.2, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -219,7 +219,7 @@
   /* ============================================================ SCENE 2
      Consensus that does useful work. */
   function sceneConsensus(film) {
-    film.scene("Consensus That Does Useful Work", 42, function (s) {
+    film.scene("Consensus That Does Useful Work", 40.3, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;

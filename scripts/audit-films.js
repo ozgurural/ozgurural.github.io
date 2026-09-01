@@ -35,12 +35,121 @@ const TEXTS = (() => {
   } catch (err) { return {}; }
 })();
 const ROOT = path.resolve(__dirname, '..');
-const FILMS = process.argv.slice(2).length
-  ? process.argv.slice(2)
+const STILLS = process.argv.includes('--stills');
+const STEP = 0.4;
+const ARGS = process.argv.slice(2).filter(a => !a.startsWith('--'));
+const FILMS = ARGS.length
+  ? ARGS
   : fs.readdirSync(path.join(ROOT, '_pages', 'embed'))
       .filter(f => f.endsWith('-embed.md'))
       .map(f => f.slice(0, -'-embed.md'.length))
       .sort();
+
+// Is a scene animating, or is it a picture with a label changing on it?
+//
+// Sampled every STEP seconds: the canvas, downsampled, plus every attribute the
+// engine animates on the SVG layer (transform, opacity, stroke-dashoffset), so
+// a scene drawn entirely out of nodes is measured as fairly as one drawn in
+// canvas. A sample that differs from its predecessor by almost nothing is a
+// still frame; a run of them is a slide. Caption changes are deliberately not
+// counted as motion, because a frozen picture with new words under it is
+// exactly the thing being looked for.
+const STILL_PROBE = async (step, moved) => {
+  const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
+  const cv = document.querySelector('.labf__stage canvas');
+  const small = document.createElement('canvas');
+  small.width = 120; small.height = 68;
+  const sg = small.getContext('2d', { willReadFrequently: true });
+  const svg = document.querySelector('.labf__stage svg');
+  const sig = () => {
+    sg.clearRect(0, 0, 120, 68);
+    if (cv) sg.drawImage(cv, 0, 0, 120, 68);
+    const px = sg.getImageData(0, 0, 120, 68).data;
+    let svgSig = '';
+    if (svg) {
+      const nodes = svg.querySelectorAll('*');
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        svgSig += (n.getAttribute('transform') || '') + '|' +
+                  (n.getAttribute('opacity') || n.style.opacity || '') + '|' +
+                  (n.getAttribute('stroke-dashoffset') || '') + ';';
+      }
+    }
+    return { px: px, svg: svgSig };
+  };
+  const out = [];
+  let prev = null;
+  for (let t = 0; t <= f.duration + 1e-6; t += step) {
+    f.seek(t);
+    const cur = sig();
+    if (prev) {
+      let changed = 0;
+      for (let i = 0; i < cur.px.length; i += 4) {
+        const d = Math.max(Math.abs(cur.px[i] - prev.px[i]),
+                           Math.abs(cur.px[i + 1] - prev.px[i + 1]),
+                           Math.abs(cur.px[i + 2] - prev.px[i + 2]),
+                           Math.abs(cur.px[i + 3] - prev.px[i + 3]));
+        if (d > 8) changed++;
+      }
+      const frac = changed / (120 * 68);
+      out.push({ t: +t.toFixed(2), still: frac < moved && cur.svg === prev.svg });
+    }
+    prev = cur;
+  }
+  return { duration: f.duration, samples: out,
+           scenes: (f.scenes || []).map(s => ({ name: s.name, start: s.start, end: s.end })) };
+};
+
+async function auditStills(browser, slug, step) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 960, height: 540, deviceScaleFactor: 1 });
+  await page.goto(`${BASE}/lab/${slug}/embed/`, { waitUntil: 'networkidle0', timeout: 90000 });
+  await page.waitForFunction(
+    () => window.LabAnim && Object.keys(window.LabAnim.films).length > 0, { timeout: 60000 });
+  await page.evaluate(() => document.fonts && document.fonts.ready);
+  const r = await page.evaluate(STILL_PROBE, step, 0.0025);
+  // When does the last line in each scene stop speaking? A tail that looks
+  // still can still have narration running over it, and cutting there would
+  // truncate the sentence rather than the dead air.
+  const voice = await page.evaluate(async () => {
+    const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
+    const cues = (f._audioCues || []).map(c => ({ id: c.id, at: c.at }));
+    const d = {};
+    await Promise.all(cues.map(c => new Promise(res => {
+      const a = new Audio('/assets/audio/lab/' + c.id + '.mp3');
+      a.addEventListener('loadedmetadata', () => { d[c.id] = a.duration; res(); });
+      a.addEventListener('error', () => { d[c.id] = 0; res(); });
+    })));
+    return cues.map(c => ({ at: c.at, ends: c.at + (d[c.id] || 0) }));
+  });
+  await page.close();
+
+  return r.scenes.map(sc => {
+    const inScene = r.samples.filter(s => s.t > sc.start && s.t <= sc.end);
+    let run = 0, best = 0, bestEnd = 0, total = 0;
+    for (const s of inScene) {
+      if (s.still) { run++; total++; if (run > best) { best = run; bestEnd = s.t; } }
+      else run = 0;
+    }
+    // Stillness at the end of a scene is the cheap kind to fix: the scene can
+    // simply be shorter, with nothing redrawn. Stillness in the middle needs
+    // something to happen. Report them apart, because they are different jobs.
+    let tail = 0;
+    for (let i = inScene.length - 1; i >= 0 && inScene[i].still; i--) tail++;
+    // The scene may not end before its last sentence does, plus a beat.
+    const lastVoice = voice.filter(v => v.at >= sc.start - 1e-6 && v.at < sc.end)
+                           .reduce((a, v) => Math.max(a, v.ends), sc.start);
+    const floor = Math.max(4, lastVoice - sc.start + 0.9);
+    const wanted = (sc.end - sc.start) - Math.max(0, tail * step - 1.5);
+    const newLen = Math.max(floor, wanted);
+    return { scene: sc.name, len: +(sc.end - sc.start).toFixed(1),
+             newLen: +newLen.toFixed(1), cut: +((sc.end - sc.start) - newLen).toFixed(1),
+             stillSec: +(total * step).toFixed(1),
+             longestSec: +(best * step).toFixed(1),
+             tailSec: +(tail * step).toFixed(1),
+             longestEndsAt: +bestEnd.toFixed(1) };
+  });
+}
 
 async function auditFilm(browser, slug) {
   const page = await browser.newPage();
@@ -98,6 +207,58 @@ async function auditFilm(browser, slug) {
     headless: 'new',
     args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars'],
   });
+  if (STILLS) {
+    // A scene that stops moving is not automatically wrong: a held beat can be
+    // deliberate. What is wrong is holding for tens of seconds, so the report
+    // is sorted by the longest single stretch and the reader decides.
+    const rows = [];
+    for (const slug of FILMS) {
+      try {
+        const scenes = await auditStills(browser, slug, STEP);
+        scenes.forEach(sc => rows.push(Object.assign({ slug }, sc)));
+      } catch (e) { console.log(`${slug}: FAILED ${e.message}`); }
+    }
+    await browser.close();
+    // The signature is an end card. It is supposed to hold, so counting it as a
+    // slide would bury the real findings under eleven false ones.
+    const real = rows.filter(r => !/^signature$/i.test(r.scene));
+    real.sort((a, b) => (b.stillSec - b.tailSec) - (a.stillSec - a.tailSec) || b.tailSec - a.tailSec);
+    console.log('slug'.padEnd(23) + 'scene'.padEnd(33) + ' len  still  tail  mid  longest');
+    for (const r of real) {
+      const mid = +(r.stillSec - r.tailSec).toFixed(1);
+      const flag = mid >= 8 ? '  <-- needs motion' : (r.tailSec >= 5 ? '  <-- trim' : '');
+      console.log(r.slug.padEnd(23) + r.scene.slice(0, 31).padEnd(33) +
+                  String(r.len).padStart(4) + String(r.stillSec).padStart(7) +
+                  String(r.tailSec).padStart(6) + String(mid).padStart(5) +
+                  String(r.longestSec).padStart(9) + flag);
+    }
+    const cuts = real.filter(r => r.cut >= 1.5);
+    if (cuts.length) {
+      console.log('');
+      console.log('safe trims (tail stillness, minus whatever the voice still needs):');
+      for (const r of cuts) {
+        console.log('  ' + r.slug.padEnd(23) + r.scene.slice(0, 31).padEnd(33) +
+                    String(r.len).padStart(5) + ' -> ' + String(r.newLen).padStart(5) +
+                    '   (-' + r.cut + 's)');
+      }
+      console.log('  total ' + cuts.reduce((a, r) => a + r.cut, 0).toFixed(1) + 's');
+      // Written out in full, because the table truncates names and several
+      // scenes carry apostrophes and maths symbols that make hand-matching them
+      // a way to edit the wrong scene.
+      const out = path.join(ROOT, 'dist', 'trims.json');
+      fs.mkdirSync(path.dirname(out), { recursive: true });
+      fs.writeFileSync(out, JSON.stringify(cuts.map(c => ({
+        slug: c.slug, scene: c.scene, len: c.len, newLen: c.newLen, cut: c.cut })), null, 1));
+      console.log('  written to ' + path.relative(ROOT, out));
+    }
+    const trim = real.reduce((a, r) => a + (r.tailSec >= 5 ? r.tailSec : 0), 0);
+    const mid = real.reduce((a, r) => a + Math.max(0, r.stillSec - r.tailSec), 0);
+    console.log(`
+${real.length} scenes (signatures excluded). ` +
+                `${trim.toFixed(0)}s of trimmable tail, ${mid.toFixed(0)}s of stillness mid-scene.`);
+    return;
+  }
+
   const all = [];
   for (const slug of FILMS) {
     try { all.push(await auditFilm(browser, slug)); }
