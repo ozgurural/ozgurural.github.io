@@ -1,0 +1,90 @@
+{
+  "blockchain-ml": {
+    "title": "Blockchain-Enhanced Machine Learning",
+    "eyebrow": "MEASURED TRADE-OFF",
+    "hook": "A blockchain can make ML auditable. It cannot make it scale.",
+    "from": 120,
+    "to": 166,
+    "post": "Blockchains do not make machine learning automatically better.\n\nIn the prototypes I reviewed, accuracy improved as more parties joined, while throughput fell. Privacy noise bought privacy at an accuracy cost.\n\nThe useful question is not whether blockchain and ML can be combined. It is which trade-off the ledger actually buys."
+  },
+  "cyber-events": {
+    "title": "Detecting Cyber Events in Turkish Streams",
+    "eyebrow": "437 DOCUMENTS · 29 ALERTS · 22 REAL",
+    "hook": "The seven false positives matter as much as the 22 detections.",
+    "from": 123,
+    "to": 173,
+    "post": "29 alerts. 22 real events. Seven false positives.\n\nThat is the result I trust more than a rounded accuracy claim. The detector had to find rare cyber events in Turkish text, where preprocessing and entity history mattered more than model size.\n\nA useful detector publishes what it gets wrong."
+  },
+  "determinism": {
+    "title": "Why the Mean Is the Wrong Real-Time Metric",
+    "eyebrow": "LEVEL D · 864,000 FRAMES PER SESSION",
+    "hook": "99.9% reliable still means 864 bad frames in four hours.",
+    "from": 44,
+    "to": 92,
+    "post": "99.9% sounds reliable. Over a four-hour, 60 Hz simulator session, it still permits 864 bad frames.\n\nThat is why a Level D system is not certified by its mean frame time. Deadlines are pass or fail, frame by frame.\n\nReliability percentages become meaningful only after you translate them into the failures a user will actually experience."
+  },
+  "gradient-pinball": {
+    "title": "Gradient Descent, Momentum, and Failure",
+    "eyebrow": "OPTIMIZATION IN MOTION",
+    "hook": "A larger step can move faster and still take you nowhere.",
+    "from": 50,
+    "to": 93,
+    "post": "A larger gradient step can move faster and still take you nowhere.\n\nToo much step size overshoots the valley. Momentum changes the geometry: sideways oscillations cancel while progress along the ravine accumulates.\n\nThe animation makes the stability problem visible before writing down the equation."
+  },
+  "universal-jira": {
+    "title": "Can a Price Coordinate Software Agents?",
+    "eyebrow": "OPEN RESEARCH DIRECTION",
+    "hook": "What if nobody assigned the work, and a price did?",
+    "from": 63,
+    "to": 121,
+    "post": "What if nobody assigned software work, and a price did?\n\nAn automated market maker can continuously price the probability that a task will be completed. That lets people or agents act on one public signal without waiting for a central coordinator.\n\nThis is an open research direction, not a published mechanism. Pricing discovers what to do; verification still has to decide what was done."
+  },
+  "oracles": {
+    "title": "How Can a Contract Verify an AI Verdict?",
+    "eyebrow": "VERIFIABLE ML INFERENCE",
+    "hook": "The contract cannot run the model. Should it trust the answer?",
+    "from": 45,
+    "to": 105,
+    "post": "An AI returns a verdict. A smart contract cannot run the model or inspect its weights. Should it act?\n\nA zero-knowledge proof can bind a committed model and input to an output without repeating the full inference on-chain. It proves the encoded computation, not that the model or input reflects reality.\n\nThat distinction is the trust boundary."
+  },
+  "training-fingerprint": {
+    "title": "Proof-of-Learning and SecurePoL",
+    "eyebrow": "MODEL PROVENANCE · IEEE ACCESS 2025",
+    "hook": "A model can be copied in seconds. Can it show how it learned?",
+    "from": 103,
+    "to": 147,
+    "post": "A trained model can be copied in seconds. The final weights contain no receipt for the compute that produced them.\n\nPlain Proof-of-Learning aimed to make forgery cost at least as much as honest training, but later attacks found cheaper routes. SecurePoL adds a second constraint: the trajectory and a watermark-consistent ownership signal must agree.\n\nSecurity here is a measured cost asymmetry, not an impossibility claim."
+  },
+  "block-race": {
+    "title": "What Six Bitcoin Confirmations Really Buy",
+    "eyebrow": "10% VS 30% ATTACKER HASHRATE",
+    "hook": "Tripling the attacker raises risk about 544 times.",
+    "from": 121,
+    "to": 149,
+    "post": "Tripling an attacker's hashrate from 10% to 30% raises the six-confirmation catch-up risk from about 0.024% to 13.2%. That is roughly 544 times, not three.\n\nConfirmations do not create certainty. They price the cost of rewriting history in energy and time."
+  },
+  "redundancy-reactor": {
+    "title": "Why Identical Backups Fail Together",
+    "eyebrow": "ARIANE 5 · 72 MILLISECONDS APART",
+    "hook": "Two computers agreed. The shared bug made both wrong.",
+    "from": 82,
+    "to": 117,
+    "post": "Ariane 5 had redundant inertial units. Identical software hit the same overflow, and the units failed 72 milliseconds apart.\n\nVoting protects against independent faults. It cannot vote out a shared mistake.\n\nThe engineering lever is not only the number of backups. It is their independence."
+  },
+  "watermarking-comparison": {
+    "title": "How Generative Text Watermarks Accumulate",
+    "eyebrow": "TOKEN-LEVEL STATISTICAL EVIDENCE",
+    "hook": "Can one paragraph reveal which model wrote it?",
+    "from": 105,
+    "to": 155,
+    "post": "Can one paragraph reveal which model wrote it?\n\nA generative watermark uses a secret hash to split the vocabulary, then slightly biases token choice toward a green list. No single word proves anything. The evidence accumulates across the passage as a measurable statistical deviation.\n\nThe result is evidence at a chosen false-positive rate, not absolute proof."
+  },
+  "model-heist": {
+    "title": "Detecting a Watermark Across Model Weights",
+    "eyebrow": "MODEL OWNERSHIP · IEEE ACCESS 2024",
+    "hook": "A mark too small to see can become detectable across thousands of weights.",
+    "from": 77,
+    "to": 113,
+    "post": "A watermark too small to see in any one weight can become detectable across thousands.\n\nA matched filter makes the marked signal add coherently while unrelated noise cancels. The result is a Z-test with an explicit threshold, false-positive rate, and detection power.\n\nAuthority comes from stating the test and its error rate, not from calling the mark undeniable."
+  }
+}

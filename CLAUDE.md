@@ -39,11 +39,16 @@ npm run build:narration # extracts lower() texts to scripts/narration.json (trac
 npm run build:film-video -- --film <slug>          # render a film to dist/video/*.mp4
 npm run build:film-video -- --film <slug> --scene 3   # one scene only
 npm run build:film-video -- --film <slug> --from 12 --to 75
+npm run build:linkedin-video -- --film <slug>       # configured 4:5 social cut + SRT + post copy
+npm run build:linkedin-videos                       # render the complete 11-film LinkedIn set
+npm run preview:linkedin-videos                     # start/middle/end JPGs for all social cuts
 ```
 
 **Sharing the films.** LinkedIn does not render players from third-party sites and X's player card needs a whitelisted domain, so a link never plays inline on either. A native mp4 upload does, which is what `build:film-video` is for. It needs the dev server running, renders picture and sound in two separate passes, and writes to `dist/` (gitignored). Picture is deterministic: `film.seek(t)` is a pure function of t, so frames are seeked and screenshotted rather than captured in real time, and piped straight into ffmpeg. Sound has to be real time, because the score is synthesised into an AudioContext as the film plays; the pass routes the narration (plain `Audio` elements, outside that graph) in through `createMediaElementSource`, taps everything reaching the destination, and records it, which also preserves the music's ducking under the voice. Output is 1920x1080 H.264 yuv420p with AAC, about 8 frames a second on this machine, so roughly a minute of render per 15 seconds of film. Note X caps most accounts at 2:20 and every film is longer, so `--scene` is usually what you want.
 
 For the web, each film also serves `/lab/<slug>/embed/` (chromeless, iframe-able) and `/lab/<slug>/oembed.json`, which makes a pasted link expand into the player on anything that speaks oEmbed.
+
+LinkedIn cuts are configured in `scripts/film-social-cuts.json`. They are not blind excerpts: each range starts just before the strongest measured result or mechanism, stays between 28 and 60 seconds, and is rendered as a 1080x1350 mobile-first frame. The original 16:9 film sits inside safe margins, while its active narration panel is repeated below it in large sound-off text. A render writes the native MP4, an uploadable SRT caption file, and a text file containing the post copy plus first-comment source link.
 
 Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a classic deferred script. Plotly ships separately via `assets/js/plotly-blocks.js` and is only included when a page contains a plotly fenced block.
 

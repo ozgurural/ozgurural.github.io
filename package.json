@@ -43,6 +43,9 @@
     "build:site-og": "node scripts/build-site-og.js",
     "build:narration": "node scripts/extract-narration.js && python scripts/generate-narration.py",
     "build:film-video": "node scripts/build-film-video.js",
+    "build:linkedin-video": "node scripts/build-film-video.js --linkedin",
+    "build:linkedin-videos": "node scripts/build-film-video.js --all --linkedin",
+    "preview:linkedin-videos": "node scripts/build-film-video.js --all --linkedin --preview",
     "audit:films": "node scripts/audit-lab-films.js"
   }
 }

@@ -1156,7 +1156,7 @@
 
     // Global Signature Outro Scene (positions in fractions of the logical
     // stage, so non-960x540 films keep it centered)
-    this.scene("Signature", 15, function(s) {
+    this.scene("Signature", 8, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: FW / 2, py: FH * 0.5, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.9rem, 5.2vw, 3.4rem); font-weight:500; line-height:1.08; letter-spacing:0.012em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
@@ -1174,6 +1174,9 @@
         creditObj = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.62rem, 1.7vw, 0.85rem); color:#9fb2d4; line-height:1.45;'>" + FILM_CREDITS[filmKey] + "</span>",
                                { px: FW / 2, py: FH * 0.685, anchor: "center", align: "center", panel: false, maxWidth: "84%" });
       }
+
+      var next = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.55rem, 1.45vw, 0.75rem); color:#58c4dd; letter-spacing:0.12em; text-transform:uppercase;'>More cited explainers in the Research Lab</span>",
+                           { px: FW / 2, py: FH * 0.795, anchor: "center", align: "center", panel: false, maxWidth: "84%" });
 
       /* The card arrives, then rests. Before, all five elements shared one
          animation: the same 0.65 to 1.05 zoom running the whole scene and the
@@ -1198,17 +1201,17 @@
       s.fadeIn(name, { at: 0.1, dur: 1.6 });
       // once landed it keeps the faintest drift, so the frame is alive without
       // being a zoom
-      s.scaleTo(name, { at: LAND, dur: 10.3, to: 1.012, ease: Ease.linear });
+      s.scaleTo(name, { at: LAND, dur: 3.7, to: 1.01, ease: Ease.linear });
 
-      var followers = [[role, 2.5], [url, 3.3]];
-      if (creditObj) followers.push([creditObj, 4.3]);
+      var followers = [[role, 2.35], [url, 2.9], [next, 4.15]];
+      if (creditObj) followers.push([creditObj, 3.45]);
       followers.forEach(function (f) {
         f[0].cur.op = 0;
         s.fadeIn(f[0], { at: f[1], dur: 1.15 });
       });
 
-      [bgLight, name, role, url].concat(creditObj ? [creditObj] : []).forEach(function (obj) {
-        s.fadeOut(obj, { at: 12.6, dur: 2.4 });
+      [bgLight, name, role, url, next].concat(creditObj ? [creditObj] : []).forEach(function (obj) {
+        s.fadeOut(obj, { at: 6.15, dur: 1.85 });
       });
 
       // Signature stinger through the shared music context, voiced from the
