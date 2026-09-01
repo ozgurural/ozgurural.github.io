@@ -7,7 +7,9 @@ tags:
   - drones
   - autonomy
   - defense
-description: "Consider this your two-minute hangar brief. Between February 2019 and November 2020, I served as an Expert Software Engineer at STM Defence Technologies in A..."
+  - ai
+  - edge-ai
+description: "What mission-control engineering for Kargu and Togan taught me about the safety boundary around edge AI, autonomous flight, and multi-UAV coordination."
 
 ---
 

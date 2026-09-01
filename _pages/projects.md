@@ -1,11 +1,11 @@
 ---
 permalink: /projects/
 title: "Projects"
-description: "Research code, interactive demos, and production systems by Dr. Ozgur Ural: SecurePoL proof-of-learning security, model watermarking, UAV ground control, Level D flight-simulation platforms, and clinical tooling."
+description: "AI- and ML-focused research code, interactive demos, agent architectures, and production foundations by Dr. Ozgur Ural: model provenance, verifiable inference, autonomous systems, and simulation-based AI validation."
 
 ---
 
-<p class="ep-lead">Selected work spanning research and production: the proof-of-learning and watermarking code behind my papers, real-time systems primitives, interactive explainers, and clinical tooling. One through-line runs through all of it: ML and systems you can <strong>verify</strong>, not just run. Each project links to its repository and writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eight playable demos of the ideas.</p>
+<p class="ep-lead">Every project selected here has a concrete AI or ML role: securing model provenance, verifying inference, coordinating agents, training autonomous systems, or measuring whether an AI-enabled system remains safe in production. Historical platforms appear only when they provide the data, control, validation, or human-oversight boundary that the AI depends on. Each project links to its repository or writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eleven playable explanations of the underlying mechanisms.</p>
 
 <ul class="ep-cards ep-cards--two">
   <li>
@@ -14,9 +14,9 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
     <p class="desc">Authored Avion's enterprise AI strategy and built the platform that presents it. A three-tier architecture (air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge) plus a suite of retrieval-augmented and autonomous agents: an engineering-knowledge copilot with grounded citations and change-impact analysis, an autonomous repository agent, an RFP accelerator, and a training-debrief writer. Built end to end with Flask, SQLite, Docker, and GitLab CI/CD. <a href="/enterprise-ai-architecture.html"><strong>Explore the interactive reference architecture &rarr;</strong></a></p>
   </li>
   <li>
-    <div class="meta">Interactive · 8 experiments</div>
+    <div class="meta">Interactive · 11 experiments</div>
     <h3 class="title"><a href="/lab/">Research Lab: interactive experiments</a></h3>
-    <p class="desc">Eight interactive experiments covering distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each presents a real scenario with measurable outcomes. Built to make the core concepts of my research accessible in three minutes.</p>
+    <p class="desc">Eleven animated experiments connect AI and ML to model provenance, optimization, verifiable inference, autonomous-agent coordination, and safety infrastructure. Consensus and fault tolerance appear where they govern what an AI system may trust or do. Each experiment ties its mechanism to a cited source, a measured result, or a clearly labelled open research direction.</p>
   </li>
 </ul>
 
@@ -120,7 +120,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   <li>
     <details class="ep-concept">
       <summary>
-        <div class="meta">Analytics · Strategy</div>
+        <div class="meta">AI Agent · Leadership</div>
         <h3 class="title">Leadership Briefing Generator</h3>
       </summary>
       <p class="desc">Produces weekly leadership pulses and meeting agendas from a single source of truth by reading commits, pull requests, and support threads through a redaction gateway before summarization.</p>
@@ -129,7 +129,7 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   <li>
     <details class="ep-concept">
       <summary>
-        <div class="meta">Data Science · Operations</div>
+        <div class="meta">ML Forecasting · Operations</div>
         <h3 class="title">Predictive Maintenance Forecaster</h3>
       </summary>
       <p class="desc">Uses fleet-wide operational telemetry to predict component wear and schedule maintenance proactively before a system goes unplanned-offline. Built on Scikit-learn and Prophet time-series models.</p>
@@ -137,42 +137,24 @@ description: "Research code, interactive demos, and production systems by Dr. Oz
   </li>
 </ul>
 
-## Production Systems (Industry)
+## AI Systems Foundations (Industry)
+
+<p class="ep-lead">These systems are not relabelled as AI deliveries after the fact. They are included because they define the operating boundary an AI component needs: deterministic simulation, synchronized telemetry, human authority, fault containment, and evidence for validation. No employer design or customer detail is disclosed.</p>
 
 <ul class="ep-cards ep-cards--two">
   <li>
-    <div class="meta">2023– · Avion Full Flight Simulators</div>
-    <h3 class="title"><a href="https://www.aviongroup.aero/">Real-time platforms for Level D flight simulators</a></h3>
-    <p class="desc">Architecting real-time simulation platforms and cloud-native infrastructure for Level D full-flight simulators: the highest certification level, where simulator time counts as flight time.</p>
+    <div class="meta">AI Training &amp; Validation · 2023– · Avion</div>
+    <h3 class="title"><a href="/posts/2026/05/avion-level-d-ffs/">Level D simulators as AI proving grounds</a></h3>
+    <p class="desc">I architect real-time platforms and cloud infrastructure for certified full-flight simulators. Their AI role is concrete: a deterministic digital twin can generate controlled failure data, train reinforcement-learning policies, and test autonomous behaviour against repeatable scenarios before any model reaches an aircraft. This is the AI direction described in the linked field note, not a claim that Avion's certified product is an autonomous aircraft.</p>
   </li>
   <li>
-    <div class="meta">2024 · Avion Full Flight Simulators</div>
-    <h3 class="title"><a href="/files/ace-architecture-report.pdf">Avion Control Engine (ACE) Architecture Report</a></h3>
-    <p class="desc">A massive production-grade Instructor Operating Station (IOS) and Telemetry Dashboard built to command A320 flight simulators. Powered by a SvelteKit frontend and Python/gRPC backend. <a href="/files/ace-architecture-report.pdf">Read the architectural deep-dive (PDF).</a></p>
+    <div class="meta">AI Observability · 2024 · Avion</div>
+    <h3 class="title"><a href="/files/ace-architecture-report.pdf">ACE telemetry as an AI validation substrate</a></h3>
+    <p class="desc">The Avion Control Engine combines an Instructor Operating Station with synchronized simulator telemetry through a SvelteKit frontend and Python/gRPC backend. Its AI value is the observability layer: time-aligned state, interventions, and outcomes are the evidence needed to evaluate learned policies, detect anomalous behaviour, and support predictive-maintenance models. <a href="/files/ace-architecture-report.pdf">Read the architecture report (PDF).</a></p>
   </li>
   <li>
-    <div class="meta">2020–2021 · Havelsan · Team Lead</div>
-    <h3 class="title">Havelsan DLP: data-leakage prevention at national scale</h3>
-    <p class="desc">Led the 14-engineer team that delivered a data-leakage-prevention product for defence and government clients.</p>
-  </li>
-  <li>
-    <div class="meta">2019–2020 · STM Defence Technologies</div>
-    <h3 class="title">Mission &amp; ground control for Kargu &amp; Togan UAVs</h3>
-    <p class="desc">Developed critical mission-control and ground-control systems for Kargu, Turkey's first indigenous loitering-munition (kamikaze) UAV and an internationally recognized autonomous system, and the Togan reconnaissance UAV. Hard-real-time, safety-critical C++.</p>
-  </li>
-  <li>
-    <div class="meta">2014–2019 · Comodo Cybersecurity</div>
-    <h3 class="title">Secure Web Gateway · Patch Manager · Dragon browser</h3>
-    <p class="desc">Led design and architecture of Comodo's Secure Web Gateway, enterprise Patch Manager, and the Chromium-based Dragon browser.</p>
-  </li>
-</ul>
-
-## Applied Tooling
-
-<ul class="ep-cards ep-cards--two">
-  <li>
-    <div class="meta">Python · PyQt5 · Clinical Tooling</div>
-    <h3 class="title"><a href="/blog/pyqt5_image_measurer">EKG Image Measurement Tool</a></h3>
-    <p class="desc">Specialized desktop utility for cardiology professionals. Built and field-tested with clinicians to provide reliable, real-world scale calibration for EKG diagnostics.</p>
+    <div class="meta">Autonomous Systems · 2019–2020 · STM</div>
+    <h3 class="title"><a href="/posts/2025/09/autonomous-drones-future/">Mission control for autonomous UAVs</a></h3>
+    <p class="desc">I developed hard-real-time mission-control and ground-control software for Kargu and Togan UAVs. The AI focus is the safety boundary around onboard autonomy: reliable telemetry, operator authority, mission constraints, and deterministic fallback when perception or planning is uncertain. The linked field note separates the systems I built from later directions such as edge inference, collaborative SLAM, and multi-aircraft autonomy.</p>
   </li>
 </ul>
