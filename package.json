@@ -43,6 +43,7 @@
     "build:site-og": "node scripts/build-site-og.js",
     "build:narration": "node scripts/extract-narration.js && python scripts/generate-narration.py",
     "build:film-video": "node scripts/build-film-video.js",
+    "films": "node scripts/build-film-video.js --all",
     "diff:film": "node scripts/diff-film-frame.js"
   }
 }

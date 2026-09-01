@@ -26,6 +26,7 @@
 const puppeteer = require('puppeteer');
 const { spawn, spawnSync } = require('child_process');
 const ffmpeg = require('ffmpeg-static');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -55,6 +56,7 @@ function parseArgs(argv) {
     else if (k === '--width') { a.width = Number(v); i++; }
     else if (k === '--scale') { a.scale = Number(v); i++; }
     else if (k === '--crf') { a.crf = Number(v); i++; }
+    else if (k === '--force') a.force = true;
   }
   return a;
 }
@@ -131,9 +133,48 @@ async function openFilm(browser, slug, { width, scale }) {
 async function filmInfo(page) {
   return page.evaluate(() => {
     const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
+    // What this render is made of, asked of the page rather than guessed at: a
+    // slug does not name its film file (universal-jira is jira.js), and the
+    // stylesheet is compiled, so the honest input list is whatever the embed
+    // actually fetched, plus the narration this film cues.
+    const origin = location.origin;
+    const fetched = performance.getEntriesByType('resource')
+      .map(e => e.name).filter(u => u.indexOf(origin) === 0);
+    const narration = (f._audioCues || [])
+      .map(c => origin + '/assets/audio/lab/' + c.id + '.mp3');
     return { duration: f.duration,
+             inputs: Array.from(new Set([location.href].concat(fetched, narration))).sort(),
              scenes: (f.scenes || []).map(s => ({ name: s.name, start: s.start, dur: s.dur })) };
   });
+}
+
+// A short digest of the bytes the render is built from. Hashing what the
+// server actually served, not the sources, means an SCSS change or a rebuilt
+// narration mp3 counts, and nothing has to know which file belongs to which
+// film.
+async function hashInputs(urls) {
+  // Every asset is served with ?v=<site.time>, and the embed's own HTML carries
+  // those query strings in its script tags, so both the URLs and that one page's
+  // bytes change on every Jekyll rebuild even when nothing about the film did.
+  // Left in, the digest would differ every run and --all would re-render all
+  // eleven films forever, which is the exact thing it exists to avoid. Strip the
+  // stamp from the URL and from any text body; the rest of the bytes still
+  // catch a real edit.
+  const stamp = new RegExp('[?]v=[0-9]+', 'g');
+  const h = crypto.createHash('sha256');
+  for (const u of urls) {
+    let res;
+    try { res = await fetch(u); } catch (err) { continue; }
+    if (!res.ok) continue;
+    h.update(u.slice(BASE.length).replace(stamp, ''));
+    const type = res.headers.get('content-type') || '';
+    if (/text|javascript|json|xml|svg/.test(type)) {
+      h.update((await res.text()).replace(stamp, ''));
+    } else {
+      h.update(Buffer.from(await res.arrayBuffer()));
+    }
+  }
+  return h.digest('hex').slice(0, 16);
 }
 
 function resolveRange(info, args) {
@@ -216,7 +257,7 @@ async function recordAudio(browser, slug, range, opts) {
            timeline: out.timeline };
 }
 
-async function renderVideo(browser, slug, range, audio, args) {
+async function renderVideo(browser, slug, range, audio, args, inputsHash) {
   const page = await openFilm(browser, slug, args);
   await page.addStyleTag({ content: CAPTURE_CSS });
   await page.evaluate(() => {
@@ -303,7 +344,7 @@ async function renderVideo(browser, slug, range, audio, args) {
     for (const [w, t] of tl) { if (w - lastW >= 0.1) { thin.push([+w.toFixed(3), +t.toFixed(3)]); lastW = w; } }
     if (tl.length) thin.push([+tl[tl.length - 1][0].toFixed(3), +tl[tl.length - 1][1].toFixed(3)]);
     fs.writeFileSync(outFile.replace(/\.mp4$/, '.timeline.json'),
-      JSON.stringify({ slug, from: range.from, to: range.to, fps: args.fps,
+      JSON.stringify({ slug, inputsHash, from: range.from, to: range.to, fps: args.fps,
                        wallSpan: +audio.wallSpan.toFixed(3), filmSpan: +audio.filmSpan.toFixed(3),
                        samples: thin }));
   }
@@ -350,24 +391,60 @@ function verify(file, expectedSeconds) {
 }
 
 // Is there already a finished render of this film at these settings?
-function existingGood(slug, args) {
+// Is there already a render of this film that is still current? Current means
+// it decodes, has both tracks, and was built from the same bytes. Without the
+// last clause --all would keep a stale mp4 forever once a film was edited,
+// which is the whole reason the digest exists.
+function existingGood(slug, args, inputsHash) {
   const f = path.join(OUT_DIR, slug + '-' + Math.round(args.width * args.scale) + 'p.mp4');
+  const side = f.replace(/\.mp4$/, '.timeline.json');
   if (!fs.existsSync(f)) return null;
-  try {
-    const info = probe(f);
-    const m = /Duration: (\d\d):(\d\d):(\d\d\.\d\d)/.exec(info);
-    if (!m || !/Video: h264/.test(info) || !/Audio: aac/.test(info)) return null;
-    const secs = Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]);
-    return (fs.statSync(f).size / 1e6).toFixed(1) + ' MB, ' + secs.toFixed(1) + 's';
-  } catch (err) { return null; }
+  let info;
+  try { info = probe(f); } catch (err) { return null; }
+  // ffmpeg prints 'Duration: 00:02:33.45,' -- read it by position rather than
+  // by regex, so this line carries no escaping to get wrong.
+  const at = info.indexOf('Duration: ');
+  const hms = at < 0 ? '' : info.substr(at + 10, 11);
+  const parts = hms.split(':');
+  if (parts.length !== 3 || !/Video: h264/.test(info) || !/Audio: aac/.test(info)) return null;
+  const secs = Number(parts[0]) * 3600 + Number(parts[1]) * 60 + Number(parts[2]);
+  if (!isFinite(secs) || secs <= 0) return null;
+  const size = (fs.statSync(f).size / 1e6).toFixed(1);
+
+  let meta = null;
+  try { meta = JSON.parse(fs.readFileSync(side, 'utf8')); } catch (err) {}
+  if (!meta) return null;                       // no sidecar, no way to tell: redo it
+  if (!meta.inputsHash) {
+    // Rendered before the digest existed. Stamp it rather than throw away a
+    // good file; from here on it is checked like everything else.
+    meta.inputsHash = inputsHash;
+    fs.writeFileSync(side, JSON.stringify(meta));
+    return size + ' MB, ' + secs.toFixed(1) + 's, sealed';
+  }
+  if (meta.inputsHash !== inputsHash) return null;   // the film changed
+  return size + ' MB, ' + secs.toFixed(1) + 's';
 }
 
 (async () => {
   const args = parseArgs(process.argv);
   const targets = args.all ? FILMS : [args.film];
   if (!targets[0]) {
-    console.error('usage: --film <slug> [--scene N | --from S --to S] [--fps 30] [--all]');
+    console.error('usage: --film <slug> | --all  [--scene N | --from S --to S] [--fps 30] [--force]');
     console.error('films: ' + FILMS.join(', '));
+    process.exit(1);
+  }
+
+  // The render reads the film from the dev server, so say so plainly when it is
+  // not there. Without this the first navigation just times out ninety seconds
+  // later with a message about a URL, which reads like a broken script.
+  try {
+    const ping = await fetch(BASE + '/lab/' + targets[0] + '/embed/');
+    if (!ping.ok) throw new Error('HTTP ' + ping.status);
+  } catch (err) {
+    console.error('cannot reach ' + BASE + ' (' + err.message + ')');
+    console.error('start the dev server first:');
+    console.error('  bundle exec jekyll serve --port 4000 --force_polling ' +
+                  '--config _config.yml,_config.dev.yml');
     process.exit(1);
   }
 
@@ -387,17 +464,16 @@ function existingGood(slug, args) {
   const failed = [];
   try {
     for (const slug of targets) {
-      // Resume. A full run is hours long, so it will be interrupted, and the
-      // only sane thing on restart is to skip what is already on disk and
-      // sound. existingGood applies the same check the render itself has to
-      // pass, so a file that survives it is finished, not truncated.
-      if (args.all) {
-        const done = existingGood(slug, args);
-        if (done) { console.log('\n' + slug + '  already rendered, skipping (' + done + ')'); continue; }
-      }
+      // The page has to be opened before anything can be decided, because the
+      // digest is of what it loads.
       const page = await openFilm(browser, slug, args);
       const info = await filmInfo(page);
       await page.close();
+      const inputsHash = await hashInputs(info.inputs);
+      if (args.all && !args.force) {
+        const done = existingGood(slug, args, inputsHash);
+        if (done) { console.log('' + slug + '  up to date, skipping (' + done + ')'); continue; }
+      }
       const range = resolveRange(info, args);
 
       console.log(`\n${slug}  (${info.duration}s, ${info.scenes.length} scenes)  ->  ${range.label} ` +
@@ -416,7 +492,7 @@ function existingGood(slug, args) {
                      'overruns its scenes or something stalled; check this one before posting.');
       }
       console.log('  rendering frames...');
-      const mp4 = await renderVideo(browser, slug, range, audio, args);
+      const mp4 = await renderVideo(browser, slug, range, audio, args, inputsHash);
       fs.unlinkSync(audio.file);
       const size = (fs.statSync(mp4).size / 1e6).toFixed(1);
       const problems = verify(mp4, audio.wallSpan);
