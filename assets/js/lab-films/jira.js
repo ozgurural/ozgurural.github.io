@@ -210,325 +210,298 @@
     }, { subtitle: "The limits of centralized management" });
   }
 
+  /* The market is one picture, shared by this scene and the next, so the price
+     the crowd sets and the price the developer moves are visibly the same
+     object. Everything is drawn from poolX(lt): the dot, the rectangle, the
+     tangent and the readout cannot disagree, and seek(t) reproduces the frame.
+
+       price = |dy/dx| = k / x^2        the marginal rate of substitution
+       prob  = price / (1 + price)      odds read as a probability
+
+     k and the x range are chosen so the curve spans a real betting range: x=12
+     is a ten cent claim, x=4 is a coin flip, x=2.4 is near certain. */
+  var MK = { k: 16, xLo: 1.6, xHi: 12.6 };
+  function mkCoords(film) {
+    return film.coords({ xRange: [0, 13.4], yRange: [0, 11],
+                         pad: { left: 96, right: 486, top: 92, bottom: 190 } });
+  }
+  function mkPrice(x) { return MK.k / (x * x); }
+  function mkProb(x) { var p = mkPrice(x); return p / (1 + p); }
+
+  // The pool rectangle. Its two sides change and its area does not, which is
+  // what x*y = k means; asserting it in a caption is not the same as showing it.
+  function drawPool(ctx, h, co, x, alpha) {
+    var y = MK.k / x;
+    ctx.fillStyle = h.rgba(CY, 0.10 * alpha);
+    ctx.fillRect(co.x(0), co.y(y), co.x(x) - co.x(0), co.y(0) - co.y(y));
+    ctx.strokeStyle = h.rgba(CY, 0.35 * alpha);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath();
+    ctx.moveTo(co.x(x), co.y(0)); ctx.lineTo(co.x(x), co.y(y));
+    ctx.lineTo(co.x(0), co.y(y));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // The readout: a column that fills to the probability, with the number under
+  // it. The column is the same height as the claim is likely, so the viewer can
+  // read the price without reading the axis.
+  var GA = { x: 596, w: 46, top: 104, bot: 340, tx: 664 };
+  function drawGauge(ctx, h, p, alpha, label, warm) {
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = h.rgba(PAL.faint, 0.5);
+    ctx.lineWidth = 1;
+    ctx.strokeRect(GA.x, GA.top, GA.w, GA.bot - GA.top);
+    var fh = (GA.bot - GA.top) * p;
+    var g = ctx.createLinearGradient(0, GA.bot, 0, GA.top);
+    g.addColorStop(0, h.rgba(CY, 0.55));
+    g.addColorStop(1, h.rgba(warm || AMB, 0.9));
+    ctx.fillStyle = g;
+    ctx.fillRect(GA.x, GA.bot - fh, GA.w, fh);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = h.rgba(PAL.white, alpha);
+    ctx.font = "bold 34px 'JetBrains Mono', monospace";
+    ctx.fillText((p * 100).toFixed(0) + '%', GA.tx, 156);
+    ctx.fillStyle = h.rgba(PAL.muted, alpha * 0.9);
+    ctx.font = "12px 'JetBrains Mono', monospace";
+    ctx.fillText(label || 'chance it gets done', GA.tx, 178);
+    ctx.globalAlpha = 1;
+  }
+
   function sceneAMM(film) {
-    film.scene("The AMM Geometry", 58, function(s) {
-      // Slower equation typing
-      var eq = s.tex2("x \\cdot y = k", { px: 150, py: 80, size: "2.2rem", color: CY });
-      s.write(eq, { at: 3.5, dur: 1.5 });
+    film.scene("The AMM Geometry", 42, function (s) {
+      var co = mkCoords(film), k = MK.k;
 
-      // the price equation lands WITH the tangent sweep it explains (lt≈20)
-      var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 108, size: "2.2rem", color: AMB });
-      s.morph(eq, eq2, { at: 19, dur: 1.2 });
-
-      var co = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 400, right: 150, top: 150, bottom: 150 } });
-      var k = 20;
-
-      // Match cut from Scene 1
-      var cx = 480, cy = 250;
-      s.canvas(function(lt, ctx, h) {
-         if (lt < 2.0) {
-            var alpha = 1 - clamp01(lt / 2.0);
-            ctx.fillStyle = h.rgba(RED, alpha * 0.15);
-            ctx.fillRect(0,0,960,540);
-            
-            ctx.shadowBlur = 20; ctx.shadowColor = h.rgba(RED, alpha);
-            ctx.fillStyle = h.rgba(RED, alpha);
-            ctx.font = "bold 32px 'JetBrains Mono'";
-            ctx.fillText("SYSTEM BOTTLENECK", cx - 160, cy - 170);
-            
-            ctx.beginPath(); ctx.arc(cx, cy - 100, 16, 0, Math.PI*2); ctx.fill();
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = h.rgba(PAL.white, alpha); ctx.font = "bold 14px 'JetBrains Mono', monospace";
-            ctx.fillText("CENTRAL MANAGER", cx + 30, cy - 95);
-         }
-      });
-      
-      var tickets = 25;
-      for (var t = 0; t < tickets; t++) {
-         var jamRadius = 25 + (t * 2.5);
-         var angle = Math.sin(67.5 * 4 + t) * 0.2 + (t / tickets) * Math.PI * 2;
-         var startX = cx + Math.cos(angle) * jamRadius;
-         var startY = cy - 100 + Math.sin(angle) * jamRadius;
-         
-         var dot = s.dot({ px: startX, py: startY, r: 4, color: RED });
-         s.show(dot, 0); 
-         
-         var targetX = 2 + (8 * t / (tickets - 1));
-         var targetY = k / targetX;
-         
-         s.move(dot, { coords: co, toX: targetX, toY: targetY, at: 0.5 + t * 0.05, dur: 1.5, ease: E.out });
-         
-         (function(dNode, delay) {
-             // cue spans from t=0 so a backwards scrub restores the red state
-             // (a cue that starts later would leave the last color painted)
-             var total = delay + 1.5;
-             s._cue(dNode, 0, total, E.linear, function(st, _e, rawP) {
-                 var p = E.out(clamp01((rawP * total - delay) / 1.5));
-                 var r1 = 252, g1 = 98, b1 = 85;
-                 var r2 = 88, g2 = 196, b2 = 221;
-                 var r = Math.round(r1 + (r2 - r1) * p);
-                 var g = Math.round(g1 + (g2 - g1) * p);
-                 var b = Math.round(b1 + (b2 - b1) * p);
-                 dNode.el.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
-             });
-         })(dot, 0.5 + t * 0.05);
+      // Where the pool sits. Two trades, each one a cause the viewer can see.
+      function poolX(lt) {
+        if (lt < 12) return 3.2;
+        if (lt < 17) return lerp(3.2, 6.4, E.inOut(clamp01((lt - 12) / 5)));
+        if (lt < 26) return 6.4;
+        if (lt < 31) return lerp(6.4, 12.0, E.inOut(clamp01((lt - 26) / 5)));
+        return 12.0;
       }
 
-      // Rebuild on engine primitives
+      var eq = s.tex2("x \\cdot y = k", { px: 352, py: 126, size: "1.6rem", color: CY });
+      s.write(eq, { at: 6.0, dur: 1.2 });
+      var eq2 = s.tex2("P = \\frac{y}{x}", { px: 352, py: 126, size: "1.6rem", color: AMB });
+      s.morph(eq, eq2, { at: 19.5, dur: 1.0 });
+
       var ax = s.axes(co, { grid: true, gridX: 8, gridY: 5 });
-      s.stagger(ax, { at: 1.0, dur: 1.2 });
-      var xlab = s.caption("NO Shares (x)", { coords: co, x: 5, y: -1, anchor: "top", align: "center", size: "1rem", color: PAL.muted });
-      var ylab = s.caption("<div style='transform: rotate(-90deg)'>YES Shares (y)</div>", { coords: co, x: -1, y: 5, anchor: "center", align: "center", size: "1rem", color: PAL.muted });
-      s.fadeIn(xlab, { at: 1.5, dur: 0.8 });
-      s.fadeIn(ylab, { at: 1.68, dur: 0.8 });
+      s.stagger(ax, { at: 0.8, dur: 1.2 });
+      var xlab = s.caption("NO shares", { coords: co, x: 6.7, y: -1.1, anchor: "top", align: "center", size: "0.85rem", color: PAL.muted });
+      var ylab = s.caption("<div style='transform: rotate(-90deg)'>YES shares</div>", { coords: co, x: -1.0, y: 5.5, anchor: "center", align: "center", size: "0.85rem", color: PAL.muted });
+      s.fadeIn(xlab, { at: 1.4, dur: 0.7 });
+      s.fadeIn(ylab, { at: 1.6, dur: 0.7 });
 
-      // True draw-on of hyperbola
       var pts = [];
-      for (var xv = 2; xv <= 10; xv += 0.1) pts.push([xv, k / xv]);
-      var curve = s.poly(pts, { coords: co, color: CY, width: 4 });
-      s.draw(curve, { at: 4.5, dur: 3.0 });
-      
-      var priceDot = s.dot({ coords: co, x: 2.5, y: k / 2.5, r: 8, color: PAL.white });
-      s.hide(priceDot, 0);
-      s.show(priceDot, 20);
-      var sweepFn = function(tau) {
-          var sweep = (Math.sin(tau * Math.PI * 2.5 - Math.PI/2) + 1) / 2; 
-          var currX = lerp(2.5, 8, E.inOut(sweep));
-          return { x: currX, y: k / currX };
-      };
-      s.moveAlong(priceDot, sweepFn, { coords: co, at: 20, dur: 35, ease: window.LabAnim.ease.linear });
+      for (var xv = MK.xLo; xv <= MK.xHi + 1e-9; xv += 0.08) pts.push([xv, k / xv]);
+      var curve = s.poly(pts, { coords: co, color: CY, width: 3 });
+      s.draw(curve, { at: 2.4, dur: 3.0 });
 
-      s.canvas(function(lt, ctx, h) {
-        // Gradient fill under curve
-        if (lt > 4.5) {
-           var drawP = clamp01((lt - 4.5) / 3.0);
-           var xEnd = 2 + (8 * drawP);
-
-           var polyGrad = ctx.createLinearGradient(0, co.y(10), 0, co.y(0));
-           polyGrad.addColorStop(0, h.rgba(CY, 0.2 * drawP));
-           polyGrad.addColorStop(1, h.rgba(CY, 0.0));
-           ctx.fillStyle = polyGrad;
-           ctx.beginPath();
-           var first = true;
-           for (var x = 2; x <= xEnd; x += 0.1) {
-              var px = co.x(x), py = co.y(k / x);
-              if (first) { ctx.moveTo(px, py); first = false; }
-              else ctx.lineTo(px, py);
-           }
-           ctx.lineTo(co.x(xEnd), co.y(0));
-           ctx.lineTo(co.x(2), co.y(0));
-           ctx.closePath();
-           ctx.fill();
+      s.canvas(function (lt, ctx, h) {
+        // The bottleneck from the previous scene, still red, dissolving. The
+        // cut only works if the thing being replaced is still on screen.
+        if (lt < 2.2) {
+          var a = 1 - clamp01(lt / 2.2);
+          ctx.fillStyle = h.rgba(RED, a * 0.13);
+          ctx.fillRect(0, 0, 960, 540);
+          ctx.textAlign = "center";
+          ctx.fillStyle = h.rgba(RED, a);
+          ctx.font = "bold 26px 'JetBrains Mono', monospace";
+          ctx.fillText("ONE MANAGER", 480, 210);
+          ctx.beginPath(); ctx.arc(480, 250, 14, 0, Math.PI * 2); ctx.fill();
+          ctx.textAlign = "left";
         }
 
-        // The sweeping tangent line (Price Discovery)
-        if (lt > 20) {
-           var fade20 = clamp01((lt - 20) / 0.5);
-           ctx.globalAlpha = fade20;
+        var x = poolX(lt), y = k / x;
 
-           var slideP = clamp01((lt - 20) / 35); 
-           var sweep = (Math.sin(slideP * Math.PI * 2.5 - Math.PI/2) + 1) / 2; 
-           var currX = lerp(2.5, 8, E.inOut(sweep));
-           var currY = k / currX;
+        // The pool, from the moment the curve finishes drawing.
+        if (lt > 5.0) {
+          var pa = clamp01((lt - 5.0) / 0.8);
+          drawPool(ctx, h, co, x, pa);
+          ctx.fillStyle = h.rgba(CY, pa * 0.85);
+          ctx.font = "13px 'JetBrains Mono', monospace";
+          ctx.textAlign = "center";
+          // the number that does not move while both sides of it do
+          ctx.fillText("area = " + (x * y).toFixed(0), (co.x(0) + co.x(x)) / 2, (co.y(0) + co.y(y)) / 2 + 5);
+          ctx.textAlign = "left";
+        }
 
-           var slope = -k / (currX * currX);
-           var tx1 = currX - 3, ty1 = currY - 3 * slope;
-           var tx2 = currX + 3, ty2 = currY + 3 * slope;
+        // The tangent, once the equation has become a price.
+        if (lt > 19.5) {
+          var ta = clamp01((lt - 19.5) / 0.6);
+          var slope = -k / (x * x);
+          ctx.strokeStyle = h.rgba(AMB, ta * 0.95);
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(co.x(x - 2.2), co.y(y - 2.2 * slope));
+          ctx.lineTo(co.x(x + 2.2), co.y(y + 2.2 * slope));
+          ctx.stroke();
+        }
 
-           ctx.shadowBlur = 10; ctx.shadowColor = AMB;
-           ctx.strokeStyle = AMB; ctx.lineWidth = 3;
-           ctx.beginPath(); ctx.moveTo(co.x(tx1), co.y(ty1)); ctx.lineTo(co.x(tx2), co.y(ty2)); ctx.stroke();
-           ctx.shadowBlur = 0;
-           
-           ctx.fillStyle = PAL.white;
-           ctx.shadowBlur = 20; ctx.shadowColor = PAL.white;
-           ctx.beginPath(); ctx.arc(co.x(currX), co.y(currY), 8, 0, Math.PI*2); ctx.fill();
-           ctx.shadowBlur = 0;
-           
-           var price = Math.abs(slope); 
-           var prob = (price / (1 + price)) * 100;
+        // The point itself, always.
+        if (lt > 5.0) {
+          var da = clamp01((lt - 5.0) / 0.8);
+          ctx.fillStyle = h.rgba(PAL.white, da);
+          ctx.beginPath(); ctx.arc(co.x(x), co.y(y), 7, 0, Math.PI * 2); ctx.fill();
+        }
 
-           ctx.fillStyle = AMB; ctx.font = "bold 20px monospace";
-           ctx.fillText("Probability: " + prob.toFixed(1) + "%", co.x(currX) + 20, co.y(currY) - 20);
-           ctx.globalAlpha = 1;
+        if (lt > 8.0) drawGauge(ctx, h, mkProb(x), clamp01((lt - 8.0) / 1.0));
+
+        // Name the two trades as they happen, so the price moving reads as
+        // somebody's decision rather than an animation.
+        var tradeLabel = null;
+        if (lt > 12 && lt < 18.5) tradeLabel = "someone sells YES";
+        else if (lt > 26 && lt < 32.5) tradeLabel = "and again, larger";
+        if (tradeLabel) {
+          ctx.fillStyle = h.rgba(PAL.muted, 0.9);
+          ctx.font = "13px 'JetBrains Mono', monospace";
+          ctx.fillText(tradeLabel, GA.x, 372);
         }
       });
 
-      lower(s, "So stop assigning the work and price it instead. Will this bug be fixed by Friday?", 2.0, { out: 22.5 });
-      lower(s, "An automated market maker always quotes a price, so there is always someone to trade against.", 17.0, { out: 45 });
-      lower(s, "And the slope of that curve is the crowd's probability that the work gets done.", 32.0, { out: 67.5 });
-      lower(s, "If nobody is working on it, the price is cheap. Cheap is the signal to act.", 47.0);
+      lower(s, "So stop assigning the work and price it instead. Will this bug be fixed by Friday?", 1.6, { out: 11.0 });
+      lower(s, "An automated market maker always quotes a price, so there is always someone to trade against.", 11.5, { out: 19.0 });
+      lower(s, "And the slope of that curve is the crowd's probability that the work gets done.", 19.8, { out: 27.0 });
+      lower(s, "If nobody is working on it, the price is cheap. Cheap is the signal to act.", 31.5);
     }, { subtitle: "Continuous automated market makers" });
   }
 
   function sceneInsiderTrading(film) {
-    film.scene("Skin in the Game", 112.5, function(s) {
-      var k3 = 20;
-      var co3 = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 340, right: 480, top: 150, bottom: 250 } });
-      var ax3 = s.axes(co3, { grid: false });
-      s.stagger(ax3, { at: 1.0, dur: 1.0 });
-      var pts3 = [];
-      for (var x = 2; x <= 10; x += 0.2) pts3.push([x, k3 / x]);
-      var curve3 = s.poly(pts3, { coords: co3, color: CY, width: 2 });
-      s.draw(curve3, { at: 1.5, dur: 1.5 });
-      
-      var pDot = s.dot({ coords: co3, x: 8, y: k3 / 8, r: 5, color: AMB });
-      s.fadeIn(pDot, { at: 3.0, dur: 0.5 });
-      
-      s.moveAlong(pDot, function(tau) {
-          var currX = lerp(8, 2, tau);
-          return { x: currX, y: k3 / currX };
-      }, { coords: co3, at: 54, dur: 6.0, ease: E.inOut });
-      
-      var payCoin = s.dot({ coords: co3, x: 2, y: 10, r: 24, color: AMB });
-      s.hide(payCoin, 0); s.show(payCoin, 60);
-      s.move(payCoin, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
-      
-      var payTxt = s.caption("<strong style='color:#000'>$1000</strong>", { coords: co3, x: 2, y: 10, size: "16px", anchor: "center" });
-      s.hide(payTxt, 0); s.show(payTxt, 60);
-      s.move(payTxt, { toX: 750, toY: 220, at: 60, dur: 8, ease: E.out });
-      
-      // the cost tag departs 2.5s behind the payout so the two texts never
-      // ride the same stretch of the path at the same moment
-      var costTxt = s.caption("<strong style='color:" + RED + "'>- $100</strong>", { coords: co3, x: 2, y: 12, size: "14px", anchor: "center" });
-      s.hide(costTxt, 0); s.show(costTxt, 62.5);
-      s.move(costTxt, { toX: 750, toY: 256, at: 62.5, dur: 6.5, ease: E.out });
-      
-      var profTxt = s.caption("<strong style='color:" + GRN + "'>PROFIT: $900 (Bounty)</strong>", { px: 650, py: 180, size: "20px" });
-      s.hide(profTxt, 0);
-      s.morph(payTxt, profTxt, { at: 68, dur: 1.0 });
-      s.fadeOut(costTxt, { at: 68, dur: 1.0 });
+    film.scene("Skin in the Game", 58, function (s) {
+      var co = mkCoords(film), k = MK.k;
 
-      s.canvas(function(lt, ctx, h) {
-        var op = clamp01(lt);
-        ctx.globalAlpha = op;
+      /* The claim this scene has to make visible is that effort moves a price
+         the worker holds. So the price is not scheduled: it is read off how
+         much of the work is done. The test strip below the curve is the cause,
+         the curve is the effect, and they are the same variable. */
+      var TESTS = 9;
+      function testsPassed(lt) {
+        if (lt < 17) return 0;
+        return Math.min(TESTS, Math.floor((lt - 17) / 1.9) + 1);
+      }
+      function workFrac(lt) {
+        if (lt < 17) return 0;
+        return clamp01((lt - 17) / (TESTS * 1.9));
+      }
+      function poolX(lt) {
+        if (lt < 6) return 12.0;                                   // ten cents, untouched
+        if (lt < 10) return lerp(12.0, 10.6, E.inOut(clamp01((lt - 6) / 4)));  // the buy
+        if (lt < 41) return lerp(10.6, 3.4, E.inOut(workFrac(lt)));  // the work re-prices it
+        return 3.4;
+      }
+      function settled(lt) { return lt > 41; }
+      function probAt(lt) {
+        if (!settled(lt)) return mkProb(poolX(lt));
+        return lerp(mkProb(3.4), 1, E.out(clamp01((lt - 41) / 1.6)));   // the oracle
+      }
 
-        // The Smart Contract Core (Glowing center)
-        var coreX = 200, coreY = 300;
-        var corePulse = Math.abs(Math.sin(lt*3));
-        
-        ctx.shadowBlur = 40 + 20*corePulse; ctx.shadowColor = h.rgba(CY, 0.4);
-        
-        var coreGrad = ctx.createLinearGradient(coreX - 100, coreY - 150, coreX + 100, coreY + 150);
-        coreGrad.addColorStop(0, h.rgba(CY, 0.15 + 0.1*corePulse));
-        coreGrad.addColorStop(1, h.rgba(CY, 0.02));
-        
-        ctx.fillStyle = coreGrad;
-        ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(coreX - 100, coreY - 150, 200, 300, 16); else ctx.rect(coreX - 100, coreY - 150, 200, 300);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        
-        ctx.strokeStyle = h.rgba(CY, 0.8); ctx.lineWidth = 2; ctx.stroke();
-        
-      ctx.fillStyle = PAL.white; ctx.font = "bold 16px 'JetBrains Mono', monospace"; 
-        ctx.fillText("BOUNTY CONTRACT", coreX - 70, coreY - 110);
-        
+      var ax = s.axes(co, { grid: true, gridX: 8, gridY: 5 });
+      s.show(ax, 0);
+      var pts = [];
+      for (var xv = MK.xLo; xv <= MK.xHi + 1e-9; xv += 0.08) pts.push([xv, k / xv]);
+      var curve = s.poly(pts, { coords: co, color: CY, width: 3 });
+      s.show(curve, 0);
 
-        // The Developer
-        var devX = 750, devY = 300;
-        ctx.fillStyle = GRN; ctx.beginPath(); ctx.arc(devX, devY, 18, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = PAL.white; ctx.font = "14px monospace"; ctx.fillText("Developer", devX - 35, devY + 40);
+      s.canvas(function (lt, ctx, h) {
+        var x = poolX(lt), y = k / x, p = probAt(lt);
+        drawPool(ctx, h, co, x, 1);
 
-        // Phase 1: Capital Transfer (Buying Shares) — a brisk, eased hop
-        if (lt > 4 && lt < 20) {
-           var fade4 = clamp01((lt - 4) / 0.5);
-           var buyP = clamp01((lt - 4) / 3.5);
-           var coinX = lerp(devX, coreX + 100, E.inOut(buyP));
-           var coinY = devY - 50;
-           
-           if (buyP < 1) {
-              ctx.globalAlpha = op * fade4;
-              // Glowing Capital particle
-              ctx.shadowBlur = 15; ctx.shadowColor = AMB;
-              ctx.fillStyle = AMB; ctx.beginPath(); ctx.arc(coinX, coinY, 8, 0, Math.PI*2); ctx.fill();
-              ctx.shadowBlur = 0;
-              ctx.fillStyle = PAL.white; ctx.font = "bold 14px monospace"; ctx.fillText("$100", coinX + 15, coinY + 5);
-           } else {
-              // Shares acquired
-              var fadeAcq = clamp01((lt - 7.5) / 0.5);
-              ctx.globalAlpha = op * fadeAcq;
-              ctx.fillStyle = AMB; ctx.font = "bold 18px monospace";
-              ctx.fillText("YES Shares: 1000", coreX - 80, coreY + 50);
-              ctx.fillText("Price: $0.10", coreX - 80, coreY + 74);
-           }
-           ctx.globalAlpha = op;
+        // the holder's entry, left on the curve so the gain has somewhere to be
+        if (lt > 9.0) {
+          ctx.strokeStyle = h.rgba(GRN, 0.5);
+          ctx.setLineDash([2, 4]);
+          ctx.beginPath();
+          ctx.moveTo(co.x(12.0), co.y(k / 12.0)); ctx.lineTo(co.x(12.0), co.y(0));
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = h.rgba(GRN, 0.8);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.textAlign = "center";
+          ctx.fillText('bought here', co.x(12.0), co.y(0) - 9);
+          ctx.textAlign = "left";
         }
 
-        // Phase 2: Work (Matrix typing effect)
-        if (lt > 20) {
-           var fade20 = clamp01((lt - 20) / 0.5);
-           ctx.globalAlpha = op * fade20;
-           ctx.fillStyle = AMB; ctx.font = "bold 18px monospace";
-           ctx.fillText("YES Shares: 1000", coreX - 80, coreY + 50);
-           ctx.fillText("Price: $0.10", coreX - 80, coreY + 74);
-           
-           if (lt < 45) {
-               var fadeRain = (1 - clamp01((lt - 44.5) / 0.5));
-               ctx.globalAlpha = op * fade20 * fadeRain;
-               var typingP = Math.abs(Math.sin(lt * 15)); 
-               ctx.fillStyle = h.rgba(GRN, 0.4 + 0.6 * typingP);
-               ctx.fillRect(devX - 25, devY - 50, 50, 20); // keyboard flashing
-               
-               // Digital rain data flowing UP from keyboard (deterministic in
-               // lt so every seek renders the same frame — engine contract)
-               var numStreams = 5;
-               for(var si=0; si<numStreams; si++) {
-                  var streamY = devY - 60 - (((lt * 40) + si*30) % 150);
-                  var streamAlpha = 1 - (devY - 60 - streamY)/150;
-                  ctx.fillStyle = h.rgba(GRN, streamAlpha);
-                  ctx.font = "10px monospace";
-                  ctx.fillText(Math.sin(Math.floor(lt * 8) * 13.37 + si * 7) > 0 ? "1" : "0", devX - 20 + si*10, streamY);
-               }
-           }
+        ctx.fillStyle = h.rgba(PAL.white, 1);
+        ctx.beginPath(); ctx.arc(co.x(x), co.y(y), 7, 0, Math.PI * 2); ctx.fill();
 
-           // Sending the PR
-           if (lt > 38 && lt < 50) {
-              var pushP = clamp01((lt - 38) / 7);
-              var prX = lerp(devX, coreX + 100, E.inOut(pushP));
-              var fadePR = clamp01((lt - 38) / 0.5) * (1 - clamp01((lt - 49.5) / 0.5));
-              ctx.globalAlpha = op * fadePR;
-              
-              ctx.shadowBlur = 15; ctx.shadowColor = GRN;
-              ctx.fillStyle = GRN; ctx.fillRect(prX, devY + 50, 40, 25);
-              ctx.shadowBlur = 0;
-              ctx.fillStyle = "#000"; ctx.font = "bold 14px monospace"; ctx.fillText("PR", prX+10, devY+67);
-           }
-           ctx.globalAlpha = op;
+        // the developer, arriving once and then staying with their position
+        if (lt > 2.5) {
+          var ea = clamp01((lt - 2.5) / 1.0);
+          var dx = lerp(900, co.x(12.0) + 22, E.out(clamp01((lt - 2.5) / 3.0)));
+          ctx.globalAlpha = ea;
+          ctx.fillStyle = h.rgba(GRN, 0.9);
+          ctx.beginPath(); ctx.arc(dx, co.y(k / 12.0) - 30, 11, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = h.rgba(PAL.muted, 0.95);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.textAlign = "center";
+          ctx.fillText("developer", dx, co.y(k / 12.0) - 48);
+          ctx.textAlign = "left";
+          ctx.globalAlpha = 1;
         }
 
-        // Phase 3: Oracle Resolution & Massive Payout
-        if (lt > 50) {
-           var fade50 = clamp01((lt - 50) / 0.5);
-           ctx.globalAlpha = op * fade50;
-           // Oracle pulse
-           var flash = clamp01(1 - (lt - 50)/2);
-           ctx.globalCompositeOperation = "screen";
-           ctx.fillStyle = h.rgba(PURP, flash);
-           ctx.fillRect(coreX - 120, coreY - 170, 240, 340);
-           ctx.globalCompositeOperation = "source-over";
-           
-           ctx.fillStyle = PURP; ctx.font = "bold 22px 'JetBrains Mono'";
-           ctx.fillText("ORACLE: RESOLVED", coreX - 90, coreY - 30);
+        // The work, as nine tests going from failing to passing. Each one lands
+        // on the beat that moves the price above it.
+        if (lt > 15.5) {
+          var sa = clamp01((lt - 15.5) / 0.8);
+          var done = testsPassed(lt);
+          var CW = 30, GAP = 8, X0 = co.x(0), Y0 = 376;
+          ctx.globalAlpha = sa;
+          ctx.fillStyle = h.rgba(PAL.muted, 0.9);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.fillText("test suite", X0, Y0 - 9);
+          for (var i = 0; i < TESTS; i++) {
+            var on = i < done;
+            ctx.fillStyle = h.rgba(on ? GRN : RED, on ? 0.85 : 0.30);
+            ctx.fillRect(X0 + i * (CW + GAP), Y0, CW, 14);
+          }
+          ctx.fillStyle = h.rgba(done === TESTS ? GRN : PAL.muted, 0.9);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.fillText(done + " / " + TESTS + " passing", X0 + TESTS * (CW + GAP) + 10, Y0 + 12);
+          ctx.globalAlpha = 1;
+        }
 
-           if (lt > 54) {
-               var fade54 = clamp01((lt - 54) / 0.5);
-               ctx.globalAlpha = op * fade50 * fade54;
-               ctx.fillStyle = GRN; ctx.font = "bold 24px monospace";
-               ctx.fillText("Price: $1.00", coreX - 80, coreY + 100); 
-            }
-         }
-         ctx.globalAlpha = 1;
+        // The gauge, reading the same number the curve does, plus the oracle.
+        drawGauge(ctx, h, p, 1,
+                  settled(lt) ? 'settled by the oracle' : 'chance it gets done',
+                  settled(lt) ? GRN : AMB);
+
+        // The position, revalued continuously against that price. This is the
+        // payoff tracking the contribution, which is the sentence the scene
+        // exists to prove, so it is a number that moves while the tests pass.
+        if (lt > 9.0) {
+          var held = 1000, entry = mkProb(12.0);
+          var gain = held * (p - entry);
+          ctx.textAlign = 'left';
+          ctx.fillStyle = h.rgba(PAL.muted, 0.9);
+          ctx.font = "12px 'JetBrains Mono', monospace";
+          ctx.fillText('1000 YES bought at ' + (entry * 100).toFixed(0) + ' cents', GA.tx, 232);
+          ctx.fillStyle = h.rgba(gain > 1 ? GRN : PAL.muted, 1);
+          ctx.font = "bold 24px 'JetBrains Mono', monospace";
+          ctx.fillText('$' + gain.toFixed(0), GA.tx, 262);
+          ctx.fillStyle = h.rgba(PAL.muted, 0.75);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.fillText('position, marked to the price', GA.tx, 280);
+        }
+
+        // The bond that makes the assertion cost something.
+        if (lt > 39) {
+          var ba = clamp01((lt - 39) / 0.8);
+          ctx.globalAlpha = ba;
+          ctx.fillStyle = h.rgba(AMB, 0.9);
+          ctx.beginPath(); ctx.arc(GA.tx + 11, 312, 11, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = h.rgba(PAL.muted, 0.95);
+          ctx.font = "12px 'JetBrains Mono', monospace";
+          ctx.fillText('merge asserted, with a bond', GA.tx + 30, 316);
+          ctx.globalAlpha = 1;
+        }
       });
 
-      lower(s, "A developer who knows they can fix it buys in quietly at ten cents.", 2.0, { out: 27 });
-      lower(s, "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.", 22.0, { out: 69 });
-      lower(s, "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.", 48.0, { out: 87 });
-      
-      var finalBeat = s.caption("Past a certain scale (a million agents, most of them not human) coordination stops being a role you can hire for. The only manager that scales is a price.", { px: 480, py: 110, anchor: "center", align: "center", size: "1rem", color: PAL.white });
-      s.fadeIn(finalBeat, { at: 75, dur: 2 });
-
-      lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 60.0);
+      lower(s, "A developer who knows they can fix it buys in quietly at ten cents.", 2.0, { out: 13.0 });
+      lower(s, "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.", 15.0, { out: 36.0 });
+      lower(s, "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.", 38.5, { out: 46.0 });
+      lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 45.6);
     }, { subtitle: "Aligning incentives with truth" });
   }
 
