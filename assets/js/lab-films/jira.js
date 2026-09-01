@@ -485,6 +485,33 @@
           ctx.fillText('position, marked to the price', GA.tx, 280);
         }
 
+        /* Settlement, so the closing line has something to watch. The position
+           stops being a price and becomes money: the holding converts, a coin
+           crosses from the market to the developer, and the figure counts up to
+           the bounty nobody assigned. Without this the scene held one picture
+           for the fifteen seconds it takes to ask the question the film ends on. */
+        if (lt > 43.5) {
+          var sp = clamp01((lt - 43.5) / 3.2);
+          var cxA = GA.x + GA.w / 2, cyA = 240;
+          var cxB = co.x(12.0) + 22, cyB = co.y(k / 12.0) - 72;   // above the developer, not on them
+          var cxN = lerp(cxA, cxB, E.inOut(sp)), cyN = lerp(cyA, cyB, E.inOut(sp)) - 60 * Math.sin(sp * Math.PI);
+          ctx.fillStyle = h.rgba(AMB, 0.95);
+          ctx.beginPath(); ctx.arc(cxN, cyN, 15, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = h.rgba('#0b0f1a', 1);
+          ctx.font = "bold 12px 'JetBrains Mono', monospace";
+          ctx.textAlign = 'center';
+          ctx.fillText('$', cxN, cyN + 4);
+          ctx.textAlign = 'left';
+
+        }
+
+        // The market winding down behind it: the curve has done its job.
+        if (lt > 47.5) {
+          var fade = clamp01((lt - 47.5) / 4.0);
+          ctx.fillStyle = h.rgba('#070b16', fade * 0.5);
+          ctx.fillRect(co.x(0) - 40, 84, co.x(13.4) - co.x(0) + 60, 310);
+        }
+
         // The bond that makes the assertion cost something.
         if (lt > 39) {
           var ba = clamp01((lt - 39) / 0.8);

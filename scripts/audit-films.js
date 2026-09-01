@@ -58,13 +58,13 @@ const STILL_PROBE = async (step, moved) => {
   const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
   const cv = document.querySelector('.labf__stage canvas');
   const small = document.createElement('canvas');
-  small.width = 120; small.height = 68;
+  small.width = 240; small.height = 135;
   const sg = small.getContext('2d', { willReadFrequently: true });
   const svg = document.querySelector('.labf__stage svg');
   const sig = () => {
-    sg.clearRect(0, 0, 120, 68);
-    if (cv) sg.drawImage(cv, 0, 0, 120, 68);
-    const px = sg.getImageData(0, 0, 120, 68).data;
+    sg.clearRect(0, 0, 240, 135);
+    if (cv) sg.drawImage(cv, 0, 0, 240, 135);
+    const px = sg.getImageData(0, 0, 240, 135).data;
     let svgSig = '';
     if (svg) {
       const nodes = svg.querySelectorAll('*');
@@ -83,16 +83,19 @@ const STILL_PROBE = async (step, moved) => {
     f.seek(t);
     const cur = sig();
     if (prev) {
-      let changed = 0;
+      let changed = 0, sum = 0;
       for (let i = 0; i < cur.px.length; i += 4) {
         const d = Math.max(Math.abs(cur.px[i] - prev.px[i]),
                            Math.abs(cur.px[i + 1] - prev.px[i + 1]),
                            Math.abs(cur.px[i + 2] - prev.px[i + 2]),
                            Math.abs(cur.px[i + 3] - prev.px[i + 3]));
-        if (d > 8) changed++;
+        if (d > 6) changed++;
+        sum += d;
       }
-      const frac = changed / (120 * 68);
-      out.push({ t: +t.toFixed(2), still: frac < moved && cur.svg === prev.svg });
+      const n = 240 * 135;
+      const frac = changed / n, energy = sum / n;
+      out.push({ t: +t.toFixed(2),
+                 still: frac < moved && energy < 0.30 && cur.svg === prev.svg });
     }
     prev = cur;
   }
@@ -107,7 +110,7 @@ async function auditStills(browser, slug, step) {
   await page.waitForFunction(
     () => window.LabAnim && Object.keys(window.LabAnim.films).length > 0, { timeout: 60000 });
   await page.evaluate(() => document.fonts && document.fonts.ready);
-  const r = await page.evaluate(STILL_PROBE, step, 0.0025);
+  const r = await page.evaluate(STILL_PROBE, step, 0.0012);
   // When does the last line in each scene stop speaking? A tail that looks
   // still can still have narration running over it, and cutting there would
   // truncate the sentence rather than the dead air.
