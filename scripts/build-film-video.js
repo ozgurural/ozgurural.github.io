@@ -35,11 +35,13 @@ const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'dist', 'video');
 const BASE = process.env.FILM_BASE_URL || 'http://localhost:4000';
 
-const FILMS = [
-  'blockchain-ml', 'cyber-events', 'determinism', 'gradient-pinball',
-  'universal-jira', 'oracles', 'training-fingerprint', 'block-race',
-  'redundancy-reactor', 'watermarking-comparison', 'model-heist',
-];
+// The films are whatever has an embed page, because that page is what the
+// render loads. Deriving it means adding a film is one file in _pages/embed
+// and nothing here: a hand-kept list is a second place to forget.
+const FILMS = fs.readdirSync(path.join(ROOT, '_pages', 'embed'))
+  .filter(f => f.endsWith('-embed.md'))
+  .map(f => f.slice(0, -'-embed.md'.length))
+  .sort();
 
 function parseArgs(argv) {
   const a = { fps: 30, width: 1280, scale: 1.5, film: null, all: false,
