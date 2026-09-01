@@ -1,7 +1,7 @@
 ---
 permalink: /projects/
 title: "Projects"
-description: "AI- and ML-focused research code, interactive demos, agent architectures, and production foundations by Dr. Ozgur Ural: model provenance, verifiable inference, autonomous systems, and simulation-based AI validation."
+description: "AI- and ML-focused research code, interactive demos, agent architectures, and production foundations by Dr. Ozgur Ural: model provenance, verifiable inference, autonomous systems, AI security, and human-verified clinical tooling."
 
 ---
 
@@ -153,8 +153,28 @@ description: "AI- and ML-focused research code, interactive demos, agent archite
     <p class="desc">The Avion Control Engine combines an Instructor Operating Station with synchronized simulator telemetry through a SvelteKit frontend and Python/gRPC backend. Its AI value is the observability layer: time-aligned state, interventions, and outcomes are the evidence needed to evaluate learned policies, detect anomalous behaviour, and support predictive-maintenance models. <a href="/files/ace-architecture-report.pdf">Read the architecture report (PDF).</a></p>
   </li>
   <li>
+    <div class="meta">AI Security &amp; Data Governance · 2020–2021 · Havelsan</div>
+    <h3 class="title">DLP foundations for secure enterprise AI</h3>
+    <p class="desc">I led the 14-engineer team that delivered Havelsan's data-leakage-prevention product for defence and government clients. The delivered product was DLP, not a generative-AI system. Its current AI role is the policy and inspection boundary needed to stop sensitive corporate data from entering prompts, retrieval indexes, model-training sets, or unauthorized agent actions.</p>
+  </li>
+  <li>
     <div class="meta">Autonomous Systems · 2019–2020 · STM</div>
     <h3 class="title"><a href="/posts/2025/09/autonomous-drones-future/">Mission control for autonomous UAVs</a></h3>
     <p class="desc">I developed hard-real-time mission-control and ground-control software for Kargu and Togan UAVs. The AI focus is the safety boundary around onboard autonomy: reliable telemetry, operator authority, mission constraints, and deterministic fallback when perception or planning is uncertain. The linked field note separates the systems I built from later directions such as edge inference, collaborative SLAM, and multi-aircraft autonomy.</p>
+  </li>
+  <li>
+    <div class="meta">AI-Assisted Cybersecurity · 2014–2019 · Comodo</div>
+    <h3 class="title">Secure Web Gateway, Patch Manager, and Dragon for AI-assisted defence</h3>
+    <p class="desc">I led design and architecture for Comodo's Secure Web Gateway, enterprise Patch Manager, and Chromium-based Dragon browser. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritize findings; deterministic controls still enforce the policy.</p>
+  </li>
+</ul>
+
+## Human-Verified Clinical AI Tooling
+
+<ul class="ep-cards ep-cards--two">
+  <li>
+    <div class="meta">Human-in-the-Loop AI · Python · PyQt5</div>
+    <h3 class="title"><a href="/blog/pyqt5_image_measurer">EKG measurement and annotation interface</a></h3>
+    <p class="desc">I built and field-tested a calibrated image-measurement utility with cardiology professionals. The released tool is manual, not a diagnostic model. Its AI role is to capture clinician-verified intervals and landmarks as training or evaluation labels, while its deterministic measurements provide a baseline for checking computer-vision suggestions. The linked writeup defines a human-confirmed AI extension without claiming it has already been delivered.</p>
   </li>
 </ul>

@@ -3,7 +3,11 @@ categories: technical
 permalink: /blog/pyqt5_image_measurer
 title: "Image Measurement with PyQt5: A Cardiology Aid"
 date: 2023-07-17
-description: "Python's versatility allows it to create tools for a broad spectrum of professional fields. In this post I walk through building an image measurement to..."
+description: "A clinician-calibrated EKG image measurement tool, and how its verified measurements can support human-in-the-loop clinical computer vision."
+tags:
+  - clinical-ai
+  - human-in-the-loop
+  - computer-vision
 
 ---
 
@@ -14,6 +18,12 @@ This application, named "Image Measurer," was developed for Dr. Görkem Şefik F
 ## Project Overview
 
 Our tool enables users to measure distances within an image relative to a real-world scale. For instance, users can load an EKG report, select two points on the image, and stipulate that the distance represents, say, 0.04 seconds or 1 millivolt in real-world terms.
+
+## AI Direction: Clinician-Verified Measurement
+
+The released utility is deliberately manual and is not a diagnostic AI system. Its AI value is the data and evaluation boundary. Calibrated intervals and landmarks confirmed by a cardiologist can become verified labels for an EKG-image model, while the same deterministic measurement logic provides a baseline for checking the model's suggestions.
+
+A responsible extension would propose candidate landmarks or intervals, display confidence, and require the clinician to confirm or correct each suggestion before saving it. Those corrections would form an auditable feedback dataset. The model would accelerate measurement; the clinician would retain diagnostic authority.
 
 ## Code Overview
 
