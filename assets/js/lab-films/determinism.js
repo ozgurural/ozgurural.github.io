@@ -286,7 +286,7 @@
       );
       lower(
         s,
-        "So the numbers are regulation, not goals. The ceiling: <strong>150 milliseconds</strong>, input to response.",
+        "The numbers are regulation, not goals. A ceiling of <strong>150 milliseconds</strong>, input to response.",
         9.0
       );
       lower(
@@ -496,7 +496,7 @@
 
       lower(
         s,
-        "Inside it, a fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
+        "A fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
         1.6
       );
       lower(
@@ -715,7 +715,7 @@
       );
       lower(
         s,
-        "The frame ends when the <strong>last</strong> host finishes. Latency composes as a maximum.",
+        "The frame ends with the <strong>last</strong> host: latency is a maximum.",
         8.6
       );
       lower(

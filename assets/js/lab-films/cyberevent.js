@@ -178,7 +178,7 @@
 
       lower(
         s,
-        "Incidents surface publicly before they surface officially. Someone tweets that the bank app is down.",
+        "Incidents surface publicly first. Someone tweets that the bank app is down.",
         1.4
       );
       lower(
@@ -344,17 +344,17 @@
 
       lower(
         s,
-        "There is no labelled Turkish corpus, so the vocabulary must be learned from an incident you already know.",
+        "With no labelled Turkish corpus, the vocabulary comes from a known incident.",
         1.4
       );
       lower(
         s,
-        "The nic.tr attack of December 2015 gives three corpora: the quiet year, the day, the fortnight after.",
+        "Comparing them is what makes a word an attack word.",
         7.0
       );
       lower(
         s,
-        "TF-IDF says which words separate an attack from ordinary Turkish. Each candidate then faces an A/B test.",
+        "Each candidate term then faces an A/B test.",
         12.0
       );
       lower(
@@ -599,17 +599,17 @@
       );
       lower(
         s,
-        "Each entity is judged against its own history, because normal for one is an alarm for another.",
+        "Each entity is judged against its own history, since normal for one alarms another.",
         15.6
       );
       lower(
         s,
-        "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. The anomaly is the signal.",
+        "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. That is the signal.",
         22.0
       );
       lower(
         s,
-        "The scoreboard, stated rather than rounded: 437 documents, 29 detections, 22 real. About 76%.",
+        "Not rounded: 437 documents, 29 detections, 22 real. About 76%.",
         31.0
       );
       lower(

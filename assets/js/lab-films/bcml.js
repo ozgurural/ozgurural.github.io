@@ -296,7 +296,7 @@
       );
       lower(
         s,
-        "So aim it at the model. Proof of Learning makes the training run earn consensus; Proof of Deep Learning covers the model itself.",
+        "Aim it at the model. Proof of Learning makes training earn consensus; Proof of Deep Learning covers the model.",
         16.0
       );
       lower(
@@ -577,7 +577,7 @@
 
       lower(
         s,
-        "Does it work? DeepChain was built: a Corda prototype trained on MNIST.",
+        "Does it work? DeepChain is a Corda prototype trained on MNIST.",
         1.4
       );
       lower(

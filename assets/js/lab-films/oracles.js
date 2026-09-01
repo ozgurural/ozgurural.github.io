@@ -307,8 +307,8 @@
       });
 
       lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
-      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 8.67, { out: 24 });
-      lower(s, "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this exact model produced this exact output.", 16.67, { out: 38 });
+      lower(s, "An off-chain computer runs the heavy network, generating a shadow of the execution.", 8.67, { out: 24 });
+      lower(s, "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this model produced this output.", 16.67, { out: 38 });
       lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 26.67);
     }, { subtitle: "Proving execution without redoing the work" });
   }

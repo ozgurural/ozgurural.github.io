@@ -190,7 +190,7 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "To make Proof-of-Learning unspoofable, I had to hide a mark inside a model. Four ways exist, and each falls to a different attacker. The first writes a pattern straight into the weights.", 1.33, { out: 18 });
+      lower(s, "Making Proof-of-Learning unspoofable meant hiding a mark inside a model. Four ways exist, each falling to a different attacker. The first writes a pattern into the weights.", 1.33, { out: 18 });
       lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.33, { out: 38 });
       lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 26.67, { out: 52 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
@@ -427,7 +427,7 @@
       });
 
       lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 1.33, { out: 12 });
-      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 9.33, { out: 26 });
+      lower(s, "A pseudo-random hash splits the vocabulary into a Green List and a Red List. The distribution is then skewed toward Green.", 9.33, { out: 26 });
       lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 18.67, { out: 40 });
       lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 28);
     }, { subtitle: "Biasing token choice, after Kirchenbauer et al." });
