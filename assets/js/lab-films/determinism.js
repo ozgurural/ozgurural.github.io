@@ -113,6 +113,21 @@
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
 
+        /* A transport delay is measured, not declared. Each stage takes a
+           slightly different time on every pass, so the budget is re-measured
+           four times a second and the margin visibly breathes against the
+           ceiling, which is the point: 16 ms of headroom reads as thin when you
+           watch it move. Computed once here because the bar and the slip beat
+           both report it, and drawn from two separate numbers they contradicted
+           each other on screen. Pure in (stage, measurement), so seek is exact. */
+        var meas = Math.floor(lt * 4);
+        function jitS(kk, m) {
+          var v = Math.sin(kk * 31.7 + m * 57.13) * 43758.5453;
+          return (v - Math.floor(v)) - 0.5;
+        }
+        var slipMs = (lt > 25 && lt < 33.4)
+          ? 20 * Math.sin(clamp01((lt - 25) / 8.0) * Math.PI) : 0;
+
         // The pipeline from control input to the pilot's senses
         var stages = [
           { n: "control\ninput", ms: 8, c: CY },
@@ -170,17 +185,30 @@
           rr(ctx, 70, 292, 820, 34, 8);
           ctx.fill();
 
-          var total = 134;
+          /* A transport delay is measured, not declared. Each stage takes a
+             slightly different time on every pass, so the bar is re-measured
+             four times a second and the margin visibly breathes against the
+             ceiling. That is the point of the scene: 16 ms of headroom is not
+             much, and it reads as not much when you watch it move. The quoted
+             134 stays the typical value; the jitter is a pure function of
+             (stage, measurement) so seek(t) reproduces the frame. */
+          var live = [], total = 0;
+          for (var k = 0; k < stages.length; k++) {
+            live[k] = stages[k].ms * (1 + jitS(k, meas) * 0.075);
+            total += live[k];
+          }
+          var baseTotal = total;
+          total = Math.round(total + slipMs);
           var fillFrac = clamp01((lt - 9) / 2.4);
           var acc = 0;
-          for (var k = 0; k < stages.length; k++) {
-            var segW = (stages[k].ms / 150) * 820;
-            var shown = clamp01((fillFrac * 150 - acc) / stages[k].ms);
+          for (k = 0; k < stages.length; k++) {
+            var segW = (live[k] / 150) * 820;
+            var shown = clamp01((fillFrac * 150 - acc) / live[k]);
             if (shown <= 0) break;
             ctx.fillStyle = h.rgba(stages[k].c, bIn * 0.75);
             rr(ctx, 70 + (acc / 150) * 820, 292, segW * shown, 34, 6);
             ctx.fill();
-            acc += stages[k].ms;
+            acc += live[k];
           }
 
           // the hard ceiling
@@ -200,7 +228,9 @@
             var tIn = clamp01((lt - 12.2) / 0.6);
             ctx.fillStyle = h.rgba(GRN, bIn * tIn);
             ctx.font = "bold 15px " + MONO;
-            ctx.fillText("spent: " + total + " ms      margin: " + (150 - total) + " ms", 70, 356);
+            var marg = 150 - total;
+            ctx.fillStyle = h.rgba(marg < 8 ? AMB : GRN, bIn * tIn);
+            ctx.fillText("spent: " + total + " ms      margin: " + marg + " ms", 70, 356);
           }
           ctx.globalAlpha = op;
         }
@@ -221,10 +251,12 @@
            the ceiling. The slip runs out and back, so the bar returns to the
            real 134 ms it spends. */
         if (lt > 25 && lt < 33.4) {
-          var sp = Math.sin(clamp01((lt - 25) / 8.0) * Math.PI);
-          var slipMs = 20 * sp;
-          var totalNow = 134 + slipMs;
-          var xEnd = 70 + (134 / 150) * 820;
+          var liveBase = 0;
+          for (var q2 = 0; q2 < stages.length; q2++) {
+            liveBase += stages[q2].ms * (1 + jitS(q2, meas) * 0.075);
+          }
+          var totalNow = liveBase + slipMs;
+          var xEnd = 70 + (liveBase / 150) * 820;
           var xNow = 70 + (totalNow / 150) * 820;
           var breach = totalNow > 150;
           ctx.save();
@@ -343,13 +375,31 @@
 
           // lognormal-ish bars: most frames fast, a thin tail
           var bins = 26;
+          /* The histogram is being filled, not drawn. A real one wobbles while
+             it is sparse and settles as the count grows, with the amplitude
+             going as one over the root of the count, and the rare over-budget
+             bins on the right settle last because they are the ones with
+             almost no samples in them. That is the scene's whole argument about
+             counting frames rather than averaging them, so it should be visible
+             rather than asserted. Deterministic in (bin, tick): seek(t)
+             reproduces the frame. */
+          var filled = clamp01((lt - 2.6) / 26);            // the session running
+          var nFrames = 1 + filled * filled * 864000;
+          var tick = Math.floor(lt * 5);
+          function wob(i, k) {
+            var v = Math.sin(i * 45.164 + k * 91.7) * 43758.5453;
+            return (v - Math.floor(v)) - 0.5;
+          }
           for (var i = 0; i < bins; i++) {
             var reveal = clamp01((lt - 2.6 - i * 0.06) / 0.4);
             if (reveal <= 0) continue;
             var ms = 4 + i * 0.8;
             var z = (Math.log(ms) - Math.log(8.6)) / 0.30;
             var dens = Math.exp(-0.5 * z * z) / ms;
-            var hgt = dens * 2300 * reveal;
+            var expected = nFrames * dens;
+            var noise = wob(i, tick) * 2.4 / Math.sqrt(Math.max(1, expected));
+            var hgt = dens * 2300 * reveal * (1 + noise);
+            if (hgt < 0) hgt = 0;
             var over = ms > 16.67;
             ctx.fillStyle = h.rgba(over ? RED : CY, hIn * (over ? 0.9 : 0.65));
             var cw = bw / bins - 3;
@@ -549,6 +599,25 @@
 
         var slowIdx = 5;
 
+        /* The rack is not a photograph. Every host publishes on every frame and
+           each takes a slightly different time, so the frame's cost is a fresh
+           maximum each time. Rolling them shows the argument instead of stating
+           it: you can watch which host is binding the frame change. Six frames a
+           second rather than sixty, because the numbers have to be readable, and
+           the jitter is a pure function of (host, frame) so seek(t) reproduces
+           the picture exactly. */
+        var fr = Math.floor(lt * 6);
+        function jit(i, f) {
+          var v = Math.sin(i * 12.9898 + f * 78.233) * 43758.5453;
+          return (v - Math.floor(v)) - 0.5;
+        }
+        var now = [], maxIdx = 0;
+        for (var q = 0; q < hosts.length; q++) {
+          var lateQ = lt > 20 && q === slowIdx;
+          now[q] = (lateQ ? 19.4 : hosts[q].ms) + jit(q, fr) * (lateQ ? 0.9 : 1.7);
+          if (now[q] > now[maxIdx]) maxIdx = q;
+        }
+
         for (var i = 0; i < hosts.length; i++) {
           var a = clamp01((lt - 0.8 - i * 0.2) / 0.5);
           if (a <= 0) continue;
@@ -565,15 +634,22 @@
           ctx.font = "bold 13px " + MONO;
           ctx.fillText(hosts[i].n, bx + 12, by + 34);
           // per-host bar
-          var frac = clamp01(hosts[i].ms / 16.67);
+          var frac = clamp01(now[i] / 16.67);
           var grow = clamp01((lt - 3.2) / 1.2);
           ctx.fillStyle = h.rgba(late ? RED : GRN, a * 0.8);
           rr(ctx, bx + 12, by + 40, (172 - 24) * frac * grow, 8, 4);
           ctx.fill();
+          // the one that closed this frame, marked as it changes
+          if (i === maxIdx && lt > 8) {
+            ctx.strokeStyle = h.rgba(late ? RED : AMB, a * 0.95);
+            ctx.lineWidth = 1.5;
+            rr(ctx, bx + 10, by + 38, (172 - 20), 12, 6);
+            ctx.stroke();
+          }
           ctx.fillStyle = h.rgba(MUTED, a);
           ctx.font = "11px " + MONO;
           ctx.textAlign = "right";
-          ctx.fillText((late ? 19.4 : hosts[i].ms).toFixed(1) + " ms", bx + 160, by + 34);
+          ctx.fillText(now[i].toFixed(1) + " ms", bx + 160, by + 34);
           ctx.textAlign = "left";
           ctx.globalAlpha = op;
         }
@@ -794,23 +870,54 @@
           ctx.fillText(rows[i].n, 108, y + 4);
 
           ctx.textAlign = "right";
-          ctx.fillStyle = h.rgba(rows[i].over > 0 && lt > 12 ? RED : MUTED, a);
+          /* The overrun counter is what the scene says to trust, so it counts
+             here rather than being printed. The IOS bus crosses the deadline
+             once every eleven seconds or so, which is why it reaches three by
+             the end of a scene that lasts forty: the number the film quotes is
+             now something the viewer watches accumulate. */
+          var overs = 0;
+          if (!rows[i].ok) {
+            overs = Math.max(0, Math.floor((lt * 0.55 + i * 2.1 - Math.PI / 2) / (Math.PI * 2)) + 1);
+          }
+          ctx.fillStyle = h.rgba(overs > 0 && lt > 12 ? RED : MUTED, a);
           ctx.font = "15px " + MONO;
-          ctx.fillText(String(rows[i].over), 520, y + 4);
+          ctx.fillText(String(overs), 520, y + 4);
           /* A telemetry table that never changes is a screenshot, and this
              scene is about instrumenting a session while it runs. Step time
              therefore ticks. The IOS bus wobbles wide enough to cross 16.67 ms
              now and then, which is exactly why its overrun counter reads 3
              while its step time mostly looks fine: the point the scene makes
              out loud ten seconds later. Derived from lt, so seeking is exact. */
-          var wob = Math.sin(lt * 2.3 + i * 1.7) * 0.35 + Math.sin(lt * 5.1 + i * 0.9) * 0.18;
-          var spike = Math.pow(Math.max(0, Math.sin(lt * 0.55 + i * 2.1)), 20);
-          var liveStep = rows[i].step + wob + (rows[i].ok ? 0 : spike * 2.6);
+          function stepAt(idx, u) {
+            var w = Math.sin(u * 2.3 + idx * 1.7) * 0.35 + Math.sin(u * 5.1 + idx * 0.9) * 0.18;
+            var sp = Math.pow(Math.max(0, Math.sin(u * 0.55 + idx * 2.1)), 20);
+            return rows[idx].step + w + (rows[idx].ok ? 0 : sp * 2.6);
+          }
+          var liveStep = stepAt(i, lt);
           ctx.fillStyle = h.rgba(liveStep > 16.67 ? RED : MUTED, a);
           ctx.fillText(liveStep.toFixed(1), 660, y + 4);
           ctx.fillStyle = h.rgba(MUTED, a);
           ctx.fillText(String(rows[i].mem), 800, y + 4);
           ctx.textAlign = "left";
+          // recent history of this bus, so a spike between polls is visible as
+          // a shape and not only as a digit that briefly changes
+          var TW = 74, TH = 22, TX = 812, TY = y - 11;
+          ctx.strokeStyle = h.rgba(rows[i].ok ? CY : RED, a * 0.75);
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          for (var q = 0; q <= 24; q++) {
+            var u = lt - (24 - q) * 0.32;
+            var v = clamp01((stepAt(i, u) - 4) / 14);
+            var px = TX + (q / 24) * TW, py = TY + TH - v * TH;
+            if (q === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.strokeStyle = h.rgba(AMB, a * 0.4);
+          ctx.setLineDash([2, 3]);
+          ctx.beginPath();
+          var dl = TY + TH - clamp01((16.67 - 4) / 14) * TH;
+          ctx.moveTo(TX, dl); ctx.lineTo(TX + TW, dl); ctx.stroke();
+          ctx.setLineDash([]);
           ctx.globalAlpha = op;
         }
 
