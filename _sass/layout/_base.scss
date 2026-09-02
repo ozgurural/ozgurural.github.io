@@ -360,13 +360,79 @@ b, i, strong, em, blockquote, p, q, span, figure, img, h1, h2, header, input, a,
    Hide the following elements on print
    ========================================================================== */
 
-   @media print {
+  /* The screen palette is light text on a dark ground, and a printer gives you
+     white paper: the body printed as #cbd5e1 on white, which is legible only
+     if you hold it up to a lamp. Print gets its own ink. The decorative
+     canvas, the author column and the navigation are dropped because none of
+     them survives the trip to paper, and a link's destination is written out,
+     since a printed page cannot be clicked. */
+  @media print {
     .masthead,
     .toc,
     .page__share,
     .page__related,
     .ads,
-    .page__footer {
-      display: none;
+    .page__footer,
+    .sidebar,
+    .author__urls-wrapper,
+    #tsparticles,
+    .skip-link,
+    .back-to-top,
+    .ep-copy-btn,
+    .labf__transport,
+    .labf__poster {
+      display: none !important;
     }
+
+    html, body {
+      background: #fff !important;
+      color: #111 !important;
+    }
+
+    /* Naming the elements one by one lost to more specific rules elsewhere and
+       the paragraphs still printed at #cbd5e1. On paper there is one ink, so
+       the selector says so; links get their own colour back below. */
+    .page__content,
+    .page__content *,
+    .page__title,
+    .archive,
+    .archive *,
+    h1, h2, h3, h4, h5, h6 {
+      color: #111 !important;
+      background: transparent !important;
+      text-shadow: none !important;
+    }
+
+    a {
+      color: #000 !important;
+      text-decoration: underline;
+    }
+
+    /* the destination, once, and only for links that go somewhere else */
+    .page__content a[href^="http"]:after {
+      content: " (" attr(href) ")";
+      font-size: 0.85em;
+      word-break: break-all;
+    }
+
+    /* code has to read as code without a dark panel behind it */
+    pre, code, .highlight, div.highlighter-rouge {
+      background: #f6f6f6 !important;
+      color: #111 !important;
+      border: 1px solid #ccc !important;
+      box-shadow: none !important;
+    }
+    .highlight * { color: #111 !important; }
+
+    /* the full width of the paper, since the author column is gone */
+    .page, .page__inner-wrap, .archive {
+      width: 100% !important;
+      float: none !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    /* a heading at the foot of a page with its section overleaf reads badly */
+    h1, h2, h3 { break-after: avoid-page; }
+    figure, pre, table { break-inside: avoid-page; }
   }
