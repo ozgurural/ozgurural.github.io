@@ -27,8 +27,10 @@
 </noscript>
 
 {% if page.url == "/" or page.url == "/index.html" %}
-<!-- Particles engine loads once at the end of body (scripts.html) -->
-<link rel="preload" as="script" href="{{ base_path }}/assets/js/tsparticles.bundle.min.js"/>
+<!-- The particle field is decorative and aria-hidden, and it was preloaded at
+     high priority on the one page whose largest paint matters most, where it
+     competed with the fonts and the hero for bandwidth. It loads at the end of
+     body like everything else. -->
 <!-- On the home page the hero supplies the H1 — hide duplicate page__title -->
 <script>document.documentElement.classList.add('ep-home');</script>
 {% endif %}

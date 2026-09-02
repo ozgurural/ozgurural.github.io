@@ -9,8 +9,12 @@ layout: compress
      light palette before the deferred JS runs. -->
 <html lang="{{ site.locale | slice: 0,2 }}" class="no-js" data-theme="dark">
   <head>
+    {%- comment -%}
+      head.html ends by including head/custom.html, so naming it again here
+      emitted every stylesheet in it twice: two render-blocking requests for
+      academicons and two for the Google Fonts sheet, on every page.
+    {%- endcomment -%}
     {% include head.html %}
-    {% include head/custom.html %}
   </head>
 
   <body>
