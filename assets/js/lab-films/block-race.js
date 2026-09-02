@@ -4,7 +4,7 @@
    Six scenes, math verified against the Bitcoin whitepaper §11:
      1. hook         Two chains, one truth     (longest-chain rule = a race)
      2. bernoulli    Every block is a coin flip (hashrate share = win prob)
-     3. ruin         The gambler's ruin        (catch-up = (q/p)^z, q<p)
+     3. ruin         The gambler's ruin        (catch-up = (q/p)^z, q\\lt p)
      4. poisson      Satoshi's head-start      (k~Poisson(zq/p); the §11 form)
      5. consequence  Orders of magnitude       (z=6: 0.024% vs 13.2% — 544×)
      6. stakes       Probabilistic finality    (P(z)→0, never exactly 0)

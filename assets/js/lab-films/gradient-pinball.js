@@ -766,7 +766,7 @@
       ["The update", "\\theta_{t+1} = \\theta_t - \\alpha\\, v_{t+1}, \\qquad v_{t+1} = \\beta\\, v_t + \\nabla L(\\theta_t)",
         "Plain gradient descent is the \\(\\beta=0\\) case. With \\(v_0=0\\), the buffer is the exponentially-weighted <em>sum</em> \\(v_{t+1}=\\sum_{k=0}^{t}\\beta^{\\,t-k}\\nabla L(\\theta_k)\\) (not an average; that would carry a \\(1-\\beta\\) factor)."],
       ["Local stability", "\\theta_{t+1}=(1-\\alpha\\lambda_i)\\,\\theta_t \\;\\Rightarrow\\; 0<\\alpha<\\tfrac{2}{\\lambda_{\\max}}",
-        "Diagonalising the Hessian \\(H=Q\\,\\mathrm{diag}(\\lambda_i)\\,Q^\\top\\) decouples GD into per-axis contractions \\(|1-\\alpha\\lambda_i|\\). Convergence requires this be \\(<1\\) on every axis."],
+        "Diagonalising the Hessian \\(H=Q\\,\\mathrm{diag}(\\lambda_i)\\,Q^\\top\\) decouples GD into per-axis contractions \\(|1-\\alpha\\lambda_i|\\). Convergence requires this be \\(\\lt 1\\) on every axis."],
       ["Optimal rates", "\\alpha^\\star=\\tfrac{2}{L+\\mu}\\Rightarrow\\tfrac{\\kappa-1}{\\kappa+1}, \\qquad \\text{heavy-ball}\\Rightarrow\\tfrac{\\sqrt{\\kappa}-1}{\\sqrt{\\kappa}+1}",
         "With \\(\\kappa=L/\\mu\\), the globally optimal GD step \\(\\alpha^\\star=2/(L{+}\\mu)\\) gives rate \\((\\kappa{-}1)/(\\kappa{+}1)\\); the simpler \\(\\alpha=1/L\\) gives the slightly worse \\((\\kappa{-}1)/\\kappa\\). Polyak's optimally-tuned heavy ball achieves the \\(\\sqrt{\\kappa}\\) law (Polyak 1964), a strongly-convex, full-gradient result."],
       ["Saddle prevalence", "P(\\text{local min}\\mid \\nabla L=0)\\to 0 \\ \\text{as } d\\to\\infty",

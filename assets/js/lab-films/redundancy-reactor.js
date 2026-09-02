@@ -507,7 +507,7 @@
       ["Superlinear gain", "\\text{gain}=\\frac{q}{P_{\\text{ind}}}=\\frac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\frac{1}{3q}",
         "Each extra pair of channels raises the failure rate to a higher power of q: on a log-log plot, a steeper slope. The unbounded gain is an <em>independent-model</em> idealisation only."],
       ["Correlation floor", "P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q",
-        "A first-order approximation (the exact Fleming β-factor is \\(\\rho q+(1-\\rho q)P_{\\text{ind}}(N,(1-\\rho)q)\\); both share the floor). The ρq term is independent of N, so for \\(q<\\tfrac12\\), \\(\\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\) and the safety multiplier saturates at \\(1/\\rho\\). Here \\(\\rho q\\) is a mission probability; \\(\\rho=\\beta\\in[0,1]\\)."],
+        "A first-order approximation (the exact Fleming β-factor is \\(\\rho q+(1-\\rho q)P_{\\text{ind}}(N,(1-\\rho)q)\\); both share the floor). The ρq term is independent of N, so for \\(q\\lt \\tfrac12\\), \\(\\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\) and the safety multiplier saturates at \\(1/\\rho\\). Here \\(\\rho q\\) is a mission probability; \\(\\rho=\\beta\\in[0,1]\\)."],
       ["Ariane 5", "\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q",
         "Flight 501 (4 Jun 1996): two SRI units, identical software, hit the same int16 overflow of BH: backup SRI 1 first, active SRI 2 ~72 ms later. Self-destruct ~39 s after H0 (30 s after lift-off), ~4 km. Identical software means ρ≈1, so N was irrelevant."]
     ];

@@ -95,6 +95,65 @@ const PAGE_CHECKS = () => {
   }
   if (!document.documentElement.getAttribute('lang')) out.issues.push({ k: 'no-lang', d: '' });
 
+  /* WCAG 1.4.3: 4.5:1 for body text, 3:1 once it is 24px or 18.66px bold. Only
+     the text a node owns directly is measured, so a paragraph is not blamed for
+     the colour of a link inside it, and the background is the nearest ancestor
+     that actually paints one. Three share buttons failed on brand colour. */
+  const parseC = (str) => {
+    const m = /rgba?\(([^)]+)\)/.exec(str || '');
+    if (!m) return null;
+    const p = m[1].split(',').map(Number);
+    return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+  };
+  const chan = (c) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lum = (c) => 0.2126 * chan(c.r) + 0.7152 * chan(c.g) + 0.0722 * chan(c.b);
+  const bgOf = (el) => {
+    let n = el;
+    while (n) { const c = parseC(getComputedStyle(n).backgroundColor); if (c && c.a > 0.5) return c; n = n.parentElement; }
+    return { r: 11, g: 15, b: 26, a: 1 };
+  };
+  document.querySelectorAll('p,li,a,span,h1,h2,h3,h4,h5,h6,td,th,figcaption,small,strong,em,div,button')
+    .forEach(el => {
+      let own = '';
+      el.childNodes.forEach(n => { if (n.nodeType === 3) own += n.textContent; });
+      if (own.trim().length < 4) return;
+      const cs = getComputedStyle(el);
+      if (cs.visibility === 'hidden' || cs.display === 'none') return;
+      const r = el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      const fg = parseC(cs.color);
+      if (!fg || fg.a < 0.5) return;
+      const l1 = lum(fg), l2 = lum(bgOf(el));
+      const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      const size = parseFloat(cs.fontSize);
+      const need = (size >= 24 || (size >= 18.66 && Number(cs.fontWeight) >= 700)) ? 3 : 4.5;
+      if (ratio < need) {
+        out.issues.push({ k: 'contrast', d: ratio.toFixed(2) + ' / ' + need + '  ' +
+          el.tagName.toLowerCase() + (el.className ? '.' + String(el.className).split(' ')[0] : '') +
+          '  "' + own.trim().slice(0, 26) + '"' });
+      }
+    });
+
+  /* The site is dark only. A near-white panel on it is almost always a light
+     theme default that was never overridden, and it reads as a broken block
+     rather than as a design choice: fenced code rendered as a white slab that
+     way, with the dark inline-code background painting only behind the glyphs.
+     Small chips are excluded, since a light badge can be deliberate. */
+  document.querySelectorAll('div,section,pre,code,figure,aside,table,blockquote,li')
+    .forEach(el => {
+      const c = parseC(getComputedStyle(el).backgroundColor);
+      if (!c || c.a < 0.5) return;
+      if (lum(c) < 0.55) return;
+      const r = el.getBoundingClientRect();
+      if (r.width * r.height < 6000) return;
+      // only report the outermost one: a light panel makes its children look light
+      const pc = el.parentElement && parseC(getComputedStyle(el.parentElement).backgroundColor);
+      if (pc && pc.a > 0.5 && lum(pc) >= 0.55) return;
+      out.issues.push({ k: 'light-panel', d: el.tagName.toLowerCase() +
+        (el.className ? '.' + String(el.className).split(' ').slice(0, 2).join('.') : '') +
+        '  ' + Math.round(r.width) + 'x' + Math.round(r.height) });
+    });
+
   // forms and controls with nothing to announce
   document.querySelectorAll('button, [role="button"], input, select, textarea').forEach(el => {
     const t = (el.innerText || '').trim() || el.getAttribute('aria-label') ||

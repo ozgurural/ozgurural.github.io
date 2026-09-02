@@ -602,7 +602,7 @@
       ["Effect size", "d = \\frac{\\sqrt{k}\\,\\varepsilon}{\\sigma}",
         "Signal projects coherently to amplitude \\(\\sqrt{k}\\,\\varepsilon\\); the noise projection \\(w^\\top n\\sim N(0,\\sigma^2)\\) stays flat because \\(\\|w\\|=1\\). The √k is the crux: robustness is bought by spreading, not deepening."],
       ["Power", "\\text{Power}=\\Phi(d-z_\\alpha),\\quad \\text{AUC}=\\Phi(d/\\sqrt2)",
-        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z>z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) (invisible) while \\(d\\gg1\\) (certain)."],
+        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z\\gt z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) (invisible) while \\(d\\gg1\\) (certain)."],
       ["Why it survives", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
         "A utility-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) can remove at most \\(\\rho\\) of the statistic, and because w is <em>secret</em>, the thief cannot align δ with it. Assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
     ];
