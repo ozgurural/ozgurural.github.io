@@ -466,12 +466,12 @@
       );
       lower(
         s,
-        "This is the low-resource penalty, and a bigger classifier does not fix it. Stemming does, before the classifier.",
+        "This is one low-resource-language penalty. The pipeline normalizes Turkish before keyword and event detection so related surface forms retain more evidence.",
         22.5
       );
       lower(
         s,
-        "Which is the under-reported part: here, preprocessing decides more than the model does.",
+        "In this system, preprocessing and entity history are part of the detector, not cleanup around it.",
         33.0,
         { out: 42.0 }
       );

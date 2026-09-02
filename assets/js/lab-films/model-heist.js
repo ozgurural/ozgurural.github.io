@@ -1,5 +1,5 @@
 /* =============================================================================
-   model-heist.js — cinematic explainer: statistical model watermarking.
+   model-heist.js — cinematic teaching model: statistical watermark detection.
 
    Seven scenes, math verified (Gaussian Z-test over k correlated marks):
      1. hook          The stolen model        (prove provenance through noise)
@@ -162,7 +162,7 @@
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: WHT });
       s.write(title, { at: 0.9, dur: 2.1 });
-      lower(s, "I built systems to stop data leaking. Prevention always fails eventually. So once your model is out in the world, can you still prove it was yours?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
+      lower(s, "I built systems to reduce data leakage. Prevention is not the same as provenance. Once your model is out in the world, what evidence could still link it to you?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
@@ -235,7 +235,7 @@
       });
       var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 78, size: "1.4rem", color: LBLU });
       s.fadeIn(eq, { at: 1.5, dur: 1.2 });
-      lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
+      lower(s, "A single large perturbation can be conspicuous and can hurt accuracy. A practical mark has to balance detectability against utility.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
   }
 
@@ -356,7 +356,7 @@
       });
       var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 74, size: "1.5rem", color: TXT });
       s.write(eq, { at: 1.5, dur: 2.1 });
-      lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
+      lower(s, "In this Gaussian teaching model, spread the mark across coordinates. A matched filter makes aligned signal add coherently while independent noise adds in quadrature.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
   }
 
@@ -427,9 +427,9 @@
       // py 130 put this under a one-line title; the sentence wraps to two lines,
       // so its top rode 10 units into the title's box. Measured on stage: title
       // occupies 63.3-87.6, caption 77.3-126.5. Dropped clear of it.
-      var cap = s.caption("the matched filter at the core of the author's 2024 watermarking method.", { px: 300, py: 148, size: "0.9rem", color: GREY });
+      var cap = s.caption("an illustrative Gaussian detector, not a reconstruction of the author's 2024 method.", { px: 300, py: 148, size: "0.9rem", color: GREY });
       s.fadeIn(cap, { at: 3.0, dur: 1.5 });
-      lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
+      lower(s, "Under the stated Gaussian assumptions this becomes a Z-test. The threshold trades detection power against false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
   }
 
@@ -497,13 +497,13 @@
       });
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
-      var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:" + EMR + "'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
-      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:" + AMB + "'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: TXT });
+      var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:" + EMR + "'>(weak)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
+      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:" + AMB + "'>↑ stronger</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: TXT });
       s.fadeIn(sm, { at: 10.5, dur: 0.9 }); s.fadeIn(dm, { at: 11.4, dur: 0.9 });
-      var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 720, py: 350, size: "1.4rem", color: AMB });
+      var aucEq = s.tex2("\\text{AUC rises with } d", { px: 720, py: 350, size: "1.4rem", color: AMB });
       s.fadeIn(aucEq, { at: 12.6, dur: 1.05 });
 
-      lower(s, "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.", 10.0, { maxWidth: "85%", px: 60 });
+      lower(s, "Inside this model, aggregate evidence grows with breadth while each coordinate stays weak. Correlated noise or a poor reference can erase that advantage.", 10.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "The √k factor decouples stealth from aggregate confidence." });
   }
 
@@ -555,8 +555,8 @@
       });
       var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1.4rem", color: AMB });
       s.write(eq, { at: 1.5, dur: 1.8 });
-      lower(s, "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark.", 7.0, { maxWidth: "85%", px: 60 });
-    }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
+      lower(s, "A norm-bounded scrub can move the score only by its budget. That is a detector bound, not a universal claim that a real watermark cannot be removed.", 7.0, { maxWidth: "85%", px: 60 });
+    }, { subtitle: "A bounded perturbation yields a bound, not immunity." });
   }
 
   /* ================= 7 — STAKES ================= */
@@ -583,13 +583,13 @@
       // caption width is clamped by the overlay, so widening does not unwrap it.
       // Raising the line is what there is room for: the stat above ends at
       // 316.6, leaving 63 units of clear space.
-      var tag = s.caption("Invisible in any one weight. <strong>Detectable across all of them.</strong>", { px: 480, py: 352, anchor: "top", align: "center", size: "1.4rem", color: TXT });
+      var tag = s.caption("Weak per coordinate. <strong>Stronger in aggregate, under the model.</strong>", { px: 480, py: 352, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.write(tag, { at: 6.6, dur: 2.1 });
       var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights; it must survive the transformations tested in the threat model. Verifiable provenance matters when you did not watch the model being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
       s.fadeIn(cap2, { at: 8.5, dur: 1.5 });
-      var cite = s.caption("Ural &amp; Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
+      var cite = s.caption("Illustrative Gaussian detector · classical matched-filter assumptions", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
       s.fadeIn(cite, { at: 9, dur: 1.2 });
-    }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
+    }, { subtitle: "Power = Φ(√k·ε/σ − z_α), inside the stated model." });
   }
 
   /* ====================== appendix ====================== */
@@ -602,7 +602,7 @@
       ["Effect size", "d = \\frac{\\sqrt{k}\\,\\varepsilon}{\\sigma}",
         "Signal projects coherently to amplitude \\(\\sqrt{k}\\,\\varepsilon\\); the noise projection \\(w^\\top n\\sim N(0,\\sigma^2)\\) stays flat because \\(\\|w\\|=1\\). The √k is the crux: robustness is bought by spreading, not deepening."],
       ["Power", "\\text{Power}=\\Phi(d-z_\\alpha),\\quad \\text{AUC}=\\Phi(d/\\sqrt2)",
-        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z>z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) (invisible) while \\(d\\gg1\\) (certain)."],
+        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z>z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). A small per-weight \\(\\varepsilon/\\sigma\\) can produce stronger aggregate evidence as \\(d\\) grows, under the stated assumptions."],
       ["Why it survives", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
         "A utility-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) can remove at most \\(\\rho\\) of the statistic, and because w is <em>secret</em>, the thief cannot align δ with it. Assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
     ];
@@ -611,7 +611,7 @@
       html += '<div class="lab-math__item"><div class="lab-math__name">' + b[0] + '</div><div class="lab-math__eq">' +
         window.katex.renderToString(b[1], { throwOnError: false, displayMode: true }) + '</div><p class="lab-math__note">' + b[2] + '</p></div>';
     });
-    html += '</div><p class="lab-math__refs">Neyman–Pearson lemma · Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024.</p>';
+    html += '</div><p class="lab-math__refs">Illustrative Gaussian matched-filter model · not a reconstruction of the author\'s 2024 feature-based watermarking mechanism.</p>';
     host.innerHTML = html;
     host.querySelectorAll(".lab-math__note").forEach(function (el) {
       el.innerHTML = el.innerHTML.replace(/\\\((.+?)\\\)/g, function (_, t) { try { return window.katex.renderToString(t, { throwOnError: false }); } catch (e) { return t; } });

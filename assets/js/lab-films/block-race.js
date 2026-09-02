@@ -501,7 +501,7 @@
       s.write(law, { at: T3 + 5.6, dur: 1.8 });
       s.pulse(law, { at: T3 + 8, dur: 1.2, amp: 0.1 });
 
-      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged 70/30. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each confirmation halves what is left.", 13.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged 70/30. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each additional block multiplies the remaining catch-up chance by three sevenths.", 13.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Only the gap matters, and the walk is rigged against the attacker." });
   }
 
@@ -779,7 +779,7 @@
 
       var fin = s.caption("payment finalized (probabilistically)", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
       s.fadeIn(fin, { at: 6.9, dur: 1.05 });
-      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Near-Zero Risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
+      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ lower modeled risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
       s.write(lim, { at: 1.5, dur: 2.1 });
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 12, dur: 1.2 });

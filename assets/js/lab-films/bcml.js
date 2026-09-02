@@ -199,17 +199,17 @@
       );
       lower(
         s,
-        "Record every transaction in the run, and tampering stops being invisible.",
+        "Record each reported transaction in the run, and later changes to that ledger become evident.",
         12.5
       );
       lower(
         s,
-        "Raw data never leaves its owner. Only parameters, transactions and results reach the chain.",
+        "In the federated designs shown here, raw data stays with its owner while parameters, transactions and results reach the chain.",
         20.6
       );
       lower(
         s,
-        "But a record proves what happened, not that it was any good. That needs a second mechanism.",
+        "But a ledger records what participants reported, not whether the contribution was good. That needs a second mechanism.",
         30.6,
         { out: 38.0 }
       );
@@ -461,7 +461,7 @@
       );
       lower(
         s,
-        "In simulation the honest and the dishonest separate cleanly, and accuracy holds.",
+        "In the reported simulation, the honest and dishonest populations separate while accuracy is preserved.",
         30.0,
         { out: 38.0 }
       );
@@ -597,7 +597,7 @@
       );
       lower(
         s,
-        "A review that only sells the idea is worth nothing. One of those seams, proving the training really happened, became my dissertation.",
+        "The useful part of a review is the unresolved seam. One of them, proving that training really happened, became my dissertation.",
         35.0,
         { out: 45.0 }
       );
@@ -632,7 +632,7 @@
         h: "Consensus that produces something",
         tex: "\\text{PoW: } H(\\text{nonce}\\,\\|\\,b) < \\tau \\;\\longrightarrow\\; \\text{PoL / PoDL / PoQ: the training run is the work}",
         note:
-          "Proof of Work spends electricity on a puzzle whose answer is worthless once found. The survey reviews the alternatives that channel that compute into training instead: Proof of Learning makes model training the consensus work, Proof of Deep Learning targets the integrity and authenticity of the resulting model, and Proof of Training Quality asks the network to agree on the quality of a contribution rather than merely its existence. Each buys a trained model with the same electricity, and each inherits one hard question: verifying that the claimed work was actually performed."
+          "Proof of Work spends electricity on a puzzle whose answer has no independent utility once found. The survey reviews alternatives intended to channel consensus work into training: Proof of Learning makes model training the consensus work, Proof of Deep Learning targets the integrity and authenticity of the resulting model, and Proof of Training Quality asks the network to agree on contribution quality rather than merely existence. These proposals aim to make consensus work useful, while inheriting a hard question: verifying that the claimed work was actually performed."
       },
       {
         h: "Rewarding the improvement you caused",

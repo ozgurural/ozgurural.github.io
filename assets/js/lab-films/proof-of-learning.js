@@ -375,8 +375,8 @@
       });
       var e1 = s.tex2("\\text{A shortcut leaves an oversized jump}", { px: 300, py: 96, size: "1.3rem", color: AMB });
       s.write(e1, { at: 19.5, dur: 1.8 });
-      lower(s, "A checker never re-runs the whole thing. It re-does only the biggest steps, which is exactly where a faker taking shortcuts would get caught.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
-    }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
+      lower(s, "The original checker avoids a full re-run. It replays the largest updates, where a naive shortcut is easiest to expose. Later attacks showed that not every spoof leaves that signal.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
+    }, { subtitle: "Top-Q replay targets large inconsistencies; later attacks found other routes." });
   }
 
   /* ============== 5 — ASYMMETRY ============== */
@@ -431,14 +431,14 @@
         if (lt >= t0) {
           var shown = Math.max(0, Math.min(D, Math.floor((lt - t0) / dStep)));
           ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.95);
-          ctx.fillText("paths that could fit:", 632, 100);
+          ctx.fillText("illustrative candidate paths:", 632, 100);
           ctx.font = "700 26px 'JetBrains Mono',monospace";
           ctx.fillText(Math.pow(2, shown).toLocaleString() + (shown >= D ? " …" : ""), 632, 134);
           if (shown >= D) {
             var beat = 0.7 + 0.3 * Math.abs(Math.sin(lt * 2));
             ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.85 * beat);
-            ctx.fillText("doubling every step", 632, 158);
-            ctx.fillText("no shortcut, no way to guess", 632, 174);
+            ctx.fillText("naive search grows quickly", 632, 158);
+            ctx.fillText("known attacks avoid this search", 632, 174);
           }
         }
       });
@@ -520,7 +520,7 @@
       var gpts = [], i; for (i = 0; i <= 40; i++) gpts.push([i, Math.exp(-i * 0.08) * (1 + 0.13 * Math.sin(i * 1.9)) * 0.9 + 0.02]);
       var gp = s.poly(gpts, { coords: co, color: TEAL, width: 2.6 });
       s.draw(gp, { at: 1.5, dur: 3.3 });
-      // forged flat / too-clean
+      // synthetic smooth comparison path
       var fpts = []; for (i = 0; i <= 40; i++) fpts.push([i, Math.exp(-i * 0.085) * 0.85 + 0.02]);
       var fp = s.poly(fpts, { coords: co, color: RED, width: 2.2, dashed: "5 5" });
       s.draw(fp, { at: 5.1, dur: 3 });
@@ -537,12 +537,9 @@
            ctx.beginPath(); ctx.arc(px, py, 4, 0, 7); ctx.fill();
            ctx.shadowBlur = 0;
         }
-        /* The scene claims the noise is the fingerprint and then held a still
-           frame for its last fourteen seconds. From 14.5 it measures the thing
-           it named: the step-to-step change of each curve, drawn as it is read
-           off. The genuine descent's steps scatter three times as wide as the
-           forged one's, which is the tell, and the appendix is where the caveat
-           that it is a tell rather than a proof belongs. */
+        /* From 14.5 the scene compares step-to-step variability in two
+           illustrative traces. The contrast motivates trajectory evidence; it
+           is not itself the replay verifier or a general forgery detector. */
         if (lt > 14.5) {
           var dg = [], df = [], q;
           for (q = 1; q <= 40; q++) { dg.push(gpts[q][1] - gpts[q - 1][1]); df.push(fpts[q][1] - fpts[q - 1][1]); }
@@ -595,16 +592,16 @@
         }
       });
       
-      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 144, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
-      var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 202, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
+      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Recorded run (illustration)", { px: 650, py: 144, anchor: "left", size: "1.25rem", color: "#e2e8f0" });
+      var fl = s.caption("<span style='color:" + RED + "'>■</span> Smooth synthetic path (illustration)", { px: 650, py: 202, anchor: "left", size: "1.15rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 4.5, dur: 0.9 }); s.fadeIn(fl, { at: 8.1, dur: 0.9 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: 0.0, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 1.5, dur: 0.75 });
       s.fadeOut(xl, { at: 13.2, dur: 0.75 }); // clear the lower third for the narration
       // Clean legend on the right
-      var hg = s.caption("The noise is the fingerprint.", { px: 650, py: 260, anchor: "left", size: "1.4rem", color: "#dbeafe" });
+      var hg = s.caption("Variability can carry evidence; it is not a detector alone.", { px: 650, py: 260, anchor: "left", size: "0.92rem", color: "#dbeafe", maxWidth: "250px" });
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
-      var seal = s.caption("✦ Two-Layer Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
+      var seal = s.caption("✦ Joint trajectory + watermark check", { px: 650, py: 310, anchor: "left", size: "1.05rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
       lower(s, "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });

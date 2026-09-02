@@ -217,7 +217,7 @@
       s.write(eq, { at: 3.5, dur: 1.5 });
 
       // the price equation lands WITH the tangent sweep it explains (lt≈20)
-      var eq2 = s.tex2("P = \\frac{y}{x}", { px: 750, py: 108, size: "2.2rem", color: AMB });
+      var eq2 = s.tex2("o = \\frac{y}{x},\\quad p = \\frac{o}{1+o}", { px: 720, py: 108, size: "1.75rem", color: AMB });
       s.morph(eq, eq2, { at: 19, dur: 1.2 });
 
       var co = film.coords({ xRange: [0, 10], yRange: [0, 10], pad: { left: 400, right: 150, top: 150, bottom: 150 } });
@@ -349,14 +349,14 @@
            var prob = (price / (1 + price)) * 100;
 
            ctx.fillStyle = AMB; ctx.font = "bold 20px monospace";
-           ctx.fillText("Probability: " + prob.toFixed(1) + "%", co.x(currX) + 20, co.y(currY) - 20);
+           ctx.fillText("Implied p: " + prob.toFixed(1) + "%", co.x(currX) + 20, co.y(currY) - 20);
            ctx.globalAlpha = 1;
         }
       });
 
       lower(s, "So stop assigning the work and price it instead. Will this bug be fixed by Friday?", 2.0, { out: 22.5 });
       lower(s, "While its liquidity pool is funded, an automated market maker continuously quotes a price, so a trader does not need a matching counterparty.", 17.0, { out: 45 });
-      lower(s, "And the slope of that curve is the crowd's probability that the work gets done.", 32.0, { out: 67.5 });
+      lower(s, "The curve's slope gives marginal odds. For binary unit payouts, those odds convert to an implied probability: a market quote, not calibrated truth.", 32.0, { out: 67.5 });
       lower(s, "If nobody is working on it, the price is cheap. Cheap is the signal to act.", 47.0);
     }, { subtitle: "Continuous automated market makers" });
   }
@@ -525,11 +525,11 @@
       lower(s, "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.", 22.0, { out: 69 });
       lower(s, "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.", 48.0, { out: 87 });
       
-      var finalBeat = s.caption("Past a certain scale (a million agents, most of them not human) coordination stops being a role you can hire for. The only manager that scales is a price.", { px: 480, py: 110, anchor: "center", align: "center", size: "1rem", color: PAL.white });
+      var finalBeat = s.caption("At machine scale, a price is one candidate coordination signal. Settlement still supplies the truth condition.", { px: 480, py: 110, anchor: "center", align: "center", size: "1rem", color: PAL.white });
       s.fadeIn(finalBeat, { at: 75, dur: 2 });
 
       lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 60.0);
-    }, { subtitle: "Aligning incentives with truth" });
+    }, { subtitle: "Prices coordinate; settlement supplies the truth condition." });
   }
 
 

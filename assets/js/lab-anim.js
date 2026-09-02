@@ -1130,7 +1130,7 @@
   var FILM_CREDITS = {
     // built from the author's own peer-reviewed work
     "pol-film":        "Based on: Ural &amp; Yoshigoe &middot; <em>SecurePoL</em> &middot; IEEE Access 2025",
-    "mh-film":         "Based on: Ural &amp; Yoshigoe &middot; <em>Feature-Based Model Watermarking for PoL</em> &middot; IEEE Access 2024",
+    "mh-film":         "Illustrative Gaussian detector &middot; assumptions stated in the appendix &middot; not the mechanism of the author&rsquo;s 2024 paper",
     "bcml-film":       "Based on: Ural &amp; Yoshigoe &middot; <em>Survey on Blockchain-Enhanced Machine Learning</em> &middot; IEEE Access 2023",
     "cyb-film":        "Based on: Ural &amp; Acart&uuml;rk &middot; <em>Automatic Detection of Cyber Security Events</em> &middot; ICISSP 2021",
     "wm-compare-film": "Trigger sets after Adi et al. 2018 &middot; generative marking after Kirchenbauer et al. 2023 &middot; auxiliary-head analysis from Ural, Ph.D. dissertation, ERAU 2025",

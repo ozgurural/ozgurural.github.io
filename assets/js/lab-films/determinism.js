@@ -281,7 +281,7 @@
 
       lower(
         s,
-        "A Level D simulator is legally the aircraft. Airlines log real type-rating hours on it.",
+        "An approved Level D simulator can substitute for aircraft time in defined training and checking tasks.",
         1.6
       );
       lower(
@@ -296,12 +296,12 @@
       );
       lower(
         s,
-        "Not a target. A <em>gate</em>. Miss it and the hours flown do not count.",
+        "Not a target. A <em>qualification gate</em>. Exceed it in the test and the device does not meet the requirement.",
         23.0
       );
       lower(
         s,
-        "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
+        "The corresponding rotorcraft limit is 100 milliseconds.",
         33.5,
         { out: 43.2 }
       );
@@ -496,7 +496,7 @@
 
       lower(
         s,
-        "Inside it, a fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
+        "Inside it, a fixed cadence. At 60 hertz each rendered frame spans 16.67 milliseconds.",
         1.6
       );
       lower(
@@ -947,7 +947,7 @@
         tex:
           "T_{\\text{transport}}=\\sum_i t_i \\;\\le\\; 150\\,\\text{ms}\\quad(\\text{aeroplane, Level C/D});\\qquad \\le 100\\,\\text{ms}\\ (\\text{helicopter})",
         note:
-          "Transport delay is the total system processing time from a pilot primary-flight-control input until the motion, visual or instrument systems respond. The limits are set by FAA 14 CFR Part 60 and the equivalent EASA CS-FSTD(A). This is a gate, not a target: a device over the ceiling does not qualify, and hours flown on it do not count toward a type rating."
+          "Transport delay is the total system processing time from a pilot primary-flight-control input until the motion, visual or instrument systems respond. The limits are set by FAA 14 CFR Part 60 and the corresponding EASA CS-FSTD(A) criteria. This is a qualification gate, not an engineering target: a device over the applicable ceiling does not meet that test requirement."
       },
       {
         h: "Why the mean is the wrong statistic",

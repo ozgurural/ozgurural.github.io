@@ -1,7 +1,7 @@
 ---
 permalink: /lab/oracles/
 oembed: "/lab/oracles/oembed.json"
-title: "ML Oracles: Bringing Truth to the Chain, animated"
+title: "ML Oracles: Verifiable Claims for the Chain, animated"
 description: "A cinematic, PhD-level explainer on the convergence of machine learning and decentralized oracle networks."
 excerpt: "Smart contracts cannot see the real world. To act on complex data, they need ML models. Here is the math of zkML and Optimistic fraud proofs, animated."
 sitemap: true
@@ -13,7 +13,7 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-oracles" style="margin-top: 0;">
   <span class="ep-eyebrow">Smart Contracts × Machine Learning</span>
-  <p class="lab-card__lead">Smart contracts are blind logic gates. They cannot see the outside world. An oracle feeds them data, but what if the data requires pattern recognition, like analyzing a satellite image or classifying a loan application? You cannot run a neural network on-chain. This animation explains how <strong>zkML (Zero-Knowledge Machine Learning)</strong> and <strong>Optimistic Fraud Proofs</strong> bridge the gap, bringing off-chain AI inference on-chain with cryptographic certainty.</p>
+  <p class="lab-card__lead">Smart contracts are blind logic gates. They cannot see the outside world. An oracle feeds them data, but what if the data requires pattern recognition, like analyzing a satellite image or classifying a loan application? Running a large neural network on-chain is usually impractical. This animation explains how <strong>zkML (Zero-Knowledge Machine Learning)</strong> and <strong>optimistic fraud proofs</strong> address different parts of the gap, while making their trust assumptions visible.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span><strong>Open research direction of the author</strong>, not yet published, and a natural continuation of the <a href="/publication/2023-ieee-access-survey">Blockchain-Enhanced ML survey</a> (IEEE Access 2023). The question: by what mechanism can a deterministic chain accept a claim about a probabilistic model it cannot re-execute? The film works through the candidate answers: zero-knowledge proofs of inference and optimistic challenge windows, and where each one currently breaks. Feedback and collaborators welcome.</span>

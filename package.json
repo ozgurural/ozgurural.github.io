@@ -46,6 +46,7 @@
     "build:linkedin-video": "node scripts/build-film-video.js --linkedin",
     "build:linkedin-videos": "node scripts/build-film-video.js --all --linkedin",
     "preview:linkedin-videos": "node scripts/build-film-video.js --all --linkedin --preview",
+    "audit:linkedin-videos": "node scripts/audit-linkedin-videos.js",
     "audit:films": "node scripts/audit-lab-films.js"
   }
 }

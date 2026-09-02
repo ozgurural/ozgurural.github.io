@@ -2,7 +2,7 @@
 permalink: /lab/
 title: "Research Lab"
 description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball · ML Oracles · Watermarking Models · Blockchain-Enhanced ML. Real research math, animated from the equation up."
-excerpt: "Eleven cinematic explainers, grouped by what they are: five from my own IEEE Access and ICISSP papers on proof-of-learning, watermarking, blockchain-enhanced ML and rare-event detection, one from the hard-real-time simulator systems I engineer, three animating foundational results credited to their authors, and two open questions labelled as unpublished. Each animates the real mathematics, derived rather than hand-waved."
+excerpt: "Eleven cinematic explainers, grouped by evidence: three reconstruct results from my papers, one explains the public constraints behind systems I engineer, two synthesize watermarking ideas with their assumptions stated, three animate foundational results credited to their authors, and two are labelled open research directions."
 header:
   og_image: "lab-og/og-lab.png"
 ---
@@ -11,7 +11,7 @@ header:
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Eleven cinematic explainers, grouped by what they are. Five animate results from my own papers on proof-of-learning, model watermarking, blockchain-enhanced ML and rare-event detection. One comes from the hard-real-time systems I engineer. Three animate foundational results that belong to other people, credited as such. Two are open questions I am still working on, labelled so they are not mistaken for reviewed work. Each film derives the real mathematics from the equation up, written for a technical reader, and every formula appears exactly as it does in the paper, including the approximations the papers themselves admit to.
+    Eleven cinematic explainers, grouped by the evidence behind them. Three reconstruct results from my papers on proof-of-learning, blockchain-enhanced ML and rare-event detection. One explains public qualification constraints behind the hard-real-time systems I engineer. Two are clearly labelled teaching and synthesis pieces about AI watermarking. Three animate foundational results that belong to other people, credited as such. Two are open research directions, labelled so they are not mistaken for reviewed work. Equations taken from papers retain their assumptions and approximations; illustrative models are identified as illustrations.
   </p>
   <div class="lab-hero__actions">
     <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>
@@ -33,18 +33,8 @@ header:
     <strong>Blockchain-Enhanced ML</strong>
     <span>Consensus that trains instead of hashing, contracts that pay for the loss you removed, and what the prototypes actually measured. <em>IEEE Access 2023, my most-cited paper.</em></span>
   </a>
-  <a class="lab-mission-card" href="/lab/model-heist/">
-    <span class="lab-mission-card__code">03</span>
-    <strong>Model Heist Detector</strong>
-    <span>A watermark invisible in any one weight, statistically detectable across thousands: a Gaussian Z-test, animated. <em>IEEE Access 2024.</em></span>
-  </a>
-  <a class="lab-mission-card" href="/lab/watermarking-comparison/">
-    <span class="lab-mission-card__code">04</span>
-    <strong>Watermarking Models</strong>
-    <span>A side-by-side comparison of ML model watermarking architectures and their robustness. <em>Auxiliary-head analysis from my dissertation.</em></span>
-  </a>
   <a class="lab-mission-card" href="/lab/cyber-events/">
-    <span class="lab-mission-card__code">05</span>
+    <span class="lab-mission-card__code">03</span>
     <strong>Rare-Event Detection</strong>
     <span>Why a 99%-accurate detector is wrong most times it speaks, and what an agglutinative language does to your features. <em>ICISSP 2021.</em></span>
   </a>
@@ -55,9 +45,25 @@ header:
 
 <nav class="lab-mission-deck" aria-label="Films from engineering practice">
   <a class="lab-mission-card" href="/lab/determinism/">
-    <span class="lab-mission-card__code">06</span>
+    <span class="lab-mission-card__code">04</span>
     <strong>Determinism at 60 Hz</strong>
     <span>A deadline is never met on average: the 150 ms qualification gate, 864,000 frames a session, and the straggler host that owns the frame.</span>
+  </a>
+</nav>
+
+<h3 class="lab-deck-heading">AI watermarking: models and synthesis</h3>
+<p class="lab-deck-note">A teaching model and a cross-paper comparison. Each page separates published mechanisms from illustrative assumptions.</p>
+
+<nav class="lab-mission-deck" aria-label="Films explaining AI watermarking models">
+  <a class="lab-mission-card" href="/lab/model-heist/">
+    <span class="lab-mission-card__code">05</span>
+    <strong>Statistical Watermark Detector</strong>
+    <span>A Gaussian matched-filter teaching model: how weak coordinate-level evidence can accumulate, with assumptions and limits stated.</span>
+  </a>
+  <a class="lab-mission-card" href="/lab/watermarking-comparison/">
+    <span class="lab-mission-card__code">06</span>
+    <strong>Watermarking Field Guide</strong>
+    <span>Four different threat models, from parameter access and black-box triggers to generated text and auxiliary heads. <em>Sources identified per mechanism.</em></span>
   </a>
 </nav>
 
@@ -68,7 +74,7 @@ header:
   <a class="lab-mission-card" href="/lab/gradient-pinball/">
     <span class="lab-mission-card__code">07</span>
     <strong>Gradient Pinball</strong>
-    <span>How machines learn: the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise. <em>After Polyak, Nesterov and Dauphin et al.</em></span>
+    <span>How machines learn: the learning-rate cliff, the √κ momentum result in the strongly convex quadratic regime, and saddle-point geometry. <em>After Polyak, Nesterov and Dauphin et al.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/block-race/">
     <span class="lab-mission-card__code">08</span>
@@ -78,7 +84,7 @@ header:
   <a class="lab-mission-card" href="/lab/redundancy-reactor/">
     <span class="lab-mission-card__code">09</span>
     <strong>Redundancy Reactor</strong>
-    <span>Superlinear safety, until correlation installs a floor that destroyed Ariane 5. <em>Classical TMR and the Ariane 5 inquiry.</em></span>
+    <span>Superlinear safety under independent faults, then the shared software failure that defeated duplicated hardware on Ariane 5. <em>Classical TMR and the Ariane 5 inquiry.</em></span>
   </a>
 </nav>
 

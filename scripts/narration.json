@@ -2,24 +2,24 @@
   "block-race": [
     "Two machines disagree, and no authority can settle it. Yet everything downstream has to act on one history. Nakamoto's answer is not a judge. It is a race, and rewriting it gets exponentially more expensive the longer you wait.",
     "Mining is a biased coin flip based on hashrate. Energy is the price of rewriting history, and the honest majority just outspends the liar.",
-    "Forget both chains. Only the gap matters, and the coin is rigged seventy to thirty. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each confirmation halves what is left.",
+    "Forget both chains. Only the gap matters, and the coin is rigged seventy to thirty. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each additional block multiplies the remaining catch-up chance by three sevenths.",
     "Satoshi models the attacker's block count as Poisson with mean lambda = z q over p, then sums gambler's-ruin tails.",
     "Tripling the attacker from 10% to 30% inflates risk by ~544x. Adversary size dominates.",
     "What this really buys is finality with no one in charge: the cost of a lie, denominated in energy and time."
   ],
   "gradient-pinball": [
-    "Every trained model is the end of a journey down a landscape like this. Walk it and you have a model. Reproduce it and you have a proof.",
+    "A trained model is the endpoint of an optimization path. The final weights show where it ended; a recorded trajectory provides evidence about how it got there.",
     "Measure slope, step against it, repeat. Each step is the locally steepest move.",
     "Step sizes dictate distance. If too large, the system overshoots and diverges.",
     "Momentum acts as a memory of past gradients. Side-to-side bounces cancel, downhill drift compounds.",
-    "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.",
+    "For a strongly convex quadratic, optimized momentum changes the condition-number scale from kappa to its square root. At kappa one thousand, that is about 32 before constants and log factors.",
     "In high dimensions, most critical points are saddles. Momentum and noise help escape them."
   ],
   "bcml": [
     "Three problems a ledger suits. Data poisoned by someone who still collects the reward. Models that leak. Weights that remember nothing.",
-    "Record every transaction in the run, and tampering stops being invisible.",
-    "Raw data never leaves its owner. Only parameters, transactions and results reach the chain.",
-    "But a record proves what happened, not that it was any good. That needs a second mechanism.",
+    "Record each reported transaction in the run, and later changes to that ledger become evident.",
+    "In the federated designs shown here, raw data stays with its owner while parameters, transactions and results reach the chain.",
+    "But a ledger records what participants reported, not whether the contribution was good. That needs a second mechanism.",
     "Proof of Work agrees by burning electricity on a puzzle worth nothing once solved.",
     "So aim it at the model. Proof of Learning makes the training run earn consensus; Proof of Deep Learning covers the model itself.",
     "Proof of Training Quality asks more: not that work happened, but that it helped.",
@@ -27,20 +27,20 @@
     "Then incentives. One contract accepts the data, prices it, and updates the model.",
     "You are paid for the loss you removed. Submit noise and the term turns negative.",
     "Stake a deposit. It comes back if the data holds up, and is forfeited if it does not.",
-    "In simulation the honest and the dishonest separate cleanly, and accuracy holds.",
+    "In the reported simulation, the honest and dishonest populations separate while accuracy is preserved.",
     "Does it work? DeepChain was built: a Corda prototype trained on MNIST.",
     "Accuracy rises with every party who joins. Throughput falls with every party who joins.",
     "LearningChain shows the same trade: privacy noise buys privacy and costs accuracy.",
     "So the survey ends on the seams: scale, energy, and consensus designed for learning rather than currency.",
-    "A review that only sells the idea is worth nothing. One of those seams, proving the training really happened, became my dissertation."
+    "The useful part of a review is the unresolved seam. One of them, proving that training really happened, became my dissertation."
   ],
   "determinism": [
-    "A Level D simulator is legally the aircraft. Airlines log real type-rating hours on it.",
+    "An approved Level D simulator can substitute for aircraft time in defined training and checking tasks.",
     "So the numbers are regulation, not goals. The ceiling: 150 milliseconds, input to response.",
     "Every stage spends it. Image generation takes the largest bite.",
-    "Not a target. A gate. Miss it and the hours flown do not count.",
-    "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
-    "Inside it, a fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
+    "Not a target. A qualification gate. Exceed it in the test and the device does not meet the requirement.",
+    "The corresponding rotorcraft limit is 100 milliseconds.",
+    "Inside it, a fixed cadence. At 60 hertz each rendered frame spans 16.67 milliseconds.",
     "Mean frame time is 8.6 milliseconds, half the budget. But a deadline is never met on average.",
     "Count the frames instead. Four hours is 864,000 of them.",
     "One bad frame in a thousand, a 99.9% success rate, is 864 stutters a session.",
@@ -67,8 +67,8 @@
     "So both become acceptance criteria: catch nic.tr on the day, stay under thirty percent false. It met both.",
     "Then the language pushes back. Turkish stacks suffixes, so one stem becomes dozens of surface forms.",
     "To a bag of words those are unrelated tokens. The evidence scatters.",
-    "This is the low-resource penalty, and a bigger classifier does not fix it. Stemming does, before the classifier.",
-    "Which is the under-reported part: here, preprocessing decides more than the model does.",
+    "This is one low-resource-language penalty. The pipeline normalizes Turkish before keyword and event detection so related surface forms retain more evidence.",
+    "In this system, preprocessing and entity history are part of the detector, not cleanup around it.",
     "And count the right thing. Not sentiment, but the entity that can be attacked.",
     "Each entity is judged against its own history, because normal for one is an alarm for another.",
     "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. The anomaly is the signal.",
@@ -83,7 +83,7 @@
     "Take the manager out and publish a price. Each agent reads one number, however many of them there are.",
     "So stop assigning the work and price it instead. Will this bug be fixed by Friday?",
     "While its liquidity pool is funded, an automated market maker continuously quotes a price, so a trader does not need a matching counterparty.",
-    "And the slope of that curve is the crowd's probability that the work gets done.",
+    "The curve's slope gives marginal odds. For binary unit payouts, those odds convert to an implied probability: a market quote, not calibrated truth.",
     "If nobody is working on it, the price is cheap. Cheap is the signal to act.",
     "A developer who knows they can fix it buys in quietly at ten cents.",
     "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.",
@@ -96,46 +96,46 @@
     "Price discovers what to do. Verification decides what was done. That second half is the open problem."
   ],
   "model-heist": [
-    "I built systems to stop data leaking. Prevention always fails eventually. So once your model is out in the world, can you still prove it was yours?",
-    "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.",
-    "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.",
-    "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.",
-    "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.",
-    "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark."
+    "I built systems to reduce data leakage. Prevention is not the same as provenance. Once your model is out in the world, what evidence could still link it to you?",
+    "A single large perturbation can be conspicuous and can hurt accuracy. A practical mark has to balance detectability against utility.",
+    "In this Gaussian teaching model, spread the mark across coordinates. A matched filter makes aligned signal add coherently while independent noise adds in quadrature.",
+    "Under the stated Gaussian assumptions this becomes a Z-test. The threshold trades detection power against false alarms.",
+    "Inside this model, aggregate evidence grows with breadth while each coordinate stays weak. Correlated noise or a poor reference can erase that advantage.",
+    "A norm-bounded scrub can move the score only by its budget. That is a detector bound, not a universal claim that a real watermark cannot be removed."
   ],
   "oracles": [
     "An autonomous system is handed a verdict: 'that's crop damage,' 'that's a valid claim,' 'that's a threat.'",
     "It didn't run the model. It can't see the weights.",
     "Should it act?",
     "In a world where AI agents consume each other's inferences, this is the trust question.",
-    "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.",
+    "Zero-Knowledge Machine Learning addresses the computation question with a cryptographic proof.",
     "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.",
     "That shadow compresses into a short proof, cheap to check and computationally infeasible to forge under its cryptographic assumptions. It binds this model and input to this output.",
     "The smart contract cannot run the model, but it can verify the proof. Acceptance guarantees that the encoded computation was followed; it does not guarantee that the model or input was truthful.",
     "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.",
     "A node asserts a result and locks a massive financial bond (stake) on the blockchain.",
     "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.",
-    "If the timer expires without a successful challenge, the protocol finalises the claim. That is an economic guarantee, and it depends on an honest watcher being present."
+    "If the timer expires without a successful challenge, the protocol finalises the claim. That is an economic verification mechanism, and it depends on an attentive, incentivized watcher being present."
   ],
   "proof-of-learning": [
     "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.",
     "A model is not born at the finish line. It walks there step by step. The path is the asset, not the endpoint.",
     "The proof is a diary of the run: checkpoints, data, settings. Signed, so nobody can edit it later.",
-    "A checker never re-runs the whole thing. It re-does only the biggest steps, which is exactly where a faker taking shortcuts would get caught.",
+    "The original checker avoids a full re-run. It replays the largest updates, where a naive shortcut is easiest to expose. Later attacks showed that not every spoof leaves that signal.",
     "The design goal is a cost asymmetry: honest proving takes one training run, while forging should cost at least as much. Later attacks showed that plain Proof-of-Learning does not always meet that goal.",
     "SecurePoL adds a second check: a mark woven into the model. A forger must now reproduce both a plausible trajectory and a watermark-consistent ownership signal.",
     "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark."
   ],
   "redundancy-reactor": [
-    "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.",
-    "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.",
+    "In a safety-critical controller, three independent channels can feed a majority voter. One faulty channel is then outvoted by the other two.",
+    "In the ideal voter model, the output fails when a majority of channels fail. Independent rare faults make that event scale as a higher power of the channel failure rate.",
     "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.",
     "When faults correlate, the cliff vanishes. Redundancy no longer protects you; they all fail together.",
-    "A rocket had identical units. A variable overflowed. Both units failed identically seventy-two milliseconds apart, voting unanimously to crash.",
-    "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains."
+    "Ariane 5 had two inertial systems running identical software. The backup failed first; the active unit stopped in the next 72 millisecond cycle for the same reason.",
+    "You cannot vote out a shared mistake. Design diversity and independent validation can reduce common-mode risk, but they do not guarantee zero correlation."
   ],
   "wm-compare": [
-    "To make Proof-of-Learning harder to spoof, the design hides a mark inside the model. Four approaches exist, and each faces a different attacker. The first writes a pattern straight into the weights.",
+    "Watermarking is not one mechanism. Here are four approaches with different access assumptions. The first writes a pattern into selected parameters.",
     "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.",
     "3. As the Z-score moves past the threshold, coincidence becomes increasingly unlikely. The result is statistical evidence of copying, at the chosen false-positive rate.",
     "But there is a catch: you need full access to the stolen weights to run this test.",
@@ -145,11 +145,11 @@
     "The network outputs a secret label on the trigger set, providing black-box evidence that it carries your watermark.",
     "For Large Language Models, watermarking happens continuously during text generation.",
     "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.",
-    "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.",
-    "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes evidence of origin at a measurable false-positive rate.",
+    "In this illustration, γ equals one half, so unwatermarked text has a null expectation of 50 percent Green.",
+    "The logit bias raises the observed Green share in this sample to about 75 percent. A keyed statistical test turns that deviation into evidence at a chosen false-positive rate.",
     "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.",
-    "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.",
+    "The auxiliary head learns a secret classification task through shared latent features while the main output keeps its own objective.",
     "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.",
-    "Every watermark can be attacked. The one that survives is not in the model. It is in the record of how the model was made."
+    "The head can be removed, so SecurePoL combines watermark evidence with a separate record of how the model was trained. Two checks cover different failure modes."
   ]
 }

@@ -157,7 +157,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 72, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
+      lower(s, "In a safety-critical controller, three independent channels can feed a majority voter. One faulty channel is then outvoted by the other two.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -210,7 +210,7 @@
       s.fadeIn(e1, { at: 10, dur: 1.0 });
       var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 121, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
-      lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
+      lower(s, "In the ideal voter model, the output fails when a majority of channels fail. Independent rare faults make that event scale as a higher power of the channel failure rate.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
   }
 
@@ -344,11 +344,9 @@
         }
         panel(120, 300, "SRI 1 (backup)", 6.6); panel(120, 366, "SRI 2 (active)", 6.75);
 
-        /* The narrated fact is that both units failed 72 ms apart and then voted
-           unanimously for the same wrong answer, and neither the interval nor
-           the voter was ever on screen: the scene stopped moving at 14.4 and
-           held for its last nine seconds. Both are now drawn, because the vote
-           agreeing is the whole reason redundancy did not save the flight. */
+        /* The two units failed 72 ms apart. They were a backup/active pair, not
+           voting channels, so this scene shows loss of both references without
+           importing the majority-voter mechanism from the earlier scenes. */
         if (lt > 15.0) {
           var tl = clamp01((lt - 15.0) / 0.6);
           var xOf = function (ms) { return 400 + ms / 100 * 340; };
@@ -360,7 +358,7 @@
           ctx.fillText("0 ms", 400, 318); ctx.fillText("100 ms", 704, 318);
 
           var reveal = clamp01((lt - 15.4) / 2.4);
-          [[0, "SRI 2 fails"], [72, "SRI 1 fails"]].forEach(function (ev, k) {
+          [[0, "SRI 1 fails"], [72, "SRI 2 fails"]].forEach(function (ev, k) {
             if (reveal < (k ? 0.72 : 0.05)) return;
             var ex = xOf(ev[0]);
             ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 2;
@@ -380,22 +378,22 @@
             ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 2;
             ctx.strokeRect(400, 368, 300, 52);
             ctx.fillStyle = h.rgba(WHT, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
-            ctx.fillText("MAJORITY VOTE: 2 of 2 agree", 414, 392);
+            ctx.fillText("SHARED SOFTWARE FAILURE", 414, 392);
             ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 12px 'JetBrains Mono',monospace";
-            ctx.fillText("accepted, and wrong", 414, 412);
+            ctx.fillText("both inertial references lost", 414, 412);
           }
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 650, py: 80, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{Shared software} \\Rightarrow \\text{fault not isolated}", { px: 650, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
-      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
-    }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
+      lower(s, "Ariane 5 had two inertial systems running identical software. The backup failed first; the active unit stopped in the next 72 millisecond cycle for the same reason.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
+    }, { subtitle: "Two inertial systems, one shared software failure." });
   }
 
   /* ============== 6 — DIVERSITY ============== */
   function diversity(film) {
-    film.scene("The only real cure: diversity", 21, function (s) {
+    film.scene("Reduce the common cause", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
         var hitLevel = clamp01((lt - 3) / 0.5) * clamp01((8 - lt) / 0.5);
         drawTMR(ctx, h, 320, 230, [0, hitLevel, 0], 0, true, lt);
@@ -426,16 +424,16 @@
       });
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 78, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
-      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
+      lower(s, "You cannot vote out a shared mistake. Design diversity and independent validation can reduce common-mode risk, but they do not guarantee zero correlation.", 7.0, { maxWidth: "70%", py: 520 });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 110, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
 
-      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 283, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
+      var cap1 = s.caption("replication helps only when failure paths are genuinely independent.", { px: 760, py: 283, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
       s.fadeIn(cap1, { at: 8.5, dur: 1.5 });
 
-      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 183, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
+      var tag2 = s.caption("As machines take consequential decisions, a crucial question is whether redundant channels can fail together. That is an engineering property to test, not a hope.", { px: 480, py: 183, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
       s.fadeIn(tag2, { at: 16.5, dur: 1.5 });
-    }, { subtitle: "The lever was never N. It was the independence ρ." });
+    }, { subtitle: "Channel count is not enough; dependence between failures matters." });
   }
 
   /* ====================== appendix ====================== */
@@ -449,8 +447,8 @@
         "Each extra pair of channels raises the failure rate to a higher power of q: on a log-log plot, a steeper slope. The unbounded gain is an <em>independent-model</em> idealisation only."],
       ["Correlation floor", "P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q",
         "A first-order approximation (the exact Fleming β-factor is \\(\\rho q+(1-\\rho q)P_{\\text{ind}}(N,(1-\\rho)q)\\); both share the floor). The ρq term is independent of N, so for \\(q<\\tfrac12\\), \\(\\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\) and the safety multiplier saturates at \\(1/\\rho\\). Here \\(\\rho q\\) is a mission probability; \\(\\rho=\\beta\\in[0,1]\\)."],
-      ["Ariane 5", "\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q",
-        "Flight 501 (4 Jun 1996): two SRI units, identical software, hit the same int16 overflow of BH: backup SRI 1 first, active SRI 2 ~72 ms later. Self-destruct ~39 s after H0 (30 s after lift-off), ~4 km. Identical software means ρ≈1, so N was irrelevant."]
+      ["Ariane 5", "\\text{duplicated hardware} \\;\\not\\Rightarrow\\; \\text{independent failure paths}",
+        "Flight 501 (4 Jun 1996): two SRI units running identical software encountered the same conversion failure, backup SRI 1 first and active SRI 2 in the next 72 ms data cycle. The case demonstrates a shared software failure; it does not measure ρ or instantiate the voting model used in the earlier scenes."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

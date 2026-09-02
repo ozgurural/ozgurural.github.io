@@ -265,7 +265,7 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk it and you have a model. Reproduce it and you have a proof.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "A trained model is the endpoint of an optimization path. The final weights show where it ended; a recorded trajectory provides evidence about how it got there.", 6.0, { out: 19.8, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
@@ -485,7 +485,7 @@
       s.write(t1, { at: 1.5, dur: 1.8 });
       var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.4rem", color: "#FFFF00" });
       s.write(t2, { at: 3.75, dur: 1.8 });
-      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.05rem", color: "#dbeafe" });
+      var t3 = s.tex2("\\text{Optimized parameters for the quadratic model}", { px: 264, py: 320, size: "1.05rem", color: "#dbeafe" });
       s.fadeIn(t3, { at: 5.4, dur: 1.5 });
 
       // plot region (right half), x = log10(kappa) in [0,4]
@@ -508,12 +508,12 @@
       var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 264, py: 400, size: "1.4rem", color: "#FFFF00" });
       s.fadeIn(call, { at: 9.6, dur: 1.2 }); s.pulse(call, { at: 10.8, dur: 1.2, amp: 0.12 });
 
-      lower(s, "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
+      lower(s, "For a strongly convex quadratic, optimized momentum changes the condition-number scale from kappa to its square root. At kappa one thousand, that is about 32 before constants and log factors.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
 
       // honesty caveat — the regime where this holds (referee note)
       var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 60, anchor: "top", align: "center", size: "0.68rem" });
       s.fadeIn(caveat, { at: 17.25, dur: 1.2 });
-    }, { subtitle: "Momentum fundamentally improves the convergence rate." });
+    }, { subtitle: "In the stated quadratic regime, momentum improves the condition-number dependence." });
   }
 
   /* ======================== SCENE 6 — SADDLES ====================== */
@@ -665,7 +665,7 @@
 
       var vis = s.caption("In a world where anyone can descend, trust no longer comes from the model. It comes from proving how the model got there.", { px: 470, py: 176, anchor: "top", align: "center", size: "1.05rem", color: "#e8eef9", maxWidth: "75%" });
       s.fadeIn(vis, { at: 22, dur: 1.5 });
-    }, { subtitle: "High dimensional critical points are almost never minima. They are saddles." });
+    }, { subtitle: "The random-field model predicts that high-error critical points are overwhelmingly saddles." });
   }
 
   /* --------- small canvas arrow helper --------- */

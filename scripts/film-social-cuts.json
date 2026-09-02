@@ -13,7 +13,7 @@
     "hook": "The seven false positives matter as much as the 22 detections.",
     "from": 123,
     "to": 173,
-    "post": "29 alerts. 22 real events. Seven false positives.\n\nThat is the result I trust more than a rounded accuracy claim. The detector had to find rare cyber events in Turkish text, where preprocessing and entity history mattered more than model size.\n\nA useful detector publishes what it gets wrong."
+    "post": "29 alerts. 22 real events. Seven false positives.\n\nThat is the result I trust more than a rounded accuracy claim. The detector had to find rare cyber events in Turkish text, where preprocessing and entity history were core parts of the method.\n\nA useful detector publishes what it gets wrong."
   },
   "determinism": {
     "title": "Why the Mean Is the Wrong Real-Time Metric",
@@ -21,7 +21,7 @@
     "hook": "99.9% reliable still means 864 bad frames in four hours.",
     "from": 44,
     "to": 92,
-    "post": "99.9% sounds reliable. Over a four-hour, 60 Hz simulator session, it still permits 864 bad frames.\n\nThat is why a Level D system is not certified by its mean frame time. Deadlines are pass or fail, frame by frame.\n\nReliability percentages become meaningful only after you translate them into the failures a user will actually experience."
+    "post": "99.9% sounds reliable. Over a four-hour, 60 Hz simulator session, it still permits 864 bad frames.\n\nThat is why mean frame time cannot demonstrate deadline compliance. The tail beyond the deadline matters, frame by frame.\n\nReliability percentages become meaningful only after you translate them into the failures a user will actually experience."
   },
   "gradient-pinball": {
     "title": "Gradient Descent, Momentum, and Failure",
@@ -37,7 +37,7 @@
     "hook": "What if nobody assigned the work, and a price did?",
     "from": 63,
     "to": 121,
-    "post": "What if nobody assigned software work, and a price did?\n\nAn automated market maker can continuously price the probability that a task will be completed. That lets people or agents act on one public signal without waiting for a central coordinator.\n\nThis is an open research direction, not a published mechanism. Pricing discovers what to do; verification still has to decide what was done."
+    "post": "What if nobody assigned software work, and a price did?\n\nAn automated market maker can quote binary outcome prices that can be read as implied probabilities under defined payouts. That lets people or agents act on one public signal without waiting for a central coordinator.\n\nThis is an open research direction, not a published mechanism. Pricing coordinates action; verification still has to decide what was done."
   },
   "oracles": {
     "title": "How Can a Contract Verify an AI Verdict?",
@@ -66,25 +66,25 @@
   "redundancy-reactor": {
     "title": "Why Identical Backups Fail Together",
     "eyebrow": "ARIANE 5 · 72 MILLISECONDS APART",
-    "hook": "Two computers agreed. The shared bug made both wrong.",
+    "hook": "Two inertial systems failed. One software assumption defeated both.",
     "from": 82,
     "to": 117,
-    "post": "Ariane 5 had redundant inertial units. Identical software hit the same overflow, and the units failed 72 milliseconds apart.\n\nVoting protects against independent faults. It cannot vote out a shared mistake.\n\nThe engineering lever is not only the number of backups. It is their independence."
+    "post": "Ariane 5 had two inertial reference systems running identical software. The backup failed first; the active unit stopped in the next 72 millisecond data cycle for the same reason.\n\nRedundancy can protect against independent faults. Ariane 5 shows why duplicated hardware does not remove a common software failure.\n\nThe engineering lever is not only the number of backups. It is the independence of their failure paths."
   },
   "watermarking-comparison": {
-    "title": "How Generative Text Watermarks Accumulate",
-    "eyebrow": "TOKEN-LEVEL STATISTICAL EVIDENCE",
-    "hook": "Can one paragraph reveal which model wrote it?",
+    "title": "How Keyed LLM Text Watermarks Accumulate",
+    "eyebrow": "ILLUSTRATIVE γ=0.5 · KEYED STATISTICAL TEST",
+    "hook": "A paragraph cannot prove authorship. It can carry a detectable watermark.",
     "from": 105,
     "to": 155,
-    "post": "Can one paragraph reveal which model wrote it?\n\nA generative watermark uses a secret hash to split the vocabulary, then slightly biases token choice toward a green list. No single word proves anything. The evidence accumulates across the passage as a measurable statistical deviation.\n\nThe result is evidence at a chosen false-positive rate, not absolute proof."
+    "post": "A paragraph cannot prove which model wrote it, but it can carry evidence of a keyed watermark.\n\nA generative watermark uses prior context and a secret key to select a green list, then softly biases token choice toward it. No single word proves anything. The evidence accumulates across the passage as a measurable statistical deviation.\n\nThe 50% baseline in this film is an illustrative γ = 0.5 setting. The result is evidence at a chosen false-positive rate, not absolute authorship proof."
   },
   "model-heist": {
-    "title": "Detecting a Watermark Across Model Weights",
-    "eyebrow": "MODEL OWNERSHIP · IEEE ACCESS 2024",
-    "hook": "A mark too small to see can become detectable across thousands of weights.",
+    "title": "Statistical Watermark Detection: A Teaching Model",
+    "eyebrow": "GAUSSIAN TEACHING MODEL · ASSUMPTIONS SHOWN",
+    "hook": "Weak marks can add up. Only if the noise model is honest.",
     "from": 77,
     "to": 113,
-    "post": "A watermark too small to see in any one weight can become detectable across thousands.\n\nA matched filter makes the marked signal add coherently while unrelated noise cancels. The result is a Z-test with an explicit threshold, false-positive rate, and detection power.\n\nAuthority comes from stating the test and its error rate, not from calling the mark undeniable."
+    "post": "Weak coordinate-level marks can add up to strong aggregate evidence, but only under explicit assumptions.\n\nIn this Gaussian teaching model, a matched filter makes aligned signal add coherently while independent noise adds in quadrature. The result is a Z-test with an explicit threshold, false-positive rate and detection power.\n\nThis is statistical intuition, not the detector claimed by my 2024 paper. The distinction matters."
   }
 }

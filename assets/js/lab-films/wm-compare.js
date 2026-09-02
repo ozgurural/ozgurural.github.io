@@ -190,7 +190,7 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "To make Proof-of-Learning harder to spoof, the design hides a mark inside the model. Four approaches exist, and each faces a different attacker. The first writes a pattern straight into the weights.", 1.33, { out: 18 });
+      lower(s, "Watermarking is not one mechanism. Here are four approaches with different access assumptions. The first writes a pattern into selected parameters.", 1.33, { out: 18 });
       lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.33, { out: 38 });
       lower(s, "3. As the Z-score moves past the threshold, coincidence becomes increasingly unlikely. The result is statistical evidence of copying, at the chosen false-positive rate.", 26.67, { out: 52 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
@@ -410,7 +410,7 @@
            ctx.shadowBlur = 0;
            
            ctx.fillStyle = P.white; ctx.font = "bold 16px monospace";
-           ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 290);
+           ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%  (illustrative γ=0.5)", streamX, streamY + 290);
            
            if (count > 15 && ratio > 0.7 && lt > 45.5) {
               var alertAlpha = clamp01((lt - 45.5) / 0.5);
@@ -428,13 +428,13 @@
 
       lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 1.33, { out: 12 });
       lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 9.33, { out: 26 });
-      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 18.67, { out: 40 });
-      lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes evidence of origin at a measurable false-positive rate.", 28);
+      lower(s, "In this illustration, γ equals one half, so unwatermarked text has a null expectation of 50 percent Green.", 18.67, { out: 40 });
+      lower(s, "The logit bias raises the observed Green share in this sample to about 75 percent. A keyed statistical test turns that deviation into evidence at a chosen false-positive rate.", 28);
     }, { subtitle: "Biasing token choice, after Kirchenbauer et al." });
   }
 
   function sceneAuxiliary(film) {
-    film.scene("The mark you can't prune", 46, function(s) {
+    film.scene("An auxiliary head, and its limit", 46, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -534,10 +534,10 @@
       var cite = s.caption("Ural, Enhancing Proof-of-Learning Security, Ph.D. dissertation, ERAU 2025.", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: GREY });
       s.fadeIn(cite, { at: 1.5, dur: 1.2 });
       lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
-      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });
+      lower(s, "The auxiliary head learns a secret classification task through shared latent features while the main output keeps its own objective.", 9.33, { out: 26 });
       lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 18.67, { out: 40 });
-      lower(s, "Every watermark can be attacked. The one that survives is not in the model. It is in the record of how the model was made.", 28);
-    }, { subtitle: "What survives is tied to the record of how the model was made." });
+      lower(s, "The head can be removed, so SecurePoL combines watermark evidence with a separate record of how the model was trained. Two checks cover different failure modes.", 28);
+    }, { subtitle: "The watermark and the training record answer different questions." });
   }
 
   setTimeout(boot, 60);
