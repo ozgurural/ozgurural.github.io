@@ -334,10 +334,21 @@
         var pShift = clamp01((lt - 15) / 10);
         var numTokens = 35;
         
+        /* A distribution over the vocabulary is recomputed at every decoding
+           step, so it does not stand still while the model writes. Drawn once
+           it was a picture of a distribution; resampled, it is the model
+           choosing, and the skew toward green is something that happens to a
+           moving thing rather than to a diagram. Deterministic in (token,
+           step), so seek reproduces the frame. */
+        var dstep = Math.floor(lt * 1.4);
+        function tjit(i, k) {
+          var v = Math.sin(i * 27.31 + k * 83.7) * 43758.5453;
+          return (v - Math.floor(v)) - 0.5;
+        }
         ctx.globalCompositeOperation = "screen";
         for (var i=0; i<numTokens; i++) {
            var isGreen = (i * 7 % 11) < 5; 
-           var baseProb = 100 + 40 * Math.sin(i*1.3);
+           var baseProb = 100 + 40 * Math.sin(i*1.3) + tjit(i, dstep) * 34;
            
            var currentProb = baseProb;
            if (isSkewed) {
@@ -465,6 +476,25 @@
         drawEdge(in2[0], in2[1], h1[0], h1[1], edgeCol); drawEdge(in2[0], in2[1], h2[0], h2[1], edgeCol); drawEdge(in2[0], in2[1], h3[0], h3[1], edgeCol);
         drawEdge(h1[0], h1[1], out[0], out[1], edgeCol); drawEdge(h2[0], h2[1], out[0], out[1], edgeCol); drawEdge(h3[0], h3[1], out[0], out[1], edgeCol);
 
+        /* A network that never carries anything is a diagram of a network. These
+           pulses are also the scene's argument: the auxiliary branch is fed by
+           the same latent layer as the main task, which is why pruning cannot
+           reach one without the other. Phase is a pure function of the edge
+           index, so seek(t) reproduces the frame. */
+        function pulse(x1, y1, x2, y2, col, idx, speed) {
+           var u = ((lt * (speed || 0.55)) + idx * 0.17) % 1;
+           var e = 1 - Math.pow(1 - Math.abs(2 * u - 1), 3);   // brighter at the ends
+           ctx.fillStyle = h.rgba(col, 0.85 * (1 - e * 0.55));
+           ctx.beginPath();
+           ctx.arc(x1 + (x2 - x1) * u, y1 + (y2 - y1) * u, 3.4, 0, Math.PI * 2);
+           ctx.fill();
+        }
+        var flow = [[in1, h1], [in1, h2], [in1, h3], [in2, h1], [in2, h2], [in2, h3],
+                    [h1, out], [h2, out], [h3, out]];
+        for (var fe = 0; fe < flow.length; fe++) {
+           pulse(flow[fe][0][0], flow[fe][0][1], flow[fe][1][0], flow[fe][1][1], CY, fe);
+        }
+
         // Nodes
         drawNode(in1[0], in1[1], CY); drawNode(in2[0], in2[1], CY);
         drawNode(h1[0], h1[1], CY); drawNode(h2[0], h2[1], CY); drawNode(h3[0], h3[1], CY);
@@ -480,6 +510,9 @@
            ctx.globalAlpha = op * ap;
            drawEdge(h2[0], h2[1], auxOut[0], auxOut[1], auxCol);
            drawEdge(h3[0], h3[1], auxOut[0], auxOut[1], auxCol);
+           // the same signal, taken down the secret branch
+           pulse(h2[0], h2[1], auxOut[0], auxOut[1], INDIGO, 3, 0.42);
+           pulse(h3[0], h3[1], auxOut[0], auxOut[1], INDIGO, 7, 0.42);
            drawNode(auxOut[0], auxOut[1], INDIGO, 15*ap);
            ctx.fillStyle = INDIGO; ctx.fillText("Auxiliary Head (Secret)", auxOut[0]+20, auxOut[1]+5);
            ctx.globalAlpha = op;
