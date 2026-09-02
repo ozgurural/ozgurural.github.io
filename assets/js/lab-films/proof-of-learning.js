@@ -249,7 +249,11 @@
         function Lof(i) { return Math.exp(-i * 0.075) * (1 + 0.14 * Math.sin(i * 1.7)) * 0.9 + 0.05; }
         function X(i) { return bx0 + (bx1 - bx0) * i / N; }
         function Y(L) { return byTop + (1 - L) * (byBot - byTop); }
-        var nn = Math.floor(clamp01((lt - 0.6) / 5.2) * N);
+        // The run does not stop while the diary is being described. Drawing it
+        // in five seconds and holding it for twelve made the loss curve a
+        // picture of a run; spread over the scene, each checkpoint is written
+        // as the run reaches it, which is what a diary is.
+        var nn = Math.floor(clamp01((lt - 0.6) / 13.5) * N);
         ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2.2; ctx.shadowBlur = 8; ctx.shadowColor = TEAL; ctx.beginPath();
         for (var i = 0; i <= nn; i++) { var xx = X(i), yy = Y(Lof(i)); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke(); ctx.shadowBlur = 0;
@@ -314,6 +318,35 @@
             ctx.shadowBlur = 15 + puls * 14; ctx.shadowColor = AMB;
             ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(bx, by - bh - 12, 9 + puls * 3.5, 0, 7); ctx.stroke();
             ctx.shadowBlur = 0;
+          }
+        }
+        /* The checker was described and then not shown working. It walks the
+           sorted steps from the largest down, re-running each and ticking it,
+           and stops well short of the end, which is the sentence: it never
+           re-runs the whole thing, only the steps a shortcut would have to
+           hide in. Pure in lt, so seek(t) reproduces the frame. */
+        if (sortP > 0.95) {
+          var scan = (lt - 5.6) / 1.35;
+          var checked = Math.max(0, Math.min(6, Math.floor(scan)));
+          for (var c2 = 0; c2 < checked; c2++) {
+            var cbx = x0 + c2 * dx;
+            ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cbx - 5, by + 8); ctx.lineTo(cbx - 1, by + 12); ctx.lineTo(cbx + 6, by + 3);
+            ctx.stroke();
+          }
+          if (scan > 0 && checked < 6) {
+            var frac = scan - Math.floor(scan);
+            var sbx = x0 + checked * dx;
+            ctx.strokeStyle = h.rgba(AMB, 0.9 * (1 - frac * 0.4)); ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(sbx, by - mags[sorted[checked]] * 130 / 2, 11 + frac * 5, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          if (checked > 0) {
+            ctx.fillStyle = h.rgba(GRN, 0.9);
+            ctx.font = "12px 'JetBrains Mono', monospace";
+            ctx.fillText("re-ran " + checked + " of 16 steps", x0 + 9 * dx, by + 24);
           }
         }
         ctx.fillStyle = h.rgba("#dbeafe", 0.85); ctx.fillText("each step's size, sorted; recheck only the biggest", x0, by + 24);
@@ -529,6 +562,33 @@
            ctx.fillStyle = TEAL;
            ctx.beginPath(); ctx.arc(px, py, 4, 0, 7); ctx.fill();
            ctx.shadowBlur = 0;
+        }
+        /* Between the second curve landing and the measurement starting, the
+           two curves sat there for nine seconds. A cursor walks both, reading
+           each step's change off as it goes, so by the time the scatter panel
+           appears the viewer has already seen the genuine curve jump around
+           and the forged one not. Pure in lt: seek(t) reproduces the frame. */
+        if (lt > 8.4 && lt < 14.9) {
+          var wp = clamp01((lt - 8.4) / 6.0);
+          var wi = Math.max(1, Math.min(40, Math.round(wp * 40)));
+          var gdel = gpts[wi][1] - gpts[wi - 1][1];
+          var fdel = fpts[wi][1] - fpts[wi - 1][1];
+          ctx.strokeStyle = h.rgba("#e8eef7", 0.28);
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(co.x(wi), co.y(0)); ctx.lineTo(co.x(wi), co.y(1));
+          ctx.stroke();
+          ctx.fillStyle = TEAL;
+          ctx.beginPath(); ctx.arc(co.x(wi), co.y(gpts[wi][1]), 4.5, 0, 7); ctx.fill();
+          ctx.fillStyle = RED;
+          ctx.beginPath(); ctx.arc(co.x(wi), co.y(fpts[wi][1]), 4.5, 0, 7); ctx.fill();
+          ctx.font = "12px 'JetBrains Mono', monospace";
+          ctx.fillStyle = h.rgba("#dbeafe", 0.9);
+          ctx.fillText("step " + wi, co.x(0), co.y(1) - 26);
+          ctx.fillStyle = h.rgba(TEAL, 0.95);
+          ctx.fillText("genuine  " + gdel.toFixed(3), co.x(0) + 92, co.y(1) - 26);
+          ctx.fillStyle = h.rgba(RED, 0.95);
+          ctx.fillText("forged  " + fdel.toFixed(3), co.x(0) + 250, co.y(1) - 26);
         }
         /* The scene claims the noise is the fingerprint and then held a still
            frame for its last fourteen seconds. From 14.5 it measures the thing
