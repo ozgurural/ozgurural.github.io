@@ -50,6 +50,8 @@
     "audit:stills": "node scripts/audit-films.js --stills",
     "audit:overlap": "node scripts/audit-overlap.js",
     "audit:site": "node scripts/audit-site.js",
+    "build:icon-fonts": "python scripts/subset-icon-fonts.py",
+    "verify:icons": "node scripts/verify-icon-subset.js",
     "apply:trims": "node scripts/apply-trims.js"
   }
 }
