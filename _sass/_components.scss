@@ -1925,7 +1925,33 @@ body.labf-embed .labf__transport {
    from, identical to the film on the page, while a small iframe gets the
    picture undisturbed. */
 @media (max-width: 1199px) {
-  body.labf-embed .labf__chrome { display: none; }
+  /* WCAG 2.2 asks for a 24px target. A link inside a sentence is exempt, because
+   it is prose; a link that is a card title, a whole list item, or a citation
+   line is a target and several were 16 to 21px tall on a phone. The padding
+   buys the height, the negative margin gives it back so nothing moves. */
+.ep-cards .title a,
+.page__content li > a:only-child,
+.page__content p > a:only-child,
+.lab-card__usecase a,
+.lab-card figcaption a {
+  display: inline-block;
+  padding: 3px 0;
+  margin: -3px 0;
+}
+
+/* The embed's heading exists for assistive technology only: the film draws its
+   own title card, so a visible second one would be a duplicate. Clipped rather
+   than display:none, which would take it out of the accessibility tree too. */
+.labf-embed__srtitle {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+body.labf-embed .labf__chrome { display: none; }
 }
 
 @media (max-width: 640px) {

@@ -2,6 +2,7 @@
 permalink: /lab/watermarking-comparison/
 oembed: "/lab/watermarking-comparison/oembed.json"
 title: "The Watermarking Wars: Capacity vs. Robustness, animated"
+seo_title: "The Watermarking Wars, animated"
 description: "A cinematic explainer comparing ML watermarking strategies: parameter perturbations, feature triggers, generative green-lists, and auxiliary heads."
 excerpt: "How do you claim ownership of a stolen model? We animate four major strategies: white-box sparse parameter perturbations, black-box feature-based triggers, generative LLM green-listing, and non-intrusive auxiliary heads."
 sitemap: true

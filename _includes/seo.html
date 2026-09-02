@@ -6,8 +6,16 @@
 {% endif %}
 {% assign seo_url = seo_url | default: site.github.url %}
 
-{% if page.title %}
-  {% assign seo_title = page.title | append: " " | append: site.title_separator | append: " " | append: "Dr. Ozgur Ural" %}
+{%- comment -%}
+  A page's heading and its search-result title are different jobs. The heading
+  can be as descriptive as it needs to be; the title tag is cut at about sixty
+  characters, and several of these were losing their ending mid-phrase. So a
+  page may set `seo_title` in front matter to give the result a short form,
+  and everything else keeps using its heading.
+{%- endcomment -%}
+{% if page.seo_title or page.title %}
+  {% assign seo_base = page.seo_title | default: page.title %}
+  {% assign seo_title = seo_base | append: " " | append: site.title_separator | append: " " | append: "Dr. Ozgur Ural" %}
 {% endif %}
 
 {% if seo_title %}
@@ -19,7 +27,7 @@
 {% endif %}
 
 {% if page.url == "/" %}
-<title>{{ seo_title | default: "Dr. Ozgur Ural" }} | Machine Learning Research Scientist & Senior Software Engineer{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
+<title>{{ page.seo_title | default: "Dr. Ozgur Ural | Machine Learning Research Scientist, Ph.D." }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 {% else %}
 <title>{{ seo_title | default: "Dr. Ozgur Ural" }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 {% endif %}

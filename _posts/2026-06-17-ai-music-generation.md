@@ -22,7 +22,7 @@ I want to share the result below. This is a completely unedited, AI-generated tr
   <iframe src="https://www.youtube-nocookie.com/embed/uL5CJdqNCYQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; max-width: 500px; aspect-ratio: 1 / 1; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);"></iframe>
 </div>
 
-### Why This Matters
+## Why This Matters
 
 What we are witnessing is the convergence of massive sequence modeling and raw waveform synthesis. Early attempts at AI music often sounded robotic or lacked structural coherence over long time horizons. Modern architectures, however, have largely solved the long-range dependency problem in audio. 
 

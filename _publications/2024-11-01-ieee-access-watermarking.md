@@ -1,5 +1,6 @@
 ---
 title: "Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking"
+seo_title: "Feature-Based Watermarking for Proof-of-Learning"
 collection: publications
 category: manuscripts
 permalink: /publication/2024-ieee-access-watermarking

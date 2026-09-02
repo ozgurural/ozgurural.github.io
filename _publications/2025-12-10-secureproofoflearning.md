@@ -1,5 +1,6 @@
 ---
 title: "SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks"
+seo_title: "SecurePoL: Watermarking Meets Proof-of-Learning"
 collection: publications
 category: manuscripts
 permalink: /publication/2025-secureproofoflearning

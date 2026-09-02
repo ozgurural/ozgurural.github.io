@@ -1,5 +1,6 @@
 ---
 title: "Y Combinator and DNA: Fixed Points in Code and Biology"
+seo_title: "Y Combinator and DNA"
 date: 2025-09-09
 permalink: /posts/2025/09/y-combinator-dna/
 categories: technical
@@ -18,17 +19,17 @@ Back in that functional-programming course, the `Y` combinator felt like a magic
 
 What the video reminded me is that biology has been running the same play for eons. DNA's instructions are not just blueprints for building proteins; they include recipes for the enzymes that copy the blueprints themselves. This [self-referential](https://en.wikipedia.org/wiki/Self-reference) loop is a biochemical fixed point, the wet-lab analogue of the mathematical one the `Y` combinator enforces.
 
-### Fixed Points and Life
+## Fixed Points and Life
 
 In mathematics, a [fixed point](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)) occurs when a function's output equals its input. The `Y` combinator forces such a state, giving rise to stable recursive processes that keep producing new values without changing the underlying definition. DNA achieves a biological fixed point when replication produces a copy that can, in turn, replicate itself, echoing the [central dogma of molecular biology](https://en.wikipedia.org/wiki/Central_dogma_of_molecular_biology). Both systems rely on elegant minimal rules to generate complex, self-sustaining behavior.
 
-### Why the Analogy Matters
+## Why the Analogy Matters
 
 As someone who now toggles between code reviews and journal articles, I find this analogy clarifying. It bridges [functional programming](https://en.wikipedia.org/wiki/Functional_programming) and [molecular biology](https://en.wikipedia.org/wiki/Molecular_biology) in a way that makes both domains feel less alien. Life's capacity for [self-replication](https://en.wikipedia.org/wiki/Self-replication) is not just a quirk of chemistry; it's a computational strategy familiar to anyone who's ever used a fixed-point combinator to get work done. When you see DNA as a program that summons its own interpreter, the boundary between silicon and carbon-based systems looks more like a gradient than a wall.
 
 Understanding the `Y` combinator, and spotting its echoes in the lab, reinforces how simple formulas can lead to **self-referential, life-like processes**. Whether I'm sketching recursion on a whiteboard or replaying that YouTube segment, the lesson is the same: elegant feedback loops are the engines of both software and biology.
 
-### References & Further Reading
+## References & Further Reading
 
 1. [Lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus)
 2. [Alonzo Church](https://en.wikipedia.org/wiki/Alonzo_Church)

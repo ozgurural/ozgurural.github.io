@@ -49,6 +49,7 @@
     "sheet": "node scripts/contact-sheet.js",
     "audit:stills": "node scripts/audit-films.js --stills",
     "audit:overlap": "node scripts/audit-overlap.js",
+    "audit:site": "node scripts/audit-site.js",
     "apply:trims": "node scripts/apply-trims.js"
   }
 }

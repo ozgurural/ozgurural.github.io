@@ -4283,7 +4283,7 @@
     border: 1px solid color-mix(in srgb, var(--hud-color, var(--cyan)) 35%, transparent);
     box-shadow: 0 0 20px color-mix(in srgb, var(--hud-color, var(--cyan)) 20%, transparent); flex-shrink: 0;
 }
-.arch-drawer-title h3 { font-size: 1.3em; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.arch-drawer-title h2 { font-size: 1.3em; font-weight: 800; color: #fff; margin-bottom: 4px; }
 .arch-drawer-title p { font-size: 0.9em; color: #ffffff; line-height: 1.5; }
 .arch-drawer-meta {
     display: flex;
@@ -4325,7 +4325,7 @@
     border-radius: 12px; padding: 16px; transition: border-color 0.3s ease;
 }
 .arch-drawer-col:hover { border-color: color-mix(in srgb, var(--hud-color, var(--cyan)) 40%, transparent); }
-.arch-drawer-col h5 {
+.arch-drawer-col h3 {
     font-family: 'Inter', sans-serif; 
     font-size: 0.75rem; 
     letter-spacing: 1.2px;
@@ -5252,7 +5252,7 @@ body.architecture-focus #architecture-view .arch-node.dimmed:hover {
     padding: var(--space-6) !important;
     border-bottom: 1px solid var(--border-subtle) !important;
 }
-#architecture-view .arch-drawer-title h3 {
+#architecture-view .arch-drawer-title h2 {
     font-family: 'Inter', sans-serif !important;
     font-size: 1.15em !important;
     font-weight: 600 !important;
@@ -8700,7 +8700,7 @@ body.architecture-focus #architecture-view {
         padding-bottom: 14px !important;
     }
 
-    #architecture-view .arch-drawer-title h3 {
+    #architecture-view .arch-drawer-title h2 {
         font-size: 1rem !important;
     }
 
@@ -9151,7 +9151,7 @@ body.architecture-focus { overflow-x: hidden; }
 <div class="arch-drawer-header" id="arch-drawer-header">
 <div class="arch-drawer-icon" id="drawer-icon"></div>
 <div class="arch-drawer-title">
-<h3 id="drawer-title"></h3>
+<h2 id="drawer-title"></h2>
 <p class="arch-drawer-desc" id="drawer-desc"></p>
 <div class="arch-drawer-meta" id="drawer-meta" style="display:none"></div>
 <div class="arch-drawer-tier" style="margin-top: 0.8rem;">
@@ -9161,19 +9161,19 @@ body.architecture-focus { overflow-x: hidden; }
 </div>
 <div class="arch-drawer-grid" id="arch-drawer-grid">
 <div class="arch-drawer-col">
-<h5 id="drawer-h-responsibilities"><i aria-hidden="true" class="fa-solid fa-list-check"></i> Responsibilities</h5>
+<h3 id="drawer-h-responsibilities"><i aria-hidden="true" class="fa-solid fa-list-check"></i> Responsibilities</h3>
 <ul id="drawer-responsibilities"></ul>
 </div>
 <div class="arch-drawer-col">
-<h5 id="drawer-h-data-in"><i aria-hidden="true" class="fa-solid fa-arrow-right-to-bracket"></i> Data In</h5>
+<h3 id="drawer-h-data-in"><i aria-hidden="true" class="fa-solid fa-arrow-right-to-bracket"></i> Data In</h3>
 <ul id="drawer-data-in"></ul>
 </div>
 <div class="arch-drawer-col">
-<h5 id="drawer-h-data-out"><i aria-hidden="true" class="fa-solid fa-arrow-right-from-bracket"></i> Data Out</h5>
+<h3 id="drawer-h-data-out"><i aria-hidden="true" class="fa-solid fa-arrow-right-from-bracket"></i> Data Out</h3>
 <ul id="drawer-data-out"></ul>
 </div>
 <div class="arch-drawer-col">
-<h5 id="drawer-h-controls"><i aria-hidden="true" class="fa-solid fa-shield-halved"></i> Controls</h5>
+<h3 id="drawer-h-controls"><i aria-hidden="true" class="fa-solid fa-shield-halved"></i> Controls</h3>
 <ul id="drawer-controls"></ul>
 </div>
 </div>

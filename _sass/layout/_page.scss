@@ -217,9 +217,15 @@
   }
 }
 
+/* Was an h4. It labels a row of links rather than opening a section, so it is
+   a paragraph now and the section carries the name through aria-labelledby.
+   These declarations keep it looking exactly as it did. */
 .page__share-title {
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+  font-family: $sans-serif;
+  font-weight: bold;
   font-size: $type-size-6;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
@@ -397,8 +403,13 @@
   }
 }
 
+/* Promoted from h4 to h2 so the outline does not skip two levels. These
+   declarations pin the look to what it was, since h2 brings its own. */
 .page__related-title {
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+  font-family: $sans-serif;
+  font-weight: bold;
   font-size: $type-size-6;
+  line-height: 1.2;
   text-transform: uppercase;
 }

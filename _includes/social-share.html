@@ -1,8 +1,8 @@
 {% include base_path %}
 
-<section class="page__share">
+<section class="page__share" aria-labelledby="share-on-label">
   {% if site.data.ui-text[site.locale].share_on_label %}
-  <h4 class="page__share-title">{{ site.data.ui-text[site.locale].share_on_label | default: "Share on" }}</h4>
+  <p class="page__share-title" id="share-on-label">{{ site.data.ui-text[site.locale].share_on_label | default: "Share on" }}</p>
   {% endif %}
 
   <a href="https://x.com/intent/post?text={{ site.url | append: page.url | url_encode }}" class="btn btn--x"

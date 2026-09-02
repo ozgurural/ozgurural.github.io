@@ -2,7 +2,7 @@
 permalink: /lab/training-fingerprint/
 oembed: "/lab/training-fingerprint/oembed.json"
 title: "Proof-of-Learning (SecurePoL), animated"
-description: "Final weights are a snapshot anyone can copy, but the path that produced them is a one-way function of compute. A cinematic, PhD-level explainer of Proof-of-Learning."
+description: "Final weights are a snapshot anyone can copy. The path that produced them is a one-way function of compute. An animated explainer of Proof-of-Learning."
 excerpt: "Prove a model was trained, not downloaded. The loss-curve trajectory is cheap to produce honestly and expensive to forge, and SecurePoL binds it to a watermark."
 sitemap: true
 header:

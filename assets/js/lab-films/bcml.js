@@ -800,9 +800,9 @@
     var html = "";
     for (var i = 0; i < blocks.length; i++) {
       html +=
-        '<h4>' +
+        '<h2>' +
         blocks[i].h +
-        "</h4><div class='lab-math__tex' id='bcml-tex-" +
+        "</h2><div class='lab-math__tex' id='bcml-tex-" +
         i +
         "'></div><p>" +
         blocks[i].note +
