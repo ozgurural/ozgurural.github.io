@@ -135,9 +135,11 @@
 
       // ball trajectory: a decaying swirl that settles at the basin floor
       // (decay tuned so the ball actually parks on the marked minimum)
-      function ballXY(tau) {
+      function ballXY(tau, ph) {
+        ph = ph || 0;
         var e = Math.exp(-3.0 * tau);
-        return { x: 0.92 * e * Math.cos(7.0 * tau), y: 0.62 * e * Math.sin(3.4 * tau) };
+        return { x: 0.92 * e * Math.cos(7.0 * tau + ph),
+                 y: 0.62 * e * Math.sin(3.4 * tau + ph * 0.62) };
       }
 
       var sgradCache = null, ballGrdCache = null;
@@ -205,7 +207,16 @@
         }
 
         // ---- the rolling ball + trail ----
-        var rollTau = h.clamp01(lt / 9);
+        /* The ball parked at nine seconds and the scene ran for twenty-one, so
+           two thirds of the opening image was a still bowl. The line spoken over
+           it says every trained model is the end of a journey down a landscape
+           like this, and a landscape is a thing you can arrive at from anywhere:
+           a second descent starts elsewhere on the rim and finds the same floor.
+           Pure in lt, so seek(t) reproduces the frame. */
+        var LAUNCH = 9.8, RUN2 = 8.0;
+        var second = lt >= LAUNCH;
+        var rollPh = second ? 2.35 : 0;
+        var rollTau = second ? h.clamp01((lt - LAUNCH) / RUN2) : h.clamp01(lt / 9);
         // trail
         var tb = 0.10, steps = 26;
         ctx.lineWidth = 2.4;
@@ -214,7 +225,7 @@
         for (i = 0; i < steps; i++) {
           var ta = rollTau - tb * (i / steps), tc = rollTau - tb * ((i + 1) / steps);
           if (tc < 0) break;
-          var A = ballXY(ta), B = ballXY(tc);
+          var A = ballXY(ta, rollPh), B = ballXY(tc, rollPh);
           var pa = proj(A.x, A.y, kBowl * (A.x * A.x + A.y * A.y) + 0.04);
           var pb = proj(B.x, B.y, kBowl * (B.x * B.x + B.y * B.y) + 0.04);
           ctx.strokeStyle = h.rgba("#FFFF00", 0.5 * (1 - i / steps));
@@ -235,7 +246,7 @@
           ctx.shadowBlur = 0;
           ctx.restore();
         }
-        var b = ballXY(rollTau);
+        var b = ballXY(rollTau, rollPh);
         var zb = kBowl * (b.x * b.x + b.y * b.y) + 0.04;
         var pb0 = proj(b.x, b.y, zb);
         // -grad L arrow (downhill) while the ball is high on the wall
@@ -525,6 +536,12 @@
 
       // ball: trembles on the plateau, then escapes down the −y unstable axis
       function ballXY(lt) {
+        // You do not meet one saddle. The ball escaped at thirteen seconds and
+        // the surface stood empty for the rest of the scene, so the descent
+        // restarts: another trajectory arrives at the plateau, trembles, and
+        // leaves down the unstable axis, which is the situation being described
+        // rather than one instance of it.
+        lt = lt % 13.0;
         if (lt < 8.5) { // jitter near the saddle
           var j = 0.05 * Math.sin(lt * 9);
           return { x: j * 0.5, y: 0.02 * Math.sin(lt * 6) };
@@ -646,6 +663,38 @@
         s.fadeIn(d, { at: 7.2 + i * 0.18, dur: 0.6 });
         s.fadeOut(d, { at: 26, dur: 1 });
       });
+      /* Bray-Dean is a statement about sampling: draw critical points and the
+         index rises with the loss, so almost none of them are minima. Six dots
+         placed at eight seconds and held for eighteen assert that; drawing them
+         one at a time, with the tally running, is the result being obtained.
+         Deterministic in the sample index, so seek(t) reproduces the frame. */
+      s.canvas(function (lt, ctx, h) {
+        if (lt < 8.2) return;
+        var NMAX = 40;
+        var n = Math.min(NMAX, Math.floor((lt - 8.2) * 2.3));
+        var mins = 0;
+        for (var k = 0; k < n; k++) {
+          var v = Math.sin(k * 12.9898 + 7.13) * 43758.5453;
+          var u = v - Math.floor(v);
+          u = 0.03 + u * 0.94;
+          var isMin = u < 0.09;
+          if (isMin) mins++;
+          var age = h.clamp01((lt - 8.2 - k / 2.3) / 0.45);
+          ctx.fillStyle = h.rgba(isMin ? "#83C167" : "#9A72AC", 0.85 * age);
+          ctx.beginPath();
+          ctx.arc(co.x(u), co.y(Math.pow(u, 0.85)), 5.2 * age, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (n > 0) {
+          ctx.fillStyle = h.rgba("#e8eef7", 0.95);
+          ctx.font = "bold 13px 'JetBrains Mono', monospace";
+          ctx.fillText(n + " critical points sampled", co.x(0.04), co.y(1.02));
+          ctx.fillStyle = h.rgba("#9A72AC", 0.95);
+          ctx.fillText((n - mins) + " saddles, " + mins +
+                       (mins === 1 ? " minimum" : " minima"), co.x(0.04), co.y(1.02) + 19);
+        }
+      });
+
       var xl = s.caption("loss ε →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.9rem", color: "#f1f5f9" });
       var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 4.5, dur: 0.9 }); s.fadeIn(yl, { at: 4.68, dur: 0.9 });
