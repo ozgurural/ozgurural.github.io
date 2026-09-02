@@ -260,7 +260,28 @@
         if (lt > 7) {
           var fade = clamp01((lt - 7) / 0.5);
           ctx.save(); ctx.globalAlpha *= fade;
-          var xm = pl.px(0.01); ctx.strokeStyle = h.rgba(WHT, 0.7); ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(xm, box.y0); ctx.lineTo(xm, box.y0 - box.h); ctx.stroke(); ctx.setLineDash([]);
+          /* The marker sat on q=.01 for the rest of the scene. The claim is
+             that the gap between one channel and three widens as faults get
+             rarer, and a fixed reading cannot show a widening. It sweeps, and
+             the three numbers move with it. Pure in lt, so seek is exact. */
+          var sweep = (Math.sin((lt - 7) * 0.42 - Math.PI / 2) + 1) / 2;
+          var qNow = Math.pow(10, lerp(-3.6, -1.15, sweep));
+          var xm = pl.px(qNow); ctx.strokeStyle = h.rgba(WHT, 0.7); ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(xm, box.y0); ctx.lineTo(xm, box.y0 - box.h); ctx.stroke(); ctx.setLineDash([]);
+          function sci(v) {
+            var e = Math.floor(Math.log(v) / Math.LN10);
+            return (v / Math.pow(10, e)).toFixed(1) + "e" + e;
+          }
+          ctx.font = "11px 'JetBrains Mono',monospace";
+          [[WHT, qNow], [CY, Pind(3, qNow)], [MAG, Pind(5, qNow)]].forEach(function (r) {
+            ctx.fillStyle = h.rgba(r[0], 0.95);
+            ctx.beginPath(); ctx.arc(xm, pl.py(r[1]), 4, 0, Math.PI * 2); ctx.fill();
+          });
+          ctx.fillStyle = h.rgba(LBL, 0.9);
+          ctx.fillText("q = " + sci(qNow), box.x0 + 8, box.y0 - box.h - 10);
+          ctx.fillStyle = h.rgba(CY, 0.95);
+          ctx.fillText("three: " + sci(Pind(3, qNow)), box.x0 + 150, box.y0 - box.h - 10);
+          ctx.fillStyle = h.rgba(MAG, 0.95);
+          ctx.fillText("five: " + sci(Pind(5, qNow)), box.x0 + 300, box.y0 - box.h - 10);
           ctx.fillStyle = h.rgba(TXT, 0.9); ctx.font = "10px 'JetBrains Mono',monospace";
           ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4", xm - 80, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 1e-5", xm - 80, pl.py(Pind(5, 0.01)));
           ctx.restore();
@@ -276,7 +297,16 @@
   function correlation(film) {
     film.scene("Correlation installs a floor", 23, function (s) {
       var pl = makePlot(film), box = pl.box;
-      function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; }
+      /* Correlation ramped to 0.30 and then sat there for thirteen seconds. The
+         floor is the point of the scene, so it keeps moving: the curves bend
+         down to meet it and lift away again, and the viewer sees that adding
+         voters stops helping the moment rho is anything but zero. Continuous at
+         the handover (cos starts at 1, so 0.175 + 0.125 is the 0.30 the ramp
+         ends on) and pure in lt, so seek(t) reproduces the frame. */
+      function rhoAt(lt) {
+        if (lt < 10) return clamp01((lt - 2) / 8) * 0.30;
+        return 0.175 + 0.125 * Math.cos((lt - 10) / 6.5 * Math.PI * 2);
+      }
       s.canvas(function (lt, ctx, h) {
         var rho = rhoAt(lt);
         pl.drawGrid(ctx, h);
@@ -314,7 +344,11 @@
         var prog = clamp01(lt / 9);
         var failLevel = clamp01((lt - 7) / 0.5);
         ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2.4; ctx.beginPath();
-        for (var i = 0; i <= 60 * prog; i++) { 
+        // The trajectory stopped being drawn at nine seconds and the scene ran
+        // for twenty-two. The vehicle did not stop: past the overflow the
+        // parabola keeps going, off the plot, for as long as the scene lasts.
+        var maxI = 60 * prog + Math.max(0, lt - 9.2) * 2.4;
+        for (var i = 0; i <= maxI; i++) { 
           var x = 80 + i * 4.5; 
           var y = 410 - i * 4.0; 
           if (i > 42) { 
@@ -327,7 +361,27 @@
         }
         ctx.stroke();
         var bhY = 200; ctx.strokeStyle = h.rgba(RED, 0.8); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(360, bhY); ctx.lineTo(720, bhY); ctx.stroke(); ctx.setLineDash([]);
-        ctx.fillStyle = h.rgba(RED, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("INT16 MAX", 600, bhY - 6);
+        ctx.fillStyle = h.rgba(RED, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("INT16 MAX", 726, bhY - 6);
+
+        /* What killed Ariane 5 was a number, and the number was not on screen.
+           The horizontal bias climbs, crosses 32767, and the conversion that
+           had no handler is the next thing that happens; the mission clock
+           keeps running afterwards because the vehicle did too. Both are pure
+           functions of lt, so seek(t) reproduces the frame. */
+        var bh = Math.round(1400 * Math.pow(Math.max(0, lt), 1.72));
+        var over = bh > 32767;
+        ctx.font = "bold 15px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(over ? RED : GRN, 0.95);
+        ctx.fillText("horizontal bias  " + (over ? "OVERFLOW" : bh.toLocaleString("en-US")),
+                     360, bhY - 26);
+        if (over) {
+          ctx.font = "11px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba(RED, 0.85);
+          ctx.fillText("64-bit float to 16-bit int, no handler", 360, bhY - 10);
+        }
+        ctx.font = "12px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(LBL, 0.85);
+        ctx.fillText("T+ " + (lt * 1.7).toFixed(1) + " s", 80, 108);
         function panel(px, py, name, errAt) {
           var errFade = clamp01((lt - errAt) / 0.5);
           ctx.strokeStyle = h.rgba(LBL, 0.7 * (1 - errFade)); ctx.lineWidth = 1.4; ctx.strokeRect(px, py, 170, 56);
