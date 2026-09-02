@@ -69,6 +69,61 @@ For the web, each film also serves `/lab/<slug>/embed/` (chromeless, iframe-able
 
 Keep `_main.js` free of ES `import`/`export` — the bundle is loaded as a classic deferred script. Plotly ships separately via `assets/js/plotly-blocks.js` and is only included when a page contains a plotly fenced block.
 
+## Auditing the site
+
+Four crawlers, all read-only, all honouring `FILM_BASE`. Run them after any
+change to a layout, an include, the theme, or the content.
+
+```bash
+npm run audit:site        # a11y, metadata, mobile, contrast, light panels, broken links
+npm run check:links       # every outbound URL, once
+npm run verify:icons      # do the icons the pages draw survive the font subset
+npm run build:icon-fonts  # re-cut the icon fonts after adding an icon
+```
+
+`audit-site.js` is a crawler rather than a file scan on purpose: half of these
+defects only exist in the rendered page, because Liquid decides the meta tags,
+the layout decides the heading order, and a relative link is only broken once it
+has been resolved against the permalink it ended up at. It found 246 issues
+across 76 pages the first time it ran, and almost all of them traced back to
+five includes and one config line rather than to individual pages.
+
+Three things it had to be taught, each after reading its own wrong output, and
+each worth keeping in mind when adding a check:
+
+- **Ask the right question of the right page.** It asked sitemap.xml for an h1,
+  and called eleven `noindex` embed players "missing a share card". A page that
+  is not competing in search does not need a canonical.
+- **Measure the thing, not its proxy.** Tap targets were measured as boxes, so
+  9px scrub dots with a 10px `::after` reach read as too small while genuine
+  sentence links read as undersized controls. WCAG's inline exception is about a
+  link being *in a sentence*, not about it being in a `<p>`.
+- **A check that cries wolf is worse than no check.** An ink-density test for
+  text-over-graphics reported 68 findings on a film with none, because a label
+  on a filled badge scores like one crossed by a chart line. It was deleted.
+
+`check-external-links.js` learned the same lesson the hard way: only 404 and 410
+mean a link is gone. A 403 means the checker was refused, which says more about
+the checker than the link (daostack.io answers 200 to curl and 403 to Node's
+fetch with identical headers, because Cloudflare fingerprints below the header
+level). Refusals are listed for a human to glance at; the exit code is driven
+only by what is provably gone.
+
+**Two traps that cost real time here.** Jekyll does not reload `_config.yml`, so
+a shortened site description kept measuring at its old length until the server
+was restarted. And raw asset sizes are misleading: `main.css` is 197 KB on disk
+and 34 KB brotli, which is what GitHub Pages sends, so trimming 525 unused Font
+Awesome rules out of it would have saved about 3 KB on the wire. The fonts, at
+280 KB uncompressed and uncompressible, were the thing worth cutting.
+
+**Icon fonts are subsetted.** `scripts/subset-icon-fonts.py` scans for
+`fa-<name>` tokens, resolves them against Font Awesome's own `_variables.scss`,
+and cuts the woff2 to what resolved: 293 KB to 13 KB, plus academicons 66 KB to
+2 KB. The upstream files stay beside them as `.full.woff2`. Deriving from source
+cannot see a class assembled at runtime, so `verify-icon-subset.js` crawls the
+site and asks every icon element for its `::before` content, which is the
+codepoint the font is actually being asked for. Run both after adding an icon.
+
 ## House rules for content
 
 These are the site owner's standing rules. They apply to every agent and every commit.
