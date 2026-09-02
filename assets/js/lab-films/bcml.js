@@ -276,7 +276,7 @@
              scene, and the next half answers it with the same compute aimed at
              a model. Deterministic in (slot, cycle), so seek is exact. */
           if (lt > 1.0) {
-            for (var q = 0; q < 22; q++) {
+            for (var q = 0; q < 18; q++) {   // three rows, so the tally has a line to itself
               var raw = (lt - 1.0) * 1.15 - q * 0.26;
               if (raw <= 0) continue;
               var cyc = Math.floor(raw / 1.6);
@@ -290,9 +290,9 @@
             ctx.textAlign = "center";
             ctx.fillStyle = h.rgba(RED, op * pOut * 0.95);
             ctx.font = "bold 13px " + MONO;
-            ctx.fillText("hashes tried: " + tried.toLocaleString("en-US"), 400, 372);
+            ctx.fillText("hashes tried: " + tried.toLocaleString("en-US"), 400, 390);
             ctx.fillStyle = h.rgba(MUTED, op * pOut * 0.9);
-            ctx.fillText("kept: 0", 620, 372);
+            ctx.fillText("kept: 0", 620, 390);
             ctx.textAlign = "left";
           }
           ctx.globalAlpha = op;
@@ -455,11 +455,11 @@
           ctx.fillText("balance  " + (bal >= 0 ? "+" : "") + bal.toFixed(0), 330, 330);
           ctx.fillStyle = h.rgba(MUTED, 0.85);
           ctx.font = "12px " + MONO;
-          ctx.fillText("contribution " + nSub + " of " + SUBS.length, 560, 330);
+          ctx.fillText("contribution " + nSub + " of " + SUBS.length, 70, 352);
           if (nSub > 0 && !lastGood) {
             ctx.fillStyle = h.rgba(RED, 0.95);
             ctx.font = "bold 12px " + MONO;
-            ctx.fillText("noise: the term is negative", 560, 352);
+            ctx.fillText("noise: the term is negative", 330, 352);
           }
         }
 
@@ -647,10 +647,15 @@
             ctx.beginPath(); ctx.arc(mx, accY, 5, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = h.rgba(RED, gi);
             ctx.beginPath(); ctx.arc(mx, thrY, 5, 0, Math.PI * 2); ctx.fill();
+            var accL = accY, thrL = thrY;
+            if (Math.abs(accL - thrL) < 20) {
+              var mid = (accL + thrL) / 2;
+              accL = mid - 10; thrL = mid + 10;
+            }
             ctx.fillStyle = h.rgba(GRN, gi);
-            ctx.fillText('acc ' + Math.round((1 - Math.exp(-nn / 34)) * 94) + '%', gx + gw + 14, accY + 4);
+            ctx.fillText('acc ' + Math.round((1 - Math.exp(-nn / 34)) * 94) + '%', gx + gw + 14, accL + 4);
             ctx.fillStyle = h.rgba(RED, gi);
-            ctx.fillText('thr ' + Math.round(85 - prog * 70) + '%', gx + gw + 14, thrY + 4);
+            ctx.fillText('thr ' + Math.round(85 - prog * 70) + '%', gx + gw + 14, thrL + 4);
           }
           ctx.globalAlpha = op;
         }

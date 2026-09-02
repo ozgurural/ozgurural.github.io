@@ -126,7 +126,7 @@
         ctx.textAlign = "center";
         ctx.fillStyle = h.rgba(WHT, 0.4);
         ctx.font = "11px 'JetBrains Mono',monospace";
-        ctx.fillText("LEVEL-D FULL-FLIGHT SIM · EASA/FAA CERTIFICATION", 480, 24);
+        ctx.fillText("LEVEL-D FULL-FLIGHT SIM · EASA/FAA CERTIFICATION", 480, 60);
         ctx.restore();
 
         var states, voter;
@@ -144,17 +144,19 @@
         if (lt < 6 && lt > 3) {
           var fade1 = clamp01((lt - 3) / 0.5) * (lt > 5.5 ? clamp01((6 - lt) / 0.5) : 1);
           ctx.save(); ctx.globalAlpha *= fade1;
-          ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 360, 85);
+          ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace";
+          ctx.textAlign = "center"; ctx.fillText("one liar, two truth-tellers → truth wins", 480, 366);
           ctx.restore();
         }
         if (lt >= 6) {
           var fade2 = clamp01((lt - 6) / 0.5);
           ctx.save(); ctx.globalAlpha *= fade2;
-          ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 330, 80);
+          ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
+          ctx.textAlign = "center"; ctx.fillText("all three fail the SAME way, the SAME instant", 480, 366);
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 72, size: "1.4rem", color: LBL });
+      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 86, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
       lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
@@ -450,6 +452,9 @@
   function diversity(film) {
     film.scene("The only real cure: diversity", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
+        var handoff = clamp01((lt - 15.0) / 1.4);
+        if (handoff >= 1) return;
+        ctx.globalAlpha *= (1 - handoff);
         var hitLevel = clamp01((lt - 3) / 0.5) * clamp01((8 - lt) / 0.5);
         drawTMR(ctx, h, 320, 230, [0, hitLevel, 0], 0, true, lt);
         // cosmic ray bolt
@@ -480,13 +485,14 @@
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 78, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
       lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
-      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 110, anchor: "top", align: "center", size: "1.4rem", color: TXT });
+      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 268, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
 
-      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 283, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
+      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 410, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
       s.fadeIn(cap1, { at: 8.5, dur: 1.5 });
+      s.fadeOut(cap1, { at: 14.6, dur: 1.0 });
 
-      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 183, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
+      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 150, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
       s.fadeIn(tag2, { at: 16.5, dur: 1.5 });
     }, { subtitle: "The lever was never N. It was the independence ρ." });
   }

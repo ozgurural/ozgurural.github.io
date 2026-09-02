@@ -426,11 +426,11 @@
           box(ctx, h, 380, 84, 200, 58, CY, sIn, "güvenlik", "stem: 'security'");
           if (lt > 6.5) {
             var seen = Math.min(96, 10 + Math.floor((lt - 6.5) * 3.4));
+            // Right of the red column label, which runs to about x 650 at y 150
+            // and which this was printed straight across.
             ctx.fillStyle = h.rgba(PURP, op * sIn * 0.95);
-            ctx.font = "bold 14px " + MONO;
-            ctx.textAlign = "center";
-            ctx.fillText(seen + " surface forms and counting", 480, 166);
-            ctx.textAlign = "left";
+            ctx.font = "bold 13px " + MONO;
+            ctx.fillText(seen + " forms and counting", 700, 128);
           }
           ctx.globalAlpha = op;
         }
@@ -658,7 +658,10 @@
           ctx.setLineDash([]);
           ctx.fillStyle = h.rgba(AMB, a * thi);
           ctx.font = "12px " + MONO;
-          ctx.fillText("threshold from this entity's own history", bx + 12, thY - 8);
+          // The line moves; the label does not follow it up into whatever is
+          // above the chart. It sits under the line when the line is high.
+          var labY = thY < 236 ? thY + 18 : thY - 8;
+          ctx.fillText("threshold from this entity's own history", bx + 12, labY);
         }
 
         if (t > 16) {
