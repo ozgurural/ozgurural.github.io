@@ -1,0 +1,6 @@
+# A second dev overlay, for when port 4000 is taken by another agent's checkout.
+# The url must move with the port: the templates emit absolute URLs from it, so
+# a page served here with url still pointing at 4000 pulls its CSS and film
+# scripts out of somebody else's tree, which is a very quiet way to measure the
+# wrong thing.
+url: http://localhost:4001

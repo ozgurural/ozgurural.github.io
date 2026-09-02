@@ -19,6 +19,20 @@ First build ~35 s, incremental rebuilds ~15–25 s. **Browse at `http://localhos
 
 **Always serve with `_config.dev.yml` layered on.** `_config.yml` sets `url` to the deployed site and the templates emit absolute URLs from it, so without the override a page served from localhost links the *production* CSS and JS: local edits appear to do nothing, and `document.styleSheets` reports the sheet as cross-origin (`cssRules` throws) which is the quickest way to detect it. The dev config only sets `url: http://localhost:4000`.
 
+**Check whose tree port 4000 is serving before trusting a measurement.** Several agents work this repo at once, sometimes from separate checkouts, and whoever starts a server first owns the port. Every film tool reads through that server, so a server belonging to another checkout means the numbers describe somebody else's files while the edits go into yours. It is silent: the pages load, the films play, the figures move. The tell is that a string you just wrote is not in what the server returns:
+
+```bash
+curl -s http://localhost:4000/assets/js/lab-films/<film>.js | grep -c 'a comment you just added'
+```
+
+When the port is taken, do not fight for it. `preview_start` the `jekyll-4001` configuration, which layers `_config.dev4001.yml` so `site.url` moves to 4001 as well (leaving it at 4000 makes the page pull its CSS and film scripts from the other tree, which is the same failure wearing a different hat), and point the tools at it:
+
+```bash
+FILM_BASE=http://localhost:4001 npm run audit:films
+```
+
+`audit-films.js`, `contact-sheet.js` and `diff-film-frame.js` all honour `FILM_BASE`.
+
 **Do not run `bundle exec jekyll build` while `jekyll serve` is running.** Both write `_site/`, the manual build uses the production config, and whichever finishes last wins. The symptom is the one above, arriving several edits after you stopped suspecting it. `serve` already rebuilds on save; to confirm a rebuild landed, poll the served asset rather than the file on disk:
 
 ```bash
