@@ -102,6 +102,57 @@
   <link rel="next" href="{{ paginator.next_page_path | prepend: seo_url }}">
 {% endif %}
 
+{%- comment -%}
+  Every page said Person and nothing else, so a paper and a post looked the same
+  to a search engine as the about page does. A publication is a ScholarlyArticle
+  and a post is a BlogPosting; both carry the author, the date and the headline,
+  which is what a rich result is built from. The venue becomes isPartOf and the
+  paper URL becomes the identifier, since that is what the fields already mean.
+{%- endcomment -%}
+{% if page.collection == "publications" and page.title %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "headline": {{ page.title | strip_html | jsonify }},
+      "name": {{ page.title | strip_html | jsonify }},
+      {% if page.excerpt %}"abstract": {{ page.excerpt | strip_html | strip_newlines | jsonify }},{% endif %}
+      {% if page.date %}"datePublished": "{{ page.date | date_to_xmlschema }}",{% endif %}
+      {% if page.venue %}"isPartOf": { "@type": "Periodical", "name": {{ page.venue | jsonify }} },{% endif %}
+      {% if page.paperurl %}"sameAs": {{ page.paperurl | jsonify }},{% endif %}
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Ozgur Ural",
+        "url": {{ seo_url | jsonify }}
+      },
+      "url": {{ canonical_url | jsonify }},
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | jsonify }} }
+    }
+  </script>
+{% elsif page.id and page.title %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ page.title | strip_html | jsonify }},
+      {% if seo_description %}"description": {{ seo_description | jsonify }},{% endif %}
+      {% if page.date %}"datePublished": "{{ page.date | date_to_xmlschema }}",{% endif %}
+      {% if page.last_modified_at %}"dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",{% endif %}
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Ozgur Ural",
+        "url": {{ seo_url | jsonify }}
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Dr. Ozgur Ural"
+      },
+      "url": {{ canonical_url | jsonify }},
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | jsonify }} }
+    }
+  </script>
+{% endif %}
+
 {% comment %} The homepage (about.md) embeds a richer Person block inline;
    skip this one there so a single, authoritative Person schema is emitted. {% endcomment %}
 {% if site.social and page.url != "/" %}
