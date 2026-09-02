@@ -512,6 +512,35 @@
       var gl = s.caption("GD ∝ κ ↑", { coords: co, x: 1.42, y: 96, anchor: "left", size: "0.76rem", color: "#9aa7be" });
       var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "0.9rem", color: "#FFFF00" });
       s.fadeIn(gl, { at: 6.3, dur: 0.75 }); s.fadeIn(hl, { at: 8.7, dur: 0.75 });
+      /* Both curves were drawn by nine seconds and the scene ran to seventeen.
+         The claim is a ratio, and a ratio wants a reading: a marker sweeps the
+         condition number and prints the two step counts at that κ, so the
+         thousand-step journey becoming thirty is watched rather than asserted.
+         Pure in lt, so seek(t) reproduces the frame. */
+      s.canvas(function (lt, ctx, h) {
+        if (lt < 9.2) return;
+        var sw = (Math.sin((lt - 9.2) * 0.62 - Math.PI / 2) + 1) / 2;
+        var lx = 0.35 + sw * 3.5, k = Math.pow(10, lx);
+        var gdY = Math.min(112, 0.7 * k), hbY = 0.7 * Math.sqrt(k);
+        var px = co.x(lx);
+        ctx.strokeStyle = h.rgba("#e8eef7", 0.35);
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.moveTo(px, co.y(0)); ctx.lineTo(px, co.y(105)); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = h.rgba("#9aa7be", 0.95);
+        ctx.beginPath(); ctx.arc(px, co.y(Math.min(gdY, 105)), 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = h.rgba("#FFFF00", 0.95);
+        ctx.beginPath(); ctx.arc(px, co.y(hbY), 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.font = "12px 'JetBrains Mono', monospace";
+        ctx.fillStyle = h.rgba("#dbeafe", 0.95);
+        ctx.fillText("κ = " + Math.round(k), co.x(0.06), co.y(104));
+        ctx.fillStyle = h.rgba("#9aa7be", 0.95);
+        ctx.fillText("plain " + Math.round(0.7 * k) + " steps", co.x(0.06), co.y(96));
+        ctx.fillStyle = h.rgba("#FFFF00", 0.95);
+        ctx.fillText("momentum " + Math.round(hbY) + " steps", co.x(0.06), co.y(88));
+      });
+
       var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -4, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.8, dur: 0.9 });
 
