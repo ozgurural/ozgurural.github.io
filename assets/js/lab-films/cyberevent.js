@@ -573,6 +573,11 @@
             ctx.textAlign = "right";
             ctx.fillText(String(n), 70 + col * 290 + 252, 104 + row * 78 + 38);
             ctx.textAlign = "left";
+            // a digit is easy to miss; the bar makes nic.tr pulling away from
+            // the rest something you see rather than something you read
+            var bw2 = Math.min(1, n / 90) * 200;
+            ctx.fillStyle = h.rgba(i === 0 && lt > 7 ? AMB : PURP, op * vOut * ei * 0.55);
+            ctx.fillRect(70 + col * 290 + 14, 104 + row * 78 + 46, bw2, 5);
             ctx.globalAlpha = op * vOut;
           }
           ctx.globalAlpha = op;

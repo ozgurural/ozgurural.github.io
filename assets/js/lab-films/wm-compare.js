@@ -116,6 +116,42 @@
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
         if (lt > 20) {
 
+           /* The scene says the Z-score shifts past the threshold and the
+              probability of coincidence drops to zero, and then never puts
+              either number on screen. Both are drawn here, sampled while the
+              null holds and climbing once the marked model is measured, so the
+              sentence is something the viewer watches happen. The tail sits at
+              10^-4 rather than at zero, because that is what the test gives.
+              Pure in lt: seek(t) reproduces the frame. */
+           var zTick = Math.floor(lt * 2.5);
+           function zjit(k) {
+             var v = Math.sin(k * 37.19 + 4.7) * 43758.5453;
+             return (v - Math.floor(v)) - 0.5;
+           }
+           var zNow = lt < 40
+             ? zjit(zTick) * 1.5
+             : lerp(zjit(zTick) * 1.5, 3.0, E.inOut(clamp01((lt - 40) / 15)));
+           // one-sided tail of the standard normal, Abramowitz and Stegun 26.2.17
+           function tailP(z) {
+             if (z < -6) return 1; if (z > 6) return 1e-9;
+             var t2 = 1 / (1 + 0.2316419 * Math.abs(z));
+             var d = 0.3989423 * Math.exp(-z * z / 2);
+             var pp = d * t2 * (0.3193815 + t2 * (-0.3565638 + t2 * (1.781478 +
+                      t2 * (-1.821256 + t2 * 1.330274))));
+             return z > 0 ? pp : 1 - pp;
+           }
+           var pNow = Math.max(1e-4, tailP(zNow));
+           var past = zNow > 3;
+           ctx.globalAlpha = op * clamp01((lt - 20) / 0.8);
+           ctx.textAlign = "left";
+           ctx.font = "bold 20px 'JetBrains Mono', monospace";
+           ctx.fillStyle = h.rgba(past ? GRN : P.white, 0.95);
+           ctx.fillText("Z = " + zNow.toFixed(2), 560, 128);
+           ctx.font = "13px 'JetBrains Mono', monospace";
+           ctx.fillStyle = h.rgba(past ? GRN : GREY, 0.9);
+           ctx.fillText(pNow <= 1e-4 ? "p < 0.0001" : "p = " + pNow.toFixed(4), 700, 128);
+           ctx.globalAlpha = op;
+
            if (lt > 22) {
               var fade22 = clamp01((lt - 22) / 0.5);
               ctx.globalAlpha = op * fade22;
@@ -225,17 +261,15 @@
         for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 180, 20, 180 - l*20); }
 
         // Normal Image Queries (Looping)
-        if (lt > 2 && lt < 25) {
-           var fade2 = clamp01((lt - 2) / 0.5) * (lt > 24.5 ? clamp01((25 - lt) / 0.5) : 1);
+        if (lt > 2 && lt < 29) {
+           var fade2 = clamp01((lt - 2) / 0.5) * (lt > 28.5 ? clamp01((29 - lt) / 0.5) : 1);
            ctx.globalAlpha = op * fade2;
            var qlt = (lt - 2) % 4; 
            var p = clamp01(qlt / 2);
            var qx = lerp(100, 600, E.in(p));
            
-           var label = "Cat";
-           if ((lt-2) > 4) label = "Dog";
-           if ((lt-2) > 8) label = "Car";
-           if ((lt-2) > 12) label = "Bird";
+           var LBLS = ["Cat", "Dog", "Car", "Bird", "Boat", "Tree", "Chair"];
+           var label = LBLS[Math.min(LBLS.length - 1, Math.floor((lt - 2) / 4))];
 
            ctx.shadowBlur = 10; ctx.shadowColor = AMB;
            ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 60, 60);
@@ -248,6 +282,26 @@
               ctx.fillStyle = h.rgba(AMB, tAlpha); ctx.font = "bold 16px 'JetBrains Mono'";
               ctx.fillText("Output: " + label, 800, 285);
               
+           }
+           ctx.globalAlpha = op;
+        }
+
+        /* The claim is about a ratio: every ordinary query gives an ordinary
+           answer and one crafted input gives the secret label. Counting the
+           ordinary ones is what makes the single exception mean anything, and
+           it keeps the API visibly serving between the two set pieces. */
+        if (lt > 3) {
+           var served = 2000 + Math.floor((lt - 3) * 137);
+           ctx.globalAlpha = op * clamp01((lt - 3) / 0.8);
+           ctx.textAlign = "left";
+           ctx.font = "12px 'JetBrains Mono', monospace";
+           ctx.fillStyle = h.rgba(GREY, 0.95);
+           ctx.fillText(served.toLocaleString("en-US") + " ordinary queries, " +
+                        served.toLocaleString("en-US") + " ordinary answers", 100, 396);
+           if (lt > 43) {
+             ctx.fillStyle = h.rgba(AMB, 0.95);
+             ctx.font = "bold 12px 'JetBrains Mono', monospace";
+             ctx.fillText("1 crafted input, 1 secret label", 100, 418);
            }
            ctx.globalAlpha = op;
         }

@@ -337,6 +337,14 @@
           ctx.fillText("training steps: " + steps.toLocaleString("en-US"), 330, 396);
           ctx.fillStyle = h.rgba(GRN, ti);
           ctx.fillText("held-out accuracy: " + acc.toFixed(1) + "%", 640, 396);
+          // the same number as a bar, so the model improving is visible at a
+          // glance beside the hash counter it is answering
+          ctx.textAlign = "left";
+          ctx.fillStyle = h.rgba(GRN, ti * 0.30);
+          ctx.fillRect(560, 406, 300, 7);
+          ctx.fillStyle = h.rgba(GRN, ti * 0.95);
+          ctx.fillRect(560, 406, 300 * (acc / 100), 7);
+          ctx.textAlign = "center";
           ctx.textAlign = "left";
           ctx.globalAlpha = op * a;
         }
@@ -413,6 +421,22 @@
             ctx.moveTo(480, parts[i].y - 16);
             ctx.lineTo(480, parts[i].y);
             ctx.stroke();
+            /* The contract is a path data takes: addData, then the incentive
+               mechanism prices it, then the model updates. Four boxes stacked
+               and held say so; a submission travelling down them shows it, and
+               the line under this is about a contract that accepts, prices and
+               updates. Pure in lt, so seek(t) reproduces the frame. */
+            if (lt > 4.2) {
+              var travel = ((lt - 4.2) / 3.1) % 1;
+              var seg = travel * 4;
+              if (seg > i && seg <= i + 1) {
+                var fr = seg - i;
+                ctx.fillStyle = h.rgba(AMB, cOut * 0.95);
+                ctx.beginPath();
+                ctx.arc(480, lerp(parts[i].y - 16, parts[i].y + 52, fr), 5, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
             ctx.globalAlpha = op * cOut;
           }
           ctx.globalAlpha = op;
