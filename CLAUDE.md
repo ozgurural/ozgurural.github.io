@@ -79,6 +79,8 @@ npm run audit:site        # a11y, metadata, mobile, contrast, light panels, brok
 npm run check:links       # every outbound URL, once
 npm run verify:icons      # do the icons the pages draw survive the font subset
 npm run build:icon-fonts  # re-cut the icon fonts after adding an icon
+npm run build:webfonts    # re-cut the type after a font, weight or text change (site + arch)
+npm run build:page-icons  # re-cut enterprise-ai-architecture.html's own icon subset
 ```
 
 `audit-site.js` is a crawler rather than a file scan on purpose: half of these
@@ -123,6 +125,56 @@ and cuts the woff2 to what resolved: 293 KB to 13 KB, plus academicons 66 KB to
 cannot see a class assembled at runtime, so `verify-icon-subset.js` crawls the
 site and asks every icon element for its `::before` content, which is the
 codepoint the font is actually being asked for. Run both after adding an icon.
+
+**Webfonts are self-hosted and derived, same as the icons.** `scripts/vendor-
+webfonts.js` used to be the only reason a visit reached fonts.googleapis.com;
+every visitor's address went to Google before a word of the page painted, and
+a stylesheet on one origin naming files on a second put two extra handshakes
+in front of the text. It has two independent targets (`--target=site`, the
+Jekyll build's main.css; `--target=arch`, enterprise-ai-architecture.html,
+which shares nothing with main.css and uses two families the rest of the site
+does not). Each target reads its own text, keeps a Google subset only where a
+character it writes falls in that subset's range, then cuts the kept subset
+again to the codepoints and `font-feature-settings` values actually used
+(Inter's latin-ext: 85 KB for the whole site's alphabet in the main build,
+2.6 KB once cut to the five Turkish letters this site writes). A fixed floor
+of printable ASCII and common typographic marks is always kept underneath the
+derived cut, so a future sentence cannot silently lose its face to a
+character nobody had written yet.
+
+Google itself often serves one physical file for several weights of a family
+(a variable-font resource pinned per weight so a browser fetches only the
+instance it renders), and a naive per-weight loop re-downloaded and re-
+subsetted that same file three or four times over. The script now groups by
+source URL before fetching, subsets each physical resource once, and lets
+every weight that shared it keep its own `@font-face` rule pointing at the one
+file (`inter-400-500-600-700-latin.woff2`) — 257 KB down to 83 KB for the
+site target from that alone, on top of the subsetting.
+
+The one hardcoded filename this depended on (a `<link rel="preload">` for the
+body face) went stale the moment the sharing behaviour above changed which
+weights got bundled together, silently 404ing on every page. It now reads
+`site.data.webfonts.preload_font`, a value the script writes to `_data/
+webfonts.yml` after deciding the real filename, guarded by `{% if %}` so a
+checkout without the fonts built yet renders without a dead preload rather
+than an empty href. `scripts/vendor-page-icons.js` does the equivalent for
+enterprise-ai-architecture.html's icons: it re-derives which of the already-
+subsetted `assets/webfonts/fa-*.woff2` glyphs that one page needs and writes
+a small standalone stylesheet, which replaced an 18 KB unsubsetted cdnjs
+`all.min.css` with no integrity hash.
+
+**A Liquid tag written in prose is still a Liquid tag.** A comment explaining
+what an `{% if %}` guard below it does, typed as literal text inside an HTML
+comment in an `_includes/*.html` file, is parsed by Liquid before the browser
+ever sees a comment: an `if` with no expression is a syntax error, and Jekyll
+responded by failing every regeneration from that point on and quietly
+continuing to serve the last `_site/` build that had succeeded. Every check
+run against the dev server in that window was checking stale output, not the
+edit just made. Describe a Liquid tag in a comment without ever writing its
+literal `{%`/`%}` delimiters, or wrap the mention in `{% raw %}...{% endraw
+%}`. The tell, if it happens anyway: `jekyll serve`'s own terminal reports
+`Liquid Exception` on every save while curl and the browser both keep
+returning a plausible, unchanged page.
 
 ## House rules for content
 

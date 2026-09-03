@@ -20,9 +20,20 @@
 
 <!-- Inter (body), Space Grotesk (display), JetBrains Mono (code), self-hosted:
      see scripts/vendor-webfonts.js. Only body text is preloaded, so the display
-     and mono faces do not compete with it for the first paint. -->
+     and mono faces do not compete with it for the first paint.
+
+     The filename comes from site.data.webfonts rather than being typed here:
+     which weights end up sharing one physical file is decided by the script
+     (Google can repack its variable-font ranges any time it likes), so a name
+     hardcoded into this include is one repack away from preloading a 404. The
+     guard below is the fallback for that anyway, since a stale checkout
+     without assets/webfonts/gf/ built yet should render without asking the
+     browser for a font that isn't there rather than emit a link with an
+     empty href. -->
+{% if site.data.webfonts.preload_font %}
 <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="{{ base_path }}/assets/webfonts/gf/inter-400-latin.woff2">
+      href="{{ base_path }}/assets/webfonts/gf/{{ site.data.webfonts.preload_font }}">
+{% endif %}
 
 {% if page.url == "/" or page.url == "/index.html" %}
 <!-- The particle field is decorative and aria-hidden, and it was preloaded at
