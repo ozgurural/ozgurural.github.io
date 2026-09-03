@@ -51,6 +51,7 @@
     "audit:overlap": "node scripts/audit-overlap.js",
     "audit:site": "node scripts/audit-site.js",
     "build:icon-fonts": "python scripts/subset-icon-fonts.py",
+    "build:webfonts": "node scripts/vendor-webfonts.js",
     "verify:icons": "node scripts/verify-icon-subset.js",
     "check:links": "node scripts/check-external-links.js",
     "apply:trims": "node scripts/apply-trims.js"

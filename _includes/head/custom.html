@@ -18,13 +18,11 @@
 <link rel="manifest" href="{{ base_path }}/images/manifest.json">
 <meta name="theme-color" content="#0a0f1c">
 
-<!-- Premium typography: Inter (UI/body), Space Grotesk (display), JetBrains Mono (code) -->
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
-</noscript>
+<!-- Inter (body), Space Grotesk (display), JetBrains Mono (code), self-hosted:
+     see scripts/vendor-webfonts.js. Only body text is preloaded, so the display
+     and mono faces do not compete with it for the first paint. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="{{ base_path }}/assets/webfonts/gf/inter-400-latin.woff2">
 
 {% if page.url == "/" or page.url == "/index.html" %}
 <!-- The particle field is decorative and aria-hidden, and it was preloaded at
