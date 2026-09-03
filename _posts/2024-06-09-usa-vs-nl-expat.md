@@ -13,7 +13,7 @@ description: "Living as an expat has given me the chance to compare daily life i
 
 Living as an expat has given me the chance to compare daily life in the United States and the Netherlands in a way no relocation checklist ever could. My Notion workspace is a mashup of Leiden grocery receipts, NS train schedules annotated with the Dutch words I still mispronounce, and lab to-do lists from Daytona Beach that smell faintly of jet fuel and cold brew. This post collects the lessons I keep returning to when friends message, "Should I move?" and when I have to remind myself why the country I'm not in still has my heart.
 
-### At-a-glance Cheat Sheet
+## At-a-glance Cheat Sheet
 
 | Daily life axis | Netherlands (Leiden + frequent trains to Rotterdam) | United States (Daytona Beach + research trips) | Personal cheat code |
 | --- | --- | --- | --- |

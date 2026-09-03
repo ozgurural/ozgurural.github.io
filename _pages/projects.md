@@ -7,6 +7,7 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
 
 <p class="ep-lead">Every project selected here has a concrete AI or ML role: securing model provenance, verifying inference, coordinating agents, training autonomous systems, or measuring whether an AI-enabled system remains safe in production. Historical platforms appear only when they provide the data, control, validation, or human-oversight boundary that the AI depends on. Each project links to its repository or writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eleven playable explanations of the underlying mechanisms.</p>
 
+<h2 class="visually-hidden">Selected AI and ML projects</h2>
 <ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">2026 · Enterprise AI · Avion</div>

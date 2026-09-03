@@ -15,19 +15,19 @@ Model watermarking embeds identifiable patterns into a model's parameters or out
 
 In production settings, watermark checks are only useful when paired with solid observability: low-latency telemetry ingest, reliable data paths, and verification hooks that can flag when a deployed model suddenly stops presenting the expected watermark. This helps teams separate integration failures from potential tampering during release incidents.
 
-### Toward resilient Proof-of-Learning
+## Toward resilient Proof-of-Learning
 
 During my doctorate at Embry-Riddle Aeronautical University I kept returning to the question: how do we prove a model was honestly trained when the hardware, datasets, and even contributors are distributed across continents? Our research investigates how watermarking strengthens Proof-of-Learning (PoL) by binding models to verifiable training artifacts. Feature-based schemes tie a model's internal representations to secret keys, making spoofing attacks detectable [1]. The most effective designs kept the verification script simple enough to run during vendor audits while still resisting collusion.
 
 A follow-up evaluation compared parameter, data, and feature watermarking across robustness metrics, highlighting trade-offs between security and computational cost [2]; that comparison still helps when teams ask, "Which watermark should we start with?" In practice, the answer varies: lighter parameter marks can protect rapid prototyping models, while feature marks are often better for externally shared or high-assurance deployments.
 
-### Emerging applications and challenges
+## Emerging applications and challenges
 
 Watermarking is moving from academic prototypes to industry as open model sharing proliferates. When Kenji Yoshigoe and I published our 2023 IEEE Access survey on blockchain-enhanced machine learning [2], the most common follow-up question from regulators and enterprise teams was, "How do we prove provenance once we decentralize training?" The conversations have only intensified as organizations deploy AI in regulated environments and need ownership trails for every neural component. Provenance controls help product leads sleep at night when releasing APIs, and they give compliance teams concrete evidence that the models feeding real-time dashboards are the ones they vetted.
 
 Meanwhile, attackers explore watermark removal and collusion strategies, prompting defenses that combine robust statistics with cryptographic attestations [4,5]. The push and pull is healthy: every defensive iteration, such as mixing watermark keys with telemetry-derived sanity checks, sharpens practical guidance for product and policy teams.
 
-### Future importance
+## Future importance
 
 In the coming years watermarking will enable:
 
