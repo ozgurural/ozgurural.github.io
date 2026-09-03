@@ -50,7 +50,13 @@
   letter-spacing: -0.025em;
   color: var(--ds-ink);
   margin: 0 0 1rem;
-  max-width: 24ch;
+  /* No cap: the headline is a full sentence, not a short poster tagline, so an
+     artificial narrow measure just fragments it. At 24ch it broke a 122-
+     character sentence into 5 lines and stopped well short of the hero
+     column, while the lede below it reached 52ch and the CTA row and stat
+     cards beneath that used the full column: three different right edges
+     stacked in one block. Letting it fill the same column as everything
+     else reads as one block instead of a headline that gave up early. */
 }
 .ep-hero__title .accent { color: var(--ds-accent); }
 .ep-hero__lede {
