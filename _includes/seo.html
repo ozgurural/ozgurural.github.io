@@ -18,11 +18,7 @@
   {% assign canonical_url = page.url | replace: "index.html", "" | prepend: site.url %}
 {% endif %}
 
-{% if page.url == "/" %}
-<title>{{ seo_title | default: "Dr. Ozgur Ural" }} | Machine Learning Research Scientist & Senior Software Engineer{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
-{% else %}
 <title>{{ seo_title | default: "Dr. Ozgur Ural" }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
-{% endif %}
 
 {% assign seo_description = page.description | default: page.excerpt | default: site.description %}
 {% if seo_description %}

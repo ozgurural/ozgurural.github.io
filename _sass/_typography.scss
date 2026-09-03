@@ -366,3 +366,65 @@ body { background-color: transparent; }
   }
   .sidebar .author__desktop { display: block !important; }
 }
+
+/* Keep the repeated author card useful without making every phone visitor
+   scroll through a desktop-sized profile before reaching the page title. */
+@media (max-width: 640px) {
+  .sidebar {
+    margin-top: 0.75rem !important;
+    margin-bottom: 1.1rem;
+  }
+
+  .sidebar [itemtype="https://schema.org/Person"] {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 0.4rem 0.85rem;
+    align-items: center;
+  }
+
+  .sidebar [itemtype="https://schema.org/Person"] > .author__avatar {
+    grid-column: 1;
+    width: 64px !important;
+  }
+
+  .author__avatar img {
+    width: 64px !important;
+    max-width: 64px !important;
+    margin: 0 !important;
+    padding: 2px;
+  }
+
+  .author__content {
+    grid-column: 2;
+    margin: 0 !important;
+    text-align: left;
+  }
+
+  .author__name {
+    margin: 0 0 0.15rem !important;
+    font-size: 1rem !important;
+    text-align: left;
+  }
+
+  .author__pronouns,
+  .author__bio {
+    max-width: none;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  .author__urls-wrapper {
+    grid-column: 1 / -1;
+    margin-top: 0.2rem;
+  }
+
+  .author__urls {
+    gap: 0.3rem 0.8rem;
+    margin-top: 0.25rem !important;
+    padding-top: 0.5rem !important;
+  }
+
+  .author__urls a { font-size: 0.78rem; }
+  .sidebar .author__desktop { display: none !important; }
+}

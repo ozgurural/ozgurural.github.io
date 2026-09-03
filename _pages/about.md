@@ -2,7 +2,7 @@
 permalink: /
 title: "Machine Learning & Mission-Critical Systems"
 hide_title: true
-excerpt: "U.S. Ph.D. from Embry-Riddle (2025), machine-learning research focus. Five first-author papers (three in IEEE Access) on trustworthy ML, proof-of-learning, and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
+excerpt: "Machine-learning research scientist building verifiable AI for critical systems. U.S. Ph.D.; five first-author papers on proof-of-learning and model watermarking."
 author_profile: true
 redirect_from:
   - /about/
