@@ -1,7 +1,7 @@
 ---
 permalink: /lab/
 title: "Research Lab"
-description: "Block Race · Model Heist Detector · Proof-of-Learning (SecurePoL) · Redundancy Reactor · Gradient Pinball · ML Oracles · Watermarking Models · Blockchain-Enhanced ML. Real research math, animated from the equation up."
+description: "Eleven animated research explainers on proof-of-learning, model watermarking, blockchain-enhanced ML, rare-event detection, and dependable real-time systems."
 excerpt: "Eleven cinematic explainers, grouped by evidence: three reconstruct results from my papers, one explains the public constraints behind systems I engineer, two synthesize watermarking ideas with their assumptions stated, three animate foundational results credited to their authors, and two are labelled open research directions."
 header:
   og_image: "lab-og/og-lab.png"

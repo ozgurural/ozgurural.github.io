@@ -6,7 +6,7 @@ layout: archive
 redirect_from:
   - /technical-blog/
   - /blog.html
-description: "Field notes on machine-learning security, proof-of-learning, distributed systems, and the engineering of high-reliability software, written for ML researchers, senior engineers, and technical leaders."
+description: "Field notes on ML security, proof-of-learning, distributed systems, and high-reliability software for researchers, engineers, and technical leaders."
 
 ---
 

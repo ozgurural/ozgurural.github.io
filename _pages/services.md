@@ -1,7 +1,7 @@
 ---
 permalink: /services/
 title: "Advisory & Service"
-description: "Technical advisory, ML-security and model-provenance review, conference speaking, plus peer review and program-committee service across machine-learning security and distributed systems."
+description: "Technical advisory, ML security and model provenance review, conference speaking, peer review, and program-committee service."
 
 ---
 

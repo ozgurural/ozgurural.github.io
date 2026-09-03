@@ -1,7 +1,7 @@
 ---
 permalink: /projects/
 title: "Projects"
-description: "AI- and ML-focused research code, interactive demos, agent architectures, and production foundations by Dr. Ozgur Ural: model provenance, verifiable inference, autonomous systems, AI security, and human-verified clinical tooling."
+description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, verifiable inference, autonomous agents, safety-critical systems, and human-verified clinical tools."
 
 ---
 
