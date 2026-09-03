@@ -470,7 +470,10 @@
   letter-spacing: 0;
   margin: 0 0 0.8rem;
   color: var(--ds-ink);
-  max-width: 14ch;
+  /* No cap: same defect and same fix as .ep-hero__title (see that rule's
+     comment). "Watch the mathematics move." is 4 words, and 14ch broke it
+     into 3 one-and-a-half-word lines while stopping at 174px against a
+     770px column the paragraph and CTA row beneath it both used in full. */
 }
 .lab-hero__copy {
   position: relative;
@@ -881,7 +884,7 @@
 
 @media (max-width: 720px) {
   .lab-hero { padding: 1.1rem 1rem 1.2rem; }
-  .lab-hero__title { font-size: 2rem; max-width: 11ch; }
+  .lab-hero__title { font-size: 2rem; }
   .lab-hero__copy { font-size: 0.98rem; }
   .lab-mission-deck { grid-template-columns: 1fr; }
   .lab-mission-card { min-height: auto; }
