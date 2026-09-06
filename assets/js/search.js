@@ -14,6 +14,12 @@
   var toggle = document.getElementById("search-toggle");
   if (!overlay || !toggle) return;
 
+  /* #search-toggle is the <li>; the thing that actually carries role="button",
+     takes focus and should carry aria-expanded is the <a> inside it. Click and
+     keydown can stay bound to the <li> since they bubble, but focus() and the
+     ARIA state have to address the control itself. */
+  var toggleBtn = toggle.querySelector('[role="button"], a, button') || toggle;
+
   var input = document.getElementById("search-input");
   var results = document.getElementById("search-results");
   var hint = document.getElementById("search-hint");
@@ -131,24 +137,75 @@
     render(matches, q);
   }
 
+  /* The panel declares role="dialog" aria-modal="true", which tells a screen
+     reader the rest of the page is inert. Nothing was enforcing that for the
+     Tab key: with the overlay open there were 47 focusable elements behind it,
+     all reachable, so a keyboard user tabbed out of the dialog and into a page
+     they could no longer see. Querying live on each Tab rather than caching a
+     list, because the results list is rebuilt on every keystroke. */
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), ' +
+                  'select:not([disabled]), textarea:not([disabled]), ' +
+                  '[tabindex]:not([tabindex="-1"])';
+  function focusablesInOverlay() {
+    return Array.prototype.filter.call(overlay.querySelectorAll(FOCUSABLE), function (el) {
+      var cs = window.getComputedStyle(el);
+      return cs.visibility !== "hidden" && cs.display !== "none" && el.offsetParent !== null;
+    });
+  }
+  function trapTab(e) {
+    if (e.key !== "Tab" || overlay.hidden) return;
+    var items = focusablesInOverlay();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1];
+    // Focus can sit outside the panel entirely (the browser restored it, or a
+    // click landed on the backdrop), so pull it back in rather than assuming
+    // it is on one of the edges.
+    if (!overlay.contains(document.activeElement)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus();
+      return;
+    }
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  /* Where focus was before the dialog opened, so Escape can put it back.
+     Without this, closing left focus on the search input inside the now
+     hidden overlay: the browser drops it to <body> and the user has lost
+     their place, needing to tab from the top of the document again. */
+  var lastFocused = null;
+
   function openSearch() {
+    if (!overlay.hidden) return;
+    lastFocused = document.activeElement;
     overlay.hidden = false;
     document.body.classList.add("search-open");
+    toggleBtn.setAttribute("aria-expanded", "true");
     loadIndex();
     if (!input.value.trim()) renderSuggestions();
     window.setTimeout(function () { input.focus(); input.select(); }, 40);
   }
   function closeSearch() {
+    if (overlay.hidden) return;
     overlay.hidden = true;
     document.body.classList.remove("search-open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+    if (lastFocused && document.contains(lastFocused) && lastFocused.focus) {
+      lastFocused.focus();
+    } else {
+      toggleBtn.focus();
+    }
+    lastFocused = null;
   }
 
+  toggleBtn.setAttribute("aria-expanded", "false");
   toggle.addEventListener("click", function (e) { e.preventDefault(); openSearch(); });
   toggle.addEventListener("keydown", function (e) {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openSearch(); }
   });
   if (closeBtn) closeBtn.addEventListener("click", closeSearch);
   overlay.addEventListener("mousedown", function (e) { if (e.target === overlay) closeSearch(); });
+  overlay.addEventListener("keydown", trapTab);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !overlay.hidden) closeSearch();
   });
