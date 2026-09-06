@@ -8,6 +8,9 @@ excerpt: "Dual-layer framework coupling immutable Proof-of-Learning logs with th
 date: 2025-12-10
 venue: "IEEE Access"
 paperurl: "https://ieeexplore.ieee.org/document/11293969"
+authors:
+  - "Dr. Ozgur Ural"
+  - "K. Yoshigoe"
 citation: "Ural, O. and Yoshigoe, K. (2025). SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks. IEEE Access, vol. 13, pp. 213067-213091. DOI: 10.1109/ACCESS.2025.3642198."
 ---
 

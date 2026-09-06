@@ -120,11 +120,31 @@
       {% if page.date %}"datePublished": "{{ page.date | date_to_xmlschema }}",{% endif %}
       {% if page.venue %}"isPartOf": { "@type": "Periodical", "name": {{ page.venue | jsonify }} },{% endif %}
       {% if page.paperurl %}"sameAs": {{ page.paperurl | jsonify }},{% endif %}
+      {%- comment -%}
+        Half of these papers are co-authored, and emitting a single author read
+        them all as sole-authored to anything parsing the schema, while the
+        citation printed on the page said otherwise. The list comes from an
+        explicit `authors` front matter key rather than from parsing the
+        citation string, which would have to guess where a name ends. Papers
+        without that key are the genuinely sole-authored ones and still get the
+        single Person. Only the first author is given a url, since that is the
+        one this site is about.
+      {%- endcomment -%}
+      {% if page.authors and page.authors.size > 0 %}
+      "author": [
+        {% for a in page.authors %}{
+          "@type": "Person",
+          "name": {{ a | jsonify }}{% if forloop.first %},
+          "url": {{ seo_url | jsonify }}{% endif %}
+        }{% unless forloop.last %},{% endunless %}{% endfor %}
+      ],
+      {% else %}
       "author": {
         "@type": "Person",
         "name": "Dr. Ozgur Ural",
         "url": {{ seo_url | jsonify }}
       },
+      {% endif %}
       "url": {{ canonical_url | jsonify }},
       "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | jsonify }} }
     }

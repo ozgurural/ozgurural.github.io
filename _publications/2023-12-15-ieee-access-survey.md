@@ -7,6 +7,9 @@ excerpt: "Comprehensive survey of blockchain-enhanced machine learning: consensu
 date: 2023-12-15
 venue: "IEEE Access"
 paperurl: "https://doi.org/10.1109/ACCESS.2023.3344669"
+authors:
+  - "Dr. Ozgur Ural"
+  - "K. Yoshigoe"
 citation: "Ural, O. and Yoshigoe, K. (2023). Survey on Blockchain-Enhanced Machine Learning. IEEE Access, pp. 145331-145362. DOI: 10.1109/ACCESS.2023.3344669."
 ---
 
