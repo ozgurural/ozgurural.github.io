@@ -81,6 +81,7 @@ npm run verify:icons      # do the icons the pages draw survive the font subset
 npm run build:icon-fonts  # re-cut the icon fonts after adding an icon
 npm run build:webfonts    # re-cut the type after a font, weight or text change (site + arch)
 npm run build:page-icons  # re-cut enterprise-ai-architecture.html's own icon subset
+npm run check:liquid      # will Jekyll still build? (source scan, no server needed)
 ```
 
 `audit-site.js` is a crawler rather than a file scan on purpose: half of these
@@ -175,6 +176,17 @@ literal `{%`/`%}` delimiters, or wrap the mention in `{% raw %}...{% endraw
 %}`. The tell, if it happens anyway: `jekyll serve`'s own terminal reports
 `Liquid Exception` on every save while curl and the browser both keep
 returning a plausible, unchanged page.
+
+`npm run check:liquid` is the guard against a repeat. It scans the source
+tree (no server needed, so it is also the right thing to run when the served
+page is exactly what you cannot trust) for both halves of that bug: block
+tags that do not balance, and literal `{%`/`{{` inside an HTML comment that
+is not wrapped in `raw`. It was written against the real defect and confirmed
+to catch it by reintroducing it. Everything inside a `raw` span is skipped
+rather than parsed, so a documented example of a tag does not read as
+unbalanced. Run it before trusting any measurement taken against the dev
+server, since a silent build failure makes every other check a check of
+stale output.
 
 ## House rules for content
 

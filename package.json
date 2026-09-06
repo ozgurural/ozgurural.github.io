@@ -55,6 +55,7 @@
     "build:page-icons": "node scripts/vendor-page-icons.js",
     "verify:icons": "node scripts/verify-icon-subset.js",
     "check:links": "node scripts/check-external-links.js",
+    "check:liquid": "node scripts/check-liquid.js",
     "apply:trims": "node scripts/apply-trims.js"
   }
 }
