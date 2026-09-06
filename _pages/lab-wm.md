@@ -16,7 +16,7 @@ header:
   <p class="lab-card__lead">🕵️ Someone leaks your AI and fine-tunes it just enough to look different. Before you ever published, you spread a faint statistical signature across thousands of weights, each mark too small to notice, but together a fingerprint only you can read. This animation shows why that works: one big mark is fragile, but <strong>k tiny correlated marks</strong> read back through a matched filter give detection power that climbs as <strong>√k</strong>, invisible in any one weight, undeniable across all of them.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Implements robust statistical watermarking, modelled as an aggregate Gaussian Z-test over k weights. See the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</span>
+    <span>This film animates the detection side of the problem: a mark spread across many parameters, read back with a matched filter, and why the evidence grows as √k. The aggregate Gaussian Z-test is the film's model of that step, not a formula taken from the paper. The paper it accompanies, <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024), embeds the mark in the model's internal features rather than its output behaviour, and checks it alongside the Proof-of-Learning trajectory so that a forger has to satisfy both conditions at once.</span>
   </div>
 
   <div class="lab-film">
