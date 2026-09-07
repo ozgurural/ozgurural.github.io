@@ -119,6 +119,22 @@ and 34 KB brotli, which is what GitHub Pages sends, so trimming 525 unused Font
 Awesome rules out of it would have saved about 3 KB on the wire. The fonts, at
 280 KB uncompressed and uncompressible, were the thing worth cutting.
 
+**Editing on Windows flips line endings, and the working tree lies about it.**
+Editing the three Font Awesome partials rewrote them as CRLF. They are stored
+LF in git, so a five-line change was committed as 169 lines of churn with the
+real edit buried in it. What makes this hard to spot is that `file` on the
+checkout is not evidence: some vendor files show CRLF in the working tree while
+their blobs are LF. Ask git what it stored, not the filesystem:
+
+```bash
+git show HEAD:_sass/vendor/font-awesome/solid.scss | file -   # ASCII text = LF
+git diff --ignore-cr-at-eol --stat                            # the real change
+```
+
+A diff stat far larger than the edit is the tell. Strip the CRs and re-commit
+rather than leaving it, since the next reader of that history cannot see what
+changed.
+
 **Icon fonts are subsetted.** `scripts/subset-icon-fonts.py` scans for
 `fa-<name>` tokens, resolves them against Font Awesome's own `_variables.scss`,
 and cuts the woff2 to what resolved: 293 KB to 13 KB, plus academicons 66 KB to
