@@ -9,8 +9,15 @@
     font-style: normal;
     font-weight: 400;
     font-display: block;
-    src:url('../fonts/academicons.eot');
-    src:url('../fonts/academicons.woff2') format('woff2'),url('../fonts/academicons.woff') format('woff'),url('../fonts/academicons.ttf') format('truetype'),url('../fonts/academicons.eot') format('embedded-opentype'),url('../fonts/academicons.svg#academicons') format('svg');font-display:block;
+    /* woff2 only. The upstream "bulletproof" src list also named eot, woff,
+       ttf and an SVG font, for IE and for browsers predating woff2. This site
+       uses aspect-ratio (Safari 15, 2021) and clamp() (Safari 13.1, 2020), so
+       any browser that can lay the page out at all has had woff2 since 2016 at
+       the latest and never requested the others. They cost 657 KB in the
+       repository to be downloaded by nobody. The full academicons.full.ttf is
+       kept beside the subset as the archival original, since no script
+       regenerates it. */
+    src:url('../fonts/academicons.woff2') format('woff2');font-display:block;
 }
 .ai {
   font-family: 'Academicons';
