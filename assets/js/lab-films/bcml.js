@@ -328,31 +328,35 @@
            a number attached while it is being made. */
         if (t > 2.0) {
           var ti = clamp01((t - 2.0) / 0.8);
+          /* fade out before the OPEN PROBLEM box arrives at t=18 */
+          var to = t > 17.2 ? 1 - clamp01((t - 17.2) / 0.8) : 1;
+          var vis = ti * to;
           var steps = Math.floor((t - 2.0) * 41000);
           var acc = (1 - Math.exp(-(t - 2.0) / 7.0)) * 96.4;
-          ctx.globalAlpha = op * ti;
+          ctx.globalAlpha = op * vis;
           ctx.textAlign = "center";
-          ctx.fillStyle = h.rgba(CY, ti * 0.95);
+          ctx.fillStyle = h.rgba(CY, vis * 0.95);
           ctx.font = "bold 13px " + MONO;
           ctx.fillText("training steps: " + steps.toLocaleString("en-US"), 330, 396);
-          ctx.fillStyle = h.rgba(GRN, ti);
+          ctx.fillStyle = h.rgba(GRN, vis);
           ctx.fillText("held-out accuracy: " + acc.toFixed(1) + "%", 640, 396);
           // the same number as a bar, so the model improving is visible at a
           // glance beside the hash counter it is answering
           ctx.textAlign = "left";
-          ctx.fillStyle = h.rgba(GRN, ti * 0.30);
+          ctx.fillStyle = h.rgba(GRN, vis * 0.30);
           ctx.fillRect(560, 406, 300, 7);
-          ctx.fillStyle = h.rgba(GRN, ti * 0.95);
+          ctx.fillStyle = h.rgba(GRN, vis * 0.95);
           ctx.fillRect(560, 406, 300 * (acc / 100), 7);
-          ctx.textAlign = "center";
           ctx.textAlign = "left";
           ctx.globalAlpha = op * a;
         }
 
         if (t > 8) {
           var ci = clamp01((t - 8) / 0.8);
-          ctx.globalAlpha = op * ci;
-          ctx.fillStyle = h.rgba(AMB, ci);
+          /* fade out before the OPEN PROBLEM box arrives at t=18 */
+          var co = t > 17.2 ? 1 - clamp01((t - 17.2) / 0.8) : 1;
+          ctx.globalAlpha = op * ci * co;
+          ctx.fillStyle = h.rgba(AMB, ci * co);
           ctx.font = "bold 15px " + MONO;
           ctx.textAlign = "center";
           ctx.fillText("the electricity produces a trained model, not a discarded hash", 480, 366);
