@@ -135,9 +135,11 @@
 
       // ball trajectory: a decaying swirl that settles at the basin floor
       // (decay tuned so the ball actually parks on the marked minimum)
-      function ballXY(tau) {
+      function ballXY(tau, ph) {
+        ph = ph || 0;
         var e = Math.exp(-3.0 * tau);
-        return { x: 0.92 * e * Math.cos(7.0 * tau), y: 0.62 * e * Math.sin(3.4 * tau) };
+        return { x: 0.92 * e * Math.cos(7.0 * tau + ph),
+                 y: 0.62 * e * Math.sin(3.4 * tau + ph * 0.62) };
       }
 
       var sgradCache = null, ballGrdCache = null;
@@ -205,7 +207,16 @@
         }
 
         // ---- the rolling ball + trail ----
-        var rollTau = h.clamp01(lt / 9);
+        /* The ball parked at nine seconds and the scene ran for twenty-one, so
+           two thirds of the opening image was a still bowl. The line spoken over
+           it says every trained model is the end of a journey down a landscape
+           like this, and a landscape is a thing you can arrive at from anywhere:
+           a second descent starts elsewhere on the rim and finds the same floor.
+           Pure in lt, so seek(t) reproduces the frame. */
+        var LAUNCH = 9.8, RUN2 = 8.0;
+        var second = lt >= LAUNCH;
+        var rollPh = second ? 2.35 : 0;
+        var rollTau = second ? h.clamp01((lt - LAUNCH) / RUN2) : h.clamp01(lt / 9);
         // trail
         var tb = 0.10, steps = 26;
         ctx.lineWidth = 2.4;
@@ -214,7 +225,7 @@
         for (i = 0; i < steps; i++) {
           var ta = rollTau - tb * (i / steps), tc = rollTau - tb * ((i + 1) / steps);
           if (tc < 0) break;
-          var A = ballXY(ta), B = ballXY(tc);
+          var A = ballXY(ta, rollPh), B = ballXY(tc, rollPh);
           var pa = proj(A.x, A.y, kBowl * (A.x * A.x + A.y * A.y) + 0.04);
           var pb = proj(B.x, B.y, kBowl * (B.x * B.x + B.y * B.y) + 0.04);
           ctx.strokeStyle = h.rgba("#FFFF00", 0.5 * (1 - i / steps));
@@ -235,7 +246,7 @@
           ctx.shadowBlur = 0;
           ctx.restore();
         }
-        var b = ballXY(rollTau);
+        var b = ballXY(rollTau, rollPh);
         var zb = kBowl * (b.x * b.x + b.y * b.y) + 0.04;
         var pb0 = proj(b.x, b.y, zb);
         // -grad L arrow (downhill) while the ball is high on the wall
@@ -265,13 +276,13 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "A trained model is the endpoint of an optimization path. The final weights show where it ended; a recorded trajectory provides evidence about how it got there.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk it and you have a model. Reproduce it and you have a proof.", 6.0, { out: 19.8, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
   /* ========================= SCENE 2 — UPDATE ======================= */
   function sceneUpdate(film) {
-    film.scene("One step at a time", 19, function (s) {
+    film.scene("One step at a time", 17.3, function (s) {
       // isotropic mapping (same px-per-unit on both axes) so the drawn
       // gradient really is perpendicular to the drawn contours on screen
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-1.68, 1.68], pad: { left: 70, right: 60, top: 70, bottom: 60 } });
@@ -366,7 +377,7 @@
 
   /* ======================= SCENE 3 — STABILITY ===================== */
   function sceneStability(film) {
-    film.scene("Too big a step", 28, function (s) {
+    film.scene("Too big a step", 26.3, function (s) {
       // three panels share one 1-D parabola L(θ)=½λθ²; we vary α against curvature λ.
       var lam = 1.0;
       var panels = [
@@ -420,7 +431,7 @@
 
   /* ======================== SCENE 4 — MOMENTUM ===================== */
   function sceneMomentum(film) {
-    film.scene("Momentum in the ravine", 25, function (s) {
+    film.scene("Momentum in the ravine", 22.7, function (s) {
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-2.3, 2.3], pad: { left: 70, right: 60, top: 84, bottom: 60 } });
       var a = 0.5, b = 4.0, mx = 0, my = 0;    // flat along x, steep across y → κ = b/a = 8
       // GD pinned near the y-axis stability edge → sharp zig-zag; underdamped heavy-ball glides the floor.
@@ -479,13 +490,13 @@
 
   /* ======================= SCENE 5 — √κ SPEEDUP ==================== */
   function sceneSqrtKappa(film) {
-    film.scene("From κ to √κ", 24, function (s) {
+    film.scene("From κ to √κ", 24.5, function (s) {
       // left: the two convergence rates, typeset. right: iterations vs κ (log-x).
       var t1 = s.tex2("\\text{Standard GD: Slow in narrow valleys}", { px: 264, py: 190, size: "1.4rem", color: "#9aa7be" });
       s.write(t1, { at: 1.5, dur: 1.8 });
       var t2 = s.tex2("\\text{With Momentum: Dramatically faster}", { px: 264, py: 250, size: "1.4rem", color: "#FFFF00" });
       s.write(t2, { at: 3.75, dur: 1.8 });
-      var t3 = s.tex2("\\text{Optimized parameters for the quadratic model}", { px: 264, py: 320, size: "1.05rem", color: "#dbeafe" });
+      var t3 = s.tex2("\\text{Optimal parameters exist for perfect damping}", { px: 264, py: 320, size: "1.05rem", color: "#dbeafe" });
       s.fadeIn(t3, { at: 5.4, dur: 1.5 });
 
       // plot region (right half), x = log10(kappa) in [0,4]
@@ -501,6 +512,35 @@
       var gl = s.caption("GD ∝ κ ↑", { coords: co, x: 1.42, y: 96, anchor: "left", size: "0.76rem", color: "#9aa7be" });
       var hl = s.caption("momentum ∝ √κ", { coords: co, x: 2.55, y: 26, anchor: "left", size: "0.9rem", color: "#FFFF00" });
       s.fadeIn(gl, { at: 6.3, dur: 0.75 }); s.fadeIn(hl, { at: 8.7, dur: 0.75 });
+      /* Both curves were drawn by nine seconds and the scene ran to seventeen.
+         The claim is a ratio, and a ratio wants a reading: a marker sweeps the
+         condition number and prints the two step counts at that κ, so the
+         thousand-step journey becoming thirty is watched rather than asserted.
+         Pure in lt, so seek(t) reproduces the frame. */
+      s.canvas(function (lt, ctx, h) {
+        if (lt < 9.2) return;
+        var sw = (Math.sin((lt - 9.2) * 0.62 - Math.PI / 2) + 1) / 2;
+        var lx = 0.35 + sw * 3.5, k = Math.pow(10, lx);
+        var gdY = Math.min(112, 0.7 * k), hbY = 0.7 * Math.sqrt(k);
+        var px = co.x(lx);
+        ctx.strokeStyle = h.rgba("#e8eef7", 0.35);
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.moveTo(px, co.y(0)); ctx.lineTo(px, co.y(105)); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = h.rgba("#9aa7be", 0.95);
+        ctx.beginPath(); ctx.arc(px, co.y(Math.min(gdY, 105)), 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = h.rgba("#FFFF00", 0.95);
+        ctx.beginPath(); ctx.arc(px, co.y(hbY), 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.font = "12px 'JetBrains Mono', monospace";
+        ctx.fillStyle = h.rgba("#dbeafe", 0.95);
+        ctx.fillText("κ = " + Math.round(k), co.x(0.06), co.y(104));
+        ctx.fillStyle = h.rgba("#9aa7be", 0.95);
+        ctx.fillText("plain " + Math.round(0.7 * k) + " steps", co.x(0.06), co.y(96));
+        ctx.fillStyle = h.rgba("#FFFF00", 0.95);
+        ctx.fillText("momentum " + Math.round(hbY) + " steps", co.x(0.06), co.y(88));
+      });
+
       var xlab = s.caption("condition number κ  (log scale, 1 → 10⁴)", { coords: co, x: 2, y: -4, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xlab, { at: 1.8, dur: 0.9 });
 
@@ -508,12 +548,12 @@
       var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 264, py: 400, size: "1.4rem", color: "#FFFF00" });
       s.fadeIn(call, { at: 9.6, dur: 1.2 }); s.pulse(call, { at: 10.8, dur: 1.2, amp: 0.12 });
 
-      lower(s, "For a strongly convex quadratic, optimized momentum changes the condition-number scale from kappa to its square root. At kappa one thousand, that is about 32 before constants and log factors.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
+      lower(s, "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
 
       // honesty caveat — the regime where this holds (referee note)
       var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 60, anchor: "top", align: "center", size: "0.68rem" });
       s.fadeIn(caveat, { at: 17.25, dur: 1.2 });
-    }, { subtitle: "In the stated quadratic regime, momentum improves the condition-number dependence." });
+    }, { subtitle: "Momentum fundamentally improves the convergence rate." });
   }
 
   /* ======================== SCENE 6 — SADDLES ====================== */
@@ -525,6 +565,12 @@
 
       // ball: trembles on the plateau, then escapes down the −y unstable axis
       function ballXY(lt) {
+        // You do not meet one saddle. The ball escaped at thirteen seconds and
+        // the surface stood empty for the rest of the scene, so the descent
+        // restarts: another trajectory arrives at the plateau, trembles, and
+        // leaves down the unstable axis, which is the situation being described
+        // rather than one instance of it.
+        lt = lt % 13.0;
         if (lt < 8.5) { // jitter near the saddle
           var j = 0.05 * Math.sin(lt * 9);
           return { x: j * 0.5, y: 0.02 * Math.sin(lt * 6) };
@@ -646,6 +692,38 @@
         s.fadeIn(d, { at: 7.2 + i * 0.18, dur: 0.6 });
         s.fadeOut(d, { at: 26, dur: 1 });
       });
+      /* Bray-Dean is a statement about sampling: draw critical points and the
+         index rises with the loss, so almost none of them are minima. Six dots
+         placed at eight seconds and held for eighteen assert that; drawing them
+         one at a time, with the tally running, is the result being obtained.
+         Deterministic in the sample index, so seek(t) reproduces the frame. */
+      s.canvas(function (lt, ctx, h) {
+        if (lt < 8.2) return;
+        var NMAX = 40;
+        var n = Math.min(NMAX, Math.floor((lt - 8.2) * 2.3));
+        var mins = 0;
+        for (var k = 0; k < n; k++) {
+          var v = Math.sin(k * 12.9898 + 7.13) * 43758.5453;
+          var u = v - Math.floor(v);
+          u = 0.03 + u * 0.94;
+          var isMin = u < 0.09;
+          if (isMin) mins++;
+          var age = h.clamp01((lt - 8.2 - k / 2.3) / 0.45);
+          ctx.fillStyle = h.rgba(isMin ? "#83C167" : "#9A72AC", 0.85 * age);
+          ctx.beginPath();
+          ctx.arc(co.x(u), co.y(Math.pow(u, 0.85)), 5.2 * age, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (n > 0) {
+          ctx.fillStyle = h.rgba("#e8eef7", 0.95);
+          ctx.font = "bold 13px 'JetBrains Mono', monospace";
+          ctx.fillText(n + " critical points sampled", co.x(0.04), co.y(1.02));
+          ctx.fillStyle = h.rgba("#9A72AC", 0.95);
+          ctx.fillText((n - mins) + " saddles, " + mins +
+                       (mins === 1 ? " minimum" : " minima"), co.x(0.04), co.y(1.02) + 19);
+        }
+      });
+
       var xl = s.caption("loss ε →", { coords: co, x: 0.5, y: -0.12, anchor: "top", align: "center", size: "0.9rem", color: "#f1f5f9" });
       var yl = s.caption("index α<br><span style='font-size:0.7em'>(% negative eigenvalues)</span>", { coords: co, x: -0.08, y: 0.98, anchor: "right", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 4.5, dur: 0.9 }); s.fadeIn(yl, { at: 4.68, dur: 0.9 });
@@ -665,7 +743,7 @@
 
       var vis = s.caption("In a world where anyone can descend, trust no longer comes from the model. It comes from proving how the model got there.", { px: 470, py: 176, anchor: "top", align: "center", size: "1.05rem", color: "#e8eef9", maxWidth: "75%" });
       s.fadeIn(vis, { at: 22, dur: 1.5 });
-    }, { subtitle: "The random-field model predicts that high-error critical points are overwhelmingly saddles." });
+    }, { subtitle: "High dimensional critical points are almost never minima. They are saddles." });
   }
 
   /* --------- small canvas arrow helper --------- */
@@ -688,7 +766,7 @@
       ["The update", "\\theta_{t+1} = \\theta_t - \\alpha\\, v_{t+1}, \\qquad v_{t+1} = \\beta\\, v_t + \\nabla L(\\theta_t)",
         "Plain gradient descent is the \\(\\beta=0\\) case. With \\(v_0=0\\), the buffer is the exponentially-weighted <em>sum</em> \\(v_{t+1}=\\sum_{k=0}^{t}\\beta^{\\,t-k}\\nabla L(\\theta_k)\\) (not an average; that would carry a \\(1-\\beta\\) factor)."],
       ["Local stability", "\\theta_{t+1}=(1-\\alpha\\lambda_i)\\,\\theta_t \\;\\Rightarrow\\; 0<\\alpha<\\tfrac{2}{\\lambda_{\\max}}",
-        "Diagonalising the Hessian \\(H=Q\\,\\mathrm{diag}(\\lambda_i)\\,Q^\\top\\) decouples GD into per-axis contractions \\(|1-\\alpha\\lambda_i|\\). Convergence requires this be \\(<1\\) on every axis."],
+        "Diagonalising the Hessian \\(H=Q\\,\\mathrm{diag}(\\lambda_i)\\,Q^\\top\\) decouples GD into per-axis contractions \\(|1-\\alpha\\lambda_i|\\). Convergence requires this be \\(\\lt 1\\) on every axis."],
       ["Optimal rates", "\\alpha^\\star=\\tfrac{2}{L+\\mu}\\Rightarrow\\tfrac{\\kappa-1}{\\kappa+1}, \\qquad \\text{heavy-ball}\\Rightarrow\\tfrac{\\sqrt{\\kappa}-1}{\\sqrt{\\kappa}+1}",
         "With \\(\\kappa=L/\\mu\\), the globally optimal GD step \\(\\alpha^\\star=2/(L{+}\\mu)\\) gives rate \\((\\kappa{-}1)/(\\kappa{+}1)\\); the simpler \\(\\alpha=1/L\\) gives the slightly worse \\((\\kappa{-}1)/\\kappa\\). Polyak's optimally-tuned heavy ball achieves the \\(\\sqrt{\\kappa}\\) law (Polyak 1964), a strongly-convex, full-gradient result."],
       ["Saddle prevalence", "P(\\text{local min}\\mid \\nabla L=0)\\to 0 \\ \\text{as } d\\to\\infty",

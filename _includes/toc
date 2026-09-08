@@ -1,6 +1,6 @@
 <aside class="sidebar__right">
-<nav class="toc" aria-label="{{ include.title | default: site.data.ui-text[site.locale].toc_label }}" markdown="1">
-<header><p class="nav__title"><i class="fa fa-{{ include.icon | default: 'file-text' }}" aria-hidden="true"></i> {{ include.title | default: site.data.ui-text[site.locale].toc_label }}</p></header>
+<nav class="toc" aria-labelledby="toc-label" markdown="1">
+<header><p class="nav__title" id="toc-label"><i class="fa fa-{{ include.icon | default: 'file-text' }}" aria-hidden="true"></i> {{ include.title | default: site.data.ui-text[site.locale].toc_label }}</p></header>
 *  Auto generated table of contents
 {:toc .toc__menu}
 </nav>

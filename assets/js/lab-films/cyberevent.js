@@ -136,8 +136,16 @@
             if (a <= 0) continue;
             var isEvent = eventCells.indexOf(idx) !== -1;
             var revealed = isEvent && lt > 14;
-            ctx.fillStyle = h.rgba(revealed ? RED : GREY, op * a * (revealed ? 1 : 0.34));
-            var sz = revealed ? 7 : 4.2;
+            /* A stream streams. The field was drawn once and then held, under a
+               line about an open Turkish stream, so posts keep arriving: every
+               cell carries its own phase and brightens as it is written. That
+               makes the four red ones read as four in a thousand going past,
+               rather than four marked on a map. Deterministic in (cell, t). */
+            var tw = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(idx * 7.13 + lt * 2.1));
+            var fresh = Math.pow(Math.max(0, Math.sin(idx * 3.77 + lt * 1.6)), 22);
+            ctx.fillStyle = h.rgba(revealed ? RED : GREY,
+                                   op * a * (revealed ? 1 : 0.34 * tw + 0.5 * fresh));
+            var sz = revealed ? 7 : 4.2 + fresh * 1.6;
             ctx.beginPath();
             ctx.arc(x0 + c * dx, y0 + r * dy, sz, 0, Math.PI * 2);
             ctx.fill();
@@ -178,7 +186,7 @@
 
       lower(
         s,
-        "Incidents surface publicly before they surface officially. Someone tweets that the bank app is down.",
+        "Incidents surface publicly first. Someone tweets that the bank app is down.",
         1.4
       );
       lower(
@@ -281,40 +289,67 @@
         ctx.fillText("the vector is squeezed from both sides", 480, 84);
         ctx.textAlign = "left";
 
+        /* The vector is squeezed from both sides, and two static boxes could
+           only assert that. It is a trade-off in one variable, so it is drawn
+           as one: false positives climb with the number of keywords, missed
+           events fall, and a marker sweeps the vocabulary size so the squeeze
+           is something you watch close from either end. The band where both of
+           the paper's criteria hold is what the two boxes below then name. */
         var li = clamp01((t - 1.2) / 0.9);
         if (li > 0) {
+          var GX = 150, GY = 268, GW = 640, GH = 132;
           ctx.globalAlpha = op * li;
-          box(ctx, h, 70, 120, 380, 150, RED, li, "", "");
-          ctx.fillStyle = h.rgba(RED, li);
-          ctx.font = "bold 15px " + MONO;
-          ctx.textAlign = "center";
-          ctx.fillText("TOO MANY KEYWORDS", 260, 152);
-          ctx.fillStyle = h.rgba(MUTED, li);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("more documents than the system", 260, 186);
-          ctx.fillText("can process, false positives rise", 260, 208);
-          ctx.fillStyle = h.rgba(RED, li);
-          ctx.font = "bold 14px " + MONO;
-          ctx.fillText("certainty falls", 260, 244);
-          ctx.textAlign = "left";
-          ctx.globalAlpha = op * a;
-        }
+          ctx.strokeStyle = h.rgba(GREY, li * 0.55);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(GX, GY - GH); ctx.lineTo(GX, GY); ctx.lineTo(GX + GW, GY);
+          ctx.stroke();
 
-        var ri = clamp01((t - 2.4) / 0.9);
-        if (ri > 0) {
-          ctx.globalAlpha = op * ri;
-          box(ctx, h, 510, 120, 380, 150, AMB, ri, "", "");
-          ctx.fillStyle = h.rgba(AMB, ri);
-          ctx.font = "bold 15px " + MONO;
+          function fpAt(u) { return Math.pow(u, 2.1); }          // false positives
+          function missAt(u) { return Math.pow(1 - u, 1.5); }    // events missed
+
+          // the acceptable band: few enough false positives, still catching it
+          var lo = 0.38, hi = 0.66;
+          ctx.fillStyle = h.rgba(GRN, li * 0.10);
+          ctx.fillRect(GX + lo * GW, GY - GH, (hi - lo) * GW, GH);
+
+          var curves = [[fpAt, RED], [missAt, AMB]];
+          for (var cI = 0; cI < 2; cI++) {
+            ctx.strokeStyle = h.rgba(curves[cI][1], li * 0.95);
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (var q = 0; q <= 60; q++) {
+              var u = q / 60, py = GY - curves[cI][0](u) * GH;
+              if (q === 0) ctx.moveTo(GX + u * GW, py); else ctx.lineTo(GX + u * GW, py);
+            }
+            ctx.stroke();
+          }
+
+          // the sweep, which is the squeeze happening
+          var sw = (Math.sin((t - 1.2) * 0.62 - Math.PI / 2) + 1) / 2;
+          var kx = GX + sw * GW;
+          ctx.strokeStyle = h.rgba(WHITE, li * 0.7);
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 4]);
+          ctx.beginPath(); ctx.moveTo(kx, GY - GH); ctx.lineTo(kx, GY); ctx.stroke();
+          ctx.setLineDash([]);
+          var inBand = sw > lo && sw < hi;
+          ctx.fillStyle = h.rgba(inBand ? GRN : WHITE, li);
+          ctx.beginPath(); ctx.arc(kx, GY - fpAt(sw) * GH, 5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(kx, GY - missAt(sw) * GH, 5, 0, Math.PI * 2); ctx.fill();
+
           ctx.textAlign = "center";
-          ctx.fillText("TOO FEW KEYWORDS", 700, 152);
-          ctx.fillStyle = h.rgba(MUTED, ri);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("events are missed, or seen", 700, 186);
-          ctx.fillText("later than the attack day", 700, 208);
-          ctx.fillStyle = h.rgba(AMB, ri);
-          ctx.font = "bold 14px " + MONO;
-          ctx.fillText("sensitivity falls", 700, 244);
+          ctx.fillStyle = h.rgba(MUTED, li * 0.9);
+          ctx.font = "12px " + MONO;
+          ctx.fillText("keywords in the vector", GX + GW / 2, GY + 22);
+          ctx.fillStyle = h.rgba(RED, li);
+          ctx.font = "bold 13px " + MONO;
+          ctx.fillText("false positives", GX + GW - 76, GY - GH - 8);
+          ctx.fillStyle = h.rgba(AMB, li);
+          ctx.fillText("events missed", GX + 76, GY - GH - 8);
+          ctx.fillStyle = h.rgba(inBand ? GRN : MUTED, li);
+          ctx.font = "bold 13px " + MONO;
+          ctx.fillText(inBand ? "both criteria met" : "one of them fails", kx, GY - GH - 26);
           ctx.textAlign = "left";
           ctx.globalAlpha = op * a;
         }
@@ -344,17 +379,17 @@
 
       lower(
         s,
-        "There is no labelled Turkish corpus, so the vocabulary must be learned from an incident you already know.",
+        "With no labelled Turkish corpus, the vocabulary comes from a known incident.",
         1.4
       );
       lower(
         s,
-        "The nic.tr attack of December 2015 gives three corpora: the quiet year, the day, the fortnight after.",
+        "Comparing them is what makes a word an attack word.",
         7.0
       );
       lower(
         s,
-        "TF-IDF says which words separate an attack from ordinary Turkish. Each candidate then faces an A/B test.",
+        "Each candidate term then faces an A/B test.",
         12.0
       );
       lower(
@@ -379,7 +414,7 @@
   /* ============================================================ SCENE 3
      Turkish morphology: vocabulary explosion. */
   function sceneMorphology(film) {
-    film.scene("A Language Where One Stem Is a Hundred Words", 43, function (s) {
+    film.scene("A Language Where One Stem Is a Hundred Words", 40.1, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -389,6 +424,14 @@
         if (sIn > 0) {
           ctx.globalAlpha = op * sIn;
           box(ctx, h, 380, 84, 200, 58, CY, sIn, "güvenlik", "stem: 'security'");
+          if (lt > 6.5) {
+            var seen = Math.min(96, 10 + Math.floor((lt - 6.5) * 3.4));
+            // Right of the red column label, which runs to about x 650 at y 150
+            // and which this was printed straight across.
+            ctx.fillStyle = h.rgba(PURP, op * sIn * 0.95);
+            ctx.font = "bold 13px " + MONO;
+            ctx.fillText(seen + " forms and counting", 700, 128);
+          }
           ctx.globalAlpha = op;
         }
 
@@ -403,11 +446,29 @@
           "güvenlikçiler",
           "güvenliksiz",
           "güvenliğiyle",
-          "güvenliğimizin"
+          "güvenliğimizin",
+          "güvenliğe",
+          "güvenlikte",
+          "güvenliğini",
+          "güvenlikleri",
+          "güvenliğimizde",
+          "güvenlikçinin",
+          "güvenliksizlik",
+          "güvenliğinizi",
+          "güvenliğimizden",
+          "güvenlikçileri"
         ];
-        for (var i = 0; i < forms.length; i++) {
+        /* One stem becomes dozens of surface forms, which is the sentence, and
+           ten of them sitting still is a list rather than an explosion. Ten
+           slots keep being refilled from a longer set while a counter climbs,
+           so the viewer watches the vocabulary multiply instead of reading that
+           it does. Deterministic in (slot, cycle): seek reproduces the frame. */
+        var SLOTS = 10;
+        var cyc = Math.floor(Math.max(0, lt - 6.5) / 2.6);
+        for (var i = 0; i < SLOTS; i++) {
           var fi = clamp01((lt - 3.0 - i * 0.32) / 0.6);
           if (fi <= 0) continue;
+          var pick = forms[(i + cyc * 3 + (cyc > 0 ? i * 2 : 0)) % forms.length];
           var col = i % 2,
             row = Math.floor(i / 2);
           var fx = col === 0 ? 120 : 620;
@@ -422,7 +483,7 @@
           ctx.fillStyle = h.rgba(WHITE, fi);
           ctx.font = "14px " + MONO;
           ctx.textAlign = "center";
-          ctx.fillText(forms[i], fx + 110, fy);
+          ctx.fillText(pick, fx + 110, fy);
           ctx.textAlign = "left";
           // link
           ctx.strokeStyle = h.rgba(PURP, fi * 0.25);
@@ -466,12 +527,12 @@
       );
       lower(
         s,
-        "This is one low-resource-language penalty. The pipeline normalizes Turkish before keyword and event detection so related surface forms retain more evidence.",
+        "This is the low-resource penalty, and a bigger classifier does not fix it. Stemming does, before the classifier.",
         22.5
       );
       lower(
         s,
-        "In this system, preprocessing and entity history are part of the detector, not cleanup around it.",
+        "Which is the under-reported part: here, preprocessing decides more than the model does.",
         33.0,
         { out: 42.0 }
       );
@@ -481,7 +542,7 @@
   /* ============================================================ SCENE 4
      NER victim vector + anomaly on daily mention counts, scored honestly. */
   function sceneAnomaly(film) {
-    film.scene("Count the Victim, Not the Sentiment", 50, function (s) {
+    film.scene("Count the Victim, Not the Sentiment", 47.4, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -500,6 +561,23 @@
             var col = i % 3,
               row = Math.floor(i / 3);
             box(ctx, h, 70 + col * 290, 104 + row * 78, 270, 58, PURP, ei, ents[i], "");
+            /* The vector is not a list, it is a set of counters: each entity is
+               counted per day against its own history, which is the sentence
+               this scene is built on. So they count. nic.tr climbs faster than
+               the rest because it is the one about to be attacked, which is the
+               thing the next half of the scene goes on to show. */
+            var rate = (i === 0 && lt > 7) ? 3.1 : 0.55 + i * 0.11;
+            var n = Math.floor(Math.max(0, lt - 1.2 - i * 0.4) * rate);
+            ctx.fillStyle = h.rgba(i === 0 && lt > 7 ? AMB : MUTED, op * vOut * ei * 0.95);
+            ctx.font = "bold 13px " + MONO;
+            ctx.textAlign = "right";
+            ctx.fillText(String(n), 70 + col * 290 + 252, 104 + row * 78 + 38);
+            ctx.textAlign = "left";
+            // a digit is easy to miss; the bar makes nic.tr pulling away from
+            // the rest something you see rather than something you read
+            var bw2 = Math.min(1, n / 90) * 200;
+            ctx.fillStyle = h.rgba(i === 0 && lt > 7 ? AMB : PURP, op * vOut * ei * 0.55);
+            ctx.fillRect(70 + col * 290 + 14, 104 + row * 78 + 46, bw2, 5);
             ctx.globalAlpha = op * vOut;
           }
           ctx.globalAlpha = op;
@@ -526,11 +604,26 @@
         ctx.font = "13px " + MONO;
         ctx.fillText("daily mentions of nic.tr", bx, 130);
 
+        /* Daily counts are daily: an ordinary day is two mentions or five, not
+           the same number forever, and the threshold is computed from this
+           entity's own history, so it has to move as that history does. Held
+           still, the chart asserted the anomaly; running, the viewer sees what
+           ordinary variation looks like and why twenty-eight is not it.
+           Deterministic in (day, tick), so seek reproduces the frame. */
+        var dayTick = Math.floor(t * 1.5);
+        function dayJit(d, k) {
+          var v = Math.sin(d * 19.31 + k * 61.7) * 43758.5453;
+          return (v - Math.floor(v)) - 0.5;
+        }
+        function liveCount(d) {
+          if (d === 13) return counts[d];
+          return Math.max(0.4, counts[d] * (1 + dayJit(d, dayTick) * 0.55));
+        }
         for (var d = 0; d < counts.length; d++) {
           var di = clamp01((t - 1.0 - d * 0.14) / 0.4);
           if (di <= 0) continue;
           var isSpike = d === 13;
-          var hgt = (counts[d] / maxC) * bh * E.smooth(di);
+          var hgt = (liveCount(d) / maxC) * bh * E.smooth(di);
           ctx.fillStyle = h.rgba(isSpike && t > 5 ? RED : CY, a * (isSpike && t > 5 ? 0.95 : 0.6));
           var cw = bw / counts.length - 6;
           rr(ctx, bx + d * (bw / counts.length), by - hgt, cw, hgt, 3);
@@ -546,7 +639,20 @@
 
         if (t > 4) {
           var thi = clamp01((t - 4) / 0.8);
-          var thY = by - (6.5 / maxC) * bh;
+          // recomputed from what the chart is currently showing, which is what
+          // "threshold from this entity's own history" actually means
+          var sum = 0, n = 0;
+          for (var q = 0; q < counts.length; q++) {
+            if (q === 13) continue;
+            sum += liveCount(q); n++;
+          }
+          var mu = sum / n, vr = 0;
+          for (q = 0; q < counts.length; q++) {
+            if (q === 13) continue;
+            vr += Math.pow(liveCount(q) - mu, 2);
+          }
+          var thVal = mu + 2.6 * Math.sqrt(vr / n);
+          var thY = by - (thVal / maxC) * bh;
           ctx.strokeStyle = h.rgba(AMB, a * thi);
           ctx.lineWidth = 2;
           ctx.setLineDash([7, 5]);
@@ -557,7 +663,10 @@
           ctx.setLineDash([]);
           ctx.fillStyle = h.rgba(AMB, a * thi);
           ctx.font = "12px " + MONO;
-          ctx.fillText("threshold from this entity's own history", bx + 12, thY - 8);
+          // The line moves; the label does not follow it up into whatever is
+          // above the chart. It sits under the line when the line is high.
+          var labY = thY < 236 ? thY + 18 : thY - 8;
+          ctx.fillText("threshold from this entity's own history", bx + 12, labY);
         }
 
         if (t > 16) {
@@ -599,22 +708,22 @@
       );
       lower(
         s,
-        "Each entity is judged against its own history, because normal for one is an alarm for another.",
+        "Each entity is judged against its own history, since normal for one alarms another.",
         15.6
       );
       lower(
         s,
-        "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. The anomaly is the signal.",
-        22.0
+        "On 14 December, nic.tr jumps from two or three mentions to twenty-eight. That is the signal.",
+        22.4
       );
       lower(
         s,
-        "The scoreboard, stated rather than rounded: 437 documents, 29 detections, 22 real. About 76%.",
+        "Not rounded: 437 documents, 29 detections, 22 real. About 76%.",
         31.0
       );
       lower(
         s,
-        "The seven false positives are published too. A rare-event detector earns trust by naming what it gets wrong.",
+        "The seven misses are published too. A rare-event detector earns trust by naming what it gets wrong.",
         40.0,
         { out: 49.0 }
       );
@@ -669,9 +778,9 @@
     var html = "";
     for (var i = 0; i < blocks.length; i++) {
       html +=
-        "<h4>" +
+        "<h2>" +
         blocks[i].h +
-        "</h4><div class='lab-math__tex' id='cyb-tex-" +
+        "</h2><div class='lab-math__tex' id='cyb-tex-" +
         i +
         "'></div><p>" +
         blocks[i].note +

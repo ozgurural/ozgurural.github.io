@@ -18,17 +18,28 @@
 <link rel="manifest" href="{{ base_path }}/images/manifest.json">
 <meta name="theme-color" content="#0a0f1c">
 
-<!-- Premium typography: Inter (UI/body), Space Grotesk (display), JetBrains Mono (code) -->
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"/>
-</noscript>
+<!-- Inter (body), Space Grotesk (display), JetBrains Mono (code), self-hosted:
+     see scripts/vendor-webfonts.js. Only body text is preloaded, so the display
+     and mono faces do not compete with it for the first paint.
+
+     The filename comes from site.data.webfonts rather than being typed here:
+     which weights end up sharing one physical file is decided by the script
+     (Google can repack its variable-font ranges any time it likes), so a name
+     hardcoded into this include is one repack away from preloading a 404. The
+     guard below is the fallback for that anyway, since a stale checkout
+     without assets/webfonts/gf/ built yet should render without asking the
+     browser for a font that isn't there rather than emit a link with an
+     empty href. -->
+{% if site.data.webfonts.preload_font %}
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="{{ base_path }}/assets/webfonts/gf/{{ site.data.webfonts.preload_font }}">
+{% endif %}
 
 {% if page.url == "/" or page.url == "/index.html" %}
-<!-- Particles engine loads once at the end of body (scripts.html) -->
-<link rel="preload" as="script" href="{{ base_path }}/assets/js/tsparticles.bundle.min.js"/>
+<!-- The particle field is decorative and aria-hidden, and it was preloaded at
+     high priority on the one page whose largest paint matters most, where it
+     competed with the fonts and the hero for bandwidth. It loads at the end of
+     body like everything else. -->
 <!-- On the home page the hero supplies the H1 — hide duplicate page__title -->
 <script>document.documentElement.classList.add('ep-home');</script>
 {% endif %}

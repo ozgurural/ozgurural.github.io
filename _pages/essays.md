@@ -9,7 +9,7 @@ excerpt: "Slow, indirect writing about machine learning, security, and the syste
 </p>
 
 <p class="ep-lead ep-lead--secondary">
-  Read at the speed of a long walk. Approximately one essay every couple of months. Suggestions, corrections, or arguments are very welcome: <a href="https://github.com/ozgurural/ozgurural.github.io/issues/new?labels=essay-feedback&amp;title=Essay+feedback">open an issue</a> or <a href="mailto:drozgurural@gmail.com">write me</a>.
+  Read at the speed of a long walk. Approximately one essay every couple of months. Suggestions, corrections, or arguments are very welcome: <a href="mailto:drozgurural@gmail.com?subject=Essay%20feedback">write to me</a>.
 </p>
 
 <article class="ep-essay" id="watchmakers-trial">

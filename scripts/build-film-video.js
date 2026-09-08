@@ -26,27 +26,26 @@
 const puppeteer = require('puppeteer');
 const { spawn, spawnSync } = require('child_process');
 const ffmpeg = require('ffmpeg-static');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const SOCIAL_CUTS = require('./film-social-cuts.json');
-const NARRATION = require('./narration.json');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'dist', 'video');
 const BASE = process.env.FILM_BASE_URL || 'http://localhost:4000';
 
-const FILMS = [
-  'blockchain-ml', 'cyber-events', 'determinism', 'gradient-pinball',
-  'universal-jira', 'oracles', 'training-fingerprint', 'block-race',
-  'redundancy-reactor', 'watermarking-comparison', 'model-heist',
-];
+// The films are whatever has an embed page, because that page is what the
+// render loads. Deriving it means adding a film is one file in _pages/embed
+// and nothing here: a hand-kept list is a second place to forget.
+const FILMS = fs.readdirSync(path.join(ROOT, '_pages', 'embed'))
+  .filter(f => f.endsWith('-embed.md'))
+  .map(f => f.slice(0, -'-embed.md'.length))
+  .sort();
 
 function parseArgs(argv) {
   const a = { fps: 30, width: 1280, scale: 1.5, film: null, all: false,
-              scene: null, from: null, to: null, crf: 19,
-              linkedin: false, preview: false };
-  let widthSet = false, scaleSet = false;
+              scene: null, from: null, to: null, crf: 19 };
   for (let i = 2; i < argv.length; i++) {
     const k = argv[i];
     const v = argv[i + 1];
@@ -56,15 +55,10 @@ function parseArgs(argv) {
     else if (k === '--from') { a.from = Number(v); i++; }
     else if (k === '--to') { a.to = Number(v); i++; }
     else if (k === '--fps') { a.fps = Number(v); i++; }
-    else if (k === '--width') { a.width = Number(v); widthSet = true; i++; }
-    else if (k === '--scale') { a.scale = Number(v); scaleSet = true; i++; }
+    else if (k === '--width') { a.width = Number(v); i++; }
+    else if (k === '--scale') { a.scale = Number(v); i++; }
     else if (k === '--crf') { a.crf = Number(v); i++; }
-    else if (k === '--linkedin') a.linkedin = true;
-    else if (k === '--preview') a.preview = true;
-  }
-  if (a.linkedin) {
-    if (!widthSet) a.width = 1080;
-    if (!scaleSet) a.scale = 1;
+    else if (k === '--force') a.force = true;
   }
   return a;
 }
@@ -74,101 +68,12 @@ function parseArgs(argv) {
 const CAPTURE_CSS = `
   .labf__poster, .labf__transport, .labf-embed__source { display: none !important; }
   .labf--idle .labf__transport { display: none !important; }
-  html, body { background: #000 !important; }
 `;
-
-// A 4:5 native feed edition. The original 16:9 stage remains intact and is
-// given real breathing room rather than cropped. Its narration is repeated in
-// large type below the picture so the result is legible with sound off on a
-// phone, while the 60px side margin keeps authored ink away from LinkedIn UI.
-const SOCIAL_CAPTURE_CSS = `
-  html, body { width: 100% !important; height: 100% !important; overflow: hidden !important; }
-  body.labf-social-capture {
-    display: grid !important;
-    grid-template-rows: 16.3% 40% 28.9% 14.8%;
-    justify-items: center;
-    align-items: stretch;
-    background:
-      radial-gradient(circle at 82% 8%, rgba(88,196,221,0.13), transparent 30%),
-      radial-gradient(circle at 12% 90%, rgba(129,92,246,0.10), transparent 34%),
-      #070b16 !important;
-    color: #f1f5f9;
-    font-family: var(--ds-font-sans, Inter, system-ui, sans-serif);
-  }
-  body.labf-social-capture .labf-social__hook {
-    width: 88.889%;
-    box-sizing: border-box;
-    padding: 4.25% 3.2% 1.5%;
-    align-self: stretch;
-  }
-  .labf-social__eyebrow {
-    color: #58c4dd;
-    font-family: var(--ds-font-mono, monospace);
-    font-size: 2.05vw;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    line-height: 1.2;
-    text-transform: uppercase;
-  }
-  .labf-social__headline {
-    margin-top: 1.6%;
-    max-width: 94%;
-    color: #ffffff;
-    font-family: var(--ds-font-display, Georgia, serif);
-    font-size: 4.45vw;
-    font-weight: 600;
-    letter-spacing: -0.018em;
-    line-height: 1.08;
-  }
-  body.labf-social-capture .labf-embed__stage {
-    width: 88.889% !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    align-self: center;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(148,163,184,0.22), 0 24px 80px rgba(0,0,0,0.35);
-  }
-  body.labf-social-capture .labf {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-  }
-  body.labf-social-capture .labf__lower,
-  body.labf-social-capture .labf__lower * { color: transparent !important; }
-  .labf-social__caption {
-    width: 88.889%;
-    box-sizing: border-box;
-    padding: 4.1% 3.5% 2.2%;
-    color: #e8eef9;
-    font-family: var(--ds-font-serif, Georgia, serif);
-    font-size: 3.05vw;
-    font-weight: 500;
-    line-height: 1.27;
-  }
-  .labf-social__caption strong { color: #ffffff; font-weight: 700; }
-  .labf-social__footer {
-    position: relative;
-    width: 88.889%;
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4%;
-    align-items: center;
-    padding: 1.2% 3.5% 5.6%;
-    border-top: 1px solid rgba(148,163,184,0.18);
-  }
-  .labf-social__author { color: #f8fafc; font-size: 2.25vw; font-weight: 700; }
-  .labf-social__topic { margin-top: 0.35em; color: #9fb2d4; font-size: 1.65vw; }
-  .labf-social__cta { color: #58c4dd; font-size: 1.7vw; font-weight: 700; text-align: right; }
-  .labf-social__url { margin-top: 0.35em; color: #dbeafe; font-size: 1.55vw; font-weight: 500; }
-  .labf-social__progress {
-    position: absolute;
-    left: 0; top: -2px;
-    height: 3px;
-    width: 0;
-    background: linear-gradient(90deg, #58c4dd, #818cf8);
-  }
-`;
+// Nothing here forces a backdrop. An earlier version painted the page black on
+// the theory that the film's own edge pixel was black. It is not, it is fully
+// transparent, and the grid the stage paints behind the canvas is the film's
+// paper. Forcing black threw that away and the rendered films lost their
+// ground. Let the embed's own colours stand.
 
 const AUDIO_PATCH = () => {
   window.__cap = { ctx: null, tap: null, tapGain: null, routed: 0 };
@@ -216,10 +121,9 @@ const AUDIO_PATCH = () => {
   };
 };
 
-async function openFilm(browser, slug, { width, scale, linkedin }) {
+async function openFilm(browser, slug, { width, scale }) {
   const page = await browser.newPage();
-  const height = linkedin ? Math.round(width * 5 / 4) : Math.round(width * 9 / 16);
-  await page.setViewport({ width, height, deviceScaleFactor: scale });
+  await page.setViewport({ width, height: Math.round(width * 9 / 16), deviceScaleFactor: scale });
   const url = `${BASE}/lab/${slug}/embed/`;
   await page.goto(url, { waitUntil: 'networkidle0', timeout: 90000 });
   await page.waitForFunction(
@@ -231,86 +135,61 @@ async function openFilm(browser, slug, { width, scale, linkedin }) {
 async function filmInfo(page) {
   return page.evaluate(() => {
     const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
+    // What this render is made of, asked of the page rather than guessed at: a
+    // slug does not name its film file (universal-jira is jira.js), and the
+    // stylesheet is compiled, so the honest input list is whatever the embed
+    // actually fetched, plus the narration this film cues.
+    const origin = location.origin;
+    const fetched = performance.getEntriesByType('resource')
+      .map(e => e.name).filter(u => u.indexOf(origin) === 0);
+    const narration = (f._audioCues || [])
+      .map(c => origin + '/assets/audio/lab/' + c.id + '.mp3');
     return { duration: f.duration,
-             scenes: (f.scenes || []).map(s => ({ name: s.name, start: s.start, dur: s.dur })),
-             audio: (f._audioCues || []).map(cue => ({ id: cue.id, at: cue.at })) };
+             inputs: Array.from(new Set([location.href].concat(fetched, narration))).sort(),
+             scenes: (f.scenes || []).map(s => ({ name: s.name, start: s.start, dur: s.dur })) };
   });
 }
 
-function resolveRange(info, args, social) {
+// A short digest of the bytes the render is built from. Hashing what the
+// server actually served, not the sources, means an SCSS change or a rebuilt
+// narration mp3 counts, and nothing has to know which file belongs to which
+// film.
+async function hashInputs(urls) {
+  // Every asset is served with ?v=<site.time>, and the embed's own HTML carries
+  // those query strings in its script tags, so both the URLs and that one page's
+  // bytes change on every Jekyll rebuild even when nothing about the film did.
+  // Left in, the digest would differ every run and --all would re-render all
+  // eleven films forever, which is the exact thing it exists to avoid. Strip the
+  // stamp from the URL and from any text body; the rest of the bytes still
+  // catch a real edit.
+  const stamp = new RegExp('[?]v=[0-9]+', 'g');
+  const h = crypto.createHash('sha256');
+  for (const u of urls) {
+    let res;
+    try { res = await fetch(u); } catch (err) { continue; }
+    if (!res.ok) continue;
+    h.update(u.slice(BASE.length).replace(stamp, ''));
+    const type = res.headers.get('content-type') || '';
+    if (/text|javascript|json|xml|svg/.test(type)) {
+      h.update((await res.text()).replace(stamp, ''));
+    } else {
+      h.update(Buffer.from(await res.arrayBuffer()));
+    }
+  }
+  return h.digest('hex').slice(0, 16);
+}
+
+function resolveRange(info, args) {
   if (args.scene != null) {
     const s = info.scenes[args.scene - 1];
     if (!s) throw new Error(`scene ${args.scene} does not exist (film has ${info.scenes.length})`);
     return { from: s.start, to: s.start + s.dur, label: `scene${args.scene}` };
-  }
-  if (args.linkedin && args.from == null && args.to == null) {
-    if (!social) throw new Error('no LinkedIn cut is configured for this film');
-    return { from: social.from, to: social.to, label: 'linkedin' };
   }
   const from = args.from != null ? args.from : 0;
   const to = args.to != null ? args.to : info.duration;
   const label = (args.from != null || args.to != null)
     ? `${Math.round(from)}-${Math.round(to)}s` : 'full';
   return { from, to, label };
-}
-
-async function setupSocialFrame(page, slug, social, range) {
-  await page.addStyleTag({ content: SOCIAL_CAPTURE_CSS });
-  await page.evaluate((filmSlug, meta, clip) => {
-    const body = document.body;
-    const stage = document.querySelector('.labf-embed__stage');
-    body.classList.add('labf-social-capture');
-
-    const hook = document.createElement('header');
-    hook.className = 'labf-social__hook';
-    hook.innerHTML = '<div class="labf-social__eyebrow"></div><div class="labf-social__headline"></div>';
-    hook.querySelector('.labf-social__eyebrow').textContent = meta.eyebrow;
-    hook.querySelector('.labf-social__headline').textContent = meta.hook;
-
-    const caption = document.createElement('section');
-    caption.className = 'labf-social__caption';
-    caption.setAttribute('aria-live', 'off');
-    caption.textContent = meta.hook;
-
-    const footer = document.createElement('footer');
-    footer.className = 'labf-social__footer';
-    footer.innerHTML =
-      '<div class="labf-social__progress"></div>' +
-      '<div><div class="labf-social__author">Dr. Ozgur Ural</div>' +
-      '<div class="labf-social__topic"></div></div>' +
-      '<div><div class="labf-social__cta">FULL CITED FILM + SOURCES</div>' +
-      '<div class="labf-social__url"></div></div>';
-    footer.querySelector('.labf-social__topic').textContent = meta.title;
-    footer.querySelector('.labf-social__url').textContent = 'ozgurural.github.io/lab/' + filmSlug + '/';
-
-    stage.parentNode.insertBefore(hook, stage);
-    stage.insertAdjacentElement('afterend', caption);
-    caption.insertAdjacentElement('afterend', footer);
-
-    function visible(element, stop) {
-      for (let node = element; node && node !== stop; node = node.parentElement) {
-        const style = getComputedStyle(node);
-        if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) < 0.02) return false;
-      }
-      return true;
-    }
-
-    window.__updateSocialFrame = function (t) {
-      const lower = Array.from(document.querySelectorAll('.labf__lower'))
-        .find(node => visible(node, stage));
-      caption.innerHTML = lower && lower.textContent.trim() ? lower.innerHTML : meta.hook;
-      const progress = Math.max(0, Math.min(1, (t - clip.from) / (clip.to - clip.from)));
-      footer.querySelector('.labf-social__progress').style.width = (progress * 100) + '%';
-      footer.classList.toggle('is-ending', progress > 0.90);
-    };
-
-    const film = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
-    window.dispatchEvent(new Event('resize'));
-    if (film && film._fitCanvas) film._fitCanvas();
-    if (film) film.render();
-    window.__updateSocialFrame(clip.from);
-  }, slug, social, range);
-  await new Promise(resolve => setTimeout(resolve, 120));
 }
 
 async function recordAudio(browser, slug, range, opts) {
@@ -323,29 +202,28 @@ async function recordAudio(browser, slug, range, opts) {
 
   const out = await page.evaluate(async (from, to) => {
     const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
-    // Warm the page and audio graph before the take, then return to the exact
-    // requested frame. Recording used to start after this 300 ms advance while
-    // the measured film span still began at `from`, which built a permanent
-    // offset into every correction ratio.
     f.seek(from);
     f.play();
     await new Promise(r => setTimeout(r, 300));
     const cap = window.__cap;
     if (!cap || !cap.ctx) throw new Error('no AudioContext was created');
     if (cap.ctx.state === 'suspended') await cap.ctx.resume();
-    f.pause();
-    f.seek(from);
 
     const rec = new MediaRecorder(cap.tap.stream, { mimeType: 'audio/webm;codecs=opus' });
     const chunks = [];
     rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
-    await new Promise((res, rej) => {
-      rec.onstart = res;
-      rec.onerror = e => rej(e.error || new Error('audio recorder failed to start'));
-      rec.start();
-    });
     const wall0 = performance.now();
-    f.play();
+    rec.start();
+    // Film time is not wall time. The engine holds the picture just short of a
+    // narration boundary while the line is still being spoken, so a sentence is
+    // never cut off, and that hold is part of what a visitor watches. Sample
+    // the mapping every animation frame so the picture pass can reproduce it
+    // instead of the sound being stretched to a timeline that never happened.
+    const timeline = [];
+    let sampler = requestAnimationFrame(function tick(now) {
+      timeline.push([(now - wall0) / 1000, f.t]);
+      sampler = requestAnimationFrame(tick);
+    });
     // follow the film's own clock rather than a wall timer, so a slow frame
     // never shortens the take
     await new Promise(res => {
@@ -353,46 +231,44 @@ async function recordAudio(browser, slug, range, opts) {
         if (f.t >= to - 0.02 || !f.playing) { clearInterval(tick); res(); }
       }, 100);
     });
-    const wallSpan = (performance.now() - wall0) / 1000;
-    const filmSpan = to - from;
-    f.pause();
+    cancelAnimationFrame(sampler);
     const blob = await new Promise(res => { rec.onstop = () => res(new Blob(chunks)); rec.stop(); });
+    const wallSpan = (performance.now() - wall0) / 1000;
+    timeline.push([wallSpan, f.t]);
+    const filmSpan = f.t - from;
+    f.pause();
     const b64 = await new Promise(res => {
       const fr = new FileReader();
       fr.onload = () => res(fr.result.split(',')[1]);
       fr.readAsDataURL(blob);
     });
-    return { b64, wallSpan, filmSpan };
+    return { b64, wallSpan, filmSpan, timeline };
   }, range.from, range.to);
 
   await page.close();
   const file = path.join(os.tmpdir(), `labfilm-${slug}-${range.label}-${Date.now()}.webm`);
   fs.writeFileSync(file, Buffer.from(out.b64, 'base64'));
-  // The picture is rendered from film time and the sound was recorded in wall
-  // time, and the engine clamps its frame delta at 0.1s, so any stall leaves
-  // film time behind the clock: measured around 0.6s lost per 21s here, in a
-  // handful of hitches that no amount of warming up or pre-decoding removed.
-  // Left alone the narration would slide later and later against the picture.
-  // The exact ratio is known, so the mix is stretched to the picture's length.
+  // Nothing is stretched. An earlier version resampled the mix to the film's
+  // own duration, on the assumption that the gap between wall time and film
+  // time was jank; most of it is the narration hold, which is deliberate and
+  // is what the site plays. On a 153s film that would have been an 11.65%
+  // speed-up of a recording that was already correct. The picture follows this
+  // timeline instead, so the two agree by construction.
   const ratio = out.wallSpan / out.filmSpan;
-  return { file, ratio, wallSpan: out.wallSpan, filmSpan: out.filmSpan };
+  return { file, ratio, wallSpan: out.wallSpan, filmSpan: out.filmSpan,
+           timeline: out.timeline };
 }
 
-async function renderVideo(browser, slug, range, audio, args) {
+async function renderVideo(browser, slug, range, audio, args, inputsHash) {
   const page = await openFilm(browser, slug, args);
   await page.addStyleTag({ content: CAPTURE_CSS });
-  if (args.linkedin) await setupSocialFrame(page, slug, args.social, range);
   await page.evaluate(() => {
     const p = document.querySelector('.labf__poster');
     if (p) p.remove();                                  // it also swallows clicks
   });
 
-  const pixelWidth = args.width * args.scale;
-  const pixelHeight = Math.round((args.linkedin ? args.width * 5 / 4 : args.width * 9 / 16) * args.scale);
-  const outName = args.linkedin
-    ? `${slug}-linkedin-${pixelWidth}x${pixelHeight}.mp4`
-    : `${slug}${range.label === 'full' ? '' : '-' + range.label}-${pixelWidth}p.mp4`;
-  const outFile = path.join(OUT_DIR, outName);
+  const outFile = path.join(OUT_DIR,
+    `${slug}${range.label === 'full' ? '' : '-' + range.label}-${args.width * args.scale}p.mp4`);
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
   const ff = spawn(ffmpeg, [
@@ -400,10 +276,8 @@ async function renderVideo(browser, slug, range, audio, args) {
     '-f', 'image2pipe', '-framerate', String(args.fps), '-i', 'pipe:0',
     '-i', audio.file,
     '-map', '0:v', '-map', '1:a',
-    '-c:v', 'libx264', '-preset', 'slow', '-tune', 'animation', '-crf', String(args.crf),
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf),
     '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-level', '4.1',
-    '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709',
-    '-filter:a', `atempo=${audio.ratio.toFixed(6)},loudnorm=I=-16:TP=-1.5:LRA=11`,
     '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
     '-movflags', '+faststart',
     '-shortest',
@@ -411,24 +285,60 @@ async function renderVideo(browser, slug, range, audio, args) {
   ], { stdio: ['pipe', 'ignore', 'pipe'] });
   let ffErr = '';
   ff.stderr.on('data', d => { ffErr += d.toString(); });
+  // Listen for the exit now, not after the loop. With -shortest ffmpeg stops as
+  // soon as the audio runs out, which is a few frames before the last one is
+  // written, so it can be gone by the time the loop breaks; a close listener
+  // attached at that point never fires and the run hangs on a finished file.
+  // That cost a pilot render twenty-four minutes of waiting on nothing.
+  let ffGone = false;
+  const ffDone = new Promise((res, rej) => {
+    ff.on('close', code => {
+      ffGone = true;
+      if (code === 0) res();
+      else rej(new Error('ffmpeg exited ' + code + String.fromCharCode(10) + ffErr.slice(-800)));
+    });
+  });
+  const ffSettled = ffDone.catch(() => {});   // for racing; the real one is awaited below
   // ffmpeg closing its stdin races the last frame writes, and an unhandled
   // error event on the pipe takes the whole process down after a perfectly
   // good file has already been written
   let piped = true;
   ff.stdin.on('error', () => { piped = false; });
 
-  const total = Math.round((range.to - range.from) * args.fps);
+  // One frame per wall-clock tick of the take, with film time read off the
+  // recorded mapping. Where the film held for a narration line the mapping is
+  // flat, so consecutive frames repeat and the picture holds exactly as it does
+  // on the page.
+  const tl = audio.timeline && audio.timeline.length > 1 ? audio.timeline : null;
+  const span = tl ? audio.wallSpan : (range.to - range.from);
+  const total = Math.round(span * args.fps);
+  let k = 0;
+  const filmTimeAt = (w) => {
+    if (!tl) return range.from + w;
+    while (k < tl.length - 2 && tl[k + 1][0] < w) k++;
+    const a0 = tl[k], a1 = tl[k + 1] || a0;
+    const dw = a1[0] - a0[0];
+    const u = dw > 1e-9 ? Math.max(0, Math.min(1, (w - a0[0]) / dw)) : 0;
+    return a0[1] + (a1[1] - a0[1]) * u;
+  };
   const t0 = Date.now();
   for (let i = 0; i < total; i++) {
-    const t = range.from + i / args.fps;
+    const t = filmTimeAt(i / args.fps);
     await page.evaluate((tt) => {
       const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
       f.seek(tt);
-      if (window.__updateSocialFrame) window.__updateSocialFrame(tt);
     }, t);
     const buf = await page.screenshot({ type: 'jpeg', quality: 95, optimizeForSpeed: true });
-    if (!piped || !ff.stdin.writable) break;
-    if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
+    if (ffGone || !piped || !ff.stdin.writable) break;
+    if (!ff.stdin.write(buf)) {
+      // Wait for room, but never on a reader that has gone. With -shortest
+      // ffmpeg stops reading once the audio is covered, which is a few frames
+      // before the last one is written, and it then exits; a bare 'drain' await
+      // at that moment never fires, because nothing is left to drain into. This
+      // held a batch for four hours on a finished file, having already rendered
+      // every frame of it, and it looked like the encode was still going.
+      await Promise.race([new Promise(r => ff.stdin.once('drain', r)), ffSettled]);
+    }
     if (i % 150 === 0 || i === total - 1) {
       const done = i + 1;
       const rate = done / ((Date.now() - t0) / 1000);
@@ -438,93 +348,25 @@ async function renderVideo(browser, slug, range, audio, args) {
     }
   }
   if (ff.stdin.writable) ff.stdin.end();
-  await new Promise((res, rej) => {
-    ff.on('close', code => code === 0 ? res() : rej(new Error('ffmpeg exited ' + code + '\n' + ffErr.slice(-800))));
-  });
+  await ffDone;
+
+  if (tl) {
+    // Video time is no longer film time, so the mapping has to outlive the run:
+    // diff:film needs it to seek the page to the moment a given frame shows,
+    // and it is the record of where the film held. Thinned to 10Hz, which is
+    // finer than any hold boundary and keeps the sidecar small.
+    const thin = [];
+    let lastW = -1;
+    for (const [w, t] of tl) { if (w - lastW >= 0.1) { thin.push([+w.toFixed(3), +t.toFixed(3)]); lastW = w; } }
+    if (tl.length) thin.push([+tl[tl.length - 1][0].toFixed(3), +tl[tl.length - 1][1].toFixed(3)]);
+    fs.writeFileSync(outFile.replace(/\.mp4$/, '.timeline.json'),
+      JSON.stringify({ slug, inputsHash, from: range.from, to: range.to, fps: args.fps,
+                       wallSpan: +audio.wallSpan.toFixed(3), filmSpan: +audio.filmSpan.toFixed(3),
+                       samples: thin }));
+  }
   process.stdout.write('\n');
   await page.close();
   return outFile;
-}
-
-async function renderLinkedInPreviews(browser, slug, range, args) {
-  const page = await openFilm(browser, slug, args);
-  await page.addStyleTag({ content: CAPTURE_CSS });
-  await setupSocialFrame(page, slug, args.social, range);
-  await page.evaluate(() => {
-    const poster = document.querySelector('.labf__poster');
-    if (poster) poster.remove();
-  });
-
-  const previewDir = path.join(OUT_DIR, 'previews');
-  fs.mkdirSync(previewDir, { recursive: true });
-  const samples = [
-    ['start', Math.min(range.to - 0.1, range.from + 1.5)],
-    ['middle', (range.from + range.to) / 2],
-    ['end', Math.max(range.from, range.to - 1.5)],
-  ];
-  const made = [];
-  for (const [label, t] of samples) {
-    await page.evaluate(tt => {
-      const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
-      f.seek(tt);
-      if (window.__updateSocialFrame) window.__updateSocialFrame(tt);
-    }, t);
-    const file = path.join(previewDir, `${slug}-linkedin-${label}.jpg`);
-    await page.screenshot({ path: file, type: 'jpeg', quality: 94 });
-    made.push(file);
-  }
-  await page.close();
-  return made;
-}
-
-function srtTime(seconds) {
-  const ms = Math.max(0, Math.round(seconds * 1000));
-  const h = Math.floor(ms / 3600000);
-  const m = Math.floor((ms % 3600000) / 60000);
-  const s = Math.floor((ms % 60000) / 1000);
-  const rest = ms % 1000;
-  return [h, m, s].map(n => String(n).padStart(2, '0')).join(':') + ',' + String(rest).padStart(3, '0');
-}
-
-function narrationForCue(id) {
-  const match = /^(.+)_(\d+)$/.exec(id || '');
-  if (!match) return '';
-  const lines = NARRATION[match[1]];
-  return lines && lines[Number(match[2])] ? lines[Number(match[2])] : '';
-}
-
-function writeLinkedInAssets(mp4, slug, info, range, social) {
-  const stem = mp4.replace(/\.mp4$/i, '');
-  const cues = info.audio || [];
-  const active = cues.filter(cue => cue.at >= range.from && cue.at < range.to);
-  const blocks = [];
-  active.forEach((cue, i) => {
-    const text = narrationForCue(cue.id);
-    if (!text) return;
-    const next = cues.find(candidate => candidate.at > cue.at);
-    const start = cue.at - range.from;
-    const end = Math.max(start + 0.8, Math.min(range.to, next ? next.at - 0.08 : range.to) - range.from);
-    blocks.push(`${i + 1}\n${srtTime(start)} --> ${srtTime(end)}\n${text}\n`);
-  });
-  fs.writeFileSync(stem + '.srt', blocks.join('\n'), 'utf8');
-
-  const pageUrl = `https://ozgurural.github.io/lab/${slug}/`;
-  const shareCopy = [
-    'POST COPY',
-    '',
-    social.post,
-    '',
-    'FIRST COMMENT',
-    '',
-    `Full cited film, equations, and sources: ${pageUrl}`,
-    '',
-    'UPLOAD',
-    '',
-    `Video: ${path.basename(mp4)}`,
-    `Captions: ${path.basename(stem + '.srt')}`,
-  ].join('\n');
-  fs.writeFileSync(stem + '.txt', shareCopy + '\n', 'utf8');
-  return [stem + '.srt', stem + '.txt'];
 }
 
 function probe(file) {
@@ -533,65 +375,152 @@ function probe(file) {
   return (r.stderr || r.stdout || '').toString();
 }
 
+/* Decode the whole thing before calling it done. A render that is interrupted
+   leaves an mp4 with no moov atom: the file is there, it is a plausible size,
+   and it is unplayable. That happened once and I caught it by hand, which is
+   not a process. Checks that it decodes, that both tracks are present, that
+   the length matches what was asked for, and that the sound is not silence. */
+function verify(file, expectedSeconds) {
+  const out = probe(file);
+  const problems = [];
+  if (/moov atom not found|Invalid data found|Error opening input/.test(out)) {
+    problems.push('the file does not decode (truncated render?)');
+    return problems;
+  }
+  const dur = out.match(/Duration:\s*(\d+):(\d+):(\d+\.\d+)/);
+  const seconds = dur ? (+dur[1] * 3600 + +dur[2] * 60 + +dur[3]) : 0;
+  if (!seconds) problems.push('no duration in the container');
+  else if (Math.abs(seconds - expectedSeconds) > 1.0) {
+    problems.push(`duration is ${seconds.toFixed(2)}s, expected about ${expectedSeconds.toFixed(2)}s`);
+  }
+  if (!/Video: h264/.test(out)) problems.push('no h264 video track');
+  if (!/Audio: aac/.test(out)) problems.push('no aac audio track');
+
+  const vol = spawnSync(ffmpeg, ['-hide_banner', '-i', file, '-af', 'volumedetect', '-f', 'null', '-'],
+                        { encoding: 'utf8' });
+  const mean = (vol.stderr || '').match(/mean_volume:\s*(-?\d+(?:\.\d+)?) dB/);
+  if (!mean) problems.push('could not measure the audio');
+  else if (Number(mean[1]) < -60) problems.push(`the audio is silent (${mean[1]} dB)`);
+  return problems;
+}
+
+// Is there already a finished render of this film at these settings?
+// Is there already a render of this film that is still current? Current means
+// it decodes, has both tracks, and was built from the same bytes. Without the
+// last clause --all would keep a stale mp4 forever once a film was edited,
+// which is the whole reason the digest exists.
+function existingGood(slug, args, inputsHash) {
+  const f = path.join(OUT_DIR, slug + '-' + Math.round(args.width * args.scale) + 'p.mp4');
+  const side = f.replace(/\.mp4$/, '.timeline.json');
+  if (!fs.existsSync(f)) return null;
+  let info;
+  try { info = probe(f); } catch (err) { return null; }
+  // ffmpeg prints 'Duration: 00:02:33.45,' -- read it by position rather than
+  // by regex, so this line carries no escaping to get wrong.
+  const at = info.indexOf('Duration: ');
+  const hms = at < 0 ? '' : info.substr(at + 10, 11);
+  const parts = hms.split(':');
+  if (parts.length !== 3 || !/Video: h264/.test(info) || !/Audio: aac/.test(info)) return null;
+  const secs = Number(parts[0]) * 3600 + Number(parts[1]) * 60 + Number(parts[2]);
+  if (!isFinite(secs) || secs <= 0) return null;
+  const size = (fs.statSync(f).size / 1e6).toFixed(1);
+
+  let meta = null;
+  try { meta = JSON.parse(fs.readFileSync(side, 'utf8')); } catch (err) {}
+  if (!meta) return null;                       // no sidecar, no way to tell: redo it
+  if (!meta.inputsHash) {
+    // Rendered before the digest existed. Stamp it rather than throw away a
+    // good file; from here on it is checked like everything else.
+    meta.inputsHash = inputsHash;
+    fs.writeFileSync(side, JSON.stringify(meta));
+    return size + ' MB, ' + secs.toFixed(1) + 's, sealed';
+  }
+  if (meta.inputsHash !== inputsHash) return null;   // the film changed
+  return size + ' MB, ' + secs.toFixed(1) + 's';
+}
+
 (async () => {
   const args = parseArgs(process.argv);
   const targets = args.all ? FILMS : [args.film];
   if (!targets[0]) {
-    console.error('usage: --film <slug> [--scene N | --from S --to S] [--linkedin] [--preview] [--fps 30] [--all]');
+    console.error('usage: --film <slug> | --all  [--scene N | --from S --to S] [--fps 30] [--force]');
     console.error('films: ' + FILMS.join(', '));
     process.exit(1);
   }
-  if (args.preview && !args.linkedin) {
-    throw new Error('--preview currently requires --linkedin');
+
+  // The render reads the film from the dev server, so say so plainly when it is
+  // not there. Without this the first navigation just times out ninety seconds
+  // later with a message about a URL, which reads like a broken script.
+  try {
+    const ping = await fetch(BASE + '/lab/' + targets[0] + '/embed/');
+    if (!ping.ok) throw new Error('HTTP ' + ping.status);
+  } catch (err) {
+    console.error('cannot reach ' + BASE + ' (' + err.message + ')');
+    console.error('start the dev server first:');
+    console.error('  bundle exec jekyll serve --port 4000 --force_polling ' +
+                  '--config _config.yml,_config.dev.yml');
+    process.exit(1);
   }
 
   const browser = await puppeteer.launch({
     headless: 'new',
+    // The audio pass plays the film in real time inside a single evaluate, and
+    // puppeteer aborts any one call after 180s by default. That is longer than
+    // a scene and shorter than every film, which is why clips rendered and
+    // whole films died on the first one. An hour clears the longest film with
+    // room for the machine having a bad minute.
+    protocolTimeout: 3600000,
     args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars',
            '--font-render-hinting=none', '--disable-lcd-text'],
   });
 
   const made = [];
+  const failed = [];
   try {
     for (const slug of targets) {
-      const social = args.linkedin ? SOCIAL_CUTS[slug] : null;
-      if (args.linkedin && !social) throw new Error(`no LinkedIn cut configured for ${slug}`);
-      const renderArgs = { ...args, social };
+      // The page has to be opened before anything can be decided, because the
+      // digest is of what it loads.
       const page = await openFilm(browser, slug, args);
       const info = await filmInfo(page);
       await page.close();
-      const range = resolveRange(info, args, social);
-      if (!(range.from >= 0 && range.to <= info.duration && range.to > range.from)) {
-        throw new Error(`invalid range ${range.from}-${range.to} for ${slug} (${info.duration}s)`);
+      const inputsHash = await hashInputs(info.inputs);
+      if (args.all && !args.force) {
+        const done = existingGood(slug, args, inputsHash);
+        if (done) { console.log('' + slug + '  up to date, skipping (' + done + ')'); continue; }
       }
+      const range = resolveRange(info, args);
 
       console.log(`\n${slug}  (${info.duration}s, ${info.scenes.length} scenes)  ->  ${range.label} ` +
                   `${(range.to - range.from).toFixed(1)}s`);
-      if (args.preview) {
-        const previews = await renderLinkedInPreviews(browser, slug, range, renderArgs);
-        previews.forEach(file => console.log('  ' + path.relative(ROOT, file)));
-        made.push(...previews);
-        continue;
-      }
       console.log('  recording audio in real time...');
       const audio = await recordAudio(browser, slug, range, args);
-      const slipPct = ((audio.ratio - 1) * 100).toFixed(2);
-      console.log(`  captured ${audio.wallSpan.toFixed(2)}s of sound for ` +
-                  `${audio.filmSpan.toFixed(2)}s of film, correcting by ${slipPct}%`);
-      if (audio.ratio > 1.10 || audio.ratio < 0.95) {
-        console.warn('  WARNING: that is a big correction and will be audible. ' +
-                     'Something stalled badly; re-run before posting this one.');
+      // The take is longer than the film's nominal duration because the engine
+      // holds the picture while a narration line finishes. That is not drift to
+      // be corrected, it is the film, and the picture follows the same timeline.
+      const heldFor = audio.wallSpan - audio.filmSpan;
+      console.log(`  ${audio.wallSpan.toFixed(1)}s of sound for ${audio.filmSpan.toFixed(1)}s ` +
+                  `of film: held ${heldFor.toFixed(1)}s for narration ` +
+                  `(${((audio.ratio - 1) * 100).toFixed(1)}%)`);
+      if (audio.ratio > 1.35) {
+        console.warn('  WARNING: that is a lot of holding. Either the narration badly ' +
+                     'overruns its scenes or something stalled; check this one before posting.');
       }
       console.log('  rendering frames...');
-      const mp4 = await renderVideo(browser, slug, range, audio, renderArgs);
+      const mp4 = await renderVideo(browser, slug, range, audio, args, inputsHash);
       fs.unlinkSync(audio.file);
       const size = (fs.statSync(mp4).size / 1e6).toFixed(1);
-      console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB`);
-      if (args.linkedin) {
-        for (const asset of writeLinkedInAssets(mp4, slug, info, range, social)) {
-          console.log(`  ${path.relative(ROOT, asset)}`);
-        }
+      const problems = verify(mp4, audio.wallSpan);
+      if (problems.length) {
+        console.error(`  UNUSABLE: ${path.relative(ROOT, mp4)}`);
+        problems.forEach(p => console.error('    - ' + p));
+        // Delete it, so a re-run retries this film instead of resuming past a
+        // broken file, and carry on: one bad render must not cost the other ten.
+        try { fs.unlinkSync(mp4); } catch (err) {}
+        failed.push(slug + ': ' + problems[0]);
+        if (!args.all) throw new Error('render did not verify: ' + problems[0]);
+        continue;
       }
+      console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB  verified`);
       made.push(mp4);
     }
   } finally {
@@ -599,11 +528,11 @@ function probe(file) {
   }
 
   console.log('\ndone:');
+  if (failed.length) {
+    console.error('\n' + failed.length + ' film(s) did not render:');
+    failed.forEach(f => console.error('  - ' + f));
+  }
   for (const m of made) {
-    if (!/\.mp4$/i.test(m)) {
-      console.log('  ' + path.relative(ROOT, m));
-      continue;
-    }
     const info = probe(m);
     const line = info.split('\n').filter(l => /Duration|Stream #/.test(l)).map(s => s.trim()).join('\n    ');
     console.log('  ' + path.relative(ROOT, m) + '\n    ' + line);

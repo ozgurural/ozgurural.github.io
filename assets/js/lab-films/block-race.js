@@ -4,7 +4,7 @@
    Six scenes, math verified against the Bitcoin whitepaper §11:
      1. hook         Two chains, one truth     (longest-chain rule = a race)
      2. bernoulli    Every block is a coin flip (hashrate share = win prob)
-     3. ruin         The gambler's ruin        (catch-up = (q/p)^z, q<p)
+     3. ruin         The gambler's ruin        (catch-up = (q/p)^z, q\\lt p)
      4. poisson      Satoshi's head-start      (k~Poisson(zq/p); the §11 form)
      5. consequence  Orders of magnitude       (z=6: 0.024% vs 13.2% — 544×)
      6. stakes       Probabilistic finality    (P(z)→0, never exactly 0)
@@ -282,7 +282,7 @@
      Everything is drawn on canvas; the only overlay text is the narration
      panel and a single closing formula. */
   function ruin(film) {
-    film.scene("The gambler's ruin", 33, function (s) {
+    film.scene("The gambler's ruin", 31.5, function (s) {
       var q = 0.3, p = 0.7, Z0 = 3, GMAX = 8;
       function gx(g) { return 130 + g * 88; }      // gap 0..8 → x 130..834
       var LY = 262;
@@ -501,13 +501,13 @@
       s.write(law, { at: T3 + 5.6, dur: 1.8 });
       s.pulse(law, { at: T3 + 8, dur: 1.2, amp: 0.1 });
 
-      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged 70/30. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each additional block multiplies the remaining catch-up chance by three sevenths.", 13.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged 70/30. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each confirmation halves what is left.", 13.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Only the gap matters, and the walk is rigged against the attacker." });
   }
 
   /* ============ 4 — POISSON : Satoshi's head-start refinement ============ */
   function poisson(film) {
-    film.scene("Satoshi's refinement: the head start", 30, function (s) {
+    film.scene("Satoshi's refinement: the head start", 23.5, function (s) {
       var q = 0.3, p = 0.7, z = 6, lambda = z * q / p;
       // LEFT: honest stacks z blocks under a sweeping dial
       s.canvas(function (lt, ctx, h) {
@@ -779,7 +779,7 @@
 
       var fin = s.caption("payment finalized (probabilistically)", { px: 200, py: 196, anchor: "left", size: "0.78rem", color: GRN });
       s.fadeIn(fin, { at: 6.9, dur: 1.05 });
-      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ lower modeled risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
+      var lim = s.tex2("\\text{More confirmations } \\Rightarrow \\text{ Near-Zero Risk}", { px: 480, py: 118, size: "1.3rem", color: AMB });
       s.write(lim, { at: 1.5, dur: 2.1 });
       var cite = s.caption("Nakamoto 2008, §11 · cf. Ural, <em>Blockchain-Enhanced ML</em>, IEEE Access 2023", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 12, dur: 1.2 });

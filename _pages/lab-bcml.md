@@ -2,7 +2,7 @@
 permalink: /lab/blockchain-ml/
 oembed: "/lab/blockchain-ml/oembed.json"
 title: "Blockchain-Enhanced Machine Learning, animated"
-description: "What a ledger actually buys machine learning: consensus that trains instead of hashing (PoL, PoDL, PoQ), incentive contracts that pay for the improvement you caused, and the measured limits DeepChain and LearningChain ran into."
+description: "What a ledger buys machine learning: consensus that trains instead of hashing, contracts that pay for the improvement you caused, and the measured limits."
 excerpt: "Point the electricity at a model instead of a hash, pay contributors by the loss they removed, and read the prototypes honestly: accuracy rises with parties while throughput falls."
 sitemap: true
 header:

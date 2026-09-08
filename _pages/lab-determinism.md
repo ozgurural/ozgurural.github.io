@@ -2,7 +2,7 @@
 permalink: /lab/determinism/
 oembed: "/lab/determinism/oembed.json"
 title: "Determinism at 60 Hz, animated"
-description: "What hard real time actually costs in a Level D full-flight simulator: the 150 ms transport-delay gate, why the mean frame time is the wrong statistic, and how latency and reliability compose across a rack of hosts."
+description: "What hard real time costs in a Level D simulator: the 150 ms gate, why mean frame time is the wrong statistic, and how latency composes across a rack."
 excerpt: "A deadline is met or missed, never averaged. The 150 ms qualification ceiling, 864,000 frames per session, and why one straggler host owns the whole frame."
 sitemap: true
 header:

@@ -123,11 +123,10 @@
     film.scene("Three computers, one sign-off", 22, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.save();
-        ctx.textAlign = "left";
+        ctx.textAlign = "center";
         ctx.fillStyle = h.rgba(WHT, 0.4);
         ctx.font = "11px 'JetBrains Mono',monospace";
-        // Keep authored ink below the player's chapter/source band.
-        ctx.fillText("LEVEL D · EASA/FAA QUALIFICATION", 60, 58);
+        ctx.fillText("LEVEL-D FULL-FLIGHT SIM · EASA/FAA CERTIFICATION", 480, 60);
         ctx.restore();
 
         var states, voter;
@@ -145,19 +144,21 @@
         if (lt < 6 && lt > 3) {
           var fade1 = clamp01((lt - 3) / 0.5) * (lt > 5.5 ? clamp01((6 - lt) / 0.5) : 1);
           ctx.save(); ctx.globalAlpha *= fade1;
-          ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillText("one liar, two truth-tellers → truth wins", 60, 430);
+          ctx.fillStyle = h.rgba(GRN, 0.9); ctx.font = "12px 'JetBrains Mono',monospace";
+          ctx.textAlign = "center"; ctx.fillText("one liar, two truth-tellers → truth wins", 480, 366);
           ctx.restore();
         }
         if (lt >= 6) {
           var fade2 = clamp01((lt - 6) / 0.5);
           ctx.save(); ctx.globalAlpha *= fade2;
-          ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace"; ctx.fillText("all three fail the SAME way, the SAME instant", 60, 430);
+          ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
+          ctx.textAlign = "center"; ctx.fillText("all three fail the SAME way, the SAME instant", 480, 366);
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 72, size: "1.4rem", color: LBL });
+      var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 86, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "In a safety-critical controller, three independent channels can feed a majority voter. One faulty channel is then outvoted by the other two.", 6.5, { maxWidth: "80%", py: 520 });
+      lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -210,7 +211,7 @@
       s.fadeIn(e1, { at: 10, dur: 1.0 });
       var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 121, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
-      lower(s, "In the ideal voter model, the output fails when a majority of channels fail. Independent rare faults make that event scale as a higher power of the channel failure rate.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
+      lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
   }
 
@@ -261,7 +262,28 @@
         if (lt > 7) {
           var fade = clamp01((lt - 7) / 0.5);
           ctx.save(); ctx.globalAlpha *= fade;
-          var xm = pl.px(0.01); ctx.strokeStyle = h.rgba(WHT, 0.7); ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(xm, box.y0); ctx.lineTo(xm, box.y0 - box.h); ctx.stroke(); ctx.setLineDash([]);
+          /* The marker sat on q=.01 for the rest of the scene. The claim is
+             that the gap between one channel and three widens as faults get
+             rarer, and a fixed reading cannot show a widening. It sweeps, and
+             the three numbers move with it. Pure in lt, so seek is exact. */
+          var sweep = (Math.sin((lt - 7) * 0.42 - Math.PI / 2) + 1) / 2;
+          var qNow = Math.pow(10, lerp(-3.6, -1.15, sweep));
+          var xm = pl.px(qNow); ctx.strokeStyle = h.rgba(WHT, 0.7); ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(xm, box.y0); ctx.lineTo(xm, box.y0 - box.h); ctx.stroke(); ctx.setLineDash([]);
+          function sci(v) {
+            var e = Math.floor(Math.log(v) / Math.LN10);
+            return (v / Math.pow(10, e)).toFixed(1) + "e" + e;
+          }
+          ctx.font = "11px 'JetBrains Mono',monospace";
+          [[WHT, qNow], [CY, Pind(3, qNow)], [MAG, Pind(5, qNow)]].forEach(function (r) {
+            ctx.fillStyle = h.rgba(r[0], 0.95);
+            ctx.beginPath(); ctx.arc(xm, pl.py(r[1]), 4, 0, Math.PI * 2); ctx.fill();
+          });
+          ctx.fillStyle = h.rgba(LBL, 0.9);
+          ctx.fillText("q = " + sci(qNow), box.x0 + 8, box.y0 - box.h - 10);
+          ctx.fillStyle = h.rgba(CY, 0.95);
+          ctx.fillText("three: " + sci(Pind(3, qNow)), box.x0 + 150, box.y0 - box.h - 10);
+          ctx.fillStyle = h.rgba(MAG, 0.95);
+          ctx.fillText("five: " + sci(Pind(5, qNow)), box.x0 + 300, box.y0 - box.h - 10);
           ctx.fillStyle = h.rgba(TXT, 0.9); ctx.font = "10px 'JetBrains Mono',monospace";
           ctx.fillText("q=.01: single 1e-2", xm + 6, pl.py(0.01)); ctx.fillStyle = h.rgba(CY, 0.95); ctx.fillText("TMR 3e-4", xm - 80, pl.py(Pind(3, 0.01))); ctx.fillStyle = h.rgba(MAG, 0.95); ctx.fillText("N=5 1e-5", xm - 80, pl.py(Pind(5, 0.01)));
           ctx.restore();
@@ -277,7 +299,16 @@
   function correlation(film) {
     film.scene("Correlation installs a floor", 23, function (s) {
       var pl = makePlot(film), box = pl.box;
-      function rhoAt(lt) { return clamp01((lt - 2) / 8) * 0.30; }
+      /* Correlation ramped to 0.30 and then sat there for thirteen seconds. The
+         floor is the point of the scene, so it keeps moving: the curves bend
+         down to meet it and lift away again, and the viewer sees that adding
+         voters stops helping the moment rho is anything but zero. Continuous at
+         the handover (cos starts at 1, so 0.175 + 0.125 is the 0.30 the ramp
+         ends on) and pure in lt, so seek(t) reproduces the frame. */
+      function rhoAt(lt) {
+        if (lt < 10) return clamp01((lt - 2) / 8) * 0.30;
+        return 0.175 + 0.125 * Math.cos((lt - 10) / 6.5 * Math.PI * 2);
+      }
       s.canvas(function (lt, ctx, h) {
         var rho = rhoAt(lt);
         pl.drawGrid(ctx, h);
@@ -307,7 +338,7 @@
 
   /* ============== 5 — ARIANE 5 ============== */
   function ariane(film) {
-    film.scene("Ariane 5, 4 June 1996", 24, function (s) {
+    film.scene("Ariane 5, 4 June 1996", 22, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.strokeStyle = h.rgba(BG_GRID, 0.3); ctx.lineWidth = 1;
         for (var gx = 60; gx < 920; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 90); ctx.lineTo(gx, 430); ctx.stroke(); }
@@ -315,7 +346,11 @@
         var prog = clamp01(lt / 9);
         var failLevel = clamp01((lt - 7) / 0.5);
         ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2.4; ctx.beginPath();
-        for (var i = 0; i <= 60 * prog; i++) { 
+        // The trajectory stopped being drawn at nine seconds and the scene ran
+        // for twenty-two. The vehicle did not stop: past the overflow the
+        // parabola keeps going, off the plot, for as long as the scene lasts.
+        var maxI = 60 * prog + Math.max(0, lt - 9.2) * 2.4;
+        for (var i = 0; i <= maxI; i++) { 
           var x = 80 + i * 4.5; 
           var y = 410 - i * 4.0; 
           if (i > 42) { 
@@ -328,7 +363,27 @@
         }
         ctx.stroke();
         var bhY = 200; ctx.strokeStyle = h.rgba(RED, 0.8); ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(360, bhY); ctx.lineTo(720, bhY); ctx.stroke(); ctx.setLineDash([]);
-        ctx.fillStyle = h.rgba(RED, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("INT16 MAX", 600, bhY - 6);
+        ctx.fillStyle = h.rgba(RED, 0.9); ctx.font = "10px 'JetBrains Mono',monospace"; ctx.fillText("INT16 MAX", 726, bhY - 6);
+
+        /* What killed Ariane 5 was a number, and the number was not on screen.
+           The horizontal bias climbs, crosses 32767, and the conversion that
+           had no handler is the next thing that happens; the mission clock
+           keeps running afterwards because the vehicle did too. Both are pure
+           functions of lt, so seek(t) reproduces the frame. */
+        var bh = Math.round(1400 * Math.pow(Math.max(0, lt), 1.72));
+        var over = bh > 32767;
+        ctx.font = "bold 15px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(over ? RED : GRN, 0.95);
+        ctx.fillText("horizontal bias  " + (over ? "OVERFLOW" : bh.toLocaleString("en-US")),
+                     360, bhY - 26);
+        if (over) {
+          ctx.font = "11px 'JetBrains Mono',monospace";
+          ctx.fillStyle = h.rgba(RED, 0.85);
+          ctx.fillText("64-bit float to 16-bit int, no handler", 360, bhY - 10);
+        }
+        ctx.font = "12px 'JetBrains Mono',monospace";
+        ctx.fillStyle = h.rgba(LBL, 0.85);
+        ctx.fillText("T+ " + (lt * 1.7).toFixed(1) + " s", 80, 108);
         function panel(px, py, name, errAt) {
           var errFade = clamp01((lt - errAt) / 0.5);
           ctx.strokeStyle = h.rgba(LBL, 0.7 * (1 - errFade)); ctx.lineWidth = 1.4; ctx.strokeRect(px, py, 170, 56);
@@ -344,9 +399,11 @@
         }
         panel(120, 300, "SRI 1 (backup)", 6.6); panel(120, 366, "SRI 2 (active)", 6.75);
 
-        /* The two units failed 72 ms apart. They were a backup/active pair, not
-           voting channels, so this scene shows loss of both references without
-           importing the majority-voter mechanism from the earlier scenes. */
+        /* The narrated fact is that both units failed 72 ms apart and then voted
+           unanimously for the same wrong answer, and neither the interval nor
+           the voter was ever on screen: the scene stopped moving at 14.4 and
+           held for its last nine seconds. Both are now drawn, because the vote
+           agreeing is the whole reason redundancy did not save the flight. */
         if (lt > 15.0) {
           var tl = clamp01((lt - 15.0) / 0.6);
           var xOf = function (ms) { return 400 + ms / 100 * 340; };
@@ -358,7 +415,7 @@
           ctx.fillText("0 ms", 400, 318); ctx.fillText("100 ms", 704, 318);
 
           var reveal = clamp01((lt - 15.4) / 2.4);
-          [[0, "SRI 1 fails"], [72, "SRI 2 fails"]].forEach(function (ev, k) {
+          [[0, "SRI 2 fails"], [72, "SRI 1 fails"]].forEach(function (ev, k) {
             if (reveal < (k ? 0.72 : 0.05)) return;
             var ex = xOf(ev[0]);
             ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 2;
@@ -378,23 +435,26 @@
             ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 2;
             ctx.strokeRect(400, 368, 300, 52);
             ctx.fillStyle = h.rgba(WHT, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
-            ctx.fillText("SHARED SOFTWARE FAILURE", 414, 392);
+            ctx.fillText("MAJORITY VOTE: 2 of 2 agree", 414, 392);
             ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 12px 'JetBrains Mono',monospace";
-            ctx.fillText("both inertial references lost", 414, 412);
+            ctx.fillText("accepted, and wrong", 414, 412);
           }
           ctx.restore();
         }
       });
-      var eq = s.tex2("\\text{Shared software} \\Rightarrow \\text{fault not isolated}", { px: 650, py: 80, size: "1.4rem", color: AMB });
+      var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 650, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
-      lower(s, "Ariane 5 had two inertial systems running identical software. The backup failed first; the active unit stopped in the next 72 millisecond cycle for the same reason.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
-    }, { subtitle: "Two inertial systems, one shared software failure." });
+      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
+    }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
   /* ============== 6 — DIVERSITY ============== */
   function diversity(film) {
-    film.scene("Reduce the common cause", 21, function (s) {
+    film.scene("The only real cure: diversity", 21, function (s) {
       s.canvas(function (lt, ctx, h) {
+        var handoff = clamp01((lt - 15.0) / 1.4);
+        if (handoff >= 1) return;
+        ctx.globalAlpha *= (1 - handoff);
         var hitLevel = clamp01((lt - 3) / 0.5) * clamp01((8 - lt) / 0.5);
         drawTMR(ctx, h, 320, 230, [0, hitLevel, 0], 0, true, lt);
         // cosmic ray bolt
@@ -424,16 +484,17 @@
       });
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 78, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
-      lower(s, "You cannot vote out a shared mistake. Design diversity and independent validation can reduce common-mode risk, but they do not guarantee zero correlation.", 7.0, { maxWidth: "70%", py: 520 });
-      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 110, anchor: "top", align: "center", size: "1.4rem", color: TXT });
+      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
+      var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 268, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
 
-      var cap1 = s.caption("replication helps only when failure paths are genuinely independent.", { px: 760, py: 283, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
+      var cap1 = s.caption("the same discipline that stops an autonomous-UAV ground station from voting itself into a crash.", { px: 760, py: 410, anchor: "center", align: "center", size: "0.75rem", color: SUB, maxWidth: "220px" });
       s.fadeIn(cap1, { at: 8.5, dur: 1.5 });
+      s.fadeOut(cap1, { at: 14.6, dur: 1.0 });
 
-      var tag2 = s.caption("As machines take consequential decisions, a crucial question is whether redundant channels can fail together. That is an engineering property to test, not a hope.", { px: 480, py: 183, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
+      var tag2 = s.caption("In the AI age we will hand irreversible decisions to redundant machines. The only question that matters is whether they can all be wrong at once, and that is an engineering answer, not a hope.", { px: 480, py: 150, anchor: "top", align: "center", size: "0.95rem", color: SUB, maxWidth: "80%" });
       s.fadeIn(tag2, { at: 16.5, dur: 1.5 });
-    }, { subtitle: "Channel count is not enough; dependence between failures matters." });
+    }, { subtitle: "The lever was never N. It was the independence ρ." });
   }
 
   /* ====================== appendix ====================== */
@@ -446,9 +507,9 @@
       ["Superlinear gain", "\\text{gain}=\\frac{q}{P_{\\text{ind}}}=\\frac{1}{3q-2q^2}\\xrightarrow{q\\to0}\\frac{1}{3q}",
         "Each extra pair of channels raises the failure rate to a higher power of q: on a log-log plot, a steeper slope. The unbounded gain is an <em>independent-model</em> idealisation only."],
       ["Correlation floor", "P_{\\text{sys}} \\approx (1-\\rho)P_{\\text{ind}} + \\rho q \\;\\ge\\; \\rho q",
-        "A first-order approximation (the exact Fleming β-factor is \\(\\rho q+(1-\\rho q)P_{\\text{ind}}(N,(1-\\rho)q)\\); both share the floor). The ρq term is independent of N, so for \\(q<\\tfrac12\\), \\(\\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\) and the safety multiplier saturates at \\(1/\\rho\\). Here \\(\\rho q\\) is a mission probability; \\(\\rho=\\beta\\in[0,1]\\)."],
-      ["Ariane 5", "\\text{duplicated hardware} \\;\\not\\Rightarrow\\; \\text{independent failure paths}",
-        "Flight 501 (4 Jun 1996): two SRI units running identical software encountered the same conversion failure, backup SRI 1 first and active SRI 2 in the next 72 ms data cycle. The case demonstrates a shared software failure; it does not measure ρ or instantiate the voting model used in the earlier scenes."]
+        "A first-order approximation (the exact Fleming β-factor is \\(\\rho q+(1-\\rho q)P_{\\text{ind}}(N,(1-\\rho)q)\\); both share the floor). The ρq term is independent of N, so for \\(q\\lt \\tfrac12\\), \\(\\lim_{N\\to\\infty}P_{\\text{sys}}=\\rho q\\) and the safety multiplier saturates at \\(1/\\rho\\). Here \\(\\rho q\\) is a mission probability; \\(\\rho=\\beta\\in[0,1]\\)."],
+      ["Ariane 5", "\\rho \\approx 1 \\;\\Rightarrow\\; P_{\\text{sys}} \\approx q",
+        "Flight 501 (4 Jun 1996): two SRI units, identical software, hit the same int16 overflow of BH: backup SRI 1 first, active SRI 2 ~72 ms later. Self-destruct ~39 s after H0 (30 s after lift-off), ~4 km. Identical software means ρ≈1, so N was irrelevant."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

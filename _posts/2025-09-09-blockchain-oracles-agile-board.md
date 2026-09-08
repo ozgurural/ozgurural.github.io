@@ -1,5 +1,6 @@
 ---
 title: "Blockchain Oracles and Smart Contracts: The World's Agile Board"
+seo_title: "Blockchain Oracles and Smart Contracts"
 date: 2025-09-09
 permalink: /posts/2025/09/blockchain-oracles-agile-board/
 categories: technical

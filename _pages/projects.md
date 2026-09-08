@@ -2,12 +2,12 @@
 permalink: /projects/
 title: "Projects"
 description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, verifiable inference, autonomous agents, safety-critical systems, and human-verified clinical tools."
-
 ---
 
-<p class="ep-lead">Every project selected here has a concrete AI or ML role: securing model provenance, verifying inference, coordinating agents, training autonomous systems, or measuring whether an AI-enabled system remains safe in production. Historical platforms appear only when they provide the data, control, validation, or human-oversight boundary that the AI depends on. Each project links to its repository or writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eleven playable explanations of the underlying mechanisms.</p>
+<p class="ep-lead">Every project selected here has a concrete AI or ML role: securing model provenance, verifying inference, coordinating agents, training autonomous systems, or measuring whether an AI-enabled system remains safe in production. Historical platforms appear only when they provide the data, control, validation, or human-oversight boundary that the AI depends on. Each project links to its repository or writeup; the <a href="/lab/"><strong>Interactive Lab</strong></a> has eleven playable films of the underlying mechanisms.</p>
 
-<h2 class="visually-hidden">Selected AI and ML projects</h2>
+## Featured
+
 <ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">2026 · Enterprise AI · Avion</div>
@@ -15,9 +15,9 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
     <p class="desc">Authored Avion's enterprise AI strategy and built the platform that presents it. A three-tier architecture (air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge) plus a suite of retrieval-augmented and autonomous agents: an engineering-knowledge copilot with grounded citations and change-impact analysis, an autonomous repository agent, an RFP accelerator, and a training-debrief writer. Built end to end with Flask, SQLite, Docker, and GitLab CI/CD. <a href="/enterprise-ai-architecture.html"><strong>Explore the interactive reference architecture &rarr;</strong></a></p>
   </li>
   <li>
-    <div class="meta">Interactive · 11 experiments</div>
+    <div class="meta">Interactive · 11 films</div>
     <h3 class="title"><a href="/lab/">Research Lab: interactive experiments</a></h3>
-    <p class="desc">Eleven animated experiments connect AI and ML to model provenance, optimization, verifiable inference, autonomous-agent coordination, and safety infrastructure. Consensus and fault tolerance appear where they govern what an AI system may trust or do. Each experiment ties its mechanism to a cited source, a measured result, or a clearly labelled open research direction.</p>
+    <p class="desc">Eleven interactive films cover distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each presents a real scenario with measurable outcomes. Built to make the core concepts of my research accessible in three minutes.</p>
   </li>
 </ul>
 
@@ -146,7 +146,7 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
   <li>
     <div class="meta">AI Training &amp; Validation · 2023– · Avion</div>
     <h3 class="title"><a href="/posts/2026/05/avion-level-d-ffs/">Level D simulators as AI proving grounds</a></h3>
-    <p class="desc">I architect real-time platforms and cloud infrastructure for certified full-flight simulators. Their AI role is concrete: a deterministic digital twin can generate controlled failure data, train reinforcement-learning policies, and test autonomous behaviour against repeatable scenarios before any model reaches an aircraft. This is the AI direction described in the linked field note, not a claim that Avion's certified product is an autonomous aircraft.</p>
+    <p class="desc">I architect real-time platforms and cloud infrastructure for certified full-flight simulators. Their AI role is concrete: a deterministic digital twin can generate controlled failure data, train reinforcement-learning policies, and test autonomous behaviour against repeatable scenarios before any model reaches an aircraft. The linked field note separates the systems I built from later directions such as edge inference, collaborative SLAM, and multi-aircraft autonomy.</p>
   </li>
   <li>
     <div class="meta">AI Observability · 2024 · Avion</div>
@@ -156,17 +156,17 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
   <li>
     <div class="meta">AI Security &amp; Data Governance · 2020–2021 · Havelsan</div>
     <h3 class="title">DLP foundations for secure enterprise AI</h3>
-    <p class="desc">I led the 14-engineer team that delivered Havelsan's data-leakage-prevention product for defence and government clients. The delivered product was DLP, not a generative-AI system. Its current AI role is the policy and inspection boundary needed to stop sensitive corporate data from entering prompts, retrieval indexes, model-training sets, or unauthorized agent actions.</p>
+    <p class="desc">I led the 14-engineer team that delivered Havelsan's data-leakage-prevention product for defence and government clients. The delivered product is DLP, not a generative-AI system; its AI role is the policy and inspection boundary that keeps sensitive data out of prompts, retrieval indexes, model-training sets, and unauthorised agent actions.</p>
   </li>
   <li>
     <div class="meta">Autonomous Systems · 2019–2020 · STM</div>
-    <h3 class="title"><a href="/posts/2025/09/autonomous-drones-future/">Mission control for autonomous UAVs</a></h3>
+    <h3 class="title">Mission control for autonomous UAVs</h3>
     <p class="desc">I developed hard-real-time mission-control and ground-control software for Kargu and Togan UAVs. The AI focus is the safety boundary around onboard autonomy: reliable telemetry, operator authority, mission constraints, and deterministic fallback when perception or planning is uncertain. The linked field note separates the systems I built from later directions such as edge inference, collaborative SLAM, and multi-aircraft autonomy.</p>
   </li>
   <li>
     <div class="meta">AI-Assisted Cybersecurity · 2014–2019 · Comodo</div>
     <h3 class="title">Secure Web Gateway, Patch Manager, and Dragon for AI-assisted defence</h3>
-    <p class="desc">I led design and architecture for Comodo's Secure Web Gateway, enterprise Patch Manager, and Chromium-based Dragon browser. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritize findings; deterministic controls still enforce the policy.</p>
+    <p class="desc">I led design and architecture for Comodo's Secure Web Gateway, enterprise Patch Manager, and Chromium-based Dragon browser. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritise findings; deterministic controls still enforce the policy.</p>
   </li>
 </ul>
 

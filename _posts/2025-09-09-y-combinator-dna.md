@@ -1,5 +1,6 @@
 ---
 title: "Y Combinator and DNA: Fixed Points in Code and Biology"
+seo_title: "Y Combinator and DNA"
 date: 2025-09-09
 permalink: /posts/2025/09/y-combinator-dna/
 categories: technical

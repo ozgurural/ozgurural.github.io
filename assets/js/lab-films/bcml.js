@@ -122,7 +122,7 @@
   /* ============================================================ SCENE 1
      Why a ledger under ML at all. */
   function sceneIntegrity(film) {
-    film.scene("The Training Process, Written Down", 39, function (s) {
+    film.scene("The Training Process, Written Down", 37.2, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -171,6 +171,39 @@
           ctx.lineTo(556, 225);
           ctx.stroke();
           ctx.setLineDash([]);
+
+          /* A ledger that is only labelled immutable is a caption. This one is
+             written to: records cross from the run into it and the height
+             climbs, and every so often a tampered record makes the same trip
+             and is turned back. That is the line being spoken over it, which
+             says tampering stops being invisible rather than stops happening.
+             Deterministic in (slot, cycle), so seek reproduces the frame. */
+          for (var rr2 = 0; rr2 < 3; rr2++) {
+            var rp = ((lt - 12) / 2.3 + rr2 / 3) % 1;
+            if (rp < 0) continue;
+            ctx.fillStyle = h.rgba(GRN, aIn * 0.85);
+            ctx.beginPath();
+            ctx.arc(404 + rp * 152, 225, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          var tam = ((lt - 12) % 7.5) / 7.5;
+          if (tam < 0.5) {
+            var out = tam < 0.28 ? tam / 0.28 : 1 - (tam - 0.28) / 0.22;
+            ctx.fillStyle = h.rgba(RED, aIn * 0.95);
+            ctx.beginPath();
+            ctx.arc(404 + out * 120, 248, 5, 0, Math.PI * 2);
+            ctx.fill();
+            if (tam > 0.26) {
+              ctx.fillStyle = h.rgba(RED, aIn * clamp01((0.5 - tam) / 0.12));
+              ctx.font = "11px " + MONO;
+              ctx.fillText("rejected", 430, 268);
+            }
+          }
+          ctx.fillStyle = h.rgba(AMB, aIn * 0.9);
+          ctx.font = "bold 13px " + MONO;
+          ctx.textAlign = "center";
+          ctx.fillText("height " + (41208 + Math.floor((lt - 12) * 1.3)), 725, 312);
+          ctx.textAlign = "left";
           ctx.globalAlpha = op;
         }
 
@@ -199,17 +232,17 @@
       );
       lower(
         s,
-        "Record each reported transaction in the run, and later changes to that ledger become evident.",
+        "Record every transaction in the run, and tampering stops being invisible.",
         12.5
       );
       lower(
         s,
-        "In the federated designs shown here, raw data stays with its owner while parameters, transactions and results reach the chain.",
+        "Raw data never leaves its owner. Only parameters, transactions and results reach the chain.",
         20.6
       );
       lower(
         s,
-        "But a ledger records what participants reported, not whether the contribution was good. That needs a second mechanism.",
+        "But a record proves what happened, not that it was any good. That needs a second mechanism.",
         30.6,
         { out: 38.0 }
       );
@@ -219,7 +252,7 @@
   /* ============================================================ SCENE 2
      Consensus that does useful work. */
   function sceneConsensus(film) {
-    film.scene("Consensus That Does Useful Work", 42, function (s) {
+    film.scene("Consensus That Does Useful Work", 40.3, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -236,12 +269,31 @@
             ctx.fillText("the computation has no value outside the puzzle", 480, 268);
             ctx.textAlign = "left";
           }
-          for (var q = 0; q < 22; q++) {
-            var qt = (lt - 1.0) * 1.4 - q * 0.28;
-            if (qt <= 0 || qt > 1) continue;
-            ctx.fillStyle = h.rgba(RED, op * pOut * (1 - qt) * 0.7);
-            ctx.font = "12px " + MONO;
-            ctx.fillText("0x" + ((q * 7919) % 65536).toString(16), 300 + (q % 6) * 68, 300 + Math.floor(q / 6) * 26);
+          /* The hashes fell once and stopped, which is the opposite of what
+             proof of work is: it never stops, and none of it is kept. So the
+             rain cycles and two counters run beside it, one climbing into the
+             millions and one that stays at zero. That contrast is the whole
+             scene, and the next half answers it with the same compute aimed at
+             a model. Deterministic in (slot, cycle), so seek is exact. */
+          if (lt > 1.0) {
+            for (var q = 0; q < 18; q++) {   // three rows, so the tally has a line to itself
+              var raw = (lt - 1.0) * 1.15 - q * 0.26;
+              if (raw <= 0) continue;
+              var cyc = Math.floor(raw / 1.6);
+              var qt = (raw / 1.6) % 1;
+              ctx.fillStyle = h.rgba(RED, op * pOut * (1 - qt) * 0.7);
+              ctx.font = "12px " + MONO;
+              ctx.fillText("0x" + (((q + 1) * 7919 + cyc * 104729) % 65536).toString(16),
+                           300 + (q % 6) * 68, 300 + Math.floor(q / 6) * 26);
+            }
+            var tried = Math.floor((lt - 1.0) * 418000);
+            ctx.textAlign = "center";
+            ctx.fillStyle = h.rgba(RED, op * pOut * 0.95);
+            ctx.font = "bold 13px " + MONO;
+            ctx.fillText("hashes tried: " + tried.toLocaleString("en-US"), 400, 390);
+            ctx.fillStyle = h.rgba(MUTED, op * pOut * 0.9);
+            ctx.fillText("kept: 0", 620, 390);
+            ctx.textAlign = "left";
           }
           ctx.globalAlpha = op;
         }
@@ -267,6 +319,33 @@
           if (mi <= 0) continue;
           ctx.globalAlpha = op * mi;
           box(ctx, h, 70, 120 + i * 80, 820, 66, mechs[i].c, mi, mechs[i].n, mechs[i].d);
+          ctx.globalAlpha = op * a;
+        }
+
+        /* The answer to the hash counter in the first half: the same electricity,
+           and this time something is kept. Steps accumulate and held-out accuracy
+           climbs, so the claim that training work becomes the consensus work has
+           a number attached while it is being made. */
+        if (t > 2.0) {
+          var ti = clamp01((t - 2.0) / 0.8);
+          var steps = Math.floor((t - 2.0) * 41000);
+          var acc = (1 - Math.exp(-(t - 2.0) / 7.0)) * 96.4;
+          ctx.globalAlpha = op * ti;
+          ctx.textAlign = "center";
+          ctx.fillStyle = h.rgba(CY, ti * 0.95);
+          ctx.font = "bold 13px " + MONO;
+          ctx.fillText("training steps: " + steps.toLocaleString("en-US"), 330, 396);
+          ctx.fillStyle = h.rgba(GRN, ti);
+          ctx.fillText("held-out accuracy: " + acc.toFixed(1) + "%", 640, 396);
+          // the same number as a bar, so the model improving is visible at a
+          // glance beside the hash counter it is answering
+          ctx.textAlign = "left";
+          ctx.fillStyle = h.rgba(GRN, ti * 0.30);
+          ctx.fillRect(560, 406, 300, 7);
+          ctx.fillStyle = h.rgba(GRN, ti * 0.95);
+          ctx.fillRect(560, 406, 300 * (acc / 100), 7);
+          ctx.textAlign = "center";
+          ctx.textAlign = "left";
           ctx.globalAlpha = op * a;
         }
 
@@ -296,7 +375,7 @@
       );
       lower(
         s,
-        "So aim it at the model. Proof of Learning makes the training run earn consensus; Proof of Deep Learning covers the model itself.",
+        "Aim it at the model. Proof of Learning makes training earn consensus; Proof of Deep Learning covers the model.",
         16.0
       );
       lower(
@@ -316,7 +395,7 @@
   /* ============================================================ SCENE 3
      SUM: paying for good data. */
   function sceneIncentives(film) {
-    film.scene("Paying for Good Data", 39, function (s) {
+    film.scene("Paying for Good Data", 37.2, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -342,6 +421,22 @@
             ctx.moveTo(480, parts[i].y - 16);
             ctx.lineTo(480, parts[i].y);
             ctx.stroke();
+            /* The contract is a path data takes: addData, then the incentive
+               mechanism prices it, then the model updates. Four boxes stacked
+               and held say so; a submission travelling down them shows it, and
+               the line under this is about a contract that accepts, prices and
+               updates. Pure in lt, so seek(t) reproduces the frame. */
+            if (lt > 4.2) {
+              var travel = ((lt - 4.2) / 3.1) % 1;
+              var seg = travel * 4;
+              if (seg > i && seg <= i + 1) {
+                var fr = seg - i;
+                ctx.fillStyle = h.rgba(AMB, cOut * 0.95);
+                ctx.beginPath();
+                ctx.arc(480, lerp(parts[i].y - 16, parts[i].y + 52, fr), 5, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
             ctx.globalAlpha = op * cOut;
           }
           ctx.globalAlpha = op;
@@ -364,6 +459,32 @@
           ctx.fillStyle = h.rgba(MUTED, a * fi);
           ctx.font = "12px " + MONO;
           ctx.fillText("balance grows by how much your data lowered the loss on the held-out set", 70, 152);
+
+          /* The formula is an operation, so it runs. Contributions arrive one
+             at a time, the held-out loss moves by what each one was worth, and
+             the balance takes exactly that difference. Two of them are noise:
+             the loss goes up, the term is negative, and the balance falls. That
+             is the sentence the scene ends on, and it happens on screen instead
+             of being promised. Deterministic in the contribution index. */
+          var SUBS = [0.062, 0.048, -0.031, 0.055, 0.037, 0.029, -0.024, 0.041, 0.022, 0.018];
+          var kSub = clamp01((lt - 3.0) / 22) * SUBS.length;
+          var nSub = Math.min(SUBS.length, Math.floor(kSub));
+          var loss = 0.740, bal = 0;
+          for (var v = 0; v < nSub; v++) { loss -= SUBS[v]; bal += SUBS[v] * 1000; }
+          var lastGood = nSub > 0 ? SUBS[nSub - 1] > 0 : true;
+          ctx.font = "bold 15px " + MONO;
+          ctx.fillStyle = h.rgba(CY, 0.95);
+          ctx.fillText("held-out loss  " + loss.toFixed(3), 70, 330);
+          ctx.fillStyle = h.rgba(bal >= 0 ? GRN : RED, 0.95);
+          ctx.fillText("balance  " + (bal >= 0 ? "+" : "") + bal.toFixed(0), 330, 330);
+          ctx.fillStyle = h.rgba(MUTED, 0.85);
+          ctx.font = "12px " + MONO;
+          ctx.fillText("contribution " + nSub + " of " + SUBS.length, 70, 352);
+          if (nSub > 0 && !lastGood) {
+            ctx.fillStyle = h.rgba(RED, 0.95);
+            ctx.font = "bold 12px " + MONO;
+            ctx.fillText("noise: the term is negative", 330, 352);
+          }
         }
 
         // deposit / refund / take
@@ -461,7 +582,7 @@
       );
       lower(
         s,
-        "In the reported simulation, the honest and dishonest populations separate while accuracy is preserved.",
+        "In simulation the honest and the dishonest separate cleanly, and accuracy holds.",
         30.0,
         { out: 38.0 }
       );
@@ -500,7 +621,11 @@
           ctx.lineTo(gx, gy - gh);
           ctx.stroke();
 
-          var prog = clamp01((lt - 4) / 3.0);
+          // Accuracy rises with every party who joins and throughput falls with every
+          // party who joins. Drawing both curves in three seconds and holding them
+          // for thirty-nine says that once; letting parties keep joining says it
+          // continuously, and puts the two traded numbers on screen together.
+          var prog = clamp01((lt - 4) / 39.0);
           ctx.strokeStyle = h.rgba(GRN, gi);
           ctx.lineWidth = 3;
           ctx.beginPath();
@@ -530,7 +655,32 @@
           ctx.fillText("throughput", gx + 232, gy - gh * 0.1);
           ctx.fillStyle = h.rgba(MUTED, gi);
           ctx.font = "12px " + MONO;
-          ctx.fillText("parties participating \u2192", gx + 90, gy + 26);
+          ctx.fillText('parties participating →  ' + Math.round(4 + clamp01((lt - 4) / 39.0) * 96), gx + 90, gy + 26);
+
+          // where the network is now, and what it costs to be there
+          if (prog > 0.01) {
+            var nn = prog * 100;
+            var mx = gx + prog * gw;
+            var accY = gy - (1 - Math.exp(-nn / 34)) * gh * 0.9;
+            var thrY = gy - gh * 0.85 + prog * gh * 0.7;
+            ctx.strokeStyle = h.rgba(WHITE, gi * 0.35);
+            ctx.setLineDash([2, 4]);
+            ctx.beginPath(); ctx.moveTo(mx, gy); ctx.lineTo(mx, gy - gh); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = h.rgba(GRN, gi);
+            ctx.beginPath(); ctx.arc(mx, accY, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = h.rgba(RED, gi);
+            ctx.beginPath(); ctx.arc(mx, thrY, 5, 0, Math.PI * 2); ctx.fill();
+            var accL = accY, thrL = thrY;
+            if (Math.abs(accL - thrL) < 20) {
+              var mid = (accL + thrL) / 2;
+              accL = mid - 10; thrL = mid + 10;
+            }
+            ctx.fillStyle = h.rgba(GRN, gi);
+            ctx.fillText('acc ' + Math.round((1 - Math.exp(-nn / 34)) * 94) + '%', gx + gw + 14, accL + 4);
+            ctx.fillStyle = h.rgba(RED, gi);
+            ctx.fillText('thr ' + Math.round(85 - prog * 70) + '%', gx + gw + 14, thrL + 4);
+          }
           ctx.globalAlpha = op;
         }
 
@@ -577,13 +727,13 @@
 
       lower(
         s,
-        "Does it work? DeepChain was built: a Corda prototype trained on MNIST.",
+        "Does it work? DeepChain is a Corda prototype trained on MNIST.",
         1.4
       );
       lower(
         s,
         "Accuracy rises with every party who joins. Throughput falls with every party who joins.",
-        6.0
+        6.3
       );
       lower(
         s,
@@ -597,7 +747,7 @@
       );
       lower(
         s,
-        "The useful part of a review is the unresolved seam. One of them, proving that training really happened, became my dissertation.",
+        "A review that only sells the idea is worth nothing. One of those seams, proving the training really happened, became my dissertation.",
         35.0,
         { out: 45.0 }
       );
@@ -632,7 +782,7 @@
         h: "Consensus that produces something",
         tex: "\\text{PoW: } H(\\text{nonce}\\,\\|\\,b) < \\tau \\;\\longrightarrow\\; \\text{PoL / PoDL / PoQ: the training run is the work}",
         note:
-          "Proof of Work spends electricity on a puzzle whose answer has no independent utility once found. The survey reviews alternatives intended to channel consensus work into training: Proof of Learning makes model training the consensus work, Proof of Deep Learning targets the integrity and authenticity of the resulting model, and Proof of Training Quality asks the network to agree on contribution quality rather than merely existence. These proposals aim to make consensus work useful, while inheriting a hard question: verifying that the claimed work was actually performed."
+          "Proof of Work spends electricity on a puzzle whose answer is worthless once found. The survey reviews the alternatives that channel that compute into training instead: Proof of Learning makes model training the consensus work, Proof of Deep Learning targets the integrity and authenticity of the resulting model, and Proof of Training Quality asks the network to agree on the quality of a contribution rather than merely its existence. Each buys a trained model with the same electricity, and each inherits one hard question: verifying that the claimed work was actually performed."
       },
       {
         h: "Rewarding the improvement you caused",
@@ -650,9 +800,9 @@
     var html = "";
     for (var i = 0; i < blocks.length; i++) {
       html +=
-        '<h4>' +
+        '<h2>' +
         blocks[i].h +
-        "</h4><div class='lab-math__tex' id='bcml-tex-" +
+        "</h2><div class='lab-math__tex' id='bcml-tex-" +
         i +
         "'></div><p>" +
         blocks[i].note +

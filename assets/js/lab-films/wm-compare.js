@@ -53,7 +53,7 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 58, function(s) {
+    film.scene("Sparse Parameter Perturbations", 55.9, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 72, size: "1.4rem", color: CY });
       s.fadeIn(eq, { at: 1, dur: 2 });
 
@@ -115,6 +115,42 @@
 
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
         if (lt > 20) {
+
+           /* The scene says the Z-score shifts past the threshold and the
+              probability of coincidence drops to zero, and then never puts
+              either number on screen. Both are drawn here, sampled while the
+              null holds and climbing once the marked model is measured, so the
+              sentence is something the viewer watches happen. The tail sits at
+              10^-4 rather than at zero, because that is what the test gives.
+              Pure in lt: seek(t) reproduces the frame. */
+           var zTick = Math.floor(lt * 2.5);
+           function zjit(k) {
+             var v = Math.sin(k * 37.19 + 4.7) * 43758.5453;
+             return (v - Math.floor(v)) - 0.5;
+           }
+           var zNow = lt < 40
+             ? zjit(zTick) * 1.5
+             : lerp(zjit(zTick) * 1.5, 3.0, E.inOut(clamp01((lt - 40) / 15)));
+           // one-sided tail of the standard normal, Abramowitz and Stegun 26.2.17
+           function tailP(z) {
+             if (z < -6) return 1; if (z > 6) return 1e-9;
+             var t2 = 1 / (1 + 0.2316419 * Math.abs(z));
+             var d = 0.3989423 * Math.exp(-z * z / 2);
+             var pp = d * t2 * (0.3193815 + t2 * (-0.3565638 + t2 * (1.781478 +
+                      t2 * (-1.821256 + t2 * 1.330274))));
+             return z > 0 ? pp : 1 - pp;
+           }
+           var pNow = Math.max(1e-4, tailP(zNow));
+           var past = zNow > 3;
+           ctx.globalAlpha = op * clamp01((lt - 20) / 0.8);
+           ctx.textAlign = "left";
+           ctx.font = "bold 20px 'JetBrains Mono', monospace";
+           ctx.fillStyle = h.rgba(past ? GRN : P.white, 0.95);
+           ctx.fillText("Z = " + zNow.toFixed(2), 560, 128);
+           ctx.font = "13px 'JetBrains Mono', monospace";
+           ctx.fillStyle = h.rgba(past ? GRN : GREY, 0.9);
+           ctx.fillText(pNow <= 1e-4 ? "p < 0.0001" : "p = " + pNow.toFixed(4), 700, 128);
+           ctx.globalAlpha = op;
 
            if (lt > 22) {
               var fade22 = clamp01((lt - 22) / 0.5);
@@ -190,15 +226,15 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Watermarking is not one mechanism. Here are four approaches with different access assumptions. The first writes a pattern into selected parameters.", 1.33, { out: 18 });
-      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.33, { out: 38 });
-      lower(s, "3. As the Z-score moves past the threshold, coincidence becomes increasingly unlikely. The result is statistical evidence of copying, at the chosen false-positive rate.", 26.67, { out: 52 });
+      lower(s, "Making Proof-of-Learning unspoofable meant hiding a mark inside a model. Four ways exist, each falling to a different attacker. The first writes a pattern into the weights.", 1.33, { out: 18 });
+      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.7, { out: 38 });
+      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 26.67, { out: 52 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
     }, { subtitle: "Moving a few weights, and what pruning does to them." });
   }
 
   function sceneBlackbox(film) {
-    film.scene("Feature-Based Triggers", 47, function(s) {
+    film.scene("Feature-Based Triggers", 45.3, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -225,17 +261,15 @@
         for(var l=0; l<4; l++) { ctx.fillRect(630 + l*35, 180, 20, 180 - l*20); }
 
         // Normal Image Queries (Looping)
-        if (lt > 2 && lt < 25) {
-           var fade2 = clamp01((lt - 2) / 0.5) * (lt > 24.5 ? clamp01((25 - lt) / 0.5) : 1);
+        if (lt > 2 && lt < 29) {
+           var fade2 = clamp01((lt - 2) / 0.5) * (lt > 28.5 ? clamp01((29 - lt) / 0.5) : 1);
            ctx.globalAlpha = op * fade2;
            var qlt = (lt - 2) % 4; 
            var p = clamp01(qlt / 2);
            var qx = lerp(100, 600, E.in(p));
            
-           var label = "Cat";
-           if ((lt-2) > 4) label = "Dog";
-           if ((lt-2) > 8) label = "Car";
-           if ((lt-2) > 12) label = "Bird";
+           var LBLS = ["Cat", "Dog", "Car", "Bird", "Boat", "Tree", "Chair"];
+           var label = LBLS[Math.min(LBLS.length - 1, Math.floor((lt - 2) / 4))];
 
            ctx.shadowBlur = 10; ctx.shadowColor = AMB;
            ctx.fillStyle = AMB; ctx.fillRect(qx, 250, 60, 60);
@@ -248,6 +282,26 @@
               ctx.fillStyle = h.rgba(AMB, tAlpha); ctx.font = "bold 16px 'JetBrains Mono'";
               ctx.fillText("Output: " + label, 800, 285);
               
+           }
+           ctx.globalAlpha = op;
+        }
+
+        /* The claim is about a ratio: every ordinary query gives an ordinary
+           answer and one crafted input gives the secret label. Counting the
+           ordinary ones is what makes the single exception mean anything, and
+           it keeps the API visibly serving between the two set pieces. */
+        if (lt > 3) {
+           var served = 2000 + Math.floor((lt - 3) * 137);
+           ctx.globalAlpha = op * clamp01((lt - 3) / 0.8);
+           ctx.textAlign = "left";
+           ctx.font = "12px 'JetBrains Mono', monospace";
+           ctx.fillStyle = h.rgba(GREY, 0.95);
+           ctx.fillText(served.toLocaleString("en-US") + " ordinary queries, " +
+                        served.toLocaleString("en-US") + " ordinary answers", 100, 396);
+           if (lt > 43) {
+             ctx.fillStyle = h.rgba(AMB, 0.95);
+             ctx.font = "bold 12px 'JetBrains Mono', monospace";
+             ctx.fillText("1 crafted input, 1 secret label", 100, 418);
            }
            ctx.globalAlpha = op;
         }
@@ -299,7 +353,7 @@
       lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 1.33, { out: 14 });
       lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 10.67, { out: 28 });
       lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 20, { out: 42 });
-      lower(s, "The network outputs a secret label on the trigger set, providing black-box evidence that it carries your watermark.", 29.33);
+      lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 29.33);
     }, { subtitle: "A mark carried in the representation the model needs." });
   }
 
@@ -334,10 +388,21 @@
         var pShift = clamp01((lt - 15) / 10);
         var numTokens = 35;
         
+        /* A distribution over the vocabulary is recomputed at every decoding
+           step, so it does not stand still while the model writes. Drawn once
+           it was a picture of a distribution; resampled, it is the model
+           choosing, and the skew toward green is something that happens to a
+           moving thing rather than to a diagram. Deterministic in (token,
+           step), so seek reproduces the frame. */
+        var dstep = Math.floor(lt * 1.4);
+        function tjit(i, k) {
+          var v = Math.sin(i * 27.31 + k * 83.7) * 43758.5453;
+          return (v - Math.floor(v)) - 0.5;
+        }
         ctx.globalCompositeOperation = "screen";
         for (var i=0; i<numTokens; i++) {
            var isGreen = (i * 7 % 11) < 5; 
-           var baseProb = 100 + 40 * Math.sin(i*1.3);
+           var baseProb = 100 + 40 * Math.sin(i*1.3) + tjit(i, dstep) * 34;
            
            var currentProb = baseProb;
            if (isSkewed) {
@@ -410,7 +475,7 @@
            ctx.shadowBlur = 0;
            
            ctx.fillStyle = P.white; ctx.font = "bold 16px monospace";
-           ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%  (illustrative γ=0.5)", streamX, streamY + 290);
+           ctx.fillText("GREEN TOKEN RATIO: " + (ratio*100).toFixed(1) + "%", streamX, streamY + 290);
            
            if (count > 15 && ratio > 0.7 && lt > 45.5) {
               var alertAlpha = clamp01((lt - 45.5) / 0.5);
@@ -427,14 +492,14 @@
       });
 
       lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 1.33, { out: 12 });
-      lower(s, "A pseudo-random hash splits the vocabulary into a 'Green List' and a 'Red List'. The probability distribution is subtly skewed to prefer Green words.", 9.33, { out: 26 });
-      lower(s, "In this illustration, γ equals one half, so unwatermarked text has a null expectation of 50 percent Green.", 18.67, { out: 40 });
-      lower(s, "The logit bias raises the observed Green share in this sample to about 75 percent. A keyed statistical test turns that deviation into evidence at a chosen false-positive rate.", 28);
+      lower(s, "A pseudo-random hash splits the vocabulary into a Green List and a Red List. The distribution is then skewed toward Green.", 9.33, { out: 26 });
+      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 18.67, { out: 40 });
+      lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 28);
     }, { subtitle: "Biasing token choice, after Kirchenbauer et al." });
   }
 
   function sceneAuxiliary(film) {
-    film.scene("An auxiliary head, and its limit", 46, function(s) {
+    film.scene("The mark you can't prune", 44.3, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -465,6 +530,25 @@
         drawEdge(in2[0], in2[1], h1[0], h1[1], edgeCol); drawEdge(in2[0], in2[1], h2[0], h2[1], edgeCol); drawEdge(in2[0], in2[1], h3[0], h3[1], edgeCol);
         drawEdge(h1[0], h1[1], out[0], out[1], edgeCol); drawEdge(h2[0], h2[1], out[0], out[1], edgeCol); drawEdge(h3[0], h3[1], out[0], out[1], edgeCol);
 
+        /* A network that never carries anything is a diagram of a network. These
+           pulses are also the scene's argument: the auxiliary branch is fed by
+           the same latent layer as the main task, which is why pruning cannot
+           reach one without the other. Phase is a pure function of the edge
+           index, so seek(t) reproduces the frame. */
+        function pulse(x1, y1, x2, y2, col, idx, speed) {
+           var u = ((lt * (speed || 0.55)) + idx * 0.17) % 1;
+           var e = 1 - Math.pow(1 - Math.abs(2 * u - 1), 3);   // brighter at the ends
+           ctx.fillStyle = h.rgba(col, 0.85 * (1 - e * 0.55));
+           ctx.beginPath();
+           ctx.arc(x1 + (x2 - x1) * u, y1 + (y2 - y1) * u, 3.4, 0, Math.PI * 2);
+           ctx.fill();
+        }
+        var flow = [[in1, h1], [in1, h2], [in1, h3], [in2, h1], [in2, h2], [in2, h3],
+                    [h1, out], [h2, out], [h3, out]];
+        for (var fe = 0; fe < flow.length; fe++) {
+           pulse(flow[fe][0][0], flow[fe][0][1], flow[fe][1][0], flow[fe][1][1], CY, fe);
+        }
+
         // Nodes
         drawNode(in1[0], in1[1], CY); drawNode(in2[0], in2[1], CY);
         drawNode(h1[0], h1[1], CY); drawNode(h2[0], h2[1], CY); drawNode(h3[0], h3[1], CY);
@@ -480,6 +564,9 @@
            ctx.globalAlpha = op * ap;
            drawEdge(h2[0], h2[1], auxOut[0], auxOut[1], auxCol);
            drawEdge(h3[0], h3[1], auxOut[0], auxOut[1], auxCol);
+           // the same signal, taken down the secret branch
+           pulse(h2[0], h2[1], auxOut[0], auxOut[1], INDIGO, 3, 0.42);
+           pulse(h3[0], h3[1], auxOut[0], auxOut[1], INDIGO, 7, 0.42);
            drawNode(auxOut[0], auxOut[1], INDIGO, 15*ap);
            ctx.fillStyle = INDIGO; ctx.fillText("Auxiliary Head (Secret)", auxOut[0]+20, auxOut[1]+5);
            ctx.globalAlpha = op;
@@ -534,10 +621,10 @@
       var cite = s.caption("Ural, Enhancing Proof-of-Learning Security, Ph.D. dissertation, ERAU 2025.", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: GREY });
       s.fadeIn(cite, { at: 1.5, dur: 1.2 });
       lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
-      lower(s, "The auxiliary head learns a secret classification task through shared latent features while the main output keeps its own objective.", 9.33, { out: 26 });
+      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });
       lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 18.67, { out: 40 });
-      lower(s, "The head can be removed, so SecurePoL combines watermark evidence with a separate record of how the model was trained. Two checks cover different failure modes.", 28);
-    }, { subtitle: "The watermark and the training record answer different questions." });
+      lower(s, "Every watermark can be attacked. The one that survives is not in the model. It is in the record of how the model was made.", 28);
+    }, { subtitle: "What survives is tied to the record of how the model was made." });
   }
 
   setTimeout(boot, 60);

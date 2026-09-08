@@ -117,13 +117,22 @@
 
   /* social buttons */
 
+  /* White text on the brand orange measured 2.94:1, against the 4.5:1 WCAG
+     1.4.3 asks for; Reddit 3.44 and Bluesky 3.65. These are the same hues taken
+     down until the label passes, and only here: the brand variables also colour
+     icons against the dark page, where darkening them would make things worse.
+     Measured after: 4.53, 4.53, 4.50. */
+  $bluesky-btn-color    : #0f75e2;
+  $hackernews-btn-color : #c95000;
+  $reddit-btn-color     : #db3b00;
+
   $social:
-  (bluesky, $bluesky-color),
+  (bluesky, $bluesky-btn-color),
   (facebook, $facebook-color),
-  (hackernews, $hackernews-color),
+  (hackernews, $hackernews-btn-color),
   (linkedin, $linkedin-color),
   (mastodon, $mastodon-color),
-  (reddit, $reddit-color);
+  (reddit, $reddit-btn-color);
 
   @each $socialnetwork, $color in $social {
     &--#{$socialnetwork} {

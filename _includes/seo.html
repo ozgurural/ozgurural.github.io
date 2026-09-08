@@ -6,8 +6,16 @@
 {% endif %}
 {% assign seo_url = seo_url | default: site.github.url %}
 
-{% if page.title %}
-  {% assign seo_title = page.title | append: " " | append: site.title_separator | append: " " | append: "Dr. Ozgur Ural" %}
+{%- comment -%}
+  A page's heading and its search-result title are different jobs. The heading
+  can be as descriptive as it needs to be; the title tag is cut at about sixty
+  characters, and several of these were losing their ending mid-phrase. So a
+  page may set `seo_title` in front matter to give the result a short form,
+  and everything else keeps using its heading.
+{%- endcomment -%}
+{% if page.seo_title or page.title %}
+  {% assign seo_base = page.seo_title | default: page.title %}
+  {% assign seo_title = seo_base | append: " " | append: site.title_separator | append: " " | append: "Dr. Ozgur Ural" %}
 {% endif %}
 
 {% if seo_title %}
@@ -18,7 +26,11 @@
   {% assign canonical_url = page.url | replace: "index.html", "" | prepend: site.url %}
 {% endif %}
 
+{% if page.url == "/" %}
+<title>{{ page.seo_title | default: "Dr. Ozgur Ural | Machine Learning Research Scientist, Ph.D." }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
+{% else %}
 <title>{{ seo_title | default: "Dr. Ozgur Ural" }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
+{% endif %}
 
 {% assign seo_description = page.description | default: page.excerpt | default: site.description %}
 {% if seo_description %}
@@ -88,6 +100,77 @@
 {% endif %}
 {% if paginator.next_page %}
   <link rel="next" href="{{ paginator.next_page_path | prepend: seo_url }}">
+{% endif %}
+
+{%- comment -%}
+  Every page said Person and nothing else, so a paper and a post looked the same
+  to a search engine as the about page does. A publication is a ScholarlyArticle
+  and a post is a BlogPosting; both carry the author, the date and the headline,
+  which is what a rich result is built from. The venue becomes isPartOf and the
+  paper URL becomes the identifier, since that is what the fields already mean.
+{%- endcomment -%}
+{% if page.collection == "publications" and page.title %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "headline": {{ page.title | strip_html | jsonify }},
+      "name": {{ page.title | strip_html | jsonify }},
+      {% if page.excerpt %}"abstract": {{ page.excerpt | strip_html | strip_newlines | jsonify }},{% endif %}
+      {% if page.date %}"datePublished": "{{ page.date | date_to_xmlschema }}",{% endif %}
+      {% if page.venue %}"isPartOf": { "@type": "Periodical", "name": {{ page.venue | jsonify }} },{% endif %}
+      {% if page.paperurl %}"sameAs": {{ page.paperurl | jsonify }},{% endif %}
+      {%- comment -%}
+        Half of these papers are co-authored, and emitting a single author read
+        them all as sole-authored to anything parsing the schema, while the
+        citation printed on the page said otherwise. The list comes from an
+        explicit `authors` front matter key rather than from parsing the
+        citation string, which would have to guess where a name ends. Papers
+        without that key are the genuinely sole-authored ones and still get the
+        single Person. Only the first author is given a url, since that is the
+        one this site is about.
+      {%- endcomment -%}
+      {% if page.authors and page.authors.size > 0 %}
+      "author": [
+        {% for a in page.authors %}{
+          "@type": "Person",
+          "name": {{ a | jsonify }}{% if forloop.first %},
+          "url": {{ seo_url | jsonify }}{% endif %}
+        }{% unless forloop.last %},{% endunless %}{% endfor %}
+      ],
+      {% else %}
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Ozgur Ural",
+        "url": {{ seo_url | jsonify }}
+      },
+      {% endif %}
+      "url": {{ canonical_url | jsonify }},
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | jsonify }} }
+    }
+  </script>
+{% elsif page.id and page.title %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ page.title | strip_html | jsonify }},
+      {% if seo_description %}"description": {{ seo_description | jsonify }},{% endif %}
+      {% if page.date %}"datePublished": "{{ page.date | date_to_xmlschema }}",{% endif %}
+      {% if page.last_modified_at %}"dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",{% endif %}
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Ozgur Ural",
+        "url": {{ seo_url | jsonify }}
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Dr. Ozgur Ural"
+      },
+      "url": {{ canonical_url | jsonify }},
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | jsonify }} }
+    }
+  </script>
 {% endif %}
 
 {% comment %} The homepage (about.md) embeds a richer Person block inline;

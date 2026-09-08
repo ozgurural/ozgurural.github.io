@@ -114,6 +114,9 @@ body { background-color: transparent; }
   color: var(--ds-body);
   transition: color 0.15s ease;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .author__urls a:hover { color: var(--ds-accent); }
 .author__urls i {
@@ -275,12 +278,6 @@ body { background-color: transparent; }
   font-size: 0.85rem;
   line-height: 1.6;
 }
-
-/* ---- Theme toggle button ---- */
-.theme-toggle {
-  color: var(--ds-muted);
-}
-.theme-toggle:hover { color: var(--ds-accent); }
 
 /* ---- Selection ---- */
 ::selection { background: var(--ds-accent-soft); color: var(--ds-ink); }

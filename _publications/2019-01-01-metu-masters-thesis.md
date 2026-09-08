@@ -1,5 +1,6 @@
 ---
 title: "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data"
+seo_title: "Cyber Security Event Detection from Turkish Twitter"
 collection: publications
 category: theses
 permalink: /publication/2019-metu-masters-thesis

@@ -16,8 +16,10 @@
   font-style: normal;
   font-weight: 900;
   font-display: $fa-font-display;
-  src: url('#{$fa-font-path}/fa-solid-900.woff2') format('woff2'),
-    url('#{$fa-font-path}/fa-solid-900.ttf') format('truetype');
+  // woff2 only. The ttf was a fallback for browsers predating woff2 (2016),
+  // which cannot render this site's CSS anyway, and it shipped unsubsetted at
+  // 420 KB while the woff2 beside it is cut to 5 KB.
+  src: url('#{$fa-font-path}/fa-solid-900.woff2') format('woff2');
 }
 
 .fas,

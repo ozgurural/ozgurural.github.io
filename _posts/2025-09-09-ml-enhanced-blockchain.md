@@ -1,5 +1,6 @@
 ---
 title: "ML-Enhanced Blockchain: Toward Intelligent, Adaptive Ledgers"
+seo_title: "ML-Enhanced Blockchain"
 date: 2025-09-09
 permalink: /posts/2025/09/ml-enhanced-blockchain/
 categories: technical

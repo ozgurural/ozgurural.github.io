@@ -9,6 +9,10 @@
  */
 
 @import
+    // First, so the browser meets the @font-face rules at the top of the sheet
+    // and can start fetching a face while the rest is still parsing.
+    "vendor/google-fonts",
+
     "vendor/breakpoint/breakpoint",
 
     "themes",

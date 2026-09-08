@@ -1,5 +1,6 @@
 ---
 title: "Reflections on the PhD Journey: Building Secure AI in Availability Zones"
+seo_title: "Reflections on the PhD Journey"
 date: 2025-09-09
 permalink: /posts/2025/09/phd-era-florida-ml-security/
 categories: life

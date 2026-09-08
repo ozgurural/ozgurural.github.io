@@ -1,7 +1,8 @@
 ---
 permalink: /lab/watermarking-comparison/
 oembed: "/lab/watermarking-comparison/oembed.json"
-title: "AI Watermarking Field Guide, animated"
+title: "The Watermarking Wars: Capacity vs. Robustness, animated"
+seo_title: "The Watermarking Wars, animated"
 description: "A cinematic explainer comparing ML watermarking strategies: parameter perturbations, feature triggers, generative green-lists, and auxiliary heads."
 excerpt: "How do you claim ownership of a stolen model? We animate four major strategies: white-box sparse parameter perturbations, black-box feature-based triggers, generative LLM green-listing, and non-intrusive auxiliary heads."
 sitemap: true
@@ -13,10 +14,10 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-wm-compare" style="margin-top: 0;">
   <span class="ep-eyebrow">Machine Learning Security</span>
-  <p class="lab-card__lead">Watermarking is not one mechanism. This field guide compares four examples with different access assumptions: <strong>white-box</strong> parameter perturbations, <strong>black-box</strong> trigger sets, <strong>generative</strong> LLM token bias, and <strong>architecture-level</strong> auxiliary heads. The goal is not to rank them on one universal scale, but to show that a detector is meaningful only after its threat model and access requirements are stated.</p>
+  <p class="lab-card__lead">An evolution of the <a href="/lab/model-heist/"><em>Model Heist Detector</em></a>. Rather than examining a single Z-test, this animation explores the entire spectrum of model watermarking strategies. We compare the mathematical capacity and evasion robustness of <strong>white-box</strong> (sparse parameter perturbations), <strong>black-box</strong> (feature-based triggers), <strong>generative</strong> (LLM token bias), and <strong>architecture-level</strong> (non-intrusive auxiliary heads) watermarks.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span><strong>Cross-paper synthesis, not one published mechanism.</strong> Black-box trigger sets follow Adi et al. (USENIX Security 2018); keyed green-list generation follows Kirchenbauer et al. (ICML 2023). Parameter perturbation and auxiliary-head examples follow the author's SecurePoL dissertation and paper. Illustrative parameters are labelled in the film.</span>
+    <span>Synthesizing state-of-the-art watermarking capacity bounds and robustness theorems. Trigger set analysis follows Adi et al. (2018), generative watermarking follows Kirchenbauer et al. (2023). Auxiliary head analysis based on Dr. Ozgur Ural's research, "Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking," ERAU 2025.</span>
   </div>
 
   <div class="lab-film">
@@ -34,11 +35,11 @@ header:
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
     <p><strong>The Threat Model Dictates the Defense.</strong> If a thief steals your weights and deploys them publicly, you can download the weights and run a statistical test (White-box). But if they hide the model behind an API, you must prove ownership using only queries and responses (Black-box).</p>
-    <p><strong>Sparse Parameter Perturbations (White-box).</strong> A mark embedded directly into selected parameters. Verification requires access to the suspected model's weights. Robustness to fine-tuning is empirical and depends on embedding strength, attack budget and detector threshold.</p>
+    <p><strong>Sparse Parameter Perturbations (White-box).</strong> A high-capacity mark embedded directly into the parameter vectors. It survives fine-tuning but requires full access to the stolen model to verify.</p>
     <p><strong>Feature-Based Triggers (Black-box).</strong> You poison the model during training to classify specific noise or feature patterns as a secret label. If the API returns that label for your secret noise, it's your model. The math here relies on the over-parameterization of neural networks to memorize random noise without hurting primary task utility.</p>
-    <p><strong>Generative Watermarking (LLMs).</strong> For language models, the watermark is added at decoding time. A keyed hash of prior context selects a green-list fraction γ, then a logit bias δ softly promotes those tokens. The detector tests whether green-token counts exceed the null expectation γT. The film's 50% and 75% values are an illustrative γ = 0.5 example, not constants reported for every model.</p>
-    <p><strong>Non-Intrusive Auxiliary Head (SecurePoL).</strong> A separate classifier branches from shared latent features and is trained alongside the main task. It can be pruned, so SecurePoL treats it as one ownership signal combined with a separate training-trajectory check, not as an unremovable mark.</p>
-    <p><strong>The comparison is conditional.</strong> Capacity, utility impact and robustness depend on access, detector thresholds and the attack being tested. The useful question is not which watermark wins universally, but which claim survives the stated threat model.</p>
+    <p><strong>Generative Watermarking (LLMs).</strong> For language models, the watermarking happens at generation time. A pseudo-random hash of the previous token splits the vocabulary into a "Green list" and a "Red list".</p>
+    <p><strong>Non-Intrusive Auxiliary Head (SecurePoL).</strong> Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier. The attacker may prune it to evade detection, but its footprint remains locked in the <a href="/lab/training-fingerprint/">Proof-of-Learning</a> trajectory.</p>
+    <p><strong>The Fundamental Trade-off.</strong> Watermarks face a strict theoretical bound: <em>Capacity vs. Distortion vs. Robustness</em>. An attacker attempting to scrub the watermark adds noise. We animate how each strategy degrades under evasion attacks.</p>
   </details>
 
   <details class="lab-reveal">

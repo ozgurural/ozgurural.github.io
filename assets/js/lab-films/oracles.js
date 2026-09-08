@@ -306,10 +306,10 @@
         ctx.globalAlpha = op;
       });
 
-      lower(s, "Zero-Knowledge Machine Learning addresses the computation question with a cryptographic proof.", 1.33, { out: 12 });
-      lower(s, "An off-chain computer runs the heavy neural network. As data flows through, it generates a 'shadow' of the execution.", 8.67, { out: 24 });
-      lower(s, "That shadow compresses into a short proof, cheap to check and computationally infeasible to forge under its cryptographic assumptions. It binds this model and input to this output.", 16.67, { out: 38 });
-      lower(s, "The smart contract cannot run the model, but it can verify the proof. Acceptance guarantees that the encoded computation was followed; it does not guarantee that the model or input was truthful.", 26.67);
+      lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
+      lower(s, "An off-chain computer runs the heavy network, generating a shadow of the execution.", 8.67, { out: 24 });
+      lower(s, "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this model produced this output.", 16.67, { out: 38 });
+      lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 26.67);
     }, { subtitle: "Proving execution without redoing the work" });
   }
 
@@ -365,8 +365,13 @@
         }
 
         // A malicious claim is planted below
-        if (lt > 15) {
-           var fade15 = clamp01((lt - 15) / 0.5);
+        // The slashed claim and the challenger that broke it stayed on the
+        // stage for the rest of the scene, on top of what comes after. They are
+        // done once the stake is taken, so they leave. The bound belongs on the
+        // block: guarding inside it would have needed a return, and that takes
+        // the finalised block and everything after it along too.
+        if (lt > 15 && lt < 32.2) {
+           var fade15 = clamp01((lt - 15) / 0.5) * (1 - clamp01((lt - 30.5) / 1.5));
            ctx.globalAlpha = op * fade15;
            ctx.shadowBlur = 20; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.fillRect(350, 330, 70, 50); 
@@ -430,6 +435,43 @@
            ctx.fillText("FINALIZED", 185, 150);
            ctx.strokeStyle = GRN; ctx.lineWidth = 3;
            ctx.beginPath(); ctx.moveTo(185, 160); ctx.lineTo(290, 160); ctx.stroke();
+
+           /* One finalised block held for eleven seconds understates the claim.
+              The economic argument is about the common case: almost every
+              assertion goes unchallenged and settles for the cost of a timer,
+              and the rare liar pays for all of it. So claims keep arriving,
+              their windows run, and the tally counts what it cost.
+              Deterministic in (slot, cycle): seek(t) reproduces the frame. */
+           var LANE_Y = 320, LX0 = 200, LW = 620;
+           ctx.fillStyle = h.rgba(CY, 0.12);
+           ctx.fillRect(LX0, LANE_Y - 12, LW, 24);
+           var since = lt - 36.5, settled = 0, slashed = 0;
+           if (since > 0) {
+             for (var sl = 0; sl < 7; sl++) {
+               var ph = (since / 3.4 + sl / 7) % 1;
+               var cyc = Math.floor(since / 3.4 + sl / 7);
+               var liar = ((sl * 7 + cyc * 3) % 11) === 0;
+               var cxp = LX0 + ph * LW;
+               var done = ph > 0.72;
+               ctx.fillStyle = h.rgba(done ? (liar ? RED : GRN) : CY, 0.9);
+               ctx.fillRect(cxp - 9, LANE_Y - 9, 18, 18);
+               if (!done) {
+                 ctx.fillStyle = h.rgba(WHITE, 0.55);
+                 ctx.fillRect(cxp - 9, LANE_Y + 12, 18 * (ph / 0.72), 2.5);
+               }
+             }
+             var total = Math.max(0, Math.floor(since / 3.4 * 7));
+             slashed = Math.floor(total / 11);
+             settled = total - slashed;
+             ctx.fillStyle = h.rgba(GRN, 0.95);
+             ctx.font = "bold 14px 'JetBrains Mono', monospace";
+             ctx.fillText(settled + " settled on a timer", LX0, LANE_Y + 46);
+             ctx.fillStyle = h.rgba(RED, 0.95);
+             ctx.fillText(slashed + " slashed", LX0 + 300, LANE_Y + 46);
+             ctx.fillStyle = h.rgba(LIGHT_GREY, 0.85);
+             ctx.font = "12px 'JetBrains Mono', monospace";
+             ctx.fillText("no expensive math in the common case", LX0, LANE_Y + 68);
+           }
            ctx.globalAlpha = op;
         }
         
@@ -442,8 +484,8 @@
       lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });
       lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 8.67, { out: 24 });
       lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.", 16.67, { out: 40 });
-      lower(s, "If the timer expires without a successful challenge, the protocol finalises the claim. That is an economic verification mechanism, and it depends on an attentive, incentivized watcher being present.", 28);
-    }, { subtitle: "Economic verification with an explicit watcher assumption" });
+      lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 28);
+    }, { subtitle: "Economic guarantees for intelligent agents" });
   }
 
   setTimeout(boot, 60);

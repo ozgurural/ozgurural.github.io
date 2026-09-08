@@ -14,6 +14,9 @@ layout: compress
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
     <meta name="robots" content="noindex, follow">
+    <!-- Not for search, since this is noindex, but a pasted embed URL still
+         unfurls in a chat client and this is what it reads. -->
+    <meta name="description" content="{{ page.title | escape }}. An animated explainer from the research lab of Dr. Ozgur Ural.">
     <link rel="canonical" href="{{ page.film_page | absolute_url }}">
     <link rel="stylesheet" href="{{ base_path }}/assets/css/main.css?v={{ site.time | date: '%s' }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
@@ -23,6 +26,11 @@ layout: compress
   </head>
 
   <body class="labf-embed">
+    <!-- A player with no heading leaves a screen reader nothing to announce on
+         arrival. It is not shown, because the film's own title card is the
+         visible one and a second copy would be a second title. -->
+    <h1 class="labf-embed__srtitle">{{ page.title }}</h1>
+
     <div class="labf-embed__stage">
       <div class="lab-film__frame labf" id="{{ page.film_id }}" role="group"
            aria-label="Animated explainer: {{ page.title | escape }}"></div>

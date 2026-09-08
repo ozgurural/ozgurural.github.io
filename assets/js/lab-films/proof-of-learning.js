@@ -83,7 +83,7 @@
 
   /* ============== 1 — HOOK : a stolen snapshot ============== */
   function hook(film) {
-    film.scene("A stolen snapshot", 21, function (s) {
+    film.scene("A stolen snapshot", 18.9, function (s) {
       s.canvas(function (lt, ctx, h) {
         grid(ctx, h, 250, 220, 14, TEAL, clamp01(lt / 1.2), false);
         ctx.font = "italic 18px var(--ds-font-serif, Georgia, serif)"; ctx.fillStyle = h.rgba(TEAL, 0.95); ctx.fillText("your trained model", 225, 350);
@@ -141,13 +141,13 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers faked it within a year. My dissertation asks whether that proof can be made unfakeable.", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
   /* ============== 2 — PATH, NOT POINT ============== */
   function pathPoint(film) {
-    film.scene("The path, not the point", 18, function (s) {
+    film.scene("The path, not the point", 14.7, function (s) {
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-2.2, 2.2], pad: { left: 70, right: 360, top: 120, bottom: 70 } });
       var a = 0.8, b = 0.5;
       // descent path with noise (precomputed)
@@ -227,7 +227,7 @@
 
   /* ============== 3 — THE PROOF OBJECT ============== */
   function proofObj(film) {
-    film.scene("What a proof actually is", 21, function (s) {
+    film.scene("What a proof actually is", 17.7, function (s) {
       var cards = [
         { k: "1", t: "the checkpoints", c: TEAL }, { k: "2", t: "which data, each step", c: "#58C4DD" },
         { k: "3", t: "a fingerprint per step", c: INDIGO }, { k: "4", t: "the settings & recipe", c: GREY }
@@ -249,7 +249,11 @@
         function Lof(i) { return Math.exp(-i * 0.075) * (1 + 0.14 * Math.sin(i * 1.7)) * 0.9 + 0.05; }
         function X(i) { return bx0 + (bx1 - bx0) * i / N; }
         function Y(L) { return byTop + (1 - L) * (byBot - byTop); }
-        var nn = Math.floor(clamp01((lt - 0.6) / 5.2) * N);
+        // The run does not stop while the diary is being described. Drawing it
+        // in five seconds and holding it for twelve made the loss curve a
+        // picture of a run; spread over the scene, each checkpoint is written
+        // as the run reaches it, which is what a diary is.
+        var nn = Math.floor(clamp01((lt - 0.6) / 13.5) * N);
         ctx.strokeStyle = h.rgba(TEAL, 0.95); ctx.lineWidth = 2.2; ctx.shadowBlur = 8; ctx.shadowColor = TEAL; ctx.beginPath();
         for (var i = 0; i <= nn; i++) { var xx = X(i), yy = Y(Lof(i)); if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); }
         ctx.stroke(); ctx.shadowBlur = 0;
@@ -316,6 +320,35 @@
             ctx.shadowBlur = 0;
           }
         }
+        /* The checker was described and then not shown working. It walks the
+           sorted steps from the largest down, re-running each and ticking it,
+           and stops well short of the end, which is the sentence: it never
+           re-runs the whole thing, only the steps a shortcut would have to
+           hide in. Pure in lt, so seek(t) reproduces the frame. */
+        if (sortP > 0.95) {
+          var scan = (lt - 5.6) / 1.35;
+          var checked = Math.max(0, Math.min(6, Math.floor(scan)));
+          for (var c2 = 0; c2 < checked; c2++) {
+            var cbx = x0 + c2 * dx;
+            ctx.strokeStyle = h.rgba(GRN, 0.9); ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cbx - 5, by + 8); ctx.lineTo(cbx - 1, by + 12); ctx.lineTo(cbx + 6, by + 3);
+            ctx.stroke();
+          }
+          if (scan > 0 && checked < 6) {
+            var frac = scan - Math.floor(scan);
+            var sbx = x0 + checked * dx;
+            ctx.strokeStyle = h.rgba(AMB, 0.9 * (1 - frac * 0.4)); ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(sbx, by - mags[sorted[checked]] * 130 / 2, 11 + frac * 5, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          if (checked > 0) {
+            ctx.fillStyle = h.rgba(GRN, 0.9);
+            ctx.font = "12px 'JetBrains Mono', monospace";
+            ctx.fillText("re-ran " + checked + " of 16 steps", x0 + 9 * dx, by + 24);
+          }
+        }
         ctx.fillStyle = h.rgba("#dbeafe", 0.85); ctx.fillText("each step's size, sorted; recheck only the biggest", x0, by + 24);
         // replay into delta-ball (right)
         if (lt > 9) {
@@ -375,8 +408,8 @@
       });
       var e1 = s.tex2("\\text{A shortcut leaves an oversized jump}", { px: 300, py: 96, size: "1.3rem", color: AMB });
       s.write(e1, { at: 19.5, dur: 1.8 });
-      lower(s, "The original checker avoids a full re-run. It replays the largest updates, where a naive shortcut is easiest to expose. Later attacks showed that not every spoof leaves that signal.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
-    }, { subtitle: "Top-Q replay targets large inconsistencies; later attacks found other routes." });
+      lower(s, "A checker never re-runs the whole thing. It re-does only the biggest steps, which is exactly where a faker taking shortcuts would get caught.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
+    }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
   }
 
   /* ============== 5 — ASYMMETRY ============== */
@@ -431,19 +464,19 @@
         if (lt >= t0) {
           var shown = Math.max(0, Math.min(D, Math.floor((lt - t0) / dStep)));
           ctx.font = "600 14px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.95);
-          ctx.fillText("illustrative candidate paths:", 632, 100);
+          ctx.fillText("paths that could fit:", 632, 100);
           ctx.font = "700 26px 'JetBrains Mono',monospace";
           ctx.fillText(Math.pow(2, shown).toLocaleString() + (shown >= D ? " …" : ""), 632, 134);
           if (shown >= D) {
             var beat = 0.7 + 0.3 * Math.abs(Math.sin(lt * 2));
             ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.85 * beat);
-            ctx.fillText("naive search grows quickly", 632, 158);
-            ctx.fillText("known attacks avoid this search", 632, 174);
+            ctx.fillText("doubling every step", 632, 158);
+            ctx.fillText("no shortcut, no way to guess", 632, 174);
           }
         }
       });
-      lower(s, "The design goal is a cost asymmetry: honest proving takes one training run, while forging should cost at least as much. Later attacks showed that plain Proof-of-Learning does not always meet that goal.", 11.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "The security target is cost asymmetry, not an impossibility theorem." });
+      lower(s, "Proving costs one honest run. Faking means running the whole training backwards, and the number of paths that could fit explodes, so it's astronomically harder.", 11.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "One run to prove it. An exploding number of guesses to fake it." });
   }
 
   /* ============== 6 — SecurePoL : trajectory ∧ watermark ============== */
@@ -452,14 +485,7 @@
       s.canvas(function (lt, ctx, h) {
         // watermarked checkpoint grid (gold sub-lattice)
         grid(ctx, h, 90, 190, 13, TEAL, 1, true);
-        // Let the previous scene's root label clear before introducing this
-        // one. Both otherwise occupy the same ink at the scene boundary.
-        if (lt > 0.8) {
-          ctx.save(); ctx.globalAlpha *= clamp01((lt - 0.8) / 0.6);
-          ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GOLD, 0.95);
-          ctx.fillText("a secret mark, woven into the model", 90, 320);
-          ctx.restore();
-        }
+        ctx.font = "11px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(GOLD, 0.95); ctx.fillText("a secret mark, woven into the model", 90, 320);
         // two rails into an AND-gate
         var gx = 640, gy = 270, trajGreen = true; // trajectory rail
         var wmGreen = lt < 4 ? null : false;       // fake transcript fails watermark
@@ -506,13 +532,13 @@
       s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
-      lower(s, "SecurePoL adds a second check: a mark woven into the model. A forger must now reproduce both a plausible trajectory and a watermark-consistent ownership signal.", 9.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Two bypassable checks become one joint constraint." });
+      lower(s, "SecurePoL adds a second lock: a mark woven into the model. A faker can copy the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
   /* ============== 7 — SIGNATURE ============== */
   function signature(film) {
-    film.scene("The fingerprint, and why it matters", 26, function (s) {
+    film.scene("The fingerprint, and why it matters", 26.5, function (s) {
       var co = film.coords({ xRange: [0, 40], yRange: [0, 1], pad: { left: 80, right: 360, top: 140, bottom: 120 } });
       var ax = s.axes(co, { grid: false });
       s.stagger(ax, { at: 0.6, dur: 1.05 });
@@ -520,7 +546,7 @@
       var gpts = [], i; for (i = 0; i <= 40; i++) gpts.push([i, Math.exp(-i * 0.08) * (1 + 0.13 * Math.sin(i * 1.9)) * 0.9 + 0.02]);
       var gp = s.poly(gpts, { coords: co, color: TEAL, width: 2.6 });
       s.draw(gp, { at: 1.5, dur: 3.3 });
-      // synthetic smooth comparison path
+      // forged flat / too-clean
       var fpts = []; for (i = 0; i <= 40; i++) fpts.push([i, Math.exp(-i * 0.085) * 0.85 + 0.02]);
       var fp = s.poly(fpts, { coords: co, color: RED, width: 2.2, dashed: "5 5" });
       s.draw(fp, { at: 5.1, dur: 3 });
@@ -537,9 +563,39 @@
            ctx.beginPath(); ctx.arc(px, py, 4, 0, 7); ctx.fill();
            ctx.shadowBlur = 0;
         }
-        /* From 14.5 the scene compares step-to-step variability in two
-           illustrative traces. The contrast motivates trajectory evidence; it
-           is not itself the replay verifier or a general forgery detector. */
+        /* Between the second curve landing and the measurement starting, the
+           two curves sat there for nine seconds. A cursor walks both, reading
+           each step's change off as it goes, so by the time the scatter panel
+           appears the viewer has already seen the genuine curve jump around
+           and the forged one not. Pure in lt: seek(t) reproduces the frame. */
+        if (lt > 8.4 && lt < 14.9) {
+          var wp = clamp01((lt - 8.4) / 6.0);
+          var wi = Math.max(1, Math.min(40, Math.round(wp * 40)));
+          var gdel = gpts[wi][1] - gpts[wi - 1][1];
+          var fdel = fpts[wi][1] - fpts[wi - 1][1];
+          ctx.strokeStyle = h.rgba("#e8eef7", 0.28);
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(co.x(wi), co.y(0)); ctx.lineTo(co.x(wi), co.y(1));
+          ctx.stroke();
+          ctx.fillStyle = TEAL;
+          ctx.beginPath(); ctx.arc(co.x(wi), co.y(gpts[wi][1]), 4.5, 0, 7); ctx.fill();
+          ctx.fillStyle = RED;
+          ctx.beginPath(); ctx.arc(co.x(wi), co.y(fpts[wi][1]), 4.5, 0, 7); ctx.fill();
+          ctx.font = "12px 'JetBrains Mono', monospace";
+          ctx.fillStyle = h.rgba("#dbeafe", 0.9);
+          ctx.fillText("step " + wi, co.x(0), co.y(1) - 26);
+          ctx.fillStyle = h.rgba(TEAL, 0.95);
+          ctx.fillText("genuine  " + gdel.toFixed(3), co.x(0) + 92, co.y(1) - 26);
+          ctx.fillStyle = h.rgba(RED, 0.95);
+          ctx.fillText("forged  " + fdel.toFixed(3), co.x(0) + 250, co.y(1) - 26);
+        }
+        /* The scene claims the noise is the fingerprint and then held a still
+           frame for its last fourteen seconds. From 14.5 it measures the thing
+           it named: the step-to-step change of each curve, drawn as it is read
+           off. The genuine descent's steps scatter three times as wide as the
+           forged one's, which is the tell, and the appendix is where the caveat
+           that it is a tell rather than a proof belongs. */
         if (lt > 14.5) {
           var dg = [], df = [], q;
           for (q = 1; q <= 40; q++) { dg.push(gpts[q][1] - gpts[q - 1][1]); df.push(fpts[q][1] - fpts[q - 1][1]); }
@@ -592,18 +648,18 @@
         }
       });
       
-      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Recorded run (illustration)", { px: 650, py: 144, anchor: "left", size: "1.25rem", color: "#e2e8f0" });
-      var fl = s.caption("<span style='color:" + RED + "'>■</span> Smooth synthetic path (illustration)", { px: 650, py: 202, anchor: "left", size: "1.15rem", color: "#e2e8f0" });
+      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 144, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
+      var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 202, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 4.5, dur: 0.9 }); s.fadeIn(fl, { at: 8.1, dur: 0.9 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: 0.0, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 1.5, dur: 0.75 });
       s.fadeOut(xl, { at: 13.2, dur: 0.75 }); // clear the lower third for the narration
       // Clean legend on the right
-      var hg = s.caption("Variability can carry evidence; it is not a detector alone.", { px: 650, py: 260, anchor: "left", size: "0.92rem", color: "#dbeafe", maxWidth: "250px" });
+      var hg = s.caption("The noise is the fingerprint.", { px: 650, py: 260, anchor: "left", size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
-      var seal = s.caption("✦ Joint trajectory + watermark check", { px: 650, py: 310, anchor: "left", size: "1.05rem", color: GOLD });
+      var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
-      lower(s, "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark.", 12.0, { maxWidth: "92%", px: 60 });
+      lower(s, "When models are cloned and stolen, what matters is not what a model knows, but whether it can prove how it learned. My work makes that proof unforgeable.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

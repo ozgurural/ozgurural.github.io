@@ -1,5 +1,6 @@
 ---
 title: "Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking"
+seo_title: "Feature-Based Watermarking for Proof-of-Learning"
 collection: publications
 category: manuscripts
 permalink: /publication/2024-ieee-access-watermarking
@@ -7,6 +8,9 @@ excerpt: "Feature-based model watermarking scheme that binds ownership proofs to
 date: 2024-11-01
 venue: "IEEE Access"
 paperurl: "https://ieeexplore.ieee.org/abstract/document/10741282"
+authors:
+  - "Dr. Ozgur Ural"
+  - "K. Yoshigoe"
 citation: "Ural, O. and Yoshigoe, K. (2024). Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking. IEEE Access. DOI: 10.1109/ACCESS.2024.3489776."
 ---
 

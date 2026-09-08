@@ -41,8 +41,13 @@ html[data-theme="dark"] {
     --global-footer-bg-color            : #{$background};
     --global-border-color               : #{$light-gray};
     --global-dark-border-color          : #{$background-light};
-    --global-code-background-color      : #fafafa;
-    --global-code-text-color            : #{$darker-gray};
+    /* The site is dark only, and this pair still carried the light theme's
+       values, so a fenced code block rendered as a near-white slab with the
+       dark inline-code background painting only behind the glyphs. The design
+       system already paints .page__content code dark; these make the block
+       around it agree. */
+    --global-code-background-color      : #131c2f;
+    --global-code-text-color            : #e8eef7;
     --global-fig-caption-color          : #{$light-gray};
     --global-link-color                 : #{$link};
     --global-link-color-hover           : #{$link-dark};

@@ -1,9 +1,9 @@
 ---
 permalink: /lab/model-heist/
 oembed: "/lab/model-heist/oembed.json"
-title: "Statistical Watermark Detector: a teaching model, animated"
-description: "A Gaussian teaching model for how many weak coordinate-level marks can become aggregate ownership evidence, with its assumptions and limits stated."
-excerpt: "Under a clean-reference, white-Gaussian-noise model, spread a weak signature across k coordinates and watch matched-filter power rise as √k."
+title: "Model Heist Detector: AI watermarks, animated"
+description: "How a watermark too faint to see in any single weight becomes a courtroom-grade signature across thousands of them. A cinematic, PhD-level Z-test explainer."
+excerpt: "Spread a faint statistical signature across k weights, read it back through fine-tuning noise with a matched filter, and watch detection power rise as √k."
 sitemap: true
 header:
   og_image: "lab-og/og-wm.png"
@@ -13,10 +13,10 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-wm" style="margin-top: 0;">
   <span class="ep-eyebrow">ML security · Model provenance</span>
-  <p class="lab-card__lead">🕵️ Someone leaks an AI model and fine-tunes it just enough to look different. This animation isolates one statistical idea: under a clean-reference, white-Gaussian-noise model, <strong>k weak coordinate-level marks</strong> can add coherently in a matched filter while unrelated noise adds in quadrature. It is a teaching model for aggregate evidence, not a reconstruction of the feature-based detector in the author's 2024 paper.</p>
+  <p class="lab-card__lead">🕵️ Someone leaks your AI and fine-tunes it just enough to look different. Before you ever published, you spread a faint statistical signature across thousands of weights, each mark too small to notice, but together a fingerprint only you can read. This animation shows why that works: one big mark is fragile, but <strong>k tiny correlated marks</strong> read back through a matched filter give detection power that climbs as <strong>√k</strong>, invisible in any one weight, undeniable across all of them.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span><strong>Illustrative statistical model.</strong> The matched-filter derivation follows classical Gaussian detection theory and states its assumptions in the appendix. For the author's published mechanism, which embeds feature-based watermarks during training and verifies them jointly with Proof-of-Learning, see <a href="/publication/2024-ieee-access-watermarking">IEEE Access 2024</a> and the source-grounded <a href="/lab/training-fingerprint/">SecurePoL film</a>.</span>
+    <span>This film animates the detection side of the problem: a mark spread across many parameters, read back with a matched filter, and why the evidence grows as √k. The aggregate Gaussian Z-test is the film's model of that step, not a formula taken from the paper. The paper it accompanies, <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024), embeds the mark in the model's internal features rather than its output behaviour, and checks it alongside the Proof-of-Learning trajectory so that a forger has to satisfy both conditions at once.</span>
   </div>
 
   <div class="lab-film">
@@ -32,11 +32,11 @@ header:
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
-    <p><strong>A weak distributed signal can be easier to test than one large coordinate.</strong> In this teaching model, the owner shifts weights along a <em>secret unit pattern</em> w across k coordinates. Each coordinate-level shift ε can remain small relative to the assumed noise scale, while the registered aggregate statistic grows with k.</p>
+    <p><strong>Tiny secrets in many places beat one big secret.</strong> A model has hundreds of millions of internal numbers. Stamping one large value into a single weight fails twice: it's conspicuous (a thief finds and erases it) and it's large (it dents accuracy). Instead, the owner shifts the weights along a <em>secret unit pattern</em> w across k coordinates, each by a tiny ε that's invisible against the noise floor.</p>
     <p><strong>Detection is a matched filter, a one-sided Z-test.</strong> The verifier correlates the leaked weights against the secret pattern, <em>S = ⟨w, θ̂ − θ<sub>ref</sub>⟩</em>. The aligned marks add coherently to amplitude √k·ε, while the fine-tuning noise projects to a flat σ (because ‖w‖ = 1). Normalised, the statistic is N(0,1) for an innocent model and N(d,1) for a watermarked one, with effect size <em>d = √k·ε/σ</em>. Detection power is Φ(d − z<sub>α</sub>) at false-positive rate α.</p>
-    <p><strong>The √k gain is conditional.</strong> With independent, equal-variance noise and a registered secret direction, the aggregate effect size is <em>d = √k·ε/σ</em>. Increasing k improves the ROC curve inside that model. Correlated noise, an uncertain reference, multiple testing or an adaptive attacker changes the result.</p>
-    <p><strong>Bounded perturbation gives a bound, not immunity.</strong> If a scrub is constrained by ‖δ‖ ≤ ρ, Cauchy-Schwarz gives |ΔS| ≤ ρ. That does not prove the real model keeps its utility, nor that the watermark is unremovable. It only states how far this detector can move under the chosen norm budget.</p>
-    <p><strong>Scientific Context:</strong> The film teaches the statistics behind one possible detector. It should not be cited as the mechanism of the author's 2024 paper. The published work uses feature-based watermarking integrated with <a href="/lab/training-fingerprint/">Proof-of-Learning</a>; its measured claims are presented there.</p>
+    <p><strong>The √k decouples stealth from certainty.</strong> Per weight, ε/σ ≪ 1, utility-preserving and undetectable. But the aggregate d = √k·ε/σ crosses any threshold for large enough k, so the ROC curve snaps to the perfect corner (AUC = Φ(d/√2)) just by adding marks. You buy confidence with breadth, not loudness.</p>
+    <p><strong>The scrubbing paradox.</strong> To erase a spread mark the thief must perturb all k coordinates at once, and because <em>w is secret</em>, he can't aim his utility budget at it: ‖δ‖ ≤ ρ ⇒ |ΔS| = |⟨w, δ⟩| ≤ ρ. Scrubbing blindly wrecks the model's usefulness long before it removes the signature, and the matched filter just re-weights the survivors. The very constraint that keeps the stolen model useful is what makes the watermark un-removable.</p>
+    <p><strong>Scientific Context:</strong> This is how labs plan to prove "that model is ours" after a leak, and the same statistics underlie AI-text detection and camera provenance. The Z-test formulation and its coupling to <a href="/lab/training-fingerprint/">Proof-of-Learning</a> are detailed in the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</p>
   </details>
 
   <details class="lab-reveal">

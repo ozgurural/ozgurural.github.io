@@ -43,6 +43,15 @@
   margin-bottom: 0.25em;
   font-family: $sans-serif-narrow;
 
+  /* The link is the whole target and its box was 21px tall on a phone, under
+     the 24px WCAG 2.2 asks for. The padding buys the height without moving the
+     text: the negative margin gives it back to the layout. */
+  a {
+    display: inline-block;
+    padding: 3px 0;
+    margin: -3px 0;
+  }
+
   a + a {
     opacity: 0.5;
   }

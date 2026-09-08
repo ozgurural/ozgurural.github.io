@@ -1,5 +1,6 @@
 ---
 title: "Proof of Learning: Building Trust in Future Machine Learning"
+seo_title: "Proof of Learning: Building Trust"
 date: 2025-09-09
 permalink: /posts/2025/09/proof-of-learning-future/
 categories: technical

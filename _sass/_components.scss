@@ -50,7 +50,13 @@
   letter-spacing: -0.025em;
   color: var(--ds-ink);
   margin: 0 0 1rem;
-  max-width: 24ch;
+  /* No cap: the headline is a full sentence, not a short poster tagline, so an
+     artificial narrow measure just fragments it. At 24ch it broke a 122-
+     character sentence into 5 lines and stopped well short of the hero
+     column, while the lede below it reached 52ch and the CTA row and stat
+     cards beneath that used the full column: three different right edges
+     stacked in one block. Letting it fill the same column as everything
+     else reads as one block instead of a headline that gave up early. */
 }
 .ep-hero__title .accent { color: var(--ds-accent); }
 .ep-hero__lede {
@@ -464,7 +470,10 @@
   letter-spacing: 0;
   margin: 0 0 0.8rem;
   color: var(--ds-ink);
-  max-width: 14ch;
+  /* No cap: same defect and same fix as .ep-hero__title (see that rule's
+     comment). "Watch the mathematics move." is 4 words, and 14ch broke it
+     into 3 one-and-a-half-word lines while stopping at 174px against a
+     770px column the paragraph and CTA row beneath it both used in full. */
 }
 .lab-hero__copy {
   position: relative;
@@ -875,7 +884,7 @@
 
 @media (max-width: 720px) {
   .lab-hero { padding: 1.1rem 1rem 1.2rem; }
-  .lab-hero__title { font-size: 2rem; max-width: 11ch; }
+  .lab-hero__title { font-size: 2rem; }
   .lab-hero__copy { font-size: 0.98rem; }
   .lab-mission-deck { grid-template-columns: 1fr; }
   .lab-mission-card { min-height: auto; }
@@ -1884,7 +1893,7 @@ body.labf-embed .labf {
   border: 0;
   border-radius: 0;
   background: #070b16;
-  width: min(100vw, calc((100dvh - 54px) * var(--labf-ar, 1.7778)));
+  width: min(100vw, calc(100dvh * var(--labf-ar, 1.7778)));
   max-width: none;
   margin: 0;
 }
@@ -1896,14 +1905,12 @@ body.labf-embed .labf__stage {
   /* the stage keeps its own background: that grid is the film's paper, and a
      rendered video without it reads flat */
 }
-/* Keep the transport outside the picture. An overlaid 50px bar covers the
-   lower-third narration at every width, so the stage is sized from the height
-   left after the controls instead. */
+/* the transport floats over the picture here too, so the whole box is film */
 body.labf-embed .labf__transport {
-  position: relative;
-  left: auto; right: auto; bottom: auto;
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
   z-index: 3;
-  background: linear-gradient(180deg, rgba(11,18,33,0), rgba(8,12,22,0.9) 40%);
+  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.72) 55%);
 }
 /* source credit, bottom-left, out of the way of the transport until hover */
 .labf-embed__source {
@@ -1919,25 +1926,43 @@ body.labf-embed .labf__transport {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 .labf-embed__source:hover { color: rgba(255, 255, 255, 0.85); }
-/* No chapter band in the embed. It is a fixed height in screen pixels, so in a
-   small iframe it eats a large share of the logical frame: at an 800px stage it
-   reaches logical y 71 against 45 on the full page, and the scene formulas
-   authored to clear 52 end up behind it. A player does not keep two lines of
-   metadata over the picture anyway; the film's own signature stays, the title
-   travels in the oEmbed payload, and the source link below is the way back. */
+/* The chapter band is a fixed height in screen pixels, so its share of the
+   logical frame grows as the stage shrinks: about y 44 at a 1280px stage, 55 at
+   1024, 71 at 800, against the y 46 that every scene is authored to clear. So
+   it stays wherever it still fits and goes wherever it would sit on top of the
+   film. That keeps a wide embed, and the 1280px render the video is captured
+   from, identical to the film on the page, while a small iframe gets the
+   picture undisturbed. */
+@media (max-width: 1199px) {
+  /* WCAG 2.2 asks for a 24px target. A link inside a sentence is exempt, because
+   it is prose; a link that is a card title, a whole list item, or a citation
+   line is a target and several were 16 to 21px tall on a phone. The padding
+   buys the height, the negative margin gives it back so nothing moves. */
+.ep-cards .title a,
+.page__content li > a:only-child,
+.page__content p > a:only-child,
+.lab-card__usecase a,
+.lab-card figcaption a {
+  display: inline-block;
+  padding: 3px 0;
+  margin: -3px 0;
+}
+
+/* The embed's heading exists for assistive technology only: the film draws its
+   own title card, so a visible second one would be a duplicate. Clipped rather
+   than display:none, which would take it out of the accessibility tree too. */
+.labf-embed__srtitle {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 body.labf-embed .labf__chrome { display: none; }
+}
 
 @media (max-width: 640px) {
   .labf-embed__source { display: none; }
-  /* At phone widths a 50px transport covers roughly 120 logical pixels of the
-     scaled film, including the lower-third narration. Put the controls below
-     the stage and reserve their height when a short landscape iframe is the
-     limiting dimension. */
-  body.labf-embed .labf {
-    width: min(100vw, calc((100dvh - 50px) * var(--labf-ar, 1.7778)));
-  }
-  body.labf-embed .labf__transport {
-    padding-top: 0.45rem;
-    padding-bottom: 0.45rem;
-  }
 }

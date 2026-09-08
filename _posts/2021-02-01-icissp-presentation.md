@@ -1,7 +1,8 @@
 ---
 title: "Presenting at ICISSP 2021: rare-event detection in a low-resource language"
+seo_title: "Presenting at ICISSP 2021"
 date: 2021-02-01
-description: "The conference talk behind the ICISSP 2021 paper: what an agglutinative language does to keyword detection, and why the false-positive rate is the number that decides whether a rare-event detector is usable."
+description: "The talk behind the ICISSP 2021 paper: what an agglutinative language does to keyword detection, and what the sample run measured."
 categories: technical
 tags:
   - security

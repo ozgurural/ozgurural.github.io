@@ -43,10 +43,19 @@
     "build:site-og": "node scripts/build-site-og.js",
     "build:narration": "node scripts/extract-narration.js && python scripts/generate-narration.py",
     "build:film-video": "node scripts/build-film-video.js",
-    "build:linkedin-video": "node scripts/build-film-video.js --linkedin",
-    "build:linkedin-videos": "node scripts/build-film-video.js --all --linkedin",
-    "preview:linkedin-videos": "node scripts/build-film-video.js --all --linkedin --preview",
-    "audit:linkedin-videos": "node scripts/audit-linkedin-videos.js",
-    "audit:films": "node scripts/audit-lab-films.js"
+    "films": "node scripts/build-film-video.js --all",
+    "diff:film": "node scripts/diff-film-frame.js",
+    "audit:films": "node scripts/audit-films.js",
+    "sheet": "node scripts/contact-sheet.js",
+    "audit:stills": "node scripts/audit-films.js --stills",
+    "audit:overlap": "node scripts/audit-overlap.js",
+    "audit:site": "node scripts/audit-site.js",
+    "build:icon-fonts": "python scripts/subset-icon-fonts.py",
+    "build:webfonts": "node scripts/vendor-webfonts.js",
+    "build:page-icons": "node scripts/vendor-page-icons.js",
+    "verify:icons": "node scripts/verify-icon-subset.js",
+    "check:links": "node scripts/check-external-links.js",
+    "check:liquid": "node scripts/check-liquid.js",
+    "apply:trims": "node scripts/apply-trims.js"
   }
 }

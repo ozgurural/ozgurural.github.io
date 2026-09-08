@@ -1,5 +1,6 @@
 ---
 title: "Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking"
+seo_title: "Proof-of-Learning Security via Model Watermarking"
 collection: publications
 category: theses
 permalink: /publication/2025-dissertation

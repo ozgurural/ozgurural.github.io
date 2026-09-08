@@ -21,9 +21,13 @@
   );
 </script>
 
-<!-- tsParticles -->
-<script src="{{ base_path }}/assets/js/tsparticles.bundle.min.js"></script>
+<!-- tsParticles. Deferred: the field is decorative, and letting it wait until
+     the document is parsed keeps 38 KB of it out of the way of the fonts and
+     the first paint. defer preserves document order, so shared still runs
+     before config, and it executes before DOMContentLoaded, which is what
+     config listens for. -->
+<script defer src="{{ base_path }}/assets/js/tsparticles.bundle.min.js"></script>
 <!-- Shared field options must load before both consumers (this file and the
      home-only topology script) read them at DOMContentLoaded. -->
-<script src="{{ base_path }}/assets/js/particles-shared.js?v={{ site.time | date: '%s' }}"></script>
-<script src="{{ base_path }}/assets/js/particles-config.js?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ base_path }}/assets/js/particles-shared.js?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ base_path }}/assets/js/particles-config.js?v={{ site.time | date: '%s' }}"></script>

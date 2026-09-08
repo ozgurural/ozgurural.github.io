@@ -76,7 +76,7 @@ layout: default
 
       <footer class="page__meta">
         {% if site.data.ui-text[site.locale].meta_label %}
-          <h2 class="page__meta-title">{{ site.data.ui-text[site.locale].meta_label }}</h2>
+          <h4 class="page__meta-title">{{ site.data.ui-text[site.locale].meta_label }}</h4>
         {% endif %}
         {% include page__taxonomy.html %}
       </footer>
@@ -95,6 +95,11 @@ layout: default
   {% if page.id and page.related and site.related_posts.size > 0 %}
     <div class="page__related">
       {% if site.data.ui-text[site.locale].related_label %}
+        {%- comment -%}
+          h2, not h4. Unlike "Share on" and the table of contents, which label a
+          control and a landmark, this one opens a real section of the page, and
+          at h4 it skipped two levels under the post's own title.
+        {%- endcomment -%}
         <h2 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h2>
       {% endif %}
       <div class="grid__wrapper">

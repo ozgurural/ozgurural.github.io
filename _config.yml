@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "Machine-learning research scientist building verifiable AI for critical systems. U.S. Ph.D.; five first-author papers on proof-of-learning and model watermarking."
+description              : &description "U.S. Ph.D. (Embry-Riddle, 2025). Five first-author papers on proof-of-learning and model watermarking. Twelve years building mission-critical systems."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -100,7 +100,7 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 : "og-default.png"  # 1200x630 social card (scripts/build-site-og.js)
-og_description           : "Machine-learning research scientist building verifiable AI for critical systems. U.S. Ph.D.; five first-author papers on proof-of-learning and model watermarking."
+og_description           : "Dr. Ozgur Ural. Ph.D. in Electrical Engineering & Computer Science (Embry-Riddle, USA, 2025) with a machine-learning research focus, three first-author IEEE Access papers on proof-of-learning and model watermarking. Twelve years architecting mission-critical systems across defence, security, and aviation."
 keywords:
   - Dr. Ozgur Ural
   - Machine Learning Research Scientist
@@ -342,3 +342,4 @@ compress_html:
   ignore:
     envs: development
 
+   
