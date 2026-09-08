@@ -86,18 +86,45 @@
           for (var i = 0; i < fleetN; i++) {
             var p = agentPos(i, fleetN);
             var head = (rnd(i + 3) * 2 - 1) * 0.6 + (lt > 14 ? 0 : Math.sin(lt * 0.4 + i) * 0.3);
-            ctx.strokeStyle = h.rgba(GRN, 0.55);
-            ctx.lineWidth = 1.5;
+            
+            // Draw agent body (larger, more visible)
+            ctx.fillStyle = h.rgba(GRN, 0.85);
+            ctx.beginPath(); ctx.arc(p.x, p.y, 5.5, 0, Math.PI * 2); ctx.fill();
+            
+            // Draw heading indicator (clearer directional marker)
+            ctx.strokeStyle = h.rgba(GRN, 0.75);
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p.x + Math.cos(head - Math.PI / 2) * 14, p.y + Math.sin(head - Math.PI / 2) * 14);
+            ctx.lineTo(p.x + Math.cos(head - Math.PI / 2) * 16, p.y + Math.sin(head - Math.PI / 2) * 16);
             ctx.stroke();
+            
+            // Add small glow to make agents more prominent
+            ctx.shadowBlur = 4; ctx.shadowColor = GRN;
             ctx.fillStyle = GRN;
-            ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
           }
-          ctx.fillStyle = h.rgba(PAL.white, 0.75);
-          ctx.font = "13px 'JetBrains Mono', monospace";
-          ctx.fillText("no director", FX - 38, FY + 4);
+          
+          // Center label with better context
+          ctx.fillStyle = h.rgba(PAL.white, 0.85);
+          ctx.font = "bold 14px 'JetBrains Mono', monospace";
+          ctx.textAlign = "center";
+          ctx.fillText("no director", FX, FY - 6);
+          ctx.font = "11px 'JetBrains Mono', monospace";
+          ctx.fillStyle = h.rgba(PAL.muted, 0.75);
+          ctx.fillText("40 autonomous agents", FX, FY + 12);
+          ctx.textAlign = "left";
+          
+          // Add a label at the top to clarify what we're looking at
+          if (lt > 2) {
+            var labelFade = clamp01((lt - 2) / 1);
+            ctx.globalAlpha = op * labelFade;
+            ctx.fillStyle = h.rgba(GRN, 0.9);
+            ctx.font = "12px 'JetBrains Mono', monospace";
+            ctx.fillText("each agent wants work, no one assigns it", 80, 100);
+            ctx.globalAlpha = op;
+          }
         }
 
         // ---- Phase B onward: the hub and its links -------------------------
@@ -105,28 +132,46 @@
           var over = n > CAP;
           var hubCol = over ? RED : CY;
 
+          // Draw connection lines first (behind agents)
           for (var j = 0; j < n; j++) {
             var q = agentPos(j, n);
             ctx.strokeStyle = h.rgba(over ? RED : CY, over ? 0.5 : 0.35);
             ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(FX, FY); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+          
+          // Draw agents (larger, more visible)
+          for (var j2 = 0; j2 < n; j2++) {
+            var q2 = agentPos(j2, n);
+            ctx.fillStyle = h.rgba(GRN, 0.85);
+            ctx.beginPath(); ctx.arc(q2.x, q2.y, 5.5, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 4; ctx.shadowColor = GRN;
             ctx.fillStyle = GRN;
-            ctx.beginPath(); ctx.arc(q.x, q.y, 3.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(q2.x, q2.y, 4, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
           }
 
+          // Draw the central hub/manager
           ctx.shadowBlur = over ? 26 : 14; ctx.shadowColor = hubCol;
           ctx.fillStyle = hubCol;
           ctx.beginPath(); ctx.arc(FX, FY, over ? 15 : 11, 0, Math.PI * 2); ctx.fill();
           ctx.shadowBlur = 0;
 
           ctx.fillStyle = h.rgba(PAL.white, 0.9);
-          ctx.font = "12px 'JetBrains Mono', monospace";
-          ctx.fillText("manager", FX - 26, FY + 30);
+          ctx.font = "bold 13px 'JetBrains Mono', monospace";
+          ctx.textAlign = "center";
+          ctx.fillText("manager", FX, FY + 32);
+          ctx.textAlign = "left";
 
           // the count is the point of the scene, so it is stated numerically
           ctx.fillStyle = over ? RED : h.rgba(PAL.white, 0.9);
           ctx.font = "bold 15px 'JetBrains Mono', monospace";
           ctx.fillText("links through one node: " + n, 60, 380);
+          if (over) {
+            ctx.fillStyle = h.rgba(RED, 0.9);
+            ctx.font = "12px 'JetBrains Mono', monospace";
+            ctx.fillText("bottleneck: capacity is " + CAP, 60, 400);
+          }
 
           // queue arc once the hub is past capacity
           if (over) {
@@ -135,9 +180,12 @@
               var qa = -Math.PI / 2 + k * 0.12;
               ctx.fillStyle = h.rgba(RED, 0.85);
               ctx.beginPath();
-              ctx.arc(FX + Math.cos(qa) * 34, FY + Math.sin(qa) * 34, 3, 0, Math.PI * 2);
+              ctx.arc(FX + Math.cos(qa) * 34, FY + Math.sin(qa) * 34, 3.5, 0, Math.PI * 2);
               ctx.fill();
             }
+            ctx.fillStyle = h.rgba(RED, 0.75);
+            ctx.font = "11px 'JetBrains Mono', monospace";
+            ctx.fillText("waiting", FX - 18, FY - 42);
           }
         }
 
