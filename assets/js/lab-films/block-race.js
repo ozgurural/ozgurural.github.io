@@ -501,7 +501,7 @@
       s.write(law, { at: T3 + 5.6, dur: 1.8 });
       s.pulse(law, { at: T3 + 8, dur: 1.2, amp: 0.1 });
 
-      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged 70/30. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each confirmation halves what is left.", 13.0, { maxWidth: "92%", px: 60 });
+      lower(s, "Forget both chains. Only the gap matters, and the coin is rigged seventy to thirty. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each additional block multiplies the remaining catch-up chance by three sevenths.", 13.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Only the gap matters, and the walk is rigged against the attacker." });
   }
 

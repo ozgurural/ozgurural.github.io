@@ -114,8 +114,7 @@ body { background-color: transparent; }
   color: var(--ds-body);
   transition: color 0.15s ease;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   min-height: 24px;
 }
 .author__urls a:hover { color: var(--ds-accent); }
@@ -130,6 +129,7 @@ body { background-color: transparent; }
 @media screen and (min-width: 1024px) {
   .sidebar .author__urls li { white-space: normal; }
   .sidebar .author__urls li > a {
+    display: block;
     padding-left: 2.25em;
     text-indent: -2.25em;
   }
@@ -138,10 +138,17 @@ body { background-color: transparent; }
 
 /* ---- Content typography ---- */
 .page__content {
+  overflow-wrap: anywhere;
   font-family: var(--ds-font-sans);
   font-size: 1.0625rem;
   line-height: 1.7;
   color: var(--ds-body);
+}
+
+.page__content > table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
 }
 .page__content p { color: var(--ds-body); }
 .page__content p,
@@ -186,6 +193,17 @@ body { background-color: transparent; }
 }
 
 .page__content h1 { font-size: 2rem; font-weight: 700; line-height: 1.15; margin-top: 2.25rem; }
+.page__content .ep-hero__title { margin-top: 0; }
+.page__resource-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+.page__content > p > a:only-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
 .page__content h2 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -422,6 +440,10 @@ body { background-color: transparent; }
     padding-top: 0.5rem !important;
   }
 
-  .author__urls a { font-size: 0.78rem; }
+  .author__urls a {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.78rem;
+  }
   .sidebar .author__desktop { display: none !important; }
 }

@@ -158,7 +158,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 86, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "A Level-D simulator is a legally certified twin of a real aircraft. Before sign-off, its flight computers must agree, so you run three, and let the majority rule.", 6.5, { maxWidth: "80%", py: 520 });
+      lower(s, "In a safety-critical controller, three independent channels can feed a majority voter. One faulty channel is then outvoted by the other two.", 6.5, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 
@@ -211,7 +211,7 @@
       s.fadeIn(e1, { at: 10, dur: 1.0 });
       var e2 = s.tex2("\\text{For 3 voters: Fails if 2 or 3 fail}", { px: 480, py: 121, size: "1.3rem", color: AMB });
       s.fadeIn(e2, { at: 12, dur: 1.2 });
-      lower(s, "Systems fail only when a majority of voters fail simultaneously. Independent voters make failure exponentially unlikely.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
+      lower(s, "In the ideal voter model, the output fails when a majority of channels fail. Independent rare faults make that event scale as a higher power of the channel failure rate.", 10.5, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Voting converts ‘any failure’ into ‘a coordinated majority’." });
   }
 
@@ -444,7 +444,7 @@
       });
       var eq = s.tex2("\\text{High Correlation} \\Rightarrow \\text{Redundancy is useless}", { px: 650, py: 80, size: "1.4rem", color: AMB });
       s.fadeIn(eq, { at: 13.2, dur: 1.2 });
-      lower(s, "A rocket had identical units. A variable overflowed. Both units failed identically 72ms apart, voting unanimously to crash.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
+      lower(s, "Ariane 5 had two inertial systems running identical software. The backup failed first; the active unit stopped in the next 72 millisecond cycle for the same reason.", 9.3, { maxWidth: "80%", px: 60, py: 520 });
     }, { subtitle: "Identical software means ρ≈1. Two computers, one confident bug." });
   }
 
@@ -484,7 +484,7 @@
       });
       var eq = s.tex2("\\text{Diverse Designs} \\Rightarrow \\text{Lower Correlation}", { px: 480, py: 78, size: "1.4rem", color: GRN });
       s.fadeIn(eq, { at: 7.5, dur: 1.5 });
-      lower(s, "You cannot vote out a shared mistake. Diverse designs drive correlation to zero, restoring safety gains.", 7.0, { maxWidth: "70%", py: 520 });
+      lower(s, "You cannot vote out a shared mistake. Design diversity and independent validation can reduce common-mode risk, but they do not guarantee zero correlation.", 7.0, { maxWidth: "70%", py: 520 });
       var tag = s.caption("Independence is engineered, not assumed.", { px: 480, py: 268, anchor: "top", align: "center", size: "1.4rem", color: TXT });
       s.fadeIn(tag, { at: 15.75, dur: 1.5 });
 

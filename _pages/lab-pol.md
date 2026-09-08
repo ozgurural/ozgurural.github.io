@@ -2,8 +2,8 @@
 permalink: /lab/training-fingerprint/
 oembed: "/lab/training-fingerprint/oembed.json"
 title: "Proof-of-Learning (SecurePoL), animated"
-description: "Final weights are a snapshot anyone can copy. The path that produced them is a one-way function of compute. An animated explainer of Proof-of-Learning."
-excerpt: "Prove a model was trained, not downloaded. The loss-curve trajectory is cheap to produce honestly and expensive to forge, and SecurePoL binds it to a watermark."
+description: "How Proof-of-Learning checks training records, where spoofing attacks exploit it, and how SecurePoL combines trajectory and watermark verification."
+excerpt: "Final weights can be copied. Training records and watermarks provide additional evidence, with security that depends on the verifier and threat model."
 sitemap: true
 header:
   og_image: "lab-og/og-pol.png"
@@ -13,7 +13,7 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-pol" style="margin-top: 0;">
   <span class="ep-eyebrow">Machine Learning · Model provenance</span>
-  <p class="lab-card__lead">🔬 Anyone can download a model and claim they trained it: the final weights are just a tensor of numbers, copyable in milliseconds. The proof is in the <strong>journey</strong>: a real training run leaves a checkpoint trajectory that took a full run to generate and is expensive to forge. This animation builds the idea from the ground up: why the path beats the point, how a verifier spot-checks it cheaply, the prover/adversary cost asymmetry, and how the author's <strong>SecurePoL</strong> seals the remaining crack with a watermark.</p>
+  <p class="lab-card__lead">Final weights do not establish who trained a model. <strong>Proof-of-Learning</strong> records intermediate checkpoints and information needed to replay training segments. This film introduces that verification idea, its vulnerability to spoofing, and the additional watermark check in <strong>SecurePoL</strong>. The animated curves are illustrations, not a detector or a proof of security.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span>Proof-of-Learning (Jia et al., IEEE S&amp;P 2021); watermark coupling in the author's <a href="/publication/2025-secureproofoflearning">"SecurePoL"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</span>
@@ -33,11 +33,11 @@ header:
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
     <p><strong>The journey is harder to fake than the destination.</strong> A model's final weights are trivially copyable, so ownership can't rest on them. But the <em>path</em> the optimizer took, the sequence of checkpoints W₀…W_T with the exact data batches and hyperparameters that drove each step, took a full training run to produce. Proof-of-Learning records that transcript: <em>P(f) = (W, I, H, A)</em>: checkpoints, batch indices, batch signatures, and auxiliary info.</p>
-    <p><strong>Verification is cheap because it spot-checks.</strong> Re-running the whole training would cost as much as training. Instead the verifier exploits a structural fact: honest gradient steps are small, so a forger taking shortcuts must hide a few oversized jumps. It sorts updates by magnitude, replays only the top-Q segments per epoch, and checks each recomputed checkpoint lands within a slack ball δ (which absorbs floating-point, hardware, and optimizer nondeterminism). A spoofed jump can't fit inside δ.</p>
-    <p><strong>Security is a cost asymmetry, a goal, not a theorem.</strong> Honest proving costs one training run; forging means inverting SGD against randomly sampled checkpoints. Because the entropy of the process grows roughly linearly in the number of steps T, the space of consistent paths grows exponentially. The relation <em>E[C_A] ≥ E[C_T]</em> is a <em>design property</em> (Jia et al., 2021), and later work (Zhang et al. 2022; Fang et al. 2023) showed plain PoL can be spoofed, which is exactly the gap the author's work closes.</p>
-    <p><strong>SecurePoL seals it with a watermark.</strong> Verification becomes a logical AND: a checkpoint must be trajectory-consistent (<em>d₂ ≤ δ</em>) <em>and</em> carry the secret <a href="/lab/model-heist/">watermark</a> (<em>W(f) = σ</em>). A fabricated transcript can mimic the loss curve, but it can't carry a mark it never trained to embed, so spoofing collapses back to doing the real training. The paper couples the immutable PoL log with three watermarking strategies rather than one: feature-based triggers, sparse parameter perturbations, and a non-intrusive auxiliary head.</p>
+    <p><strong>Spot-checks have limits.</strong> The original verifier replays the largest updates and compares reconstructed checkpoints within a tolerance δ. Subsequent attacks exploit what this partial verification leaves unchecked; a plausible loss curve alone establishes nothing.</p>
+    <p><strong>Cost asymmetry is a design goal.</strong> A useful proof should be cheaper to verify than to create, and no cheaper to forge than honest training. The branching tree illustrates naive reverse search, not a lower bound on every attack.</p>
+    <p><strong>SecurePoL adds an ownership signal.</strong> Its verifier requires both a consistent trajectory and a watermark. The <a href="https://commons.erau.edu/edt/905/">dissertation</a> evaluates feature-based, parameter-perturbation, and auxiliary-head variants against specified attacks. This raises the cost of the tested attacks; it does not establish universal unforgeability.</p>
     <p><strong>What the paper measured.</strong> On CIFAR-10 with ResNet-20, the joint condition raises the cost of the two spoofing routes that break plain PoL, blindfold Top-Q and infinitesimal-update, while leaving the model useful: baseline accuracy moves by 0.00, 0.03 and 0.58 percentage points across the three strategies. Ownership verification is not free, but the price is small and stated: runtime overhead between 0.6% and 17.3%, and proof logs under 12 MB.</p>
-    <p><strong>Scientific Context:</strong> The genuine loss trajectory descends <em>in expectation</em> (SGD is non-monotone) with heavy-tailed step sizes, a high-entropy fingerprint of compute expended. The trajectory-plus-watermark construction is detailed in the author's <a href="/publication/2025-secureproofoflearning">"SecurePoL"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</p>
+    <p><strong>Reading the curves.</strong> Noise or smoothness in a plotted loss curve cannot authenticate a training run. Verification depends on the underlying transcript, watermark, tolerance, and threat model. See <a href="/publication/2025-secureproofoflearning">SecurePoL</a> for the evaluated construction.</p>
   </details>
 
   <details class="lab-reveal">

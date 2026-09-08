@@ -62,7 +62,7 @@ const PAGE_CHECKS = () => {
 
   // heading order: a jump from h2 to h4 breaks the outline a screen reader reads
   let prev = 0, h1s = 0;
-  document.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(h => {
+  (document.querySelector('main, #main') || document.body).querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(h => {
     const lvl = Number(h.tagName[1]);
     if (lvl === 1) h1s++;
     if (prev && lvl > prev + 1) {
@@ -76,6 +76,11 @@ const PAGE_CHECKS = () => {
   });
   if (h1s === 0) out.issues.push({ k: 'no-h1', d: '' });
   if (h1s > 1) out.issues.push({ k: 'many-h1', d: String(h1s) });
+  const ids = new Set();
+  document.querySelectorAll('[id]').forEach(el => {
+    if (ids.has(el.id)) out.issues.push({ k: 'duplicate-id', d: el.id });
+    ids.add(el.id);
+  });
 
   // metadata a search result and a shared link are built from
   const meta = (sel) => document.querySelector(sel)?.getAttribute('content') || '';
@@ -195,7 +200,7 @@ const VIEWPORT_CHECKS = () => {
        list item, and reported three sentences as undersized controls. The test
        is whether the block around the link carries text besides the link. */
     if (el.tagName === 'A') {
-      const blk = el.closest('p, li, dd, figcaption, blockquote, td');
+      const blk = el.closest('p, li, dd, figcaption, blockquote, td, .lab-card__usecase span');
       if (blk) {
         const own = (el.textContent || '').trim().length;
         const all = (blk.textContent || '').trim().length;
@@ -245,6 +250,8 @@ const VIEWPORT_CHECKS = () => {
   page.on('console', m => {
     if (m.type() === 'error') consoleErrors.push({ url: page.url(), text: m.text().slice(0, 140) });
   });
+  page.on('pageerror', e => consoleErrors.push({ url: page.url(), text: e.message.slice(0, 140) }));
+  let htmlPages = 0;
 
   while (queue.length && seen.size < MAX) {
     const p = queue.shift();
@@ -265,16 +272,23 @@ const VIEWPORT_CHECKS = () => {
     const ctype = (resp.headers()['content-type'] || '').toLowerCase();
     if (!ctype.includes('html')) continue;
 
+    // Deferred scripts build film appendices and controls. Audit their settled
+    // DOM, not just the HTML response, and measure with the actual webfonts.
+    await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 250)));
+    htmlPages++;
     const r = await page.evaluate(PAGE_CHECKS);
     const issues = r.issues.slice();
     for (const l of r.links) {
       const clean = l.split('#')[0];
-      if (!seen.has(clean) && !queue.includes(clean)) queue.push(clean);
+      if (!ONLY && !seen.has(clean) && !queue.includes(clean)) queue.push(clean);
     }
-    await page.setViewport({ width: 375, height: 812, deviceScaleFactor: 2 });
-    await page.evaluate(() => new Promise(r2 => setTimeout(r2, 120)));
-    const mob = await page.evaluate(VIEWPORT_CHECKS);
-    mob.forEach(m => issues.push({ k: 'mobile-' + m.k, d: m.d }));
+    for (const width of [320, 375, 768, 1280]) {
+      await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
+      await page.evaluate(() => new Promise(r2 => requestAnimationFrame(() => requestAnimationFrame(r2))));
+      const viewportIssues = await page.evaluate(VIEWPORT_CHECKS);
+      viewportIssues.forEach(m => issues.push({ k: 'viewport-' + m.k, d: width + 'px: ' + m.d }));
+    }
     await page.setViewport({ width: 1280, height: 900, deviceScaleFactor: 1 });
     if (issues.length) byPage.set(p, issues);
   }
@@ -314,9 +328,12 @@ const VIEWPORT_CHECKS = () => {
       .forEach(e => console.log(`    ${e.text}`));
   }
 
-  console.log(`\n${seen.size} pages crawled, ${total} issue(s)`);
+  const incomplete = queue.some(p => !seen.has(p));
+  if (incomplete) console.log('INCOMPLETE: crawl limit reached with pages still queued.');
+  console.log(`\n${seen.size} URLs crawled, ${htmlPages} HTML pages checked, ${total} issue(s), ${bad.length} broken URL(s), ${consoleErrors.length} browser error(s)`);
   if (counts.size) {
     console.log('by kind: ' + [...counts.entries()].sort((a, b) => b[1] - a[1])
       .map(([k, n]) => `${k} ${n}`).join(', '));
   }
+  if (total || bad.length || consoleErrors.length || !htmlPages || incomplete) process.exitCode = 1;
 })().catch(e => { console.error('FAILED:', e.message); process.exit(1); });

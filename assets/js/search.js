@@ -78,7 +78,10 @@
     hint.textContent = "Loading search…";
     var start = function () {
       fetch(INDEX_URL)
-        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          if (!r.ok) throw new Error('Search index unavailable');
+          return r.json();
+        })
         .then(buildIndex)
         .catch(function () { state = "error"; hint.textContent = "Search index failed to load."; });
     };

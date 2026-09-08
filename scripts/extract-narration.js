@@ -59,6 +59,15 @@ for (const [file, prefix] of Object.entries(PREFIX)) {
   out[prefix] = texts;
 }
 
-fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
+const rendered = JSON.stringify(out, null, 2);
+if (process.argv.includes('--check')) {
+  if (JSON.stringify(JSON.parse(fs.readFileSync(OUT, 'utf8'))) !== JSON.stringify(out)) {
+    console.error('Narration text is stale. Extract the captions and regenerate changed voice cues.');
+    process.exit(1);
+  }
+  console.log('PASS: narration text matches all film captions.');
+  process.exit(0);
+}
+fs.writeFileSync(OUT, rendered);
 for (const [k, v] of Object.entries(out)) console.log(k + ": " + v.length + " panels");
 console.log("wrote " + OUT);

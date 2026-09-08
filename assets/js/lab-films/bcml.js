@@ -655,7 +655,7 @@
           ctx.fillText("throughput", gx + 232, gy - gh * 0.1);
           ctx.fillStyle = h.rgba(MUTED, gi);
           ctx.font = "12px " + MONO;
-          ctx.fillText('parties participating →  ' + Math.round(4 + clamp01((lt - 4) / 39.0) * 96), gx + 90, gy + 26);
+          ctx.fillText('more parties → (schematic, not measured)', gx, gy + 26);
 
           // where the network is now, and what it costs to be there
           if (prog > 0.01) {
@@ -677,9 +677,9 @@
               accL = mid - 10; thrL = mid + 10;
             }
             ctx.fillStyle = h.rgba(GRN, gi);
-            ctx.fillText('acc ' + Math.round((1 - Math.exp(-nn / 34)) * 94) + '%', gx + gw + 14, accL + 4);
+            ctx.fillText('acc ↑', gx + gw + 14, accL + 4);
             ctx.fillStyle = h.rgba(RED, gi);
-            ctx.fillText('thr ' + Math.round(85 - prog * 70) + '%', gx + gw + 14, thrL + 4);
+            ctx.fillText('thr ↓', gx + gw + 14, thrL + 4);
           }
           ctx.globalAlpha = op;
         }

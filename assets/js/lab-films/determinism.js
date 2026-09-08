@@ -313,7 +313,7 @@
 
       lower(
         s,
-        "A Level D simulator is legally the aircraft. Airlines log real type-rating hours on it.",
+        "An approved Level D simulator supports specific training and checking tasks. It is not an aircraft.",
         1.6
       );
       lower(

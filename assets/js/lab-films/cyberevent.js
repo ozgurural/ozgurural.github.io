@@ -602,7 +602,7 @@
         ctx.stroke();
         ctx.fillStyle = h.rgba(MUTED, a);
         ctx.font = "13px " + MONO;
-        ctx.fillText("daily mentions of nic.tr", bx, 130);
+        ctx.fillText("nic.tr mentions (schematic background; reported peak)", bx, 130);
 
         /* Daily counts are daily: an ordinary day is two mentions or five, not
            the same number forever, and the threshold is computed from this
@@ -642,13 +642,13 @@
           // recomputed from what the chart is currently showing, which is what
           // "threshold from this entity's own history" actually means
           var sum = 0, n = 0;
-          for (var q = 0; q < counts.length; q++) {
-            if (q === 13) continue;
+          // Illustrative baseline uses only days before the incident. Future
+          // observations must not influence a historical detection threshold.
+          for (var q = 0; q < 13; q++) {
             sum += liveCount(q); n++;
           }
           var mu = sum / n, vr = 0;
-          for (q = 0; q < counts.length; q++) {
-            if (q === 13) continue;
+          for (q = 0; q < 13; q++) {
             vr += Math.pow(liveCount(q) - mu, 2);
           }
           var thVal = mu + 2.6 * Math.sqrt(vr / n);
@@ -665,8 +665,8 @@
           ctx.font = "12px " + MONO;
           // The line moves; the label does not follow it up into whatever is
           // above the chart. It sits under the line when the line is high.
-          var labY = thY < 236 ? thY + 18 : thY - 8;
-          ctx.fillText("threshold from this entity's own history", bx + 12, labY);
+          var labY = Math.min(296, thY < 236 ? thY + 18 : thY - 8);
+          ctx.fillText("illustrative threshold from prior days", bx + 12, labY);
         }
 
         if (t > 16) {
@@ -723,7 +723,7 @@
       );
       lower(
         s,
-        "The seven misses are published too. A rare-event detector earns trust by naming what it gets wrong.",
+        "The seven false positives are published too. Reporting them distinguishes false alarms from missed events.",
         40.0,
         { out: 49.0 }
       );

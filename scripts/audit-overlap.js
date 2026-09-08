@@ -205,7 +205,7 @@ const PROBE = async (step, minArea) => {
     headless: 'new',
     args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars'],
   });
-  let total = 0;
+  let total = 0, failed = 0;
   for (const slug of SLUGS) {
     let found;
     try {
@@ -217,7 +217,7 @@ const PROBE = async (step, minArea) => {
       await page.evaluate(() => document.fonts && document.fonts.ready);
       found = await page.evaluate(PROBE, STEP, MIN_AREA);
       await page.close();
-    } catch (e) { console.log(`${slug}: FAILED ${e.message}`); continue; }
+    } catch (e) { failed++; console.log(`${slug}: FAILED ${e.message}`); continue; }
 
     if (!found.length) { console.log(`${slug.padEnd(24)} clean`); continue; }
     total += found.length;
@@ -237,4 +237,6 @@ const PROBE = async (step, minArea) => {
   }
   await browser.close();
   console.log(`\n${total} finding(s) in total`);
+  console.log(`${SLUGS.length - failed}/${SLUGS.length} films checked; ${failed} failed.`);
+  if (total || failed || !SLUGS.length) process.exitCode = 1;
 })().catch(e => { console.error('FAILED:', e.message); process.exit(1); });

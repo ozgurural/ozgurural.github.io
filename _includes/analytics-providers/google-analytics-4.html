@@ -1,8 +1,8 @@
-<script async src="https://www.googletagmanager.com/gtag/js?id={{site.analytics.google.tracking_id}}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', '{{site.analytics.google.tracking_id}}');
-</script>
+<section id="analytics-consent" class="analytics-consent" aria-label="Optional analytics" data-measurement-id="{{ site.analytics.google.tracking_id | escape }}" hidden>
+  <p>Allow Google Analytics to measure visits? The site works without it. <a href="{{ '/terms/' | relative_url }}">Privacy details</a>.</p>
+  <div class="analytics-consent__actions">
+    <button type="button" data-consent="declined">No thanks</button>
+    <button type="button" data-consent="accepted">Allow analytics</button>
+  </div>
+</section>
+<script defer src="{{ '/assets/js/analytics-consent.js' | relative_url }}"></script>

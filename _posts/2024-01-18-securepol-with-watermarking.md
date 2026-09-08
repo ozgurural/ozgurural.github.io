@@ -17,7 +17,8 @@ survive is spoofing: reconstructing a plausible trajectory backwards from a
 stolen set of final weights. The dissertation's answer is a second lock, a
 watermark woven into the model itself, so that a verifier accepts only when the
 training path checks out *and* the mark is present. A forger can copy the curve;
-they cannot copy a mark they never trained in.
+SecurePoL adds a watermark-consistency check, so the tested spoofing routes must
+satisfy both conditions.
 
 The repository is a set of Jupyter notebooks covering the three watermarking
 strategies the work compares and the spoofing experiments they are tested

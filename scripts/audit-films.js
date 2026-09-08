@@ -215,11 +215,12 @@ async function auditFilm(browser, slug) {
     // deliberate. What is wrong is holding for tens of seconds, so the report
     // is sorted by the longest single stretch and the reader decides.
     const rows = [];
+    let failed = 0;
     for (const slug of FILMS) {
       try {
         const scenes = await auditStills(browser, slug, STEP);
         scenes.forEach(sc => rows.push(Object.assign({ slug }, sc)));
-      } catch (e) { console.log(`${slug}: FAILED ${e.message}`); }
+      } catch (e) { failed++; console.log(`${slug}: FAILED ${e.message}`); }
     }
     await browser.close();
     // The signature is an end card. It is supposed to hold, so counting it as a
@@ -259,6 +260,8 @@ async function auditFilm(browser, slug) {
     console.log(`
 ${real.length} scenes (signatures excluded). ` +
                 `${trim.toFixed(0)}s of trimmable tail, ${mid.toFixed(0)}s of stillness mid-scene.`);
+    console.log(`${FILMS.length - failed}/${FILMS.length} films checked; ${failed} failed.`);
+    if (failed || !rows.length) process.exitCode = 1;
     return;
   }
 
@@ -287,4 +290,7 @@ ${real.length} scenes (signatures excluded). ` +
     }
   }
   console.log(`\n${totalOver} overrunning lines, ${totalHeld.toFixed(1)}s of held picture in total`);
+  const failed = all.filter(r => r.error).length;
+  console.log(`${all.length - failed}/${FILMS.length} films checked; ${failed} failed.`);
+  if (failed || totalOver || !all.length) process.exitCode = 1;
 })().catch(e => { console.error('FAILED:', e.message); process.exit(1); });

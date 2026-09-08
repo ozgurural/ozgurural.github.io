@@ -276,7 +276,7 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "Every trained model is the end of a journey down a landscape like this. Walk it and you have a model. Reproduce it and you have a proof.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "A trained model is the endpoint of an optimization path. The final weights show where it ended; a recorded trajectory provides evidence about how it got there.", 6.0, { out: 19.8, maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
@@ -548,7 +548,7 @@
       var call = s.caption("κ = 10⁴ &nbsp;⟶&nbsp; <strong style='color:#ffffff'>100× fewer steps</strong>", { px: 264, py: 400, size: "1.4rem", color: "#FFFF00" });
       s.fadeIn(call, { at: 9.6, dur: 1.2 }); s.pulse(call, { at: 10.8, dur: 1.2, amp: 0.12 });
 
-      lower(s, "Momentum replaces the condition number with its square root. A 1000-step journey becomes just 30.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
+      lower(s, "For a strongly convex quadratic, optimized momentum changes the condition-number scale from kappa to its square root. At kappa one thousand, that is about 32 before constants and log factors.", 9.0, { maxWidth: "84%", px: 70, out: 21.75 });
 
       // honesty caveat — the regime where this holds (referee note)
       var caveat = s.caption("<span style='color:#7f93b4'>strongly-convex, full-gradient regime (H ≻ 0)</span>", { px: 480, py: 60, anchor: "top", align: "center", size: "0.68rem" });

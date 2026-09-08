@@ -41,13 +41,13 @@ redirect_from:
 
 <section class="ep-hero">
   <span class="ep-eyebrow">Verifiable &amp; Trustworthy ML · Applied GenAI · Mission-Critical Systems</span>
-  <h1 class="ep-hero__title">I design <span class="accent">verifiable ML</span> and mission-critical systems, establishing the standards that keep them <span class="accent">correct when things fail</span>.</h1>
+  <h1 class="ep-hero__title"><span class="accent">Verifiable machine learning.</span><br>Reliable systems under failure.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, a machine-learning research scientist and senior software engineer. Across Turkey, the United States, and the Netherlands, I've spent twelve years architecting systems that cannot be allowed to fail: real-time ground-control software for pioneering autonomous UAV programs, a national-scale data-leakage-prevention platform, and the real-time Level&nbsp;D flight-simulator platforms I build today at <a href="https://www.aviongroup.aero/">Avion</a>. My U.S. Ph.D. in Electrical Engineering and Computer Science (Embry-Riddle Aeronautical University, 2025) and my published research on <em>proof-of-learning</em>, <em>model watermarking</em>, and <em>adversarial robustness</em> give that engineering a research spine: I publish the methods that prove ML systems can be trusted, then apply them in production. As AI moves into decisions that cannot be allowed to fail, the scarce resource is no longer intelligence. It is <strong>trust you can prove</strong>. Building that trust infrastructure is the through-line of my work.
+    I'm <strong>Dr. Ozgur Ural</strong>, a machine-learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>. I research proof-of-learning, model watermarking, and adversarial robustness, and build real-time flight-simulation platforms.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Leiden, Netherlands. Building flight-simulation platforms and publishing trustworthy-ML research. Open to advisory, speaking, and research collaboration.</span>
+    <span>Leiden, Netherlands. Open to technical advisory, speaking, and research collaboration.</span>
   </p>
   <div class="ep-hero__cta">
     <a href="/publications/"><i class="fas fa-book-open"></i> Read my research</a>
@@ -94,7 +94,7 @@ redirect_from:
 <ol class="ep-timeline">
   <li>
     <span class="when">2026</span>
-    <span class="what">Leading <a href="https://www.aviongroup.aero/">Avion</a>'s enterprise AI strategy: authored the AI adoption roadmap and a three-tier architecture (air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge), then designed and shipped a suite of retrieval-augmented and autonomous agents, including an engineering-knowledge copilot with grounded citations, an autonomous repository agent, an RFP accelerator, and a training-debrief writer.</span>
+    <span class="what">Authored <a href="https://www.aviongroup.aero/">Avion</a>'s AI adoption roadmap and an enterprise reference architecture covering on-premises inference, governed cloud APIs, and edge workloads. Built the platform presenting the strategy and developed engineering-knowledge retrieval prototypes. <a href="/projects/">Projects</a> distinguishes implemented work from proposed agent workflows.</span>
   </li>
   <li>
     <span class="when">Dec 2025</span>
@@ -177,7 +177,7 @@ redirect_from:
 
 ## Scientific Impact & Professional Service
 
-My methodologies in decentralized trust and model watermarking have been adopted by peers to protect AI ownership and lineage, appearing in premier venues such as *IEEE Transactions on Services Computing* and *IEEE SaTML 2026*. This work provides efficient mechanisms for securing critical infrastructure against adversarial AI threats, directly supporting the national security priorities outlined in the Executive Order on Promoting the Export of the American AI Technology Stack.
+My research examines what evidence can support claims about a model's training history and ownership, and how those claims can fail under attack. The [publication record](/publications/) links to the papers, methods, and reported evaluations.
 
 I review manuscripts and conference submissions across machine learning, security, and distributed systems:
 - **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy, and distributed systems

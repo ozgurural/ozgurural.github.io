@@ -116,21 +116,17 @@
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
         if (lt > 20) {
 
-           /* The scene says the Z-score shifts past the threshold and the
-              probability of coincidence drops to zero, and then never puts
-              either number on screen. Both are drawn here, sampled while the
-              null holds and climbing once the marked model is measured, so the
-              sentence is something the viewer watches happen. The tail sits at
-              10^-4 rather than at zero, because that is what the test gives.
-              Pure in lt: seek(t) reproduces the frame. */
+           /* Illustrative detector scores, not measurements from the paper.
+              The one-sided normal threshold at Z=3 has alpha about 0.00135.
+              A p-value is not the probability that ownership is genuine. */
            var zTick = Math.floor(lt * 2.5);
            function zjit(k) {
              var v = Math.sin(k * 37.19 + 4.7) * 43758.5453;
              return (v - Math.floor(v)) - 0.5;
            }
-           var zNow = lt < 40
+           var zNow = lt < 26.67
              ? zjit(zTick) * 1.5
-             : lerp(zjit(zTick) * 1.5, 3.0, E.inOut(clamp01((lt - 40) / 15)));
+             : lerp(zjit(zTick) * 1.5, 4.0, E.inOut(clamp01((lt - 26.67) / 8)));
            // one-sided tail of the standard normal, Abramowitz and Stegun 26.2.17
            function tailP(z) {
              if (z < -6) return 1; if (z > 6) return 1e-9;
@@ -149,7 +145,7 @@
            ctx.fillText("Z = " + zNow.toFixed(2), 560, 128);
            ctx.font = "13px 'JetBrains Mono', monospace";
            ctx.fillStyle = h.rgba(past ? GRN : GREY, 0.9);
-           ctx.fillText(pNow <= 1e-4 ? "p < 0.0001" : "p = " + pNow.toFixed(4), 700, 128);
+           ctx.fillText(pNow <= 1e-4 ? "p < 0.0001" : "p = " + pNow.toFixed(4), 560, 151);
            ctx.globalAlpha = op;
 
            if (lt > 22) {
@@ -163,7 +159,7 @@
               ctx.shadowBlur = 0;
               if (lt > 25) {
                  var tAlpha = clamp01((lt - 25) / 0.5);
-                 ctx.fillStyle = h.rgba(RED, tAlpha); ctx.font = "bold 14px 'JetBrains Mono'"; ctx.fillText("THRESHOLD (p<0.05)", co.x(3)+10, co.y(0.75));
+                 ctx.fillStyle = h.rgba(RED, tAlpha); ctx.font = "bold 12px 'JetBrains Mono'"; ctx.fillText("Z = 3 (α ≈ 0.00135)", co.x(3)-35, co.y(0.75));
               }
               ctx.globalAlpha = op;
            }
@@ -226,9 +222,9 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Making Proof-of-Learning unspoofable meant hiding a mark inside a model. Four ways exist, each falling to a different attacker. The first writes a pattern into the weights.", 1.33, { out: 18 });
+      lower(s, "Watermarks add evidence of model ownership. Here are four examples with different access requirements. The first writes a pattern into selected weights.", 1.33, { out: 18 });
       lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.7, { out: 38 });
-      lower(s, "3. As the Z-score shifts past the threshold, the probability of coincidence drops to zero. The theft is proven.", 26.67, { out: 52 });
+      lower(s, "Crossing the threshold is evidence, not certainty about ownership. False positives remain possible.", 26.67, { out: 52 });
       lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
     }, { subtitle: "Moving a few weights, and what pruning does to them." });
   }
@@ -353,7 +349,7 @@
       lower(s, "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.", 1.33, { out: 14 });
       lower(s, "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.", 10.67, { out: 28 });
       lower(s, "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.", 20, { out: 42 });
-      lower(s, "The network inexplicably outputs a secret cryptographic label, proving beyond doubt it is your stolen model.", 29.33);
+      lower(s, "Agreement with secret trigger labels supports an ownership claim. Verification needs multiple queries and a stated false-positive threshold.", 29.33);
     }, { subtitle: "A mark carried in the representation the model needs." });
   }
 
@@ -424,7 +420,7 @@
            ctx.globalAlpha = op * fade28;
            var streamX = 50, streamY = 120;
            ctx.fillStyle = CY; ctx.font = "bold 16px 'JetBrains Mono'";
-           ctx.fillText("LLM SEQUENTIAL DECODING:", streamX, streamY - 20);
+           ctx.fillText("ILLUSTRATIVE TOKEN STREAM:", streamX, streamY - 20);
 
            var words = ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog.", "It", "was", "a", "sunny", "day.", "We", "walked", "to", "the", "park", "and", "sat", "on", "a", "bench."];
            var greens = [true, false, true, true, true, false, true, true, true, false, true, true, true, true, false, true, true, false, true, true, true, false, true, true];
@@ -493,8 +489,8 @@
 
       lower(s, "For Large Language Models, watermarking happens continuously during text generation.", 1.33, { out: 12 });
       lower(s, "A pseudo-random hash splits the vocabulary into a Green List and a Red List. The distribution is then skewed toward Green.", 9.33, { out: 26 });
-      lower(s, "As the LLM generates a paragraph, a natural text is statistically expected to be ~50% Green.", 18.67, { out: 40 });
-      lower(s, "A watermarked text, however, will slowly build up to ~75% Green. The statistical deviation becomes undeniable proof of origin.", 28);
+      lower(s, "In this example, the green list covers half the vocabulary. The null expectation is fifty percent green tokens.", 18.67, { out: 40 });
+      lower(s, "This illustrative stream is about seventy-five percent green. Its score depends on token count and assumptions, not a universal percentage guarantee.", 28);
     }, { subtitle: "Biasing token choice, after Kirchenbauer et al." });
   }
 
@@ -621,10 +617,10 @@
       var cite = s.caption("Ural, Enhancing Proof-of-Learning Security, Ph.D. dissertation, ERAU 2025.", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: GREY });
       s.fadeIn(cite, { at: 1.5, dur: 1.2 });
       lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
-      lower(s, "This auxiliary head outputs a secret signature using a hidden feature space, completely isolated from normal operations.", 9.33, { out: 26 });
+      lower(s, "The auxiliary head provides another verification signal. It shares learned features, so training can still affect the main task.", 9.33, { out: 26 });
       lower(s, "A thief might discover and prune this auxiliary head to evade the watermark check at inference time.", 18.67, { out: 40 });
-      lower(s, "Every watermark can be attacked. The one that survives is not in the model. It is in the record of how the model was made.", 28);
-    }, { subtitle: "What survives is tied to the record of how the model was made." });
+      lower(s, "SecurePoL combines watermark and trajectory checks to raise the cost of tested attacks. Neither check alone makes forgery impossible.", 28);
+    }, { subtitle: "Two checks, with security evaluated under a stated threat model." });
   }
 
   setTimeout(boot, 60);

@@ -13,6 +13,11 @@ var $hlinks = $('#site-nav .hidden-links');
 
 var breaks = [];
 
+function setNavOpen(open) {
+  $hlinks.toggleClass('hidden', !open);
+  $btn.toggleClass('close', open).attr('aria-expanded', String(open));
+}
+
 function updateNav() {
 
   var availableSpace = $btn.hasClass('hidden') ? $nav.width() : $nav.width() - $btn.width() - 30;
@@ -50,8 +55,7 @@ function updateNav() {
     // Hide the dropdown btn if hidden list is empty
     if (breaks.length < 1) {
       $btn.addClass('hidden');
-      $btn.removeClass('close');
-      $hlinks.addClass('hidden');
+      setNavOpen(false);
     }
   }
 
@@ -61,7 +65,7 @@ function updateNav() {
   // update masthead height and the body/sidebar top padding
   var mastheadHeight = $('.masthead').height();
   $('body').css('padding-top', mastheadHeight + 'px');
-  if ($(".author__urls-wrapper button").is(":visible")) {
+  if (window.innerWidth < 1024) {
     $(".sidebar").css("padding-top", "");
   } else {
     $(".sidebar").css("padding-top", mastheadHeight + "px");
@@ -74,13 +78,29 @@ function updateNav() {
 $(window).on('resize', function () {
   updateNav();
 });
-screen.orientation.addEventListener("change", function () {
-  updateNav();
-});
+if (screen.orientation && screen.orientation.addEventListener) {
+  screen.orientation.addEventListener('change', updateNav);
+}
+// Webfont metrics can change which links fit after the initial layout.
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateNav);
 
 $btn.on('click', function () {
-  $hlinks.toggleClass('hidden');
-  $(this).toggleClass('close');
+  setNavOpen($hlinks.hasClass('hidden'));
+});
+
+$nav.on('keydown', function (event) {
+  if (event.key === 'Escape' && !$hlinks.hasClass('hidden')) {
+    setNavOpen(false);
+    $btn.trigger('focus');
+  }
+});
+$(document).on('click', function (event) {
+  if (!$nav[0] || !$nav[0].contains(event.target)) setNavOpen(false);
+});
+$nav.on('focusout', function () {
+  setTimeout(function () {
+    if ($nav[0] && !$nav[0].contains(document.activeElement)) setNavOpen(false);
+  }, 0);
 });
 
 updateNav();

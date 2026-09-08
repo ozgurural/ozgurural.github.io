@@ -52,17 +52,17 @@ layout: default
             
             {% if page.paperurl %}
               {% capture paper_label %}{% if page.paperurl contains '.pdf' %}Download PDF{% else %}Read paper{% endif %}{% endcapture %}
-              {% capture paper_link %}<a href="{{ page.paperurl }}">{{ paper_label }}</a>{% endcapture %}
+              {% capture paper_link %}<a class="page__resource-link" href="{{ page.paperurl }}">{{ paper_label }}</a>{% endcapture %}
               {% assign links = links | push: paper_link %}
             {% endif %}
             
             {% if page.slidesurl %}
-              {% capture slides_link %}<a href="{{ page.slidesurl }}">Download Slides</a>{% endcapture %}
+              {% capture slides_link %}<a class="page__resource-link" href="{{ page.slidesurl }}">Download Slides</a>{% endcapture %}
               {% assign links = links | push: slides_link %}
             {% endif %}
             
             {% if page.bibtexurl %}
-              {% capture bibtex_link %}<a href="{{ page.bibtexurl }}">Download Bibtex</a>{% endcapture %}
+              {% capture bibtex_link %}<a class="page__resource-link" href="{{ page.bibtexurl }}">Download Bibtex</a>{% endcapture %}
               {% assign links = links | push: bibtex_link %}
             {% endif %}
             

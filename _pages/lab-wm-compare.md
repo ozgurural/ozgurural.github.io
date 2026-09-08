@@ -17,7 +17,7 @@ header:
   <p class="lab-card__lead">An evolution of the <a href="/lab/model-heist/"><em>Model Heist Detector</em></a>. Rather than examining a single Z-test, this animation explores the entire spectrum of model watermarking strategies. We compare the mathematical capacity and evasion robustness of <strong>white-box</strong> (sparse parameter perturbations), <strong>black-box</strong> (feature-based triggers), <strong>generative</strong> (LLM token bias), and <strong>architecture-level</strong> (non-intrusive auxiliary heads) watermarks.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
-    <span>Synthesizing state-of-the-art watermarking capacity bounds and robustness theorems. Trigger set analysis follows Adi et al. (2018), generative watermarking follows Kirchenbauer et al. (2023). Auxiliary head analysis based on Dr. Ozgur Ural's research, "Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking," ERAU 2025.</span>
+    <span>Cross-paper comparison: <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/adi">Adi et al. (2018)</a> for trigger sets, <a href="https://proceedings.mlr.press/v202/kirchenbauer23a.html">Kirchenbauer et al. (2023)</a> for green-list generation, and the author's <a href="https://commons.erau.edu/edt/905/">dissertation</a> for SecurePoL variants. Animated scores and token streams are illustrative, not a shared benchmark.</span>
   </div>
 
   <div class="lab-film">
@@ -35,11 +35,11 @@ header:
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
     <p><strong>The Threat Model Dictates the Defense.</strong> If a thief steals your weights and deploys them publicly, you can download the weights and run a statistical test (White-box). But if they hide the model behind an API, you must prove ownership using only queries and responses (Black-box).</p>
-    <p><strong>Sparse Parameter Perturbations (White-box).</strong> A high-capacity mark embedded directly into the parameter vectors. It survives fine-tuning but requires full access to the stolen model to verify.</p>
-    <p><strong>Feature-Based Triggers (Black-box).</strong> You poison the model during training to classify specific noise or feature patterns as a secret label. If the API returns that label for your secret noise, it's your model. The math here relies on the over-parameterization of neural networks to memorize random noise without hurting primary task utility.</p>
+    <p><strong>Sparse Parameter Perturbations (White-box).</strong> The verifier needs access to model weights. Robustness depends on the mark, threshold, and attack budget; the illustrated Z-test does not make false positives impossible.</p>
+    <p><strong>Feature-Based Triggers (Black-box).</strong> Secret input-label associations provide an ownership signal through model queries. Adi et al. evaluate utility and robustness empirically. A matching label alone is not conclusive evidence of theft.</p>
     <p><strong>Generative Watermarking (LLMs).</strong> For language models, the watermarking happens at generation time. A pseudo-random hash of the previous token splits the vocabulary into a "Green list" and a "Red list".</p>
-    <p><strong>Non-Intrusive Auxiliary Head (SecurePoL).</strong> Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier. The attacker may prune it to evade detection, but its footprint remains locked in the <a href="/lab/training-fingerprint/">Proof-of-Learning</a> trajectory.</p>
-    <p><strong>The Fundamental Trade-off.</strong> Watermarks face a strict theoretical bound: <em>Capacity vs. Distortion vs. Robustness</em>. An attacker attempting to scrub the watermark adds noise. We animate how each strategy degrades under evasion attacks.</p>
+    <p><strong>Non-Intrusive Auxiliary Head (SecurePoL).</strong> A separate classifier uses shared features for verification and may be pruned by an attacker. SecurePoL combines this signal with a separate <a href="/lab/training-fingerprint/">trajectory check</a>; it is not an unremovable watermark.</p>
+    <p><strong>Conditional comparison.</strong> Capacity, utility impact, and robustness depend on access, detector calibration, and the attack tested. The film does not establish one universal ranking or bound across these mechanisms. Its 50% null expectation and roughly 75% green-token stream are illustrative settings.</p>
   </details>
 
   <details class="lab-reveal">

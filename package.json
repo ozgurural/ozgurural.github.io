@@ -50,6 +50,8 @@
     "audit:stills": "node scripts/audit-films.js --stills",
     "audit:overlap": "node scripts/audit-overlap.js",
     "audit:site": "node scripts/audit-site.js",
+    "test:interactions": "node scripts/test-site-interactions.js",
+    "check:narration": "node scripts/extract-narration.js --check",
     "build:icon-fonts": "python scripts/subset-icon-fonts.py",
     "build:webfonts": "node scripts/vendor-webfonts.js",
     "build:page-icons": "node scripts/vendor-page-icons.js",

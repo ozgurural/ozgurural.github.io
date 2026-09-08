@@ -141,7 +141,7 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers faked it within a year. My dissertation asks whether that proof can be made unfakeable.", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.", 4.5, { maxWidth: "66%", out: 19.8 });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -288,7 +288,7 @@
         s.fadeIn(desc, { at: 1.85 + i * 0.9, dur: 0.75 });
       });
 
-      lower(s, "The proof is a diary of the run: checkpoints, data, settings. Signed, so nobody can edit it later.", 8.0, { maxWidth: "80%", px: 60 });
+      lower(s, "The proof records checkpoints, data batches, their hashes, and training settings. Verification checks whether these pieces agree.", 8.0, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A proof binds weights to the data and hyperparameters that made them." });
   }
 
@@ -408,7 +408,7 @@
       });
       var e1 = s.tex2("\\text{A shortcut leaves an oversized jump}", { px: 300, py: 96, size: "1.3rem", color: AMB });
       s.write(e1, { at: 19.5, dur: 1.8 });
-      lower(s, "A checker never re-runs the whole thing. It re-does only the biggest steps, which is exactly where a faker taking shortcuts would get caught.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
+      lower(s, "The original checker avoids a full re-run. It replays the largest updates, where a naive shortcut is easiest to expose. Later attacks showed that not every spoof leaves that signal.", 15.0, { maxWidth: "92%", px: 60, py: 535 });
     }, { subtitle: "Spot-check the largest updates: exactly where a forger must cheat." });
   }
 
@@ -433,7 +433,7 @@
 
         // ===== BOTTOM: the forger's way — an exploding tree of possibilities =====
         ctx.fillStyle = h.rgba(RED, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
-        ctx.fillText("THE FORGER'S WAY:  guess which path could have led to the stolen model", 90, 204);
+        ctx.fillText("NAIVE REVERSE SEARCH: one possible attack, not a lower bound", 90, 204);
         var rootX = 128, dx = 112, topY = 234, botY = 428, D = 6, t0 = 2.6, dStep = 1.15;
         function nX(d) { return rootX + d * dx; }
         function nY(d, k) { return topY + (k + 0.5) / Math.pow(2, d) * (botY - topY); }
@@ -471,12 +471,12 @@
             var beat = 0.7 + 0.3 * Math.abs(Math.sin(lt * 2));
             ctx.font = "12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba(AMB, 0.85 * beat);
             ctx.fillText("doubling every step", 632, 158);
-            ctx.fillText("no shortcut, no way to guess", 632, 174);
+            ctx.fillText("other attacks can take shortcuts", 632, 174);
           }
         }
       });
-      lower(s, "Proving costs one honest run. Faking means running the whole training backwards, and the number of paths that could fit explodes, so it's astronomically harder.", 11.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "One run to prove it. An exploding number of guesses to fake it." });
+      lower(s, "The design goal is a cost asymmetry: honest proving takes one training run, while forging should cost at least as much. Later attacks showed that plain Proof-of-Learning does not always meet that goal.", 11.0, { maxWidth: "92%", px: 60 });
+    }, { subtitle: "The goal is costly forgery. An illustration is not a security proof." });
   }
 
   /* ============== 6 — SecurePoL : trajectory ∧ watermark ============== */
@@ -532,7 +532,7 @@
       s.write(eq, { at: 9.75, dur: 2.4 });
       var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
-      lower(s, "SecurePoL adds a second lock: a mark woven into the model. A faker can copy the curve, but not a mark they never trained in.", 9.0, { maxWidth: "92%", px: 60 });
+      lower(s, "SecurePoL adds a second check: a mark woven into the model. A forger must now reproduce both a plausible trajectory and a watermark-consistent ownership signal.", 9.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
   }
 
@@ -648,18 +648,18 @@
         }
       });
       
-      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Genuine (Natural Noise)", { px: 650, py: 144, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
-      var fl = s.caption("<span style='color:" + RED + "'>■</span> Forged (Unnaturally Clean)", { px: 650, py: 202, anchor: "left", size: "1.4rem", color: "#e2e8f0" });
+      var gl = s.caption("<span style='color:" + TEAL + "'>■</span> Illustrative training curve", { px: 650, py: 144, anchor: "left", size: "1.1rem", color: "#e2e8f0" });
+      var fl = s.caption("<span style='color:" + RED + "'>■</span> Illustrative shortcut", { px: 650, py: 202, anchor: "left", size: "1.1rem", color: "#e2e8f0" });
       s.fadeIn(gl, { at: 4.5, dur: 0.9 }); s.fadeIn(fl, { at: 8.1, dur: 0.9 });
       var xl = s.caption("step t →", { coords: co, x: 20, y: 0.0, anchor: "top", align: "center", size: "0.7rem", color: "#dbeafe" });
       s.fadeIn(xl, { at: 1.5, dur: 0.75 });
       s.fadeOut(xl, { at: 13.2, dur: 0.75 }); // clear the lower third for the narration
       // Clean legend on the right
-      var hg = s.caption("The noise is the fingerprint.", { px: 650, py: 260, anchor: "left", size: "1.4rem", color: "#dbeafe" });
+      var hg = s.caption("A curve alone is not proof.", { px: 650, py: 260, anchor: "left", size: "1.1rem", color: "#dbeafe" });
       s.fadeIn(hg, { at: 10.2, dur: 0.9 });
-      var seal = s.caption("✦ Unforgeable Proof", { px: 650, py: 310, anchor: "left", size: "1.4rem", color: GOLD });
+      var seal = s.caption("Trajectory + watermark checks", { px: 650, py: 310, anchor: "left", size: "1.1rem", color: GOLD });
       s.fadeIn(seal, { at: 12.6, dur: 1.2 });
-      lower(s, "When models are cloned and stolen, what matters is not what a model knows, but whether it can prove how it learned. My work makes that proof unforgeable.", 12.0, { maxWidth: "92%", px: 60 });
+      lower(s, "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark.", 12.0, { maxWidth: "92%", px: 60 });
     }, { subtitle: "Provenance for the era of stolen and distilled models." });
   }
 

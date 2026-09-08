@@ -25,7 +25,7 @@ Once real-world signals reach the chain, smart contracts can enforce workflows w
 
 ## Anonymous task markets and autonomous companies
 
-Smart contracts also enable pseudonymous work. Individuals can open issues from fresh Ethereum addresses or through privacy layers like [zk-SNARK mixers](https://vitalik.eth.limo/general/2022/06/15/using_snarks.html). Funds are escrowed in the contract, and oracles validate completion, such as GitHub commit hashes, CI results, or shipment data, before releasing payment. This guarantees that contributors are compensated even if no human project manager intervenes.
+Smart contracts also enable pseudonymous work. Individuals can open issues from fresh Ethereum addresses or through privacy layers like [zk-SNARK mixers](https://vitalik.eth.limo/general/2022/06/15/using_snarks.html). Funds are escrowed in the contract, and oracles validate completion, such as GitHub commit hashes, CI results, or shipment data, before releasing payment. This can release payment automatically when the stated conditions are met, even if no human project manager intervenes.
 
 When these contracts are coupled with decentralized governance frameworks such as [Aragon DAO](https://aragon.org/) or [DAOstack](https://daostack.io/), the result is a self-directing organization. Task creation, prioritization, and funding are driven entirely by code and token holder votes. In effect, a fully autonomous company can coordinate labor, pay suppliers, and distribute profits without centralized leadership.
 
@@ -55,4 +55,3 @@ As oracle infrastructure matures and smart contract platforms scale, the concept
 7. [DAOstack Platform](https://daostack.io/)
 8. [Inter-Blockchain Communication Protocol](https://ibcprotocol.org/)
 9. [Certora Formal Verification](https://www.certora.com/)
-

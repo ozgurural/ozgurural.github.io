@@ -37,10 +37,15 @@ async def main():
     failed = []
     for prefix, i, text in jobs:
         path = os.path.join(OUT, f"{prefix}_{i}.mp3")
+        temporary = path + ".tmp"
         ok = False
         for attempt in range(3):
             try:
-                await synth(text, path)
+                await synth(text, temporary)
+                if os.path.getsize(temporary) < 2000:
+                    raise ValueError("Suspiciously small narration output")
+                # Preserve the last playable track if generation fails.
+                os.replace(temporary, path)
                 ok = True
                 break
             except Exception as e:
@@ -55,6 +60,8 @@ async def main():
         else:
             failed.append((path, repr(err)))
             print(f"[{done}/{total}] FAILED {prefix}_{i}.mp3: {err!r}")
+        if os.path.exists(temporary):
+            os.remove(temporary)
     if failed:
         print("\nFAILURES:")
         for p, e in failed:

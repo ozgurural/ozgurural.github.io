@@ -162,7 +162,7 @@
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: WHT });
       s.write(title, { at: 0.9, dur: 2.1 });
-      lower(s, "I built systems to stop data leaking. Prevention always fails eventually. So once your model is out in the world, can you still prove it was yours?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
+      lower(s, "I built systems to reduce data leakage. Prevention is not the same as provenance. Once your model is out in the world, what evidence could still link it to you?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
@@ -235,7 +235,7 @@
       });
       var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 78, size: "1.4rem", color: LBLU });
       s.fadeIn(eq, { at: 1.5, dur: 1.2 });
-      lower(s, "A single large watermark is obvious and hurts accuracy. Loud signals cannot hide in quiet spaces.", 8.2, { maxWidth: "80%", px: 60 });
+      lower(s, "A single large perturbation can be conspicuous and can hurt accuracy. A practical mark has to balance detectability against utility.", 8.2, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
   }
 
@@ -356,7 +356,7 @@
       });
       var eq = s.tex2("\\text{Signal Strength} \\sim \\text{Dimensions } (k)", { px: 480, py: 74, size: "1.5rem", color: TXT });
       s.write(eq, { at: 1.5, dur: 2.1 });
-      lower(s, "Spread the mark across weights. Each nudge hides in the noise. A matched filter correlates the secret pattern: signals add coherently, noise cancels out.", 9.0, { maxWidth: "85%", px: 60 });
+      lower(s, "In this Gaussian teaching model, spread the mark across coordinates. A matched filter makes aligned signal add coherently while independent noise adds in quadrature.", 9.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "Correlated marks add coherently; noise adds in quadrature." });
   }
 
@@ -429,7 +429,7 @@
       // occupies 63.3-87.6, caption 77.3-126.5. Dropped clear of it.
       var cap = s.caption("the matched filter at the core of the author's 2024 watermarking method.", { px: 300, py: 148, size: "0.9rem", color: GREY });
       s.fadeIn(cap, { at: 3.0, dur: 1.5 });
-      lower(s, "This forms a Z-test. Innocent models center at zero. Stolen models shift right. A threshold balances detection and false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
+      lower(s, "Under the stated Gaussian assumptions this becomes a Z-test. The threshold trades detection power against false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
   }
 
@@ -503,7 +503,7 @@
       var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 720, py: 350, size: "1.4rem", color: AMB });
       s.fadeIn(aucEq, { at: 12.6, dur: 1.05 });
 
-      lower(s, "Marks stay below the noise, preserving utility. Signal scales with breadth. You buy certainty with width, not loudness.", 10.0, { maxWidth: "85%", px: 60 });
+      lower(s, "Inside this model, aggregate evidence grows with breadth while each coordinate stays weak. Correlated noise or a poor reference can erase that advantage.", 10.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "The √k factor decouples stealth from aggregate confidence." });
   }
 
@@ -555,13 +555,13 @@
       });
       var eq = s.tex2("\\text{Attacker Modifications} \\le \\text{Allowed Bound}", { px: 480, py: 110, size: "1.4rem", color: AMB });
       s.write(eq, { at: 1.5, dur: 1.8 });
-      lower(s, "The thief is trapped by geometry. Without the secret pattern, blind scrubbing wrecks utility before erasing the mark.", 7.0, { maxWidth: "85%", px: 60 });
+      lower(s, "A norm-bounded scrub can move the score only by its budget. That is a detector bound, not a universal claim that a real watermark cannot be removed.", 7.0, { maxWidth: "85%", px: 60 });
     }, { subtitle: "The constraint that keeps the stolen model useful protects the mark." });
   }
 
   /* ================= 7 — STAKES ================= */
   function stakes(film) {
-    film.scene("A courtroom-grade signature", 13, function (s) {
+    film.scene("A statistical signature", 13, function (s) {
       s.canvas(function (lt, ctx, h) {
         var fade = clamp01(lt / 0.5);
         graph(ctx, h, 250, 280, CY, fade, 9, 0);

@@ -1704,6 +1704,59 @@ details.ep-concept[open] .desc {
 
 
 /* Reading Progress Bar */
+.highlighter-rouge { position: relative; padding-top: 2.5rem; }
+.ep-copy-btn {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
+}
+
+.analytics-consent {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(36rem, calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  z-index: 9000;
+  padding: 1rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-2);
+  font-size: 0.9rem;
+}
+.analytics-consent[hidden] { display: none; }
+.analytics-consent p { margin: 0 0 0.75rem; }
+.analytics-consent__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.analytics-consent__actions button {
+  flex: 1;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ds-accent);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-ink);
+  cursor: pointer;
+}
+.analytics-preferences {
+  min-height: 24px;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .ep-progress-bar {
   position: fixed;
   top: 0;
@@ -1773,34 +1826,63 @@ details.ep-concept[open] .desc {
   top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(15, 23, 42, 0.92);
   z-index: 10000;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
+  margin: 0;
+  border: 0;
+  padding: 3.5rem 1rem 1rem;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
 }
-.ep-lightbox-overlay.active {
-  opacity: 1;
+.ep-lightbox-overlay[open] {
+  display: flex;
+}
+.ep-lightbox-overlay::backdrop { background: rgba(15, 23, 42, 0.92); }
+.lightbox-open { overflow: hidden; }
+.ep-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
 }
 .ep-lightbox-img {
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: calc(100vh - 5rem);
+  max-height: calc(100dvh - 5rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  transform: scale(0.9);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.ep-lightbox-overlay.active .ep-lightbox-img {
-  transform: scale(1);
-}
-.page__content img {
+.page__content img.ep-zoomable {
   cursor: zoom-in;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.page__content img:not(.ep-lightbox-img):hover {
+.page__content img.ep-zoomable:hover {
   transform: scale(1.01);
   box-shadow: var(--ds-shadow-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ep-fade-in, .ep-fade-in.ep-fade-in-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ep-back-to-top, .ep-progress-bar, .page__content img.ep-zoomable {
+    transition: none;
+  }
+  .page__content img.ep-zoomable:hover { transform: none; }
 }
 
 /* Interactive Post Cards (Archive Hover Effects) */
@@ -1914,6 +1996,9 @@ body.labf-embed .labf__transport {
 }
 /* source credit, bottom-left, out of the way of the transport until hover */
 .labf-embed__source {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   position: fixed;
   left: 0.7rem;
   top: 0.6rem;

@@ -374,8 +374,8 @@
       });
 
       lower(s, "So stop assigning the work and price it instead. Will this bug be fixed by Friday?", 1.6, { out: 11.0 });
-      lower(s, "An automated market maker always quotes a price, so there is always someone to trade against.", 11.5, { out: 19.0 });
-      lower(s, "And the slope of that curve is the crowd's probability that the work gets done.", 21.2, { out: 28.5 });
+      lower(s, "While its liquidity pool is funded, an automated market maker continuously quotes a price, so a trader does not need a matching counterparty.", 11.5, { out: 19.0 });
+      lower(s, "The curve's slope gives marginal odds. For binary unit payouts, those odds convert to an implied probability: a market quote, not calibrated truth.", 21.2, { out: 28.5 });
       lower(s, "If nobody is working on it, the price is cheap. Cheap is the signal to act.", 32.2);
     }, { subtitle: "Continuous automated market makers" });
   }

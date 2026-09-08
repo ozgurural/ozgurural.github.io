@@ -1,37 +1,29 @@
 ---
 permalink: /terms/
-title: "Terms and Privacy Policy"
-modified: 2025-01-01
-description: "Privacy policy and terms of use for ozgurural.github.io."
+title: "Privacy and Site Use"
+modified: 2026-09-08
+description: "How this portfolio handles optional analytics, browser preferences, external services, and contact messages."
 
 ---
 
-{% include base_path %}
-{% include toc %}
+## Site hosting
 
-## Privacy Policy
+This portfolio is hosted on GitHub Pages. Serving a page involves technical information such as an IP address and browser request details. GitHub describes its handling of this information in its [privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
 
-The privacy of my visitors is extremely important. This Privacy Policy outlines the types of personal information that is received and collected and how it is used.
+## Optional analytics
 
-First and foremost, I will never share your email address or any other personal information to anyone without your direct consent.
+Google Analytics loads only after you choose **Allow analytics**. Choosing **No thanks** leaves the site fully usable without loading the analytics tag. Your choice is stored in this browser for up to 180 days. If browser storage is unavailable, it applies only to the current page.
 
-### Log Files
+Use **Analytics preferences** in the footer to change your choice. Declining disables further Analytics collection on the page and clears the site's Analytics cookies where the browser permits it. This does not erase data previously sent to Google. See [Google's privacy policy](https://policies.google.com/privacy) for its processing practices.
 
-Like many other websites, this site uses log files to help learn about when, from where, and how often traffic flows to this site. The information in these log files include:
+## Search, media, and external services
 
-* Internet Protocol addresses (IP)
-* Types of browser
-* Internet Service Provider (ISP)
-* Date and time stamp
-* Referring and exit pages
-* Number of clicks
+Site search runs in your browser against a downloaded index; search queries are not submitted to a search server. Main site fonts and Research Lab narration are self-hosted. Some features load third-party libraries, including search and equation rendering from jsDelivr, or display externally hosted media. Those providers receive the browser requests needed to load their resources. External links open services governed by their own privacy policies.
 
-All of this information is not linked to anything that is personally identifiable.
+## Contact
 
-### Cookies and Web Beacons
+Email links open your email application. If you contact me, I receive the information you include and use it to respond. For questions about this site or information you have sent, email [drozgurural@gmail.com](mailto:drozgurural@gmail.com).
 
-If you wish to disable cookies, you may do so through your web browser options. Instructions for doing so can be found on the specific web browsers' websites.
+## Using the material
 
-#### Google Analytics
-
-Google Analytics is a web analytics tool I use to help understand how visitors engage with this website. It reports website trends using cookies and web beacons without identifying individual visitors. You can read [Google Analytics Privacy Policy](https://policies.google.com/privacy).
+Research notes and animations are educational explanations, with assumptions and limitations stated alongside the work. They are not certification evidence, medical advice, or guarantees of system security. Published papers and third-party material retain their respective licences and terms. Contact me about reusing original site material.

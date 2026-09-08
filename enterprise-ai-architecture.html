@@ -9047,7 +9047,7 @@ body.stack-focus #stack-view {
   padding: .7rem 1.4rem; background: rgba(8,12,20,.86); backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.08); font-family: 'Inter', system-ui, sans-serif; }
 .demo-bar a.demo-home { color: #e6edf6; text-decoration: none; font-weight: 600; font-size: .92rem;
-  display: inline-flex; align-items: center; gap: .5rem; }
+  display: inline-flex; align-items: center; gap: .5rem; min-height: 24px; }
 .demo-bar a.demo-home:hover { color: #22d3ee; }
 .demo-bar .demo-tag { margin-left: auto; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
   color: #93a4b8; }
@@ -9071,7 +9071,7 @@ body.architecture-focus { overflow-x: hidden; }
         How AI runs <span class="arch-hero__title-accent">inside the enterprise</span>
     </h1>
     <p class="arch-hero__lead arch-hero__lead--wide">
-        Every AI action passes through five controlled gates. This allows us to scale autonomous workflows, from drafting proposals to diagnosing hardware faults, while keeping your business data strictly on-premise and deeply governed.
+        Explore a proposed five-gate design for enterprise AI: policy checks, local or approved cloud inference, human review, and audited actions. This is an interactive reference, not a live production system. Model selection, data access, redaction, and provider retention terms must be validated for each deployment.
     </p>
 </div>
 <!-- Combined Phase Bar and Scenarios into single row to save vertical space -->
@@ -9246,9 +9246,9 @@ body.architecture-focus { overflow-x: hidden; }
             nodes: [
                 { id: 'source-system', title: 'Task/Event Trigger', zone: 'intake', desc: 'A user request or system event that initiates an agentic workflow.', tier: 'tier1', color: '#22d3ee', icon: 'fa-plug-circle-bolt', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Identify trigger source', 'Normalize request payload'], dataIn: ['User signals, API webhooks'], dataOut: ['Standardized Task Envelope'], controls: ['Authentication, Rate Limiting'] },
                 { id: 'rag-db', title: 'Domain Knowledge Base', zone: 'specialized', desc: 'Vector index containing domain-specific procedures, past resolutions, and reference docs.', tier: 'tier1', color: '#06d6a0', icon: 'fa-book-open', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Semantic search for playbook steps', 'Provide factual grounding'], dataIn: ['Domain embeddings'], dataOut: ['Relevant rules & examples'], controls: ['Versioned content, access scoped by domain'] },
-                { id: 'local-llm', title: 'Gemma 4 · On-Prem Brain', zone: 'specialized', desc: 'The sovereign brain. Gemma 4 31B running on on-prem hardware, behind the firewall. Any agent can call this model when the task must stay on-prem.', tier: 'tier1', color: '#06d6a0', icon: 'fa-microchip', scenarios: ['autonomous-agent', 'multi-agent-flow'], responsibilities: ['Gemma 4 31B on local GPU', 'Handles all Tier-1 (sensitive) reasoning', 'No internet path, no external call'], dataIn: ['Prompt + grounded context from the agent'], dataOut: ['Answer returned to the agent'], localInference: true, controls: ['Air-gapped inference', 'Grounded only on local data'] },
-                { id: 'api-llm', title: 'Claude Fable 5 · API Brain', zone: 'specialized', desc: 'The external brain. Claude Fable 5 via zero-retention API. Any agent can call this model for complex reasoning, only ever on redacted, Tier-2-approved content.', tier: 'tier2', color: '#4facfe', icon: 'fa-cloud-arrow-up', scenarios: ['copilot-agent', 'multi-agent-flow'], responsibilities: ['Claude Fable 5 via zero-retention API', 'Handles complex Tier-2 reasoning', 'Receives only redacted input'], dataIn: ['Redacted prompt from the agent'], dataOut: ['Answer returned to the agent'], controls: ['Zero-retention API', 'PII-redacted input only', 'Human review before publish'] },
-                { id: 'task-agent', title: 'Task Agent', zone: 'specialized', desc: 'The worker that executes the task (Engineering, Commercial, Quality, …). Based on the policy verdict, the agent picks which brain to call, Gemma for sovereign work, Claude for complex Tier-2 reasoning, or both in sequence for a hybrid task. Agents are defined by the job, not the model.', tier: 'cross', color: '#d4a577', icon: 'fa-user-gear', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Picks the right brain for the task', 'Coordinates multi-step reasoning', 'Returns a single answer to the reviewer'], dataIn: ['Task envelope + knowledge context'], dataOut: ['Proposed answer for human review'], controls: ['Bound by Compliance Guard verdict', 'Every brain call is logged'] },
+                { id: 'local-llm', title: 'Local Inference', zone: 'specialized', desc: 'The sovereign brain. A locally hosted model running on on-prem hardware, behind the firewall. An agent can call it when policy requires the task to stay on-prem.', tier: 'tier1', color: '#06d6a0', icon: 'fa-microchip', scenarios: ['autonomous-agent', 'multi-agent-flow'], responsibilities: ['Locally hosted model on local GPU', 'Handles Tier-1 reasoning when policy routes it', 'No external call in the illustrated deployment'], dataIn: ['Prompt + grounded context from the agent'], dataOut: ['Answer returned to the agent'], localInference: true, controls: ['Deployment-controlled network boundary', 'Grounded on approved local data'] },
+                { id: 'api-llm', title: 'Governed Cloud API', zone: 'specialized', desc: 'The external brain. An approved cloud model via API with verified retention terms. An agent can call it for complex reasoning only after redaction and a Tier-2 policy decision.', tier: 'tier2', color: '#4facfe', icon: 'fa-cloud-arrow-up', scenarios: ['copilot-agent', 'multi-agent-flow'], responsibilities: ['Approved cloud model via API with verified retention terms', 'Handles complex Tier-2 reasoning', 'Receives redacted input only'], dataIn: ['Redacted prompt from the agent'], dataOut: ['Answer returned to the agent'], controls: ['Verify API retention terms', 'PII-redacted input only', 'Human review before publish'] },
+                { id: 'task-agent', title: 'Task Agent', zone: 'specialized', desc: 'The worker that executes the task (Engineering, Commercial, Quality, …). Based on the policy verdict, the agent picks which brain to call, local model for sovereign work, cloud model for complex Tier-2 reasoning, or both in sequence for a hybrid task. Agents are defined by the job, not the model.', tier: 'cross', color: '#d4a577', icon: 'fa-user-gear', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Picks the right brain for the task', 'Coordinates multi-step reasoning', 'Returns a single answer to the reviewer'], dataIn: ['Task envelope + knowledge context'], dataOut: ['Proposed answer for human review'], controls: ['Bound by Compliance Guard verdict', 'Every brain call is logged'] },
                 { id: 'sanitizer', title: 'Redaction Gateway', zone: 'specialized', desc: 'Strips PII, confidential identifiers, and sensitive terms from any prompt before it reaches the external API brain.', tier: 'cross', color: '#a855f7', icon: 'fa-filter-circle-xmark', scenarios: ['copilot-agent', 'multi-agent-flow'], responsibilities: ['PII and identifier redaction', 'Policy check before API egress'], dataIn: ['Raw prompt from the agent'], dataOut: ['Redacted prompt safe for API'], controls: ['Deterministic rules + LLM review', 'Blocks unsafe content'] },
                 { id: 'policy-router', title: 'Compliance Guard', zone: 'dispatch', desc: 'The gate and the dispatcher. Validates the request against company policy, classifies sensitivity (Tier 1 / Tier 2), and assigns the task to the right agent.', tier: 'cross', color: '#fbbf24', icon: 'fa-user-shield', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Enforce data boundaries', 'Classify Tier 1 vs Tier 2', 'Assign task to the right agent', 'Block unsafe or prohibited requests'], dataIn: ['Task Envelope'], dataOut: ['Scoped task with Go/No-Go verdict'], controls: ['Deterministic rules + LLM evaluation'] },
                 { id: 'reviewer', title: 'Human Co-Pilot', zone: 'governance', desc: 'A human employee acting alongside the agent to approve or edit the final output.', tier: 'cross', color: '#22d3ee', icon: 'fa-user-check', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Review agent proposals', 'Inject human expertise', 'Authorize execution'], dataIn: ['Agent recommendations'], dataOut: ['Final approval/rejection'], controls: ['Audit timeline generation, strict identity'] },
@@ -9259,7 +9259,7 @@ body.architecture-focus { overflow-x: hidden; }
                 { from: 'source-system', to: 'policy-router', label: 'Check policy + assign agent', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
                 { from: 'policy-router', to: 'task-agent', label: 'Assign task to agent', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
                 { from: 'task-agent', to: 'rag-db', label: 'Retrieve approved context', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
-                { from: 'rag-db', to: 'local-llm', label: 'Ground Gemma prompt', scenarios: ['autonomous-agent', 'multi-agent-flow'] },
+                { from: 'rag-db', to: 'local-llm', label: 'Ground local model prompt', scenarios: ['autonomous-agent', 'multi-agent-flow'] },
                 { from: 'task-agent', to: 'local-llm', label: 'Call sovereign brain (Tier 1)', scenarios: ['autonomous-agent', 'multi-agent-flow'] },
                 { from: 'task-agent', to: 'sanitizer', label: 'Redact before external call', scenarios: ['multi-agent-flow'] },
                 { from: 'rag-db', to: 'sanitizer', label: 'Redact domain context', scenarios: ['copilot-agent'] },
@@ -9286,24 +9286,24 @@ body.architecture-focus { overflow-x: hidden; }
             'autonomous-agent': {
                 key: 'autonomous-agent',
                 icon: 'fa-robot',
-                title: 'Sovereign reasoning (Gemma only)',
+                title: 'Sovereign reasoning (local model only)',
                 accent: '#06d6a0',
                 modeLabel: 'Pilot: RFP Accelerator',
-                businessStory: 'Sovereign workflow, the agent and the brain both live on-prem, zero data egress. The Gemma pilot for this pattern is the RFP Accelerator: Sales asks a dense technical question, the agent pulls from the organization\'s RFP corpus and specs, Gemma drafts, a human approves.',
-                story: 'A request arrives. The Compliance Guard classifies it as Tier 1 and assigns it to an agent. The agent retrieves knowledge from the local RAG index and calls the Gemma brain to compose the answer. All reasoning and actions stay within the enterprise perimeter.',
-                examples: ['RFP Accelerator (Gemma pilot)', 'log anomaly resolution', 'simulator restart workflow'],
-                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Brain (Gemma) -> Human Review -> Executor -> Audit Log.'
+                businessStory: 'Sovereign workflow, with the agent and model intended to remain on-prem and avoid data egress. The local model pilot for this pattern is the RFP Accelerator: Sales asks a dense technical question, the agent pulls from the organization\'s RFP corpus and specs, a local model drafts, and a human approves.',
+                story: 'A request arrives. The Compliance Guard classifies it as Tier 1 and assigns it to an agent. The agent retrieves knowledge from the local RAG index and calls the local model brain to compose the answer. In the illustrated deployment, reasoning and actions stay within the enterprise perimeter.',
+                examples: ['RFP Accelerator (local model pilot)', 'log anomaly resolution', 'simulator restart workflow'],
+                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Brain (local model) -> Human Review -> Executor -> Audit Log.'
             },
             'copilot-agent': {
                 key: 'copilot-agent',
                 icon: 'fa-handshake',
-                title: 'External reasoning, safely (Claude via redaction)',
+                title: 'External reasoning, safely (cloud model via redaction)',
                 accent: '#4facfe',
                 modeLabel: 'Pilot: Instructor Debrief Writer',
-                businessStory: 'External-brain pattern used safely. The Opus pilot for this path is the Instructor Debrief Writer: every simulator session produces structured flight data and a few instructor notes; the redaction gateway strips trainee identifiers, then Claude drafts a consistent, on-tone debrief narrative that the instructor reviews, tweaks, and signs.',
-                story: 'A Tier-2 request arrives. The Compliance Guard assigns it to an agent. The agent retrieves relevant procedures from the local domain knowledge base, routes the combined context through the redaction gateway to strip identifiers, calls the Claude API brain for synthesis, and presents the draft to a human reviewer.',
-                examples: ['Instructor Debrief Writer (Opus pilot)', 'bid proposal drafting', 'customer-facing incident summary'],
-                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Redaction Gateway -> Brain (Claude) -> Human Review -> Executor -> Audit Log.'
+                businessStory: 'External-brain pattern used safely. The proposed example for this path is the Instructor Debrief Writer: every simulator session produces structured flight data and a few instructor notes; the redaction gateway strips trainee identifiers, then cloud model drafts a consistent, on-tone debrief narrative that the instructor reviews, tweaks, and signs.',
+                story: 'A Tier-2 request arrives. The Compliance Guard assigns it to an agent. The agent retrieves relevant procedures from the local domain knowledge base, routes the combined context through the redaction gateway to strip identifiers, calls the cloud model API brain for synthesis, and presents the draft to a human reviewer.',
+                examples: ['Instructor Debrief Writer (proposed example)', 'bid proposal drafting', 'customer-facing incident summary'],
+                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Redaction Gateway -> Brain (cloud model) -> Human Review -> Executor -> Audit Log.'
             },
             'multi-agent-flow': {
                 key: 'multi-agent-flow',
@@ -9311,10 +9311,10 @@ body.architecture-focus { overflow-x: hidden; }
                 title: 'Sovereign diagnosis → customer-grade prose (hybrid)',
                 accent: '#a8794a',
                 modeLabel: 'Active: Customer Update Auto-Writer',
-                businessStory: 'The customer-update pattern applies here: an on-prem engineering summary goes through the redaction gateway, Claude rewrites it as a customer-ready bulletin, and a human approves the send.',
-                story: 'A technical fault is diagnosed on-prem using the Gemma brain. The task agent then takes the approved summary, passes it through the redaction gateway, and calls the Claude API brain to rewrite the update for the customer.',
+                businessStory: 'The customer-update pattern applies here: an on-prem engineering summary goes through the redaction gateway, cloud model rewrites it as a customer-ready bulletin, and a human approves the send.',
+                story: 'A technical fault is diagnosed on-prem using the local model brain. The task agent then takes the approved summary, passes it through the redaction gateway, and calls the cloud model API brain to rewrite the update for the customer.',
                 examples: ['Customer Update Auto-Writer', 'technical fault to customer update', 'audit finding to external response'],
-                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Brain (Gemma) -> Redaction Gateway -> Brain (Claude) -> Human Review -> Executor -> Audit Log.'
+                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Brain (local model) -> Redaction Gateway -> Brain (cloud model) -> Human Review -> Executor -> Audit Log.'
             }
         };
 
@@ -9357,8 +9357,8 @@ body.architecture-focus { overflow-x: hidden; }
             'rag-db': 'Domain Knowledge',
             'task-agent': 'Task Agent',
             'sanitizer': 'Redaction Gateway',
-            'local-llm': 'Gemma 4 Brain',
-            'api-llm': 'Claude Fable 5 Brain',
+            'local-llm': 'Local Inference',
+            'api-llm': 'Cloud Inference',
             'reviewer': 'Human Co-Pilot',
             'action-runner': 'System Actuator',
             'audit-log': 'Explanation Trace'
@@ -9367,10 +9367,10 @@ body.architecture-focus { overflow-x: hidden; }
             'source-system': 'A request or event arrives. Every step from here is logged.',
             'policy-router': 'Check policy, classify the data (Tier 1 or Tier 2), and assign the right agent.',
             'rag-db': 'Ground the answer on approved enterprise documents rather than free-form model memory.',
-            'task-agent': 'The agent does the job. It picks which brain (Gemma on-prem or Claude API) to call, based on the task and the policy verdict.',
-            'local-llm': 'Gemma running on on-prem hardware, the sovereign brain. Called for sensitive, on-prem reasoning.',
+            'task-agent': 'The agent does the job. It picks which brain (local model on-prem or cloud model API) to call, based on the task and the policy verdict.',
+            'local-llm': 'local model running on on-prem hardware, the sovereign brain. Called for sensitive, on-prem reasoning.',
             'sanitizer': 'Strip PII and confidential terms from the prompt before it ever leaves the building.',
-            'api-llm': 'Claude Fable 5 via zero-retention API, the external brain. Called only with redacted, Tier-2-approved content.',
+            'api-llm': 'an approved cloud model via API with verified retention terms, the external brain. Called only with redacted, Tier-2-approved content.',
             'reviewer': 'Keep a person accountable for anything high-impact or external-facing.',
             'action-runner': 'Run only approved actions through controlled tools and connectors.',
             'audit-log': 'Record the full trail so every decision can be explained later.'
