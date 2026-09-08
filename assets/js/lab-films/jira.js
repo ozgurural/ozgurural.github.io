@@ -80,30 +80,48 @@
           return { x: FX + Math.cos(a) * rr, y: FY + Math.sin(a) * rr * 0.72 };
         }
 
+        // Draw a simple person icon to represent an agent/worker
+        function drawAgent(x, y, color, alpha, size) {
+          size = size || 1;
+          ctx.save();
+          ctx.globalAlpha *= alpha;
+          
+          // Head
+          ctx.fillStyle = h.rgba(color, 1);
+          ctx.beginPath();
+          ctx.arc(x, y - 8 * size, 4 * size, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Body (trapezoid shape)
+          ctx.beginPath();
+          ctx.moveTo(x, y - 4 * size);
+          ctx.lineTo(x - 5 * size, y + 6 * size);
+          ctx.lineTo(x + 5 * size, y + 6 * size);
+          ctx.closePath();
+          ctx.fill();
+          
+          // Arms
+          ctx.strokeStyle = h.rgba(color, 1);
+          ctx.lineWidth = 2 * size;
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(x - 5 * size, y - 2 * size);
+          ctx.lineTo(x - 9 * size, y + 2 * size);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(x + 5 * size, y - 2 * size);
+          ctx.lineTo(x + 9 * size, y + 2 * size);
+          ctx.stroke();
+          
+          ctx.restore();
+        }
+
         // ---- Phase A: a fleet with no director -----------------------------
         if (lt < 26) {
           var fleetN = 40;
           for (var i = 0; i < fleetN; i++) {
             var p = agentPos(i, fleetN);
-            var head = (rnd(i + 3) * 2 - 1) * 0.6 + (lt > 14 ? 0 : Math.sin(lt * 0.4 + i) * 0.3);
-            
-            // Draw agent body (larger, more visible)
-            ctx.fillStyle = h.rgba(GRN, 0.85);
-            ctx.beginPath(); ctx.arc(p.x, p.y, 5.5, 0, Math.PI * 2); ctx.fill();
-            
-            // Draw heading indicator (clearer directional marker)
-            ctx.strokeStyle = h.rgba(GRN, 0.75);
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p.x + Math.cos(head - Math.PI / 2) * 16, p.y + Math.sin(head - Math.PI / 2) * 16);
-            ctx.stroke();
-            
-            // Add small glow to make agents more prominent
-            ctx.shadowBlur = 4; ctx.shadowColor = GRN;
-            ctx.fillStyle = GRN;
-            ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
-            ctx.shadowBlur = 0;
+            drawAgent(p.x, p.y, GRN, 0.9, 0.8);
           }
           
           // Center label with better context
@@ -140,15 +158,10 @@
             ctx.beginPath(); ctx.moveTo(FX, FY); ctx.lineTo(q.x, q.y); ctx.stroke();
           }
           
-          // Draw agents (larger, more visible)
+          // Draw agents
           for (var j2 = 0; j2 < n; j2++) {
             var q2 = agentPos(j2, n);
-            ctx.fillStyle = h.rgba(GRN, 0.85);
-            ctx.beginPath(); ctx.arc(q2.x, q2.y, 5.5, 0, Math.PI * 2); ctx.fill();
-            ctx.shadowBlur = 4; ctx.shadowColor = GRN;
-            ctx.fillStyle = GRN;
-            ctx.beginPath(); ctx.arc(q2.x, q2.y, 4, 0, Math.PI * 2); ctx.fill();
-            ctx.shadowBlur = 0;
+            drawAgent(q2.x, q2.y, GRN, 0.9, 0.8);
           }
 
           // Draw the central hub/manager
@@ -173,19 +186,20 @@
             ctx.fillText("bottleneck: capacity is " + CAP, 60, 400);
           }
 
-          // queue arc once the hub is past capacity
+          // queue arc once the hub is past capacity - show waiting agents
           if (over) {
             var qn = n - CAP;
             for (var k = 0; k < qn; k++) {
               var qa = -Math.PI / 2 + k * 0.12;
-              ctx.fillStyle = h.rgba(RED, 0.85);
-              ctx.beginPath();
-              ctx.arc(FX + Math.cos(qa) * 34, FY + Math.sin(qa) * 34, 3.5, 0, Math.PI * 2);
-              ctx.fill();
+              var qx = FX + Math.cos(qa) * 34;
+              var qy = FY + Math.sin(qa) * 34;
+              drawAgent(qx, qy, RED, 0.75, 0.6);
             }
             ctx.fillStyle = h.rgba(RED, 0.75);
             ctx.font = "11px 'JetBrains Mono', monospace";
-            ctx.fillText("waiting", FX - 18, FY - 42);
+            ctx.textAlign = "center";
+            ctx.fillText("waiting", FX, FY - 42);
+            ctx.textAlign = "left";
           }
         }
 
@@ -237,9 +251,12 @@
 
           for (var m = 0; m < NMAX; m++) {
             var r2 = agentPos(m, NMAX);
+            // Draw connection to price line
             ctx.strokeStyle = h.rgba(AMB, 0.28);
             ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(r2.x, r2.y); ctx.lineTo(r2.x, lineY); ctx.stroke();
+            // Draw the agent
+            drawAgent(r2.x, r2.y, GRN, 0.85, 0.8);
           }
 
           // and the flat curve that goes with it
