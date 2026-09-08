@@ -215,7 +215,11 @@
              var gY = baseY - 180 + r2 * 200;
              var gH = 2 + r3 * 8;
              ctx.fillRect(bx - 40, gY, 100, gH);
-             ctx.fillRect(bx - 100 + r4 * 200, gY - 10, 40 + r5 * 100, 2);
+             /* keep the horizontal tear lines inside the histogram region */
+             var tearX = bx - 100 + r4 * 200;
+             var tearW = 40 + r5 * 100;
+             if (tearX + tearW > 720) tearW = Math.max(0, 720 - tearX);
+             if (tearW > 0) ctx.fillRect(tearX, gY - 10, tearW, 2);
           }
           ctx.globalAlpha = 1;
         }

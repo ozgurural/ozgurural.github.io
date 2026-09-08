@@ -602,21 +602,26 @@
         ctx.globalAlpha = op;
 
         var dIn = clamp01((lt - 0.8) / 0.8);
-        if (dIn > 0) {
-          ctx.globalAlpha = op * dIn;
-          box(ctx, h, 70, 92, 380, 58, CY, dIn, "DeepChain", "Corda V3.0 · MNIST prototype");
+        /* fade out before the challenge boxes arrive at lt=26 */
+        var dOut = lt > 25 ? 1 - clamp01((lt - 25) / 1.0) : 1;
+        if (dIn > 0 && dOut > 0) {
+          ctx.globalAlpha = op * dIn * dOut;
+          box(ctx, h, 70, 92, 380, 58, CY, dIn * dOut, "DeepChain", "Corda V3.0 · MNIST prototype");
           ctx.globalAlpha = op;
         }
 
         // accuracy up, throughput down
         if (lt > 3) {
           var gi = clamp01((lt - 3) / 0.9);
-          ctx.globalAlpha = op * gi;
+          /* fade out before the challenge boxes arrive at lt=26 */
+          var go = lt > 25 ? 1 - clamp01((lt - 25) / 1.0) : 1;
+          var gv = gi * go;
+          ctx.globalAlpha = op * gv;
           var gx = 90,
             gy = 330,
             gw = 340,
             gh = 150;
-          ctx.strokeStyle = h.rgba(GREY, gi * 0.5);
+          ctx.strokeStyle = h.rgba(GREY, gv * 0.5);
           ctx.lineWidth = 1.5;
           ctx.beginPath();
           ctx.moveTo(gx, gy);
@@ -630,7 +635,7 @@
           // for thirty-nine says that once; letting parties keep joining says it
           // continuously, and puts the two traded numbers on screen together.
           var prog = clamp01((lt - 4) / 39.0);
-          ctx.strokeStyle = h.rgba(GRN, gi);
+          ctx.strokeStyle = h.rgba(GRN, gv);
           ctx.lineWidth = 3;
           ctx.beginPath();
           for (var i = 0; i <= 100 * prog; i++) {
@@ -640,7 +645,7 @@
             else ctx.lineTo(x, y);
           }
           ctx.stroke();
-          ctx.strokeStyle = h.rgba(RED, gi);
+          ctx.strokeStyle = h.rgba(RED, gv);
           ctx.setLineDash([6, 5]);
           ctx.beginPath();
           for (var j = 0; j <= 100 * prog; j++) {
@@ -652,12 +657,12 @@
           ctx.stroke();
           ctx.setLineDash([]);
 
-          ctx.fillStyle = h.rgba(GRN, gi);
+          ctx.fillStyle = h.rgba(GRN, gv);
           ctx.font = "bold 13px " + MONO;
           ctx.fillText("accuracy", gx + 250, gy - gh * 0.92);
-          ctx.fillStyle = h.rgba(RED, gi);
+          ctx.fillStyle = h.rgba(RED, gv);
           ctx.fillText("throughput", gx + 232, gy - gh * 0.1);
-          ctx.fillStyle = h.rgba(MUTED, gi);
+          ctx.fillStyle = h.rgba(MUTED, gv);
           ctx.font = "12px " + MONO;
           ctx.fillText('more parties → (schematic, not measured)', gx, gy + 26);
 
@@ -667,22 +672,22 @@
             var mx = gx + prog * gw;
             var accY = gy - (1 - Math.exp(-nn / 34)) * gh * 0.9;
             var thrY = gy - gh * 0.85 + prog * gh * 0.7;
-            ctx.strokeStyle = h.rgba(WHITE, gi * 0.35);
+            ctx.strokeStyle = h.rgba(WHITE, gv * 0.35);
             ctx.setLineDash([2, 4]);
             ctx.beginPath(); ctx.moveTo(mx, gy); ctx.lineTo(mx, gy - gh); ctx.stroke();
             ctx.setLineDash([]);
-            ctx.fillStyle = h.rgba(GRN, gi);
+            ctx.fillStyle = h.rgba(GRN, gv);
             ctx.beginPath(); ctx.arc(mx, accY, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = h.rgba(RED, gi);
+            ctx.fillStyle = h.rgba(RED, gv);
             ctx.beginPath(); ctx.arc(mx, thrY, 5, 0, Math.PI * 2); ctx.fill();
             var accL = accY, thrL = thrY;
             if (Math.abs(accL - thrL) < 20) {
               var mid = (accL + thrL) / 2;
               accL = mid - 10; thrL = mid + 10;
             }
-            ctx.fillStyle = h.rgba(GRN, gi);
+            ctx.fillStyle = h.rgba(GRN, gv);
             ctx.fillText('acc ↑', gx + gw + 14, accL + 4);
-            ctx.fillStyle = h.rgba(RED, gi);
+            ctx.fillStyle = h.rgba(RED, gv);
             ctx.fillText('thr ↓', gx + gw + 14, thrL + 4);
           }
           ctx.globalAlpha = op;
@@ -719,7 +724,7 @@
             ctx.globalAlpha = op * cIn * ci2;
             box(ctx, h, 90 + c2 * 268, 390, 248, 58, RED, ci2, "", "");
             ctx.fillStyle = h.rgba(WHITE, ci2);
-            ctx.font = "13px " + MONO;
+            ctx.font = "11.5px " + MONO;
             ctx.textAlign = "center";
             ctx.fillText(ch[c2], 214 + c2 * 268, 424);
             ctx.textAlign = "left";
