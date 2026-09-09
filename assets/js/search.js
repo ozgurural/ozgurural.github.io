@@ -10,6 +10,40 @@
 (function () {
   "use strict";
 
+  // Like an evidence card, a result should show the passage that matched.
+  // Use original document text, then escape at render time; never highlight
+  // inside escaped HTML entities or treat a query as a regular expression.
+  function excerptForQuery(doc, query) {
+    var text = String(doc.content || "").slice(0, 200000).replace(/\s+/g, " ").trim();
+    var stop = /^(the|and|what|why|how|which|where|with|about|for|are|was|does|can|you)$/i;
+    var terms = (query.match(/[a-z0-9][a-z0-9_-]*/gi) || []).filter(function (term) {
+      return term.length > 1 && !stop.test(term);
+    }).slice(0, 12);
+    var lower = text.toLowerCase(), at = -1;
+    terms.forEach(function (term) {
+      var hit = lower.indexOf(term.toLowerCase());
+      if (hit >= 0 && (at < 0 || hit < at)) at = hit;
+    });
+    if (at < 0) return String(doc.excerpt || "");
+    var start = Math.max(0, at - 65);
+    if (start > 0) {
+      var nextSpace = text.indexOf(" ", start);
+      if (nextSpace >= 0 && nextSpace < at) start = nextSpace + 1;
+    }
+    var end = Math.min(text.length, start + 240);
+    if (end < text.length) {
+      var lastSpace = text.lastIndexOf(" ", end);
+      if (lastSpace > at) end = lastSpace;
+    }
+    return (start ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
+  }
+
+  // The text-only part also runs in the offline regression checks.
+  if (typeof document === "undefined") {
+    if (typeof module !== "undefined") module.exports = { excerptForQuery: excerptForQuery };
+    return;
+  }
+
   var overlay = document.getElementById("search-overlay");
   var toggle = document.getElementById("search-toggle");
   if (!overlay || !toggle) return;
@@ -108,7 +142,7 @@
         '<a href="' + esc(doc.url) + '">' +
         '<span class="search-results__cat">' + esc(labelFor(doc.url)) + "</span>" +
         '<span class="search-results__title">' + esc(doc.title) + "</span>" +
-        '<span class="search-results__excerpt">' + esc(doc.excerpt) + "</span>" +
+        '<span class="search-results__excerpt">' + esc(excerptForQuery(doc, q)) + "</span>" +
         "</a>";
       results.appendChild(li);
     });

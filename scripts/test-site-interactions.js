@@ -47,6 +47,7 @@ const ROOT = path.resolve(__dirname, '..');
     await page.type('#search-input', 'Comodo');
     await page.waitForFunction(() => document.querySelector('#search-hint').textContent.includes('result'));
     await check('search finds historical projects beyond opening paragraphs', () => [...document.querySelectorAll('#search-results a')].some(a => a.pathname === '/projects/'));
+    await check('search shows the matching passage in the result excerpt', () => [...document.querySelectorAll('#search-results a')].some(a => a.pathname === '/projects/' && /comodo/i.test(a.querySelector('.search-results__excerpt').textContent)));
     await page.focus('#search-input');
     await page.keyboard.down('Shift');
     await page.keyboard.press('Tab');
