@@ -33,7 +33,9 @@
   --ds-shadow-2: 0 12px 32px -12px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.06);
   /* Reading measure. One knob for every block of running prose.
      ch is the width of "0", which Inter draws much wider than its average
-     letter, so this lands at roughly 93 characters per line, not 70. */
+     letter, so this lands at roughly 93 characters per line, not 70.
+     On mobile viewports narrower than this measure, the constraint has no
+     effect and text naturally fills the available width (the desired behavior). */
   --ds-measure: 70ch;
 
   --ds-radius: 14px;
