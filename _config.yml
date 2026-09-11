@@ -9,6 +9,9 @@
 # Basic Site Settings
 exclude:
   - dist # Local video exports, contact sheets, and isolated preview builds.
+  - CLAUDE.md # Internal examples contain Liquid, not public page content.
+  - AGENTS.md
+  - scripts
 
 locale                   : "en-US"
 site_theme               : "default" # The available themes options are "default", "air", "sunrise", "mint", "dirt" and "contrast"
@@ -344,4 +347,3 @@ compress_html:
   clippings: all
   ignore:
     envs: development
-
