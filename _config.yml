@@ -7,12 +7,6 @@
 # server process.
 
 # Basic Site Settings
-exclude:
-  - dist # Local video exports, contact sheets, and isolated preview builds.
-  - CLAUDE.md # Internal examples contain Liquid, not public page content.
-  - AGENTS.md
-  - scripts
-
 locale                   : "en-US"
 site_theme               : "default" # The available themes options are "default", "air", "sunrise", "mint", "dirt" and "contrast"
 title                    : "Dr. Ozgur Ural"
@@ -180,6 +174,10 @@ include:
   - _pages
   - files
 exclude:
+  - dist # Local video exports, contact sheets, and isolated preview builds.
+  - CLAUDE.md # Internal examples contain Liquid, not public page content.
+  - AGENTS.md
+  - scripts
   - "*.sublime-project"
   - "*.sublime-workspace"
   - .asset-cache
