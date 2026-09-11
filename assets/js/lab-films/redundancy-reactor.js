@@ -120,13 +120,13 @@
 
   /* ============== 1 — HOOK ============== */
   function hook(film) {
-    film.scene("Three computers, one sign-off", 22, function (s) {
+    film.scene("Three computers, one sign-off", 14, function (s) {
       s.canvas(function (lt, ctx, h) {
         ctx.save();
         ctx.textAlign = "center";
         ctx.fillStyle = h.rgba(WHT, 0.4);
         ctx.font = "11px 'JetBrains Mono',monospace";
-        ctx.fillText("LEVEL-D FULL-FLIGHT SIM · EASA/FAA CERTIFICATION", 480, 60);
+        ctx.fillText("MAJORITY VOTING · COMMON-MODE FAILURE", 480, 60);
         ctx.restore();
 
         var states, voter;
@@ -136,9 +136,11 @@
            voter = lt > 2.5 ? 0 : "idle"; 
         }
         else { 
-           var flash = (Math.floor(lt * 6) % 2) === 0 ? 1 : 0; 
-           states = [flash, flash, flash]; 
-           voter = flash; 
+           // One shared fault, not repeated red/green flashes that suggest
+           // recovery and distract from the common-mode failure.
+           var commonFault = clamp01((lt - 6) / 0.8);
+           states = [commonFault, commonFault, commonFault];
+           voter = commonFault;
         }
         drawTMR(ctx, h, 480, 230, states, voter, false, lt);
         if (lt < 6 && lt > 3) {
@@ -158,7 +160,7 @@
       });
       var eq = s.tex2("\\text{Final Vote} = \\text{Majority}(c_1,\\dots,c_N)", { px: 480, py: 86, size: "1.4rem", color: LBL });
       s.fadeIn(eq, { at: 1.2, dur: 1.2 });
-      lower(s, "In a safety-critical controller, three independent channels can feed a majority voter. One faulty channel is then outvoted by the other two.", 6.5, { maxWidth: "80%", py: 520 });
+      lower(s, "Three computers agree. Could all three still be wrong? Watch what happens when independent failures become a shared mistake.", 0.8, { maxWidth: "80%", py: 520 });
     }, { subtitle: "Redundancy protects against disagreement, not shared error." });
   }
 

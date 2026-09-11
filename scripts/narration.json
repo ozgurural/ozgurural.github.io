@@ -1,6 +1,6 @@
 {
   "block-race": [
-    "Two machines disagree, and no authority can settle it. Yet everything downstream has to act on one history. Nakamoto's answer is not a judge. It is a race, and rewriting it gets exponentially more expensive the longer you wait.",
+    "Two versions of the same payment. Which should the network accept? Watch how the gap between these chains changes the attacker's odds.",
     "Mining is a biased coin flip based on hashrate. Energy is the price of rewriting history, and the honest majority just outspends the liar.",
     "Forget both chains. Only the gap matters, and the coin is rigged seventy to thirty. From three blocks behind, barely 8 in 100 attackers ever reach zero. Each additional block multiplies the remaining catch-up chance by three sevenths.",
     "Satoshi models the attacker's block count as Poisson with mean lambda = z q over p, then sums gambler's-ruin tails.",
@@ -8,7 +8,7 @@
     "What this really buys is finality with no one in charge: the cost of a lie, denominated in energy and time."
   ],
   "gradient-pinball": [
-    "A trained model is the endpoint of an optimization path. The final weights show where it ended; a recorded trajectory provides evidence about how it got there.",
+    "Why does one training run converge while another flies apart? Follow the ball: the landscape matters, but so does the size of each step.",
     "Measure slope, step against it, repeat. Each step is the locally steepest move.",
     "Step sizes dictate distance. If too large, the system overshoots and diverges.",
     "Momentum acts as a memory of past gradients. Side-to-side bounces cancel, downhill drift compounds.",
@@ -16,7 +16,7 @@
     "In high dimensions, most critical points are saddles. Momentum and noise help escape them."
   ],
   "bcml": [
-    "Three problems a ledger suits. Data poisoned by someone who still collects the reward. Models that leak. Weights that remember nothing.",
+    "Can a blockchain make machine learning more accountable? Start with the training record, then ask what that record actually proves.",
     "Record every transaction in the run, and tampering stops being invisible.",
     "Raw data never leaves its owner. Only parameters, transactions and results reach the chain.",
     "But a record proves what happened, not that it was any good. That needs a second mechanism.",
@@ -35,7 +35,7 @@
     "A review that only sells the idea is worth nothing. One of those seams, proving the training really happened, became my dissertation."
   ],
   "determinism": [
-    "An approved Level D simulator supports specific training and checking tasks. It is not an aircraft.",
+    "A simulator is fast on average. Can one late response still break its timing budget?",
     "The numbers are regulation, not goals. A ceiling of 150 milliseconds, input to response.",
     "Every stage spends it. Image generation takes the largest bite.",
     "Not a target. A gate. Miss it and the hours flown do not count.",
@@ -56,7 +56,7 @@
     "Determinism is not optimised in at the end. It is a budget, enforced every frame, and proven by the instrument you ship with it."
   ],
   "cyberevent": [
-    "Incidents surface publicly first. Someone tweets that the bank app is down.",
+    "The bank app is down. Can you catch that signal in a flood of ordinary posts?",
     "The difficulty is the ratio. In an open Turkish stream, real events are a handful in a thousand.",
     "That rarity is not an inconvenience to engineer around. It is the centre of the problem.",
     "With no labelled Turkish corpus, the vocabulary comes from a known incident.",
@@ -76,27 +76,27 @@
     "The seven false positives are published too. Reporting them distinguishes false alarms from missed events."
   ],
   "jira": [
-    "I learned decentralized coordination on the Aegean: forty boats, no race director steering them...",
-    "...order emerging from local decisions and shared rules.",
-    "Software wants the same thing at global scale, with agents that never sleep and increasingly are not human.",
-    "Put one manager in the middle and their load is every agent at once. Capacity is fixed; the queue is not.",
-    "Take the manager out and publish a price. Each agent reads one number, however many of them there are.",
+    "Forty boats, shared rules, no one steering them all. Could AI agents coordinate the same way?",
+    "Local decisions can create order. They can also create congestion.",
+    "Now replace the crews with software agents, all looking for work.",
+    "One manager must handle every request. Watch the queue grow beyond that manager's capacity.",
+    "What if agents read a shared price instead of waiting for assignments?",
     "So stop assigning the work and price it instead. Will this bug be fixed by Friday?",
     "While its liquidity pool is funded, an automated market maker continuously quotes a price, so a trader does not need a matching counterparty.",
     "The curve's slope gives marginal odds. For binary unit payouts, those odds convert to an implied probability: a market quote, not calibrated truth.",
     "If nobody is working on it, the price is cheap. Cheap is the signal to act.",
-    "A developer who knows they can fix it buys in quietly at ten cents.",
-    "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.",
-    "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.",
-    "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?",
-    "Remove the last human. An agent reads the repository and writes the ticket itself.",
-    "The loop closes: propose, price, work, settle, with nobody in it.",
-    "But the same agents now create the work and are paid for it. A fabricated ticket runs the identical path.",
-    "So bond the proposal, bar self-settlement, and pay only for what real work leaves behind: a failing test that now passes.",
-    "Price discovers what to do. Verification decides what was done. That second half is the open problem."
+    "A developer expects to fix the bug and buys YES at ten cents.",
+    "They do the work. In this example, passing tests move the price of the shares they hold.",
+    "An oracle receives the completion claim and a bond. An unchallenged claim settles.",
+    "The price offered a reason to act. But a rising price is not proof of useful work. Who checks the claim?",
+    "Now an agent reads the repository and writes its own ticket.",
+    "Propose, price, work, settle. The loop can run without a human assigning tasks.",
+    "The problem: agents can invent work and get paid for it. A fabricated ticket follows the same path.",
+    "Candidate safeguards: bond proposals, prevent self-settlement, and check work artifacts. Even a passing test needs an independent check.",
+    "Price suggests the work. Who verifies the result? That is the open problem."
   ],
   "model-heist": [
-    "I built systems to reduce data leakage. Prevention is not the same as provenance. Once your model is out in the world, what evidence could still link it to you?",
+    "Your model has been copied and fine-tuned. Can a faint watermark still link the copy to you? Let's test the idea, and its limits.",
     "A single large perturbation can be conspicuous and can hurt accuracy. A practical mark has to balance detectability against utility.",
     "In this Gaussian teaching model, spread the mark across coordinates. A matched filter makes aligned signal add coherently while independent noise adds in quadrature.",
     "Under the stated Gaussian assumptions this becomes a Z-test. The threshold trades detection power against false alarms.",
@@ -104,21 +104,21 @@
     "A norm-bounded scrub can move the score only by its budget. That is a detector bound, not a universal claim that a real watermark cannot be removed."
   ],
   "oracles": [
-    "An autonomous system is handed a verdict: 'that's crop damage,' 'that's a valid claim,' 'that's a threat.'",
-    "It didn't run the model. It can't see the weights.",
-    "Should it act?",
-    "In a world where AI agents consume each other's inferences, this is the trust question.",
-    "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.",
-    "An off-chain computer runs the heavy network, generating a shadow of the execution.",
-    "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this model produced this output.",
-    "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.",
-    "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.",
-    "A node asserts a result and locks a massive financial bond (stake) on the blockchain.",
-    "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.",
-    "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required."
+    "An AI says the crop is damaged. Should a contract release the payment?",
+    "The contract did not run the model. It only received an answer.",
+    "An outside answer cannot verify itself. Something has to cross this trust boundary.",
+    "Two approaches: prove the computation, or give others time to challenge the claim.",
+    "First, prove that the specified computation was followed. This is the role of zero-knowledge proofs.",
+    "The model runs off-chain. A prover generates a proof of its encoded computation.",
+    "A verifier checks that proof, without repeating all the model's work. Security depends on the proof system and its implementation.",
+    "A valid proof confirms the computation, not the truth of the input or the quality of the model. Those still need checking.",
+    "The optimistic approach starts with a claim and time to dispute it, rather than a proof of every computation.",
+    "A proposer posts a bond. A challenger also risks a bond, so a dispute has a cost.",
+    "Disputed claims go through a resolution process. A successful challenge can cost the proposer its bond.",
+    "Without a challenge, the claim settles when time runs out. That requires someone able and willing to catch false claims."
   ],
   "proof-of-learning": [
-    "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.",
+    "Training a model is expensive. Copying its weights is cheap. Can a training record tell them apart, or can that record be forged too?",
     "A model is not born at the finish line. It walks there step by step. The path is the asset, not the endpoint.",
     "The proof records checkpoints, data batches, their hashes, and training settings. Verification checks whether these pieces agree.",
     "The original checker avoids a full re-run. It replays the largest updates, where a naive shortcut is easiest to expose. Later attacks showed that not every spoof leaves that signal.",
@@ -127,7 +127,7 @@
     "When models are cloned and stolen, what matters is not only what a model knows, but whether it can show how it learned. SecurePoL makes forgery costlier by checking both the trajectory and the watermark."
   ],
   "redundancy-reactor": [
-    "In a safety-critical controller, three independent channels can feed a majority voter. One faulty channel is then outvoted by the other two.",
+    "Three computers agree. Could all three still be wrong? Watch what happens when independent failures become a shared mistake.",
     "In the ideal voter model, the output fails when a majority of channels fail. Independent rare faults make that event scale as a higher power of the channel failure rate.",
     "For rare, independent faults, simply adding voters pushes the failure probability off a cliff.",
     "When faults correlate, the cliff vanishes. Redundancy no longer protects you; they all fail together.",
@@ -135,10 +135,10 @@
     "You cannot vote out a shared mistake. Design diversity and independent validation can reduce common-mode risk, but they do not guarantee zero correlation."
   ],
   "wm-compare": [
-    "Watermarks add evidence of model ownership. Here are four examples with different access requirements. The first writes a pattern into selected weights.",
-    "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.",
-    "Crossing the threshold is evidence, not certainty about ownership. False positives remain possible.",
-    "But there is a catch: you need full access to the stolen weights to run this test.",
+    "A copied model, a hidden API, or generated text. Which watermark could you actually check? Start with a pattern in selected weights.",
+    "The owner reads the weights and calculates a statistical score.",
+    "Crossing the threshold is evidence, not certainty. False positives remain possible.",
+    "The catch: this test needs the weights. What if all you have is an API?",
     "If the thief hides the model behind a commercial API, you cannot see the weights to run a Z-test.",
     "Instead, Black-box watermarks train the network to memorize specific 'Trigger' images during training.",
     "You query the API with the Trigger. Normal images work fine, but the Trigger forces a massive, hidden backdoor activation.",

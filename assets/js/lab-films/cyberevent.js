@@ -186,7 +186,7 @@
 
       lower(
         s,
-        "Incidents surface publicly first. Someone tweets that the bank app is down.",
+        "The bank app is down. Can you catch that signal in a flood of ordinary posts?",
         1.4
       );
       lower(

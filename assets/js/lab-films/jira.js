@@ -33,7 +33,7 @@
     flushLower(s, at);
     // Pinned to exact bottom-left for full-width overlay bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
-    s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.3 });
     _pendLower = { s: s, c: c, at: at, out: o.out || null };
     return c;
   }
@@ -50,8 +50,10 @@
   }
 
   function sceneCoordination(film) {
-    film.scene("The Coordination Problem", 60.5, function(s) {
+    film.scene("The Coordination Problem", 42, function(s) {
       s.canvas(function(lt, ctx, h) {
+        // Preserve the authored visual beats; narration uses the shorter edit.
+        lt *= 60.5 / 42;
         var op = clamp01(lt);
         ctx.globalAlpha = op;
 
@@ -272,11 +274,11 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "I learned decentralized coordination on the Aegean: forty boats, no race director steering them...", 2.0, { out: 18 });
-      lower(s, "...order emerging from local decisions and shared rules.", 13.0, { out: 24 });
-      lower(s, "Software wants the same thing at global scale, with agents that never sleep and increasingly are not human.", 25.0, { out: 33 });
-      lower(s, "Put one manager in the middle and their load is every agent at once. Capacity is fixed; the queue is not.", 35.0, { out: 49 });
-      lower(s, "Take the manager out and publish a price. Each agent reads one number, however many of them there are.", 52.0);
+      lower(s, "Forty boats, shared rules, no one steering them all. Could AI agents coordinate the same way?", 0.8);
+      lower(s, "Local decisions can create order. They can also create congestion.", 9.0);
+      lower(s, "Now replace the crews with software agents, all looking for work.", 17.35);
+      lower(s, "One manager must handle every request. Watch the queue grow beyond that manager's capacity.", 24.3);
+      lower(s, "What if agents read a shared price instead of waiting for assignments?", 36.1);
     }, { subtitle: "The limits of centralized management" });
   }
 
@@ -446,7 +448,7 @@
   }
 
   function sceneInsiderTrading(film) {
-    film.scene("Skin in the Game", 58, function (s) {
+    film.scene("Skin in the Game", 44, function (s) {
       var co = mkCoords(film), k = MK.k;
 
       /* The claim this scene has to make visible is that effort moves a price
@@ -487,6 +489,7 @@
       s.show(curve, 0);
 
       s.canvas(function (lt, ctx, h) {
+        lt *= 58 / 44;
         var x = poolX(lt), y = k / x, p = probAt(lt);
         drawPool(ctx, h, co, x, 1);
 
@@ -607,17 +610,18 @@
         }
       });
 
-      lower(s, "A developer who knows they can fix it buys in quietly at ten cents.", 2.0, { out: 13.0 });
-      lower(s, "Then they do the work. Effort moves a price they hold, so the payoff tracks the contribution.", 15.0, { out: 36.0 });
-      lower(s, "The merge is asserted to an oracle with a bond. Unchallenged, it settles at one.", 38.5, { out: 46.0 });
-      lower(s, "Nobody assigned that bounty. A price discovered it. Which leaves the question this lab keeps returning to: when no one is in charge, who verifies the claim?", 45.6);
+      lower(s, "A developer expects to fix the bug and buys YES at ten cents.", 1.5);
+      lower(s, "They do the work. In this example, passing tests move the price of the shares they hold.", 11.4);
+      lower(s, "An oracle receives the completion claim and a bond. An unchallenged claim settles.", 29.2);
+      lower(s, "The price offered a reason to act. But a rising price is not proof of useful work. Who checks the claim?", 35.5);
     }, { subtitle: "Aligning incentives with truth" });
   }
 
 
   function sceneAgentLoop(film) {
-    film.scene("Who Verifies the Claim", 73.9, function(s) {
+    film.scene("Who Verifies the Claim", 52, function(s) {
       s.canvas(function(lt, ctx, h) {
+        lt *= 73.9 / 52;
         var op = clamp01(lt);
         ctx.globalAlpha = op;
 
@@ -879,11 +883,11 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Remove the last human. An agent reads the repository and writes the ticket itself.", 2.0, { out: 20 });
-      lower(s, "The loop closes: propose, price, work, settle, with nobody in it.", 13.0, { out: 28 });
-      lower(s, "But the same agents now create the work and are paid for it. A fabricated ticket runs the identical path.", 30.0, { out: 45 });
-      lower(s, "So bond the proposal, bar self-settlement, and pay only for what real work leaves behind: a failing test that now passes.", 47.0, { out: 65 });
-      lower(s, "Price discovers what to do. Verification decides what was done. That second half is the open problem.", 66.0);
+      lower(s, "Now an agent reads the repository and writes its own ticket.", 1.4);
+      lower(s, "Propose, price, work, settle. The loop can run without a human assigning tasks.", 9.15);
+      lower(s, "The problem: agents can invent work and get paid for it. A fabricated ticket follows the same path.", 21.1);
+      lower(s, "Candidate safeguards: bond proposals, prevent self-settlement, and check work artifacts. Even a passing test needs an independent check.", 33.1);
+      lower(s, "Price suggests the work. Who verifies the result? That is the open problem.", 46.0);
     }, { subtitle: "Closing the loop, and breaking it" });
   }
 

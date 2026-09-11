@@ -313,7 +313,7 @@
 
       lower(
         s,
-        "An approved Level D simulator supports specific training and checking tasks. It is not an aircraft.",
+        "A simulator is fast on average. Can one late response still break its timing budget?",
         1.6
       );
       lower(

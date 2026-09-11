@@ -2,8 +2,8 @@
 permalink: /lab/oracles/
 oembed: "/lab/oracles/oembed.json"
 title: "ML Oracles: Verifiable Claims for the Chain, animated"
-description: "A cinematic, PhD-level explainer on the convergence of machine learning and decentralized oracle networks."
-excerpt: "Smart contracts cannot see the real world. To act on complex data, they need ML models. Here is the math of zkML and Optimistic fraud proofs, animated."
+description: "Can a contract trust an AI answer it did not compute? An animated comparison of zero-knowledge proofs, optimistic challenges, and their limits."
+excerpt: "A proof checks computation. A challenge window lets others dispute a claim. Neither makes an AI answer automatically true."
 sitemap: true
 header:
   og_image: "lab-og/og-oracles.png"
@@ -13,7 +13,7 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-oracles" style="margin-top: 0;">
   <span class="ep-eyebrow">Smart Contracts × Machine Learning</span>
-  <p class="lab-card__lead">Smart contracts are blind logic gates. They cannot see the outside world. An oracle feeds them data, but what if the data requires pattern recognition, like analyzing a satellite image or classifying a loan application? Running a large neural network on-chain is usually impractical. This animation explains how <strong>zkML (Zero-Knowledge Machine Learning)</strong> and <strong>optimistic fraud proofs</strong> address different parts of the gap, while making their trust assumptions visible.</p>
+  <p class="lab-card__lead">An AI says a crop is damaged. Should a smart contract release the payment? An oracle can deliver the answer, but delivery is not verification. This animation compares <strong>zkML (Zero-Knowledge Machine Learning)</strong> with <strong>optimistic challenge windows</strong>, showing what each checks and what it leaves unresolved.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span><strong>Open research direction of the author</strong>, not yet published, and a natural continuation of the <a href="/publication/2023-ieee-access-survey">Blockchain-Enhanced ML survey</a> (IEEE Access 2023). The question: by what mechanism can a deterministic chain accept a claim about a probabilistic model it cannot re-execute? The film works through the candidate answers: zero-knowledge proofs of inference and optimistic challenge windows, and where each one currently breaks. Feedback and collaborators welcome.</span>
@@ -34,8 +34,8 @@ header:
     <summary>🧠 What did you just learn?</summary>
     <p><strong>The Blockchain is a closed system.</strong> A smart contract cannot make an API call to OpenAI or run a PyTorch script. It only knows what is posted to it. When an agreement requires complex pattern recognition (e.g., "Is this crop damage real?"), the classification <em>y = F_θ(x)</em> must happen off-chain.</p>
     <p><strong>The Verification Trilemma.</strong> We can trust an oracle implicitly (centralized, cheap), we can run the model on-chain (currently impractical for large <em>θ</em>), or we can use cryptographic or economic verification. Each choice moves the trust assumption rather than removing it.</p>
-    <p><strong>Zero-Knowledge Inference (zkML).</strong> A prover runs the model off-chain and generates a cryptographic proof <em>π</em>. The smart contract verifies <em>π</em> cheaply. Under the proof system's assumptions, a valid <em>π</em> shows that the encoded circuit maps the committed model <em>θ</em> and input <em>x</em> to output <em>y</em>. It does not establish that the model or input represents the outside world faithfully. The animation visualizes how polynomial commitments shadow the neural network's layers.</p>
-    <p><strong>Optimistic Fraud Proofs.</strong> Cryptography is expensive. The optimistic approach is economic: a node asserts <em>y</em> and locks a stake <em>S</em>. Anyone can challenge it within time <em>Δt</em>. If challenged, a referee protocol narrows the dispute down to a single instruction and penalizes the liar. Unchallenged claims avoid proving every execution, but they cannot be final before the challenge window closes.</p>
+    <p><strong>Zero-Knowledge Inference (zkML).</strong> A prover generates a proof of an encoded computation; a verifier checks it. This verifies execution, not the truth of the input or the quality of the model. <a href="https://docs.ezkl.xyz/">EZKL's documentation</a> describes a concrete model-to-circuit workflow. Proof construction, verification cost, and security depend on the system used. The moving proof in the film is a schematic, not a trace of a specific proving system.</p>
+    <p><strong>Optimistic Challenges.</strong> A proposer posts a claim and a bond. Others may dispute it during a challenge window. Disputes require a resolution mechanism; they do not universally reduce to a single machine instruction. <a href="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work">UMA's oracle</a>, for example, resolves disputes through its Data Verification Mechanism. Unchallenged claims settle, but this depends on effective monitoring and credible disputes. The animation's claims and timings are illustrative, not measured rates.</p>
   </details>
 
   <details class="lab-reveal">

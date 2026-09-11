@@ -732,6 +732,20 @@
     this._audioCues.push({id: id, at: at, audio: a});
   };
 
+  // Audio can take time to start even after metadata has loaded. Keep the
+  // current picture in place until playback starts, rather than losing the
+  // opening words or letting speech trail the animation. Bound the wait so
+  // a blocked/failed media request never traps the player.
+  Film.prototype._playNarrator = function(a) {
+    var self = this;
+    var pending = { audio: a, since: performance.now() };
+    this._audioStarting = pending;
+    var done = function() {
+      if (self._audioStarting === pending) self._audioStarting = null;
+    };
+    try { a.play().then(done, done); } catch (e) { done(); }
+  };
+
   Film.prototype._buildDOM = function () {
     var c = this.container;
     c.classList.add("labf");
@@ -1156,7 +1170,7 @@
 
     // Global Signature Outro Scene (positions in fractions of the logical
     // stage, so non-960x540 films keep it centered)
-    this.scene("Signature", 8, function(s) {
+    this.scene("Signature", 5, function(s) {
       var bgLight = s.caption("<div style='position:absolute; top:50%; left:50%; width:600px; height:250px; background:radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2) 0%, rgba(14, 18, 26, 0) 70%); transform:translate(-50%,-50%); border-radius:50%; filter:blur(30px);'></div>", { px: FW / 2, py: FH * 0.5, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.9rem, 5.2vw, 3.4rem); font-weight:500; line-height:1.08; letter-spacing:0.012em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
@@ -1178,40 +1192,27 @@
       var next = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.55rem, 1.45vw, 0.75rem); color:#58c4dd; letter-spacing:0.12em; text-transform:uppercase;'>More cited explainers in the Research Lab</span>",
                            { px: FW / 2, py: FH * 0.795, anchor: "center", align: "center", panel: false, maxWidth: "84%" });
 
-      /* The card arrives, then rests. Before, all five elements shared one
-         animation: the same 0.65 to 1.05 zoom running the whole scene and the
-         same fade, so nothing was ever staged and nothing ever settled, the
-         type was still growing when it faded out. Worse, the cadence resolved
-         at about 2.3 s while the name did not reach full opacity until 3.75,
-         so the music landed a second and a half before the picture.
-
-         Now the name settles on the chord. The stinger's tonic arrives 2.22 s
-         after it is fired, so the name's scale finishes at 2.3 with a strongly
-         decelerating ease, which is what makes it read as landing rather than
-         drifting. Everything else follows it in sequence, and once the last
-         line is in, the card holds still. */
+      // Reveal the source early, then hold it. The name still settles with
+      // the tonic at 2.22s, without making viewers wait for the credit.
       var LAND = 2.3;
 
       bgLight.cur.op = 0; bgLight.cur.sx = 0.88; bgLight.cur.sy = 0.88;
-      s.scaleTo(bgLight, { at: 0, dur: 2.8, to: 1, ease: Ease.smooth });
-      s.fadeIn(bgLight, { at: 0, dur: 2.6 });
+      s.scaleTo(bgLight, { at: 0, dur: 2.3, to: 1, ease: Ease.smooth });
+      s.fadeIn(bgLight, { at: 0, dur: 0.6 });
 
       name.cur.op = 0; name.cur.sx = 0.93; name.cur.sy = 0.93;
       s.scaleTo(name, { at: 0, dur: LAND, to: 1, ease: Ease.outQuint });
-      s.fadeIn(name, { at: 0.1, dur: 1.6 });
-      // once landed it keeps the faintest drift, so the frame is alive without
-      // being a zoom
-      s.scaleTo(name, { at: LAND, dur: 3.7, to: 1.01, ease: Ease.linear });
+      s.fadeIn(name, { at: 0.1, dur: 0.6 });
 
-      var followers = [[role, 2.35], [url, 2.9], [next, 4.15]];
-      if (creditObj) followers.push([creditObj, 3.45]);
+      var followers = [[role, 0.25], [url, 0.4], [next, 0.7]];
+      if (creditObj) followers.push([creditObj, 0.5]);
       followers.forEach(function (f) {
         f[0].cur.op = 0;
-        s.fadeIn(f[0], { at: f[1], dur: 1.15 });
+        s.fadeIn(f[0], { at: f[1], dur: 0.5 });
       });
 
       [bgLight, name, role, url, next].concat(creditObj ? [creditObj] : []).forEach(function (obj) {
-        s.fadeOut(obj, { at: 6.15, dur: 1.85 });
+        s.fadeOut(obj, { at: 4.5, dur: 0.5 });
       });
 
       // Signature stinger through the shared music context, voiced from the
@@ -1322,13 +1323,14 @@
                }
                try { a.currentTime = offset; } catch(e) {}
                if (self.playing && !window.globalLabMuted && window.globalLabVoice) {
-                  a.play().catch(function(){});
+                  self._playNarrator(a);
                }
             };
 
             if (a.readyState >= 1) {
                tryPlay();
             } else {
+               if (self.playing) self._audioStarting = { audio: a, since: performance.now() };
                a.onloadedmetadata = tryPlay;
             }
          }
@@ -1442,6 +1444,7 @@
     this._lastT = this.t;
     // Force audio resync on jump
     this._currentCue = null;
+    this._audioStarting = null;
     if (window._currentLabNarrator) { window._currentLabNarrator.pause(); window._currentLabNarrator = null; }
     if (!this.playing) this.render();
     return this;
@@ -1888,6 +1891,10 @@
       // resolves, which reads as a jolt rather than an ending; with the score
       // raised and this eased back the lift is about eight
       var out = ctx.createGain(); out.gain.value = 0.40;
+      // The five-second source card has a matching release. Let the tonic
+      // ring, then reach silence before the player or video reaches its end.
+      out.gain.setValueAtTime(0.40, t + 3.3);
+      out.gain.linearRampToValueAtTime(0, t + 4.75);
       // the cadence stacks bass, sub, a four-note chord and the motif on the
       // same downbeat, so it goes through a limiter rather than trusting the
       // arithmetic to stay under one
@@ -1973,8 +1980,9 @@
     LabMusic.start((this.container && this.container.id) || "lab");
     this._everPlayed = true;
     this._lastTs = performance.now();
-    if (window._currentLabNarrator && !window.globalLabMuted && window.globalLabVoice && !window._currentLabNarrator.ended) {
-      window._currentLabNarrator.play().catch(function(){});
+    if (window._currentLabNarrator && !window.globalLabMuted && window.globalLabVoice &&
+        (!window._currentLabNarrator.ended || window._currentLabNarrator.seeking)) {
+      this._playNarrator(window._currentLabNarrator);
     }
     this.poster.classList.add("is-hidden");
     this.playBtn.textContent = "⏸";
@@ -2011,6 +2019,11 @@
         }
 
         var nextT = self.t + dt;
+        var pending = self._audioStarting;
+        if (pending && pending.audio === window._currentLabNarrator &&
+            !window.globalLabMuted && window.globalLabVoice && performance.now() - pending.since < 4000) {
+          nextT = self.t;
+        }
         if (nextT >= holdAt - 0.05 && window._currentLabNarrator && window.globalLabVoice && !window.globalLabMuted) {
            var n = window._currentLabNarrator;
            // If the audio is currently playing, hold time just before the
@@ -2039,6 +2052,7 @@
   Film.prototype.pause = function () {
     if (!this.playing) return this;
     this.playing = false;
+    this._audioStarting = null;
     if (this._clearIdle) this._clearIdle();
     playingFilmsCount = Math.max(0, playingFilmsCount - 1);
     if (playingFilmsCount === 0) LabMusic.pause();

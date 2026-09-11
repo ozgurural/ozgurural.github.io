@@ -227,7 +227,7 @@
 
       lower(
         s,
-        "Three problems a ledger suits. Data poisoned by someone who still collects the reward. Models that leak. Weights that remember nothing.",
+        "Can a blockchain make machine learning more accountable? Start with the training record, then ask what that record actually proves.",
         1.4
       );
       lower(

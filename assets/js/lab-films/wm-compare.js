@@ -32,7 +32,7 @@
     o = o || {};
     flushLower(s, at);
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
-    s.fadeIn(c, { at: at, dur: o.dur || 1 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.3 });
     _pendLower = { s: s, c: c, at: at, out: o.out || null };
     return c;
   }
@@ -53,12 +53,12 @@
   }
 
   function sceneWhitebox(film) {
-    film.scene("Sparse Parameter Perturbations", 55.9, function(s) {
+    film.scene("Sparse Parameter Perturbations", 46, function(s) {
       var eq = s.tex2("\\theta_{wm} = \\theta + \\delta", { px: 200, py: 72, size: "1.4rem", color: CY });
       s.fadeIn(eq, { at: 1, dur: 2 });
 
       var eq2 = s.tex2("Z = \\frac{\\sum \\theta_{wm} \\cdot \\delta}{\\sigma}", { px: 750, py: 84, size: "1.4rem", color: GRN });
-      s.fadeIn(eq2, { at: 20, dur: 3 });
+      s.fadeIn(eq2, { at: 16.46, dur: 2.47 });
       
       var co = film.coords({ xRange: [-4, 6], yRange: [0, 1], pad: { left: 550, right: 100, top: 150, bottom: 150 } });
 
@@ -66,6 +66,7 @@
       var axHandle = s.axes(co, { grid: false, xLabel: "Z-score", yLabel: "Density" });
 
       s.canvas(function(lt, ctx, h) {
+        lt *= 55.9 / 46;
         var op = clamp01(lt);
         ctx.globalAlpha = op;
         
@@ -222,10 +223,10 @@
         ctx.globalAlpha = 1;
       });
 
-      lower(s, "Watermarks add evidence of model ownership. Here are four examples with different access requirements. The first writes a pattern into selected weights.", 1.33, { out: 18 });
-      lower(s, "2. To verify it, the owner extracts the weights and calculates a statistical Z-score.", 13.7, { out: 38 });
-      lower(s, "Crossing the threshold is evidence, not certainty about ownership. False positives remain possible.", 26.67, { out: 52 });
-      lower(s, "But there is a catch: you need full access to the stolen weights to run this test.", 35.33);
+      lower(s, "A copied model, a hidden API, or generated text. Which watermark could you actually check? Start with a pattern in selected weights.", 0.8);
+      lower(s, "The owner reads the weights and calculates a statistical score.", 11.3);
+      lower(s, "Crossing the threshold is evidence, not certainty. False positives remain possible.", 22.0);
+      lower(s, "The catch: this test needs the weights. What if all you have is an API?", 29.1);
     }, { subtitle: "Moving a few weights, and what pruning does to them." });
   }
 
@@ -495,7 +496,7 @@
   }
 
   function sceneAuxiliary(film) {
-    film.scene("The mark you can't prune", 44.3, function(s) {
+    film.scene("An auxiliary head, a second check", 44.3, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -614,7 +615,7 @@
         }
         ctx.globalAlpha = 1;
       });
-      var cite = s.caption("Ural, Enhancing Proof-of-Learning Security, Ph.D. dissertation, ERAU 2025.", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: GREY });
+      var cite = s.caption("Ural, Ph.D. dissertation, ERAU 2025", { px: 680, py: 80, anchor: "center", align: "center", maxWidth: "50%", size: "0.8rem", color: GREY });
       s.fadeIn(cite, { at: 1.5, dur: 1.2 });
       lower(s, "Instead of modifying the main task, you branch off the latent layers to train a secret auxiliary classifier.", 1.33, { out: 12 });
       lower(s, "The auxiliary head provides another verification signal. It shares learned features, so training can still affect the main task.", 9.33, { out: 26 });

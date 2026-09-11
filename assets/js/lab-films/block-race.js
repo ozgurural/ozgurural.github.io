@@ -218,7 +218,7 @@
       // lower-left corner never carries two competing texts
       s.fadeOut(lblA, { at: 6.15, dur: 0.6 });
 
-      lower(s, "Two machines disagree, and no authority can settle it. Yet everything downstream has to act on one history. Nakamoto's answer is not a judge. It is a race, and rewriting it gets exponentially more expensive the longer you wait.", 4.4, { maxWidth: "55%", px: 400, out: 13 });
+      lower(s, "Two versions of the same payment. Which should the network accept? Watch how the gap between these chains changes the attacker's odds.", 0.8, { maxWidth: "55%", px: 400 });
     }, { subtitle: "Trust with no trusted party: the true history is whatever is most expensive to rewrite." });
   }
 

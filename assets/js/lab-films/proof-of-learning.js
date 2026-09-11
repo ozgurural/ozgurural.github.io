@@ -141,7 +141,7 @@
       });
       var eq = s.tex2("\\text{Copying the weights: almost free}", { px: 380, py: 110, size: "1.4rem", color: "#dbeafe" });
       s.fadeIn(eq, { at: 5.25, dur: 1.2 });
-      lower(s, "Proof-of-Learning promised to show you trained a model, not downloaded it. Attackers soon found cheaper ways to spoof it. My dissertation asks whether watermarking can raise that attack cost.", 4.5, { maxWidth: "66%", out: 19.8 });
+      lower(s, "Training a model is expensive. Copying its weights is cheap. Can a training record tell them apart, or can that record be forged too?", 0.8, { maxWidth: "66%" });
     }, { subtitle: "The endpoint carries no evidence of the effort that made it." });
   }
 
@@ -399,7 +399,7 @@
           if (lt > 26.5) {
             ctx.save(); ctx.globalAlpha = clamp01((lt - 26.5) / 1.4);
             ctx.font = "600 12px 'JetBrains Mono',monospace"; ctx.fillStyle = h.rgba("#dbeafe", 0.95);
-            ctx.fillText("honest work lands inside; a shortcut cannot", 90, 400);
+            ctx.fillText("this shortcut falls outside the tolerance", 90, 400);
             ctx.restore();
           }
         }
@@ -530,10 +530,10 @@
       });
       var eq = s.tex2("\\text{Accept only if: right path } \\textbf{ AND } \\text{ secret mark}", { px: 480, py: 104, size: "1.3rem", color: AMB });
       s.write(eq, { at: 9.75, dur: 2.4 });
-      var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: "#7f93b4" });
+      var cite = s.caption("Ural &amp; Yoshigoe, <em>SecurePoL</em>, IEEE Access 2025", { px: 480, py: 390, anchor: "center", align: "center", maxWidth: "84%", size: "0.8rem", color: "#7f93b4" });
       s.fadeIn(cite, { at: 13.5, dur: 1.2 });
       lower(s, "SecurePoL adds a second check: a mark woven into the model. A forger must now reproduce both a plausible trajectory and a watermark-consistent ownership signal.", 9.0, { maxWidth: "92%", px: 60 });
-    }, { subtitle: "Two bypassable checks → one joint constraint a spoofer cannot meet." });
+    }, { subtitle: "Trajectory and watermark: two checks a forger must address." });
   }
 
   /* ============== 7 — SIGNATURE ============== */
@@ -675,7 +675,7 @@
       ["Security", "\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\ \\text{(design property)}",
         "Entropy of the process grows linearly in T, so \\(\\#\\text{paths}\\sim e^{\\Theta(T)}\\). This cost asymmetry is a <em>desideratum</em> (Jia 2021, Property 2), not a theorem, and was later shown bypassable (Zhang et al. 2022; Fang et al. 2023)."],
       ["SecurePoL", "\\text{Accept} \\iff (d_2\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f)=\\sigma)",
-        "The author binds the trajectory check to a feature watermark, turning two individually-bypassable checks into one joint constraint a spoofer cannot meet without genuinely training (Ural &amp; Yoshigoe, IEEE Access 2025)."]
+        "The author combines a trajectory check with a feature watermark. A forger must address both checks; this is not a claim that every possible forgery requires genuine training (Ural &amp; Yoshigoe, IEEE Access 2025)."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

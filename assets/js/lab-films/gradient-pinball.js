@@ -276,7 +276,7 @@
       s.write(title, { at: 0.6, dur: 2.4 });
       s.fadeOut(title, { at: 7.5, dur: 1.5 });
 
-      lower(s, "A trained model is the endpoint of an optimization path. The final weights show where it ended; a recorded trajectory provides evidence about how it got there.", 6.0, { out: 19.8, maxWidth: "64%" });
+      lower(s, "Why does one training run converge while another flies apart? Follow the ball: the landscape matters, but so does the size of each step.", 0.8, { maxWidth: "64%" });
     }, { subtitle: "Learning is descent. And 'down' means the negative gradient." });
   }
 
@@ -481,7 +481,7 @@
       s.fadeOut(gball, { at: 13.8, dur: 1.2, to: 0.28 });
       s.fadeOut(gdTag, { at: 13.8, dur: 1.2, to: 0.45 });
 
-      var eq = s.tex2("\\text{Momentum: Remember past velocity}", { px: 480, py: 64, size: "1.05rem", color: "#e8eef9" });
+      var eq = s.tex2("\\text{Momentum: remember past velocity}", { px: 480, py: 72, anchor: "center", size: "1.05rem", color: "#e8eef9" });
       s.write(eq, { at: 13.5, dur: 2.1 });
 
       lower(s, "Momentum acts as a memory of past gradients. Side-to-side bounces cancel, downhill drift compounds.", 13.6, { maxWidth: "82%", px: 70 });

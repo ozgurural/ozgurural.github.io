@@ -65,15 +65,24 @@ const ROOT = path.resolve(__dirname, '..');
     // This exercises the production handler without modifying published content.
     await page.evaluateOnNewDocument(() => {
       if (!location.search.includes('interaction-fixture')) return;
-      document.addEventListener('DOMContentLoaded', () => {
+      // Insert while the HTML is parsed, before deferred application scripts
+      // bind image controls. DOMContentLoaded can be too late for jQuery ready.
+      const insertFixture = () => {
+        const content = document.querySelector('.page__content');
+        if (!content) return false;
         const img = document.createElement('img');
         img.id = 'review-image';
         img.src = '/images/ozgururalpp.webp';
         img.alt = 'Portrait used by the interaction test';
         img.width = 160;
         img.height = 246;
-        document.querySelector('.page__content').prepend(img);
+        content.prepend(img);
+        return true;
+      };
+      const observer = new MutationObserver(() => {
+        if (insertFixture()) observer.disconnect();
       });
+      if (!insertFixture()) observer.observe(document, { childList: true, subtree: true });
     });
     await go('/blog/pyqt5_image_measurer?interaction-fixture');
     await page.waitForSelector('#review-image[role="button"]');

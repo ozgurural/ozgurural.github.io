@@ -82,6 +82,7 @@ npm run build:icon-fonts  # re-cut the icon fonts after adding an icon
 npm run build:webfonts    # re-cut the type after a font, weight or text change (site + arch)
 npm run build:page-icons  # re-cut enterprise-ai-architecture.html's own icon subset
 npm run check:liquid      # will Jekyll still build? (source scan, no server needed)
+npm run test:films        # real voice startup, pause, end, replay, early hooks and credits
 ```
 
 `audit-site.js` is a crawler rather than a file scan on purpose: half of these

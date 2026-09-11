@@ -107,7 +107,7 @@
 
   /* ===================== 1 — HOOK ===================== */
   function hook(film) {
-    film.scene("The stolen model", 21, function (s) {
+    film.scene("The stolen model", 15, function (s) {
       s.canvas(function (lt, ctx, h) {
         graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
         // faint watermark dots
@@ -162,7 +162,7 @@
       });
       var title = s.caption("Can you prove it’s <em>yours</em>?", { px: 480, py: 96, anchor: "top", align: "center", size: "1.4rem", color: WHT });
       s.write(title, { at: 0.9, dur: 2.1 });
-      lower(s, "I built systems to reduce data leakage. Prevention is not the same as provenance. Once your model is out in the world, what evidence could still link it to you?", 4.4, { maxWidth: "80%", out: 19.8, px: 60 });
+      lower(s, "Your model has been copied and fine-tuned. Can a faint watermark still link the copy to you? Let's test the idea, and its limits.", 0.8, { maxWidth: "80%", px: 60 });
     }, { subtitle: "Ownership must survive transformation, not just live in raw weights." });
   }
 
@@ -502,7 +502,7 @@
 
       // stealth meter (right) — epsilon/sigma pinned low while d climbs
       var sm = s.caption("per-weight ε/σ ≈ 0.3 <span style='color:" + EMR + "'>(invisible)</span>", { px: 720, py: 250, anchor: "left", size: "0.86rem", color: GREY });
-      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:" + AMB + "'>↑ certain</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: TXT });
+      var dm = s.caption("aggregate d = √k·ε/σ <span style='color:" + AMB + "'>↑ power</span>", { px: 720, py: 290, anchor: "left", size: "0.86rem", color: TXT });
       s.fadeIn(sm, { at: 10.5, dur: 0.9 }); s.fadeIn(dm, { at: 11.4, dur: 0.9 });
       var aucEq = s.tex2("\\text{Detection Accuracy} \\sim \\text{Signal}", { px: 720, py: 350, size: "1.4rem", color: AMB });
       s.fadeIn(aucEq, { at: 12.6, dur: 1.05 });
@@ -565,7 +565,7 @@
 
   /* ================= 7 — STAKES ================= */
   function stakes(film) {
-    film.scene("A statistical signature", 13, function (s) {
+    film.scene("A statistical signature", 9, function (s) {
       s.canvas(function (lt, ctx, h) {
         var fade = clamp01(lt / 0.5);
         graph(ctx, h, 250, 280, CY, fade, 9, 0);
@@ -581,19 +581,11 @@
       var valNode = s.value("detection power → <strong style='color:" + WHT + "'>0.00%</strong>", { px: 560, py: 300, anchor: "left", size: "1.4rem", color: GRN, fmt: function(v) { return "detection power → <strong style='color:" + WHT + "'>" + v.toFixed(2) + "%</strong>"; } });
       s.fadeIn(valNode, { at: 3.75, dur: 1.5 });
       s.countUp(valNode, { at: 4.0, dur: 2.0, from: 0, to: power * 100 });
-      // This line wraps to two lines at 1.4rem and stands 65 units tall, so at
-      // py 380 its bottom (445.6) ran into the paragraph below (430.1). The
-      // paragraph cannot move down — it already ends at 523 of 540 — and the
-      // caption width is clamped by the overlay, so widening does not unwrap it.
-      // Raising the line is what there is room for: the stat above ends at
-      // 316.6, leaving 63 units of clear space.
-      var tag = s.caption("Invisible in any one weight. <strong>Undeniable across all of them.</strong>", { px: 480, py: 352, anchor: "top", align: "center", size: "1.4rem", color: TXT });
-      s.write(tag, { at: 6.6, dur: 2.1 });
-      var cap2 = s.caption("When AI makes the decisions, ownership can't live in the weights; it must survive every transformation an adversary can apply. Provenance you can prove is the price of trusting a model you never watched being trained.", { px: 480, py: 430, anchor: "top", align: "center", maxWidth: "80%", size: "1rem", color: GREY });
-      s.fadeIn(cap2, { at: 8.5, dur: 1.5 });
-      var cite = s.caption("Ural &amp; Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024", { px: 900, py: 60, anchor: "top-right", align: "right", size: "0.66rem", color: MBLU });
-      s.fadeIn(cite, { at: 9, dur: 1.2 });
-    }, { subtitle: "Power = Φ(√k·ε/σ − z_α): tune k, certify ownership." });
+      var tag = s.caption("Weak individually. <strong>Detectable together.</strong>", { px: 480, py: 370, anchor: "top", align: "center", maxWidth: "84%", size: "1.3rem", color: TXT });
+      s.fadeIn(tag, { at: 2.5, dur: 0.7 });
+      var cap2 = s.caption("Illustrative Gaussian detector, not a universal ownership guarantee.", { px: 480, py: 440, anchor: "top", align: "center", maxWidth: "84%", size: "0.9rem", color: GREY });
+      s.fadeIn(cap2, { at: 3.2, dur: 0.6 });
+    }, { subtitle: "Power = Φ(√k·ε/σ − z_α), under the stated assumptions." });
   }
 
   /* ====================== appendix ====================== */
@@ -606,9 +598,9 @@
       ["Effect size", "d = \\frac{\\sqrt{k}\\,\\varepsilon}{\\sigma}",
         "Signal projects coherently to amplitude \\(\\sqrt{k}\\,\\varepsilon\\); the noise projection \\(w^\\top n\\sim N(0,\\sigma^2)\\) stays flat because \\(\\|w\\|=1\\). The √k is the crux: robustness is bought by spreading, not deepening."],
       ["Power", "\\text{Power}=\\Phi(d-z_\\alpha),\\quad \\text{AUC}=\\Phi(d/\\sqrt2)",
-        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z\\gt z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) (invisible) while \\(d\\gg1\\) (certain)."],
+        "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z\\gt z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) can coexist with large \\(d\\) and high detection power. This is not certainty."],
       ["Why it survives", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
-        "A utility-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) can remove at most \\(\\rho\\) of the statistic, and because w is <em>secret</em>, the thief cannot align δ with it. Assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
+        "A norm-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) changes the statistic by at most \\(\\rho\\), regardless of direction. Relating this norm budget to a real model's utility requires additional evidence. The detector assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

@@ -33,7 +33,7 @@
     flushLower(s, at);
     // Full width bottom bar
     var c = s.caption(html, { px: 0, py: 540, anchor: "bottom-left", align: "left", size: o.size, panel: true });
-    s.fadeIn(c, { at: at, dur: o.dur || 1.5 });
+    s.fadeIn(c, { at: at, dur: o.dur || 0.3 });
     _pendLower = { s: s, c: c, at: at, out: o.out || null };
     return c;
   }
@@ -49,7 +49,7 @@
   }
 
   function sceneBlind(film) {
-    film.scene("The Verdict It Can't Check", 45, function(s) {
+    film.scene("The Verdict It Can't Check", 32, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -151,19 +151,18 @@
         ctx.globalAlpha = op;
       });
 
-      var dlp = s.caption("Every trust boundary I've built (a data-leakage classifier deciding what crosses, an autonomous system acting on a perception model) comes down to the same question: can you act on a verdict you can't re-derive?", { px: 480, py: 142, anchor: "center", align: "center", size: "1.1rem", color: LIGHT_GREY });
-      s.fadeIn(dlp, { at: 28, dur: 2 });
-      s.fadeOut(dlp, { at: 42, dur: 1.5 });
+      var question = s.caption("Can you trust an answer<br>you did not compute?", { px: 270, py: 120, anchor: "center", align: "center", maxWidth: "44%", size: "1.25rem", color: WHITE });
+      s.fadeIn(question, { at: 0.3, dur: 0.7 });
 
-      lower(s, "An autonomous system is handed a verdict: 'that's crop damage,' 'that's a valid claim,' 'that's a threat.'", 1.33, { out: 12 });
-      lower(s, "It didn't run the model. It can't see the weights.", 8.67, { out: 24 });
-      lower(s, "Should it act?", 16.67, { out: 34 });
-      lower(s, "In a world where AI agents consume each other's inferences, this is the trust question.", 23.33);
+      lower(s, "An AI says the crop is damaged. Should a contract release the payment?", 0.8);
+      lower(s, "The contract did not run the model. It only received an answer.", 7.8);
+      lower(s, "An outside answer cannot verify itself. Something has to cross this trust boundary.", 15.2);
+      lower(s, "Two approaches: prove the computation, or give others time to challenge the claim.", 23.3);
     }, { subtitle: "Trust boundaries in autonomous systems" });
   }
 
   function sceneZK(film) {
-    film.scene("Zero-Knowledge Inference (zkML)", 60, function(s) {
+    film.scene("Zero-Knowledge Inference (zkML)", 41, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         
@@ -300,21 +299,23 @@
               ctx.fillStyle = GRN; ctx.font = "bold 24px 'JetBrains Mono'";
               ctx.fillText("VALID", 665, 260);
               ctx.shadowBlur = 0;
+              ctx.fillStyle = LIGHT_GREY; ctx.font = "14px monospace";
+              ctx.fillText("Execution, not real-world truth", 535, 390);
            }
            ctx.globalAlpha = op;
         }
         ctx.globalAlpha = op;
       });
 
-      lower(s, "Zero-Knowledge Machine Learning (zkML) solves this using advanced cryptography.", 1.33, { out: 12 });
-      lower(s, "An off-chain computer runs the heavy network, generating a shadow of the execution.", 8.67, { out: 24 });
-      lower(s, "That shadow compresses into a short proof, cheap to check and impossible to forge. It certifies that this model produced this output.", 16.67, { out: 38 });
-      lower(s, "The smart contract cannot run the model, but it can cheaply verify the proof. If it fits, the result is mathematically guaranteed.", 26.67);
+      lower(s, "First, prove that the specified computation was followed. This is the role of zero-knowledge proofs.", 1.0);
+      lower(s, "The model runs off-chain. A prover generates a proof of its encoded computation.", 8.7);
+      lower(s, "A verifier checks that proof, without repeating all the model's work. Security depends on the proof system and its implementation.", 16.7);
+      lower(s, "A valid proof confirms the computation, not the truth of the input or the quality of the model. Those still need checking.", 27.2);
     }, { subtitle: "Proving execution without redoing the work" });
   }
 
   function sceneOptimistic(film) {
-    film.scene("Optimistic Staking", 47, function(s) {
+    film.scene("Optimistic Staking", 42, function(s) {
       s.canvas(function(lt, ctx, h) {
         var op = clamp01(lt);
         ctx.globalAlpha = op;
@@ -338,7 +339,7 @@
            ctx.fillStyle = AMB; ctx.fillRect(200, 200, 70, 50); 
            ctx.shadowBlur = 0;
            
-           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
+           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("BOND", 213, 230);
            
            ctx.fillStyle = WHITE;
            ctx.fillText("Claim: Result = TRUE", 150, 180);
@@ -376,7 +377,7 @@
            ctx.shadowBlur = 20; ctx.shadowColor = RED;
            ctx.fillStyle = RED; ctx.fillRect(350, 330, 70, 50); 
            ctx.shadowBlur = 0;
-           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 360, 360);
+           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("BOND", 363, 360);
            ctx.fillStyle = RED; ctx.fillText("Claim: Result = FALSE", 290, 310);
            
             // A Challenger smashes into it
@@ -402,7 +403,7 @@
                   ctx.beginPath(); ctx.arc(385, 355, 50 + shatterTime*100, 0, Math.PI*2); ctx.fill();
                   
                   ctx.shadowBlur = 15; ctx.shadowColor = RED;
-                  ctx.fillStyle = RED; ctx.font = "bold 28px 'JetBrains Mono'"; ctx.fillText("SLASHED!", 320, 420);
+                  ctx.fillStyle = RED; ctx.font = "bold 18px 'JetBrains Mono'"; ctx.fillText("BOND LOST AFTER RESOLUTION", 260, 400);
                   
                   // Advanced Particle Physics for shattered coins
                   for (var k=0; k<15; k++) {
@@ -429,7 +430,7 @@
            ctx.shadowBlur = 30; ctx.shadowColor = GRN;
            ctx.fillStyle = GRN; ctx.fillRect(200, 200, 70, 50); // Block turns green
            ctx.shadowBlur = 0;
-           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("$100k", 210, 230);
+           ctx.fillStyle = BLACK; ctx.font = "bold 16px 'JetBrains Mono'"; ctx.fillText("BOND", 213, 230);
            
            ctx.fillStyle = GRN; ctx.font = "bold 22px 'JetBrains Mono'";
            ctx.fillText("FINALIZED", 185, 150);
@@ -470,7 +471,7 @@
              ctx.fillText(slashed + " slashed", LX0 + 300, LANE_Y + 46);
              ctx.fillStyle = h.rgba(LIGHT_GREY, 0.85);
              ctx.font = "12px 'JetBrains Mono', monospace";
-             ctx.fillText("no expensive math in the common case", LX0, LANE_Y + 68);
+             ctx.fillText("illustrative claims, not measured rates", LX0, LANE_Y + 68);
            }
            ctx.globalAlpha = op;
         }
@@ -478,14 +479,14 @@
         ctx.globalAlpha = op;
       });
 
-      var cite = s.caption("Intelligence is getting cheap. Verified intelligence is not. The limiting reagent for autonomous AI won't be a smarter model; it'll be whether one system can trust another's answer without redoing the work.", { px: 480, py: 134, anchor: "center", align: "center", size: "1rem", color: WHITE });
-      s.fadeIn(cite, { at: 42, dur: 2 });
+      var takeaway = s.caption("Who watches the challenge window?", { px: 480, py: 85, anchor: "center", align: "center", maxWidth: "80%", size: "1.2rem", color: WHITE });
+      s.fadeIn(takeaway, { at: 35.5, dur: 0.6 });
 
-      lower(s, "Cryptography is expensive. The 'Optimistic' approach uses raw economic game theory.", 1.33, { out: 12 });
-      lower(s, "A node asserts a result and locks a massive financial bond (stake) on the blockchain.", 8.67, { out: 24 });
-      lower(s, "A challenge timer starts. If anyone can prove the node lied, the liar's stake is slashed and given to the challenger.", 16.67, { out: 40 });
-      lower(s, "If the timer runs out with no challenges, the result solidifies as absolute truth. No expensive math required.", 28);
-    }, { subtitle: "Economic guarantees for intelligent agents" });
+      lower(s, "The optimistic approach starts with a claim and time to dispute it, rather than a proof of every computation.", 1.0);
+      lower(s, "A proposer posts a bond. A challenger also risks a bond, so a dispute has a cost.", 9.4);
+      lower(s, "Disputed claims go through a resolution process. A successful challenge can cost the proposer its bond.", 17.2);
+      lower(s, "Without a challenge, the claim settles when time runs out. That requires someone able and willing to catch false claims.", 28.0);
+    }, { subtitle: "Bonds, challenge windows, and their assumptions" });
   }
 
   setTimeout(boot, 60);
