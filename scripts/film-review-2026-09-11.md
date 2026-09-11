@@ -60,12 +60,15 @@ detector misses them.
   pause, end, and replay pass `npm run test:films`.
 - A deliberately delayed first audio start in Jira exercises the new bounded
   startup wait. Seeking and pausing clear that pending wait.
+- The startup gate also waits for the requested media offset and two monotonic
+  clock advances, so a cold decoder cannot skip the first spoken cue or let the
+  picture run ahead while `currentTime` is still stale.
 - Initial contact sheets reviewed across every scene of all eleven films;
   changed compositions additionally checked after the edit.
-- Page/native-video comparison for Oracle at 70 seconds: 1.975% differing
+- Page/native-video comparison for Oracle at 70 seconds: 1.941% differing
   pixels, concentrated in antialiased text at different native stage sizes.
   The native 1920x1080 export no longer leaks its accessibility heading into
-  the picture at the capture width; it is H.264/AAC, 132.97 seconds, and
+  the picture at the capture width; it is H.264/AAC, 130.50 seconds, and
   decodes cleanly. The encoder pads the final audio tail so the closing frame
   is not cut by a shorter MediaRecorder container.
 - Site audit: 76 URLs, 72 HTML pages, zero issues, broken URLs, or browser errors.
