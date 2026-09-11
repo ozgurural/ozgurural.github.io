@@ -736,13 +736,19 @@
   // current picture in place until playback starts, rather than losing the
   // opening words or letting speech trail the animation. Bound the wait so
   // a blocked/failed media request never traps the player.
-  Film.prototype._playNarrator = function(a) {
+  Film.prototype._playNarrator = function(a, targetTime) {
     var self = this;
     if (this._audioStarting && this._audioStarting.finish) this._audioStarting.finish();
+    var target = isFinite(targetTime) ? Math.max(0, targetTime) : null;
+    var initial = isFinite(a.currentTime) ? a.currentTime : 0;
     var pending = {
       audio: a,
       since: performance.now(),
-      baseline: isFinite(a.currentTime) ? a.currentTime : 0
+      target: target,
+      aligned: target === null,
+      baseline: target === null ? initial : target,
+      last: target === null ? initial : target,
+      progressSamples: 0
     };
     this._audioStarting = pending;
     var done = function() {
@@ -759,12 +765,33 @@
     };
     var finish = function() { clearListeners(); done(); };
     var progressed = function() {
-      if (a.ended || a.currentTime > pending.baseline + 0.02) {
-        pending.progressSamples = (pending.progressSamples || 0) + 1;
-        if (a.ended || pending.progressSamples >= 2) finish();
-      } else {
+      var current = Number(a.currentTime);
+      if (!isFinite(current)) return;
+      if (a.ended) { finish(); return; }
+      // A seek can report the old position briefly. Do not count that stale
+      // value as playback progress; first wait until the requested offset is
+      // actually visible, then require two monotonic clock advances.
+      if (!pending.aligned) {
+        if (Math.abs(current - pending.target) > 0.05) return;
+        pending.aligned = true;
+        pending.baseline = current;
+        pending.last = current;
         pending.progressSamples = 0;
+        return;
       }
+      if (current < pending.last - 0.02) {
+        // The media element finally applied a pending seek. Rebase once rather
+        // than mistaking the old position for a running clock.
+        pending.baseline = current;
+        pending.last = current;
+        pending.progressSamples = 0;
+        return;
+      }
+      if (current > pending.last + 0.015) {
+        pending.last = current;
+        if (current > pending.baseline + 0.02) pending.progressSamples++;
+      }
+      if (pending.progressSamples >= 2 && current > pending.baseline + 0.08) finish();
     };
     a.addEventListener("timeupdate", progressed);
     a.addEventListener("error", finish, { once: true });
@@ -1356,7 +1383,7 @@
                }
                try { a.currentTime = offset; } catch(e) {}
                if (self.playing && !window.globalLabMuted && window.globalLabVoice) {
-                  self._playNarrator(a);
+                  self._playNarrator(a, offset);
                }
             };
 
