@@ -45,8 +45,24 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
       const sync = await page.evaluate(async slug => {
         window.globalLabMuted = false;
         window.globalLabVoice = true;
+        const firstAudio = window.reviewFilm._audioCues[0].audio;
+        // The page creates all cue elements up front, but a cold browser can
+        // still be fetching the first file while the visual timing checks run.
+        // Wait for metadata here so this regression test measures playback and
+        // drift rather than which request won a network race.
+        if (firstAudio.readyState < 1) {
+          await new Promise((resolve, reject) => {
+            const timer = setTimeout(() => reject(new Error('first narration metadata did not load')), 15000);
+            const done = () => { clearTimeout(timer); resolve(); };
+            firstAudio.addEventListener('loadedmetadata', done, { once: true });
+            firstAudio.addEventListener('error', () => {
+              clearTimeout(timer);
+              reject(new Error('first narration audio failed to load'));
+            }, { once: true });
+          });
+        }
         if (slug === 'universal-jira') {
-          const audio = window.reviewFilm._audioCues[0].audio;
+          const audio = firstAudio;
           const original = audio.play.bind(audio);
           audio.play = function() {
             audio.play = original;

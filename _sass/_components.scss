@@ -2011,6 +2011,17 @@ body.labf-embed .labf__transport {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 .labf-embed__source:hover { color: rgba(255, 255, 255, 0.85); }
+/* The embed's heading exists for assistive technology only: the film draws its
+   own title card, so a visible second one would be a duplicate. Clipped rather
+   than display:none, which would take it out of the accessibility tree too. */
+.labf-embed__srtitle {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
 /* The chapter band is a fixed height in screen pixels, so its share of the
    logical frame grows as the stage shrinks: about y 44 at a 1280px stage, 55 at
    1024, 71 at 800, against the y 46 that every scene is authored to clear. So
@@ -2036,15 +2047,6 @@ body.labf-embed .labf__transport {
 /* The embed's heading exists for assistive technology only: the film draws its
    own title card, so a visible second one would be a duplicate. Clipped rather
    than display:none, which would take it out of the accessibility tree too. */
-.labf-embed__srtitle {
-  position: absolute;
-  width: 1px; height: 1px;
-  margin: -1px; padding: 0; border: 0;
-  clip-path: inset(50%);
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 body.labf-embed .labf__chrome { display: none; }
 }
 

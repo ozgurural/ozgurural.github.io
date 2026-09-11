@@ -278,6 +278,10 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf),
     '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-level', '4.1',
+    // MediaRecorder can close its WebM a fraction before the final sampled
+    // frame. Pad the mixed track so -shortest ends on the picture, not on an
+    // encoder timestamp, and never cuts the closing visual cadence.
+    '-af', 'apad',
     '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
     '-movflags', '+faststart',
     '-shortest',

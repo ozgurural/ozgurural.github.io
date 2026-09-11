@@ -738,12 +738,45 @@
   // a blocked/failed media request never traps the player.
   Film.prototype._playNarrator = function(a) {
     var self = this;
-    var pending = { audio: a, since: performance.now() };
+    if (this._audioStarting && this._audioStarting.finish) this._audioStarting.finish();
+    var pending = {
+      audio: a,
+      since: performance.now(),
+      baseline: isFinite(a.currentTime) ? a.currentTime : 0
+    };
     this._audioStarting = pending;
     var done = function() {
       if (self._audioStarting === pending) self._audioStarting = null;
     };
-    try { a.play().then(done, done); } catch (e) { done(); }
+    // play() resolving means the browser accepted the request, not that the
+    // decoder has advanced the clock. Keep the startup hold until a real media
+    // tick arrives, otherwise a cold stream can let the picture run ahead by a
+    // second or jump over the opening cue entirely. Rejection still releases it
+    // immediately, and the normal four-second bound remains the final escape.
+    var clearListeners = function() {
+      a.removeEventListener("timeupdate", progressed);
+      a.removeEventListener("error", finish);
+    };
+    var finish = function() { clearListeners(); done(); };
+    var progressed = function() {
+      if (a.ended || a.currentTime > pending.baseline + 0.02) {
+        pending.progressSamples = (pending.progressSamples || 0) + 1;
+        if (a.ended || pending.progressSamples >= 2) finish();
+      } else {
+        pending.progressSamples = 0;
+      }
+    };
+    a.addEventListener("timeupdate", progressed);
+    a.addEventListener("error", finish, { once: true });
+    try {
+      var request = a.play();
+      if (request && typeof request.catch === "function") request.catch(finish);
+    } catch (e) { finish(); }
+    // The RAF also sees progress on browsers that do not emit timeupdate until
+    // after the first quarter-second. It removes the listeners when playback
+    // has genuinely started; pause/seek clear _audioStarting as before.
+    pending.finish = finish;
+    pending.progressed = progressed;
   };
 
   Film.prototype._buildDOM = function () {
@@ -1443,6 +1476,7 @@
     this.t = clamp01(t / this.duration) * this.duration;
     this._lastT = this.t;
     // Force audio resync on jump
+    if (this._audioStarting && this._audioStarting.finish) this._audioStarting.finish();
     this._currentCue = null;
     this._audioStarting = null;
     if (window._currentLabNarrator) { window._currentLabNarrator.pause(); window._currentLabNarrator = null; }
@@ -2021,6 +2055,11 @@
         var nextT = self.t + dt;
         var pending = self._audioStarting;
         if (pending && pending.audio === window._currentLabNarrator &&
+            pending.progressed) {
+          pending.progressed();
+          pending = self._audioStarting;
+        }
+        if (pending && pending.audio === window._currentLabNarrator &&
             !window.globalLabMuted && window.globalLabVoice && performance.now() - pending.since < 4000) {
           nextT = self.t;
         }
@@ -2052,6 +2091,7 @@
   Film.prototype.pause = function () {
     if (!this.playing) return this;
     this.playing = false;
+    if (this._audioStarting && this._audioStarting.finish) this._audioStarting.finish();
     this._audioStarting = null;
     if (this._clearIdle) this._clearIdle();
     playingFilmsCount = Math.max(0, playingFilmsCount - 1);

@@ -62,13 +62,17 @@ detector misses them.
   startup wait. Seeking and pausing clear that pending wait.
 - Initial contact sheets reviewed across every scene of all eleven films;
   changed compositions additionally checked after the edit.
-- Page/embed comparison for Oracle at 70 seconds: 2.08% differing pixels,
-  concentrated in antialiased text/chrome at different native stage sizes.
+- Page/native-video comparison for Oracle at 70 seconds: 1.975% differing
+  pixels, concentrated in antialiased text at different native stage sizes.
+  The native 1920x1080 export no longer leaks its accessibility heading into
+  the picture at the capture width; it is H.264/AAC, 132.97 seconds, and
+  decodes cleanly. The encoder pads the final audio tail so the closing frame
+  is not cut by a shorter MediaRecorder container.
 - Site audit: 76 URLs, 72 HTML pages, zero issues, broken URLs, or browser errors.
 - Interaction suite: 17 checks passed. Its image fixture now enters before
   deferred app initialization, removing a timing race in the test itself.
 - Icon audit: 76 pages, 15 glyphs; the two non-Font-Awesome glyphs are Academicons.
-- External links: 249 verified, zero confirmed dead, nine unverified due to
+- External links: 250 verified, zero confirmed dead, eight unverified due to
   refusal, timeout, or network failure. EZKL was independently read through
   the web research tool; its timeout in the crawler is not treated as a 404.
 - Production Jekyll build, narration manifest, Liquid, and diff checks pass.
