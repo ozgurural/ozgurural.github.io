@@ -320,9 +320,11 @@ body { background-color: transparent; }
   }
   .author__avatar img {
     display: block;
-    /* Width-only sizing keeps the photo's natural portrait aspect ratio,
-       so border-radius:50% gives the same elliptical shape as desktop
-       (instead of cropping to a circle and cutting off the head). */
+    /* Width-only sizing, with height auto, so the photo keeps whatever
+       aspect ratio it actually has rather than being squashed into one.
+       The portrait shot this used to carry came out as an ellipse here and
+       on desktop; the square headshot that replaced it comes out as a
+       circle. Either way the shape follows the file, and nothing crops. */
     width: 150px !important;
     max-width: 150px !important;
     height: auto !important;
