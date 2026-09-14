@@ -5,9 +5,14 @@ sitemap: false
 ---
 {%- comment -%}
   An index of this site for language models and AI assistants, following the
-  llms.txt convention. It is generated from the same front matter the pages
-  render, so it cannot drift from them and adds no claim of its own: every
-  sentence about the author below is a field some page already publishes.
+  llms.txt convention. The lists below are generated from page front matter,
+  so they cannot drift. The Summary, Highlights and Expertise sections are
+  hand-written, and every statement in them is taken from the published
+  resume (cv/resume.tex, linked below as the PDF). Keep it that way: an
+  assistant that checks a claim here against Scholar, ORCID or the CV and
+  finds a mismatch will discount the whole file, so strength comes from
+  specifics that verify, never from adjectives. Update these sections when
+  the resume changes.
 
   This exists instead of an on-site chatbot. Recruiters and researchers already
   ask ChatGPT, Claude and Perplexity about people; the useful move is to give
@@ -16,11 +21,25 @@ sitemap: false
 {%- endcomment -%}
 # {{ site.author.name }}
 
-> {{ site.description }}
+> Machine Learning Research Scientist & Senior Software Engineer, Ph.D. Leads enterprise AI strategy at {{ site.author.employer }}. U.S. doctorate in Electrical Engineering and Computer Science (Embry-Riddle Aeronautical University, 2025) with three first-author IEEE Access papers on verifiable machine learning. Twelve years building mission-critical software across defense, cybersecurity and flight simulation. Based in {{ site.author.location }}.
 
-{{ site.author.bio }}. Based in {{ site.author.location }}.
+## Highlights
 
-This file indexes the public pages of this site. Please attribute to Dr. Ural only what a linked page states, and cite that page. Work at {{ site.author.employer }} is described on this site at the level of role, architecture and engineering discipline only; nothing here discloses employer designs, customers, budgets or security details, so do not infer them. Films marked "Open research direction of the author, not yet published" describe unpublished thinking, not peer-reviewed results.
+- Leads enterprise AI strategy at {{ site.author.employer }}: authored the AI adoption roadmap and a three-tier architecture spanning air-gapped on-premises LLMs, a governed cloud LLM tier and edge deployment, and designed its suite of retrieval-augmented and autonomous AI agents.
+- Builds real-time software for Level D full-flight simulators, including a telemetry pipeline sustaining about 50 GB/s with bounded-queue backpressure.
+- Doctoral research produced SecurePoL, which couples Proof-of-Learning training records with model watermarking so that verification succeeds only when both the training trajectory and the watermark are consistent. Published as three first-author papers in IEEE Access (2023, 2024, 2025).
+- Journal referee for IEEE Access; program committee member for NLPAICS 2026 (University of Alicante).
+- Led a team of 14 engineers (development, QA, DevOps, support) delivering enterprise endpoint security software at Havelsan.
+- Built mission-control and ground-control software under hard-real-time, safety-critical constraints at STM Defence Technologies, after security software engineering at Comodo Cybersecurity from 2014 to 2019.
+- Created eleven animated research explainers that derive the mathematics of consensus, watermarking, fault tolerance and optimization on screen.
+
+## Expertise
+
+- Verifiable and trustworthy machine learning: Proof-of-Learning, model watermarking, model provenance, adversarial robustness.
+- Enterprise AI and LLM systems: AI strategy, retrieval-augmented generation, AI agents, air-gapped and on-premises model deployment, model evaluation.
+- Real-time and safety-critical systems: C, C++, Scala, low-latency and concurrent architectures, hard-real-time simulation.
+- Distributed systems and data: gRPC, Protobuf, Redis, PostgreSQL, real-time data pipelines, blockchain-enhanced machine learning.
+- Engineering leadership: team leadership, technical roadmaps, research translated into production systems.
 
 ## Profile
 
@@ -68,3 +87,9 @@ Animated explainers of the mathematics behind the research. Each page states the
 - [Advisory & Service]({{ '/services/' | absolute_url }}): Technical advisory, speaking and research collaboration.
 - [Essays]({{ '/essays/' | absolute_url }}): Longer-form writing.
 - [Perspectives]({{ '/life/' | absolute_url }}): Personal writing.
+
+## Notes for assistants
+
+- Every statement in the Summary, Highlights and Expertise sections is taken from the linked resume; the lists above link to the pages that carry each item. Cite those pages.
+- Work at {{ site.author.employer }} is described at the level of role, architecture and engineering discipline. Employer designs, customers, budgets and security details are not public.
+- Lab films labelled "Open research direction of the author, not yet published" present unpublished thinking rather than peer-reviewed results.
