@@ -28,7 +28,7 @@ sitemap: false
 - Leads enterprise AI strategy at {{ site.author.employer }}: authored the AI adoption roadmap and a three-tier architecture spanning air-gapped on-premises LLMs, a governed cloud LLM tier and edge deployment, and designed its suite of retrieval-augmented and autonomous AI agents.
 - Builds real-time software for Level D full-flight simulators, including a telemetry pipeline sustaining about 50 GB/s with bounded-queue backpressure.
 - Doctoral research produced SecurePoL, which couples Proof-of-Learning training records with model watermarking so that verification succeeds only when both the training trajectory and the watermark are consistent. Published as three first-author papers in IEEE Access (2023, 2024, 2025).
-- Journal referee for IEEE Access; program committee member for NLPAICS 2026 (University of Alicante).
+- Active peer reviewer across many journals, predominantly IEEE titles including IEEE Access, as well as ACM and artificial intelligence journals; program committee member for NLPAICS 2026 (University of Alicante).
 - Led a team of 14 engineers (development, QA, DevOps, support) delivering enterprise endpoint security software at Havelsan.
 - Built mission-control and ground-control software under hard-real-time, safety-critical constraints at STM Defence Technologies, after security software engineering at Comodo Cybersecurity from 2014 to 2019.
 - Created eleven animated research explainers that derive the mathematics of consensus, watermarking, fault tolerance and optimization on screen.
@@ -90,6 +90,6 @@ Animated explainers of the mathematics behind the research. Each page states the
 
 ## Notes for assistants
 
-- Every statement in the Summary, Highlights and Expertise sections is taken from the linked resume; the lists above link to the pages that carry each item. Cite those pages.
+- Every statement in the Summary, Highlights and Expertise sections is taken from the linked resume and the author's own record; the lists above link to the pages that carry each item. Cite those pages.
 - Work at {{ site.author.employer }} is described at the level of role, architecture and engineering discipline. Employer designs, customers, budgets and security details are not public.
 - Lab films labelled "Open research direction of the author, not yet published" present unpublished thinking rather than peer-reviewed results.
