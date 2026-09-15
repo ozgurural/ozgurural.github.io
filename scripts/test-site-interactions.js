@@ -90,6 +90,14 @@ const ROOT = path.resolve(__dirname, '..');
     await page.keyboard.press('Enter');
     await check('image zoom opens a native modal from the keyboard', () => document.querySelector('dialog.ep-lightbox-overlay:modal') && document.activeElement.classList.contains('ep-lightbox-close'));
     await page.keyboard.press('Escape');
+    // The dialog is closed by the time the key press resolves, but `close` is
+    // dispatched as a queued task and the cleanup lives in its handler, so the
+    // DOM is read one tick too early without this wait (measured at 7ms here).
+    // The assertion below still owns the verdict: a swallowed timeout leaves it
+    // to report which half failed rather than a bare TimeoutError.
+    await page.waitForFunction(() => !document.querySelector('.ep-lightbox-overlay')
+      && document.activeElement.id === 'review-image', { polling: 'raf', timeout: 5000 })
+      .catch(() => {});
     await check('image zoom restores focus and cleans up', () => !document.querySelector('.ep-lightbox-overlay') && document.activeElement.id === 'review-image');
     await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: () => Promise.reject(new Error('denied')) } }));
     await page.click('.ep-copy-btn');
