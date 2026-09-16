@@ -130,15 +130,15 @@ redirect_from:
   </li>
   <li>
     <span class="when">2020–2021</span>
-    <span class="what">Software Team Lead at <a href="https://www.havelsan.com/en">Havelsan</a>. Led a 14-engineer team delivering the <em>Havelsan DLP</em> data leakage prevention product for defence and government clients.</span>
+    <span class="what">Software Team Lead at <a href="https://www.havelsan.com/en">Havelsan</a>. Led a 14-engineer team delivering the <a href="https://www.havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp"><em>Havelsan DLP</em></a> data leakage prevention product for defence and government clients.</span>
   </li>
   <li>
     <span class="when">2019–2020</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Developed critical mission-control and ground-control systems for <em>Kargu</em>, Turkey's first indigenous loitering-munition (kamikaze) UAV and an internationally recognized autonomous system, alongside the <em>Togan</em> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Developed critical mission-control and ground-control systems for <a href="https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav"><em>Kargu</em></a>, Turkey's first indigenous loitering-munition (kamikaze) UAV and an internationally recognized autonomous system, alongside the <a href="https://www.stm.com.tr/en/togan-multi-rotor-uas"><em>Togan</em></a> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
   </li>
   <li>
     <span class="when">2014–2019</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Led design and architecture of the Secure Web Gateway, enterprise Patch Manager, and the Chromium-based Dragon browser.</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Led design and architecture of the <a href="https://cdome.comodo.com/">Secure Web Gateway</a>, enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a>, and the Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>.</span>
   </li>
   <li>
     <span class="when">2014</span>

@@ -57,6 +57,6 @@ These days I’m a Senior Software Engineer at Avion Full Flight Simulators in t
 
 ## References
 
-[1] [STM Kargu](https://www.stm.com.tr/en/products/kargu)
+[1] [STM Kargu](https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav)
 
-[2] [STM Togan](https://www.stm.com.tr/en/products/togan)
+[2] [STM Togan](https://www.stm.com.tr/en/togan-multi-rotor-uas)

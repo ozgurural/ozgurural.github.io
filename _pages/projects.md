@@ -156,17 +156,17 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
   <li>
     <div class="meta">AI Security &amp; Data Governance · 2020–2021 · Havelsan</div>
     <h3 class="title">DLP foundations for secure enterprise AI</h3>
-    <p class="desc">I led the 14-engineer team that delivered Havelsan's data-leakage-prevention product for defence and government clients. The delivered product is DLP, not a generative-AI system. The relevant AI extension is applying policy enforcement and content inspection to prompts, retrieval indexes, training data, and agent actions; this is not a claim about the historical product's AI integrations.</p>
+    <p class="desc">I led the 14-engineer team that delivered Havelsan's <a href="https://www.havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp">data-leakage-prevention product (Havelsan DLP)</a> for defence and government clients. The delivered product is DLP, not a generative-AI system. The relevant AI extension is applying policy enforcement and content inspection to prompts, retrieval indexes, training data, and agent actions; this is not a claim about the historical product's AI integrations.</p>
   </li>
   <li>
     <div class="meta">Autonomous Systems · 2019–2020 · STM</div>
     <h3 class="title"><a href="/posts/2025/09/autonomous-drones-future/">Mission control for autonomous UAVs</a></h3>
-    <p class="desc">I developed hard-real-time mission-control and ground-control software for Kargu and Togan UAVs. The AI focus is the safety boundary around onboard autonomy: reliable telemetry, operator authority, mission constraints, and deterministic fallback when perception or planning is uncertain. The linked field note separates the systems I built from later directions such as edge inference, collaborative SLAM, and multi-aircraft autonomy.</p>
+    <p class="desc">I developed hard-real-time mission-control and ground-control software for <a href="https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav">Kargu</a> and <a href="https://www.stm.com.tr/en/togan-multi-rotor-uas">Togan</a> UAVs. The AI focus is the safety boundary around onboard autonomy: reliable telemetry, operator authority, mission constraints, and deterministic fallback when perception or planning is uncertain. The linked field note separates the systems I built from later directions such as edge inference, collaborative SLAM, and multi-aircraft autonomy.</p>
   </li>
   <li>
     <div class="meta">AI-Assisted Cybersecurity · 2014–2019 · Comodo</div>
     <h3 class="title">Secure Web Gateway, Patch Manager, and Dragon for AI-assisted defence</h3>
-    <p class="desc">I led design and architecture for Comodo's Secure Web Gateway, enterprise Patch Manager, and Chromium-based Dragon browser. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritise findings; deterministic controls still enforce the policy.</p>
+    <p class="desc">I led design and architecture for Comodo's <a href="https://cdome.comodo.com/">Secure Web Gateway</a>, enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a>, and Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritise findings; deterministic controls still enforce the policy.</p>
   </li>
 </ul>
 
