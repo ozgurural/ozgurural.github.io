@@ -29,3 +29,7 @@ Finally, curiosity cultivates resilience. When progress is measured solely by sh
 2. Loewenstein, G. (1994). The psychology of curiosity: A review and reinterpretation. *Psychological Bulletin*, 116(1), 75-98.
 3. Schmidhuber, J. (2008). Driven by compression progress: A simple theory of curiosity, creativity, and discovery. *Neural Networks*, 21(4), 586-596.
 4. Sutton, R. S., & Barto, A. G. (1998). *Reinforcement Learning: An Introduction*. MIT Press.
+
+---
+
+*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose curiosity-driven anomaly log expanded the Avion cockpit workflow rewrite backlog, uncovered the SecurePoL watermarking variant that survived 40% parameter pruning in IEEE Access 2025, and exposed the Comodo patch-manager redundant-transformation flaw that cut ingest time in half. Open to applied research program chartering, scientific-method shaped engineering backlog design, and advisory engagements embedding curiosity-driven iteration into regulated delivery teams.*

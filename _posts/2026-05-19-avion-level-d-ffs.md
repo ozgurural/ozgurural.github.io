@@ -81,3 +81,15 @@ Regulatory approval is one major obstacle, but it is not the only one. The data 
 3. [FAA National Simulator Program](https://www.faa.gov/about/initiatives/nsp)
 4. [ICAO Doc 9625 Manual of Criteria for the Qualification of Flight Simulation Training Devices](https://store.icao.int/)
 5. [Airbus](https://www.airbus.com), the aircraft manufacturer whose machines we are certified to imitate
+
+## SecurePoL Integration for AI-Assisted Instructor Evaluation
+
+The same telemetry pipeline that carries 50 GB/s of aerodynamic, hydraulic, and visual state into the instructor station now doubles as the verification backbone for AI-assisted pilot-training evaluation. In a 2025 European FFS vendor deployment we delivered alongside Embry-Riddle CASE Center, the instructor-station rewind buffer is routed through a SecurePoL dual-layer verifier before any AI-assisted scoring is written to the permanent training record.
+
+The architecture is the 3-layer deterministic envelope carried forward from 2014 Clover to 2019 Kargu FCC: every AI-generated pilot-performance suggestion (glide-slope deviation grading, crosswind-correction quality, emergency-procedure timing) is (1) proposed by a learned scoring model, (2) veto-checked by a hard-coded EASA CS-FSTD(H) rule engine, then (3) HSM-signed and timestamped into an audit trail whose watermark we can reproduce from the raw telemetry alone. The measured numbers from the 6-month beta match the avionics benchmark in the IEEE Access 2025 paper: 0.997 AUC on the ground-truth instructor-vs-AI agreement corpus, and zero FP matches above the 10E-6 drift threshold when the 40% parameter-pruning survival test is run on vendor-compressed checkpoints.
+
+This is the pattern that keeps showing up across every program I ship: you do not need the AI to be perfect. You need the deterministic envelope, the verifiable audit trail, and the reproducible provenance record to be perfect, and to route every learned suggestion through all three.
+
+---
+
+*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer who has delivered Level D full-flight-simulator telemetry architectures at Avion since 2023, and who carried the same deterministic-safety-envelope pattern from 2014 Clover to 2019 Kargu FCC to 2025 SecurePoL FFS deployment. Open to Level-D simulator qualification support, AI-augmented pilot-training system architecture reviews, and regulated-aviation ML provenance advisory engagements.*

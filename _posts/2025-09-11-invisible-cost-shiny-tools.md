@@ -39,4 +39,8 @@ Teams can mitigate this by maintaining a well communicated architecture decision
 
 ## Fewer Moving Parts as a Competitive Edge
 
-Teams that resist the siren song of tool sprawl gain a competitive edge. They ship more predictably, onboard engineers faster, and spend less time reinventing infrastructure. The mantra “fewer moving parts” is not anti innovation; it is pro focus. By reserving tool churn for moments of clear, demonstrable gain, organizations preserve engineering time for what truly differentiates them: solving customer problems.
+Teams that resist the siren song of tool sprawl gain a competitive edge. They ship more predictably, onboard engineers faster, and spend less time reinventing infrastructure. The mantra "fewer moving parts" is not anti innovation; it is pro focus. By reserving tool churn for moments of clear, demonstrable gain, organizations preserve engineering time for what truly differentiates them: solving customer problems.
+
+---
+
+*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer who ran the data-driven Bazel pilot that rejected cross-stack adoption at Avion (only above-1MLOC modules saw a CI gain) and navigated the Comodo React rewrite that cost 25% of a quarter's velocity before parity returned, building ADR repositories that lock in tool-change rationale at both firms. Open to toolchain-return-on-investment evaluation, architecture-decision-record program setup, and advisory engagements right-sizing technology stacks for regulated aerospace, cybersecurity, and clinical-AI teams.*

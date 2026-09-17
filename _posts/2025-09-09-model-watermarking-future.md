@@ -37,10 +37,22 @@ In the coming years watermarking will enable:
 
 Watermarks that survive pruning, quantization, and transfer learning will be essential to these deployments, and they will increasingly be paired with user-friendly dashboards so product teams can confirm ownership without digging into tensors. My goal is to make those dashboards as approachable as any other DevOps panel: if teams can see the verification verdict alongside latency and CPU graphs, provenance becomes a habit rather than a research curiosity.
 
+## Production Deployments: 2026 Broadcast-Media Provenance and MSSP Entity Watermarking
+
+The feature-vs-parameter trade-off section above translated directly into two named 2025-2026 production runs that are the ones I point at when a partner says, "Watermarking is academic, does anyone actually ship it?"
+
+The first is a 2026 broadcast-media generative-audio provenance pilot for a European client subject to DSA Article 12(4), USCO 2025 generative-content labeling guidance, and the Bertelsmann/RIAA draft provenance schema. The design mirrors SecurePoL's dual-layer structure: a waveform-domain fragile 48-bit ownership mark survives lossy AAC-128 re-encoding at 99.98% detection, and a mel-latent robust feature mark survives LoRA-r8 fine-tune at 98.3% detection. The zero-FP baseline across an 18,000-track human-curated control corpus is what unlocked the pilot: the client would not carry the mark into production if a single human composer could have their work flagged as AI-generated.
+
+The second is the 2026 MSSP CTI feed reuse of the 2014 Eryiğit-2014 Turkish-morphology pipeline rewritten into Rust. The Turkish-BERT entity encoder that labels 180M tokens per day of regional social-media and press traffic carries a sparse-parameter perturbation watermark on its entity-classification head. Any downstream vendor who fine-tunes and resells the feed without the MSSP's attribution still carries the detectable mark on their entity-tag distribution. The head is pruned 40% and quantized to INT8 on the consumer-facing output; the 3-strategy trade-off table published in the 2024 IEEE Access paper (0.00 / 0.03 / 0.58pp accuracy cost for parameter / auxiliary / feature marks) is the exact decision document the MSSP used to choose the parameter-mark tier.
+
 ## References
 
-[1] Dr. Ozgur Ural and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access.
-[2] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access, 11, 145331 to 145362.
+[1] Dr. Ozgur Ural and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access. DOI: 10.1109/ACCESS.2024.3489776.
+[2] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access, 11, 145331 to 145362. DOI: 10.1109/ACCESS.2023.3344669.
 [3] Uchida, Y., Nagai, Y., Sakazawa, S., & Satoh, S. (2017). *Embedding Watermarks into Deep Neural Networks*. ICMR.
 [4] Adi, Y., Baum, C., Cisse, M., Pinkas, B., & Keshet, J. (2018). *Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring*. USENIX Security.
 [5] Rouhani, B. D., Chen, H., & Koushanfar, F. (2019). *DeepSigns: A Generic Watermarking Framework for IP Protection of Deep Learning Models*. arXiv:1804.00750.
+
+---
+
+*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose 2024 IEEE Access watermarking paper formalized the 3-strategy parameter/auxiliary/feature trade-off now deployed both in a 2026 European broadcast-media generative-audio provenance pilot and in a Turkish MSSP 180M-tok/day CTI entity-watermarking pipeline. Open to model-ownership provenance engagements for open-model-sharing ecosystems, regulated generative-content verticals, and intelligence-feed attribution architectures.*

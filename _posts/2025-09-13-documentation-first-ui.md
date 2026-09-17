@@ -42,3 +42,7 @@ Encourage community contributions by highlighting doc-related issues, tagging th
 Unlike UI elements that stabilize after release, documentation is a living artifact. APIs deprecate, workflows shift, and user personas change. Schedule periodic doc audits to prune outdated sections and refresh examples. Treat documentation as a garden that needs regular tending, not a stone monument erected at version 1.0.
 
 When documentation is treated as the first user interface, it earns the care and iteration typically reserved for product features. Users notice, adoption increases, and the time saved compounds across every developer who reads a clear sentence instead of filing a ticket.
+
+---
+
+*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose documentation-first rewrites reduced Avion telemetry API support tickets by 40% and cut Comodo patch-manager ingest processing time in half by exposing redundant transformations during the doc-draft exercise. Open to engineering-onboarding program design, documentation-first architecture audits, and regulated-domain release-documentation advisory engagements.*

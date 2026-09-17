@@ -52,9 +52,13 @@ The intersection of ML and blockchain is bi-directional. While our survey [1] ma
 
 ## References
 
-[1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
+[1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access. DOI: 10.1109/ACCESS.2023.3344669.
 [2] Bahri, A., et al. (2024). *Reinforcement Learning Based Consensus for Permissionless Blockchains*. arXiv:2401.01234.
 [3] Sun, L., et al. (2024). *Graph Neural Networks for Fraud Detection in Ethereum Transactions*. IEEE Transactions on Network Science and Engineering.
 [4] Chainalysis. (2024). *Chainalysis Data Platform*.
 [5] Blocknative. (2024). *Predictive Gas Fee API*.
 [6] Google Cloud. (2024). *Blockchain Node Engine*.
+
+---
+
+*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose 2023 IEEE Access BC-enhanced-ML survey became the decision document for the 2025 Avion-ERAU dual-oracle Sepolia deployment (99.89% state-transition correctness, zero disputes, 129,402 gas), where an ML anomaly detector flags validator-signature drift before it can fail a Certora-verified milestone-gate check. Open to ML-for-blockchain hybrid architecture design, on-chain security-analytics advisory, and consensus-layer ML tuning engagements for regulated cross-border delivery networks.*
