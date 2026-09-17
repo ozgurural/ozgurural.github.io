@@ -1,12 +1,13 @@
----
+﻿---
 categories: technical
 permalink: /blog/securepol-with-watermarking
 title: "SecurePoL with Watermarking: The Jupyter Notebook Suite Behind Three IEEE Access Papers and a European FFS Deployment"
 seo_title: "SecurePoL Watermarking IEEE Access Code Repository"
 date: 2024-01-18
 description: "The official repository of Jupyter notebooks implementing the three watermarking strategies compared across the SecurePoL line of work, with the measured spoofing-resistance numbers reported in the IEEE Access 2024 and 2025 papers and the 2025 Embry-Riddle doctoral dissertation."
+header:
+  og_image: "lab-og/og-pol.png"
 ---
-
 This is the code repository and living documentation for the **SecurePoL dual-layer verification framework**: the combination of Proof-of-Learning training-trajectory verification with three orthogonal model watermarking strategies, published across two IEEE Access papers (2024 and 2025), a 2025 Embry-Riddle doctoral dissertation, and deployed in 2025-2026 as the checkpoint-verification layer inside a European flight-simulator vendor's AI-assisted instructor-evaluation pipeline.
 
 The dissertation write-up lives at [Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking](/publication/2025-dissertation). The peer-reviewed publications are:

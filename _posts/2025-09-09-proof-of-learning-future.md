@@ -1,4 +1,4 @@
----
+﻿---
 title: "Proof of Learning: Building Trust in Future Machine Learning"
 seo_title: "Proof of Learning: Building Trust"
 date: 2025-09-09
@@ -10,8 +10,9 @@ tags:
   - machine-learning
 description: "Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt th..."
 
+header:
+  og_image: "lab-og/og-pol.png"
 ---
-
 Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt the urgency for PoL while helping an aerospace partner document how a safety-critical model was trained, our counterparts were less interested in raw accuracy and more concerned about whether they could audit each gradient step. As machine learning systems become pervasive in critical domains, PoL offers a mechanism to ensure trust and accountability in model provenance.
 
 ## Why PoL Matters in Practice
@@ -43,5 +44,6 @@ In that engagement every training-job completion event (PoL checkpoint hash, wat
 [5] Zhao, Z., Fang, Z., Wang, X., Chen, X., Su, H., Xiao, H., and Zhou, Y. (2024). *Proof-of-Learning with Incentive Security*. arXiv:2404.09005.
 
 ---
+
 
 *Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose SecurePoL IEEE Access 2023/24/25 paper series and ERAU dissertation formalized the 3-mark watermarking + PoL defense, with the 2025 Avion-ERAU dual-oracle Sepolia deployment demonstrating 99.89% state-transition correctness under regulated cross-border gates. Open to regulated-industry PoL deployment advisory, vendor-acceptance baseline audits, and cross-border AI-delivery governance engagements.*

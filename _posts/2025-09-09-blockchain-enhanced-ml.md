@@ -1,4 +1,4 @@
----
+﻿---
 title: "Blockchain-Enhanced Machine Learning: Linking Trust, Data, and Incentives"
 seo_title: "Blockchain-Enhanced Machine Learning"
 date: 2025-09-09
@@ -12,8 +12,9 @@ tags:
   - decentralization
 description: "How blockchain's immutable ledgers and decentralized governance address auditability, provenance, and incentive-alignment challenges in machine-learning pipelines."
 
+header:
+  og_image: "lab-og/og-bcml.png"
 ---
-
 <div class="notice--info" markdown="1">
 **Editor's Note on Distributed Intelligence**
 
@@ -85,5 +86,6 @@ A ledger does not make a model smarter. It makes the model's history checkable, 
 [1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
 
 ---
+
 
 *Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose 2023 IEEE Access blockchain-enhanced-ML survey (DOI 10.1109/ACCESS.2023.3344669) formalized the on-chain-coordination-off-chain-computation pattern that now carries the 2025 Avion-ERAU SecurePoL 9-month cross-border engagement through a Certora-verified 606-line DualOracleVerifier.sol, turning every ERAU JIRA signed webhook and Avion milestone-completion event into a tamper-evident model-provenance record. Open to blockchain-for-ML provenance architecture design, verifiable federated-learning coordination, and Proof-of-Useful-Work protocol advisory engagements for aerospace, defense, and regulated clinical-AI teams.*

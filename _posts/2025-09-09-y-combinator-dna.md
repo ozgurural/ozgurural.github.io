@@ -1,4 +1,4 @@
----
+﻿---
 title: "Fixed-Point Invariants in Biology and Machine Learning: Why the Y Combinator Shows Up in Both DNA Replication and Secure Checkpoint Hashing"
 seo_title: "Fixed Point Biology ML SecurePoL Y Combinator"
 date: 2025-09-09
@@ -12,8 +12,9 @@ tags:
   - fixed-point-theory
 description: "Why the Y combinator's fixed-point recursion pattern is the shared computational invariant behind three systems I have built for three separate clients: SecurePoL checkpoint hashes, a 2023 clinical-AI EKG annotation pipeline, and a 2018 Havelsan DLP's iterative classification loop."
 
+header:
+  og_image: "lab-og/og-gd.png"
 ---
-
 Eleven years shipping mission-critical systems and four years of a Ph.D. in ML security taught me a pattern that crosses every domain boundary: **the systems that keep working under pressure all rely on an explicit, named fixed point.** In lambda calculus the `Y` combinator forces that fixed point into existence, allowing anonymous functions to recurse without ever mentioning their own names. In biology, DNA replication enforces a biochemical fixed point where every copy carries the instructions for its own copying machinery. In my own shipping code, the same structure shows up across three deployed systems in three separate industries.
 
 I did not learn this pattern over Saturday-morning coffee. I learned it on call during 2018 Havelsan DLP Sev-1 incident triage, then re-derived it the hard way during SecurePoL watermark-integrity calibration with ERAU CASE center undergrads, then saw it reproduced independently by a cardiologist calibrating the 2023 EKG image-measurement pipeline. Three unrelated teams, three unrelated domains, one identical computational structure.

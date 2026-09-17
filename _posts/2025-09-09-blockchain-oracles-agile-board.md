@@ -1,4 +1,4 @@
----
+﻿---
 title: "JIRA Meets Smart Contracts: A Production Oracle Architecture for Cross-Border Engineering Governance"
 seo_title: "Blockchain Oracles Jira Cross Border Engineering"
 date: 2025-09-09
@@ -13,8 +13,9 @@ tags:
   - engineering-governance
 description: "The on-chain/off-chain oracle architecture I built for the 2025 Avion-ERAU cross-border SecurePoL delivery program, replacing manual status emails with signed JIRA-to-Smart-Contract oracles that govern milestone payments automatically."
 
+header:
+  og_image: "lab-og/og-oracles.png"
 ---
-
 Traditional agile boards work well inside a single organization with a shared payroll system. They break down the moment a program spans two legal entities in two countries, where every milestone release is tied to a signed payment, an export-control classification, and a regulatory approval that cannot live in a SaaS vendor's database. For the 2025 Avion Full Flight Simulators to Embry-Riddle SecurePoL cross-border delivery, I replaced the manual status spreadsheet with an architecture that is the subject of this post: **a signed JIRA-to-Ethereum oracle that turns sprint-state transitions into smart-contract events, and smart-contract payment conditions into JIRA gating rules.**
 
 This post is not a survey of Chainlink, UMA, or OpenZeppelin. Those are commodity primitives. This post is the measured architecture that governed a 9-month EU-U.S. delivery program with three milestone payments, two export-control reviews, and one FAA-adjacent qualification gate, with zero manual reconciliation errors and zero payment disputes.

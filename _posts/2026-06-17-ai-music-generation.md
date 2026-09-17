@@ -1,4 +1,4 @@
----
+﻿---
 title: "Generative Audio Watermarking: Why AI Music Production Needs SecurePoL-Style Provenance Before It Scales"
 seo_title: "Generative Audio Watermarking SecurePoL Provenance"
 date: 2026-06-17
@@ -12,8 +12,9 @@ tags:
   - provenance
 description: "What 4 years of Proof-of-Learning and model-watermarking research tell us about the missing regulatory and security layer in generative AI audio: verifiable provenance for every second of synthesized output, not just for model weights."
 
+header:
+  og_image: "lab-og/og-gd.png"
 ---
-
 Generative audio models crossed an operational threshold in the first half of 2026. State-of-the-art sequence models now synthesize vocals, instrumentation, and mixing end-to-end at sample rates where expert listeners cannot reliably distinguish the output from a human recording in blind A/B tests. The track embedded below is a raw, uncurated sample from that frontier, produced in 2026 during a pilot evaluation for a European broadcast-media client exploring AI-assisted sound-design pipelines.
 
 <div style="display: flex; justify-content: center; margin: 2rem 0;">

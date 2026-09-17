@@ -1,4 +1,4 @@
----
+﻿---
 title: "ML-Enhanced Blockchain: Toward Intelligent, Adaptive Ledgers"
 seo_title: "ML-Enhanced Blockchain"
 date: 2025-09-09
@@ -12,8 +12,9 @@ tags:
   - consensus
 description: "Machine learning (ML) is increasingly used to make blockchain networks more secure, efficient, and user-friendly. When I co-authored our survey on blockchain..."
 
+header:
+  og_image: "lab-og/og-bcml.png"
 ---
-
 Machine learning (ML) is increasingly used to make blockchain networks more secure, efficient, and user-friendly. When I co-authored our survey on blockchain-enhanced machine learning [1], I kept hearing founders ask the inverse question: "How can ML shore up my ledger right now?" This post collects the playbooks that stuck with me from those conversations and the lab prototypes we built afterward.
 
 ## Why I lean on ML for blockchains
@@ -60,5 +61,6 @@ The intersection of ML and blockchain is bi-directional. While our survey [1] ma
 [6] Google Cloud. (2024). *Blockchain Node Engine*.
 
 ---
+
 
 *Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose 2023 IEEE Access BC-enhanced-ML survey became the decision document for the 2025 Avion-ERAU dual-oracle Sepolia deployment (99.89% state-transition correctness, zero disputes, 129,402 gas), where an ML anomaly detector flags validator-signature drift before it can fail a Certora-verified milestone-gate check. Open to ML-for-blockchain hybrid architecture design, on-chain security-analytics advisory, and consensus-layer ML tuning engagements for regulated cross-border delivery networks.*

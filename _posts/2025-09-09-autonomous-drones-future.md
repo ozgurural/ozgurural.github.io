@@ -1,4 +1,4 @@
----
+﻿---
 title: "Autonomous Flight Systems: Engineering Mission-Critical Autonomy from Tactical UAVs to Verifiable AI"
 date: 2025-09-09
 permalink: /posts/2025/09/autonomous-drones-future/
@@ -11,8 +11,9 @@ tags:
   - safety-critical
   - edge-ai
 description: "Architectural lessons from engineering mission-control and ground-control software for Kargu and Togan UAVs: hard real-time constraints, deterministic safety envelopes, and the boundary between learned models and physical actuators."
+header:
+  og_image: "lab-og/og-det.png"
 ---
-
 Between February 2019 and November 2020, I served as an Expert Software Engineer at STM Defence Technologies in Ankara, Turkey. During this period, my team and I engineered the core mission-control and ground-control architectures for two landmark autonomous aerial systems: [**Kargu**](https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav), Turkey's first indigenous rotary-wing loitering munition platform and an internationally recognized autonomous tactical system, and [**Togan**](https://www.stm.com.tr/en/togan-multi-rotor-uas), an autonomous multi-rotor reconnaissance unmanned aircraft system (UAS).
 
 Developing software for military-grade autonomous flight is fundamentally different from building conventional enterprise or cloud applications. In this domain, software operates under hard real-time, safety-critical constraints: a deadline overrun is not an inconvenient latency spike or a dropped frame; it is an immediate physical failure, loss of vehicle control, or catastrophic mission outcome.
@@ -22,6 +23,7 @@ This deterministic-safety-envelope architecture is not something we invented for
 Below are the architectural foundations, distributed systems patterns, and verification principles required when deploying autonomous intelligence into physical, high-consequence environments.
 
 ---
+
 
 ## The Reality of Hard Real-Time Mission Control
 
@@ -48,6 +50,7 @@ In aerospace engineering, failure prevention begins before the propellers ever t
 
 ---
 
+
 ## Swarm Dynamics and Multi-Aircraft Coordination
 
 Coordinating multiple autonomous airframes in tactical airspace introduces distributed consensus problems under asynchronous and unreliable communication:
@@ -57,6 +60,7 @@ Coordinating multiple autonomous airframes in tactical airspace introduces distr
 3. **RF Denial and State Prediction:** In contested electronic warfare environments where GPS and datalinks are jammed, autonomous aircraft must rely on relative visual navigation, dead reckoning, and collaborative state estimation. The flight stack must maintain relative formation geometry even when external positioning references are completely lost.
 
 ---
+
 
 ## The Core Rule: Learned Perception Inside a Deterministic Safety Envelope
 
@@ -97,6 +101,7 @@ This clean separation between probabilistic intelligence and deterministic enfor
 
 ---
 
+
 ## Cross-Domain Spillover: From Tactical Defense to Enterprise AI
 
 The engineering discipline required to deploy autonomous systems in defense is directly transferable to high-consequence enterprise and industrial applications:
@@ -106,6 +111,7 @@ The engineering discipline required to deploy autonomous systems in defense is d
 - **Critical Infrastructure & Autonomous Logistics:** Commercial drone delivery, autonomous maritime inspection, and robotic manufacturing face identical verification hurdles. Organizations that attempt to deploy autonomous AI without rigorous formal safety envelopes and deterministic fallback architectures will inevitably encounter catastrophic field failures.
 
 ---
+
 
 ## Technical Advisory and Collaboration
 
@@ -118,6 +124,7 @@ If you are an engineering leader, executive, or research organization building m
 - **Projects & Architectures:** [Selected Projects](/projects/)
 
 ---
+
 
 ## References
 

@@ -1,4 +1,4 @@
----
+﻿---
 title: "Flight Simulators Are Becoming the AI Proving Ground"
 date: 2026-05-19
 permalink: /posts/2026/05/avion-level-d-ffs/
@@ -12,8 +12,9 @@ tags:
   - simulation
   - engineering
   - ai
+header:
+  og_image: "lab-og/og-jira.png"
 ---
-
 A Level D full-flight simulator is a qualified training device, not a literal digital twin.
 
 It is a large computational and physical architecture. Its engineering purpose is to reproduce specified aircraft behaviour closely enough for the applicable qualification criteria. It can recreate engine failures, low-visibility landings, and hydraulic system collapses. Approved training may support credit for defined tasks under the applicable authority; it does not make the simulator the aircraft or certify every possible flight condition.
@@ -74,6 +75,7 @@ Regulatory approval is one major obstacle, but it is not the only one. The data 
 
 ---
 
+
 **References**
 
 1. [Avion Group](https://www.aviongroup.aero), where I have been building Level D simulators since 2023
@@ -91,5 +93,6 @@ The architecture is the 3-layer deterministic envelope carried forward from 2014
 This is the pattern that keeps showing up across every program I ship: you do not need the AI to be perfect. You need the deterministic envelope, the verifiable audit trail, and the reproducible provenance record to be perfect, and to route every learned suggestion through all three.
 
 ---
+
 
 *Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer who has delivered Level D full-flight-simulator telemetry architectures at Avion since 2023, and who carried the same deterministic-safety-envelope pattern from 2014 Clover to 2019 Kargu FCC to 2025 SecurePoL FFS deployment. Open to Level-D simulator qualification support, AI-augmented pilot-training system architecture reviews, and regulated-aviation ML provenance advisory engagements.*

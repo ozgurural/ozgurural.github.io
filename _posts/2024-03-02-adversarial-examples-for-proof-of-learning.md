@@ -1,12 +1,13 @@
----
+﻿---
 categories: technical
 permalink: /blog/adversarial-examples-for-proof-of-learning
 title: "Adversarial Example Attacks Against Proof-of-Learning: A Reproduced Threat Reference for Every SecurePoL Defense"
 seo_title: "Adversarial Attacks Proof of Learning Spoofing Reference"
 date: 2024-03-02
 description: "The runnable reference implementation of four spoofing attacks against plain Proof-of-Learning verification, used as the calibration threat model for every SecurePoL defense published in IEEE Access 2024, 2025, and the 2025 Embry-Riddle doctoral dissertation."
+header:
+  og_image: "lab-og/og-pol.png"
 ---
-
 This repository contains the working, maintained reference implementation of four spoofing attacks against Proof-of-Learning protocols. It is deliberately kept as an attack-only codebase, not a defense one. The defenses that defeat these attacks are published separately:
 - [IEEE Access 2024: Feature-based model watermarking as a secondary verification condition](/publication/2024-ieee-access-watermarking)
 - [IEEE Access 2025: SecurePoL full three-strategy framework](/publication/2025-secureproofoflearning)

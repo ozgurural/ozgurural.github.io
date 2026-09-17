@@ -1,4 +1,4 @@
----
+﻿---
 title: "Model Watermarking and the Future of Trustworthy AI"
 date: 2025-09-09
 permalink: /posts/2025/09/model-watermarking-future/
@@ -9,8 +9,9 @@ tags:
   - machine-learning
 description: "Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original tra..."
 
+header:
+  og_image: "lab-og/og-wm.png"
 ---
-
 Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original training process. My work on trustworthy machine learning focuses on how ownership signals can remain detectable after fine-tuning and transfer. Early work shows that deep network weights can carry hidden signatures without affecting accuracy [3], and behavior-based marks can survive aggressive fine-tuning [4,5].
 
 In production settings, watermark checks are only useful when paired with solid observability: low-latency telemetry ingest, reliable data paths, and verification hooks that can flag when a deployed model suddenly stops presenting the expected watermark. This helps teams separate integration failures from potential tampering during release incidents.
@@ -54,5 +55,6 @@ The second is the 2026 MSSP CTI feed reuse of the 2014 Eryiğit-2014 Turkish-mor
 [5] Rouhani, B. D., Chen, H., & Koushanfar, F. (2019). *DeepSigns: A Generic Watermarking Framework for IP Protection of Deep Learning Models*. arXiv:1804.00750.
 
 ---
+
 
 *Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose 2024 IEEE Access watermarking paper formalized the 3-strategy parameter/auxiliary/feature trade-off now deployed both in a 2026 European broadcast-media generative-audio provenance pilot and in a Turkish MSSP 180M-tok/day CTI entity-watermarking pipeline. Open to model-ownership provenance engagements for open-model-sharing ecosystems, regulated generative-content verticals, and intelligence-feed attribution architectures.*
