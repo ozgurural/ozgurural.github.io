@@ -48,6 +48,7 @@ const ROOT = path.resolve(__dirname, '..');
     await page.waitForFunction(() => document.querySelector('#search-hint').textContent.includes('result'));
     await check('search finds historical projects beyond opening paragraphs', () => [...document.querySelectorAll('#search-results a')].some(a => a.pathname === '/projects/'));
     await check('search shows the matching passage in the result excerpt', () => [...document.querySelectorAll('#search-results a')].some(a => a.pathname === '/projects/' && /comodo/i.test(a.querySelector('.search-results__excerpt').textContent)));
+    await check('all announced search results are reachable', () => Number(document.querySelector('#search-hint').textContent.match(/^\d+/)?.[0]) === document.querySelectorAll('#search-results a').length);
     await page.focus('#search-input');
     await page.keyboard.down('Shift');
     await page.keyboard.press('Tab');

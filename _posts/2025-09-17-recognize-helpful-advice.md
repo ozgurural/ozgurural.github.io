@@ -26,10 +26,6 @@ Finally, cultivate a repository of personal data. Document each significant piec
 **References**
 
 1. Kahneman, D., & Tversky, A. (1974). Judgment under uncertainty: Heuristics and biases. *Science*, 185(4157), 1124 to 1131.
-2. Kruger, J., & Dunning, D. (1999). Unskilled and unaware of it: How difficulties in recognizing one's own incompetence lead to inflated self assessments. *Journal of Personality and Social Psychology*, 77(6), 1121 to 1134.
+2. Kruger, J., & Dunning, D. (1999). Unskilled and unaware of it: How difficulties in recognizing one’s own incompetence lead to inflated self assessments. *Journal of Personality and Social Psychology*, 77(6), 1121 to 1134.
 3. Pfeffer, J., & Sutton, R. I. (2006). *Hard Facts, Dangerous Half Truths, and Total Nonsense: Profiting from Evidence Based Management*. Harvard Business School Press.
 4. Tetlock, P. E., & Gardner, D. (2015). *Superforecasting: The Art and Science of Prediction*. Crown.
-
----
-
-*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer who reframed Avion's sub-200ms cockpit telemetry debate into a single precise-mentor question that routed preprocessing next to Redis (avoiding a 3-month Scala-services detour), applied war-story-validated DLP tooling selection heuristics at Havelsan instead of generic best-practices, and wove adversarial-fine-tuning guardrails into every SecurePoL IEEE Access experiment in direct response to ERAU committee feedback framed with explicit failure modes. Open to decision-framework design, technical-mentorship program setup, and advisory engagements grounding executive and research guidance in measurable, first-hand field evidence.*

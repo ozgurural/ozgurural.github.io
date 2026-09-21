@@ -48,5 +48,4 @@ Constraints on small teams also demand humility. The ideal generalist is confide
 Hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that covers the whole product. Their fingerprints are everywhere, from the first commit to the onboarding guide, and that continuity becomes a competitive advantage.
 
 ---
-
-*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer who has scaled engineering teams across Comodo SWG (2016 Mirai-ticket pressure), Havelsan DLP (14-person group with sprint-long role-swaps), and Avion Level-D simulator (50 GB/s telemetry generalist-as-ops-release-QA rotations), turning early broad-scope hires into platform leads without culture splintering. Open to startup and scaleup engineering-hiring framework design, technical-org chart construction, and advisory engagements on breadth-first staffing models for regulated domains.*
+*Dr. Ozgur Ural is a Technical Leader and Senior Software Engineer. He has built and led engineering teams across cybersecurity, aerospace, and simulation industries.*

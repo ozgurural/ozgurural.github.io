@@ -133,7 +133,7 @@
     results.innerHTML = "";
     if (!matches.length) { hint.textContent = "No results for “" + q + "”."; return; }
     hint.textContent = matches.length + " result" + (matches.length > 1 ? "s" : "") + " for “" + q + "”.";
-    matches.slice(0, 12).forEach(function (m) {
+    matches.forEach(function (m) {
       var doc = store[m.ref];
       if (!doc) return;
       var li = document.createElement("li");

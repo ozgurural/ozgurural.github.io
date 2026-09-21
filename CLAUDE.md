@@ -221,6 +221,8 @@ grep -rn '—' _pages _posts _publications | grep -v _site   # must be empty
 
 **Positioning.** Headline title is "Machine Learning Research Scientist & Senior Software Engineer, Ph.D."; never "AI Engineer". The degree is named by its official title, "Ph.D. in Electrical Engineering and Computer Science" (Embry-Riddle, USA, 2025), and the fact that it is a U.S. doctorate is worth foregrounding. Keep `cv/resume.tex`, `_pages/about.md` and `_config.yml` consistent whenever any of this changes.
 
+**Biographical and research claims need evidence.** Editing for authority or SEO must never invent clients, deployments, collaborations, licensing, job responsibilities, benchmark results, clinical studies, regulatory obligations, or publication venues. A plausible connection between two projects is not evidence that they were integrated. Retain established facts; tie new measurements and mechanisms to the source passage that actually reports them. A DOI or Scholar search link does not substantiate surrounding prose by itself. If evidence is unavailable, omit the claim or clearly label a proposed research direction. Do not turn a technical report into a conference paper.
+
 **Employer content.** Work drawn from Avion may describe the author's role, architecture and engineering discipline, but discloses no employer design, customer, budget or security specifics. Say so on the page when it applies.
 
 ## Architecture

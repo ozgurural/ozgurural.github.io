@@ -56,6 +56,16 @@ const lineOf = (src, idx) => (src.slice(0, idx).match(/\n/g) || []).length + 1;
 
 let problems = 0;
 
+// A BOM before front matter can make Jekyll silently treat a post as plain text.
+// PowerShell writes can also stack a second BOM onto an existing one.
+const encodingFiles = [path.join(ROOT, '_config.yml'), ...DIRS.flatMap(dir => walk(path.join(ROOT, dir)))];
+for (const file of encodingFiles) {
+  if (fs.readFileSync(file, 'utf8').startsWith('\uFEFF')) {
+    console.log(`${path.relative(ROOT, path.resolve(file))}:1  Remove the UTF-8 BOM before Jekyll metadata`);
+    problems++;
+  }
+}
+
 for (const dir of DIRS) {
   for (const file of walk(path.join(ROOT, dir))) {
     const rel = path.relative(ROOT, file).replace(/\\/g, '/');

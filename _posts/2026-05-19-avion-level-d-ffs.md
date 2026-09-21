@@ -1,11 +1,12 @@
-﻿---
-title: "Flight Simulators Are Becoming the AI Proving Ground"
+---
+title: "Flight Simulation and the Evaluation of Learning Systems"
+seo_title: "Flight Simulation and Learning Systems"
 date: 2026-05-19
 permalink: /posts/2026/05/avion-level-d-ffs/
 redirect_from:
   - /posts/2025/09/avion-level-d-ffs/
-description: "What if flight simulators are the AI proving ground nobody is talking about? Three years inside Avion."
-excerpt: "What if flight simulators are the AI proving ground nobody is talking about? Three years inside Avion."
+description: "General engineering considerations for evaluating learning systems in simulation, with a proposed research direction and its evidence limits."
+excerpt: "General engineering considerations for evaluating learning systems in simulation."
 categories: technical
 tags:
   - aviation
@@ -15,84 +16,21 @@ tags:
 header:
   og_image: "lab-og/og-jira.png"
 ---
-A Level D full-flight simulator is a qualified training device, not a literal digital twin.
 
-It is a large computational and physical architecture. Its engineering purpose is to reproduce specified aircraft behaviour closely enough for the applicable qualification criteria. It can recreate engine failures, low-visibility landings, and hydraulic system collapses. Approved training may support credit for defined tasks under the applicable authority; it does not make the simulator the aircraft or certify every possible flight condition.
+Since October 2023, I have worked as a Senior Software Engineer at Avion Full Flight Simulators. My work includes software for monitoring, configuring, and diagnosing simulator components.
 
-I have been at [Avion](https://www.aviongroup.aero) since 2023 building these systems. But looking at the sheer volume of data flowing through these pipelines, a compelling question emerges: Could the same deterministic machinery built to train human pilots be used as the ultimate training ground for Reinforcement Learning models? And more provocatively, is someone already doing it?
+This article discusses general engineering considerations and a research question. It does not disclose employer designs, customer information, budgets, or security specifics.
 
-## The Architecture of High-Fidelity Simulation
+## What makes simulation useful for engineering
 
-Regulators certify four tiers of flight simulators. Level A is essentially a consumer application. Level D is the absolute top. To earn that certification, the architecture has to solve several complex problems simultaneously in real time.
+A simulator gives engineers a controlled environment in which to exercise scenarios, observe system behaviour, and investigate failures. Timing, state consistency, and diagnostic information all affect the usefulness of that environment.
 
-It must match the real aircraft controls closely enough for the applicable qualification criteria. It must project a wraparound physical environment with the timing and visual performance required for training. It must behave consistently across the tests and tolerances defined by the qualification programme.
+For a team evaluating a learned component, the questions extend beyond whether it performs well in one demonstration. Which scenarios were tested? Which assumptions does the simulation make? How would the team detect a failure that the model did not encounter during training?
 
-Pass the qualification, and an airline can train crews without burning jet fuel. Fail, and an expensive device may sit idle while the engineering team diagnoses the gap.
+## A possible research direction
 
-## Building the Deterministic Pipeline
+I am interested in how simulation could support the evaluation of learning systems. A proposed study could vary operating conditions, record the model's responses, and examine where performance changes. It would need to distinguish repeatable behaviour within the simulation from evidence about behaviour outside it.
 
-Delivering this level of fidelity requires three relentless architectural pillars.
+**Open research direction of the author, not yet published.** This article reports no SecurePoL integration into a flight simulator, pilot-scoring deployment, or measured result from such a system.
 
-**The Data Plumbing.** A Level D simulator does not just render graphics. It calculates many aerodynamic, hydraulic, and avionics variables in real time, generating large streams of internal state and sensor data. This data has to be captured, synchronized, and streamed within tight timing budgets. If the architecture stutters, the physics and training experience can be affected. That makes the pipeline an interesting candidate for studying the infrastructure needed to reduce, rather than eliminate, the Sim-to-Real gap in autonomous AI training.
-
-**The Flight Model.** Inside the hardware runs a computational model of the aircraft's behaviour, validated against qualification data and expert review. Teams compare changes with the applicable reference data and investigate deviations before release. The model is an approximation with defined tolerances, not a claim of perfect physical identity.
-
-**The Instructor Station.** The instructor needs a control panel that lets them stress the system in highly specific ways. They need to fail an engine here, drop hydraulics there, or blind the windscreen with fog exactly when the pilot commits to land. They also need to scrub time backward and forward, like watching a Netflix episode of *How Not to Land an Airplane*. The most useful object in the building is the rewind button. Pilots learn more from thirty seconds of replay than from thirty minutes of lecture.
-
-The whiteboards are never empty. The coffee is always warmer than the hydraulic oil.
-
-## Are Simulators the Secret AI Proving Grounds?
-
-Aviation regulators operate on extended timelines where a decade is considered a rapid transition. They currently view AI as a predictive maintenance tool or a biometric dashboard. This view might be completely underestimating the underlying data architecture.
-
-For a Reinforcement Learning agent, a high-fidelity simulator can reduce some differences between training data and the real aircraft. It does not make the simulation indistinguishable from ground truth, so validation and transfer checks remain essential.
-
-While the commercial aerospace industry focuses entirely on building human training tools, we have to ask if we are inadvertently laying the exact hardware and software foundations required for autonomous systems. Look at the architecture, and ask yourself if these three realities are already quietly rewriting the sector's future:
-
-**1. The End of Scripted Failures.** Yesterday, an instructor pressed a button to simulate a thunderstorm. Today, we have the pipeline capability to route telemetry from actual fleet encounters directly into the simulator. As we move from scripted scenarios to the automated ingestion of global edge cases, what stops future AI models from training on the collective turbulence of an entire fleet?
-
-**2. The Biometric Baseline.** Because we must capture every micro-correction a human pilot makes, we are building a historic dataset. We map eye movements and record the exact moment human panic introduces a critical lag in rudder response. Are we just debriefing humans, or are we compiling the deterministic data needed to map all the specific mathematical boundaries of human failure for an AI?
-
-**3. The Determinism Trap.** Regulators will naturally demand evidence of repeatable behaviour that Deep Learning does not provide automatically. The first autonomous flight applications will face demanding assurance work. A large simulated success count would still be evidence to evaluate, not a guarantee of safe deployment. If a neural network can land a crippled airliner in a crosswind 10,000 times in a row within a carefully specified simulation, regulators would still need to examine the model, the simulator, the coverage, and the transfer assumptions.
-
-## The Obvious Objection
-
-"Regulators will never let an unverified AI fly passengers." That objection is correct today. Future use would still require evidence, oversight, and an accepted certification path. Three things are converging.
-
-**One.** Aviation regulators are already drafting AI-specific certification frameworks. EASA's AI Roadmap and the FAA's emerging machine-learning safety guidance are funded work products, not whiteboard sessions.
-
-**Two.** Cargo has often preceded passenger operations in aviation. An autonomous cargo aircraft could become an operational test bed for later passenger applications, but the timetable is uncertain.
-
-**Three.** The simulator can serve as both a training and a verification environment, but it is not the only evidence needed to audit an AI system. Regulators would need confidence in the simulator, the model, the test coverage, and the operational controls.
-
-## The Reality Check
-
-If you think this is purely theoretical, look at what is already flying. Xwing has flown autonomous Cessna 208 Caravans on FAA Part 135 cargo routes with safety pilots in the seat, an autonomy stack partially trained against high-fidelity flight simulators. Reliable Robotics is walking the same regulatory path with the same airframe. Wisk Aero, the Boeing-backed autonomous eVTOL program, runs thousands of simulated approaches against the same physics models its real aircraft will fly. DARPA's CODE and ALIAS programs have been plugging reinforcement learning into flight-physics engines for years.
-
-Here is a hypothesis, not a forecast: an autonomous cargo aircraft trained partly in a qualified simulator may eventually be certified for routine commercial operations. Reaching that point would require more than a mature data pipeline, including operational evidence and a regulator-accepted safety case.
-
-Regulatory approval is one major obstacle, but it is not the only one. The data pipeline is an enabling component, not a completed certification case.
-
----
-
-
-**References**
-
-1. [Avion Group](https://www.aviongroup.aero), where I have been building Level D simulators since 2023
-2. [EASA Flight Simulation Training Devices](https://www.easa.europa.eu/en/domains/aircrew-and-medical/flight-simulation-training-devices-fstd)
-3. [FAA National Simulator Program](https://www.faa.gov/about/initiatives/nsp)
-4. [ICAO Doc 9625 Manual of Criteria for the Qualification of Flight Simulation Training Devices](https://store.icao.int/)
-5. [Airbus](https://www.airbus.com), the aircraft manufacturer whose machines we are certified to imitate
-
-## SecurePoL Integration for AI-Assisted Instructor Evaluation
-
-The same telemetry pipeline that carries 50 GB/s of aerodynamic, hydraulic, and visual state into the instructor station now doubles as the verification backbone for AI-assisted pilot-training evaluation. In a 2025 European FFS vendor deployment we delivered alongside Embry-Riddle CASE Center, the instructor-station rewind buffer is routed through a SecurePoL dual-layer verifier before any AI-assisted scoring is written to the permanent training record.
-
-The architecture is the 3-layer deterministic envelope carried forward from 2014 Clover to 2019 Kargu FCC: every AI-generated pilot-performance suggestion (glide-slope deviation grading, crosswind-correction quality, emergency-procedure timing) is (1) proposed by a learned scoring model, (2) veto-checked by a hard-coded EASA CS-FSTD(H) rule engine, then (3) HSM-signed and timestamped into an audit trail whose watermark we can reproduce from the raw telemetry alone. The measured numbers from the 6-month beta match the avionics benchmark in the IEEE Access 2025 paper: 0.997 AUC on the ground-truth instructor-vs-AI agreement corpus, and zero FP matches above the 10E-6 drift threshold when the 40% parameter-pruning survival test is run on vendor-compressed checkpoints.
-
-This is the pattern that keeps showing up across every program I ship: you do not need the AI to be perfect. You need the deterministic envelope, the verifiable audit trail, and the reproducible provenance record to be perfect, and to route every learned suggestion through all three.
-
----
-
-
-*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer who has delivered Level D full-flight-simulator telemetry architectures at Avion since 2023, and who carried the same deterministic-safety-envelope pattern from 2014 Clover to 2019 Kargu FCC to 2025 SecurePoL FFS deployment. Open to Level-D simulator qualification support, AI-augmented pilot-training system architecture reviews, and regulated-aviation ML provenance advisory engagements.*
+My published [Proof-of-Learning research](/publication/2025-dissertation) and my engineering role are distinct work. Any future application connecting them would need its own methods, evidence, and review.

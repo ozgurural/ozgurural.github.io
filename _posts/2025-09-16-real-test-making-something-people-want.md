@@ -31,8 +31,4 @@ Ultimately, the test for whether you are building something people want is not a
 2. Ries, E. (2011). *The Lean Startup*. Crown Business.
 3. Snyder, C. (2003). *Paper Prototyping: The Fast and Easy Way to Design and Refine User Interfaces*. Morgan Kaufmann.
 4. Tullis, T., & Albert, W. (2013). *Measuring the User Experience: Collecting, Analyzing, and Presenting Usability Metrics*. Morgan Kaufmann.
-5. Wharton, C., Rieman, J., Lewis, C., & Polson, P. (1994). The cognitive walkthrough method: A practitioner's guide. In *Usability inspection methods*.
-
----
-
-*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose no-rescue usability sessions with Level-D simulator instructors redirected weeks of polished-chart work into the raw-log-stream "flight mode" navigation that shipped to Avion customers, applied the same think-aloud protocol during Havelsan DLP endpoint-console redesigns, and shaped the SecurePoL verification-dashboard UX around auditor and regulator personas rather than internal ML practitioners. Open to product-discovery framing, regulated-domain usability-program design, and advisory engagements replacing pitch-deck statistics with behavior-grounded evidence for safety-critical and clinical-AI products.*
+5. Wharton, C., Rieman, J., Lewis, C., & Polson, P. (1994). The cognitive walkthrough method: A practitioner’s guide. In *Usability inspection methods*.

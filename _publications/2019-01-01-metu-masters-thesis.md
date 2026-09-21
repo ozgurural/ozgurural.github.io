@@ -1,43 +1,24 @@
 ---
 title: "Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data"
-seo_title: "Cyber Security Event Detection from Turkish Twitter | METU MS Thesis"
+seo_title: "Cyber Security Event Detection from Turkish Twitter"
 collection: publications
 category: theses
 permalink: /publication/2019-metu-masters-thesis
-excerpt: "2019 METU M.S. thesis introducing a morphological-normalization and per-entity anomaly-scoring pipeline for Turkish cyber-security event detection. The morphological-normalization module is now licensed and deployed in a European MSSP's Turkish-language OSINT feed, serving 80+ managed-security customers."
+excerpt: "Master's thesis introducing NLP methods for detecting cyber-security events in Turkish social media and news streams, advised by Prof. Cengiz Acartürk and the basis of the later ICISSP 2021 paper."
 date: 2019-01-01
-venue: "Master's Thesis, Middle East Technical University (Ankara, Turkey)"
+venue: "Master's Thesis"
 paperurl: "https://open.metu.edu.tr/handle/11511/43747"
-citation: "Ural, O. (2019). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data. Master's Thesis in Cyber Security, Middle East Technical University. Advisor: Prof. Cengiz Acartürk."
+citation: "Ural, O. (2019). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data. Master's Thesis, Middle East Technical University, Ankara, Turkey."
 ---
-Master of Science thesis in Cyber Security at Middle East Technical University (METU), Ankara, advised by [Prof. Cengiz Acartürk](https://acarturk.net/). This thesis is the full methodological write-up behind the later co-authored ICISSP 2021 conference publication: [Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data](/publication/AutomaticDetectionCyberSecurity).
 
-[Full text on METU Open Archive](https://open.metu.edu.tr/handle/11511/43747) | [Animated walkthrough of the method in the Research Lab](/lab/cyber-events/) | [Code repository on GitHub](https://github.com/ozgurural/MS-Thesis)
+Master's thesis in Cyber Security at Middle East Technical University, advised by [Prof. Cengiz Acartürk](https://acarturk.net/). It builds a system that detects cyber-security events from two live Turkish sources, a Twitter stream and newspaper data, and it is the work later extended into the co-authored [ICISSP 2021 paper](/publication/AutomaticDetectionCyberSecurity).
 
-## The Research Gap It Closed
-At the time of writing (2019), no published system that I was aware of detected Turkish-language cyber-security events from live public streams. English-language keyword detectors and sentiment classifiers failed catastrophically on Turkish text because of Turkish's agglutinative morphology: a single lexical stem can produce 60-120 legal surface forms, and a bag-of-words model treats every form as an unrelated token. Running a standard English detector on 9.4 million tokens of Turkish social-media text produced zero detected incidents on the ground-truth anchor incident used for evaluation. That is the scale of the gap.
+## The problem it takes on
 
-## Three-Stage Pipeline
-1. **Dual-source collection.** Selenium/BeautifulSoup scrapers for 14 Turkish newspaper archives; authenticated Twitter 1% stream collector. Minhash LSH dedup reduces 14.3M raw documents to 4.8M.
-2. **ITU Turkish NLP morphological normalization (Eryiğit, 2014, DOI 10.3115/v1/E14-2001).** Every surface form projected back onto its first listed root before vector math. Vocabulary compressed 4.6x: 982,400 tokens → 211,700 roots. This single step moves detection from zero events to the operational headline result.
-3. **Per-entity anomaly scoring (no labelled corpus required).** Keyword vector learned from 48 hours post ground-truth event. Entities exceeding 99.5th percentile co-occurrence rate with the vector are flagged as candidate incidents.
+Security incidents are discussed publicly before they are announced officially, so an open stream carries the signal early. The obstacle is that genuine events are a handful in a thousand posts, and Turkish has no large annotated security corpus to train on. The thesis therefore learns its vocabulary from an incident whose ground truth is already known, then treats the size of that keyword set as a tuning problem between missing events and flooding the queue with false ones.
 
-## Measured Headline Results (28-day evaluation window)
-| Metric | Thesis value |
-|---|---|
-| Ground-truth event detected on day of occurrence | Yes (11 hours after first Twitter report, 26 hours before official vendor advisory) |
-| 14-day rolling false-positive rate | 27.1% (below the 30% operational SOC-analyst triage budget) |
-| Candidate incidents flagged / manually confirmed | 138 / 101 |
-| Two-annotator Cohen's kappa (security relevance) | 0.78 |
-| End-to-end throughput (i7-7700K, post dedup) | ~8,200 documents / second |
+## Why the language matters
 
-## The Methodology That Carried Over to Every Later Program
-The most durable contribution of this thesis is not the pipeline itself. It is the three-part experimental-design rule that I now apply to every SecurePoL experimental design (2023 survey, 2024 feature-based, 2025 SecurePoL):
-1. **State an explicit operational tolerance budget** (e.g., < 30% 14-day FPR) before tuning any parameter, rather than optimizing abstract F1.
-2. **Measure the preprocessing layer independently** (e.g., normalization vs. no normalization) before touching any model or classifier.
-3. **Attach a deployment-sized cost** (e.g., 1 SOC analyst, 40 hours/week) to every claimed performance number.
+Turkish is agglutinative, so a single stem produces a combinatorial family of surface forms that a bag-of-words model reads as unrelated tokens. The thesis addresses this before the classifier rather than inside it, by normalising forms back onto their stems so the statistical evidence concentrates instead of scattering. This is the finding that carried into the published paper.
 
-## The Module That Escaped Into Production
-In 2024 a European managed-security-service provider licensed the Rust-rewritten morphological-normalization module from this thesis for use in their Turkish-language open-source intelligence feed. As of 2026 it is deployed across 12 sidecar nodes, processing ~180 million tokens/day with a production vocabulary-compression factor of 4.3x (remarkably close to the thesis's 4.6x lab result). The 27.1% ICISSP-paper false-positive rate is the quarterly tuning baseline against which every live feed release is compared. The feed has surfaced multiple regional events not captured by English-language upstream vendors, including a 2022 ransomware campaign affecting 14 Turkish municipalities.
-
-[Licensed module and MSSP engagement details are documented in the ICISSP 2021 presentation post](/posts/2021/02/icissp-presentation/).
+The full text is available in [METU's open archive](https://open.metu.edu.tr/handle/11511/43747), and there is an [animated explainer](/lab/cyber-events/) of the approach in the Research Lab.

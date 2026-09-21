@@ -36,7 +36,3 @@ Automation also reduces reliance on shortcuts. Continuous integration, comprehen
 Teams that avoid quick fixes build long-term velocity. Their codebases remain clean, onboarding is smoother, and incidents are rarer. The cumulative effect of disciplined engineering practices is a product that can adapt quickly to new requirements without collapsing under its own weight.
 
 In the end, the fastest path is often the one that looks slowest. Investing time to understand and resolve underlying issues pays dividends in reliability and developer happiness. The myth of the quick fix dissolves when teams recognize that true velocity comes from building sturdy foundations, not stacking unstable hacks.
-
----
-
-*Dr. Ozgur Ural is a U.S.-PhD (Embry-Riddle) ML security researcher and senior software engineer whose postmortem-driven root-cause rewrites replaced the Avion telemetry API's 60-second timeout band-aid with a query redesign that eliminated peak-season latency spikes, and unwound the Comodo patch-manager hard-coded environment tangle that had accrued during five expedient releases. Open to technical-debt remediation audits, firefighter-to-root-cause culture programs, and advisory engagements replacing band-aid release patterns with durable architectural guardrails.*
