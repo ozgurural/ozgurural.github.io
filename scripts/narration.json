@@ -51,6 +51,27 @@
     "Measure task success, timing and cost. Check generated scenes against physical evidence.",
     "Build a system that can adopt better intelligence without losing its timing contract."
   ],
+  "level-d": [
+    "A simulator is fast on average. Can one late response still break its timing budget?",
+    "The numbers are regulation, not goals. A ceiling of 150 milliseconds, input to response.",
+    "Every stage spends it. Image generation takes the largest bite.",
+    "Not a target. A gate. Miss it and the hours flown do not count.",
+    "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
+    "A fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
+    "Mean frame time is 8.6 milliseconds, half the budget. But a deadline is never met on average.",
+    "Count the frames instead. Four hours is 864,000 of them.",
+    "One bad frame in a thousand, a 99.9% success rate, is 864 stutters a session.",
+    "And that assumes failures spread evenly. They cluster, so the real thing is worse.",
+    "A simulator is not one computer. It is a rack, all publishing into one frame.",
+    "The frame ends with the last host: latency is a maximum.",
+    "Reliability composes by multiplication. Nine hosts at three nines give 99.1% clean.",
+    "One straggler is enough. A single host at 19 milliseconds makes the frame late for everyone.",
+    "So the budget is allocated and enforced per host. A system average constrains nobody.",
+    "None of it is real unless it is instrumented while the session runs.",
+    "Trust the overrun counter. Step time is sampled, so a spike hides between polls.",
+    "One bus overruns, the rest stay clean, and the engineer knows before the qualification test does.",
+    "Determinism is not optimised in at the end. It is a budget, enforced every frame, and proven by the instrument you ship with it."
+  ],
   "cyberevent": [
     "The bank app is down. Can you catch that signal in a flood of ordinary posts?",
     "The difficulty is the ratio. In an open Turkish stream, real events are a handful in a thousand.",

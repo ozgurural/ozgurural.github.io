@@ -2,7 +2,7 @@
 permalink: /lab/
 title: "Research Lab"
 description: "Block Race, Model Heist Detector, SecurePoL, Redundancy Reactor, Gradient Pinball, ML Oracles and more. Real research math, animated from the equation up."
-excerpt: "Eleven cinematic explainers, grouped by what they are: five from my own IEEE Access and ICISSP papers on proof-of-learning, watermarking, blockchain-enhanced ML and rare-event detection, one architecture experiment connecting AI inference to real-time execution, three animating foundational results credited to their authors, and two open questions labelled as unpublished. Each animates the real mathematics, derived rather than hand-waved."
+excerpt: "Twelve cinematic explainers, grouped by what they are: five from my own IEEE Access and ICISSP papers on proof-of-learning, watermarking, blockchain-enhanced ML and rare-event detection, one from the hard-real-time simulator systems I engineer, one architecture experiment connecting AI inference to real-time execution, three animating foundational results credited to their authors, and two open questions labelled as unpublished. Each animates the real mathematics, derived rather than hand-waved."
 header:
   og_image: "lab-og/og-lab.png"
 ---
@@ -11,7 +11,7 @@ header:
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Eleven cinematic explainers, grouped by what they are. Five animate results from my own papers on proof-of-learning, model watermarking, blockchain-enhanced ML and rare-event detection. One is an unpublished architecture experiment connecting AI inference to real-time execution. Three animate foundational results that belong to other people, credited as such. Two are open questions I am still working on, labelled so they are not mistaken for reviewed work. The films distinguish published results from teaching models and proposed experiments, with sources and assumptions stated on their pages.
+    Twelve cinematic explainers, grouped by what they are. Five animate results from my own papers on proof-of-learning, model watermarking, blockchain-enhanced ML and rare-event detection. One comes from the hard-real-time systems I engineer. One is an unpublished architecture experiment connecting AI inference to real-time execution. Three animate foundational results that belong to other people, credited as such. Two are open questions I am still working on, labelled so they are not mistaken for reviewed work. The films distinguish published results from teaching models and proposed experiments, with sources and assumptions stated on their pages.
   </p>
   <div class="lab-hero__actions">
     <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>
@@ -50,12 +50,23 @@ header:
   </a>
 </nav>
 
+<h3 class="lab-deck-heading">From the systems I engineer</h3>
+<p class="lab-deck-note">Hard real time as it is actually regulated and measured, drawn from my work on Level D full-flight simulators. No employer design is disclosed.</p>
+
+<nav class="lab-mission-deck" aria-label="Films from engineering practice">
+  <a class="lab-mission-card" href="/lab/level-d-60hz/">
+    <span class="lab-mission-card__code">06</span>
+    <strong>Determinism at 60 Hz</strong>
+    <span>A deadline is never met on average: the 150 ms qualification gate, 864,000 frames a session, and the straggler host that owns the frame.</span>
+  </a>
+</nav>
+
 <h3 class="lab-deck-heading">Architecture experiments</h3>
 <p class="lab-deck-note">Executable design studies with explicit assumptions. Proposed architectures, not claims of deployment or qualification.</p>
 
 <nav class="lab-mission-deck" aria-label="Films exploring proposed architectures">
   <a class="lab-mission-card" href="/lab/determinism/">
-    <span class="lab-mission-card__code">06</span>
+    <span class="lab-mission-card__code">07</span>
     <strong>AI Meets the Deadline</strong>
     <span>Where should inference run? Test asynchronous proposals, expiry, fallback and resource contention around a 60 Hz execution loop.</span>
   </a>
@@ -66,17 +77,17 @@ header:
 
 <nav class="lab-mission-deck" aria-label="Films explaining foundational results">
   <a class="lab-mission-card" href="/lab/gradient-pinball/">
-    <span class="lab-mission-card__code">07</span>
+    <span class="lab-mission-card__code">08</span>
     <strong>Gradient Pinball</strong>
     <span>How machines learn: the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise. <em>After Polyak, Nesterov and Dauphin et al.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/block-race/">
-    <span class="lab-mission-card__code">08</span>
+    <span class="lab-mission-card__code">09</span>
     <strong>Block Race</strong>
     <span>Why "6 confirmations" is a probability, not a promise: Bitcoin's §11 double-spend math, animated. <em>After Nakamoto.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/redundancy-reactor/">
-    <span class="lab-mission-card__code">09</span>
+    <span class="lab-mission-card__code">10</span>
     <strong>Redundancy Reactor</strong>
     <span>Superlinear safety, until correlation installs a floor that destroyed Ariane 5. <em>Classical TMR and the Ariane 5 inquiry.</em></span>
   </a>
@@ -87,12 +98,12 @@ header:
 
 <nav class="lab-mission-deck" aria-label="Films on open research directions">
   <a class="lab-mission-card" href="/lab/oracles/">
-    <span class="lab-mission-card__code">10</span>
+    <span class="lab-mission-card__code">11</span>
     <strong>ML &amp; Blockchain Oracles</strong>
     <span>By what mechanism can a deterministic chain accept a claim about a model it cannot re-execute?</span>
   </a>
   <a class="lab-mission-card" href="/lab/universal-jira/">
-    <span class="lab-mission-card__code">11</span>
+    <span class="lab-mission-card__code">12</span>
     <strong>Universal Jira Board</strong>
     <span>Can prediction markets price and settle engineering work without a central planner?</span>
   </a>

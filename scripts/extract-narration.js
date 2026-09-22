@@ -13,6 +13,7 @@ const PREFIX = {
   "gradient-pinball.js": "gradient-pinball",
   "bcml.js": "bcml",
   "determinism.js": "determinism",
+  "level-d.js": "level-d",
   "cyberevent.js": "cyberevent",
   "jira.js": "jira",
   "model-heist.js": "model-heist",

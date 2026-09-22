@@ -1211,6 +1211,7 @@
 
     // drawn from the author's engineering practice
     "det-film":        "Open research direction of the author, not yet published &middot; synthetic scheduling experiment &middot; no employer design disclosed",
+    "lvd-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion &middot; limits per FAA&nbsp;Part&nbsp;60 / EASA CS-FSTD(A) &middot; no employer design disclosed",
 
     // results that belong to other people, animated with attribution
     "gd-film":         "Momentum after Polyak 1964 and Nesterov 1983 &middot; saddle-point prevalence after Dauphin et al., NeurIPS 2014",
@@ -1535,6 +1536,7 @@
       "bcml-film":       { root: 146.83, scale: [0,2,3,5,7,9,10], tempo: 46, cutoff: 880,  pad: [0,7], bright: 0.5,  prog: [0,5,3,4] }, // D dorian - systems, sober
       "jira-film":       { root: 146.83, scale: [0,2,4,5,7,9,11], tempo: 54, cutoff: 950,  pad: [0,4], bright: 0.6,  prog: [0,3,4,5] }, // D major - optimistic
       "det-film":        { root: 110.00, scale: [0,2,3,5,7,8,10], tempo: 60, cutoff: 760,  pad: [0,7], bright: 0.4,  prog: [0,5,0,4] }, // A minor - metronomic, exacting
+      "lvd-film":        { root: 110.00, scale: [0,2,3,5,7,8,10], tempo: 60, cutoff: 760,  pad: [0,7], bright: 0.4,  prog: [0,5,0,4] }, // A minor - metronomic, exacting
       "cyb-film":        { root: 138.59, scale: [0,1,4,5,7,8,11], tempo: 38, cutoff: 640,  pad: [0,5], bright: 0.35, prog: [0,4,5,4] }  // C# double harmonic - signal in noise
     };
 
@@ -1565,6 +1567,7 @@
       "jira-film":       [[0,0,1],[2,1,1],[4,2,1.5],[5,4,2],[4,6,2]],
       // strictly on the beat: the metronome is the character
       "det-film":        [[0,0,1],[0,2,1],[2,4,1],[0,6,2]],
+      "lvd-film":        [[0,0,1],[0,2,1],[2,4,1],[0,6,2]],
       // sparse and irregular, a signal surfacing out of a gap
       "cyb-film":        [[0,0,2],[4,3,1.5],[3,5,3]]
     };

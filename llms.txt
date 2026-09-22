@@ -31,7 +31,7 @@ sitemap: false
 - Active peer reviewer across many journals, predominantly IEEE titles including IEEE Access, as well as ACM and artificial intelligence journals; program committee member for NLPAICS 2026 (University of Alicante).
 - Led a team of 14 engineers (development, QA, DevOps, support) delivering enterprise endpoint security software at Havelsan.
 - Built mission-control and ground-control software under hard-real-time, safety-critical constraints at STM Defence Technologies, after security software engineering at Comodo Cybersecurity from 2014 to 2019.
-- Created eleven animated research explainers that derive the mathematics of consensus, watermarking, fault tolerance and optimization on screen.
+- Created twelve animated research explainers that derive the mathematics of consensus, watermarking, fault tolerance, real-time systems and optimization on screen.
 
 ## Expertise
 

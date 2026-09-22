@@ -15,9 +15,9 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
     <p class="desc">Authored Avion's enterprise AI strategy and built the platform that presents it. The reference architecture separates on-premises inference, governed cloud APIs, and edge workloads. It covers engineering knowledge retrieval, repository assistance, proposals, and training debriefs. The interactive view describes the design; it is not evidence that every proposed agent is deployed. <a href="/enterprise-ai-architecture.html"><strong>Explore the interactive reference architecture &rarr;</strong></a></p>
   </li>
   <li>
-    <div class="meta">Interactive · 11 films</div>
+    <div class="meta">Interactive · 12 films</div>
     <h3 class="title"><a href="/lab/">Research Lab: interactive experiments</a></h3>
-    <p class="desc">Eleven interactive films cover distributed consensus, model watermarking, proof-of-learning, fault tolerance, and gradient descent. Each pairs a visual explanation with technical notes and references. Films run approximately two to four minutes; use the chapter controls to revisit a mechanism.</p>
+    <p class="desc">Twelve interactive films cover distributed consensus, model watermarking, proof-of-learning, fault tolerance, hard real-time simulation, and gradient descent. Each pairs a visual explanation with technical notes and references. Films run approximately two to four minutes; use the chapter controls to revisit a mechanism.</p>
   </li>
 </ul>
 
