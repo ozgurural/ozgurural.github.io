@@ -9,7 +9,10 @@ const puppeteer = require('puppeteer');
 const BASE = process.env.FILM_BASE || 'http://localhost:4001';
 const slugs = fs.readdirSync(path.join(__dirname, '../_pages/embed'))
   .filter(name => name.endsWith('-embed.md'))
-  .map(name => name.replace('-embed.md', '')).sort();
+  .map(name => name.replace('-embed.md', '')).sort()
+  // Optional slugs on the command line narrow the run, so one film can be
+  // re-run on its own when chasing an intermittent failure.
+  .filter(name => process.argv.length <= 2 || process.argv.slice(2).includes(name));
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 (async () => {

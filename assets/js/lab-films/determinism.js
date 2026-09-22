@@ -22,17 +22,10 @@
     ctx.fillStyle = color || C.ink; ctx.textAlign = align || 'left';
     ctx.fillText(value, x, y);
   }
-  function box(ctx, x, y, w, h, label, sub, color) {
-    ctx.fillStyle = '#101e32'; ctx.strokeStyle = color || C.blue; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.roundRect(x,y,w,h,10); ctx.fill(); ctx.stroke();
-    text(ctx,label,x+w/2,y+32,18,color,'center');
-    if (sub) text(ctx,sub,x+w/2,y+58,13,C.muted,'center');
-  }
   function line(ctx, x1,y1,x2,y2,color) {
     ctx.beginPath(); ctx.strokeStyle=color || C.blue; ctx.lineWidth=2;
     ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
   }
-  function dot(ctx,x,y,color,r) { ctx.beginPath();ctx.fillStyle=color;ctx.arc(x,y,r || 6,0,Math.PI*2);ctx.fill(); }
   function head(ctx, title, note) {
     text(ctx,title,48,88,27,C.ink);
     text(ctx,note,48,119,14,C.muted);
@@ -63,28 +56,46 @@
   }
   function build() {
     var film=window.LabAnim.create('#det-film',{width:960,height:540});
+    var normal=window.DeadlineModel.run({delay:80,ttl:150});
     film.scene('The model can wait. Can the system?',28,function(s){
+      /* Two clocks on one time axis, read from the same model the page runs:
+         the controller ticks every 16.67 ms whatever happens, while inference
+         calls land at their own pace. The quantity that moves is how many
+         ticks pass while a call is still out, so the one slow call is seen
+         to span five of them rather than being described as "longer". */
+      var WIN=700, X0=210, X1=912, ms=function(v){return X0+(X1-X0)*v/WIN;};
+      var calls=normal.events.filter(function(e){return e.at<WIN;});
       s.canvas(function(t,ctx){
-        head(ctx,'AI MEETS THE DEADLINE','A design experiment: learning above a 60 Hz execution loop');
-        box(ctx,48,170,260,80,'AI PLANNER','variable inference time',C.purple);
-        box(ctx,350,170,260,80,'CONTROLLER','16.67 ms per tick',C.blue);
-        box(ctx,652,170,260,80,'PHYSICAL WORLD','keeps moving',C.amber);
-        line(ctx,308,210,350,210);line(ctx,610,210,652,210);
-        var phase=(t%4)/4;
-        dot(ctx,48+864*phase,282,C.purple,8);
-        for(var i=0;i<48;i++) {
-          var x=48+i*18;line(ctx,x,313,x,333,C.blue);
-          if(i<Math.floor((t*12)%48))dot(ctx,x,355,C.blue,3);
+        head(ctx,'AI MEETS THE DEADLINE','Two clocks on one axis: the first 700 ms of the synthetic trace');
+        var now=Math.max(0,Math.min(WIN,(t-0.8)*26));
+        text(ctx,'CONTROLLER',48,196,16,C.blue);text(ctx,'every 16.67 ms',48,216,12,C.muted);
+        text(ctx,'AI INFERENCE',48,276,16,C.purple);text(ctx,'variable time',48,296,12,C.muted);
+        line(ctx,X0,236,X1,236,'#24344c');line(ctx,X0,312,X1,312,'#24344c');
+        var ticks=0;
+        for(var k=0;k*normal.dt<=now;k++){var x=ms(k*normal.dt);line(ctx,x,180,x,236,C.blue);ticks++;}
+        var slow=0,longest=null;
+        calls.forEach(function(e){
+          if(e.at>now)return;
+          var end=Math.min(e.done,now),over=e.latency>normal.dt;
+          ctx.fillStyle=over?C.red:C.purple;ctx.globalAlpha=0.9;
+          ctx.fillRect(ms(e.at),262,Math.max(3,ms(end)-ms(e.at)),34);ctx.globalAlpha=1;
+          if(over){slow++;longest=e;}
+        });
+        if(longest){
+          var spanned=Math.min(longest.done,now)-longest.at;
+          text(ctx,spanned.toFixed(0)+' ms = '+(spanned/normal.dt).toFixed(1)+' controller ticks',ms(longest.at),254,13,C.red);
+          ctx.fillStyle='rgba(252,98,85,0.10)';ctx.fillRect(ms(longest.at),180,ms(Math.min(longest.done,now))-ms(longest.at),56);
         }
-        text(ctx,'Model quality',48,389,20,C.purple);
-        text(ctx,'Timing',367,389,20,C.blue);
-        text(ctx,'Useful action',680,389,20,C.amber);
+        line(ctx,ms(now),172,ms(now),320,C.ink);
+        text(ctx,Math.round(now)+' ms',ms(now),340,13,C.ink,'center');
+        text(ctx,'Ticks: '+ticks,48,388,20,C.blue);
+        text(ctx,'Inference calls: '+calls.filter(function(e){return e.at<=now;}).length,300,388,20,C.purple);
+        text(ctx,'Longer than one tick: '+slow,640,388,20,slow?C.red:C.muted);
       });
       lower(s, "AI can plan the next move. But what happens when its answer arrives after the system needed it?", 0.8);
       lower(s, "At sixty hertz, the controller gets sixteen point six seven milliseconds. A model call can take longer.", 10);
       lower(s, "Connect two clocks: variable inference time and a fixed execution deadline. Let us test that boundary.", 19);
     },{subtitle:'Timing and decision quality are separate requirements.'});
-    var normal=window.DeadlineModel.run({delay:80,ttl:150});
     film.scene('Move inference out of the waiting path',28,function(s){
       s.canvas(function(t,ctx){compare(ctx,normal,Math.min(360,Math.floor(t/27*360)),
         'SAME DELAY PATTERN. DIFFERENT SCHEDULING.','Synthetic trace: 8 ms inference, plus 80 ms on every fourth request');});
@@ -93,19 +104,33 @@
       lower(s, "Here, controller costs are fixed and resources isolated. We measure timing, not whether an action is useful.", 19);
     },{subtitle:'Cyan is on time. Amber is fallback. Neither proves task success.'});
     film.scene('Every proposal needs an admission contract',28,function(s){
+      /* The age of the proposal the controller is using, job by job across the
+         whole six-second trace. It climbs while no new answer arrives and drops
+         when one is admitted, so the one slow call is seen pushing it through
+         the limit and the controller falling back until a fresh one lands.
+         Every point is a row of the model's own output, not a staged case. */
+      var TTL=150, YMAX=250, PX0=110, PX1=912, PY0=178, PY1=338;
+      var px=function(i){return PX0+(PX1-PX0)*i/359;}, py=function(a){return PY1-(PY1-PY0)*Math.min(a,YMAX)/YMAX;};
       s.canvas(function(t,ctx){
-        head(ctx,'AN ANSWER NEEDS AN EXPIRY DATE','Example contract: observation time, context version, validated action limits');
-        var caseNo=Math.floor(t/7)%4;
-        var labels=['FRESH PROPOSAL','EXPIRED PROPOSAL','WRONG CONTEXT','NO RESPONSE'];
-        var ages=[42,188,60,400],ver=['matches','matches','changed','unknown'];
-        box(ctx,48,166,270,90,labels[caseNo],'age '+ages[caseNo]+' ms',caseNo?C.amber:C.purple);
-        box(ctx,355,166,245,90,'ADMISSION','age + context + limits',C.blue);
-        box(ctx,647,166,265,90,caseNo?'FALLBACK':'ACCEPT UPDATE',caseNo?'continue baseline control':'atomic handoff',caseNo?C.amber:C.green);
-        line(ctx,318,211,355,211);line(ctx,600,211,647,211);
-        var phase=(t%7)/7;dot(ctx,48+864*phase,289,caseNo?C.amber:C.green,7);
-        text(ctx,'Example age limit: 150 ms',48,339,20,C.blue);
-        text(ctx,'Context: '+ver[caseNo],492,339,20,C.muted);
-        text(ctx,'A freshness check cannot establish action safety.',48,390,19,C.amber);
+        head(ctx,'AN ANSWER NEEDS AN EXPIRY DATE','Admit a proposal only if its observation is recent and its context still matches');
+        var upto=Math.max(0,Math.min(359,Math.floor((t-1)/24*360)));
+        text(ctx,'age',48,PY0+4,13,C.muted);text(ctx,'250 ms',48,PY0+22,12,C.muted);text(ctx,'0',96,PY1+4,12,C.muted);
+        line(ctx,PX0,PY1,PX1,PY1,'#24344c');
+        ctx.setLineDash([6,5]);line(ctx,PX0,py(TTL),PX1,py(TTL),C.red);ctx.setLineDash([]);
+        text(ctx,'limit '+TTL+' ms',PX1,py(TTL)-8,13,C.red,'right');
+        var admitted=0,fallback=0;
+        for(var i=1;i<=upto;i++){
+          var a=normal.async[i],p=normal.async[i-1];
+          if(a.fresh)admitted++;else fallback++;
+          if(a.age===null||p.age===null)continue;
+          line(ctx,px(i-1),py(p.age),px(i),py(a.age),a.fresh?C.green:C.amber);
+        }
+        var cur=normal.async[upto];
+        line(ctx,px(upto),PY0-6,px(upto),PY1,C.ink);
+        var state=cur.age===null?'WAITING FOR A FIRST PROPOSAL':cur.fresh?'ADMITTED  age '+cur.age.toFixed(0)+' ms':'EXPIRED  age '+cur.age.toFixed(0)+' ms, using fallback';
+        text(ctx,state,48,370,19,cur.fresh?C.green:C.amber);
+        text(ctx,'Admitted: '+admitted+'   Fallback: '+fallback,560,370,16,C.muted);
+        text(ctx,'A freshness check cannot establish action safety.',48,398,15,C.amber);
       });
       lower(s, "Asynchrony changes the failure mode. The loop may stay on time while using an answer about a world that has already changed.", 0.8);
       lower(s, "Attach an observation timestamp and a context version. Check both before use, and define the fallback when a proposal expires.", 10);
@@ -120,23 +145,50 @@
       lower(s, "Count deadline misses and fallback use. Measure task success separately. An on-time system can still be useless.", 19);
     },{subtitle:'The failure trace matters as much as the successful demo.'});
     film.scene('Use better AI to find better tests',28,function(s){
+      /* A twelve-case sweep laid out as a map rather than read out one number
+         at a time: extra delay across, operating condition down. Each cell is
+         a full run of the same model, filled in turn. Once the map is complete
+         its pattern is the finding: the asynchronous design misses deadlines
+         only in the rows with shared-resource stalls, whatever the delay or
+         outage, while delay and outage cost freshness instead. */
+      var DEL=[0,80,240], ROWS=[
+        {label:'isolated',sub:'online',shared:false,outage:false},
+        {label:'isolated',sub:'1 s outage',shared:false,outage:true},
+        {label:'shared stalls',sub:'online',shared:true,outage:false},
+        {label:'shared stalls',sub:'1 s outage',shared:true,outage:true}];
+      var cells=[];
+      ROWS.forEach(function(r){DEL.forEach(function(d){
+        var p=window.DeadlineModel.run({delay:d,shared:r.shared,outage:r.outage,ttl:150});
+        cells.push({miss:p.asyncStats.misses,block:p.directStats.misses,fresh:p.asyncStats.fresh/360});
+      });});
+      var GX=250, GY=176, CW=220, CH=46;
       s.canvas(function(t,ctx){
-        head(ctx,'WHAT CAN WE BUILD NEXT?','An experiment backlog, not a claimed deployment');
-        var labels=['GENERATE CASES','REPLAY FAILURES','COMPARE DESIGNS'];
-        var subs=['AI proposes variations','fixed seeds + event logs','timing + task success'];
-        for(var i=0;i<3;i++) {
-          var x=48+i*296;box(ctx,x,175,272,86,labels[i],subs[i],i===Math.floor(t/9)%3?C.green:C.blue);
-          if(i<2)line(ctx,x+272,218,x+296,218);
+        head(ctx,'WHAT CAN WE BUILD NEXT?','An experiment backlog, not a claimed deployment: 12 synthetic probes');
+        DEL.forEach(function(d,j){text(ctx,'+'+d+' ms delay',GX+j*CW+CW/2-6,164,14,C.purple,'center');});
+        var prog=Math.max(0,(t-0.6)/1.75), shown=Math.min(12,Math.floor(prog)+1);
+        ROWS.forEach(function(r,i){
+          text(ctx,r.label,48,GY+i*CH+20,15,r.shared?C.red:C.blue);
+          text(ctx,r.sub,48,GY+i*CH+37,12,C.muted);
+          DEL.forEach(function(d,j){
+            var k=i*3+j,c=cells[k],x=GX+j*CW,y=GY+i*CH;
+            ctx.fillStyle='#101e32';ctx.fillRect(x,y,CW-12,CH-6);
+            if(k>=shown)return;
+            // each run fills over its own slot: the counters climb to the model's totals
+            var f=Math.min(1,prog-k), miss=Math.round(c.miss*f), fr=c.fresh*f;
+            ctx.fillStyle=miss?'rgba(252,98,85,0.22)':'rgba(88,196,221,0.14)';ctx.fillRect(x,y,(CW-12)*f,CH-6);
+            ctx.fillStyle=C.amber;ctx.fillRect(x,y+CH-9,(CW-12)*fr,3);
+            text(ctx,miss+' async miss'+(miss===1?'':'es'),x+10,y+19,14,miss?C.red:C.blue);
+            text(ctx,'fresh AI '+(100*fr).toFixed(0)+'%',x+10,y+34,12,C.amber);
+            text(ctx,'blocking '+Math.round(c.block*f),x+CW-22,y+34,12,C.muted,'right');
+          });
+        });
+        text(ctx,'Each cell: async misses, fresh-AI share, and blocking-design misses for the same run.',48,398,12,C.muted);
+        if(prog>=12){
+          // the finding: frame the only rows where the async loop misses a deadline
+          var k=Math.min(1,(t-21.8)/3);
+          if(k>0){ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.strokeRect(40,GY+2*CH-4,(GX+3*CW-40)*k,2*CH-2);}
+          if(t>23)text(ctx,'Here only shared stalls cost the async loop a deadline; delay and outage cost freshness.',48,380,15,C.ink);
         }
-        // Replay actual model variations rather than a decorative progress bar.
-        var caseIndex=Math.min(11,Math.floor(t/2.25));
-        var delays=[0,80,240],d=delays[caseIndex%3],shared=caseIndex>=6,offline=caseIndex%6>=3;
-        var probe=window.DeadlineModel.run({delay:d,shared:shared,outage:offline,ttl:150});
-        text(ctx,'SYNTHETIC PROBE '+(caseIndex+1)+' / 12',48,307,16,C.muted);
-        text(ctx,'Extra delay: '+d+' ms',48,346,21,C.purple);
-        text(ctx,'Async misses: '+probe.asyncStats.misses,492,346,21,shared?C.red:C.blue);
-        text(ctx,'Outage: '+(offline?'on':'off')+' | Shared stalls: '+(shared?'on':'off'),48,389,15,C.muted);
-        text(ctx,'Fresh AI: '+(100*probe.asyncStats.fresh/360).toFixed(1)+'%',492,389,20,C.amber);
       });
       lower(s, "Use robot models and world models to propose harder tests. Replay failures in a controlled environment.", 0.8);
       lower(s, "Measure task success, timing and cost. Check generated scenes against physical evidence.", 10);
