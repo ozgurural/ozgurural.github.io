@@ -2,7 +2,7 @@
 permalink: /lab/
 title: "Research Lab"
 description: "Block Race, Model Heist Detector, SecurePoL, Redundancy Reactor, Gradient Pinball, ML Oracles and more. Real research math, animated from the equation up."
-excerpt: "Eleven cinematic explainers, grouped by what they are: five from my own IEEE Access and ICISSP papers on proof-of-learning, watermarking, blockchain-enhanced ML and rare-event detection, one from the hard-real-time simulator systems I engineer, three animating foundational results credited to their authors, and two open questions labelled as unpublished. Each animates the real mathematics, derived rather than hand-waved."
+excerpt: "Eleven cinematic explainers, grouped by what they are: five from my own IEEE Access and ICISSP papers on proof-of-learning, watermarking, blockchain-enhanced ML and rare-event detection, one architecture experiment connecting AI inference to real-time execution, three animating foundational results credited to their authors, and two open questions labelled as unpublished. Each animates the real mathematics, derived rather than hand-waved."
 header:
   og_image: "lab-og/og-lab.png"
 ---
@@ -11,7 +11,7 @@ header:
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Eleven cinematic explainers, grouped by what they are. Five animate results from my own papers on proof-of-learning, model watermarking, blockchain-enhanced ML and rare-event detection. One comes from the hard-real-time systems I engineer. Three animate foundational results that belong to other people, credited as such. Two are open questions I am still working on, labelled so they are not mistaken for reviewed work. Each film derives the real mathematics from the equation up, written for a technical reader, and every formula appears exactly as it does in the paper, including the approximations the papers themselves admit to.
+    Eleven cinematic explainers, grouped by what they are. Five animate results from my own papers on proof-of-learning, model watermarking, blockchain-enhanced ML and rare-event detection. One is an unpublished architecture experiment connecting AI inference to real-time execution. Three animate foundational results that belong to other people, credited as such. Two are open questions I am still working on, labelled so they are not mistaken for reviewed work. The films distinguish published results from teaching models and proposed experiments, with sources and assumptions stated on their pages.
   </p>
   <div class="lab-hero__actions">
     <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>
@@ -50,14 +50,14 @@ header:
   </a>
 </nav>
 
-<h3 class="lab-deck-heading">From the systems I engineer</h3>
-<p class="lab-deck-note">Hard real time as it is actually regulated and measured, drawn from my work on Level D full-flight simulators. No employer design is disclosed.</p>
+<h3 class="lab-deck-heading">Architecture experiments</h3>
+<p class="lab-deck-note">Executable design studies with explicit assumptions. Proposed architectures, not claims of deployment or qualification.</p>
 
-<nav class="lab-mission-deck" aria-label="Films from engineering practice">
+<nav class="lab-mission-deck" aria-label="Films exploring proposed architectures">
   <a class="lab-mission-card" href="/lab/determinism/">
     <span class="lab-mission-card__code">06</span>
-    <strong>Determinism at 60 Hz</strong>
-    <span>A deadline is never met on average: the 150 ms qualification gate, 864,000 frames a session, and the straggler host that owns the frame.</span>
+    <strong>AI Meets the Deadline</strong>
+    <span>Where should inference run? Test asynchronous proposals, expiry, fallback and resource contention around a 60 Hz execution loop.</span>
   </a>
 </nav>
 

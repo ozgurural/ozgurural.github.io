@@ -1,1107 +1,180 @@
-/* =============================================================================
-   determinism.js — cinematic explainer: what "hard real time" costs in a
-   Level D full-flight simulator.
-
-   Four scenes. Every number on stage is either a published qualification
-   requirement or arithmetic derived from one:
-
-     1. contract    The 150 ms transport-delay gate (FAA 14 CFR Part 60 /
-                    EASA CS-FSTD(A)); helicopters are held to 100 ms
-     2. tail        16.67 ms per frame at 60 Hz — and why the mean is the
-                    wrong statistic: E[overruns] = N·p over a session
-     3. composition Distributed sim: the frame ends when the LAST host
-                    reports, so reliability multiplies and latency composes
-                    as a max, not a mean
-     4. instrument  You cannot certify what you do not measure
-
-   Deliberate honesty constraints:
-     • 150 ms is a REGULATORY CEILING on total transport delay, not a frame
-       budget and not a target to design to.
-     • E[K] = N·p assumes independence between frames. Real overruns cluster
-       (a GC pause or a network stall spans frames), so independence is the
-       OPTIMISTIC case — stated on stage.
-     • No employer architecture is shown. The topology is the generic
-       multi-host layout every Level D device uses, and the numbers are
-       illustrative unless cited.
-   ============================================================================= */
+/* AI Meets the Deadline. All traces are the author's synthetic teaching model.
+   Open research direction of the author, not yet published.
+   No employer design, certification result, or measured model benchmark. */
 (function () {
-  "use strict";
-
+  'use strict';
   function boot() {
-    if (!window.LabAnim) return setTimeout(boot, 60);
-    if (!document.getElementById("det-film")) return;
-    if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
-    build();
-    appendix();
+    if (!window.LabAnim || !window.DeadlineModel) return setTimeout(boot, 60);
+    if (document.getElementById('det-film')) build();
+    experiment();
   }
-
-  var P = window.LabAnim.palette,
-    E = window.LabAnim.ease,
-    lerp = window.LabAnim.lerp,
-    clamp01 = window.LabAnim.clamp01;
-  var CY = P.sky,
-    AMB = P.amber,
-    RED = P.rose,
-    GRN = P.good,
-    GREY = P.faint,
-    PURP = P.violet,
-    WHITE = P.white,
-    MUTED = P.muted;
-
-  var MONO = "'JetBrains Mono', ui-monospace, monospace";
-
-  var _lowerCount = 0,
-    _pend = null;
-
-  function flushLower(s, nextAt) {
-    if (!_pend) return;
-    var eff = _pend.out || Infinity;
-    if (s && _pend.s === s && typeof nextAt === "number") eff = Math.min(eff, nextAt - 1.1);
-    if (isFinite(eff)) _pend.s.fadeOut(_pend.c, { at: Math.max(eff, _pend.at + 1.2), dur: 0.9 });
-    _pend = null;
+  var mono = "'JetBrains Mono', monospace", count = 0, pending = null;
+  function lower(s, html, at) {
+    if (pending && pending.s === s) s.fadeOut(pending.c, { at: at - 0.7, dur: 0.5 });
+    var c = s.caption(html, { px: 0, py: 540, anchor: 'bottom-left', align: 'left', panel: true });
+    s.fadeIn(c, { at: at, dur: 0.5 });
+    s.audio('determinism_' + count++, at);
+    pending = { s: s, c: c };
   }
-
-  function lower(s, html, at, o) {
-    s.audio("determinism_" + _lowerCount++, at);
-    o = o || {};
-    flushLower(s, at);
-    var c = s.caption(html, {
-      px: 0,
-      py: 540,
-      anchor: "bottom-left",
-      align: "left",
-      size: o.size,
-      panel: true
-    });
-    s.fadeIn(c, { at: at, dur: o.dur || 1.4 });
-    _pend = { s: s, c: c, at: at, out: o.out || null };
-    return c;
+  var C = { ink: '#ecf3ff', muted: '#a8b9d0', blue: '#58c4dd', green: '#83c167', red: '#fc6255', amber: '#fbbf24', purple: '#ac94ff' };
+  function text(ctx, value, x, y, size, color, align) {
+    ctx.font = '500 ' + (size || 18) + 'px ' + mono;
+    ctx.fillStyle = color || C.ink; ctx.textAlign = align || 'left';
+    ctx.fillText(value, x, y);
   }
-
-  function rr(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
-    else ctx.rect(x, y, w, h);
+  function box(ctx, x, y, w, h, label, sub, color) {
+    ctx.fillStyle = '#101e32'; ctx.strokeStyle = color || C.blue; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(x,y,w,h,10); ctx.fill(); ctx.stroke();
+    text(ctx,label,x+w/2,y+32,18,color,'center');
+    if (sub) text(ctx,sub,x+w/2,y+58,13,C.muted,'center');
   }
-
-  function box(ctx, h, x, y, w, hh, color, alpha, label, sub) {
-    ctx.fillStyle = h.rgba(color, alpha * 0.12);
-    rr(ctx, x, y, w, hh, 9);
-    ctx.fill();
-    ctx.strokeStyle = h.rgba(color, alpha * 0.85);
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    if (label) {
-      ctx.fillStyle = h.rgba(WHITE, alpha);
-      ctx.font = "bold 13px " + MONO;
-      ctx.textAlign = "center";
-      ctx.fillText(label, x + w / 2, y + (sub ? hh / 2 - 1 : hh / 2 + 4));
-      if (sub) {
-        ctx.fillStyle = h.rgba(MUTED, alpha * 0.9);
-        ctx.font = "11px " + MONO;
-        ctx.fillText(sub, x + w / 2, y + hh / 2 + 15);
-      }
-      ctx.textAlign = "left";
+  function line(ctx, x1,y1,x2,y2,color) {
+    ctx.beginPath(); ctx.strokeStyle=color || C.blue; ctx.lineWidth=2;
+    ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  }
+  function dot(ctx,x,y,color,r) { ctx.beginPath();ctx.fillStyle=color;ctx.arc(x,y,r || 6,0,Math.PI*2);ctx.fill(); }
+  function head(ctx, title, note) {
+    text(ctx,title,48,88,27,C.ink);
+    text(ctx,note,48,119,14,C.muted);
+  }
+  function grid(ctx, rows, n, x,y,w,h) {
+    // Six rows of sixty release slots. Colour is paired with labels/counters.
+    var cw=w/60,ch=h/6;
+    for(var i=0;i<360;i++) {
+      ctx.fillStyle=i>=n?'#1a293e':rows[i].late?C.red:rows[i].fresh===false?C.amber:C.blue;
+      ctx.globalAlpha=i>=n?0.5:0.95;
+      ctx.fillRect(x+(i%60)*cw,y+Math.floor(i/60)*ch,cw-2,ch-3);
     }
+    ctx.globalAlpha=1;
   }
-
-  /* ============================================================ SCENE 1
-     The 150 ms transport-delay contract. */
-  function sceneContract(film) {
-    film.scene("The 150 Millisecond Contract", 44, function (s) {
-      s.canvas(function (lt, ctx, h) {
-        var op = clamp01(lt / 0.6);
-        ctx.globalAlpha = op;
-
-        /* A transport delay is measured, not declared. Each stage takes a
-           slightly different time on every pass, so the budget is re-measured
-           four times a second and the margin visibly breathes against the
-           ceiling, which is the point: 16 ms of headroom reads as thin when you
-           watch it move. Computed once here because the bar and the slip beat
-           both report it, and drawn from two separate numbers they contradicted
-           each other on screen. Pure in (stage, measurement), so seek is exact. */
-        var meas = Math.floor(lt * 4);
-        function jitS(kk, m) {
-          var v = Math.sin(kk * 31.7 + m * 57.13) * 43758.5453;
-          return (v - Math.floor(v)) - 0.5;
-        }
-        var slipMs = (lt > 25 && lt < 33.4)
-          ? 20 * Math.sin(clamp01((lt - 25) / 8.0) * Math.PI) : 0;
-
-        // The pipeline from control input to the pilot's senses
-        var stages = [
-          { n: "control\ninput", ms: 8, c: CY },
-          { n: "flight\nmodel", ms: 17, c: CY },
-          { n: "systems\n+ dynamics", ms: 25, c: CY },
-          { n: "image\ngeneration", ms: 50, c: PURP },
-          { n: "display\n+ motion", ms: 34, c: AMB }
-        ];
-
-        var x0 = 70,
-          w = 164,
-          gap = 8;
-        for (var i = 0; i < stages.length; i++) {
-          var a = clamp01((lt - 1.0 - i * 0.45) / 0.55);
-          if (a <= 0) continue;
-          ctx.globalAlpha = op * a;
-          var bx = x0 + i * (w + gap);
-          box(ctx, h, bx, 120, w, 74, stages[i].c, a, "", "");
-          ctx.fillStyle = h.rgba(WHITE, a);
-          ctx.font = "bold 13px " + MONO;
-          ctx.textAlign = "center";
-          var parts = stages[i].n.split("\n");
-          ctx.fillText(parts[0], bx + w / 2, 148);
-          ctx.fillText(parts[1], bx + w / 2, 165);
-          ctx.textAlign = "left";
-          if (lt > 4.6) {
-            var mv = clamp01((lt - 4.6 - i * 0.2) / 0.5);
-            ctx.fillStyle = h.rgba(stages[i].c, a * mv);
-            ctx.font = "bold 15px " + MONO;
-            ctx.textAlign = "center";
-            ctx.fillText(stages[i].ms + " ms", bx + w / 2, 214);
-            ctx.textAlign = "left";
-          }
-          if (i < stages.length - 1) {
-            ctx.strokeStyle = h.rgba(GREY, a * 0.7);
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(bx + w, 157);
-            ctx.lineTo(bx + w + gap, 157);
-            ctx.stroke();
-          }
-        }
-        ctx.globalAlpha = op;
-
-        // The regulatory ceiling as a budget bar
-        if (lt > 8) {
-          var bIn = clamp01((lt - 8) / 0.8);
-          ctx.globalAlpha = op * bIn;
-          ctx.fillStyle = h.rgba(MUTED, bIn);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("transport delay budget: pilot input to first response", 70, 275);
-
-          // ceiling track
-          ctx.fillStyle = h.rgba(GREY, bIn * 0.25);
-          rr(ctx, 70, 292, 820, 34, 8);
-          ctx.fill();
-
-          /* A transport delay is measured, not declared. Each stage takes a
-             slightly different time on every pass, so the bar is re-measured
-             four times a second and the margin visibly breathes against the
-             ceiling. That is the point of the scene: 16 ms of headroom is not
-             much, and it reads as not much when you watch it move. The quoted
-             134 stays the typical value; the jitter is a pure function of
-             (stage, measurement) so seek(t) reproduces the frame. */
-          var live = [], total = 0;
-          for (var k = 0; k < stages.length; k++) {
-            live[k] = stages[k].ms * (1 + jitS(k, meas) * 0.075);
-            total += live[k];
-          }
-          var baseTotal = total;
-          total = Math.round(total + slipMs);
-          var fillFrac = clamp01((lt - 9) / 2.4);
-          var acc = 0;
-          for (k = 0; k < stages.length; k++) {
-            var segW = (live[k] / 150) * 820;
-            var shown = clamp01((fillFrac * 150 - acc) / live[k]);
-            if (shown <= 0) break;
-            ctx.fillStyle = h.rgba(stages[k].c, bIn * 0.75);
-            rr(ctx, 70 + (acc / 150) * 820, 292, segW * shown, 34, 6);
-            ctx.fill();
-            acc += live[k];
-          }
-
-          // the hard ceiling
-          ctx.strokeStyle = h.rgba(RED, bIn);
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.moveTo(890, 284);
-          ctx.lineTo(890, 334);
-          ctx.stroke();
-          ctx.fillStyle = h.rgba(RED, bIn);
-          ctx.font = "bold 14px " + MONO;
-          ctx.textAlign = "right";
-          ctx.fillText("150 ms: qualification ceiling", 886, 356);
-          ctx.textAlign = "left";
-
-          if (lt > 12.2) {
-            var tIn = clamp01((lt - 12.2) / 0.6);
-            ctx.fillStyle = h.rgba(GRN, bIn * tIn);
-            ctx.font = "bold 15px " + MONO;
-            var marg = 150 - total;
-            ctx.fillStyle = h.rgba(marg < 8 ? AMB : GRN, bIn * tIn);
-            ctx.fillText("spent: " + total + " ms      margin: " + marg + " ms", 70, 356);
-          }
-          ctx.globalAlpha = op;
-        }
-
-        // The consequence of breaching it
-        if (lt > 22) {
-          var cIn = clamp01((lt - 22) / 0.8);
-          ctx.globalAlpha = op * cIn;
-          box(ctx, h, 70, 400, 380, 66, RED, cIn, "OVER 150 ms", "device does not qualify");
-          box(ctx, h, 510, 400, 380, 66, GREY, cIn, "NOT A PERFORMANCE TARGET", "a regulatory ceiling");
-          ctx.globalAlpha = op;
-        }
-
-        /* "Not a target, a gate. Miss it and the hours flown do not count" is
-           narrated from 23 s over two static boxes. This is what the gate means,
-           drawn over the bar rather than replacing it: let image generation
-           slip 20 ms and the same device goes from 16 ms of margin to 4 ms past
-           the ceiling. The slip runs out and back, so the bar returns to the
-           real 134 ms it spends. */
-        if (lt > 25 && lt < 33.4) {
-          var liveBase = 0;
-          for (var q2 = 0; q2 < stages.length; q2++) {
-            liveBase += stages[q2].ms * (1 + jitS(q2, meas) * 0.075);
-          }
-          var totalNow = liveBase + slipMs;
-          var xEnd = 70 + (liveBase / 150) * 820;
-          var xNow = 70 + (totalNow / 150) * 820;
-          var breach = totalNow > 150;
-          ctx.save();
-          ctx.globalAlpha = op * clamp01((lt - 25) / 0.6) * clamp01((33.4 - lt) / 0.6);
-          ctx.fillStyle = h.rgba(breach ? RED : AMB, 0.8);
-          rr(ctx, xEnd, 292, Math.max(0, xNow - xEnd), 34, 6);
-          ctx.fill();
-          ctx.fillStyle = h.rgba(breach ? RED : AMB, 1);
-          ctx.font = "600 13px " + MONO;
-          ctx.fillText("image generation slips " + slipMs.toFixed(0) + " ms: " + totalNow.toFixed(0) + " ms spent" +
-                       (breach ? ", out of qualification" : ""), 70, 240);
-          ctx.restore();
-        }
-
-        /* The narration brings in the 100 ms rotorcraft ceiling at 33.5 s and
-           the screen never showed it, leaving the scene frozen for its last
-           third. Same bar, second gate. The stage budget happens to sum to
-           exactly 100 ms at the end of image generation (8+17+25+50), so the
-           rotorcraft ceiling lands precisely on that boundary and the whole
-           34 ms display-and-motion stage falls outside it. The same device
-           clears 150 with 16 ms in hand and misses 100 by 34. */
-        if (lt > 34) {
-          var rIn = clamp01((lt - 34) / 1.2);
-          var X100 = 70 + (100 / 150) * 820;
-          var X134 = 70 + (134 / 150) * 820;
-          ctx.save();
-          ctx.globalAlpha = op * rIn;
-
-          ctx.fillStyle = h.rgba(RED, 0.32);
-          ctx.fillRect(X100, 292, (X134 - X100) * E.out(rIn), 34);
-
-          ctx.strokeStyle = h.rgba(AMB, 0.95); ctx.lineWidth = 2.5;
-          ctx.beginPath(); ctx.moveTo(X100, 284); ctx.lineTo(X100, 332); ctx.stroke();
-          ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 12px " + MONO;
-          ctx.textAlign = "center";
-          ctx.fillText("100 ms", X100, 278);
-          ctx.textAlign = "left";
-
-          if (lt > 36.2) {
-            ctx.save(); ctx.globalAlpha = op * clamp01((lt - 36.2) / 0.9);
-            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 13px " + MONO;
-            ctx.fillText("rotorcraft ceiling: 100 ms, reached as image generation ends", 70, 240);
-            ctx.restore();
-          }
-          if (lt > 39.4) {
-            ctx.save(); ctx.globalAlpha = op * clamp01((lt - 39.4) / 0.9);
-            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 13px " + MONO;
-            ctx.fillText("display and motion, all 34 ms of it, falls outside", 70, 260);
-            ctx.restore();
-          }
-          ctx.restore();
-        }
-      });
-
-      lower(
-        s,
-        "A simulator is fast on average. Can one late response still break its timing budget?",
-        1.6
-      );
-      lower(
-        s,
-        "The numbers are regulation, not goals. A ceiling of <strong>150 milliseconds</strong>, input to response.",
-        9.0
-      );
-      lower(
-        s,
-        "Every stage spends it. Image generation takes the largest bite.",
-        16.9
-      );
-      lower(
-        s,
-        "Not a target. A <em>gate</em>. Miss it and the hours flown do not count.",
-        23.0
-      );
-      lower(
-        s,
-        "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
-        33.5,
-        { out: 43.2 }
-      );
-    }, { subtitle: "Transport delay as a qualification gate, not a target." });
+  function compare(ctx,run,n,title,note) {
+    head(ctx,title,note);
+    var a=run.direct.slice(0,n),b=run.async.slice(0,n);
+    text(ctx,'WAIT FOR INFERENCE',48,170,17,C.red);
+    text(ctx,'ASYNCHRONOUS + ADMISSION',492,170,17,C.blue);
+    grid(ctx,run.direct,n,48,193,414,102);grid(ctx,run.async,n,492,193,414,102);
+    var ma=a.filter(function(r){return r.late;}).length,mb=b.filter(function(r){return r.late;}).length;
+    var fresh=b.filter(function(r){return r.fresh;}).length;
+    text(ctx,ma+' deadline misses',48,326,23,C.red);
+    text(ctx,mb+' deadline misses',492,326,23,mb?C.red:C.blue);
+    text(ctx,'360 jobs released over 6 simulated seconds',48,369,14,C.muted);
+    text(ctx,'Fresh AI: '+fresh+' / '+n+' jobs',492,369,16,C.amber);
+    text(ctx,'Cyan: on time | Red: late | Amber: fallback',48,399,13,C.muted);
   }
-
-  /* ============================================================ SCENE 2
-     The tail, not the mean. */
-  function sceneTail(film) {
-    film.scene("The Mean Is the Wrong Statistic", 48, function (s) {
-      s.canvas(function (lt, ctx, h) {
-        var op = clamp01(lt / 0.6);
-        ctx.globalAlpha = op;
-
-        // 60 Hz frame budget
-        var fIn = clamp01(lt / 0.8);
-        ctx.fillStyle = h.rgba(WHITE, op * fIn);
-        ctx.font = "bold 17px " + MONO;
-        ctx.fillText("60 Hz  →  16.67 ms per frame", 70, 66);
-
-        // Histogram of frame times
-        // the histogram hands the stage to the clustering comparison at 37 s
-        var clus = clamp01((lt - 37) / 1.2);
-        var hIn = clamp01((lt - 2.2) / 0.9) * (1 - clus);
-        if (hIn > 0) {
-          ctx.globalAlpha = op * hIn;
-          var bx = 90,
-            by = 330,
-            bw = 640,
-            bh = 210;
-
-          // axis
-          ctx.strokeStyle = h.rgba(GREY, hIn * 0.6);
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(bx, by);
-          ctx.lineTo(bx + bw, by);
-          ctx.stroke();
-
-          // lognormal-ish bars: most frames fast, a thin tail
-          var bins = 26;
-          /* The histogram is being filled, not drawn. A real one wobbles while
-             it is sparse and settles as the count grows, with the amplitude
-             going as one over the root of the count, and the rare over-budget
-             bins on the right settle last because they are the ones with
-             almost no samples in them. That is the scene's whole argument about
-             counting frames rather than averaging them, so it should be visible
-             rather than asserted. Deterministic in (bin, tick): seek(t)
-             reproduces the frame. */
-          var filled = clamp01((lt - 2.6) / 26);            // the session running
-          var nFrames = 1 + filled * filled * 864000;
-          var tick = Math.floor(lt * 5);
-          function wob(i, k) {
-            var v = Math.sin(i * 45.164 + k * 91.7) * 43758.5453;
-            return (v - Math.floor(v)) - 0.5;
-          }
-          for (var i = 0; i < bins; i++) {
-            var reveal = clamp01((lt - 2.6 - i * 0.06) / 0.4);
-            if (reveal <= 0) continue;
-            var ms = 4 + i * 0.8;
-            var z = (Math.log(ms) - Math.log(8.6)) / 0.30;
-            var dens = Math.exp(-0.5 * z * z) / ms;
-            var expected = nFrames * dens;
-            var noise = wob(i, tick) * 2.4 / Math.sqrt(Math.max(1, expected));
-            var hgt = dens * 2300 * reveal * (1 + noise);
-            if (hgt < 0) hgt = 0;
-            var over = ms > 16.67;
-            ctx.fillStyle = h.rgba(over ? RED : CY, hIn * (over ? 0.9 : 0.65));
-            var cw = bw / bins - 3;
-            rr(ctx, bx + i * (bw / bins), by - hgt, cw, hgt, 2);
-            ctx.fill();
-          }
-
-          // budget line
-          var bl = bx + ((16.67 - 4) / (4 + bins * 0.8 - 4)) * bw;
-          ctx.strokeStyle = h.rgba(AMB, hIn);
-          ctx.lineWidth = 2.5;
-          ctx.setLineDash([6, 5]);
-          ctx.beginPath();
-          ctx.moveTo(bl, by - bh);
-          ctx.lineTo(bl, by + 8);
-          ctx.stroke();
-          ctx.setLineDash([]);
-          ctx.fillStyle = h.rgba(AMB, hIn);
-          ctx.font = "bold 13px " + MONO;
-          ctx.fillText("16.67 ms", bl + 8, by - bh + 14);
-
-          // mean marker
-          var meanX = bx + ((8.6 - 4) / (bins * 0.8)) * bw;
-          ctx.strokeStyle = h.rgba(GRN, hIn * 0.9);
-          ctx.beginPath();
-          ctx.moveTo(meanX, by - 40);
-          ctx.lineTo(meanX, by + 8);
-          ctx.stroke();
-          ctx.fillStyle = h.rgba(GRN, hIn);
-          ctx.font = "12px " + MONO;
-          ctx.fillText("mean 8.6 ms", meanX - 34, by + 26);
-          ctx.fillStyle = h.rgba(MUTED, hIn);
-          ctx.fillText("frame time", bx + bw / 2 - 34, by + 48);
-          ctx.globalAlpha = op;
-        }
-
-        // The arithmetic that matters
-        if (lt > 16) {
-          var aIn = clamp01((lt - 16) / 0.8);
-          ctx.globalAlpha = op * aIn;
-          box(ctx, h, 762, 90, 200, 0, CY, 0, "", "");
-          ctx.fillStyle = h.rgba(WHITE, aIn);
-          ctx.font = "bold 14px " + MONO;
-          ctx.fillText("a 4-hour session", 754, 110);
-          ctx.fillStyle = h.rgba(MUTED, aIn);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("N = 60 × 3600 × 4", 754, 138);
-          ctx.fillStyle = h.rgba(CY, aIn);
-          ctx.font = "bold 16px " + MONO;
-          ctx.fillText("= 864,000 frames", 754, 162);
-
-          if (lt > 20) {
-            var r2 = clamp01((lt - 20) / 0.8);
-            ctx.fillStyle = h.rgba(MUTED, aIn * r2);
-            ctx.font = "13px " + MONO;
-            ctx.fillText("p = 10⁻⁵ per frame", 754, 202);
-            ctx.fillStyle = h.rgba(RED, aIn * r2);
-            ctx.font = "bold 16px " + MONO;
-            ctx.fillText("E[overruns] ≈ 8.6", 754, 228);
-          }
-          if (lt > 26) {
-            var r3 = clamp01((lt - 26) / 0.8);
-            ctx.fillStyle = h.rgba(MUTED, aIn * r3);
-            ctx.font = "13px " + MONO;
-            ctx.fillText("p = 10⁻³", 754, 268);
-            ctx.fillStyle = h.rgba(RED, aIn * r3);
-            ctx.font = "bold 16px " + MONO;
-            ctx.fillText("≈ 864 overruns", 754, 294);
-          }
-          ctx.globalAlpha = op;
-        }
-
-        // honesty note
-        if (lt > 36) {
-          var nIn = clamp01((lt - 36) / 0.8);
-          ctx.globalAlpha = op * nIn;
-          ctx.fillStyle = h.rgba(AMB, nIn);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("assumes independent frames: real overruns cluster, so this is the optimistic case", 90, 400);
-          ctx.globalAlpha = op;
-        }
-
-        /* The caption above is the film's own honesty note, and the last thing
-           narrated here is that failures cluster so the real thing is worse.
-           Both were words on a static frame. This shows it: the same 864
-           overruns arranged two ways, with the same amount of ink on screen
-           (640 px at alpha 0.22 against six 24 px bursts at alpha 0.98).
-           Spread evenly they are 1,000 frames apart and nobody notices.
-           In six bursts they are 144 consecutive frames, 2.4 s of frozen
-           visual, which is the difference between a rounding error and a
-           finding at qualification. */
-        if (clus > 0) {
-          var SX = 90, SW = 640, SH = 26;
-          ctx.save();
-          ctx.globalAlpha = clus;
-          ctx.textAlign = "left";
-
-          ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
-          ctx.fillText("THE SAME 864 OVERRUNS, ARRANGED TWO WAYS", SX, 150);
-
-          // even: one every 1,000 frames, indistinguishable from clean
-          var e1 = clamp01((lt - 38.4) / 1.8);
-          ctx.strokeStyle = h.rgba(GREY, 0.45); ctx.lineWidth = 1;
-          ctx.strokeRect(SX, 186, SW, SH);
-          ctx.fillStyle = h.rgba(CY, 0.22 * e1);
-          ctx.fillRect(SX, 186, SW * e1, SH);
-          if (e1 > 0.98) {
-            ctx.save(); ctx.globalAlpha = clus * clamp01((lt - 40.2) / 0.7);
-            ctx.fillStyle = h.rgba("#dbeafe", 1); ctx.font = "600 13px " + MONO;
-            ctx.fillText("spread evenly: one per 1,000 frames, 16.7 s apart", SX, 176);
-            ctx.fillStyle = h.rgba(CY, 1); ctx.font = "12px " + MONO;
-            ctx.fillText("each one isolated, and nobody in the box notices", SX, 232);
-            ctx.restore();
-          }
-
-          // clustered: the same count, six bursts of 144 consecutive frames
-          var c1 = clamp01((lt - 41.2) / 2.0);
-          ctx.strokeStyle = h.rgba(GREY, 0.45); ctx.lineWidth = 1;
-          ctx.strokeRect(SX, 286, SW, SH);
-          for (var b = 0; b < 6; b++) {
-            var bf = clamp01(c1 * 7 - b);
-            if (bf <= 0) continue;
-            ctx.fillStyle = h.rgba(RED, 0.98 * bf);
-            ctx.fillRect(SX + 34 + b * 104, 286, 24, SH);
-          }
-          if (c1 > 0.98) {
-            ctx.save(); ctx.globalAlpha = clus * clamp01((lt - 43.4) / 0.7);
-            ctx.fillStyle = h.rgba("#dbeafe", 1); ctx.font = "600 13px " + MONO;
-            ctx.fillText("clustered: six bursts of 144 consecutive frames", SX, 276);
-            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 12px " + MONO;
-            ctx.fillText("2.4 seconds of frozen visual, six times a session", SX, 332);
-            ctx.restore();
-          }
-
-          if (lt > 44.8) {
-            ctx.save(); ctx.globalAlpha = clus * clamp01((lt - 44.8) / 0.8);
-            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px " + MONO;
-            ctx.fillText("same count, same ink; only one of them is survivable", SX, 372);
-            ctx.restore();
-          }
-          ctx.restore();
-        }
-      });
-
-      lower(
-        s,
-        "A fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
-        1.6
-      );
-      lower(
-        s,
-        "Mean frame time is 8.6 milliseconds, half the budget. But a deadline is never met on average.",
-        9.0
-      );
-      lower(
-        s,
-        "Count the frames instead. Four hours is 864,000 of them.",
-        17.0
-      );
-      lower(
-        s,
-        "One bad frame in a thousand, a 99.9% success rate, is 864 stutters a session.",
-        26.5
-      );
-      lower(
-        s,
-        "And that assumes failures spread evenly. They cluster, so the real thing is worse.",
-        36.5,
-        { out: 47.0 }
-      );
-    }, { subtitle: "864,000 frames a session, and the tail past the deadline." });
-  }
-
-  /* ============================================================ SCENE 3
-     Distributed: the frame ends when the last host reports. */
-  function sceneComposition(film) {
-    film.scene("The Frame Ends When the Last Host Reports", 46, function (s) {
-      s.canvas(function (lt, ctx, h) {
-        // the rack has made its point by 31 s; it clears the stage for the
-        // comparison that closes the scene. everything above multiplies
-        // through op, so this one factor takes the whole first half with it.
-        var handoff = clamp01((lt - 31) / 1.3);
-        var op = clamp01(lt / 0.6) * (1 - handoff);
-        ctx.globalAlpha = op;
-
-        var hosts = [
-          { n: "sim host", ms: 9.1 },
-          { n: "avionics", ms: 7.4 },
-          { n: "display", ms: 11.2 },
-          { n: "visual ch1", ms: 12.8 },
-          { n: "visual ch2", ms: 12.1 },
-          { n: "visual ch3", ms: 13.0 },
-          { n: "sound", ms: 5.2 },
-          { n: "motion", ms: 8.8 },
-          { n: "IOS", ms: 6.0 }
-        ];
-
-        var slowIdx = 5;
-
-        /* The rack is not a photograph. Every host publishes on every frame and
-           each takes a slightly different time, so the frame's cost is a fresh
-           maximum each time. Rolling them shows the argument instead of stating
-           it: you can watch which host is binding the frame change. Six frames a
-           second rather than sixty, because the numbers have to be readable, and
-           the jitter is a pure function of (host, frame) so seek(t) reproduces
-           the picture exactly. */
-        var fr = Math.floor(lt * 6);
-        function jit(i, f) {
-          var v = Math.sin(i * 12.9898 + f * 78.233) * 43758.5453;
-          return (v - Math.floor(v)) - 0.5;
-        }
-        var now = [], maxIdx = 0;
-        for (var q = 0; q < hosts.length; q++) {
-          var lateQ = lt > 20 && q === slowIdx;
-          now[q] = (lateQ ? 19.4 : hosts[q].ms) + jit(q, fr) * (lateQ ? 0.9 : 1.7);
-          if (now[q] > now[maxIdx]) maxIdx = q;
-        }
-
-        for (var i = 0; i < hosts.length; i++) {
-          var a = clamp01((lt - 0.8 - i * 0.2) / 0.5);
-          if (a <= 0) continue;
-          var col = i % 3,
-            row = Math.floor(i / 3);
-          var bx = 70 + col * 200,
-            by = 96 + row * 92;
-          var late = lt > 20 && i === slowIdx;
-          ctx.globalAlpha = op * a;
-          // name left, figure right, on one line: centring the name ran the
-          // three "visual chN" labels straight into their own millisecond value
-          box(ctx, h, bx, by, 172, 62, late ? RED : CY, a, "", "");
-          ctx.fillStyle = h.rgba(late ? RED : WHITE, a);
-          ctx.font = "bold 13px " + MONO;
-          ctx.fillText(hosts[i].n, bx + 12, by + 34);
-          // per-host bar
-          var frac = clamp01(now[i] / 16.67);
-          var grow = clamp01((lt - 3.2) / 1.2);
-          ctx.fillStyle = h.rgba(late ? RED : GRN, a * 0.8);
-          rr(ctx, bx + 12, by + 40, (172 - 24) * frac * grow, 8, 4);
-          ctx.fill();
-          // the one that closed this frame, marked as it changes
-          if (i === maxIdx && lt > 8) {
-            ctx.strokeStyle = h.rgba(late ? RED : AMB, a * 0.95);
-            ctx.lineWidth = 1.5;
-            rr(ctx, bx + 10, by + 38, (172 - 20), 12, 6);
-            ctx.stroke();
-          }
-          ctx.fillStyle = h.rgba(MUTED, a);
-          ctx.font = "11px " + MONO;
-          ctx.textAlign = "right";
-          ctx.fillText(now[i].toFixed(1) + " ms", bx + 160, by + 34);
-          ctx.textAlign = "left";
-          ctx.globalAlpha = op;
-        }
-
-        // the max gate
-        if (lt > 8) {
-          var gIn = clamp01((lt - 8) / 0.8);
-          ctx.globalAlpha = op * gIn;
-          ctx.fillStyle = h.rgba(WHITE, gIn);
-          ctx.font = "bold 16px " + MONO;
-          ctx.fillText("frame time  =  max, not mean", 640, 130);
-          ctx.fillStyle = h.rgba(MUTED, gIn);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("one straggler owns the frame", 640, 156);
-          ctx.globalAlpha = op;
-        }
-
-        // reliability multiplies
-        if (lt > 13) {
-          var rIn = clamp01((lt - 13) / 0.8);
-          ctx.globalAlpha = op * rIn;
-          ctx.fillStyle = h.rgba(WHITE, rIn);
-          ctx.font = "14px " + MONO;
-          ctx.fillText("each host: 99.9% of frames on time", 640, 214);
-          ctx.fillStyle = h.rgba(CY, rIn);
-          ctx.font = "bold 16px " + MONO;
-          ctx.fillText("0.999", 640, 248);
-          ctx.font = "bold 12px " + MONO;
-          ctx.fillText("9", 700, 240);
-          ctx.fillStyle = h.rgba(RED, rIn);
-          ctx.font = "bold 16px " + MONO;
-          ctx.fillText("=  99.1%", 716, 248);
-          ctx.fillStyle = h.rgba(MUTED, rIn);
-          ctx.font = "13px " + MONO;
-          ctx.fillText("≈ 7,800 bad frames in a session", 640, 276);
-          ctx.globalAlpha = op;
-        }
-
-        // straggler callout
-        if (lt > 21) {
-          var sIn = clamp01((lt - 21) / 0.7);
-          ctx.globalAlpha = op * sIn;
-          ctx.strokeStyle = h.rgba(RED, sIn);
-          ctx.lineWidth = 2;
-          ctx.setLineDash([5, 4]);
-          ctx.beginPath();
-          ctx.moveTo(444, 250);
-          ctx.lineTo(636, 300);
-          ctx.stroke();
-          ctx.setLineDash([]);
-          ctx.fillStyle = h.rgba(RED, sIn);
-          ctx.font = "bold 14px " + MONO;
-          ctx.fillText("19.4 ms: everyone waits", 640, 316);
-          ctx.globalAlpha = op;
-        }
-
-        if (lt > 30) {
-          var cIn = clamp01((lt - 30) / 0.8);
-          ctx.globalAlpha = op * cIn;
-          box(ctx, h, 640, 350, 290, 60, AMB, cIn, "BUDGET PER HOST", "not per system");
-          ctx.globalAlpha = op;
-        }
-
-        /* "A system average constrains nobody" is the line narrated across the
-           last third of this scene, and the screen only restated it in a box.
-           Here it is shown. Two racks with the SAME mean frame time, one of
-           which misses the deadline, because the deadline is a maximum and a
-           mean cannot see a maximum. Both means are 10.2 ms: nine hosts at
-           10.24, against eight at 9.1 with one at 19.4 (92.2/9 = 10.24). */
-        if (handoff > 0) {
-          var BY = 360, MS = 4.5, DL = 16.67;      // baseline, px per ms, deadline
-          ctx.save();
-          ctx.globalAlpha = handoff;
-          ctx.textAlign = "left";
-
-          ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
-          ctx.fillText("THE SAME AVERAGE, TWO DIFFERENT RACKS", 130, 168);
-
-          var RACKS = [
-            { at: 130, t0: 32.6, host: [10.24,10.24,10.24,10.24,10.24,10.24,10.24,10.24,10.24],
-              name: "every host at 10.2 ms", col: GRN, verdict: "max 10.2 ms: frame on time" },
-            { at: 470, t0: 35.8, host: [9.1,9.1,9.1,9.1,9.1,19.4,9.1,9.1,9.1],
-              name: "eight fast, one slow",  col: RED, verdict: "max 19.4 ms: frame is late" }
-          ];
-
-          for (var r = 0; r < RACKS.length; r++) {
-            var R = RACKS[r], gp = clamp01((lt - R.t0) / 2.6);
-            if (gp <= 0) continue;
-            ctx.fillStyle = h.rgba("#dbeafe", 0.9); ctx.font = "600 13px " + MONO;
-            ctx.fillText(R.name, R.at, 206);
-
-            ctx.strokeStyle = h.rgba(RED, 0.5); ctx.lineWidth = 1.2;
-            ctx.setLineDash([4, 4]);
-            ctx.beginPath(); ctx.moveTo(R.at - 8, BY - DL * MS); ctx.lineTo(R.at + 188, BY - DL * MS); ctx.stroke();
-            ctx.setLineDash([]);
-
-            var sum = 0;
-            for (var i = 0; i < R.host.length; i++) {
-              sum += R.host[i];
-              var gi = clamp01(gp * 10 - i);
-              if (gi <= 0) continue;
-              var bh = R.host[i] * MS * E.out(gi);
-              var over = R.host[i] > DL;
-              ctx.fillStyle = h.rgba(over ? RED : CY, 0.78);
-              ctx.fillRect(R.at + i * 20, BY - bh, 14, bh);
-              if (over && gi > 0.9) {
-                ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 1.6;
-                ctx.strokeRect(R.at + i * 20, BY - bh, 14, bh);
-              }
-            }
-            ctx.strokeStyle = h.rgba(GREY, 0.4); ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(R.at - 8, BY); ctx.lineTo(R.at + 188, BY); ctx.stroke();
-
-            if (gp > 0.98) {
-              var vf = clamp01((lt - R.t0 - 2.6) / 0.7);
-              ctx.save(); ctx.globalAlpha = handoff * vf;
-              ctx.fillStyle = h.rgba(MUTED, 1); ctx.font = "12px " + MONO;
-              ctx.fillText("mean " + (sum / R.host.length).toFixed(1) + " ms", R.at, BY + 24);
-              ctx.fillStyle = h.rgba(R.col, 1); ctx.font = "600 13px " + MONO;
-              ctx.fillText(R.verdict, R.at, BY + 46);
-              ctx.restore();
-            }
-          }
-
-          if (lt > 40.4) {
-            ctx.save(); ctx.globalAlpha = handoff * clamp01((lt - 40.4) / 1.0);
-            ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 14px " + MONO;
-            ctx.fillText("identical averages; only one of them qualifies", 130, 438);
-            ctx.restore();
-          }
-          ctx.restore();
-        }
-      });
-
-      lower(
-        s,
-        "A simulator is not one computer. It is a rack, all publishing into one frame.",
-        1.6
-      );
-      lower(
-        s,
-        "The frame ends with the <strong>last</strong> host: latency is a maximum.",
-        8.6
-      );
-      lower(
-        s,
-        "Reliability composes by multiplication. Nine hosts at three nines give 99.1% clean.",
-        13.6
-      );
-      lower(
-        s,
-        "One straggler is enough. A single host at 19 milliseconds makes the frame late for everyone.",
-        22.1
-      );
-      lower(
-        s,
-        "So the budget is allocated and enforced <em>per host</em>. A system average constrains nobody.",
-        30.6,
-        { out: 45.0 }
-      );
-    }, { subtitle: "Latency composes as a maximum, reliability as a product." });
-  }
-
-  /* ============================================================ SCENE 4
-     You cannot certify what you do not measure. */
-  function sceneInstrument(film) {
-    film.scene("You Cannot Certify What You Do Not Measure", 42, function (s) {
-      s.canvas(function (lt, ctx, h) {
-        // the table is the anchor for the first half; once the trace below it
-        // takes over it steps back rather than competing. everything in the
-        // table multiplies through op, so dimming it is this one factor.
-        var demo = clamp01((lt - 24) / 1.4);
-        var op = clamp01(lt / 0.6) * (1 - demo);
-        ctx.globalAlpha = op;
-
-        var rows = [
-          { n: "FAVT", over: 0, step: 8.9, mem: 412, ok: true },
-          { n: "TCAS", over: 0, step: 7.1, mem: 268, ok: true },
-          { n: "IOS", over: 3, step: 15.8, mem: 902, ok: false },
-          { n: "DU1", over: 0, step: 9.4, mem: 331, ok: true }
-        ];
-
-        var tIn = clamp01((lt - 0.8) / 0.8);
-        if (tIn > 0) {
-          ctx.globalAlpha = op * tIn;
-          ctx.fillStyle = h.rgba(MUTED, tIn);
-          ctx.font = "12px " + MONO;
-          ctx.fillText("BUS", 96, 128);
-          ctx.textAlign = "right";
-          ctx.fillText("OVERRUNS", 520, 128);
-          ctx.fillText("STEP MS", 660, 128);
-          ctx.fillText("MEM MB", 800, 128);
-          ctx.textAlign = "left";
-          ctx.strokeStyle = h.rgba(GREY, tIn * 0.4);
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(90, 140);
-          ctx.lineTo(870, 140);
-          ctx.stroke();
-          ctx.globalAlpha = op;
-        }
-
-        for (var i = 0; i < rows.length; i++) {
-          var a = clamp01((lt - 1.6 - i * 0.4) / 0.6);
-          if (a <= 0) continue;
-          var y = 176 + i * 54;
-          var bad = !rows[i].ok && lt > 12;
-          ctx.globalAlpha = op * a;
-          ctx.fillStyle = h.rgba(bad ? RED : CY, a * 0.08);
-          rr(ctx, 90, y - 24, 780, 42, 8);
-          ctx.fill();
-          ctx.strokeStyle = h.rgba(bad ? RED : GREY, a * 0.5);
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          ctx.fillStyle = h.rgba(bad ? RED : WHITE, a);
-          ctx.font = "bold 15px " + MONO;
-          ctx.fillText(rows[i].n, 108, y + 4);
-
-          ctx.textAlign = "right";
-          /* The overrun counter is what the scene says to trust, so it counts
-             here rather than being printed. The IOS bus crosses the deadline
-             once every eleven seconds or so, which is why it reaches three by
-             the end of a scene that lasts forty: the number the film quotes is
-             now something the viewer watches accumulate. */
-          var overs = 0;
-          if (!rows[i].ok) {
-            overs = Math.max(0, Math.floor((lt * 0.55 + i * 2.1 - Math.PI / 2) / (Math.PI * 2)) + 1);
-          }
-          ctx.fillStyle = h.rgba(overs > 0 && lt > 12 ? RED : MUTED, a);
-          ctx.font = "15px " + MONO;
-          ctx.fillText(String(overs), 520, y + 4);
-          /* A telemetry table that never changes is a screenshot, and this
-             scene is about instrumenting a session while it runs. Step time
-             therefore ticks. The IOS bus wobbles wide enough to cross 16.67 ms
-             now and then, which is exactly why its overrun counter reads 3
-             while its step time mostly looks fine: the point the scene makes
-             out loud ten seconds later. Derived from lt, so seeking is exact. */
-          function stepAt(idx, u) {
-            var w = Math.sin(u * 2.3 + idx * 1.7) * 0.35 + Math.sin(u * 5.1 + idx * 0.9) * 0.18;
-            var sp = Math.pow(Math.max(0, Math.sin(u * 0.55 + idx * 2.1)), 20);
-            return rows[idx].step + w + (rows[idx].ok ? 0 : sp * 2.6);
-          }
-          var liveStep = stepAt(i, lt);
-          ctx.fillStyle = h.rgba(liveStep > 16.67 ? RED : MUTED, a);
-          ctx.fillText(liveStep.toFixed(1), 660, y + 4);
-          ctx.fillStyle = h.rgba(MUTED, a);
-          ctx.fillText(String(rows[i].mem), 800, y + 4);
-          ctx.textAlign = "left";
-          // recent history of this bus, so a spike between polls is visible as
-          // a shape and not only as a digit that briefly changes
-          var TW = 74, TH = 22, TX = 812, TY = y - 11;
-          ctx.strokeStyle = h.rgba(rows[i].ok ? CY : RED, a * 0.75);
-          ctx.lineWidth = 1.2;
-          ctx.beginPath();
-          for (var q = 0; q <= 24; q++) {
-            var u = lt - (24 - q) * 0.32;
-            var v = clamp01((stepAt(i, u) - 4) / 14);
-            var px = TX + (q / 24) * TW, py = TY + TH - v * TH;
-            if (q === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-          }
-          ctx.stroke();
-          ctx.strokeStyle = h.rgba(AMB, a * 0.4);
-          ctx.setLineDash([2, 3]);
-          ctx.beginPath();
-          var dl = TY + TH - clamp01((16.67 - 4) / 14) * TH;
-          ctx.moveTo(TX, dl); ctx.lineTo(TX + TW, dl); ctx.stroke();
-          ctx.setLineDash([]);
-          ctx.globalAlpha = op;
-        }
-
-        if (lt > 13) {
-          var aIn = clamp01((lt - 13) / 0.8);
-          ctx.globalAlpha = op * aIn;
-          ctx.fillStyle = h.rgba(RED, aIn);
-          ctx.font = "bold 15px " + MONO;
-          ctx.fillText("overrun counter is the reliable signal; step time can miss a spike between polls", 90, 420);
-          ctx.globalAlpha = op;
-        }
-
-        /* The claim this scene rests on is that step time is sampled, so a
-           spike can hide between two polls while the overrun counter still
-           catches it. A caption asserting that proves nothing, so the second
-           half shows it happening: one host, a hundred frames, a spike three
-           frames wide, polled every eighth frame. The poll lands either side
-           of it and the sampled maximum stays comfortably inside budget. */
-        // the table clears the stage before the trace arrives, so the two
-        // never share it
-        var demoIn = clamp01((lt - 25.5) / 1.0);
-        if (demoIn > 0) {
-          // baseline sits above y=461, where the subtitle panel starts, so the
-          // trace furniture and the readouts under it stay visible
-          var X0 = 110, X1 = 850, Y0 = 430, MSPX = 11;
-          var yOf = function (ms) { return Y0 - ms * MSPX; };
-          var xOf = function (fr) { return lerp(X0, X1, fr / 100); };
-          var stepMs = function (fr) {
-            var d = fr - 62;
-            return 9.0 + 0.55 * Math.sin(fr * 0.7) + 0.3 * Math.sin(fr * 1.9) +
-                   10.6 * Math.exp(-(d * d) / 1.6);
-          };
-          ctx.globalAlpha = demoIn;
-          ctx.textAlign = "left";
-
-          ctx.fillStyle = h.rgba(MUTED, 0.9); ctx.font = "12px " + MONO;
-          ctx.fillText("ONE HOST, 100 FRAMES, POLLED EVERY 8th", X0, 158);
-
-          ctx.strokeStyle = h.rgba(RED, 0.5); ctx.lineWidth = 1.2;
-          ctx.setLineDash([5, 5]);
-          ctx.beginPath(); ctx.moveTo(X0, yOf(16.67)); ctx.lineTo(X1, yOf(16.67)); ctx.stroke();
-          ctx.setLineDash([]);
-          ctx.fillStyle = h.rgba(RED, 0.85); ctx.font = "11px " + MONO;
-          ctx.fillText("16.67 ms deadline", X0, yOf(16.67) - 7);
-
-          ctx.strokeStyle = h.rgba(GREY, 0.35); ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.moveTo(X0, Y0); ctx.lineTo(X1, Y0); ctx.stroke();
-
-          var head = 100 * E.out(clamp01((lt - 25.6) / 8.5));
-          var fr, sampMax = 0;
-
-          ctx.strokeStyle = h.rgba(CY, 0.9); ctx.lineWidth = 2;
-          ctx.beginPath();
-          for (fr = 0; fr <= head; fr += 0.5) {
-            if (fr === 0) ctx.moveTo(xOf(0), yOf(stepMs(0)));
-            else ctx.lineTo(xOf(fr), yOf(stepMs(fr)));
-          }
-          ctx.stroke();
-
-          for (fr = 0; fr <= 96 && fr <= head; fr += 8) {
-            var sy = yOf(stepMs(fr));
-            sampMax = Math.max(sampMax, stepMs(fr));
-            ctx.strokeStyle = h.rgba(AMB, 0.2); ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(xOf(fr), sy); ctx.lineTo(xOf(fr), Y0); ctx.stroke();
-            ctx.fillStyle = h.rgba(AMB, 0.95);
-            ctx.beginPath(); ctx.arc(xOf(fr), sy, 3.4, 0, 7); ctx.fill();
-          }
-
-          if (lt > 34.6) {
-            var an = clamp01((lt - 34.6) / 1.1);
-            ctx.globalAlpha = demoIn * an;
-            var sx = xOf(62), sy2 = yOf(stepMs(62));
-            ctx.strokeStyle = h.rgba(RED, 0.95); ctx.lineWidth = 1.8;
-            ctx.beginPath(); ctx.arc(sx, sy2, 13, 0, 7); ctx.stroke();
-            ctx.fillStyle = h.rgba(RED, 1); ctx.font = "bold 12px " + MONO;
-            ctx.textAlign = "center";
-            ctx.fillText(stepMs(62).toFixed(1) + " ms, and no poll was looking", sx, sy2 - 22);
-            ctx.textAlign = "left";
-          }
-          if (lt > 37.4) {
-            ctx.globalAlpha = demoIn * clamp01((lt - 37.4) / 1.1);
-            ctx.font = "bold 13px " + MONO;
-            ctx.fillStyle = h.rgba(AMB, 1);
-            ctx.fillText("sampled max " + sampMax.toFixed(1) + " ms: inside budget", X0, 182);
-            ctx.fillStyle = h.rgba(RED, 1);
-            ctx.fillText("overrun counter: 1", X0 + 420, 182);
-          }
-          ctx.globalAlpha = 1;
-        }
-      });
-
-      lower(
-        s,
-        "None of it is real unless it is instrumented while the session runs.",
-        1.6
-      );
-      lower(
-        s,
-        "Trust the overrun counter. Step time is sampled, so a spike hides between polls.",
-        13.6
-      );
-      lower(
-        s,
-        "One bus overruns, the rest stay clean, and the engineer knows before the qualification test does.",
-        24.6
-      );
-      lower(
-        s,
-        "Determinism is not optimised in at the end. It is a budget, enforced every frame, and proven by the instrument you ship with it.",
-        32.0,
-        { out: 41.2 }
-      );
-    }, { subtitle: "Why the overrun counter is the number to trust." });
-  }
-
   function build() {
-    var film = window.LabAnim.create("#det-film", { width: 960, height: 540 });
-    sceneContract(film);
-    sceneTail(film);
-    sceneComposition(film);
-    sceneInstrument(film);
-    flushLower();
+    var film=window.LabAnim.create('#det-film',{width:960,height:540});
+    film.scene('The model can wait. Can the system?',28,function(s){
+      s.canvas(function(t,ctx){
+        head(ctx,'AI MEETS THE DEADLINE','A design experiment: learning above a 60 Hz execution loop');
+        box(ctx,48,170,260,80,'AI PLANNER','variable inference time',C.purple);
+        box(ctx,350,170,260,80,'CONTROLLER','16.67 ms per tick',C.blue);
+        box(ctx,652,170,260,80,'PHYSICAL WORLD','keeps moving',C.amber);
+        line(ctx,308,210,350,210);line(ctx,610,210,652,210);
+        var phase=(t%4)/4;
+        dot(ctx,48+864*phase,282,C.purple,8);
+        for(var i=0;i<48;i++) {
+          var x=48+i*18;line(ctx,x,313,x,333,C.blue);
+          if(i<Math.floor((t*12)%48))dot(ctx,x,355,C.blue,3);
+        }
+        text(ctx,'Model quality',48,389,20,C.purple);
+        text(ctx,'Timing',367,389,20,C.blue);
+        text(ctx,'Useful action',680,389,20,C.amber);
+      });
+      lower(s, "AI can plan the next move. But what happens when its answer arrives after the system needed it?", 0.8);
+      lower(s, "At sixty hertz, the controller gets sixteen point six seven milliseconds. A model call can take longer.", 10);
+      lower(s, "Connect two clocks: variable inference time and a fixed execution deadline. Let us test that boundary.", 19);
+    },{subtitle:'Timing and decision quality are separate requirements.'});
+    var normal=window.DeadlineModel.run({delay:80,ttl:150});
+    film.scene('Move inference out of the waiting path',28,function(s){
+      s.canvas(function(t,ctx){compare(ctx,normal,Math.min(360,Math.floor(t/27*360)),
+        'SAME DELAY PATTERN. DIFFERENT SCHEDULING.','Synthetic trace: 8 ms inference, plus 80 ms on every fourth request');});
+      lower(s, "On the left, inference blocks execution. A slow request delays later jobs too. Red squares count missed deadlines.", 0.8);
+      lower(s, "On the right, a separate worker proposes updates. The controller never waits for that worker. Amber means it uses the fallback.", 10);
+      lower(s, "Here, controller costs are fixed and resources isolated. We measure timing, not whether an action is useful.", 19);
+    },{subtitle:'Cyan is on time. Amber is fallback. Neither proves task success.'});
+    film.scene('Every proposal needs an admission contract',28,function(s){
+      s.canvas(function(t,ctx){
+        head(ctx,'AN ANSWER NEEDS AN EXPIRY DATE','Example contract: observation time, context version, validated action limits');
+        var caseNo=Math.floor(t/7)%4;
+        var labels=['FRESH PROPOSAL','EXPIRED PROPOSAL','WRONG CONTEXT','NO RESPONSE'];
+        var ages=[42,188,60,400],ver=['matches','matches','changed','unknown'];
+        box(ctx,48,166,270,90,labels[caseNo],'age '+ages[caseNo]+' ms',caseNo?C.amber:C.purple);
+        box(ctx,355,166,245,90,'ADMISSION','age + context + limits',C.blue);
+        box(ctx,647,166,265,90,caseNo?'FALLBACK':'ACCEPT UPDATE',caseNo?'continue baseline control':'atomic handoff',caseNo?C.amber:C.green);
+        line(ctx,318,211,355,211);line(ctx,600,211,647,211);
+        var phase=(t%7)/7;dot(ctx,48+864*phase,289,caseNo?C.amber:C.green,7);
+        text(ctx,'Example age limit: 150 ms',48,339,20,C.blue);
+        text(ctx,'Context: '+ver[caseNo],492,339,20,C.muted);
+        text(ctx,'A freshness check cannot establish action safety.',48,390,19,C.amber);
+      });
+      lower(s, "Asynchrony changes the failure mode. The loop may stay on time while using an answer about a world that has already changed.", 0.8);
+      lower(s, "Attach an observation timestamp and a context version. Check both before use, and define the fallback when a proposal expires.", 10);
+      lower(s, "Freshness is only one check. Validate action limits, state estimation and fallback for the actual system.", 19);
+    },{subtitle:'150 ms here is a chosen freshness limit, not a regulatory threshold.'});
+    var stress=window.DeadlineModel.run({delay:80,ttl:150,outage:true,shared:true});
+    film.scene('Break the assumptions',28,function(s){
+      s.canvas(function(t,ctx){compare(ctx,stress,Math.min(360,Math.floor(t/27*360)),
+        'NOW REMOVE CONNECTIVITY AND ISOLATION','Same model: 1 s outage window + six injected 20 ms resource stalls');});
+      lower(s, "Now interrupt inference and inject shared resource stalls. Asynchrony alone cannot protect the controller from contention.", 0.8);
+      lower(s, "Separate processes can still share hardware. Test resource isolation under competing load.", 10);
+      lower(s, "Count deadline misses and fallback use. Measure task success separately. An on-time system can still be useless.", 19);
+    },{subtitle:'The failure trace matters as much as the successful demo.'});
+    film.scene('Use better AI to find better tests',28,function(s){
+      s.canvas(function(t,ctx){
+        head(ctx,'WHAT CAN WE BUILD NEXT?','An experiment backlog, not a claimed deployment');
+        var labels=['GENERATE CASES','REPLAY FAILURES','COMPARE DESIGNS'];
+        var subs=['AI proposes variations','fixed seeds + event logs','timing + task success'];
+        for(var i=0;i<3;i++) {
+          var x=48+i*296;box(ctx,x,175,272,86,labels[i],subs[i],i===Math.floor(t/9)%3?C.green:C.blue);
+          if(i<2)line(ctx,x+272,218,x+296,218);
+        }
+        // Replay actual model variations rather than a decorative progress bar.
+        var caseIndex=Math.min(11,Math.floor(t/2.25));
+        var delays=[0,80,240],d=delays[caseIndex%3],shared=caseIndex>=6,offline=caseIndex%6>=3;
+        var probe=window.DeadlineModel.run({delay:d,shared:shared,outage:offline,ttl:150});
+        text(ctx,'SYNTHETIC PROBE '+(caseIndex+1)+' / 12',48,307,16,C.muted);
+        text(ctx,'Extra delay: '+d+' ms',48,346,21,C.purple);
+        text(ctx,'Async misses: '+probe.asyncStats.misses,492,346,21,shared?C.red:C.blue);
+        text(ctx,'Outage: '+(offline?'on':'off')+' | Shared stalls: '+(shared?'on':'off'),48,389,15,C.muted);
+        text(ctx,'Fresh AI: '+(100*probe.asyncStats.fresh/360).toFixed(1)+'%',492,389,20,C.amber);
+      });
+      lower(s, "Use robot models and world models to propose harder tests. Replay failures in a controlled environment.", 0.8);
+      lower(s, "Measure task success, timing and cost. Check generated scenes against physical evidence.", 10);
+      lower(s, "Build a system that can adopt better intelligence without losing its timing contract.", 19);
+    },{subtitle:'Open research direction of the author, not yet published.'});
     film.build();
-    if (window.__LABDEBUG) window.__detFilm = film;
+    if(window.__LABDEBUG)window.__detFilm=film;
   }
-
-  function appendix() {
-    var host = document.querySelector('[data-role="det-appendix"]');
-    if (!host || !window.katex) return;
-
-    var blocks = [
-      {
-        h: "The qualification ceiling",
-        tex:
-          "T_{\\text{transport}}=\\sum_i t_i \\;\\le\\; 150\\,\\text{ms}\\quad(\\text{aeroplane, Level C/D});\\qquad \\le 100\\,\\text{ms}\\ (\\text{helicopter})",
-        note:
-          "Transport delay is the total system processing time from a pilot primary-flight-control input until the motion, visual or instrument systems respond. The limits are set by FAA 14 CFR Part 60 and the equivalent EASA CS-FSTD(A). This is a gate, not a target: a device over the ceiling does not qualify, and hours flown on it do not count toward a type rating."
-      },
-      {
-        h: "Why the mean is the wrong statistic",
-        tex:
-          "N=f\\cdot T_{\\text{session}}=60\\,\\text{Hz}\\times 4\\,\\text{h}=864{,}000\\ \\text{frames};\\qquad \\mathbb{E}[K]=N\\,p",
-        note:
-          "A deadline is met or missed per frame, so the quantity that matters is the tail mass beyond the budget, not the average. At p = 10⁻⁵ a four-hour session still expects ~8.6 overruns; at p = 10⁻³ (a 99.9% success rate) it expects ~864. The independence assumption behind E[K] = Np is optimistic: GC pauses and network stalls take out consecutive frames, so real sessions cluster their failures."
-      },
-      {
-        h: "Composition across hosts",
-        tex:
-          "T_{\\text{frame}}=\\max_{i\\le n} T_i,\\qquad \\Pr[\\text{frame ok}]=\\prod_{i\\le n}\\Pr[T_i\\le \\tau]=0.999^{9}\\approx 0.991",
-        note:
-          "A full-flight simulator is a distributed system: the frame closes when the slowest participant publishes, so latency composes as a maximum and reliability as a product. Nine hosts at three nines each yield ~99.1% clean frames, roughly 7,800 bad frames per four-hour session. This is why the deadline budget has to be allocated and enforced per host; a system-wide average is not something an engineer can design against."
-      },
-      {
-        h: "What to instrument",
-        tex:
-          "\\text{overruns}(t)\\ \\text{, counted by the runtime};\\qquad \\text{step time} \\ \\text{, sampled at } f_{\\text{poll}} \\ll f_{\\text{frame}}",
-        note:
-          "Sampled step time can miss a spike that occurs between two polls; an overrun counter is incremented by the runtime at the moment the deadline is breached and therefore cannot be missed. Monotonic counters are the trustworthy primitive for deadline monitoring; sampled gauges are for trend, not for compliance."
-      }
-    ];
-
-    var html = "";
-    for (var i = 0; i < blocks.length; i++) {
-      html +=
-        "<h2>" +
-        blocks[i].h +
-        "</h2><div class='lab-math__tex' id='det-tex-" +
-        i +
-        "'></div><p>" +
-        blocks[i].note +
-        "</p>";
+  function experiment() {
+    var host=document.getElementById('deadline-experiment');if(!host)return;
+    var delay=host.querySelector('#deadline-delay'),ttl=host.querySelector('#deadline-ttl');
+    var outage=host.querySelector('#deadline-outage'),shared=host.querySelector('#deadline-shared');
+    function update() {
+      var r=window.DeadlineModel.run({delay:Number(delay.value),ttl:Number(ttl.value),outage:outage.checked,shared:shared.checked});
+      host.querySelector('#deadline-delay-value').textContent=delay.value+' ms';
+      host.querySelector('#deadline-ttl-value').textContent=ttl.value+' ms';
+      host.querySelector('#deadline-direct').textContent=r.directStats.misses+' / 360';
+      host.querySelector('#deadline-async').textContent=r.asyncStats.misses+' / 360';
+      host.querySelector('#deadline-fresh').textContent=(100*r.asyncStats.fresh/360).toFixed(1)+'%';
+      host.querySelector('#deadline-peak').textContent=r.directStats.peak.toFixed(1)+' / '+r.asyncStats.peak.toFixed(1)+' ms';
+      var canvas=host.querySelector('canvas'),ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,960,250);
+      text(ctx,'Blocking inference',30,35,20,C.red);text(ctx,'Async + admission',500,35,20,C.blue);
+      grid(ctx,r.direct,360,30,55,430,130);grid(ctx,r.async,360,500,55,430,130);
+      text(ctx,'Each square is one controller job.',30,223,17,C.muted);
+      canvas.setAttribute('aria-label','360 jobs: blocking '+r.directStats.misses+' deadline misses; asynchronous '+r.asyncStats.misses+' misses. Fresh AI used for '+r.asyncStats.fresh+' jobs.');
+      host.querySelector('#deadline-interpretation').textContent=shared.checked?
+        'Shared stalls cause asynchronous deadline misses too. Moving inference to another worker is not resource isolation.':
+        'The asynchronous loop meets its modelled timing budget because its costs are bounded and isolated by assumption. Fresh-AI coverage shows how often an admitted proposal is available; it is not a task-success rate.';
+      window.__deadlineExperiment=r;
     }
-    host.innerHTML = html;
-
-    for (var j = 0; j < blocks.length; j++) {
-      var el = document.getElementById("det-tex-" + j);
-      if (!el) continue;
-      try {
-        window.katex.render(blocks[j].tex, el, { displayMode: true, throwOnError: false });
-      } catch (e) {
-        el.textContent = blocks[j].tex;
-      }
-    }
+    host.addEventListener('input',update);
+    host.querySelector('#deadline-reset').addEventListener('click',function(){delay.value=80;ttl.value=150;outage.checked=false;shared.checked=false;update();});
+    host.querySelector('#deadline-download').addEventListener('click',function(){
+      var blob=new Blob([JSON.stringify(window.__deadlineExperiment,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);
+      var a=document.createElement('a');a.href=url;a.download='ai-deadline-synthetic-trace.json';a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    });
+    update();
   }
-
   boot();
 })();

@@ -207,19 +207,28 @@ async function recordAudio(browser, slug, range, opts) {
     await new Promise(r => setTimeout(r, 300));
     const cap = window.__cap;
     if (!cap || !cap.ctx) throw new Error('no AudioContext was created');
+    // Warm-up creates the audio graph, but is not part of the requested take.
+    // Reset before recording so the opening frames are not silently omitted.
+    f.pause();
+    f.seek(from);
     if (cap.ctx.state === 'suspended') await cap.ctx.resume();
 
     const rec = new MediaRecorder(cap.tap.stream, { mimeType: 'audio/webm;codecs=opus' });
     const chunks = [];
     rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
-    const wall0 = performance.now();
-    rec.start();
+    let wall0;
+    await new Promise((resolve, reject) => {
+      rec.onstart = () => { wall0 = performance.now(); resolve(); };
+      rec.onerror = event => reject(event.error || new Error('audio recorder failed to start'));
+      rec.start();
+    });
+    f.play();
     // Film time is not wall time. The engine holds the picture just short of a
     // narration boundary while the line is still being spoken, so a sentence is
     // never cut off, and that hold is part of what a visitor watches. Sample
     // the mapping every animation frame so the picture pass can reproduce it
     // instead of the sound being stretched to a timeline that never happened.
-    const timeline = [];
+    const timeline = [[0, from]];
     let sampler = requestAnimationFrame(function tick(now) {
       timeline.push([(now - wall0) / 1000, f.t]);
       sampler = requestAnimationFrame(tick);

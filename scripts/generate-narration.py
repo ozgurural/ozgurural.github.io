@@ -37,7 +37,9 @@ async def main():
     failed = []
     for prefix, i, text in jobs:
         path = os.path.join(OUT, f"{prefix}_{i}.mp3")
-        temporary = path + ".tmp"
+        # Jekyll skips dotfiles. A visible temporary file can disappear between
+        # its source scan and copy, aborting a concurrent preview rebuild.
+        temporary = os.path.join(OUT, f".{prefix}_{i}.mp3.tmp")
         ok = False
         for attempt in range(3):
             try:

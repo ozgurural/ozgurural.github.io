@@ -46,6 +46,7 @@ layout: compress
             integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg"
             crossorigin="anonymous"></script>
     <script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+    {% if page.film_support %}<script defer src="{{ '/assets/js/' | relative_url }}{{ page.film_support }}.js?v={{ site.time | date: '%s' }}"></script>{% endif %}
     <script defer src="{{ '/assets/js/lab-films/' | relative_url }}{{ page.film_script }}.js?v={{ site.time | date: '%s' }}"></script>
   </body>
 </html>

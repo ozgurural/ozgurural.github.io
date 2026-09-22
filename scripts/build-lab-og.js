@@ -10,6 +10,10 @@ const fs = require("fs");
 const path = require("path");
 
 const LABS = [
+  { key: "ai-deadline", eyebrow: "AI architecture | Real-time systems", icon: "60",
+    title: "AI Meets the Deadline", sub: "Better intelligence. A timing contract.",
+    tagline: "Explore inference, expiry, fallback and resource isolation",
+    badge: "DESIGN EXPERIMENT", bg: "#0f172a", accent: "#38bdf8" },
   {
     key: "lab",
     eyebrow: "Animated research",
@@ -183,7 +187,7 @@ function svg(lab) {
 
   <!-- Icon + Title block. Title font-size scales down for long titles
        so it never clips against the 5-star pip block on the right. -->
-  <text x="80" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="140" font-weight="700">${esc(lab.icon)}</text>
+  <text x="80" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="140" font-weight="700" fill="${lab.key === "ai-deadline" ? lab.accent : "#000"}">${esc(lab.icon)}</text>
   <text x="250" y="265" font-family="Georgia, 'Times New Roman', serif" font-size="${
     lab.title.length > 18 ? 70 : lab.title.length > 14 ? 80 : 96
   }" font-weight="800" fill="#f8fafc">${esc(lab.title)}</text>
@@ -212,8 +216,10 @@ function svg(lab) {
 const outDir = path.join(__dirname, "..", "images", "lab-og");
 fs.mkdirSync(outDir, { recursive: true });
 
-let total = 0;
+let total = 0, renderedCount = 0;
+const selected = process.argv.includes("--only") ? process.argv[process.argv.indexOf("--only") + 1] : null;
 for (const lab of LABS) {
+  if (selected && lab.key !== selected) continue;
   const xml = svg(lab);
   const r = new Resvg(xml, {
     background: lab.bg,
@@ -224,6 +230,6 @@ for (const lab of LABS) {
   const out = path.join(outDir, "og-" + lab.key + ".png");
   fs.writeFileSync(out, png);
   console.log("✓ " + path.relative(path.join(__dirname, ".."), out) + "  (" + png.length + " bytes)");
-  total += png.length;
+  total += png.length; renderedCount++;
 }
-console.log("\nTotal: " + LABS.length + " images, " + total + " bytes");
+console.log("\nTotal: " + renderedCount + " images, " + total + " bytes");
