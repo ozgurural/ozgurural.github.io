@@ -15,7 +15,7 @@ redirect_from:
   "@type": "Person",
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
-  "jobTitle": "Machine Learning Research Scientist & Senior Software Engineer · Ph.D.",
+  "jobTitle": {{ site.data.person.job_title | jsonify }},
   "description": "Researcher and architect building verifiable, trustworthy AI for systems that cannot be allowed to fail: proof-of-learning, model watermarking, and adversarial robustness, applied across defence, aviation, and critical infrastructure. Three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
@@ -25,7 +25,7 @@ redirect_from:
     { "@type": "CollegeOrUniversity", "name": "Middle East Technical University", "url": "https://www.metu.edu.tr/" }
   ],
   "worksFor": { "@type": "Organization", "name": "Avion Full Flight Simulators", "url": "https://www.aviongroup.aero/" },
-  "knowsAbout": ["Machine Learning", "Trustworthy Machine Learning", "Proof-of-Learning", "Model Watermarking", "Adversarial Machine Learning", "Robustness", "Evaluation", "Distributed Systems", "Blockchain", "Verifiable Computing", "Real-time Systems"],
+  "knowsAbout": {{ site.data.person.knows_about | jsonify }},
   "sameAs": [
     "https://scholar.google.com/citations?user=lYx8fqsAAAAJ",
     "https://orcid.org/0000-0003-1329-4303",

@@ -1,0 +1,18 @@
+# One source for the Person structured data. The home page (about.md) and
+# every other page (_includes/seo.html) both emit a schema.org Person, and
+# when the two disagreed search engines were given two versions of one
+# person. knows_about lists subjects only: names, schools and job titles
+# belong in their own properties, not here.
+job_title: "Machine Learning Research Scientist & Senior Software Engineer, Ph.D."
+knows_about:
+  - Machine Learning
+  - Trustworthy Machine Learning
+  - Proof-of-Learning
+  - Model Watermarking
+  - Adversarial Machine Learning
+  - Robustness
+  - Evaluation
+  - Distributed Systems
+  - Blockchain
+  - Verifiable Computing
+  - Real-time Systems

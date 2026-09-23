@@ -181,9 +181,9 @@
       "@context" : "https://schema.org",
       "@type" : "Person",
       "name" : "Dr. Ozgur Ural",
-      "jobTitle": "Machine Learning Research Scientist & Senior Software Engineer",
+      "jobTitle": {{ site.data.person.job_title | jsonify }},
       "alumniOf": "Embry-Riddle Aeronautical University",
-      "knowsAbout": {{ site.keywords | jsonify }},
+      "knowsAbout": {{ site.data.person.knows_about | jsonify }},
       "url" : {{ seo_url | jsonify }},
       "sameAs" : {{ site.social.links | jsonify }}
     }
