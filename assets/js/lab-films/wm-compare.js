@@ -78,6 +78,7 @@
         
         var cols = 32, rows = 16;
         var cellSize = 11, gap = 2;
+        var scanCol = Math.floor(clamp01((lt - 3) / 6.5) * cols);
         
         for (var r = 0; r < rows; r++) {
            for (var c = 0; c < cols; c++) {
@@ -110,9 +111,29 @@
               }
               
               ctx.fillRect(dx + markOffsetX, dy + markOffsetY, cellSize, cellSize); 
+
+              /* The opening held this grid still for its first eight seconds
+                 while the narration said "start with a pattern in selected
+                 weights". So the selection happens on screen: a sweep
+                 sweep picks out the cells the mark will use, before they are
+                 moved at lt 10. */
+              if (isMarked && lt > 3 && lt <= 10.5 && c <= scanCol) {
+                 ctx.strokeStyle = h.rgba(GRN, 0.9 * clamp01((10.5 - lt) / 0.5));
+                 ctx.lineWidth = 1.5;
+                 ctx.strokeRect(dx - 1.5, dy - 1.5, cellSize + 3, cellSize + 3);
+              }
            }
         }
         ctx.shadowBlur = 0;
+        if (lt > 3 && lt < 10) {
+           var sx = cx + scanCol * (cellSize + gap) + cellSize + 1;
+           ctx.strokeStyle = h.rgba(GRN, 0.55 * clamp01((lt - 3) / 0.4) * clamp01((10 - lt) / 0.4));
+           ctx.lineWidth = 1;
+           ctx.beginPath(); ctx.moveTo(sx, cy - 4); ctx.lineTo(sx, cy + rows * (cellSize + gap) + 2); ctx.stroke();
+           ctx.fillStyle = h.rgba(GRN, 0.9 * clamp01((lt - 3) / 0.4) * clamp01((10 - lt) / 0.4));
+           ctx.font = "12px 'JetBrains Mono', monospace";
+           ctx.fillText("selecting the weights that will carry the mark", cx, cy + rows * (cellSize + gap) + 20);
+        }
 
         // The Z-Test Bell Curve (Null Hypothesis vs Marked)
         if (lt > 20) {

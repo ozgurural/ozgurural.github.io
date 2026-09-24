@@ -346,11 +346,13 @@
            ctx.globalAlpha = op;
         }
 
-        // The Challenge Countdown
-        if (lt > 10 && lt < 35) {
-           var fade10 = clamp01((lt - 10) / 0.5) * clamp01((35 - lt) / 0.5);
+        // The Challenge Countdown. It used to open at 10 s, leaving the bond
+        // alone on a still timeline while the narration was already saying
+        // "time to dispute it"; the window now starts running under that line.
+        if (lt > 4.5 && lt < 35) {
+           var fade10 = clamp01((lt - 4.5) / 0.5) * clamp01((35 - lt) / 0.5);
            ctx.globalAlpha = op * fade10;
-           var timeP = clamp01((lt - 10) / 25);
+           var timeP = clamp01((lt - 4.5) / 30.5);
            var currX = lerp(200, 800, timeP);
            
            // Sweeping Clock UI

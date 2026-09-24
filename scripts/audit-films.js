@@ -150,7 +150,9 @@ async function auditStills(browser, slug, step) {
              stillSec: +(total * step).toFixed(1),
              longestSec: +(best * step).toFixed(1),
              tailSec: +(tail * step).toFixed(1),
-             longestEndsAt: +bestEnd.toFixed(1) };
+             longestEndsAt: +bestEnd.toFixed(1),
+             // where in the scene that stretch starts, so it can be found by eye
+             longestFrom: +Math.max(0, bestEnd - best * step - sc.start).toFixed(1) };
   });
 }
 
@@ -227,14 +229,14 @@ async function auditFilm(browser, slug) {
     // slide would bury the real findings under eleven false ones.
     const real = rows.filter(r => !/^signature$/i.test(r.scene));
     real.sort((a, b) => (b.stillSec - b.tailSec) - (a.stillSec - a.tailSec) || b.tailSec - a.tailSec);
-    console.log('slug'.padEnd(23) + 'scene'.padEnd(33) + ' len  still  tail  mid  longest');
+    console.log('slug'.padEnd(23) + 'scene'.padEnd(33) + ' len  still  tail  mid  longest  from');
     for (const r of real) {
       const mid = +(r.stillSec - r.tailSec).toFixed(1);
       const flag = mid >= 8 ? '  <-- needs motion' : (r.tailSec >= 5 ? '  <-- trim' : '');
       console.log(r.slug.padEnd(23) + r.scene.slice(0, 31).padEnd(33) +
                   String(r.len).padStart(4) + String(r.stillSec).padStart(7) +
                   String(r.tailSec).padStart(6) + String(mid).padStart(5) +
-                  String(r.longestSec).padStart(9) + flag);
+                  String(r.longestSec).padStart(9) + String(r.longestFrom).padStart(6) + flag);
     }
     const cuts = real.filter(r => r.cut >= 1.5);
     if (cuts.length) {
