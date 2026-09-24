@@ -107,7 +107,7 @@
 
   /* ===================== 1 — HOOK ===================== */
   function hook(film) {
-    film.scene("The stolen model", 15, function (s) {
+    film.scene("The stolen model", 12, function (s) {
       s.canvas(function (lt, ctx, h) {
         graph(ctx, h, 270, 270, CY, clamp01(lt / 1.2), 1, 0);
         // faint watermark dots
@@ -168,7 +168,7 @@
 
   /* ================= 2 — FRAGILE MARK ================= */
   function fragile(film) {
-    film.scene("One big mark is fragile", 18.0, function (s) {
+    film.scene("One big mark is fragile", 12.5, function (s) {
       var idx = 15;
       var brushGrd = null;
       s.canvas(function (lt, ctx, h) {
@@ -239,7 +239,7 @@
       });
       var eq = s.tex2("\\text{Large noise} \\Rightarrow \\text{Visible } \\& \\text{ Brittle}", { px: 480, py: 78, size: "1.4rem", color: LBLU });
       s.fadeIn(eq, { at: 1.5, dur: 1.2 });
-      lower(s, "A single large perturbation can be conspicuous and can hurt accuracy. A practical mark has to balance detectability against utility.", 8.2, { maxWidth: "80%", px: 60 });
+      lower(s, "A single large perturbation can be conspicuous and can hurt accuracy. A practical mark has to balance detectability against utility.", 2.0, { maxWidth: "80%", px: 60 });
     }, { subtitle: "A single strong mark can’t be stealthy, robust, and harmless at once." });
   }
 

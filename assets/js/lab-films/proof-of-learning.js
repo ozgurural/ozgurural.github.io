@@ -83,7 +83,7 @@
 
   /* ============== 1 — HOOK : a stolen snapshot ============== */
   function hook(film) {
-    film.scene("A stolen snapshot", 18.9, function (s) {
+    film.scene("A stolen snapshot", 14.5, function (s) {
       s.canvas(function (lt, ctx, h) {
         grid(ctx, h, 250, 220, 14, TEAL, clamp01(lt / 1.2), false);
         ctx.font = "italic 18px var(--ds-font-serif, Georgia, serif)"; ctx.fillStyle = h.rgba(TEAL, 0.95); ctx.fillText("your trained model", 225, 350);
@@ -112,11 +112,11 @@
            the original is compared against the copy, one at a time, and each
            comparison comes back equal. Finding nothing, repeatedly, is the
            point. */
-        if (lt > 8.4) {
-          var scanP = clamp01((lt - 8.4) / 7.0);
+        if (lt > 8.2) {
+          var scanP = clamp01((lt - 8.2) / 3.2);
           var seen = Math.floor(scanP * 64);
           ctx.save();
-          ctx.globalAlpha = clamp01((lt - 8.4) / 0.6);
+          ctx.globalAlpha = clamp01((lt - 8.2) / 0.6);
           for (var k = 0; k < seen; k++) {
             var ci = k % 8, cj = Math.floor(k / 8);
             var age = clamp01((seen - k) / 6);
@@ -129,8 +129,8 @@
           ctx.fillStyle = h.rgba(GRN, 0.95);
           ctx.textAlign = "center";
           ctx.fillText("weights compared: " + seen + " / 64   differences: 0", 461, 378);
-          if (lt > 16.0) {
-            ctx.globalAlpha = clamp01((lt - 16.0) / 0.9);
+          if (lt > 11.6) {
+            ctx.globalAlpha = clamp01((lt - 11.6) / 0.9);
             ctx.font = "600 15px 'JetBrains Mono',monospace";
             ctx.fillStyle = h.rgba(AMB, 1);
             ctx.fillText("nothing here says who trained it", 461, 404);
@@ -147,7 +147,7 @@
 
   /* ============== 2 — PATH, NOT POINT ============== */
   function pathPoint(film) {
-    film.scene("The path, not the point", 14.7, function (s) {
+    film.scene("The path, not the point", 12.2, function (s) {
       var co = film.coords({ xRange: [-3.4, 3.4], yRange: [-2.2, 2.2], pad: { left: 70, right: 360, top: 120, bottom: 70 } });
       var a = 0.8, b = 0.5;
       // descent path with noise (precomputed)
@@ -208,20 +208,24 @@
       });
       // descent polyline (SVG) + checkpoints
       var pl = s.poly(path, { coords: co, color: TEAL, width: 2.4 });
-      s.draw(pl, { at: 1.2, dur: 11.25 });
+      s.draw(pl, { at: 1.2, dur: 9.4 });
       var w0 = s.dot({ coords: co, x: path[0][0], y: path[0][1], r: 6, color: "#ffffff" });
       s.fadeIn(w0, { at: 0.9, dur: 0.6 });
       var w0l = s.caption("start", { coords: co, x: path[0][0] - 0.1, y: path[0][1] + 0.35, anchor: "right", size: "1.3rem", color: "#f1f5f9" });
       s.fadeIn(w0l, { at: 1.2, dur: 0.6 });
+      // Each checkpoint lights as the drawn path reaches it. draw() is eased and
+      // reveals by arc length, so the arrival times are measured, not derived
+      // from the point index (index spacing put the first dot 3 s ahead).
+      var arrive = [6.1, 7.1, 7.65, 8.5, 10.15];
       [8, 16, 24, 32, 39].forEach(function (ci, q) {
         var d = s.dot({ coords: co, x: path[ci][0], y: path[ci][1], r: 5, color: AMB, glow: 5 });
-        s.fadeIn(d, { at: 3 + q * 0.7, dur: 0.6 });
+        s.fadeIn(d, { at: arrive[q] - 0.3, dur: 0.6 });
       });
       var wt = s.caption("final model", { coords: co, x: path[39][0] + 0.1, y: path[39][1] + 0.4, anchor: "left", size: "1.3rem", color: AMB });
       s.fadeIn(wt, { at: 10.5, dur: 0.75 });
       var eq = s.tex2("\\text{Each step: a small nudge from the data}", { px: 360, py: 92, size: "1.3rem", color: "#e8eef9" });
       s.write(eq, { at: 1.5, dur: 2.1 });
-      lower(s, "A model is not born at the finish line. It walks there step by step. The path is the asset, not the endpoint.", 6.0, { maxWidth: "92%", px: 60 });
+      lower(s, "A model is not born at the finish line. It walks there step by step. The path is the asset, not the endpoint.", 2.6, { maxWidth: "92%", px: 60 });
     }, { subtitle: "PoL records the optimization transcript, not the result." });
   }
 

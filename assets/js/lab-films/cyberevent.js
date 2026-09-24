@@ -115,7 +115,7 @@
   /* ============================================================ SCENE 1
      The rarity of the signal. */
   function sceneRarity(film) {
-    film.scene("A Handful of Events in a Million Posts", 34, function (s) {
+    film.scene("A Handful of Events in a Million Posts", 26.5, function (s) {
       s.canvas(function (lt, ctx, h) {
         var op = clamp01(lt / 0.6);
         ctx.globalAlpha = op;
@@ -135,7 +135,7 @@
             var a = clamp01((lt - 0.6 - idx * 0.0011) / 0.4);
             if (a <= 0) continue;
             var isEvent = eventCells.indexOf(idx) !== -1;
-            var revealed = isEvent && lt > 14;
+            var revealed = isEvent && lt > 12.5;
             /* A stream streams. The field was drawn once and then held, under a
                line about an open Turkish stream, so posts keep arriving: every
                cell carries its own phase and brightens as it is written. That
@@ -168,15 +168,15 @@
           ctx.fillText("Turkish Twitter stream · one screen ≈ 1,000 posts", 70, 72);
         }
 
-        if (lt > 15) {
-          var t2 = clamp01((lt - 15) / 0.7);
+        if (lt > 13.2) {
+          var t2 = clamp01((lt - 13.2) / 0.7);
           ctx.fillStyle = h.rgba(RED, op * t2);
           ctx.font = "bold 16px " + MONO;
           ctx.fillText("4 of them are a real security event", 70, 372);
         }
 
-        if (lt > 24) {
-          var t3 = clamp01((lt - 24) / 0.8);
+        if (lt > 16.5) {
+          var t3 = clamp01((lt - 16.5) / 0.8);
           ctx.globalAlpha = op * t3;
           box(ctx, h, 70, 386, 380, 48, RED, t3, "π ≈ 4 × 10⁻³", "prior probability of an event");
           box(ctx, h, 500, 386, 390, 48, GREY, t3, "AND THE CLASS IS SHIFTING", "yesterday's vocabulary ages fast");
@@ -197,8 +197,8 @@
       lower(
         s,
         "That rarity is not an inconvenience to engineer around. It is the centre of the problem.",
-        24.5,
-        { out: 33.0 }
+        17.0,
+        { out: 25.5 }
       );
     }, { subtitle: "Why the rarity, not the classifier, is the hard part." });
   }
