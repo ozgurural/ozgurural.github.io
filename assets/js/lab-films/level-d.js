@@ -6,7 +6,9 @@
    requirement or arithmetic derived from one:
 
      1. contract    The 150 ms transport-delay gate (FAA 14 CFR Part 60 /
-                    EASA CS-FSTD(A)); helicopters are held to 100 ms
+                    EASA CS-FSTD(A)); EASA CS-FSTD Issue 1 (ED Decision
+                    2026/008/R) sets 100 ms at fidelity level S for new
+                    devices, motion, instruments and visual alike (p. 467)
      2. tail        16.67 ms per frame at 60 Hz — and why the mean is the
                     wrong statistic: E[overruns] = N·p over a session
      3. composition Distributed sim: the frame ends when the LAST host
@@ -176,7 +178,8 @@
         if (lt > 8) {
           var bIn = clamp01((lt - 8) / 0.8);
           ctx.globalAlpha = op * bIn;
-          ctx.fillStyle = h.rgba(MUTED, bIn);
+          // the bar's title gives way when the two 100 ms lines stack above it
+          ctx.fillStyle = h.rgba(MUTED, bIn * (1 - clamp01((lt - 35.4) / 0.8)));
           ctx.font = "13px " + MONO;
           ctx.fillText("transport delay budget: pilot input to first response", 70, 275);
 
@@ -271,13 +274,14 @@
           ctx.restore();
         }
 
-        /* The narration brings in the 100 ms rotorcraft ceiling at 33.5 s and
-           the screen never showed it, leaving the scene frozen for its last
-           third. Same bar, second gate. The stage budget happens to sum to
-           exactly 100 ms at the end of image generation (8+17+25+50), so the
-           rotorcraft ceiling lands precisely on that boundary and the whole
-           34 ms display-and-motion stage falls outside it. The same device
-           clears 150 with 16 ms in hand and misses 100 by 34. */
+        /* Same bar, second gate: the 100 ms that CS-FSTD Issue 1 (2026) sets
+           for a new device at the highest fidelity level. It replaced a
+           helicopter comparison, since the new standard gives aeroplanes and
+           helicopters the same table. The stage budget sums to exactly 100 ms
+           at the end of image generation (8+17+25+50), so the new gate lands
+           on that boundary and the whole 34 ms display-and-motion stage falls
+           outside it: the device that clears 150 with 16 ms in hand misses
+           100 by 34. */
         if (lt > 34) {
           var rIn = clamp01((lt - 34) / 1.2);
           var X100 = 70 + (100 / 150) * 820;
@@ -298,7 +302,7 @@
           if (lt > 36.2) {
             ctx.save(); ctx.globalAlpha = op * clamp01((lt - 36.2) / 0.9);
             ctx.fillStyle = h.rgba(AMB, 1); ctx.font = "600 13px " + MONO;
-            ctx.fillText("rotorcraft ceiling: 100 ms, reached as image generation ends", 70, 240);
+            ctx.fillText("EASA 2026, highest fidelity: 100 ms, spent when image generation ends", 70, 240);
             ctx.restore();
           }
           if (lt > 39.4) {
@@ -333,7 +337,7 @@
       );
       lower(
         s,
-        "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
+        "EASA's 2026 standard tightens it: a new device at the highest fidelity gets 100 milliseconds. This pipeline would fail.",
         33.5,
         { out: 43.2 }
       );
@@ -1026,7 +1030,7 @@
       );
       lower(
         s,
-        "Determinism is not optimised in at the end. It is a budget, enforced every frame, and proven by the instrument you ship with it.",
+        "Determinism is a budget, enforced every frame and proven by the instrument you ship. An AI model in this loop inherits it too.",
         32.0,
         { out: 41.2 }
       );
@@ -1052,9 +1056,9 @@
       {
         h: "The qualification ceiling",
         tex:
-          "T_{\\text{transport}}=\\sum_i t_i \\;\\le\\; 150\\,\\text{ms}\\quad(\\text{aeroplane, Level C/D});\\qquad \\le 100\\,\\text{ms}\\ (\\text{helicopter})",
+          "T_{\\text{transport}}=\\sum_i t_i \\;\\le\\; 150\\,\\text{ms}\\quad(\\text{Level C/D, qualified devices});\\qquad \\le 100\\,\\text{ms}\\ (\\text{new, fidelity S, 2026})",
         note:
-          "Transport delay is the total system processing time from a pilot primary-flight-control input until the motion, visual or instrument systems respond. The limits are set by FAA 14 CFR Part 60 and the equivalent EASA CS-FSTD(A). This is a gate, not a target: a device over the ceiling does not qualify, and hours flown on it do not count toward a type rating."
+          "Transport delay is the total system processing time from a pilot primary-flight-control input until the motion, visual or instrument systems respond. Devices qualified under FAA 14 CFR Part 60 or EASA CS-FSTD(A) are held to 150 ms at Level C/D. EASA CS-FSTD Issue 1 (July 2026), the standard for initial qualification of new devices, sets 100 ms for motion, instruments and visual at its highest fidelity level. This is a gate, not a target: a device over the ceiling does not qualify, and hours flown on it do not count toward a type rating."
       },
       {
         h: "Why the mean is the wrong statistic",

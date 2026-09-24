@@ -56,7 +56,7 @@
     "The numbers are regulation, not goals. A ceiling of 150 milliseconds, input to response.",
     "Every stage spends it. Image generation takes the largest bite.",
     "Not a target. A gate. Miss it and the hours flown do not count.",
-    "Helicopters get 100 milliseconds. A hovering rotorcraft is unstable, and the pilot closes the loop faster.",
+    "EASA's 2026 standard tightens it: a new device at the highest fidelity gets 100 milliseconds. This pipeline would fail.",
     "A fixed cadence. At 60 hertz each subsystem gets 16.67 milliseconds.",
     "Mean frame time is 8.6 milliseconds, half the budget. But a deadline is never met on average.",
     "Count the frames instead. Four hours is 864,000 of them.",
@@ -70,7 +70,7 @@
     "None of it is real unless it is instrumented while the session runs.",
     "Trust the overrun counter. Step time is sampled, so a spike hides between polls.",
     "One bus overruns, the rest stay clean, and the engineer knows before the qualification test does.",
-    "Determinism is not optimised in at the end. It is a budget, enforced every frame, and proven by the instrument you ship with it."
+    "Determinism is a budget, enforced every frame and proven by the instrument you ship. An AI model in this loop inherits it too."
   ],
   "cyberevent": [
     "The bank app is down. Can you catch that signal in a flood of ordinary posts?",

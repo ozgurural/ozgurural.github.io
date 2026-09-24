@@ -1211,7 +1211,7 @@
 
     // drawn from the author's engineering practice
     "det-film":        "Open research direction of the author, not yet published &middot; synthetic scheduling experiment &middot; no employer design disclosed",
-    "lvd-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion &middot; limits per FAA&nbsp;Part&nbsp;60 / EASA CS-FSTD(A) &middot; no employer design disclosed",
+    "lvd-film":        "Informed by Level&nbsp;D full-flight-simulator engineering at Avion &middot; limits per FAA&nbsp;Part&nbsp;60, EASA CS-FSTD(A) and CS-FSTD Issue&nbsp;1 (2026) &middot; no employer design disclosed",
 
     // results that belong to other people, animated with attribution
     "gd-film":         "Momentum after Polyak 1964 and Nesterov 1983 &middot; saddle-point prevalence after Dauphin et al., NeurIPS 2014",
