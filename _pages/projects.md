@@ -4,7 +4,7 @@ title: "Projects"
 description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, verifiable inference, autonomous agents, safety-critical systems, and human-verified clinical tools."
 ---
 
-<p class="ep-lead">Research, prototypes, and engineering foundations for AI systems. Published work and delivered software are distinguished from proposed AI extensions. Historical projects remain part of the record, with their relevance to AI explained below. Explore the linked papers and field notes, or visit the <a href="/lab/"><strong>Interactive Lab</strong></a> for eleven films about the underlying mechanisms.</p>
+<p class="ep-lead">Research, prototypes, and engineering foundations for AI systems. Published work and delivered software are distinguished from proposed AI extensions. Historical projects remain part of the record, with their relevance to AI explained below. Explore the linked papers and field notes, or visit the <a href="/lab/"><strong>Interactive Lab</strong></a> for twelve films about the underlying mechanisms.</p>
 
 ## Featured
 
