@@ -2,7 +2,7 @@
 permalink: /
 title: "Machine Learning & Mission-Critical Systems"
 hide_title: true
-excerpt: "U.S. Ph.D. (Embry-Riddle, 2025) in machine learning security. Five first-author papers, three in IEEE Access. Twelve years on mission-critical systems."
+excerpt: "U.S. Ph.D. (Embry-Riddle, 2025) in machine learning security. Four first-author papers, three in IEEE Access. Twelve years on mission-critical systems."
 author_profile: true
 redirect_from:
   - /about/
@@ -59,7 +59,7 @@ redirect_from:
 <ul class="ep-stats">
   <li><span class="num">12+</span><span class="label">Years in mission-critical software</span></li>
   <li><span class="num">Ph.D.</span><span class="label">ML research · ERAU (USA) 2025</span></li>
-  <li><span class="num">5</span><span class="label">First-author papers · 3 in IEEE Access</span></li>
+  <li><span class="num">4</span><span class="label">First-author papers · 3 in IEEE Access</span></li>
 </ul>
 
 ## Leadership & Core Domains
@@ -70,12 +70,12 @@ redirect_from:
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Engineering Leadership</span>
     <h3>Direction, standards, teams</h3>
-    <p>Having shipped national data-leakage-prevention products and mission-critical software, I now set architecture decisions and engineering standards across the organization: resilience patterns, review culture, and release discipline.</p>
+    <p>I led a 14-engineer team shipping a data-leakage-prevention product at Havelsan, built mission-critical UAV software at STM, and now lead Avion's enterprise AI strategy: the adoption roadmap and the reference architecture behind it.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
     <h3>Correct when parts fail</h3>
-    <p>Real-time simulation platforms and cloud-native services (C++, Scala, TypeScript, gRPC) built on distributed protocols whose outputs and state can be audited end-to-end without compromising latency.</p>
+    <p>Real-time simulator software and the services around it (C, C++, Scala, TypeScript, gRPC), including a telemetry pipeline that sustains about 50 GB/s through batching and bounded-queue backpressure.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Trustworthy ML & Security</span>
@@ -106,7 +106,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">Aug 2025</span>
-    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. My doctoral research was guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>, with whom I continue to actively collaborate on securing distributed ML systems. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. My doctoral research was guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>. Dr. Yoshigoe and I continued the work after graduation: SecurePoL (IEEE Access, December 2025) is joint work. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
   </li>
   <li>
     <span class="when">2021–2025</span>

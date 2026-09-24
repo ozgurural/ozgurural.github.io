@@ -21,7 +21,7 @@ Lean engineering teams face a paradox: they need specialists to build complex pr
 
 ## Generalists Fill Invisible Gaps
 
-When we built out Avion’s simulator diagnostics portal, the first “ops” engineer on the project was also our incident coordinator, release manager, and part-time QA lead. Each role could have justified a dedicated hire, but in the beginning, these duties landed on whichever generalist had the bandwidth. We avoided splintering the team by trusting one adaptable engineer to wear multiple hats and rotate responsibilities as the backlog evolved.
+On a new internal platform, the first “ops” engineer is often also the incident coordinator, the release manager and part-time QA. Each role could justify a dedicated hire, but early on these duties land on whichever generalist has the bandwidth. Trusting one adaptable engineer to wear several hats, and rotating responsibilities as the backlog changes, keeps a small team from splintering.
 
 These invisible gaps appear because early products evolve quickly. A feature demoed on Monday might pivot by Friday, requiring updates to documentation, deployments, and marketing collateral. Specialists with narrow scopes struggle to keep up. Generalists, by contrast, embrace the fluidity and patch the seams that would otherwise tear.
 
@@ -48,4 +48,4 @@ Constraints on small teams also demand humility. The ideal generalist is confide
 Hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that covers the whole product. Their fingerprints are everywhere, from the first commit to the onboarding guide, and that continuity becomes a competitive advantage.
 
 ---
-*Dr. Ozgur Ural is a Technical Leader and Senior Software Engineer. He has built and led engineering teams across cybersecurity, aerospace, and simulation industries.*
+*Dr. Ozgur Ural is a machine learning research scientist and senior software engineer. He led a team of 14 engineers at Havelsan and has built software across cybersecurity, defense and flight simulation.*

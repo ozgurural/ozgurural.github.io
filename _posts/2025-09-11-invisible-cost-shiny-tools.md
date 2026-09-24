@@ -15,7 +15,7 @@ Engineering teams love new tools. The promise of faster development, cleaner abs
 
 ## Tool Churn Disrupts Team Flow
 
-Switching tools interrupts the rhythm of a team. Documentation and institutional knowledge become outdated overnight. When we moved Comodo’s customer portal from a homegrown jQuery stack to React, three sprints vanished into retraining engineers and porting widgets that users already liked. The codebase eventually reached parity, but overall velocity dropped 25% for the quarter.
+Switching tools interrupts the rhythm of a team. Documentation and institutional knowledge become outdated overnight. Moving a mature customer portal from a homegrown jQuery stack to React is a typical case: sprints disappear into retraining engineers and porting widgets that users already liked. The codebase can reach parity and still leave the team slower for a quarter.
 
 Tool churn also erodes psychological safety. When developers fear their hard won expertise will be obsolete by the next planning cycle, they hesitate to invest deeply in mastering the stack. Stable environments cultivate craftsmanship; revolving doors cultivate surface level familiarity.
 

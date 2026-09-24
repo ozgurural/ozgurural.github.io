@@ -19,10 +19,10 @@ header:
 <div class="notice--info" markdown="1">
 **Editor's Note on Distributed Intelligence**
 
-Blockchain and Machine Learning are often discussed as separate revolutions, but their intersection offers a solution to the "black box" problem in AI. This article explores how we can move model coordination on-chain while keeping heavy computation off-chain, a hybrid architecture that finally makes "Proof-of-Useful-Work" a reality.
+Blockchains and machine learning are usually discussed separately. Our IEEE Access survey asks what a ledger can actually add to machine learning: a tamper-evident record of training, consensus that does useful work instead of hashing, and incentives for contributing good data. It also records what that costs, from throughput to energy. This article keeps coordination on-chain and heavy computation off-chain, and says where that split still falls short.
 </div>
 
-Blockchain technology and machine learning (ML) have traditionally evolved on parallel tracks. However, recent research shows that their convergence promises **transparent, trustworthy, and decentralized intelligent systems**. In our survey on blockchain-enhanced machine learning [1], we examine how the decentralized design of blockchain can address systemic challenges in ML and pave the way for collaborative, verifiable artificial intelligence.
+Blockchain technology and machine learning (ML) have mostly evolved on separate tracks. In our survey on blockchain-enhanced machine learning [1], we examine where the decentralized design of blockchain can address specific problems in ML, such as accountable training records and collaboration between parties that do not trust each other, and where its costs outweigh what it adds.
 
 ## Why Blockchain Matters for ML
 
@@ -87,4 +87,4 @@ A ledger does not make a model smarter. It makes the model's history checkable, 
 [1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
 
 ---
-*Dr. Ozgur Ural is a Senior Software Engineer & Researcher specializing in Secure Distributed Systems. This article is based on his Ph.D. research into the intersection of Cryptography and Machine Learning.*
+*Dr. Ozgur Ural is a machine learning research scientist and senior software engineer. This article draws on his IEEE Access survey on blockchain-enhanced machine learning [1].*

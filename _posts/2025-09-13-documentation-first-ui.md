@@ -15,7 +15,7 @@ Before a developer ever sees your landing page, they might encounter your README
 
 ## Clear Docs Reduce Support Load
 
-Well-written documentation prevents repetitive support requests and frees engineering time. When we shipped the first version of Avion’s telemetry API, the same three setup questions kept hitting our inbox, even though the answers technically lived in the docs. They were buried in long paragraphs without code examples. After restructuring the documentation into task-based sections with copy and paste snippets, support tickets dropped by 40%.
+Well-written documentation prevents repetitive support requests and frees engineering time. When the first version of an internal API ships, the same few setup questions tend to arrive again and again, even though the answers technically live in the docs. Usually they are buried in long paragraphs without code examples. Restructuring the documentation into task-based sections with copy-and-paste snippets is what stops the repeats.
 
 Support metrics should inform documentation priorities. If a question appears frequently in chat channels or issue trackers, the docs have failed to address it clearly enough. Incorporating analytics, such as page views and time-on-page, helps identify which sections are confusing or underused.
 
