@@ -475,7 +475,7 @@ function existingGood(slug, args, inputsHash) {
     process.exit(1);
   }
 
-  const browser = await puppeteer.launch({
+  const launch = () => puppeteer.launch({
     headless: 'new',
     // The audio pass plays the film in real time inside a single evaluate, and
     // puppeteer aborts any one call after 180s by default. That is longer than
@@ -486,11 +486,19 @@ function existingGood(slug, args, inputsHash) {
     args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars',
            '--font-render-hinting=none', '--disable-lcd-text'],
   });
+  let browser = await launch();
 
   const made = [];
   const failed = [];
   try {
     for (const slug of targets) {
+     // One film's failure must not end an --all run, whatever throws it. On
+     // Windows, Chrome's temporary profile can be locked (EBUSY) while
+     // puppeteer cleans it up, and that error escaped the per-film handling
+     // below and stopped a three-hour run after two films. Log it, bring the
+     // browser back if it went down with the film, and move on; the next run
+     // retries whatever is missing.
+     try {
       // The page has to be opened before anything can be decided, because the
       // digest is of what it loads.
       const page = await openFilm(browser, slug, args);
@@ -535,9 +543,18 @@ function existingGood(slug, args, inputsHash) {
       }
       console.log(`  ${path.relative(ROOT, mp4)}  ${size} MB  verified`);
       made.push(mp4);
+     } catch (err) {
+      if (!args.all) throw err;
+      console.error(`  FAILED ${slug}: ${err.message}`);
+      failed.push(slug + ': ' + err.message);
+      if (!browser.isConnected()) {
+        try { await browser.close(); } catch (e) {}
+        browser = await launch();
+      }
+     }
     }
   } finally {
-    await browser.close();
+    try { await browser.close(); } catch (err) { console.warn('browser cleanup: ' + err.message); }
   }
 
   console.log('\ndone:');
