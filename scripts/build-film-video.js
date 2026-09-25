@@ -275,6 +275,26 @@ async function recordAudio(browser, slug, range, opts) {
            timeline: out.timeline };
 }
 
+// Loudness for upload. The capture comes out of Web Audio at about -20.6 LUFS
+// (level-d-60hz, measured), roughly 6.6 dB under what social feeds play, so a
+// viewer who unmutes hears this film quieter than the post above it. Master to
+// -14 LUFS with true peak capped at -1.5 dBTP, the usual streaming target.
+// Two-pass: measure first, then apply linearly, so the mix is scaled rather
+// than squeezed; loudnorm falls back to dynamic only where a peak would clip.
+// This is delivery, not content: the site plays the same mix at the viewer's
+// own volume.
+function loudnormFilter(file) {
+  const target = 'I=-14:TP=-1.5:LRA=11';
+  const r = spawnSync(ffmpeg, ['-hide_banner', '-nostats', '-i', file,
+    '-af', 'loudnorm=' + target + ':print_format=json', '-f', 'null', '-'], { encoding: 'utf8' });
+  const json = (r.stderr || '').slice((r.stderr || '').lastIndexOf('{'));
+  let m;
+  try { m = JSON.parse(json.slice(0, json.indexOf('}') + 1)); } catch (err) { return 'apad'; }
+  return 'loudnorm=' + target + ':measured_I=' + m.input_i + ':measured_TP=' + m.input_tp +
+         ':measured_LRA=' + m.input_lra + ':measured_thresh=' + m.input_thresh +
+         ':offset=' + m.target_offset + ':linear=true,apad';
+}
+
 async function renderVideo(browser, slug, range, audio, args, inputsHash) {
   const page = await openFilm(browser, slug, args);
   await page.addStyleTag({ content: CAPTURE_CSS });
@@ -297,7 +317,7 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
     // MediaRecorder can close its WebM a fraction before the final sampled
     // frame. Pad the mixed track so -shortest ends on the picture, not on an
     // encoder timestamp, and never cuts the closing visual cadence.
-    '-af', 'apad',
+    '-af', loudnormFilter(audio.file),
     '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
     '-movflags', '+faststart',
     '-shortest',
