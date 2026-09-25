@@ -134,11 +134,11 @@ redirect_from:
   </li>
   <li>
     <span class="when">2019–2020</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Developed critical mission-control and ground-control systems for <a href="https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav"><em>Kargu</em></a>, Turkey's first indigenous loitering-munition (kamikaze) UAV and an internationally recognized autonomous system, alongside the <a href="https://www.stm.com.tr/en/togan-multi-rotor-uas"><em>Togan</em></a> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Developed critical mission-control and ground-control systems for <a href="https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav"><em>Kargu</em></a>, STM's rotary-wing loitering munition in service with the Turkish Armed Forces, alongside the <a href="https://www.stm.com.tr/en/togan-multi-rotor-uas"><em>Togan</em></a> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
   </li>
   <li>
     <span class="when">2014–2019</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Led design and architecture of the <a href="https://cdome.comodo.com/">Secure Web Gateway</a>, enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a>, and the Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>.</span>
+    <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Worked on the <a href="https://cdome.comodo.com/">Comodo Dome Secure Web Gateway</a>, the enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a> and the Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>, leading the design and development of Windows services and applications in C++.</span>
   </li>
   <li>
     <span class="when">2014</span>

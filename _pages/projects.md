@@ -166,7 +166,7 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
   <li>
     <div class="meta">AI-Assisted Cybersecurity · 2014–2019 · Comodo</div>
     <h3 class="title">Secure Web Gateway, Patch Manager, and Dragon for AI-assisted defence</h3>
-    <p class="desc">I led design and architecture for Comodo's <a href="https://cdome.comodo.com/">Secure Web Gateway</a>, enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a>, and Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritise findings; deterministic controls still enforce the policy.</p>
+    <p class="desc">I worked on Comodo's <a href="https://cdome.comodo.com/">Dome Secure Web Gateway</a>, enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a> and Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>, leading the design and development of Windows services and applications in C++. These products predate today's generative-AI stack, but expose the enforcement and telemetry surfaces an AI security layer needs: web requests, endpoint inventory, vulnerability state, and browser signals. AI can classify and prioritise findings; deterministic controls still enforce the policy.</p>
   </li>
 </ul>
 
