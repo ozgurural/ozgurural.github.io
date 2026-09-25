@@ -150,8 +150,8 @@ description: "AI and ML projects by Dr. Ozgur Ural spanning model provenance, ve
   </li>
   <li>
     <div class="meta">AI Observability · 2024 · Avion</div>
-    <h3 class="title"><a href="/files/ace-architecture-report.pdf">ACE telemetry as an AI validation substrate</a></h3>
-    <p class="desc">The Avion Control Engine combines an Instructor Operating Station with synchronized simulator telemetry through a SvelteKit frontend and Python/gRPC backend. Its AI value is the observability layer: time-aligned state, interventions, and outcomes are the evidence needed to evaluate learned policies, detect anomalous behaviour, and support predictive-maintenance models. <a href="/files/ace-architecture-report.pdf">Read the architecture report (PDF).</a></p>
+    <h3 class="title">Simulator telemetry as an AI validation substrate</h3>
+    <p class="desc">I build web applications for the Avion Cloud Environment that monitor, configure and diagnose core simulator components (TypeScript, Svelte, Scala, Python, gRPC). Their AI value is the observability layer: time-aligned state, interventions, and outcomes are the evidence needed to evaluate learned policies, detect anomalous behaviour, and support predictive-maintenance models.</p>
   </li>
   <li>
     <div class="meta">AI Security &amp; Data Governance · 2020–2021 · Havelsan</div>
