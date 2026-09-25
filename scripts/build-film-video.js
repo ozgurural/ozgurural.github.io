@@ -164,18 +164,25 @@ async function hashInputs(urls) {
   // catch a real edit.
   const stamp = new RegExp('[?]v=[0-9]+', 'g');
   const h = crypto.createHash('sha256');
+  // Each input's own fingerprint is kept too and written to the sidecar, so a
+  // re-render can say which input changed. Two films re-rendered with nothing
+  // edited, and without this there was no way to tell whether a file really
+  // changed or the page simply fetched a different set of resources.
+  const parts = {};
   for (const u of urls) {
     let res;
     try { res = await fetch(u); } catch (err) { continue; }
     if (!res.ok) continue;
-    h.update(u.slice(BASE.length).replace(stamp, ''));
+    const key = u.slice(BASE.length).replace(stamp, '');
+    h.update(key);
     const type = res.headers.get('content-type') || '';
-    if (/text|javascript|json|xml|svg/.test(type)) {
-      h.update((await res.text()).replace(stamp, ''));
-    } else {
-      h.update(Buffer.from(await res.arrayBuffer()));
-    }
+    const body = /text|javascript|json|xml|svg/.test(type)
+      ? (await res.text()).replace(stamp, '')
+      : Buffer.from(await res.arrayBuffer());
+    h.update(body);
+    parts[key] = crypto.createHash('sha256').update(body).digest('hex').slice(0, 12);
   }
+  hashInputs.parts = parts;
   return h.digest('hex').slice(0, 16);
 }
 
@@ -373,7 +380,7 @@ async function renderVideo(browser, slug, range, audio, args, inputsHash) {
     for (const [w, t] of tl) { if (w - lastW >= 0.1) { thin.push([+w.toFixed(3), +t.toFixed(3)]); lastW = w; } }
     if (tl.length) thin.push([+tl[tl.length - 1][0].toFixed(3), +tl[tl.length - 1][1].toFixed(3)]);
     fs.writeFileSync(outFile.replace(/\.mp4$/, '.timeline.json'),
-      JSON.stringify({ slug, inputsHash, from: range.from, to: range.to, fps: args.fps,
+      JSON.stringify({ slug, inputsHash, inputs: hashInputs.parts, from: range.from, to: range.to, fps: args.fps,
                        wallSpan: +audio.wallSpan.toFixed(3), filmSpan: +audio.filmSpan.toFixed(3),
                        samples: thin }));
   }
@@ -448,7 +455,16 @@ function existingGood(slug, args, inputsHash) {
     fs.writeFileSync(side, JSON.stringify(meta));
     return size + ' MB, ' + secs.toFixed(1) + 's, sealed';
   }
-  if (meta.inputsHash !== inputsHash) return null;   // the film changed
+  if (meta.inputsHash !== inputsHash) {              // the film changed
+    if (meta.inputs && hashInputs.parts) {
+      const a = meta.inputs, b = hashInputs.parts;
+      const diff = Array.from(new Set(Object.keys(a).concat(Object.keys(b))))
+        .filter(k => a[k] !== b[k])
+        .map(k => (k in a ? (k in b ? 'changed ' : 'no longer loaded ') : 'newly loaded ') + k);
+      console.log(slug + '  inputs differ: ' + diff.join(', '));
+    }
+    return null;
+  }
   return size + ' MB, ' + secs.toFixed(1) + 's';
 }
 
