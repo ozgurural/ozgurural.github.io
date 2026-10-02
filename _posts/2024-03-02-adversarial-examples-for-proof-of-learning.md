@@ -19,7 +19,7 @@ Adversarial-example techniques are one way to try, and having the attack in
 runnable form is what makes a defence testable rather than asserted.
 
 My own work on the defence side is published: [Enhancing Security of
-Proof-of-Learning against Spoofing Attacks using Feature-Based Model
+Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model
 Watermarking](/publication/2024-ieee-access-watermarking) and
 [SecurePoL](/publication/2025-secureproofoflearning), with the dissertation at
 [Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model

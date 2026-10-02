@@ -1,0 +1,39 @@
+---
+layout: null
+permalink: /llms-full.txt
+sitemap: false
+---
+{%- comment -%}
+  The publication pages as one plain-text file, for an assistant or a script
+  that wants the whole record in a single request (the companion to llms.txt,
+  which is the index). Each entry leads with the reference a citation needs
+  and then gives the page's own text. Generated from the publications, so it
+  cannot drift from them.
+{%- endcomment -%}
+# {{ site.author.name }}: publications, full text
+
+Source: {{ '/publications/' | absolute_url }}
+BibTeX: {{ '/publications.bib' | absolute_url }}
+ORCID: {{ site.author.orcid }}
+{% assign pubs = site.publications | sort: "date" | reverse %}
+{%- for p in pubs %}
+
+---
+
+## {{ p.title | strip_html }}
+
+- Authors: {% if p.author_list %}{% for a in p.author_list %}{{ a.given }} {{ a.family }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% else %}Ozgur Ural{% endif %}
+- Published: {% if p.venue %}{{ p.venue | strip_html }}{% if p.volume %}, vol. {{ p.volume }}{% endif %}{% if p.pages %}, pp. {{ p.pages }}{% endif %}, {% endif %}{{ p.date | date: "%Y" }}{% if p.school %} ({{ p.school }}){% endif %}
+{%- if p.doi %}
+- DOI: https://doi.org/{{ p.doi }}{% endif %}
+{%- if p.pdf %}
+- PDF: {{ p.pdf }}{% endif %}
+{%- if p.code %}
+- Code: {{ p.code }}{% endif %}
+{%- if p.keywords %}
+- Keywords: {{ p.keywords | join: ", " }}{% endif %}
+- Page: {{ p.url | absolute_url }}
+- Cite as: {{ p.citation | strip_html }}
+
+{{ p.content | strip_html | replace: "&amp;", "&" | replace: "&rsquo;", "'" | replace: "&#39;", "'" | replace: "&quot;", '"' | replace: "&lt;", "<" | replace: "&gt;", ">" | strip }}
+{%- endfor %}

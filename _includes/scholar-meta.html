@@ -1,0 +1,46 @@
+{%- comment -%}
+  Bibliographic tags for a publication page, in the Highwire Press vocabulary
+  that Google Scholar, Zotero and the scholarly crawlers read, plus Dublin Core.
+  Without them a page about a paper is just a page: a reference manager cannot
+  import it and an index cannot tell which paper it describes. Every value comes
+  from the publication's front matter, which holds the publisher's own record
+  (Crossref for the journal and proceedings papers), so these tags, the BibTeX
+  on the page and /publications.bib all say the same thing.
+{%- endcomment -%}
+<meta name="citation_title" content="{{ page.title | strip_html | escape }}">
+{% for a in page.author_list -%}
+<meta name="citation_author" content="{{ a.family | escape }}, {{ a.given | escape }}">
+{% if a.orcid %}<meta name="citation_author_orcid" content="https://orcid.org/{{ a.orcid }}">
+{% endif %}{% endfor -%}
+<meta name="citation_publication_date" content="{% if page.date_exact %}{{ page.date | date: '%Y/%m/%d' }}{% else %}{{ page.date | date: '%Y' }}{% endif %}">
+{% if page.pub_type == "journal" %}<meta name="citation_journal_title" content="{{ page.venue | strip_html | escape }}">
+{% elsif page.pub_type == "conference" %}<meta name="citation_conference_title" content="{{ page.venue | strip_html | escape }}">
+{% elsif page.pub_type == "thesis" %}<meta name="citation_dissertation_institution" content="{{ page.school | escape }}">
+{% elsif page.pub_type == "report" %}<meta name="citation_technical_report_institution" content="{{ page.publisher | default: 'Independent' | escape }}">
+{% endif -%}
+{% if page.volume %}<meta name="citation_volume" content="{{ page.volume }}">
+{% endif -%}
+{% if page.pages %}{% assign pp = page.pages | split: "-" %}<meta name="citation_firstpage" content="{{ pp.first }}">
+<meta name="citation_lastpage" content="{{ pp.last }}">
+{% endif -%}
+{% if page.issn %}<meta name="citation_issn" content="{{ page.issn }}">
+{% endif -%}
+{% if page.publisher %}<meta name="citation_publisher" content="{{ page.publisher | escape }}">
+{% endif -%}
+{% if page.doi %}<meta name="citation_doi" content="{{ page.doi }}">
+{% endif -%}
+{% if page.pdf %}<meta name="citation_pdf_url" content="{{ page.pdf | escape }}">
+{% endif -%}
+<meta name="citation_abstract_html_url" content="{{ page.url | absolute_url }}">
+{% if page.keywords %}<meta name="citation_keywords" content="{{ page.keywords | join: '; ' | escape }}">
+{% endif -%}
+<meta name="citation_language" content="en">
+<meta name="DC.title" content="{{ page.title | strip_html | escape }}">
+{% for a in page.author_list -%}
+<meta name="DC.creator" content="{{ a.given | escape }} {{ a.family | escape }}">
+{% endfor -%}
+<meta name="DC.issued" content="{{ page.date | date: '%Y' }}">
+{% if page.doi %}<meta name="DC.identifier" content="doi:{{ page.doi }}">
+{% endif -%}
+<link rel="alternate" type="application/x-bibtex" title="BibTeX for all publications" href="{{ '/publications.bib' | relative_url }}">
+<link rel="alternate" type="application/vnd.citationstyles.csl+json" title="CSL-JSON for all publications" href="{{ '/publications.json' | relative_url }}">

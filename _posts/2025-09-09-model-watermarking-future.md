@@ -41,7 +41,7 @@ Watermarks that survive pruning, quantization, and transfer learning will be ess
 
 ## References
 
-[1] Dr. Ozgur Ural and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access.
+[1] Dr. Ozgur Ural and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model Watermarking*. IEEE Access.
 [2] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access, 11, 145331 to 145362.
 [3] Uchida, Y., Nagai, Y., Sakazawa, S., & Satoh, S. (2017). *Embedding Watermarks into Deep Neural Networks*. ICMR.
 [4] Adi, Y., Baum, C., Cisse, M., Pinkas, B., & Keshet, J. (2018). *Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring*. USENIX Security.

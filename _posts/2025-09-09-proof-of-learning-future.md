@@ -32,7 +32,7 @@ Emerging blockchain protocols employ PoL as a form of Proof-of-Useful-Work, demo
 
 ## References
 
-[1] Dr. Ozgur Ural and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking*. IEEE Access.
+[1] Dr. Ozgur Ural and Yoshigoe, K. (2024). *Enhancing Security of Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model Watermarking*. IEEE Access.
 [2] Dr. Ozgur Ural (2025). *Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking*. Doctoral Dissertation, Embry-Riddle Aeronautical University.
 [3] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
 [4] Lan, Y., Liu, Y., and Li, B. (2020). *Proof of Learning (PoLe): Empowering Machine Learning with Consensus Building on Blockchains*. arXiv:2007.15145.

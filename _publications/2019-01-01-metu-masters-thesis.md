@@ -9,6 +9,13 @@ date: 2019-01-01
 venue: "Master's Thesis"
 paperurl: "https://open.metu.edu.tr/handle/11511/43747"
 citation: "Ural, O. (2019). Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data. Master's Thesis, Middle East Technical University, Ankara, Turkey."
+bibkey: "ural2019mastersthesis"
+pub_type: "thesis"
+degree: "masters"
+school: "Middle East Technical University"
+keywords: ["cyber security event detection", "Twitter", "natural language processing", "Turkish"]
+author_list:
+  - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
 ---
 
 Master's thesis in Cyber Security at Middle East Technical University, advised by [Prof. Cengiz Acartürk](https://acarturk.net/). It builds a system that detects cyber-security events from two live Turkish sources, a Twitter stream and newspaper data, and it is the work later extended into the co-authored [ICISSP 2021 paper](/publication/AutomaticDetectionCyberSecurity).

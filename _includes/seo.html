@@ -106,31 +106,56 @@
   Every page said Person and nothing else, so a paper and a post looked the same
   to a search engine as the about page does. A publication is a ScholarlyArticle
   and a post is a BlogPosting; both carry the author, the date and the headline,
-  which is what a rich result is built from. The venue becomes isPartOf and the
-  paper URL becomes the identifier, since that is what the fields already mean.
+  which is what a rich result is built from.
 {%- endcomment -%}
 {% if page.collection == "publications" and page.title %}
+  {%- comment -%}
+    A publication's structured data. The type follows what the work is (a
+    thesis is a Thesis, a report a Report), the DOI is its identifier, and the
+    authors come from author_list with their ORCIDs, so an index can match the
+    people and the paper to the records it already holds instead of guessing
+    from a name. Works without that record fall back to the older fields.
+    Only the first author carries this site's url, since that is who it is about.
+  {%- endcomment -%}
+  {%- assign ld_type = "ScholarlyArticle" -%}
+  {%- if page.pub_type == "thesis" -%}{%- assign ld_type = "Thesis" -%}{%- elsif page.pub_type == "report" -%}{%- assign ld_type = "Report" -%}{%- endif -%}
+  {%- capture doi_url -%}{% if page.doi %}https://doi.org/{{ page.doi }}{% endif %}{%- endcapture -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ScholarlyArticle",
+      "@type": {{ ld_type | jsonify }},
       "headline": {{ page.title | strip_html | jsonify }},
       "name": {{ page.title | strip_html | jsonify }},
       {% if page.excerpt %}"abstract": {{ page.excerpt | strip_html | strip_newlines | jsonify }},{% endif %}
       {% if page.date %}"datePublished": "{{ page.date | date_to_xmlschema }}",{% endif %}
-      {% if page.venue %}"isPartOf": { "@type": "Periodical", "name": {{ page.venue | jsonify }} },{% endif %}
-      {% if page.paperurl %}"sameAs": {{ page.paperurl | jsonify }},{% endif %}
-      {%- comment -%}
-        Half of these papers are co-authored, and emitting a single author read
-        them all as sole-authored to anything parsing the schema, while the
-        citation printed on the page said otherwise. The list comes from an
-        explicit `authors` front matter key rather than from parsing the
-        citation string, which would have to guess where a name ends. Papers
-        without that key are the genuinely sole-authored ones and still get the
-        single Person. Only the first author is given a url, since that is the
-        one this site is about.
-      {%- endcomment -%}
-      {% if page.authors and page.authors.size > 0 %}
+      "inLanguage": "en",
+      {% if page.venue and page.pub_type == "journal" %}"isPartOf": {
+        "@type": "PublicationVolume"{% if page.volume %}, "volumeNumber": {{ page.volume | jsonify }}{% endif %},
+        "isPartOf": { "@type": "Periodical", "name": {{ page.venue | jsonify }}{% if page.issn %}, "issn": {{ page.issn | jsonify }}{% endif %} }
+      },{% elsif page.venue and page.pub_type != "thesis" %}"isPartOf": { "@type": "CreativeWork", "name": {{ page.venue | strip_html | jsonify }} },{% endif %}
+      {% if page.pages %}"pagination": {{ page.pages | jsonify }},{% endif %}
+      {% if page.doi %}"identifier": { "@type": "PropertyValue", "propertyID": "DOI", "value": {{ page.doi | jsonify }}, "url": {{ doi_url | jsonify }} },{% endif %}
+      {% if page.doi and page.paperurl and page.paperurl != doi_url %}"sameAs": [{{ doi_url | jsonify }}, {{ page.paperurl | jsonify }}],
+      {% elsif page.paperurl %}"sameAs": {{ page.paperurl | jsonify }},{% endif %}
+      {% if page.keywords %}"keywords": {{ page.keywords | jsonify }},{% endif %}
+      {% if page.license %}"license": {{ page.license | jsonify }},{% endif %}
+      {% if page.open_access %}"isAccessibleForFree": true,{% endif %}
+      {% if page.publisher %}"publisher": { "@type": "Organization", "name": {{ page.publisher | jsonify }} },{% endif %}
+      {% if page.school %}"sourceOrganization": { "@type": "CollegeOrUniversity", "name": {{ page.school | jsonify }} },{% endif %}
+      {% if page.pdf %}"encoding": { "@type": "MediaObject", "encodingFormat": "application/pdf", "contentUrl": {{ page.pdf | jsonify }} },{% endif %}
+      {% if page.author_list and page.author_list.size > 0 %}
+      "author": [
+        {% for a in page.author_list %}{%- capture full -%}{{ a.given }} {{ a.family }}{%- endcapture -%}{
+          "@type": "Person",
+          "name": {{ full | jsonify }},
+          "givenName": {{ a.given | jsonify }},
+          "familyName": {{ a.family | jsonify }}{% if a.orcid %},
+          "identifier": "https://orcid.org/{{ a.orcid }}",
+          "sameAs": "https://orcid.org/{{ a.orcid }}"{% endif %}{% if forloop.first %},
+          "url": {{ seo_url | jsonify }}{% endif %}
+        }{% unless forloop.last %},{% endunless %}{% endfor %}
+      ],
+      {% elsif page.authors and page.authors.size > 0 %}
       "author": [
         {% for a in page.authors %}{
           "@type": "Person",

@@ -1,0 +1,48 @@
+---
+layout: null
+permalink: /publications.json
+sitemap: false
+---
+{%- comment -%}
+  The same list as CSL-JSON, the format citation tools exchange. Generated
+  from the publications' front matter.
+{%- endcomment -%}
+{%- assign pubs = site.publications | sort: "date" | reverse -%}
+{%- assign first = true -%}
+[
+{%- for p in pubs -%}{%- if p.bibkey -%}
+{%- assign t = "document" -%}
+{%- if p.pub_type == "journal" -%}{%- assign t = "article-journal" -%}
+{%- elsif p.pub_type == "conference" -%}{%- assign t = "paper-conference" -%}
+{%- elsif p.pub_type == "thesis" -%}{%- assign t = "thesis" -%}
+{%- elsif p.pub_type == "report" -%}{%- assign t = "report" -%}{%- endif -%}
+{%- unless first -%},{%- endunless -%}{%- assign first = false %}
+  {
+    "id": {{ p.bibkey | jsonify }},
+    "type": {{ t | jsonify }},
+    "title": {{ p.title | strip_html | jsonify }},
+    "author": [{% for a in p.author_list %}{ "family": {{ a.family | jsonify }}, "given": {{ a.given | jsonify }}{% if a.orcid %}, "ORCID": "https://orcid.org/{{ a.orcid }}"{% endif %} }{% unless forloop.last %}, {% endunless %}{% endfor %}],
+    "issued": { "date-parts": [[{{ p.date | date: "%Y" | plus: 0 }}]] },
+    {%- if p.venue %}
+    "container-title": {{ p.venue | strip_html | jsonify }},{% endif %}
+    {%- if p.volume %}
+    "volume": {{ p.volume | jsonify }},{% endif %}
+    {%- if p.pages %}
+    "page": {{ p.pages | jsonify }},{% endif %}
+    {%- if p.publisher %}
+    "publisher": {{ p.publisher | jsonify }},{% endif %}
+    {%- if p.school %}
+    "publisher": {{ p.school | jsonify }},{% endif %}
+    {%- if p.issn %}
+    "ISSN": {{ p.issn | jsonify }},{% endif %}
+    {%- if p.doi %}
+    "DOI": {{ p.doi | jsonify }},{% endif %}
+    {%- if p.keywords %}
+    "keyword": {{ p.keywords | join: ", " | jsonify }},{% endif %}
+    {%- if p.excerpt %}
+    "abstract": {{ p.excerpt | strip_html | strip_newlines | strip | jsonify }},{% endif %}
+    "URL": {% if p.doi %}"https://doi.org/{{ p.doi }}"{% else %}{{ p.paperurl | jsonify }}{% endif %},
+    "note": {{ p.url | absolute_url | jsonify }}
+  }
+{%- endif -%}{%- endfor %}
+]

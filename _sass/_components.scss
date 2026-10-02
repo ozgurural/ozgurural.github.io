@@ -2014,3 +2014,15 @@ body.labf-embed .labf__chrome { display: none; }
 @media (max-width: 640px) {
   .labf-embed__source { display: none; }
 }
+
+// How to cite a publication: the reference, its BibTeX and the links, at the foot of the page.
+.cite-block {
+  margin-top: 2.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  background: var(--ds-surface);
+}
+.cite-block h2 { margin-top: 0; font-size: 1.15rem; }
+.cite-block__ref, .cite-block__links { font-size: 0.9rem; }
+.cite-block__bib { margin: 0.75rem 0; font-size: 0.8rem; overflow-x: auto; white-space: pre; }

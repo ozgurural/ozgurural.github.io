@@ -9,8 +9,21 @@ venue: "IEEE Access"
 paperurl: "https://doi.org/10.1109/ACCESS.2023.3344669"
 authors:
   - "Dr. Ozgur Ural"
-  - "K. Yoshigoe"
-citation: "Ural, O. and Yoshigoe, K. (2023). Survey on Blockchain-Enhanced Machine Learning. IEEE Access, pp. 145331-145362. DOI: 10.1109/ACCESS.2023.3344669."
+  - "Kenji Yoshigoe"
+citation: "Ural, O. and Yoshigoe, K. (2023). Survey on Blockchain-Enhanced Machine Learning. IEEE Access, vol. 11, pp. 145331-145362. DOI: 10.1109/ACCESS.2023.3344669."
+bibkey: "ural2023blockchainml"
+issn: "2169-3536"
+publisher: "IEEE"
+pub_type: "journal"
+open_access: true
+doi: "10.1109/ACCESS.2023.3344669"
+volume: "11"
+pages: "145331-145362"
+license: "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+keywords: ["blockchain", "machine learning", "federated learning", "data provenance", "consensus mechanisms", "incentive mechanisms"]
+author_list:
+  - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
+  - { given: "Kenji", family: "Yoshigoe" }
 ---
 
 Machine learning has three problems a distributed ledger is unusually well suited to. Training data can be poisoned by contributors who still collect a reward. Models leak the data they were trained on. And a finished set of weights records nothing about what happened to it. This survey works through what a ledger actually buys in each case, and is deliberately balanced: it presents the limitations alongside the opportunities.

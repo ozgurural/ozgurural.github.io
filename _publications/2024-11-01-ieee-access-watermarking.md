@@ -1,5 +1,5 @@
 ---
-title: "Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking"
+title: "Enhancing Security of Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model Watermarking"
 seo_title: "Feature-Based Watermarking for Proof-of-Learning"
 collection: publications
 category: manuscripts
@@ -10,8 +10,21 @@ venue: "IEEE Access"
 paperurl: "https://ieeexplore.ieee.org/abstract/document/10741282"
 authors:
   - "Dr. Ozgur Ural"
-  - "K. Yoshigoe"
-citation: "Ural, O. and Yoshigoe, K. (2024). Enhancing Security of Proof-of-Learning against Spoofing Attacks using Feature-Based Model Watermarking. IEEE Access. DOI: 10.1109/ACCESS.2024.3489776."
+  - "Kenji Yoshigoe"
+citation: "Ural, O. and Yoshigoe, K. (2024). Enhancing Security of Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model Watermarking. IEEE Access, vol. 12, pp. 169567-169591. DOI: 10.1109/ACCESS.2024.3489776."
+bibkey: "ural2024featurewatermark"
+issn: "2169-3536"
+publisher: "IEEE"
+pub_type: "journal"
+open_access: true
+doi: "10.1109/ACCESS.2024.3489776"
+volume: "12"
+pages: "169567-169591"
+license: "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+keywords: ["Proof-of-Learning", "feature-based watermarking", "spoofing attacks", "model ownership", "machine learning security"]
+author_list:
+  - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
+  - { given: "Kenji", family: "Yoshigoe", orcid: "0000-0001-6040-4742" }
 ---
 
 Proof-of-Learning lets a party prove they trained a model rather than downloaded it, by committing to the trajectory the optimizer actually took. The weakness is that the proof is a transcript, and a transcript can be forged: later work showed that an adversary can replicate the computational path of a legitimate model closely enough to pass verification.

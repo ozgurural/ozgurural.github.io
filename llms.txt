@@ -62,8 +62,15 @@ sitemap: false
 ## Publications
 {% assign pubs = site.publications | sort: "date" | reverse %}
 {%- for p in pubs %}
-- [{{ p.title | strip_html }}]({{ p.url | absolute_url }}): {% if p.venue %}{{ p.venue | strip_html }}, {% endif %}{{ p.date | date: "%Y" }}.{% if p.authors and p.authors.size > 1 %} With {% for a in p.authors offset: 1 %}{{ a }}{% unless forloop.last %}, {% endunless %}{% endfor %}.{% endif %} {{ p.excerpt | strip_html | normalize_whitespace }}
+- [{{ p.title | strip_html }}]({{ p.url | absolute_url }}): {% if p.author_list %}{% for a in p.author_list %}{{ a.given }} {{ a.family }}{% unless forloop.last %}, {% endunless %}{% endfor %}. {% endif %}{% if p.venue %}{{ p.venue | strip_html }}{% if p.volume %}, vol. {{ p.volume }}{% endif %}{% if p.pages %}, pp. {{ p.pages }}{% endif %}, {% endif %}{{ p.date | date: "%Y" }}.{% if p.doi %} DOI: https://doi.org/{{ p.doi }}.{% endif %}{% if p.open_access %} Open access.{% endif %}{% if p.code %} Code: {{ p.code }}.{% endif %} {{ p.excerpt | strip_html | normalize_whitespace }}
 {%- endfor %}
+
+## Citing this work
+
+- [BibTeX for every publication]({{ '/publications.bib' | absolute_url }}): One entry per work, generated from the same records as the pages.
+- [CSL-JSON for every publication]({{ '/publications.json' | absolute_url }}): The same list for citation tools.
+- [Publication pages in one file]({{ '/llms-full.txt' | absolute_url }}): The full text of every publication page, with its reference.
+- Each publication page ends with its reference and BibTeX entry. Cite a paper by its DOI and venue as given there, not by this site's URL.
 
 ## Research Lab
 

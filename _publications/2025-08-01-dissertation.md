@@ -9,6 +9,15 @@ date: 2025-08-01
 venue: "Doctoral Dissertation"
 paperurl: "https://commons.erau.edu/edt/905/"
 citation: "Ural, O. (2025). Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking. Doctoral dissertation, Embry-Riddle Aeronautical University."
+bibkey: "ural2025dissertation"
+pub_type: "thesis"
+degree: "phd"
+school: "Embry-Riddle Aeronautical University"
+open_access: true
+pdf: "https://commons.erau.edu/cgi/viewcontent.cgi?article=1944&context=edt"
+keywords: ["Proof-of-Learning", "model watermarking", "spoofing attacks", "verifiable machine learning"]
+author_list:
+  - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
 ---
 
 Doctoral dissertation, Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University (Daytona Beach, Florida). Advisor: Dr. Kenji Yoshigoe.

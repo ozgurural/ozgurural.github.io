@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /publications.bib
+sitemap: false
+---
+{%- comment -%}
+  Every publication as BibTeX, generated from the same front matter as the
+  pages, so a reference manager, a script or an assistant can take the whole
+  list in one request.
+{%- endcomment -%}
+% Publications of Ozgur Ural. Source: {{ '/publications/' | absolute_url }}
+% ORCID: {{ site.author.orcid }}
+{% assign pubs = site.publications | sort: "date" | reverse %}
+{%- for p in pubs -%}{%- if p.bibkey %}
+
+{% include bibtex-entry.html pub=p %}
+{%- endif -%}{%- endfor %}

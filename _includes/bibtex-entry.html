@@ -1,0 +1,35 @@
+{%- comment -%}
+  One BibTeX entry, built from a publication's front matter (include.pub), so
+  the entry on the page, the one in /publications.bib and the citation tags in
+  the head cannot disagree. Lines are collected and joined rather than written
+  with conditionals in place, because a skipped optional field would otherwise
+  leave a blank line inside the entry. Braces come from variables: a literal
+  brace beside an output tag reads as the start of another tag.
+{%- endcomment -%}
+{%- assign p = include.pub -%}
+{%- assign lb = "{" -%}{%- assign rb = "}" -%}{%- assign ind = "  " -%}
+{%- capture nl %}
+{% endcapture -%}
+{%- capture sep -%},{{ nl }}{%- endcapture -%}
+{%- capture who -%}{%- for a in p.author_list -%}{{ a.family }}, {{ a.given }}{%- unless forloop.last %} and {% endunless -%}{%- endfor -%}{%- endcapture -%}
+{%- assign kind = "misc" -%}
+{%- if p.pub_type == "journal" -%}{%- assign kind = "article" -%}
+{%- elsif p.pub_type == "conference" -%}{%- assign kind = "inproceedings" -%}
+{%- elsif p.pub_type == "thesis" and p.degree == "phd" -%}{%- assign kind = "phdthesis" -%}
+{%- elsif p.pub_type == "thesis" -%}{%- assign kind = "mastersthesis" -%}
+{%- elsif p.pub_type == "report" -%}{%- assign kind = "techreport" -%}
+{%- endif -%}
+{%- assign f = "" | split: "" -%}
+{%- capture x -%}{{ ind }}author    = {{ lb }}{{ who }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}
+{%- capture x -%}{{ ind }}title     = {{ lb }}{{ p.title | strip_html }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}
+{%- if p.pub_type == "journal" -%}{%- capture x -%}{{ ind }}journal   = {{ lb }}{{ p.venue | strip_html }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- if p.pub_type == "conference" -%}{%- capture x -%}{{ ind }}booktitle = {{ lb }}{{ p.venue | strip_html }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- if p.school -%}{%- capture x -%}{{ ind }}school    = {{ lb }}{{ p.school }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- if p.pub_type == "report" -%}{%- capture x -%}{{ ind }}type      = {{ lb }}Technical report{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- capture x -%}{{ ind }}year      = {{ lb }}{{ p.date | date: "%Y" }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}
+{%- if p.volume -%}{%- capture x -%}{{ ind }}volume    = {{ lb }}{{ p.volume }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- if p.pages -%}{%- capture x -%}{{ ind }}pages     = {{ lb }}{{ p.pages | replace: "-", "--" }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- if p.publisher -%}{%- capture x -%}{{ ind }}publisher = {{ lb }}{{ p.publisher }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- if p.doi -%}{%- capture x -%}{{ ind }}doi       = {{ lb }}{{ p.doi }}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}{%- endif -%}
+{%- capture x -%}{{ ind }}url       = {{ lb }}{% if p.doi %}https://doi.org/{{ p.doi }}{% else %}{{ p.paperurl }}{% endif %}{{ rb }}{%- endcapture -%}{%- assign f = f | push: x -%}
+@{{ kind }}{{ lb }}{{ p.bibkey }},{{ nl }}{{ f | join: sep }}{{ nl }}{{ rb }}

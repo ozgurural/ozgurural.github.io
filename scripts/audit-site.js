@@ -261,6 +261,12 @@ const VIEWPORT_CHECKS = () => {
     try {
       resp = await page.goto(BASE + p, { waitUntil: 'domcontentloaded', timeout: 45000 });
     } catch (e) {
+      // A file the browser downloads instead of rendering (a .bib, an archive)
+      // aborts the navigation. That is not a failed page: ask for it directly.
+      if (/ERR_ABORTED/.test(e.message)) {
+        const direct = await fetch(BASE + p).catch(() => null);
+        if (direct && direct.ok && !(direct.headers.get('content-type') || '').includes('html')) { status.set(p, direct.status); continue; }
+      }
       byPage.set(p, [{ k: 'load-failed', d: e.message.slice(0, 80) }]);
       continue;
     }

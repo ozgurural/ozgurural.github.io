@@ -1,0 +1,20 @@
+{%- comment -%}
+  How to cite this work, in the two forms a reader copies: the reference as a
+  sentence and the BibTeX entry. Making the correct citation one selection away
+  is the cheapest thing a page can do for being cited correctly, by a person or
+  by an assistant quoting the page.
+{%- endcomment -%}
+{%- capture bib -%}{% include bibtex-entry.html pub=page %}{%- endcapture -%}
+<section class="cite-block" aria-labelledby="cite-this-work">
+  <h2 id="cite-this-work">Cite this work</h2>
+  {% if page.citation %}<p class="cite-block__ref">{{ page.citation }}</p>{% endif %}
+  <pre class="cite-block__bib"><code>{{ bib | strip | escape }}</code></pre>
+  <p class="cite-block__links">
+    {%- if page.doi %}<a class="page__resource-link" href="https://doi.org/{{ page.doi }}">DOI: {{ page.doi }}</a>{% endif -%}
+    {%- if page.paperurl %}{% if page.doi %} | {% endif %}<a class="page__resource-link" href="{{ page.paperurl }}">{% if page.pub_type == "thesis" %}Repository page{% else %}Read paper{% endif %}</a>{% endif -%}
+    {%- if page.pdf %} | <a class="page__resource-link" href="{{ page.pdf }}">PDF</a>{% endif -%}
+    {%- if page.code %} | <a class="page__resource-link" href="{{ page.code }}">Code</a>{% endif -%}
+    {%- if page.slidesurl %} | <a class="page__resource-link" href="{{ page.slidesurl }}">Slides</a>{% endif %}
+    | <a class="page__resource-link" href="{{ '/publications.bib' | relative_url }}">All publications (BibTeX)</a>
+  </p>
+</section>
