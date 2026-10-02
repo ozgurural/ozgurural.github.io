@@ -1718,45 +1718,6 @@ details.ep-concept[open] .desc {
   cursor: pointer;
 }
 
-.analytics-consent {
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(36rem, calc(100% - 2rem));
-  max-height: calc(100dvh - 2rem);
-  overflow: auto;
-  z-index: 9000;
-  padding: 1rem;
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius);
-  background: var(--ds-surface);
-  box-shadow: var(--ds-shadow-2);
-  font-size: 0.9rem;
-}
-.analytics-consent[hidden] { display: none; }
-.analytics-consent p { margin: 0 0 0.75rem; }
-.analytics-consent__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-.analytics-consent__actions button {
-  flex: 1;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--ds-accent);
-  border-radius: var(--ds-radius-sm);
-  color: var(--ds-ink);
-  cursor: pointer;
-}
-.analytics-preferences {
-  min-height: 24px;
-  border: 0;
-  padding: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .ep-progress-bar {
   position: fixed;
   top: 0;

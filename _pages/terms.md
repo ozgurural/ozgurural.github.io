@@ -1,20 +1,14 @@
 ---
 permalink: /terms/
 title: "Privacy and Site Use"
-modified: 2026-09-08
-description: "How this portfolio handles optional analytics, browser preferences, external services, and contact messages."
+modified: 2026-10-02
+description: "How this portfolio handles hosting, external services, and contact messages."
 
 ---
 
 ## Site hosting
 
 This portfolio is hosted on GitHub Pages. Serving a page involves technical information such as an IP address and browser request details. GitHub describes its handling of this information in its [privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
-
-## Optional analytics
-
-Google Analytics loads only after you choose **Allow analytics**. Choosing **No thanks** leaves the site fully usable without loading the analytics tag. Your choice is stored in this browser for up to 180 days. If browser storage is unavailable, it applies only to the current page.
-
-Use **Analytics preferences** in the footer to change your choice. Declining disables further Analytics collection on the page and clears the site's Analytics cookies where the browser permits it. This does not erase data previously sent to Google. See [Google's privacy policy](https://policies.google.com/privacy) for its processing practices.
 
 ## Search, media, and external services
 

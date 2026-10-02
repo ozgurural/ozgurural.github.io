@@ -14,12 +14,10 @@ const ROOT = path.resolve(__dirname, '..');
   try {
     const page = await browser.newPage();
     const errors = [];
-    let analyticsRequests = 0;
     page.on('pageerror', error => errors.push(error.message));
     await page.setRequestInterception(true);
     page.on('request', request => {
       if (/googletagmanager\.com|google-analytics\.com/.test(request.url())) {
-        analyticsRequests++;
         return request.respond({ status: 200, contentType: 'application/javascript', body: '' });
       }
       request.continue();
@@ -113,31 +111,6 @@ const ROOT = path.resolve(__dirname, '..');
     await go('/');
     await check('reduced-motion visitors do not get reveal animations', () => !document.querySelector('.ep-fade-in'));
     await check('off-screen back-to-top is not a tab stop', () => document.querySelector('.ep-back-to-top').tabIndex === -1);
-
-    // Exercise the real consent module in development and production builds.
-    await page.evaluate(() => {
-      localStorage.removeItem('analytics-consent-v1');
-      document.querySelector('#analytics-consent')?.remove();
-      document.querySelector('#analytics-preferences')?.remove();
-      const container = document.createElement('div');
-      container.innerHTML = '<button id="analytics-preferences">Analytics preferences</button><section id="analytics-consent" data-measurement-id="G-REVIEW" hidden><button data-consent="declined">No thanks</button><button data-consent="accepted">Allow analytics</button></section>';
-      document.body.append(container);
-    });
-    const before = analyticsRequests;
-    await page.addScriptTag({ content: fs.readFileSync(path.join(ROOT, 'assets/js/analytics-consent.js'), 'utf8') });
-    assert.equal(analyticsRequests, before, 'no analytics request before opt-in');
-    await page.click('#analytics-consent [data-consent="declined"]');
-    await check('decline persists without enabling tracking', () => JSON.parse(localStorage.getItem('analytics-consent-v1')).choice === 'declined' && window['ga-disable-G-REVIEW'] === true);
-    assert.equal(analyticsRequests, before);
-    await page.click('#analytics-preferences');
-    await page.click('#analytics-consent [data-consent="accepted"]');
-    await page.waitForFunction(() => window['ga-disable-G-REVIEW'] === false);
-    await page.waitForNetworkIdle();
-    assert.equal(analyticsRequests, before + 1, 'one opt-in request');
-    await page.evaluate(() => { document.cookie = '_ga=review; path=/'; });
-    await page.click('#analytics-preferences');
-    await page.click('#analytics-consent [data-consent="declined"]');
-    await check('withdrawal disables tracking and clears its cookie', () => window['ga-disable-G-REVIEW'] === true && !document.cookie.split('; ').some(c => c.startsWith('_ga=')));
 
     assert.deepEqual(errors, [], 'uncaught browser errors');
     console.log(`${checked} interaction checks passed; no uncaught browser errors.`);
