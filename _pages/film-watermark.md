@@ -1,14 +1,14 @@
 ---
 layout: cinema
 permalink: /films/watermark/
-title: "A signature in the words"
-description: "Was this written by an AI? A narrated film on how a text watermark works (Kirchenbauer et al., ICML 2023): a rule splits the vocabulary before every word and the AI is nudged toward one half. And why the model itself needs a signature too."
+title: "Signing an AI model"
+description: "Your AI model has been stolen and runs inside someone else's product. How do you show it is yours? A narrated film on model watermarking: three places to hide a signature in a model, and why it should be tied to the training record (Ural & Yoshigoe, IEEE Access 2025)."
 film_module: watermark
 noindex: true
 sitemap: false
 links:
-  - label: "Text watermark paper"
-    url: "https://arxiv.org/abs/2301.10226"
-  - label: "Model watermarking"
+  - label: "Paper"
+    url: "https://ieeexplore.ieee.org/document/11293969"
+  - label: "About the research"
     url: "/publication/2025-secureproofoflearning"
 ---

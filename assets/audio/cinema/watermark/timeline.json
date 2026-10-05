@@ -1,60 +1,56 @@
 {
  "film": "watermark",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 100.478,
- "authored": 100.0,
+ "duration": 98.015,
+ "authored": 97.5,
  "anchors": [
   [
    0.0,
    0.0
   ],
   [
-   6.85,
-   6.5
+   8.515,
+   8.0
   ],
   [
-   13.478,
-   13.0
+   17.515,
+   17.0
   ],
   [
-   21.478,
-   21.0
+   21.015,
+   20.5
   ],
   [
-   28.478,
-   28.0
+   32.015,
+   31.5
   ],
   [
-   34.478,
-   34.0
+   43.015,
+   42.5
   ],
   [
-   43.978,
-   43.5
+   54.015,
+   53.5
   ],
   [
-   53.478,
-   53.0
+   65.515,
+   65.0
   ],
   [
-   58.978,
-   58.5
+   73.015,
+   72.5
   ],
   [
-   68.978,
-   68.5
+   83.015,
+   82.5
   ],
   [
-   82.478,
-   82.0
+   91.515,
+   91.0
   ],
   [
-   91.978,
-   91.5
-  ],
-  [
-   100.478,
-   100.0
+   98.015,
+   97.5
   ]
  ],
  "audio": "soundtrack.mp3",
@@ -63,154 +59,141 @@
    "id": "hook",
    "at": 0.0,
    "real": 0.35,
-   "speech": 5.465,
-   "len": 5.69,
+   "speech": 7.765,
+   "len": 7.99,
    "head": 0.225,
    "file": "hook.mp3",
    "file_start": 0.125,
-   "hash": "9694149b13c9",
-   "text": "Was this written by an AI? There is a way to tell, and it's hiding in the words.",
-   "source": "Kirchenbauer et al. 2023, abstract"
+   "hash": "7b638cac01a5",
+   "text": "Your AI model has been stolen. It now runs inside someone else's product. How do you show it's yours?",
+   "source": "Ural and Yoshigoe 2025, Sec. I, III-C (threat model)"
   },
   {
-   "id": "choice",
-   "at": 6.5,
-   "real": 6.85,
-   "speech": 6.228,
-   "len": 6.46,
-   "head": 0.232,
-   "file": "choice.mp3",
-   "file_start": 6.618,
-   "hash": "c7bf293ac547",
-   "text": "When an AI writes, every next word is a choice. Usually, many words would fit.",
-   "source": "Sec. 1.2 (many plausible next tokens when entropy is high)"
+   "id": "why",
+   "at": 8.0,
+   "real": 8.515,
+   "speech": 8.371,
+   "len": 8.59,
+   "head": 0.219,
+   "file": "why.mp3",
+   "file_start": 8.296,
+   "hash": "62673b004c55",
+   "text": "You can't sign a model like a painting. A label added on top is simply cut off. So the signature has to be trained in.",
+   "source": "Sec. II-B (watermarks are embedded in the model, during training)"
   },
   {
-   "id": "split",
-   "at": 13.0,
-   "real": 13.478,
-   "speech": 6.258,
-   "len": 6.48,
-   "head": 0.222,
-   "file": "split.mp3",
-   "file_start": 13.256,
-   "hash": "d94515b3d39d",
-   "text": "So before each word, a simple rule splits the whole vocabulary in two: a green list and a red list.",
-   "source": "Sec. 3, Alg. 2 (hash of the previous token seeds the green list)"
+   "id": "three",
+   "at": 17.0,
+   "real": 17.515,
+   "speech": 2.349,
+   "len": 2.57,
+   "head": 0.221,
+   "file": "three.mp3",
+   "file_start": 17.294,
+   "hash": "36a6687512a1",
+   "text": "There are three places to hide it.",
+   "source": "Sec. II-B (three families of model watermark)"
   },
   {
-   "id": "shuffle",
-   "at": 21.0,
-   "real": 21.478,
-   "speech": 5.034,
-   "len": 5.26,
-   "head": 0.226,
-   "file": "shuffle.mp3",
-   "file_start": 21.252,
-   "hash": "0340ae6a5afb",
-   "text": "The lists reshuffle with every word, and the AI is gently nudged to pick from green.",
-   "source": "Sec. 3 (soft watermark: green tokens promoted, not forced)"
+   "id": "says",
+   "at": 20.5,
+   "real": 21.015,
+   "speech": 9.383,
+   "len": 9.6,
+   "head": 0.217,
+   "file": "says.mp3",
+   "file_start": 20.798,
+   "hash": "2d009cbc82b6",
+   "text": "One: in what the model says. It learns an odd answer to a secret question. Ask from the outside, and only your model answers that way.",
+   "source": "Sec. II-B, IV-B (feature-trigger marks, verified with black-box access)"
   },
   {
-   "id": "reads",
-   "at": 28.0,
-   "real": 28.478,
-   "speech": 5.314,
-   "len": 5.54,
-   "head": 0.226,
-   "file": "reads.mp3",
-   "file_start": 28.252,
-   "hash": "b3c148056c55",
-   "text": "The text reads just as well. Without the rule, there is nothing to see.",
-   "source": "abstract (negligible impact on text quality, invisible to humans)"
+   "id": "numbers",
+   "at": 31.5,
+   "real": 32.015,
+   "speech": 9.619,
+   "len": 9.84,
+   "head": 0.221,
+   "file": "numbers.mp3",
+   "file_start": 31.794,
+   "hash": "2d69162d567f",
+   "text": "Two: in its numbers. A tiny pattern written into just a couple of them. It costs almost nothing, but you need the file in your hands to read it.",
+   "source": "Sec. IV-B, VI-J (parameter perturbation: two weights, near-zero cost, white-box)"
   },
   {
-   "id": "human",
-   "at": 34.0,
-   "real": 34.478,
-   "speech": 7.94,
-   "len": 8.16,
-   "head": 0.22,
-   "file": "human.mp3",
-   "file_start": 34.258,
-   "hash": "b0aab37be18e",
-   "text": "Now check it. A person has no idea which words are green, so they land on green about half the time, like tossing a coin.",
-   "source": "Sec. 2 (a human is expected to hit green with half of their tokens)"
+   "id": "head",
+   "at": 42.5,
+   "real": 43.015,
+   "speech": 9.103,
+   "len": 9.31,
+   "head": 0.207,
+   "file": "head.mp3",
+   "file_start": 42.808,
+   "hash": "dac7a13b27d9",
+   "text": "Three: in a small extra part attached to the model, which normal use never touches. The model's work is undisturbed, and the part can be replaced.",
+   "source": "Sec. IV-B, VI-J (auxiliary head: main task untouched, replaceable)"
   },
   {
-   "id": "ai",
-   "at": 43.5,
-   "real": 43.978,
-   "speech": 7.656,
-   "len": 7.9,
-   "head": 0.244,
-   "file": "ai.mp3",
-   "file_start": 43.734,
-   "hash": "da320d7ffba6",
-   "text": "The AI's text lands on green again and again. A few sentences in, that's a coin coming up heads far too often to be luck.",
-   "source": "Sec. 2 (one-proportion z-test on the green count)"
-  },
-  {
-   "id": "check",
-   "at": 53.0,
-   "real": 53.478,
-   "speech": 3.669,
-   "len": 3.91,
-   "head": 0.241,
-   "file": "check.mp3",
-   "file_start": 53.237,
-   "hash": "3fdb29b860dd",
-   "text": "And checking needs only the rule, not the AI that wrote it.",
-   "source": "Sec. 2 (detection does not require access to the model)"
+   "id": "which",
+   "at": 53.5,
+   "real": 54.015,
+   "speech": 10.075,
+   "len": 10.3,
+   "head": 0.225,
+   "file": "which.mp3",
+   "file_start": 53.79,
+   "hash": "c9b5eae3e54c",
+   "text": "In our research we trained all three the same way and measured them. No single one wins. It depends on whether you can open the model, or only talk to it.",
+   "source": "Sec. II-B.1, VI-J (three families compared under one regime; deployment guidance)"
   },
   {
    "id": "catch",
-   "at": 58.5,
-   "real": 58.978,
-   "speech": 8.601,
-   "len": 8.83,
-   "head": 0.229,
+   "at": 65.0,
+   "real": 65.515,
+   "speech": 5.959,
+   "len": 6.19,
+   "head": 0.231,
    "file": "catch.mp3",
-   "file_start": 58.749,
-   "hash": "56c75f5af377",
-   "text": "It isn't magic. Rewrite a large part of the text and the pattern fades. And it's only there if the AI's maker switches it on.",
-   "source": "Sec. 7 (attacks: about a quarter of the tokens or more must change)"
+   "file_start": 65.284,
+   "hash": "adc604cce1ba",
+   "text": "And they share one weakness. A thief can retrain the model until the signature washes out.",
+   "source": "Sec. II-C.1, III-C.5 (cleaning, fine-tuning and pruning attenuate a mark)"
   },
   {
-   "id": "turn",
-   "at": 68.5,
-   "real": 68.978,
-   "speech": 11.714,
-   "len": 11.93,
-   "head": 0.216,
-   "file": "turn.mp3",
-   "file_start": 68.762,
-   "hash": "645bd706dd40",
-   "text": "Text is one thing an AI makes. The model itself is another, and models get copied. That's the part I work on: a signature trained into the model, so its owner can prove it's theirs.",
-   "source": "Ural and Yoshigoe, IEEE Access 2024 and 2025"
+   "id": "tie",
+   "at": 72.5,
+   "real": 73.015,
+   "speech": 7.467,
+   "len": 7.68,
+   "head": 0.213,
+   "file": "tie.mp3",
+   "file_start": 72.802,
+   "hash": "79e0f23b6f43",
+   "text": "So we tie the signature to the record of how the model was trained. Wash it out, and the model no longer matches its own record.",
+   "source": "Sec. II-C.1, III-C.5 (removal alters the weight trajectory, so replay fails)"
   },
   {
    "id": "close",
-   "at": 82.0,
-   "real": 82.478,
-   "speech": 7.146,
-   "len": 7.37,
-   "head": 0.224,
+   "at": 82.5,
+   "real": 83.015,
+   "speech": 6.027,
+   "len": 6.24,
+   "head": 0.213,
    "file": "close.mp3",
-   "file_start": 82.254,
-   "hash": "10e635a2de85",
-   "text": "More and more of what we read and run is made by machines. Knowing where it came from is becoming a basic need.",
-   "source": "the author's view"
+   "file_start": 82.802,
+   "hash": "294169ba9bcd",
+   "text": "AI models are becoming property. And property needs a signature that survives being copied.",
+   "source": "the authors' view"
   },
   {
    "id": "card",
-   "at": 91.5,
-   "real": 91.978,
+   "at": 91.0,
+   "real": 91.515,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 91.978,
+   "file_start": 91.515,
    "hash": "",
    "text": "",
    "source": ""
