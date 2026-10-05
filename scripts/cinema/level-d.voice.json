@@ -2,20 +2,84 @@
  "film": "level-d",
  "voice": "edge:en-GB-RyanNeural",
  "rate": "+6%",
- "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "stages" },
- "authored_duration": 113.0,
+ "music": {
+  "file": "dist/music/mixkit-587-discover.mp3",
+  "rise": 30,
+  "rise_on": "input"
+ },
+ "authored_duration": 114.0,
  "lines": [
-  { "id": "hook", "at": 0.0, "source": "old lab film, line 0: fast on average, can one late response break the budget", "text": "A flight simulator can be fast on average and still fail its pilot. All it takes is one late answer." },
-  { "id": "gate", "at": 7.5, "source": "old lab film, lines 1 and 3: transport delay is a regulated ceiling (150 ms, FAA Part 60 / EASA CS-FSTD(A)); a blink lasts roughly 100 to 400 ms; a device over the ceiling does not qualify", "text": "When the pilot moves the controls, the simulator has to answer in about the time of a blink. That limit is a rule, not a goal. Miss it, and the hours flown do not count." },
-  { "id": "stages", "at": 19.0, "source": "old lab film, line 2: every stage spends the budget, image generation the largest share (illustrative stage budget)", "text": "Every stage spends part of that time, from the controls to the motion of the cabin. Drawing the world takes the largest share." },
-  { "id": "tighter", "at": 28.0, "source": "old lab film, line 4: EASA CS-FSTD Issue 1 (ED Decision 2026/008/R, p. 467) sets 100 ms at fidelity level S for new devices", "text": "And Europe's newest standard tightens the limit for the most realistic new simulators. A chain that passed before would now fail." },
-  { "id": "beat", "at": 37.0, "source": "old lab film, lines 5 and 6: a fixed cadence (60 Hz); a deadline is never met on average", "text": "Inside, the simulator runs on a beat, many times a second. A late frame is late, however fast the frames around it were." },
-  { "id": "session", "at": 47.0, "source": "old lab film, lines 7 and 8: count the frames; a four-hour session at 60 Hz is 864,000 frames, and one in a thousand is 864 stutters", "text": "A training session is a long run of frames. Even a failure that looks vanishingly rare comes back again and again, and the pilot feels every one." },
-  { "id": "cluster", "at": 58.0, "source": "old lab film, line 9: independence is the optimistic case; real overruns cluster", "text": "And failures don't spread out politely. They arrive in bursts, so the real thing is worse." },
-  { "id": "rack", "at": 66.0, "source": "old lab film, lines 10 and 11: a rack of hosts publishes into one frame; the frame ends with the last host, latency is a maximum", "text": "A simulator is not one computer. It is a rack of them, all feeding the same frame, and the frame is only done when the last one reports." },
-  { "id": "straggler", "at": 77.0, "source": "old lab film, lines 13 and 14: one straggler makes the frame late; budgets are allocated and enforced per host, a system average constrains nobody", "text": "So one slow computer makes the frame late for everyone. An average across the rack hides it. Each computer needs its own budget, enforced." },
-  { "id": "measure", "at": 88.0, "source": "old lab film, lines 15 to 17: instrument while the session runs; trust the overrun counter, sampled step time misses spikes", "text": "None of it counts unless it is measured while the session runs. Count every overrun. A spike can hide between two samples." },
-  { "id": "close", "at": 98.0, "source": "old lab film, line 18 (closing line, kept)", "text": "Determinism is a budget, enforced every frame and proven by the instrument you ship. An AI model in this loop inherits it too." },
-  { "id": "card", "at": 107.0, "source": "", "text": "" }
+  {
+   "id": "hook",
+   "at": 0.0,
+   "source": "old lab film, line 0: fast on average, can one late response break the budget; transport delay ceiling (150 ms at Level C/D) against a blink of roughly 100 to 400 ms",
+   "text": "A flight simulator has to answer its pilot in about the time of a blink. Not on average. Every single time. Here is why that is hard."
+  },
+  {
+   "id": "input",
+   "at": 10.8,
+   "source": "old lab film, lines 1 and 3: transport delay runs from a primary flight control input to the motion, visual or instrument response (FAA Part 60, EASA CS-FSTD(A)); a device over the limit does not qualify",
+   "text": "When the pilot moves the controls, the view and the cabin must follow within that blink. The limit is written into the rules. A simulator that misses it does not qualify for training pilots."
+  },
+  {
+   "id": "chain",
+   "at": 22.9,
+   "source": "old lab film, line 2: every stage spends the budget, image generation the largest share; the stages are the generic chain of a full-flight simulator",
+   "text": "In that blink, the signal crosses a chain of computers. One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screen and moves the cabin."
+  },
+  {
+   "id": "tighter",
+   "at": 39.6,
+   "source": "old lab film, line 4: EASA CS-FSTD Issue 1 (ED Decision 2026/008/R, p. 467) sets 100 ms at fidelity level S for new devices",
+   "text": "Europe's newest standard makes that blink shorter for the most realistic new simulators. The same chain no longer makes it."
+  },
+  {
+   "id": "beat",
+   "at": 47.6,
+   "source": "old lab film, lines 5 and 6: a fixed cadence (60 Hz), hour-long sessions",
+   "text": "And it is not done once. The whole chain runs many times every second, for hours."
+  },
+  {
+   "id": "session",
+   "at": 54.0,
+   "source": "old lab film, lines 6 to 8: a deadline is never met on average; a four-hour session at 60 Hz is 864,000 frames and one in a thousand is 864 stutters",
+   "text": "So usually fast is not enough. Lay out one training session, frame by frame. A slip that happens only once in a long while still comes back again and again, and every one is a jolt the pilot can feel."
+  },
+  {
+   "id": "cluster",
+   "at": 67.4,
+   "source": "old lab film, line 9: real overruns cluster, so independence is the optimistic case",
+   "text": "Worse, the slips bunch together, so the pilot feels a stutter, not a blip."
+  },
+  {
+   "id": "rack",
+   "at": 72.8,
+   "source": "old lab film, lines 10 and 11: a rack of hosts publishes into one frame, which ends when the last host reports",
+   "text": "Why do frames slip? The work is split across a rack of computers, and every frame has to wait for the slowest one."
+  },
+  {
+   "id": "straggler",
+   "at": 80.6,
+   "source": "old lab film, lines 13 and 14: one straggler makes the frame late; budgets are allocated and enforced per host, a system average constrains nobody",
+   "text": "One slow computer, and the whole frame is late. An average hides it. So every computer gets its own time budget, checked every frame."
+  },
+  {
+   "id": "measure",
+   "at": 90.4,
+   "source": "old lab film, lines 15 to 17: instrument while the session runs; the overrun counter catches what sampled step time misses",
+   "text": "And every overrun is counted while the simulator runs. Spot checks miss a short spike. A counter does not."
+  },
+  {
+   "id": "close",
+   "at": 98.9,
+   "source": "old lab film, line 18 (closing line, in plainer words)",
+   "text": "That is determinism: a time budget kept every frame and proven by measurement. Any AI added to this loop has to live inside it too."
+  },
+  {
+   "id": "card",
+   "at": 107.8,
+   "source": "",
+   "text": ""
+  }
  ]
 }
