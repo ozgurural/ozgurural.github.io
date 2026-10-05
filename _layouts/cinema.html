@@ -52,6 +52,16 @@
                 padding: 9px 14px; border-radius: 999px; background: rgba(10,16,28,.8); border: 1px solid rgba(160,200,255,.35); }
     .cin-wrap.is-muted:not(.is-paused) .cin-hint { display: block; }
     .is-render .cin-controls, .is-render .cin-links, .is-render .cin-hint { display: none !important; }
+    /* A lab page on a phone shows the film about 320x180: at full size the
+       controls took nearly half the picture and the links sat on the title.
+       Smaller, but every target stays above 24px. */
+    @media (max-height: 300px), (max-width: 480px) {
+      .cin-controls { gap: 8px; padding: 6px 8px; }
+      .cin-btn { width: 30px; height: 30px; font-size: 12px; }
+      .cin-links { top: 2px; right: 6px; font-size: 10px; letter-spacing: .03em; }
+      .cin-links a { margin-left: 2px; padding: 6px 3px; }
+      .cin-hint { top: 6px; font-size: 11px; padding: 6px 10px; }
+    }
   </style>
   <script type="importmap">
     { "imports": { "three": "{{ '/assets/vendor/three/build/three.module.js' | relative_url }}",

@@ -1,0 +1,202 @@
+{
+ "film": "deadline",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 102.066,
+ "authored": 100.0,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   8.85,
+   8.5
+  ],
+  [
+   18.534,
+   17.0
+  ],
+  [
+   28.066,
+   26.0
+  ],
+  [
+   38.066,
+   36.0
+  ],
+  [
+   48.066,
+   46.0
+  ],
+  [
+   57.066,
+   55.0
+  ],
+  [
+   67.066,
+   65.0
+  ],
+  [
+   76.566,
+   74.5
+  ],
+  [
+   88.066,
+   86.0
+  ],
+  [
+   96.066,
+   94.0
+  ],
+  [
+   102.066,
+   100.0
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 6.452,
+   "len": 6.67,
+   "head": 0.218,
+   "file": "hook.mp3",
+   "file_start": 0.132,
+   "hash": "c2ebed62bcf6",
+   "text": "An AI can plan a robot's next move. But what if the answer arrives after the moment it was needed?",
+   "source": "old lab film, scene 1, first line"
+  },
+  {
+   "id": "beat",
+   "at": 8.5,
+   "real": 8.85,
+   "speech": 9.284,
+   "len": 9.5,
+   "head": 0.216,
+   "file": "beat.mp3",
+   "file_start": 8.634,
+   "hash": "6a218e85f995",
+   "text": "A machine that moves runs on a beat. Many times a second, its controller has to act. Not usually. Every time.",
+   "source": "old lab film, scene 1: at sixty hertz the controller gets 16.67 ms, every time"
+  },
+  {
+   "id": "think",
+   "at": 17.0,
+   "real": 18.534,
+   "speech": 9.132,
+   "len": 9.34,
+   "head": 0.208,
+   "file": "think.mp3",
+   "file_start": 18.326,
+   "hash": "d6e561c0b4aa",
+   "text": "An AI model keeps a different clock. Most answers come back quickly. Some take far longer, and nobody can say in advance which.",
+   "source": "old lab film, scene 1: inference time is variable; DeadlineModel's slow request takes several controller ticks"
+  },
+  {
+   "id": "wait",
+   "at": 26.0,
+   "real": 28.066,
+   "speech": 9.255,
+   "len": 9.48,
+   "head": 0.225,
+   "file": "wait.mp3",
+   "file_start": 27.841,
+   "hash": "534db8cd54c4",
+   "text": "Make the controller wait for the model, and one slow answer costs it a beat. Then the next. The delay spills into everything queued behind it.",
+   "source": "old lab film, scene 2: blocking inference delays later jobs too, red squares count missed deadlines"
+  },
+  {
+   "id": "split",
+   "at": 36.0,
+   "real": 38.066,
+   "speech": 9.1,
+   "len": 9.31,
+   "head": 0.21,
+   "file": "split.mp3",
+   "file_start": 37.856,
+   "hash": "e771c0245450",
+   "text": "So take the model out of the waiting path. The controller keeps its beat whatever happens. The model works beside it and leaves its newest plan.",
+   "source": "old lab film, scene 2: a separate worker proposes updates and the controller never waits for it"
+  },
+  {
+   "id": "stale",
+   "at": 46.0,
+   "real": 48.066,
+   "speech": 7.465,
+   "len": 7.7,
+   "head": 0.235,
+   "file": "stale.mp3",
+   "file_start": 47.831,
+   "hash": "92eafe72c8d0",
+   "text": "That changes how things fail. Every beat is now on time, but a plan can describe a world that has already moved on.",
+   "source": "old lab film, scene 3: the loop may stay on time while using an answer about a world that has changed"
+  },
+  {
+   "id": "contract",
+   "at": 55.0,
+   "real": 57.066,
+   "speech": 7.892,
+   "len": 8.11,
+   "head": 0.218,
+   "file": "contract.mp3",
+   "file_start": 56.848,
+   "hash": "6000d1a2c3e4",
+   "text": "So every plan carries the moment it was made. If it is too old, the controller sets it aside and falls back to a safe default.",
+   "source": "old lab film, scene 3: observation timestamp checked before use, fallback when a proposal expires"
+  },
+  {
+   "id": "limits",
+   "at": 65.0,
+   "real": 67.066,
+   "speech": 7.243,
+   "len": 7.46,
+   "head": 0.217,
+   "file": "limits.mp3",
+   "file_start": 66.849,
+   "hash": "961fd4773855",
+   "text": "Age is only one check. A fresh plan can still be wrong, so the limits on what the machine may do keep their own guard.",
+   "source": "old lab film, scene 3: freshness is only one check; validate action limits separately"
+  },
+  {
+   "id": "share",
+   "at": 74.5,
+   "real": 76.566,
+   "speech": 10.438,
+   "len": 10.66,
+   "head": 0.222,
+   "file": "share.mp3",
+   "file_start": 76.344,
+   "hash": "26714a31d084",
+   "text": "One trap remains. If the model and the controller share a computer, a busy model can still steal the controller's time. Keep them apart, and test it under load.",
+   "source": "old lab film, scene 4 and DeadlineModel: async misses are zero when isolated and appear only under shared stalls"
+  },
+  {
+   "id": "close",
+   "at": 86.0,
+   "real": 88.066,
+   "speech": 6.317,
+   "len": 6.55,
+   "head": 0.233,
+   "file": "close.mp3",
+   "file_start": 87.833,
+   "hash": "76d0ea9c4044",
+   "text": "Better AI will keep arriving. The question is whether a system can take it in without losing its beat.",
+   "source": "old lab film, scene 5 closing line: adopt better intelligence without losing the timing contract"
+  },
+  {
+   "id": "card",
+   "at": 94.0,
+   "real": 96.066,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 96.066,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}

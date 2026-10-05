@@ -16,8 +16,11 @@ header:
   <p class="lab-card__lead">AI can plan the next move. <strong>The system still has to meet the next deadline.</strong> As robot models gain new capabilities, an architecture decision becomes more important: where should inference run, when may its answer be used, and what happens while it is unavailable? This film and executable experiment explore those choices around a 60 Hz controller.</p>
   <div class="lab-card__usecase"><strong>Design study:</strong> <span>Open research direction of the author, not yet published. The traces below come from a synthetic scheduling model, not a deployed robot, an AI benchmark or a certification test. The work connects my interests in machine-learning security and real-time systems; it discloses no employer design. The regulated timing budget it starts from is animated in <a href="/lab/level-d-60hz/">Determinism at 60 Hz</a>.</span></div>
 
-  <div class="lab-film"><div class="lab-film__frame" id="det-film" role="group" aria-label="Animated architecture experiment: AI Meets the Deadline"></div></div>
-  <p class="lab-film__legend"><span><i style="background:#58c4dd"></i> on time</span><span><i style="background:#fc6255"></i> deadline missed</span><span><i style="background:#fbbf24"></i> fallback</span></p>
+  <div class="lab-film">
+    <div class="lab-film__frame lab-film__frame--cinema">
+      <iframe src="{{ '/films/deadline/' | relative_url }}?autoplay=0" title="AI meets the deadline: a narrated film on keeping an AI planner out of a real-time controller's waiting path" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
 
   <h2>The decision: let intelligence improve without blocking execution</h2>
   <p>In this design, inference runs in a separate worker. The execution loop consumes an admitted proposal or uses a defined baseline controller. A proposal carries the observation time and context version it was computed from. Admission and expiry checks apply before use. That preserves a place for richer planning while making availability, freshness and timing explicit responsibilities.</p>
