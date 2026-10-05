@@ -89,12 +89,14 @@ const PAGE_CHECKS = () => {
   else if (title.length > 70) out.issues.push({ k: 'title-long', d: title.length + ' chars' });
   const desc = meta('meta[name="description"]');
   if (!desc) out.issues.push({ k: 'no-description', d: '' });
-  else if (desc.length > 200) out.issues.push({ k: 'description-long', d: desc.length + ' chars' });
   // A noindex page is not competing in search, so a missing canonical or share
   // card is a decision rather than an omission. The embeds are eleven of those,
-  // and reporting them buried the pages where it matters.
+  // and reporting them buried the pages where it matters. The same goes for a
+  // long description: its length only matters in a search snippet, and the
+  // seven noindex film pages were reported for it.
   const noindex = /noindex/i.test(meta('meta[name="robots"]'));
   if (!noindex) {
+    if (desc.length > 200) out.issues.push({ k: 'description-long', d: desc.length + ' chars' });
     if (!document.querySelector('link[rel="canonical"]')) out.issues.push({ k: 'no-canonical', d: '' });
     if (!meta('meta[property="og:image"]')) out.issues.push({ k: 'no-og-image', d: '' });
   }

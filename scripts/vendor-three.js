@@ -48,6 +48,25 @@ while (queue.length) {
   }
 }
 
+// three ships unminified ES modules (0.186 has no .min build), and a film
+// page fetched 1.46 MB + 0.66 MB of it, 417 KB gzipped, every time a lab
+// page's film iframe scrolled into view. Minified it is 189 KB gzipped, and
+// the SecurePoL film rendered byte-identical frames at 10, 40 and 80 s with
+// either copy. Export names survive (uglify re-exports them by alias); the
+// @license header is kept, since the MIT licence asks for it in every copy.
+const UglifyJS = require('uglify-js');
+(function minifyAll(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const f = path.join(dir, e.name);
+    if (e.isDirectory()) { minifyAll(f); continue; }
+    if (!f.endsWith('.js')) continue;
+    const r = UglifyJS.minify(fs.readFileSync(f, 'utf8'),
+      { module: true, compress: {}, mangle: true, output: { comments: /@license|@preserve|^!/ } });
+    if (r.error) throw new Error(path.relative(ROOT, f) + ': ' + r.error.message);
+    fs.writeFileSync(f, r.code);
+  }
+})(OUT);
+
 const version = JSON.parse(fs.readFileSync(path.join(SRC, 'package.json'), 'utf8')).version;
 fs.writeFileSync(path.join(OUT, 'VERSION'), version + '\n');
 console.log(`three ${version}: ${BUILD.length} build files, ${seen.size} addons -> ${path.relative(ROOT, OUT)}`);
