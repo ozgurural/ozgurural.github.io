@@ -1,0 +1,304 @@
+{
+ "film": "securepol",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 120.61,
+ "authored": 120.0,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   5.366,
+   5.0
+  ],
+  [
+   13.366,
+   13.0
+  ],
+  [
+   21.866,
+   21.5
+  ],
+  [
+   30.866,
+   30.5
+  ],
+  [
+   40.866,
+   40.5
+  ],
+  [
+   50.866,
+   50.5
+  ],
+  [
+   58.866,
+   58.5
+  ],
+  [
+   65.366,
+   65.0
+  ],
+  [
+   73.866,
+   73.5
+  ],
+  [
+   79.366,
+   79.0
+  ],
+  [
+   87.866,
+   87.5
+  ],
+  [
+   91.347,
+   90.8
+  ],
+  [
+   95.547,
+   95.0
+  ],
+  [
+   99.81,
+   99.2
+  ],
+  [
+   104.61,
+   104.0
+  ],
+  [
+   114.11,
+   113.5
+  ],
+  [
+   120.61,
+   120.0
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 4.616,
+   "len": 4.85,
+   "head": 0.234,
+   "file": "hook.mp3",
+   "file_start": 0.116,
+   "hash": "6f4f709bc00e",
+   "text": "Someone copies your AI model. How do you prove it was yours?",
+   "source": "Sec. I"
+  },
+  {
+   "id": "copy",
+   "at": 5.0,
+   "real": 5.366,
+   "speech": 6.982,
+   "len": 7.2,
+   "head": 0.218,
+   "file": "copy.mp3",
+   "file_start": 5.148,
+   "hash": "78d8ef3e347e",
+   "text": "A trained model is just a file of numbers. The copy is identical, and nothing in it says who did the work.",
+   "source": "Sec. I"
+  },
+  {
+   "id": "walk",
+   "at": 13.0,
+   "real": 13.366,
+   "speech": 7.0,
+   "len": 7.22,
+   "head": 0.22,
+   "file": "walk.mp3",
+   "file_start": 13.146,
+   "hash": "f9fb64ebc26a",
+   "text": "But the work leaves a trail. Training is a long walk downhill, every step making the model a little less wrong.",
+   "source": "Sec. III-B (SGD on a loss)"
+  },
+  {
+   "id": "receipts",
+   "at": 21.5,
+   "real": 21.866,
+   "speech": 6.838,
+   "len": 7.06,
+   "head": 0.222,
+   "file": "receipts.mp3",
+   "file_start": 21.644,
+   "hash": "dd106d0d2424",
+   "text": "Proof-of-Learning keeps that trail: snapshots along the way, which a verifier can replay to check the walk really happened.",
+   "source": "Sec. II-A, IV, Alg. 1 and 2"
+  },
+  {
+   "id": "forged",
+   "at": 30.5,
+   "real": 30.866,
+   "speech": 9.227,
+   "len": 9.46,
+   "head": 0.233,
+   "file": "forged.mp3",
+   "file_start": 30.633,
+   "hash": "f5625d208fec",
+   "text": "There's a catch. No computer repeats a long calculation exactly, so the check has to accept close enough. And close enough can be faked.",
+   "source": "Sec. II-A, VII-B"
+  },
+  {
+   "id": "lock",
+   "at": 40.5,
+   "real": 40.866,
+   "speech": 9.245,
+   "len": 9.46,
+   "head": 0.215,
+   "file": "lock.mp3",
+   "file_start": 40.651,
+   "hash": "19bf8c1aa1f8",
+   "text": "Our work, SecurePoL, closes that gap with a secret. While the model trains, it also learns planted answers to questions only its owner knows.",
+   "source": "Sec. III-A, III-B.3"
+  },
+  {
+   "id": "trap",
+   "at": 50.5,
+   "real": 50.866,
+   "speech": 6.071,
+   "len": 6.29,
+   "head": 0.219,
+   "file": "trap.mp3",
+   "file_start": 50.647,
+   "hash": "8de1dc5d5f1e",
+   "text": "Mapmakers used the same trick: a street that doesn't exist, hidden in the map to catch anyone who copies it.",
+   "source": "the analogy is ours"
+  },
+  {
+   "id": "both",
+   "at": 58.5,
+   "real": 58.866,
+   "speech": 4.963,
+   "len": 5.18,
+   "head": 0.217,
+   "file": "both.mp3",
+   "file_start": 58.649,
+   "hash": "f0df166c43a3",
+   "text": "Now a claim needs both: a trail that replays, and a model that knows the secret.",
+   "source": "Alg. 2, Sec. VI-I"
+  },
+  {
+   "id": "thief",
+   "at": 65.0,
+   "real": 65.366,
+   "speech": 7.278,
+   "len": 7.49,
+   "head": 0.212,
+   "file": "thief.mp3",
+   "file_start": 65.154,
+   "hash": "8df4cc3ad1c0",
+   "text": "A thief can't name the questions. And scrubbing the secret out changes the model, so it stops matching its own trail.",
+   "source": "Sec. III-B.3, II-C.1"
+  },
+  {
+   "id": "scrub",
+   "at": 73.5,
+   "real": 73.866,
+   "speech": 4.102,
+   "len": 4.32,
+   "head": 0.218,
+   "file": "scrub.mp3",
+   "file_start": 73.648,
+   "hash": "4768dc1f3f56",
+   "text": "Hiding that takes real training: the very work they tried to skip.",
+   "source": "Sec. III-C.5"
+  },
+  {
+   "id": "cost",
+   "at": 79.0,
+   "real": 79.366,
+   "speech": 7.704,
+   "len": 7.92,
+   "head": 0.216,
+   "file": "cost.mp3",
+   "file_start": 79.15,
+   "hash": "86a07fed6c50",
+   "text": "And the price is small. In our experiments the model stayed almost exactly as accurate, and training took only a little longer.",
+   "source": "Sec. VI-B, VI-F"
+  },
+  {
+   "id": "use",
+   "at": 87.5,
+   "real": 87.866,
+   "speech": 3.081,
+   "len": 3.31,
+   "head": 0.229,
+   "file": "use.mp3",
+   "file_start": 87.637,
+   "hash": "105830dfbc47",
+   "text": "This matters wherever a model changes hands.",
+   "source": "Sec. V-A"
+  },
+  {
+   "id": "hosp",
+   "at": 90.8,
+   "real": 91.347,
+   "speech": 3.625,
+   "len": 3.84,
+   "head": 0.215,
+   "file": "hosp.mp3",
+   "file_start": 91.132,
+   "hash": "a0ab09b3009b",
+   "text": "A hospital can confirm its model is the one that was audited.",
+   "source": "Sec. V-A.1"
+  },
+  {
+   "id": "car",
+   "at": 95.0,
+   "real": 95.547,
+   "speech": 3.863,
+   "len": 4.08,
+   "head": 0.217,
+   "file": "car.mp3",
+   "file_start": 95.33,
+   "hash": "ab7416a84770",
+   "text": "A carmaker can replay a supplier's training after an incident.",
+   "source": "Sec. V-A.2"
+  },
+  {
+   "id": "cloud",
+   "at": 99.2,
+   "real": 99.81,
+   "speech": 3.933,
+   "len": 4.15,
+   "head": 0.217,
+   "file": "cloud.mp3",
+   "file_start": 99.593,
+   "hash": "d5460454dd7a",
+   "text": "An AI provider can show that a model was trained on licensed data.",
+   "source": "Sec. V-A.3"
+  },
+  {
+   "id": "close",
+   "at": 104.0,
+   "real": 104.61,
+   "speech": 7.773,
+   "len": 7.99,
+   "head": 0.217,
+   "file": "close.mp3",
+   "file_start": 104.393,
+   "hash": "5c3a06ff5eae",
+   "text": "AI models are becoming things we buy, deploy and trust. Where a model came from will matter as much as what it can do.",
+   "source": "the authors' view"
+  },
+  {
+   "id": "card",
+   "at": 113.5,
+   "real": 114.11,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 114.11,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}

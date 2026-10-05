@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- A cinema film: one WebGL stage, a typography layer over it, and nothing
+     else. The same page renders the 4:5 cut for social feeds and the 16:9 cut
+     for wide screens; ?aspect=4x5 or ?aspect=16x9 forces one, otherwise the
+     viewport's shape decides. ?render=1 hides the controls for the mp4 render. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description | escape }}">
+  {% if page.noindex %}<meta name="robots" content="noindex, follow">{% endif %}
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{{ page.title | escape }}">
+  <meta property="og:description" content="{{ page.description | escape }}">
+  <meta property="og:type" content="video.other">
+  <style>
+    @font-face { font-family: "Space Grotesk"; font-weight: 500 700; font-display: block;
+      src: url("{{ '/assets/webfonts/gf/space-grotesk-500-600-700-latin.woff2' | relative_url }}") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 400 700; font-display: block;
+      src: url("{{ '/assets/webfonts/gf/inter-400-500-600-700-latin.woff2' | relative_url }}") format("woff2"); }
+    @font-face { font-family: "Inter"; font-weight: 400 700; font-display: block; unicode-range: U+0370-03FF;
+      src: url("{{ '/assets/webfonts/gf/inter-400-500-600-700-greek.woff2' | relative_url }}") format("woff2"); }
+    @font-face { font-family: "JetBrains Mono"; font-weight: 400 500; font-display: block;
+      src: url("{{ '/assets/webfonts/gf/jetbrains-mono-400-500-latin.woff2' | relative_url }}") format("woff2"); }
+    @font-face { font-family: "JetBrains Mono"; font-weight: 400 500; font-display: block; unicode-range: U+0370-03FF;
+      src: url("{{ '/assets/webfonts/gf/jetbrains-mono-400-500-greek.woff2' | relative_url }}") format("woff2"); }
+
+    :root { color-scheme: dark; }
+    html, body { margin: 0; height: 100%; background: #03050a; color: #e8eef7; }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center;
+           font-family: "Inter", system-ui, sans-serif; overflow: hidden; }
+    .cin-wrap { position: relative; width: 100vw; height: 100vh; display: flex;
+                align-items: center; justify-content: center; }
+    .cin-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .cin-controls { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center;
+                    gap: 14px; padding: 14px 18px; opacity: 0; transition: opacity .25s;
+                    background: linear-gradient(to top, rgba(3,5,10,.85), rgba(3,5,10,0)); }
+    .cin-wrap:hover .cin-controls, .cin-wrap.is-paused .cin-controls { opacity: 1; }
+    .cin-btn { appearance: none; border: 1px solid rgba(160,200,255,.35); background: rgba(10,16,28,.7);
+               color: #e8eef7; border-radius: 999px; width: 40px; height: 40px; font-size: 15px;
+               cursor: pointer; display: grid; place-items: center; }
+    .cin-btn:focus-visible { outline: 2px solid #6fd3ff; outline-offset: 2px; }
+    .cin-bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(160,200,255,.18); cursor: pointer; position: relative; }
+    .cin-bar__fill { position: absolute; inset: 0 auto 0 0; width: 0; background: #6fd3ff; border-radius: 2px; }
+    .cin-links { position: absolute; top: 12px; right: 16px; font: 500 12px/1.4 "JetBrains Mono", monospace;
+                 letter-spacing: .06em; opacity: 0; transition: opacity .25s; }
+    .cin-wrap:hover .cin-links, .cin-wrap.is-paused .cin-links { opacity: .85; }
+    .cin-links a { color: #9fd8ff; text-decoration: none; margin-left: 14px; }
+    .cin-hint { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); display: none;
+                font: 600 14px/1 "Inter", sans-serif; letter-spacing: .02em; color: #e8eef7; cursor: pointer;
+                padding: 9px 14px; border-radius: 999px; background: rgba(10,16,28,.8); border: 1px solid rgba(160,200,255,.35); }
+    .cin-wrap.is-muted:not(.is-paused) .cin-hint { display: block; }
+    .is-render .cin-controls, .is-render .cin-links, .is-render .cin-hint { display: none !important; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "{{ '/assets/vendor/three/build/three.module.js' | relative_url }}",
+                   "three/addons/": "{{ '/assets/vendor/three/addons/' | relative_url }}" } }
+  </script>
+</head>
+<body>
+  <h1 class="cin-sr">{{ page.title }}</h1>
+  <div class="cin-wrap is-paused" id="cin-wrap">
+    <div id="cin-stage" role="img" aria-label="{{ page.description | escape }}"></div>
+    <nav class="cin-links" aria-label="Sources">
+      {% for l in page.links %}<a href="{{ l.url }}"{% if l.url contains '://' %} target="_blank" rel="noopener"{% else %} target="_top"{% endif %}>{{ l.label }}</a>{% endfor %}
+    </nav>
+    <button class="cin-hint" type="button" data-act="sound">&#128266; Tap for sound</button>
+    <div class="cin-controls">
+      <button class="cin-btn" type="button" data-act="play" aria-label="Play">&#9654;</button>
+      <button class="cin-btn" type="button" data-act="sound" aria-label="Sound on">&#128263;</button>
+      <div class="cin-bar" data-act="seek" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><div class="cin-bar__fill"></div></div>
+      <button class="cin-btn" type="button" data-act="replay" aria-label="Replay">&#8634;</button>
+    </div>
+  </div>
+  <script type="module" src="{{ '/assets/js/cinema/' | relative_url }}{{ page.film_module }}.js?v={{ site.time | date: '%s' }}"></script>
+</body>
+</html>
