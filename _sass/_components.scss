@@ -1033,6 +1033,14 @@ button:focus-visible {
   width: 100%;
 }
 
+// a cinema film (/films/<slug>/) shown in the same frame
+.lab-film__frame--cinema iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .labf { 
   position: relative; 
   aspect-ratio: unset !important;

@@ -13,22 +13,18 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-tmr" style="margin-top: 0;">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
-  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong>, superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. This animation derives the binomial-tail gain, then shows how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat, the exact mechanism that destroyed Ariane 5 in 1996.</p>
+  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong>, superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. The film shows the idea and the page below gives the mathematics: the binomial-tail gain, and how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat, the exact mechanism that destroyed Ariane 5 in 1996.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span>Triple Modular Redundancy with common-cause (β-factor) failure. The Ariane 5 Flight 501 case follows the ESA Inquiry Board report; the redundancy patterns mirror real-time safety-critical avionics architecture developed by the author.</span>
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="tmr-film" role="group" aria-label="Animated explainer: triple modular redundancy, correlated failure, and the Ariane 5 disaster"></div>
+    <div class="lab-film__frame lab-film__frame--cinema">
+      <iframe src="{{ '/films/redundancy/' | relative_url }}?autoplay=0" title="A backup that shares your mistake: a narrated film on redundancy and Ariane 5" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=healthy channel / gain, amber=voter / threshold, rose=failure / correlation floor, violet=N=5 curve">
-    <span><i style="background:#58C4DD"></i> healthy channel / gain</span>
-    <span><i style="background:#fbbf24"></i> voter · threshold</span>
-    <span><i style="background:#fc6255"></i> failure · correlation floor</span>
-    <span><i style="background:#9a72ac"></i> N=5 curve</span>
-  </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>

@@ -20,15 +20,11 @@ header:
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="bcml-film" role="group" aria-label="Animated explainer: ledger-backed training integrity, training-as-consensus, incentive contracts, and the measured limits of the prototypes"></div>
+    <div class="lab-film__frame lab-film__frame--cinema">
+      <iframe src="{{ '/films/blockchain-ml/' | relative_url }}?autoplay=0" title="What a blockchain buys machine learning: a narrated film on the survey" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=honest participant and model, amber=ledger, rose=threat or measured degradation, green=rewarded contribution">
-    <span><i style="background:#58C4DD"></i> participant · model</span>
-    <span><i style="background:#fbbf24"></i> ledger · record</span>
-    <span><i style="background:#fc6255"></i> threat · measured cost</span>
-    <span><i style="background:#83C167"></i> rewarded · accepted</span>
-  </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
