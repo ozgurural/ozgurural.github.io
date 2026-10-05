@@ -2,7 +2,7 @@
  "film": "level-d",
  "voice": "edge:en-GB-RyanNeural",
  "rate": "+6%",
- "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "beat" },
+ "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "stages" },
  "authored_duration": 113.0,
  "lines": [
   { "id": "hook", "at": 0.0, "source": "old lab film, line 0: fast on average, can one late response break the budget", "text": "A flight simulator can be fast on average and still fail its pilot. All it takes is one late answer." },

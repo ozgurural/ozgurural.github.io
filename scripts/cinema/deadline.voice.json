@@ -2,7 +2,7 @@
  "film": "deadline",
  "voice": "edge:en-GB-RyanNeural",
  "rate": "+6%",
- "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "split" },
+ "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "think" },
  "authored_duration": 100.0,
  "lines": [
   { "id": "hook", "at": 0.0, "source": "old lab film, scene 1, first line", "text": "An AI can plan a robot's next move. But what if the answer arrives after the moment it was needed?" },

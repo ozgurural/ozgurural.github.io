@@ -160,6 +160,13 @@ def mix(src, lines, dur, out_dir):
     if music:
         rise_at = next(ln['real'] for ln in lines if ln['id'] == music['rise_on'])
         offset = music['rise'] - rise_at               # where in the track the film begins
+        # A swell landing later than the track's own swell point means the track
+        # has to start late, and the film opens in silence: deadline and level-d
+        # did, for 8 and 7 seconds, before anyone heard it. Refuse it; pick an
+        # earlier line (the series puts the swell between about 15 and 22 s).
+        if offset < 0:
+            raise SystemExit(f"music would start {-offset:.1f}s into the film: '{music['rise_on']}' is at "
+                             f"{rise_at:.1f}s, after the track's swell at {music['rise']}s; choose an earlier rise_on")
         mi = n
         if offset >= 0:
             inputs += ['-ss', f'{offset:.3f}', '-i', os.path.join(ROOT, music['file'])]
