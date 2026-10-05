@@ -20,17 +20,11 @@ header:
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="gd-film" role="group" aria-label="Animated explainer: gradient descent, momentum, and saddle points on a loss landscape"></div>
+    <div class="lab-film__frame lab-film__frame--cinema">
+      <iframe src="{{ '/films/gradient-descent/' | relative_url }}?autoplay=0" title="A walk downhill: a narrated film on how a machine learns" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: teal=loss surface, yellow=descent ball and momentum path, grey=plain gradient descent, green=safe step and gradient arrow, red=divergence, purple=saddle index">
-    <span><i style="background:#58C4DD"></i> loss surface</span>
-    <span><i style="background:#FFFF00"></i> descent ball / momentum</span>
-    <span><i style="background:#9aa7be"></i> plain GD (zig-zag)</span>
-    <span><i style="background:#83C167"></i> safe step / −∇L</span>
-    <span><i style="background:#FC6255"></i> divergence</span>
-    <span><i style="background:#9A72AC"></i> saddle index</span>
-  </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>

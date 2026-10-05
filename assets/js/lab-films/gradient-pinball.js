@@ -24,11 +24,13 @@
   function boot() {
     if (!window.LabAnim) { return setTimeout(boot, 60); }
     var mount = document.getElementById("gd-film");
-    if (!mount) return;
+    // the lab page now shows the cinema film; the player is built only where its mount still exists (the embed page),
+    // and the appendix is written either way
+    if (!mount && !document.querySelector('[data-role$="-appendix"]')) return;
     // KaTeX is nice-to-have; if it's slow, give it a beat, then build anyway.
     if (!window.katex && boot._tries === undefined) { boot._tries = 0; }
     if (!window.katex && boot._tries < 25) { boot._tries++; return setTimeout(boot, 80); }
-    build(mount);
+    if (mount) build(mount);
     renderAppendix();
   }
 

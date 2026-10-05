@@ -1,0 +1,28 @@
+{
+  "film": "gradient-descent",
+  "voice": "edge:en-GB-RyanNeural",
+  "rate": "+6%",
+  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "step" },
+  "authored_duration": 101.0,
+  "lines": [
+    { "id": "hook",     "at": 0.0,   "source": "old lab film, scene 1 (the negative gradient is the learning signal)",
+      "text": "How does a machine actually learn? It walks downhill." },
+    { "id": "land",     "at": 5.5,   "source": "loss landscape: a loss L over the parameters",
+      "text": "Picture every possible version of a model as a point on a landscape. Height is how wrong that version is. Learning means finding low ground." },
+    { "id": "step",     "at": 16.5,  "source": "gradient descent: step against the gradient, repeat",
+      "text": "But it can't see the landscape. It can only feel the slope under its feet. So it takes a step downhill, feels again, and repeats. Billions of times." },
+    { "id": "small",    "at": 28.5,  "source": "step size: too small a learning rate wastes the run",
+      "text": "Everything depends on the size of that step. Too small, and it crawls." },
+    { "id": "large",    "at": 35.5,  "source": "step size: above 2 over the largest curvature the iteration diverges",
+      "text": "Too large, and it overshoots the valley. Each bounce is bigger than the last, until it flies off." },
+    { "id": "ravine",   "at": 44.5,  "source": "ill-conditioning: a long narrow valley makes plain descent zigzag",
+      "text": "The hard places are long, narrow valleys. Plain downhill steps zigzag between the walls, and barely move forward." },
+    { "id": "momentum", "at": 54.5,  "source": "heavy-ball momentum (Polyak 1964): opposing components cancel, the consistent one accumulates",
+      "text": "The fix is momentum: give the walker a memory of its recent steps. The side to side wobble cancels out, and the forward motion adds up." },
+    { "id": "saddle",   "at": 66.5,  "source": "saddle points dominate in high dimensions under the random-field model (Dauphin et al. 2014)",
+      "text": "And with millions of dimensions, the traps are rarely pits. They are saddles: flat places that rise one way and fall another. Momentum, and a little noise, help the walker slide off." },
+    { "id": "close",    "at": 81.5,  "source": "the author's view; the training trajectory is what Proof-of-Learning records",
+      "text": "Every AI system you have used was trained this way: a long walk downhill, one small step at a time. And that walk is what my research records, to prove a model was really trained." },
+    { "id": "card",     "at": 94.5,  "source": "", "text": "" }
+  ]
+}

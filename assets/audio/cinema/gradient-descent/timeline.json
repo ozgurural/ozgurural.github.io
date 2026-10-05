@@ -1,0 +1,185 @@
+{
+ "film": "gradient-descent",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 101.35,
+ "authored": 101.0,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   5.85,
+   5.5
+  ],
+  [
+   16.85,
+   16.5
+  ],
+  [
+   28.85,
+   28.5
+  ],
+  [
+   35.85,
+   35.5
+  ],
+  [
+   44.85,
+   44.5
+  ],
+  [
+   54.85,
+   54.5
+  ],
+  [
+   66.85,
+   66.5
+  ],
+  [
+   81.85,
+   81.5
+  ],
+  [
+   94.85,
+   94.5
+  ],
+  [
+   101.35,
+   101.0
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 4.308,
+   "len": 4.54,
+   "head": 0.232,
+   "file": "hook.mp3",
+   "file_start": 0.118,
+   "hash": "23ac94497497",
+   "text": "How does a machine actually learn? It walks downhill.",
+   "source": "old lab film, scene 1 (the negative gradient is the learning signal)"
+  },
+  {
+   "id": "land",
+   "at": 5.5,
+   "real": 5.85,
+   "speech": 9.312,
+   "len": 9.53,
+   "head": 0.218,
+   "file": "land.mp3",
+   "file_start": 5.632,
+   "hash": "05207b6950ab",
+   "text": "Picture every possible version of a model as a point on a landscape. Height is how wrong that version is. Learning means finding low ground.",
+   "source": "loss landscape: a loss L over the parameters"
+  },
+  {
+   "id": "step",
+   "at": 16.5,
+   "real": 16.85,
+   "speech": 11.065,
+   "len": 11.28,
+   "head": 0.215,
+   "file": "step.mp3",
+   "file_start": 16.635,
+   "hash": "9cf3a73cd884",
+   "text": "But it can't see the landscape. It can only feel the slope under its feet. So it takes a step downhill, feels again, and repeats. Billions of times.",
+   "source": "gradient descent: step against the gradient, repeat"
+  },
+  {
+   "id": "small",
+   "at": 28.5,
+   "real": 28.85,
+   "speech": 5.258,
+   "len": 5.47,
+   "head": 0.212,
+   "file": "small.mp3",
+   "file_start": 28.638,
+   "hash": "b5f90b01f943",
+   "text": "Everything depends on the size of that step. Too small, and it crawls.",
+   "source": "step size: too small a learning rate wastes the run"
+  },
+  {
+   "id": "large",
+   "at": 35.5,
+   "real": 35.85,
+   "speech": 6.569,
+   "len": 6.79,
+   "head": 0.221,
+   "file": "large.mp3",
+   "file_start": 35.629,
+   "hash": "d575751a7684",
+   "text": "Too large, and it overshoots the valley. Each bounce is bigger than the last, until it flies off.",
+   "source": "step size: above 2 over the largest curvature the iteration diverges"
+  },
+  {
+   "id": "ravine",
+   "at": 44.5,
+   "real": 44.85,
+   "speech": 7.668,
+   "len": 7.9,
+   "head": 0.232,
+   "file": "ravine.mp3",
+   "file_start": 44.618,
+   "hash": "0174bdcb4d7a",
+   "text": "The hard places are long, narrow valleys. Plain downhill steps zigzag between the walls, and barely move forward.",
+   "source": "ill-conditioning: a long narrow valley makes plain descent zigzag"
+  },
+  {
+   "id": "momentum",
+   "at": 54.5,
+   "real": 54.85,
+   "speech": 8.358,
+   "len": 8.57,
+   "head": 0.212,
+   "file": "momentum.mp3",
+   "file_start": 54.638,
+   "hash": "1065c1b52490",
+   "text": "The fix is momentum: give the walker a memory of its recent steps. The side to side wobble cancels out, and the forward motion adds up.",
+   "source": "heavy-ball momentum (Polyak 1964): opposing components cancel, the consistent one accumulates"
+  },
+  {
+   "id": "saddle",
+   "at": 66.5,
+   "real": 66.85,
+   "speech": 12.427,
+   "len": 12.65,
+   "head": 0.223,
+   "file": "saddle.mp3",
+   "file_start": 66.627,
+   "hash": "05cb27c47770",
+   "text": "And with millions of dimensions, the traps are rarely pits. They are saddles: flat places that rise one way and fall another. Momentum, and a little noise, help the walker slide off.",
+   "source": "saddle points dominate in high dimensions under the random-field model (Dauphin et al. 2014)"
+  },
+  {
+   "id": "close",
+   "at": 81.5,
+   "real": 81.85,
+   "speech": 11.183,
+   "len": 11.4,
+   "head": 0.217,
+   "file": "close.mp3",
+   "file_start": 81.633,
+   "hash": "cc4e42539270",
+   "text": "Every AI system you have used was trained this way: a long walk downhill, one small step at a time. And that walk is what my research records, to prove a model was really trained.",
+   "source": "the author's view; the training trajectory is what Proof-of-Learning records"
+  },
+  {
+   "id": "card",
+   "at": 94.5,
+   "real": 94.85,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 94.85,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}
