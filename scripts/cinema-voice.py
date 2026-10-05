@@ -138,7 +138,9 @@ def main():
 
     if not a.no_mix:
         mix(src, lines, dur, out_dir)
-    json.dump(timeline, open(tl_path, 'w', encoding='utf-8'), indent=1)
+    # LF, as git stores it: on Windows a plain 'w' writes CRLF, and every voice
+    # build showed the whole timeline as changed
+    json.dump(timeline, open(tl_path, 'w', encoding='utf-8', newline='\n'), indent=1)
     print(f"  wrote {os.path.relpath(tl_path, ROOT)}")
 
 
