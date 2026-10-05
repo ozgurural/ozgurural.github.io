@@ -158,6 +158,8 @@ const CSS = `
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+  .cin .end__n { font: 500 24px/1.4 "JetBrains Mono", monospace; color: #8fa2ba; margin-top: 34px; letter-spacing: .03em; }
+  .cin .end__n b { color: #ffcf5a; font-weight: 600; }
 `;
 
 /* ------------------------------------------------------------- the chain
@@ -454,11 +456,13 @@ const film = {
            html: 'a time budget kept <em>every frame</em>, proven by measurement.' });
     text({ at: T.close + 5.2, out: T.card - 0.3, cls: 'cl__c', place: { x: 260, y: 650, w: 1400, align: 'center' },
            html: 'Any AI added to this loop has to live inside it too.' });
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
+    // the card is one block in normal flow, so the series line sits under the name and can never cover it
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 210, w: 1600, align: 'center' },
            html: `<div class="end__t">Determinism at 60 Hz</div>
                   <div class="end__s">Why a flight simulator has to answer its pilot in time every frame, on every computer, and why an average proves nothing.</div>
                   <div class="end__a">Informed by Level D full-flight-simulator engineering at Avion &middot; no employer design shown</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
+                  <div class="end__n">Next in the series: <b>AI meets the deadline</b>, what happens when an AI joins this loop</div>` });
 
     /* the instrument: a trace per computer scrolling past, spot-check dots, the overrun tally */
     const SVGW = 760, SVGH = 400, ROWS = 6, RH = SVGH / ROWS;

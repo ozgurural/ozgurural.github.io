@@ -43,6 +43,8 @@
     .cin-btn:focus-visible { outline: 2px solid #6fd3ff; outline-offset: 2px; }
     .cin-bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(160,200,255,.18); cursor: pointer; position: relative; }
     .cin-bar__fill { position: absolute; inset: 0 auto 0 0; width: 0; background: #6fd3ff; border-radius: 2px; }
+    .cin-time { font: 500 13px/1 "JetBrains Mono", monospace; color: #c9d4e3; letter-spacing: .02em; white-space: nowrap;
+                font-variant-numeric: tabular-nums; min-width: 9ch; text-align: center; }
     .cin-links { position: absolute; top: 6px; right: 12px; font: 500 12px/1.4 "JetBrains Mono", monospace;
                  letter-spacing: .06em; opacity: 0; transition: opacity .25s; }
     .cin-wrap:hover .cin-links, .cin-wrap.is-paused .cin-links { opacity: .85; }
@@ -61,6 +63,7 @@
       .cin-links { top: 2px; right: 6px; font-size: 10px; letter-spacing: .03em; }
       .cin-links a { margin-left: 2px; padding: 6px 3px; }
       .cin-hint { top: 6px; font-size: 11px; padding: 6px 10px; }
+      .cin-time { font-size: 10px; min-width: 8ch; }
     }
   </style>
   <script type="importmap">
@@ -80,6 +83,7 @@
       <button class="cin-btn" type="button" data-act="play" aria-label="Play">&#9654;</button>
       <button class="cin-btn" type="button" data-act="sound" aria-label="Sound on">&#128263;</button>
       <div class="cin-bar" data-act="seek" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><div class="cin-bar__fill"></div></div>
+      <span class="cin-time" aria-hidden="true">0:00 / 0:00</span>
       <button class="cin-btn" type="button" data-act="fullscreen" aria-label="Full screen">&#9974;</button>
       <button class="cin-btn" type="button" data-act="replay" aria-label="Replay">&#8634;</button>
     </div>

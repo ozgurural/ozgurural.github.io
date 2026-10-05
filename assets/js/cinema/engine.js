@@ -330,6 +330,10 @@ export function createCinema(film) {
   let t = 0, playing = false, raf = 0, wall0 = 0, t0 = 0;
   const fill = wrap.querySelector('.cin-bar__fill');
   const bar = wrap.querySelector('.cin-bar');
+  // elapsed / total as m:ss; the slider's aria-valuetext says the same for a screen reader
+  const clock = wrap.querySelector('.cin-time');
+  const mmss = s => { s = Math.max(0, Math.floor(s + 1e-6)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const total = mmss(film.duration);
   const playBtn = wrap.querySelector('[data-act="play"]');
   const soundBtn = wrap.querySelector('.cin-controls [data-act="sound"]');
 
@@ -383,6 +387,8 @@ export function createCinema(film) {
     for (const it of texts) updateText(it, a);
     for (const lb of labels) updateLabel(lb, a);
     if (fill) fill.style.width = (100 * t / film.duration).toFixed(2) + '%';
+    if (clock) { const now = mmss(t) + ' / ' + total; if (clock.textContent !== now) clock.textContent = now; }
+    if (bar) bar.setAttribute('aria-valuetext', mmss(t) + ' of ' + total);
     if (bar) bar.setAttribute('aria-valuenow', String(Math.round(100 * t / film.duration)));
     return t;
   }

@@ -146,6 +146,8 @@ const CSS = `
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+  .cin .end__n { font: 500 24px/1.4 "JetBrains Mono", monospace; color: #8fa2ba; margin-top: 34px; letter-spacing: .03em; }
+  .cin .end__n b { color: #ffcf5a; font-weight: 600; }
 `;
 
 /* ------------------------------------------------------------ the schedule
@@ -377,11 +379,13 @@ const film = {
            html: 'Better AI will keep arriving.' });
     text({ at: T.close + 2.4, out: T.card - 0.3, cls: 'cl__b', place: { x: 260, y: 420, w: 1400, align: 'center' },
            html: 'Can the system take it in <em>without losing its beat</em>?' });
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
+    // one block in normal flow, so the series line sits under the name and can never cover it
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 210, w: 1600, align: 'center' },
            html: `<div class="end__t">AI meets the deadline</div>
                   <div class="end__s">Keep the model out of the waiting path, check how old each plan is, guard the limits separately, and keep the computers apart.</div>
                   <div class="end__a">An open research direction of the author &middot; not yet published</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
+                  <div class="end__n">Before this in the series: <b>Determinism at 60 Hz</b>, the timing rule this loop has to keep</div>` });
 
     /* --------------------------------------------------------- labels */
     const at = v => () => v;
