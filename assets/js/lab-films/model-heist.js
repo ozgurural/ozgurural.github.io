@@ -24,9 +24,13 @@
 
   function boot() {
     if (!window.LabAnim) return setTimeout(boot, 60);
-    if (!document.getElementById("mh-film")) return;
+    // the lab page now shows the cinema film; the player is built only where its mount still exists (the embed page),
+    // and the appendix is written either way
+    var mounted = !!document.getElementById("mh-film");
+    if (!mounted && !document.querySelector('[data-role$="-appendix"]')) return;
     if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
-    build(); appendix();
+    if (mounted) build();
+    appendix();
   }
 
   var PAL = window.LabAnim.palette, E = window.LabAnim.ease, lerp = window.LabAnim.lerp, clamp01 = window.LabAnim.clamp01;

@@ -1,0 +1,28 @@
+{
+  "film": "model-heist",
+  "voice": "edge:en-GB-RyanNeural",
+  "rate": "+6%",
+  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "thin" },
+  "authored_duration": 101.5,
+  "lines": [
+    { "id": "hook",    "at": 0.0,   "source": "old lab film, scene 1",
+      "text": "Your AI model leaks. Someone retrains it a little, so it no longer looks like yours. Can a hidden mark survive that?" },
+    { "id": "loud",    "at": 9.0,   "source": "old lab film, scene 2 (one large mark is conspicuous and can hurt accuracy)",
+      "text": "You could hide one big mark in one place. But a big mark is easy to find, easy to cut out, and it can hurt the model." },
+    { "id": "thin",    "at": 18.5,  "source": "scene 3 (a small shift along a secret pattern across many weights)",
+      "text": "So spread it thin: a nudge so small, across so many of the model's numbers, that no single one looks unusual." },
+    { "id": "add",     "at": 28.0,  "source": "scene 3 (matched filter: the aligned marks add coherently, independent noise adds in quadrature)",
+      "text": "To read it back, line every nudge up against your secret pattern, and add them together. The pattern adds up. The noise points every which way, and mostly cancels." },
+    { "id": "score",   "at": 41.0,  "source": "scene 4 (a one-sided Z-test: N(0,1) for an innocent model, N(d,1) for a marked one; the threshold sets the false-alarm rate)",
+      "text": "What comes out is a single score. An innocent model lands near zero. A marked one lands far away. You draw a line between them, knowing how rarely chance would cross it." },
+    { "id": "wide",    "at": 54.0,  "source": "scene 5 (effect size d grows as the square root of the number of marked weights)",
+      "text": "And the wider you spread the mark, the further apart the two land, while every nudge stays tiny." },
+    { "id": "scrub",   "at": 62.0,  "source": "scene 6 (a perturbation of bounded norm moves the score by at most that norm; not a universal claim)",
+      "text": "A thief who shakes the weights to hide it can only move the score by as much as they shake. That is a limit on this test. It doesn't promise that no mark can ever be removed." },
+    { "id": "limits",  "at": 75.0,  "source": "scene 5, appendix (assumptions: independent noise, a clean reference)",
+      "text": "And it rests on assumptions: random noise, and a clean copy of your pattern. Break them, and the advantage shrinks." },
+    { "id": "close",   "at": 84.0,  "source": "the author's view; Ural and Yoshigoe, IEEE Access 2024",
+      "text": "A whisper, repeated across a million numbers, can be heard over the noise. In our research, we pair a mark like this with a record of the training itself." },
+    { "id": "card",    "at": 95.0,  "source": "", "text": "" }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+ "film": "model-heist",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 101.85,
+ "authored": 101.5,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   9.35,
+   9.0
+  ],
+  [
+   18.85,
+   18.5
+  ],
+  [
+   28.35,
+   28.0
+  ],
+  [
+   41.35,
+   41.0
+  ],
+  [
+   54.35,
+   54.0
+  ],
+  [
+   62.35,
+   62.0
+  ],
+  [
+   75.35,
+   75.0
+  ],
+  [
+   84.35,
+   84.0
+  ],
+  [
+   95.35,
+   95.0
+  ],
+  [
+   101.85,
+   101.5
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 8.582,
+   "len": 8.81,
+   "head": 0.228,
+   "file": "hook.mp3",
+   "file_start": 0.122,
+   "hash": "fb92afe50a5e",
+   "text": "Your AI model leaks. Someone retrains it a little, so it no longer looks like yours. Can a hidden mark survive that?",
+   "source": "old lab film, scene 1"
+  },
+  {
+   "id": "loud",
+   "at": 9.0,
+   "real": 9.35,
+   "speech": 7.63,
+   "len": 7.85,
+   "head": 0.22,
+   "file": "loud.mp3",
+   "file_start": 9.13,
+   "hash": "905061b34da1",
+   "text": "You could hide one big mark in one place. But a big mark is easy to find, easy to cut out, and it can hurt the model.",
+   "source": "old lab film, scene 2 (one large mark is conspicuous and can hurt accuracy)"
+  },
+  {
+   "id": "thin",
+   "at": 18.5,
+   "real": 18.85,
+   "speech": 6.747,
+   "len": 6.96,
+   "head": 0.213,
+   "file": "thin.mp3",
+   "file_start": 18.637,
+   "hash": "b6afae8f8514",
+   "text": "So spread it thin: a nudge so small, across so many of the model's numbers, that no single one looks unusual.",
+   "source": "scene 3 (a small shift along a secret pattern across many weights)"
+  },
+  {
+   "id": "add",
+   "at": 28.0,
+   "real": 28.35,
+   "speech": 10.487,
+   "len": 10.7,
+   "head": 0.213,
+   "file": "add.mp3",
+   "file_start": 28.137,
+   "hash": "b1550d74301d",
+   "text": "To read it back, line every nudge up against your secret pattern, and add them together. The pattern adds up. The noise points every which way, and mostly cancels.",
+   "source": "scene 3 (matched filter: the aligned marks add coherently, independent noise adds in quadrature)"
+  },
+  {
+   "id": "score",
+   "at": 41.0,
+   "real": 41.35,
+   "speech": 11.891,
+   "len": 12.12,
+   "head": 0.229,
+   "file": "score.mp3",
+   "file_start": 41.121,
+   "hash": "cfeb4e836157",
+   "text": "What comes out is a single score. An innocent model lands near zero. A marked one lands far away. You draw a line between them, knowing how rarely chance would cross it.",
+   "source": "scene 4 (a one-sided Z-test: N(0,1) for an innocent model, N(d,1) for a marked one; the threshold sets the false-alarm rate)"
+  },
+  {
+   "id": "wide",
+   "at": 54.0,
+   "real": 54.35,
+   "speech": 5.503,
+   "len": 5.74,
+   "head": 0.237,
+   "file": "wide.mp3",
+   "file_start": 54.113,
+   "hash": "181e5fbac8da",
+   "text": "And the wider you spread the mark, the further apart the two land, while every nudge stays tiny.",
+   "source": "scene 5 (effect size d grows as the square root of the number of marked weights)"
+  },
+  {
+   "id": "scrub",
+   "at": 62.0,
+   "real": 62.35,
+   "speech": 10.396,
+   "len": 10.61,
+   "head": 0.214,
+   "file": "scrub.mp3",
+   "file_start": 62.136,
+   "hash": "35b817d4b3e2",
+   "text": "A thief who shakes the weights to hide it can only move the score by as much as they shake. That is a limit on this test. It doesn't promise that no mark can ever be removed.",
+   "source": "scene 6 (a perturbation of bounded norm moves the score by at most that norm; not a universal claim)"
+  },
+  {
+   "id": "limits",
+   "at": 75.0,
+   "real": 75.35,
+   "speech": 7.62,
+   "len": 7.85,
+   "head": 0.23,
+   "file": "limits.mp3",
+   "file_start": 75.12,
+   "hash": "3e1077795aa3",
+   "text": "And it rests on assumptions: random noise, and a clean copy of your pattern. Break them, and the advantage shrinks.",
+   "source": "scene 5, appendix (assumptions: independent noise, a clean reference)"
+  },
+  {
+   "id": "close",
+   "at": 84.0,
+   "real": 84.35,
+   "speech": 9.312,
+   "len": 9.53,
+   "head": 0.218,
+   "file": "close.mp3",
+   "file_start": 84.132,
+   "hash": "c2836638cf3a",
+   "text": "A whisper, repeated across a million numbers, can be heard over the noise. In our research, we pair a mark like this with a record of the training itself.",
+   "source": "the author's view; Ural and Yoshigoe, IEEE Access 2024"
+  },
+  {
+   "id": "card",
+   "at": 95.0,
+   "real": 95.35,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 95.35,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}

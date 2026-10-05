@@ -20,15 +20,11 @@ header:
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="mh-film" role="group" aria-label="Animated explainer: statistical model watermarking detected by a Gaussian Z-test"></div>
+    <div class="lab-film__frame lab-film__frame--cinema">
+      <iframe src="{{ '/films/model-heist/' | relative_url }}?autoplay=0" title="A whisper in the weights: a narrated film on reading a faint watermark out of the noise" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
   </div>
 
-  <p class="lab-film__legend" role="img" aria-label="Colour key: blue=owner signal, grey=noise, red=thief, yellow=effect size">
-    <span><i style="background:#58C4DD"></i> owner signal</span>
-    <span><i style="background:#94a3b8"></i> fine-tuning noise</span>
-    <span><i style="background:#fb7185"></i> thief / scrub</span>
-    <span><i style="background:#fbbf24"></i> effect size d</span>
-  </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
