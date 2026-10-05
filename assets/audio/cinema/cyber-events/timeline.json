@@ -1,0 +1,236 @@
+{
+ "film": "cyber-events",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 123.452,
+ "authored": 123.0,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   8.952,
+   8.5
+  ],
+  [
+   17.452,
+   17.0
+  ],
+  [
+   26.952,
+   26.5
+  ],
+  [
+   40.452,
+   40.0
+  ],
+  [
+   48.452,
+   48.0
+  ],
+  [
+   62.452,
+   62.0
+  ],
+  [
+   71.452,
+   71.0
+  ],
+  [
+   84.952,
+   84.5
+  ],
+  [
+   91.452,
+   91.0
+  ],
+  [
+   102.452,
+   102.0
+  ],
+  [
+   109.452,
+   109.0
+  ],
+  [
+   117.452,
+   117.0
+  ],
+  [
+   123.452,
+   123.0
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 8.202,
+   "len": 8.42,
+   "head": 0.218,
+   "file": "hook.mp3",
+   "file_start": 0.132,
+   "hash": "ae251351b34c",
+   "text": "A website goes down. Before any official statement, people are already posting about it. Can a machine hear that?",
+   "source": "Ural and Acarturk 2021, Sec. 1.1 (an attack on a site is reported by social media users first)"
+  },
+  {
+   "id": "flood",
+   "at": 8.5,
+   "real": 8.952,
+   "speech": 7.006,
+   "len": 7.22,
+   "head": 0.214,
+   "file": "flood.mp3",
+   "file_start": 8.738,
+   "hash": "6f0f4e925eea",
+   "text": "The trouble is the flood. Millions of ordinary posts, and somewhere in them, a handful about a real attack.",
+   "source": "Sec. 1.1, 4.4 (millions of documents a day; most posts are not informative)"
+  },
+  {
+   "id": "known",
+   "at": 17.0,
+   "real": 17.452,
+   "speech": 8.374,
+   "len": 8.59,
+   "head": 0.216,
+   "file": "known.mp3",
+   "file_start": 17.236,
+   "hash": "6d73c9683340",
+   "text": "In Turkish, there was no ready-made collection of examples to learn from. So we started from one attack whose answer we already knew.",
+   "source": "Sec. 1.1, 2.2 (no Turkish data set or term dictionary; one past incident, the nic.tr attack, used as the reference)"
+  },
+  {
+   "id": "compare",
+   "at": 26.5,
+   "real": 26.952,
+   "speech": 12.613,
+   "len": 12.84,
+   "head": 0.227,
+   "file": "compare.mp3",
+   "file_start": 26.725,
+   "hash": "6ce16496c1a6",
+   "text": "December 2015: Turkey's domain servers are attacked. We compared what people wrote in the year before, on the day, and in the two weeks after. The words that stood out became our vocabulary.",
+   "source": "Sec. 2.2, 4.1 (three databases: the year before, the attack day, the two weeks after; TF-IDF)"
+  },
+  {
+   "id": "test",
+   "at": 40.0,
+   "real": 40.452,
+   "speech": 6.682,
+   "len": 6.91,
+   "head": 0.228,
+   "file": "test.mp3",
+   "file_start": 40.224,
+   "hash": "ded203c228db",
+   "text": "Then every word had to earn its place. If it brought more false alarms than real detections, it was out.",
+   "source": "Sec. 2.2 (A/B test: a keyword that raises false positives is not added)"
+  },
+  {
+   "id": "balance",
+   "at": 48.0,
+   "real": 48.452,
+   "speech": 12.617,
+   "len": 12.84,
+   "head": 0.223,
+   "file": "balance.mp3",
+   "file_start": 48.229,
+   "hash": "312e1c737030",
+   "text": "Too many words, and the analyst drowns in false alarms. Too few, and the attack is noticed late. So we set the bar in advance: catch it on the day, with fewer than one false alarm in three.",
+   "source": "Sec. 4.1, 4.4 (too many keywords lower certainty, too few lower sensitivity; criteria: detect on the attack day, no more than 30 percent false positives)"
+  },
+  {
+   "id": "clean",
+   "at": 62.0,
+   "real": 62.452,
+   "speech": 8.048,
+   "len": 8.26,
+   "head": 0.212,
+   "file": "clean.mp3",
+   "file_start": 62.24,
+   "hash": "1b01a7caae2a",
+   "text": "Posts are messy, and Turkish packs a lot into one word. So the text is cleaned up first: many spellings, one word.",
+   "source": "Sec. 2.3 (every text is normalised through the ITU Turkish NLP service before detection)"
+  },
+  {
+   "id": "count",
+   "at": 71.0,
+   "real": 71.452,
+   "speech": 12.035,
+   "len": 12.24,
+   "head": 0.205,
+   "file": "count.mp3",
+   "file_start": 71.247,
+   "hash": "c011b65fb16f",
+   "text": "Then the detector does something simple. It doesn't try to understand the posts. It counts how often each possible target is named, day by day, and waits for a day that doesn't look like the others.",
+   "source": "Sec. 2.1, 2.3 (a vector of possible victims; daily mention counts against a threshold from the entity's own history)"
+  },
+  {
+   "id": "spike",
+   "at": 84.5,
+   "real": 84.952,
+   "speech": 5.48,
+   "len": 5.71,
+   "head": 0.23,
+   "file": "spike.mp3",
+   "file_start": 84.722,
+   "hash": "df8a53e68057",
+   "text": "On the day of the attack, the count for the target jumped. That jump was the alarm.",
+   "source": "Sec. 4.1, Fig. 2 (the attack is detected on its first day)"
+  },
+  {
+   "id": "result",
+   "at": 91.0,
+   "real": 91.452,
+   "speech": 9.004,
+   "len": 9.22,
+   "head": 0.216,
+   "file": "result.mp3",
+   "file_start": 91.236,
+   "hash": "bfbd16afe0c5",
+   "text": "In a test run, about three alarms in four were real. And we published the false ones too, like a post that only asked: was your account hacked?",
+   "source": "Sec. 4.3.1, 4.4 (437 entries, 29 detections, 22 positive, 7 false; the 'hacklendi' false positive)"
+  },
+  {
+   "id": "why",
+   "at": 102.0,
+   "real": 102.452,
+   "speech": 4.918,
+   "len": 5.14,
+   "head": 0.222,
+   "file": "why.mp3",
+   "file_start": 102.23,
+   "hash": "9c6dfb9d160f",
+   "text": "Because it reads Turkish, it caught incidents that a tool built for English would have missed.",
+   "source": "Sec. 4.2.2 (an incident published in Turkish, which a system reading English text could not detect)"
+  },
+  {
+   "id": "close",
+   "at": 109.0,
+   "real": 109.452,
+   "speech": 6.142,
+   "len": 6.36,
+   "head": 0.218,
+   "file": "close.mp3",
+   "file_start": 109.234,
+   "hash": "ade8386698fd",
+   "text": "Most of the world doesn't write in English. A tool that listens only in English is deaf to most of it.",
+   "source": "the authors' view (Sec. 1.1, 5.1)"
+  },
+  {
+   "id": "card",
+   "at": 117.0,
+   "real": 117.452,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 117.452,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}

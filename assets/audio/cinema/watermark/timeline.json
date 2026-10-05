@@ -1,7 +1,7 @@
 {
  "film": "watermark",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 98.015,
+ "duration": 99.877,
  "authored": 97.5,
  "anchors": [
   [
@@ -21,35 +21,35 @@
    20.5
   ],
   [
-   32.015,
+   33.338,
    31.5
   ],
   [
-   43.015,
+   44.338,
    42.5
   ],
   [
-   54.015,
+   55.338,
    53.5
   ],
   [
-   65.515,
+   66.838,
    65.0
   ],
   [
-   73.015,
+   74.877,
    72.5
   ],
   [
-   83.015,
+   84.877,
    82.5
   ],
   [
-   91.515,
+   93.377,
    91.0
   ],
   [
-   98.015,
+   99.877,
    97.5
   ]
  ],
@@ -98,24 +98,24 @@
    "id": "says",
    "at": 20.5,
    "real": 21.015,
-   "speech": 9.383,
-   "len": 9.6,
+   "speech": 11.923,
+   "len": 12.14,
    "head": 0.217,
    "file": "says.mp3",
    "file_start": 20.798,
-   "hash": "2d009cbc82b6",
-   "text": "One: in what the model says. It learns an odd answer to a secret question. Ask from the outside, and only your model answers that way.",
+   "hash": "c0917eece4ac",
+   "text": "One: in what the model says. It learns odd answers to a set of secret questions. Ask from the outside. One match could be luck. A whole set is not.",
    "source": "Sec. II-B, IV-B (feature-trigger marks, verified with black-box access)"
   },
   {
    "id": "numbers",
    "at": 31.5,
-   "real": 32.015,
+   "real": 33.338,
    "speech": 9.619,
    "len": 9.84,
    "head": 0.221,
    "file": "numbers.mp3",
-   "file_start": 31.794,
+   "file_start": 33.117,
    "hash": "2d69162d567f",
    "text": "Two: in its numbers. A tiny pattern written into just a couple of them. It costs almost nothing, but you need the file in your hands to read it.",
    "source": "Sec. IV-B, VI-J (parameter perturbation: two weights, near-zero cost, white-box)"
@@ -123,25 +123,25 @@
   {
    "id": "head",
    "at": 42.5,
-   "real": 43.015,
-   "speech": 9.103,
-   "len": 9.31,
+   "real": 44.338,
+   "speech": 9.273,
+   "len": 9.48,
    "head": 0.207,
    "file": "head.mp3",
-   "file_start": 42.808,
-   "hash": "dac7a13b27d9",
-   "text": "Three: in a small extra part attached to the model, which normal use never touches. The model's work is undisturbed, and the part can be replaced.",
+   "file_start": 44.131,
+   "hash": "34d9bafb68e1",
+   "text": "Three: in a small extra part attached to the model, which normal use never touches. The model's work is barely disturbed, and the part can be replaced.",
    "source": "Sec. IV-B, VI-J (auxiliary head: main task untouched, replaceable)"
   },
   {
    "id": "which",
    "at": 53.5,
-   "real": 54.015,
+   "real": 55.338,
    "speech": 10.075,
    "len": 10.3,
    "head": 0.225,
    "file": "which.mp3",
-   "file_start": 53.79,
+   "file_start": 55.113,
    "hash": "c9b5eae3e54c",
    "text": "In our research we trained all three the same way and measured them. No single one wins. It depends on whether you can open the model, or only talk to it.",
    "source": "Sec. II-B.1, VI-J (three families compared under one regime; deployment guidance)"
@@ -149,25 +149,25 @@
   {
    "id": "catch",
    "at": 65.0,
-   "real": 65.515,
-   "speech": 5.959,
-   "len": 6.19,
+   "real": 66.838,
+   "speech": 7.639,
+   "len": 7.87,
    "head": 0.231,
    "file": "catch.mp3",
-   "file_start": 65.284,
-   "hash": "adc604cce1ba",
-   "text": "And they share one weakness. A thief can retrain the model until the signature washes out.",
+   "file_start": 66.607,
+   "hash": "caaa34297a4c",
+   "text": "And they share one weakness. A thief can retrain the model, or cut parts of it away, until the signature washes out.",
    "source": "Sec. II-C.1, III-C.5 (cleaning, fine-tuning and pruning attenuate a mark)"
   },
   {
    "id": "tie",
    "at": 72.5,
-   "real": 73.015,
+   "real": 74.877,
    "speech": 7.467,
    "len": 7.68,
    "head": 0.213,
    "file": "tie.mp3",
-   "file_start": 72.802,
+   "file_start": 74.664,
    "hash": "79e0f23b6f43",
    "text": "So we tie the signature to the record of how the model was trained. Wash it out, and the model no longer matches its own record.",
    "source": "Sec. II-C.1, III-C.5 (removal alters the weight trajectory, so replay fails)"
@@ -175,12 +175,12 @@
   {
    "id": "close",
    "at": 82.5,
-   "real": 83.015,
+   "real": 84.877,
    "speech": 6.027,
    "len": 6.24,
    "head": 0.213,
    "file": "close.mp3",
-   "file_start": 82.802,
+   "file_start": 84.664,
    "hash": "294169ba9bcd",
    "text": "AI models are becoming property. And property needs a signature that survives being copied.",
    "source": "the authors' view"
@@ -188,12 +188,12 @@
   {
    "id": "card",
    "at": 91.0,
-   "real": 91.515,
+   "real": 93.377,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 91.515,
+   "file_start": 93.377,
    "hash": "",
    "text": "",
    "source": ""

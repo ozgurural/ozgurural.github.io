@@ -268,7 +268,7 @@ const CSS = `
                 border: 2px solid currentColor; border-radius: 10px; background: rgba(6,10,18,.72); }
   .cin .stamp .ic { margin-right: 8px; }
   .cin .credit { font: 500 23px/1.5 "JetBrains Mono", monospace; letter-spacing: .04em; color: #8fd3ff; }
-  .cin .credit span { display: block; color: #7f8ea3; }
+  .cin .credit span { display: block; color: #9aa9be; }
   .cin .vrow { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.3fr; align-items: center; gap: 10px;
                font: 500 29px/1 "Inter", sans-serif; color: #dfe7f2;
                padding: 18px 20px; border-radius: 14px; background: rgba(6,12,24,.72); border: 1px solid rgba(127,207,255,.18); }
@@ -391,7 +391,8 @@ const film = {
                                                                 blending: THREE.AdditiveBlending, depthWrite: false }));
       ring.position.copy(p).y -= LIFT * 0.6;
       scene.add(pillar, node, ring);
-      return { idx, u: arc.at(idx), p, pillar, node, ring, at: logT(k) };
+      // Top-Q: the verifier does not replay the whole run, only the largest updates
+      return { idx, u: arc.at(idx), p, pillar, node, ring, at: logT(k), big: [1, 3, 5].includes(k) };
     });
 
     /* tolerance: the tube a replay may land anywhere inside (Sec. II-A, VII-B) */
@@ -414,11 +415,11 @@ const film = {
     const forgedMat = mat(GLOWLINE, { uColor: COL.forged, uReveal: 0, uHead: 1, uAlpha: 0,
                                       uScan: -1, uScanAmt: 0, uScanColor: HDR(1.6, 2.2, 2.4) });
     scene.add(new THREE.Mesh(new THREE.TubeGeometry(fcurve, 900, 0.09, 8), forgedMat));
-    const fnodes = CK.map(idx => {
+    const fnodes = CK.map((idx, k) => {
       const n = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 8), new THREE.MeshBasicMaterial({ color: COL.forged.clone(), transparent: true, opacity: 0 }));
       n.position.copy(fpts[idx]);
       scene.add(n);
-      return { n, u: arc.at(idx) };
+      return { n, u: arc.at(idx), big: [1, 3, 5].includes(k) };
     });
 
     /* the two models. They open the film as an original and its copy, and come
@@ -552,7 +553,9 @@ const film = {
     say(T.walk, T.receipts - gone, 'But the work leaves a <em>trail</em>.',
         'Training is a long walk downhill, every step making the model a little less wrong.');
     say(T.receipts, T.forged - gone, 'Proof-of-Learning <em>keeps that trail</em>.',
-        'Snapshots along the way, which a verifier can replay to check the walk really happened.');
+        'Snapshots of the model, with the data and settings behind every step. A verifier replays the <b>biggest steps</b> and checks where they land.');
+    text({ at: T.receipts + 0.8, out: T.lock - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 940, w: 800 },
+           html: 'Proof-of-Learning: Jia et al., IEEE S&amp;P 2021' });
 
     // the catch
     say(T.forged, 36.75, 'There&rsquo;s a <span class="amber">catch</span>.',
@@ -587,7 +590,9 @@ const film = {
     // the thief's two ways out
     say(T.thief, 67.75, 'A thief can&rsquo;t name the questions.');
     say(67.8, T.scrub - gone, 'Scrub the secret out, and the model <span class="red">stops matching its own trail</span>.');
-    say(T.scrub, T.cost - gone, 'Hiding that takes <em>real training</em>.', 'The very work they tried to skip.');
+    say(T.scrub, T.cost - gone, 'Hiding that took <em>real training</em>.', 'In our tests: the very work they tried to skip.');
+    text({ at: T.thief + 3.4, out: T.cost - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 900, w: 800 },
+           html: 'Tested against the spoofing attacks in the paper.<span>It raises the cost of those attacks; it is not a proof against every attack.</span>' });
 
     // what it costs (Sec. VI-B, VI-F): bars drawn to the largest change the paper measured, no figures
     say(T.cost, T.use - gone, 'And the price is <em>small</em>.',
@@ -653,9 +658,11 @@ const film = {
             alpha: t => win(t, T.walk + 0.8, T.receipts - 0.2, 0.4, 0.5) });
     label({ cls: 'chip', html: 'the trained model', anchor: () => END, dx: 0, dy: 34, ax: 0.5, ay: 0,
             alpha: t => win(t, 20.6, T.forged - 0.2, 0.4, 0.5) });
-    [0, 3].forEach(k => label({ cls: 'chip', html: 'snapshot', anchor: () => cks[k].p, dx: 0, dy: -62, ax: 0.5, ay: 1,
-            alpha: t => win(t, cks[k].at + 0.2, 26.4, 0.4, 0.5) }));
-    label({ cls: 'stamp green', html: `${OK}THE WALK CHECKS OUT`, anchor: () => cks[4].p, dx: 60, dy: -110, ax: 0.5, ay: 1,
+    label({ cls: 'chip', html: 'snapshot + data + settings', anchor: () => cks[2].p, dx: 0, dy: -62, ax: 0.5, ay: 1,
+            alpha: t => win(t, cks[2].at + 0.2, 26.2, 0.4, 0.5) });
+    label({ cls: 'chip', html: 'biggest steps: replayed', anchor: () => cks[3].p, dx: 0, dy: -62, ax: 0.5, ay: 1,
+            alpha: t => win(t, 26.5, 28.5, 0.4, 0.4) });
+    label({ cls: 'stamp green', html: `${OK}SPOT-CHECK PASSES`, anchor: () => cks[4].p, dx: 60, dy: -110, ax: 0.5, ay: 1,
             alpha: t => win(t, 28.6, T.forged - 0.1, 0.35, 0.4) });
     label({ cls: 'chip', html: 'close enough', anchor: () => cks[4].p, dx: 0, dy: -84, ax: 0.5, ay: 1,
             alpha: t => win(t, 34.4, 38.6, 0.4, 0.4) });
@@ -718,7 +725,7 @@ const film = {
     const ckFade = t < T.lock ? 1 : t < 68.4 ? lerp(1, 0, ramp(t, T.lock, T.lock + 1.2)) : lerp(0, 0.9, ramp(t, 68.4, 69.6));
     cks.forEach(c => {
       const grow = ease.outBack(ramp(t, c.at, c.at + 0.55));
-      const ver = t > R0 && scanU >= c.u;
+      const ver = c.big && t > R0 && scanU >= c.u;
       const col = ver ? COL.ok : COL.logged;
       const pulse = ver && t < R1 + 0.6 ? Math.exp(-Math.pow((scanU - c.u) * 20, 2)) : 0;
       c.pillar.scale.set(1, 0.01 + 2.6 * grow, 1);
@@ -746,7 +753,7 @@ const film = {
     forgedMat.uniforms.uScan.value = t > 38.3 && t < 39.3 ? fScan : -1;
     forgedMat.uniforms.uScanAmt.value = win(t, 38.3, 39.4, 0.2, 0.2);
     fnodes.forEach(fn => {
-      const passed = t > 38.3 && fScan >= fn.u;
+      const passed = fn.big && t > 38.3 && fScan >= fn.u;
       fn.n.material.color.copy(passed ? COL.ok : COL.forged);
       fn.n.material.opacity = (fRev >= fn.u ? 1 : 0) * fA;
     });

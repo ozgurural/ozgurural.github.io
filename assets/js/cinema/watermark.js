@@ -166,13 +166,16 @@ const CSS = `
                 border: 2px solid currentColor; border-radius: 10px; background: rgba(6,10,18,.72); white-space: nowrap; }
   .cin .stamp .ic { margin-right: 8px; }
   .cin .credit { font: 500 21px/1.5 "JetBrains Mono", monospace; letter-spacing: .03em; color: #8fd3ff; }
-  .cin .credit span { display: block; color: #7f8ea3; }
+  .cin .credit span { display: block; color: #9aa9be; }
   .cin .pn { padding: 16px 20px 18px; border-radius: 16px; background: rgba(6,12,24,.78); border: 1px solid rgba(127,207,255,.2); }
   .cin .pn__t { font: 500 21px/1 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #8fa2ba; margin-bottom: 14px; }
+  .cin .pn__h { display: flex; align-items: center; justify-content: space-between; min-height: 48px; margin-bottom: 10px; }
+  .cin .pn__h .pn__t { margin: 0; }
+  .cin .pn__h .stamp { font-size: 23px; padding: 8px 12px 8px 10px; opacity: 0; }
   .cin .pn__f { display: flex; align-items: center; gap: 14px; margin-top: 14px; min-height: 48px; }
   .cin .pn__f > * { opacity: 0; }
-  .cin .qa { display: grid; grid-template-columns: 1fr 44px 190px; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .cin .qa span { font: 500 29px/1.15 "JetBrains Mono", monospace; padding: 12px 14px; border-radius: 9px; color: #e4ecf6;
+  .cin .qa { display: grid; grid-template-columns: 1fr 44px 190px; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .cin .qa span { font: 500 27px/1.15 "JetBrains Mono", monospace; padding: 9px 14px; border-radius: 9px; color: #e4ecf6;
                   border: 1.5px solid rgba(127,207,255,.28); background: rgba(127,207,255,.08); opacity: 0; }
   .cin .qa span.ar { border: none; background: none; padding: 0; text-align: center; color: #8fa2ba; }
   .cin .qa.s span.q, .cin .qa.s span.a { border-color: #ffcf5a; background: rgba(255,207,90,.12); color: #ffe7a6; }
@@ -194,6 +197,7 @@ const CSS = `
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
 `;
 
+const ANS = [7.2, 8.9, 9.4];
 const bump = (t, at, w) => Math.exp(-Math.pow((t - at) / w, 2));
 const show = (el, v) => { el.style.opacity = String(v); };
 
@@ -319,19 +323,21 @@ const film = {
         'A label added on top is simply cut off. So the signature has to be <span class="gold">trained in</span>.');
     say(T.three, T.says - gone, 'There are <em>three places</em> to hide it.');
     say(T.says, T.numbers - gone, 'One: in what the model <em>says</em>.',
-        'It learns an odd answer to a secret question. Ask from the outside, and only your model answers that way.');
+        'It learns odd answers to a set of secret questions. Ask from the outside. One match could be luck. A whole set is not.');
     say(T.numbers, T.head - gone, 'Two: in its <em>numbers</em>.',
         'A tiny pattern written into just a couple of them. It costs almost nothing, but you need the file in your hands to read it.');
     say(T.head, T.which - gone, 'Three: in a small <em>extra part</em>.',
-        'Normal use never touches it. The model&rsquo;s work is undisturbed, and the part can be replaced.');
+        'Normal use never touches it. The model&rsquo;s work is barely disturbed, and the part can be replaced.');
     say(T.which, T.catch - gone, 'No single one <em>wins</em>.',
         'In our research we trained all three the same way and measured them. It depends on whether you can open the model, or only talk to it.');
     say(T.catch, T.tie - gone, 'They share one <span class="amber">weakness</span>.',
-        'A thief can retrain the model until the signature washes out.');
+        'A thief can retrain the model, or cut parts of it away, until the signature washes out.');
     say(T.tie, T.close - 0.25, 'So we tie it to the <em>record of training</em>.',
         'Wash the signature out, and the model no longer matches its own record.');
-    text({ at: T.three + 0.6, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 900, w: 820 },
-           html: 'Ural &amp; Yoshigoe, IEEE Access, 2025: one design from each of the three families, compared.<span>The examples on screen are illustrations.</span>' });
+    text({ at: T.three + 0.6, out: T.catch - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 868, w: 820 },
+           html: 'Ural &amp; Yoshigoe, IEEE Access, 2025: one design from each of the three families, compared.<span>This is about marking the model itself. Marking the text a model writes is a separate technique.</span>' });
+    text({ at: T.catch + 0.3, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 868, w: 820 },
+           html: 'A match is evidence, not certainty.<span>Tying the mark to the record raises the cost of the attacks tested in the paper. It is not a proof against every attack.</span>' });
 
     text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 260, y: 330, w: 1400, align: 'center' },
            html: 'AI models are becoming property.' });
@@ -354,18 +360,18 @@ const film = {
              d.style.opacity = String(u); d.style.transform = `translateY(${((1 - u) * 16).toFixed(1)}px)`;
            }) });
 
-    // one: asked from the outside
-    text({ at: T.says + 1.0, out: T.numbers - gone, cls: 'pn', words: false, dur: 0.5, rise: 16, place: PN,
-           html: `<div class="pn__t">asked from the outside</div>
-                  <div class="qa"><span class="q">a photo of a cat</span><span class="ar">&rarr;</span><span class="a">&ldquo;cat&rdquo;</span></div>
-                  <div class="qa s"><span class="q">the same photo, with a secret mark</span><span class="ar">&rarr;</span><span class="a">&ldquo;ship&rdquo;</span></div>
-                  <div class="pn__f"><span class="stamp gold">${OK}ONLY YOUR MODEL ANSWERS THIS WAY</span></div>`,
+    // one: asked from the outside. An ordinary question, then the secret set: one match could be luck, a set is not
+    const SECRET = [['secret photo 1', 'ship'], ['secret photo 2', 'frog'], ['secret photo 3', 'truck']];
+    text({ at: T.says + 1.0, out: T.numbers - gone, cls: 'pn', words: false, dur: 0.5, rise: 16, place: { x: PN.x, y: 690, w: PN.w },
+           html: `<div class="pn__h"><div class="pn__t">from outside &middot; illustration</div><span class="stamp gold">${OK}A WHOLE SET: NOT LUCK</span></div>
+                  <div class="qa"><span class="q">a photo of a cat</span><span class="ar">&rarr;</span><span class="a">&ldquo;cat&rdquo;</span></div>` +
+                 SECRET.map(([q, a2]) => `<div class="qa s"><span class="q">${q}</span><span class="ar">&rarr;</span><span class="a">&ldquo;${a2}&rdquo;</span></div>`).join(''),
            update: (t, el) => {
-             const [r1, r2] = el.querySelectorAll('.qa');
+             const rows = el.querySelectorAll('.qa');
              const row = (r, tq, ta) => { show(r.children[0], ramp(t, tq, tq + 0.4)); show(r.children[1], ramp(t, ta - 0.4, ta)); show(r.children[2], ramp(t, ta, ta + 0.4)); };
-             row(r1, T.says + 1.5, T.says + 2.6);
-             row(r2, T.says + 3.6, T.says + 6.7);
-             show(el.querySelector('.stamp'), ramp(t, T.says + 8.0, T.says + 8.5));
+             row(rows[0], T.says + 1.4, T.says + 2.3);
+             SECRET.forEach((_, i) => row(rows[i + 1], T.says + 3.4 + i * 0.5, T.says + ANS[i]));
+             show(el.querySelector('.stamp'), ramp(t, T.says + ANS[2] + 0.6, T.says + ANS[2] + 1.1));
            } });
 
     // two: read off the file
@@ -451,7 +457,7 @@ const film = {
     const trained = ramp(t, T.why + 6.0, T.why + 7.4);
     const washed1 = ramp(t, T.catch + 2.6, T.catch + 5.4), back = ramp(t, T.tie + 0.5, T.tie + 1.4), washed2 = ramp(t, T.tie + 4.6, T.tie + 5.8);
     const there = t < T.tie ? trained * (1 - 0.94 * washed1) : lerp(0.06, 1, back) * (1 - 0.94 * washed2);
-    const answers = win(t, T.says + 6.5, T.numbers - 0.2, 0.4, 0.6) + win(t, T.catch + 0.2, T.catch + 2.6, 0.5, 0.3) + win(t, T.tie + 1.2, T.tie + 4.6, 0.5, 0.3);
+    const answers = win(t, T.says + ANS[0] - 0.2, T.numbers - 0.2, 0.4, 0.6) + win(t, T.catch + 0.2, T.catch + 2.6, 0.5, 0.3) + win(t, T.tie + 1.2, T.tie + 4.6, 0.5, 0.3);
     motes.material.uniforms.uAlpha.value = there * (0.55 + 0.75 * Math.min(1, answers) + 0.5 * bump(t, T.why + 7.2, 0.4));
     motes.material.uniforms.uPR.value = pr;
     lines.material.opacity = there * Math.min(1, answers) * 0.95;
@@ -468,7 +474,7 @@ const film = {
     const inside = t < T.numbers ? box.material.opacity / 0.85 : 0;
     const out = 1 - ramp(t, T.close - 0.4, T.close + 0.7);
     shell.material.opacity = 0.9 * out * (1 - 0.25 * inside);
-    core.material.uniforms.uAlpha.value = out * (1.1 + 0.6 * (bump(t, T.says + 2.4, 0.3) + bump(t, T.says + 6.6, 0.3)));
+    core.material.uniforms.uAlpha.value = out * (1.1 + 0.6 * (bump(t, T.says + 2.2, 0.3) + ANS.reduce((m, x) => m + bump(t, T.says + x - 0.1, 0.25), 0)));
 
     // the extra part: arrives, sits beside the model while its work flows past, and is swapped for another
     const inA = ease.outCubic(ramp(t, T.head + 0.8, T.head + 2.0)), outA = ease.inOutCubic(ramp(t, T.head + 7.4, T.head + 8.5));

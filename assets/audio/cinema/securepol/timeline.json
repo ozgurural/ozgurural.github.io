@@ -1,7 +1,7 @@
 {
  "film": "securepol",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 120.61,
+ "duration": 122.095,
  "authored": 120.0,
  "anchors": [
   [
@@ -21,59 +21,59 @@
    21.5
   ],
   [
-   30.866,
+   32.351,
    30.5
   ],
   [
-   40.866,
+   42.351,
    40.5
   ],
   [
-   50.866,
+   52.351,
    50.5
   ],
   [
-   58.866,
+   60.351,
    58.5
   ],
   [
-   65.366,
+   66.851,
    65.0
   ],
   [
-   73.866,
+   75.351,
    73.5
   ],
   [
-   79.366,
+   80.851,
    79.0
   ],
   [
-   87.866,
+   89.351,
    87.5
   ],
   [
-   91.347,
+   92.832,
    90.8
   ],
   [
-   95.547,
+   97.032,
    95.0
   ],
   [
-   99.81,
+   101.295,
    99.2
   ],
   [
-   104.61,
+   106.095,
    104.0
   ],
   [
-   114.11,
+   115.595,
    113.5
   ],
   [
-   120.61,
+   122.095,
    120.0
   ]
  ],
@@ -122,24 +122,24 @@
    "id": "receipts",
    "at": 21.5,
    "real": 21.866,
-   "speech": 6.838,
-   "len": 7.06,
-   "head": 0.222,
+   "speech": 10.085,
+   "len": 10.3,
+   "head": 0.215,
    "file": "receipts.mp3",
-   "file_start": 21.644,
-   "hash": "dd106d0d2424",
-   "text": "Proof-of-Learning keeps that trail: snapshots along the way, which a verifier can replay to check the walk really happened.",
-   "source": "Sec. II-A, IV, Alg. 1 and 2"
+   "file_start": 21.651,
+   "hash": "f129a303e60b",
+   "text": "Proof-of-Learning keeps that trail: snapshots of the model, with the data and settings behind every step. A verifier replays the biggest steps and checks where they land.",
+   "source": "Sec. II-A, IV, Alg. 1 and 2 (the log holds checkpoints, batch indices and hashes, hyperparameters; Top-Q replays the largest updates)"
   },
   {
    "id": "forged",
    "at": 30.5,
-   "real": 30.866,
+   "real": 32.351,
    "speech": 9.227,
    "len": 9.46,
    "head": 0.233,
    "file": "forged.mp3",
-   "file_start": 30.633,
+   "file_start": 32.118,
    "hash": "f5625d208fec",
    "text": "There's a catch. No computer repeats a long calculation exactly, so the check has to accept close enough. And close enough can be faked.",
    "source": "Sec. II-A, VII-B"
@@ -147,12 +147,12 @@
   {
    "id": "lock",
    "at": 40.5,
-   "real": 40.866,
+   "real": 42.351,
    "speech": 9.245,
    "len": 9.46,
    "head": 0.215,
    "file": "lock.mp3",
-   "file_start": 40.651,
+   "file_start": 42.136,
    "hash": "19bf8c1aa1f8",
    "text": "Our work, SecurePoL, closes that gap with a secret. While the model trains, it also learns planted answers to questions only its owner knows.",
    "source": "Sec. III-A, III-B.3"
@@ -160,12 +160,12 @@
   {
    "id": "trap",
    "at": 50.5,
-   "real": 50.866,
+   "real": 52.351,
    "speech": 6.071,
    "len": 6.29,
    "head": 0.219,
    "file": "trap.mp3",
-   "file_start": 50.647,
+   "file_start": 52.132,
    "hash": "8de1dc5d5f1e",
    "text": "Mapmakers used the same trick: a street that doesn't exist, hidden in the map to catch anyone who copies it.",
    "source": "the analogy is ours"
@@ -173,12 +173,12 @@
   {
    "id": "both",
    "at": 58.5,
-   "real": 58.866,
+   "real": 60.351,
    "speech": 4.963,
    "len": 5.18,
    "head": 0.217,
    "file": "both.mp3",
-   "file_start": 58.649,
+   "file_start": 60.134,
    "hash": "f0df166c43a3",
    "text": "Now a claim needs both: a trail that replays, and a model that knows the secret.",
    "source": "Alg. 2, Sec. VI-I"
@@ -186,12 +186,12 @@
   {
    "id": "thief",
    "at": 65.0,
-   "real": 65.366,
+   "real": 66.851,
    "speech": 7.278,
    "len": 7.49,
    "head": 0.212,
    "file": "thief.mp3",
-   "file_start": 65.154,
+   "file_start": 66.639,
    "hash": "8df4cc3ad1c0",
    "text": "A thief can't name the questions. And scrubbing the secret out changes the model, so it stops matching its own trail.",
    "source": "Sec. III-B.3, II-C.1"
@@ -199,25 +199,25 @@
   {
    "id": "scrub",
    "at": 73.5,
-   "real": 73.866,
-   "speech": 4.102,
-   "len": 4.32,
-   "head": 0.218,
+   "real": 75.351,
+   "speech": 4.889,
+   "len": 5.11,
+   "head": 0.221,
    "file": "scrub.mp3",
-   "file_start": 73.648,
-   "hash": "4768dc1f3f56",
-   "text": "Hiding that takes real training: the very work they tried to skip.",
+   "file_start": 75.13,
+   "hash": "5f19b9aebc47",
+   "text": "In our tests, hiding that took real training: the very work they tried to skip.",
    "source": "Sec. III-C.5"
   },
   {
    "id": "cost",
    "at": 79.0,
-   "real": 79.366,
+   "real": 80.851,
    "speech": 7.704,
    "len": 7.92,
    "head": 0.216,
    "file": "cost.mp3",
-   "file_start": 79.15,
+   "file_start": 80.635,
    "hash": "86a07fed6c50",
    "text": "And the price is small. In our experiments the model stayed almost exactly as accurate, and training took only a little longer.",
    "source": "Sec. VI-B, VI-F"
@@ -225,12 +225,12 @@
   {
    "id": "use",
    "at": 87.5,
-   "real": 87.866,
+   "real": 89.351,
    "speech": 3.081,
    "len": 3.31,
    "head": 0.229,
    "file": "use.mp3",
-   "file_start": 87.637,
+   "file_start": 89.122,
    "hash": "105830dfbc47",
    "text": "This matters wherever a model changes hands.",
    "source": "Sec. V-A"
@@ -238,12 +238,12 @@
   {
    "id": "hosp",
    "at": 90.8,
-   "real": 91.347,
+   "real": 92.832,
    "speech": 3.625,
    "len": 3.84,
    "head": 0.215,
    "file": "hosp.mp3",
-   "file_start": 91.132,
+   "file_start": 92.617,
    "hash": "a0ab09b3009b",
    "text": "A hospital can confirm its model is the one that was audited.",
    "source": "Sec. V-A.1"
@@ -251,12 +251,12 @@
   {
    "id": "car",
    "at": 95.0,
-   "real": 95.547,
+   "real": 97.032,
    "speech": 3.863,
    "len": 4.08,
    "head": 0.217,
    "file": "car.mp3",
-   "file_start": 95.33,
+   "file_start": 96.815,
    "hash": "ab7416a84770",
    "text": "A carmaker can replay a supplier's training after an incident.",
    "source": "Sec. V-A.2"
@@ -264,12 +264,12 @@
   {
    "id": "cloud",
    "at": 99.2,
-   "real": 99.81,
+   "real": 101.295,
    "speech": 3.933,
    "len": 4.15,
    "head": 0.217,
    "file": "cloud.mp3",
-   "file_start": 99.593,
+   "file_start": 101.078,
    "hash": "d5460454dd7a",
    "text": "An AI provider can show that a model was trained on licensed data.",
    "source": "Sec. V-A.3"
@@ -277,12 +277,12 @@
   {
    "id": "close",
    "at": 104.0,
-   "real": 104.61,
+   "real": 106.095,
    "speech": 7.773,
    "len": 7.99,
    "head": 0.217,
    "file": "close.mp3",
-   "file_start": 104.393,
+   "file_start": 105.878,
    "hash": "5c3a06ff5eae",
    "text": "AI models are becoming things we buy, deploy and trust. Where a model came from will matter as much as what it can do.",
    "source": "the authors' view"
@@ -290,12 +290,12 @@
   {
    "id": "card",
    "at": 113.5,
-   "real": 114.11,
+   "real": 115.595,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 114.11,
+   "file_start": 115.595,
    "hash": "",
    "text": "",
    "source": ""

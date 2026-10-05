@@ -1,0 +1,30 @@
+{
+  "film": "redundancy",
+  "voice": "edge:en-GB-RyanNeural",
+  "rate": "+6%",
+  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "rare" },
+  "authored_duration": 120.0,
+  "lines": [
+    { "id": "hook",     "at": 0.0,   "source": "old lab film, scene 1",
+      "text": "Three computers agree. Could all three still be wrong?" },
+    { "id": "vote",     "at": 5.0,   "source": "triple modular redundancy with a majority voter",
+      "text": "Machines we trust with lives don't rely on one computer. They run three and take a vote. If one goes wrong, the other two outvote it." },
+    { "id": "rare",     "at": 15.0,  "source": "binomial tail: the vote fails only when a majority fails, P = 3q^2(1-q) + q^3, and falls as q^(m+1) with more channels",
+      "text": "For the vote itself to fail, two have to go wrong at the same moment. If their faults are unrelated, that almost never happens. And the more computers you add, the rarer it gets." },
+    { "id": "catch",    "at": 27.5,  "source": "common-cause (beta-factor) failure: the floor rho*q does not depend on the number of channels",
+      "text": "But there's a condition hiding in that. Unrelated. Give every computer the same flaw, and they fail together. The vote is unanimous, and wrong. Adding more copies changes nothing." },
+    { "id": "ariane",   "at": 41.5,  "source": "Ariane 501 Inquiry Board report, Sec. 1.1, 2.1 (two SRIs, identical hardware and software, one active, one hot stand-by)",
+      "text": "June, 1996. Ariane 5 lifts off on its first flight, steered by two navigation computers: one active, one backup. Identical machines, identical software." },
+    { "id": "overflow", "at": 53.5,  "source": "Sec. 2.1, 2.2, 3.1 finding p (software reused from Ariane 4; horizontal velocity builds five times faster; unprotected 64-bit to 16-bit conversion; back-up failed one 72 ms cycle before the active unit)",
+      "text": "The software came from an older, slower rocket. On the new one, a number grew too big for the space it had been given. The backup shut itself down. A moment later the active one did the same, for the same reason." },
+    { "id": "break",    "at": 67.5,  "source": "Sec. 2.1 (diagnostic bit pattern interpreted as flight data; full nozzle deflections; break-up at about H0 + 39 s)",
+      "text": "The rocket took the error message for flight data, swerved hard, and tore itself apart, about forty seconds into the flight." },
+    { "id": "lesson",   "at": 76.5,  "source": "Sec. 2.2 (the switch-off of two still healthy critical units; the same software runs in both)",
+      "text": "Nothing had broken. Both computers were healthy, and both did exactly what their software said. A backup that shares your mistake is not a backup." },
+    { "id": "cure",     "at": 87.5,  "source": "design diversity lowers common-mode risk without removing it (old lab film, scene 6)",
+      "text": "So the cure is not more copies. It's different ones: built by different teams, in different ways, so their mistakes don't line up. That lowers the risk. It never makes it zero." },
+    { "id": "close",    "at": 101.0, "source": "the author's view (old lab film, closing caption)",
+      "text": "We are handing more decisions to machines that check each other, and now to AI. The question is never how many agree. It's whether they can all be wrong at once." },
+    { "id": "card",     "at": 113.5, "source": "", "text": "" }
+  ]
+}
