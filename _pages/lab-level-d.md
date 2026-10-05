@@ -20,15 +20,10 @@ header:
   </div>
 
   <div class="lab-film">
-    <div class="lab-film__frame" id="lvd-film" role="group" aria-label="Animated explainer: hard real-time determinism in a Level D full-flight simulator"></div>
+    <div class="lab-film__frame lab-film__frame--cinema">
+      <iframe src="{{ '/films/level-d/' | relative_url }}?autoplay=0" title="Determinism at 60 Hz: a narrated film on timing in a Level D full-flight simulator" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
   </div>
-
-  <p class="lab-film__legend" role="img" aria-label="Colour key: cyan=within budget, amber=budget boundary, rose=deadline breach, green=margin">
-    <span><i style="background:#58C4DD"></i> within budget</span>
-    <span><i style="background:#fbbf24"></i> budget boundary</span>
-    <span><i style="background:#fc6255"></i> deadline breach</span>
-    <span><i style="background:#83C167"></i> margin · healthy</span>
-  </p>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
