@@ -336,9 +336,37 @@ export function createCinema(film) {
   // The soundtrack is the master clock while it plays, so a long film cannot
   // drift off its narration. Browsers refuse sound before a gesture, so an
   // autoplay starts muted and says so; any click on the film turns it on.
-  const audio = !renderMode && film.audio ? new Audio(film.audio) : null;
+  let audio = !renderMode && film.audio ? new Audio(film.audio) : null;
   if (audio) audio.preload = 'auto';
   else if (soundBtn) soundBtn.hidden = true;
+  // A media element whose audio output fails (MEDIA_ERR_DECODE carrying
+  // AUDIO_RENDERER_ERROR, as when an output device goes away mid-play) never
+  // plays again, and since this is the film's only soundtrack the rest of the
+  // film went silent while the picture ran on the wall clock. The output comes
+  // back after a moment (the lab films' playback test showed the next line
+  // playing seconds later), so retry on a fresh element with a delay, three
+  // times, resuming wherever the film has got to.
+  function recoverOnError(el) {
+    el.addEventListener('error', () => {
+      const tries = el._retries || 0;
+      if (tries >= 3) return;
+      setTimeout(() => {
+        if (audio !== el) return;
+        const fresh = new Audio(film.audio);
+        fresh.preload = 'auto';
+        fresh._retries = tries + 1;
+        fresh.muted = el.muted;
+        audio = fresh;
+        recoverOnError(fresh);
+        fresh.addEventListener('loadedmetadata', () => {
+          if (audio !== fresh || !playing) return;
+          fresh.currentTime = t;
+          fresh.play().catch(() => {});
+        }, { once: true });
+      }, [250, 1000, 2500][tries]);
+    }, { once: true });
+  }
+  if (audio) recoverOnError(audio);
   function setSound(on) {
     if (!audio) return;
     audio.muted = !on;

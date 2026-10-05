@@ -761,7 +761,7 @@
     // immediately, and the normal four-second bound remains the final escape.
     var clearListeners = function() {
       a.removeEventListener("timeupdate", progressed);
-      a.removeEventListener("error", finish);
+      a.removeEventListener("error", onError);
     };
     var finish = function() { clearListeners(); done(); };
     var progressed = function() {
@@ -794,7 +794,42 @@
       if (pending.progressSamples >= 2 && current > pending.baseline + 0.08) finish();
     };
     a.addEventListener("timeupdate", progressed);
-    a.addEventListener("error", finish, { once: true });
+    var onError = function() {
+      finish();
+      // An element whose audio output failed (MEDIA_ERR_DECODE carrying
+      // AUDIO_RENDERER_ERROR: an output device that went away mid-play, or a
+      // headless browser's sink after several films in one tab) never
+      // recovers by itself, and the film used to run on silent with that line
+      // lost; the playback test caught it as determinism's opening line going
+      // missing. The output does come back: the next line, ten seconds later,
+      // played. An immediate retry on a fresh element failed the same way, so
+      // retry with a delay, three times, and start the line where the film now
+      // is so voice and picture stay together. Then give up as before.
+      var tries = a._labRetries || 0;
+      if (tries >= 3 || window._currentLabNarrator !== a || !self.playing) return;
+      var cue = null;
+      for (var ci = 0; ci < (self._audioCues || []).length; ci++) {
+        if (self._audioCues[ci].audio === a) cue = self._audioCues[ci];
+      }
+      setTimeout(function () {
+        if (window._currentLabNarrator !== a || !self.playing) return;
+        var fresh = new Audio(a.currentSrc || a.src);
+        fresh._labRetries = tries + 1;
+        fresh.preload = "auto";
+        fresh.volume = a.volume;
+        if (cue) cue.audio = fresh;
+        window._currentLabNarrator = fresh;
+        var go = function () {
+          if (window._currentLabNarrator !== fresh || !self.playing) return;
+          var at = cue ? Math.max(0, self.t - cue.at) : 0;
+          if (fresh.duration && at >= fresh.duration) { window._currentLabNarrator = null; return; }
+          try { fresh.currentTime = at; } catch (e) {}
+          self._playNarrator(fresh, at);
+        };
+        if (fresh.readyState >= 1) go(); else fresh.addEventListener("loadedmetadata", go, { once: true });
+      }, [250, 1000, 2500][tries]);
+    };
+    a.addEventListener("error", onError, { once: true });
     try {
       var request = a.play();
       if (request && typeof request.catch === "function") request.catch(finish);
