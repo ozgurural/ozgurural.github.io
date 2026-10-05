@@ -1,0 +1,32 @@
+{
+  "film": "blockchain-ml",
+  "voice": "edge:en-GB-RyanNeural",
+  "rate": "+6%",
+  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "ledger" },
+  "authored_duration": 112.0,
+  "lines": [
+    { "id": "hook",     "at": 0.0,   "source": "Ural and Yoshigoe 2023, Sec. I, IV (collaborative and federated training among parties that do not trust each other)",
+      "text": "People who have never met want to train one AI model together. Why would any of them trust the others?" },
+    { "id": "problems", "at": 8.0,   "source": "Sec. IV-A (data poisoning; a trained model carries no record of its training)",
+      "text": "Someone can slip in bad data and still collect a reward. And the finished model keeps no record of what went into it." },
+    { "id": "ledger",   "at": 17.0,  "source": "Sec. II-A, IV-A (immutability; recording the training transactions gives a tamper-evident record)",
+      "text": "A blockchain is a shared notebook that nobody can quietly rewrite. Write every step of the training into it, and tampering stops being invisible." },
+    { "id": "private",  "at": 27.5,  "source": "Sec. IV-A (data stays on the owners' devices; only model parameters are shared and updated on the chain)",
+      "text": "The data itself never goes into the notebook. It stays with its owner. Only the model's updates are shared." },
+    { "id": "work",     "at": 36.0,  "source": "Sec. II-B, IV-C (proof of work; proof of useful work; Proof of Learning: the miner with the best model writes the next block)",
+      "text": "Ordinary blockchains agree by burning electricity on puzzles whose answers are worth nothing. So researchers aimed that effort at something useful: training the model. Whoever trains the best one writes the next page." },
+    { "id": "real",     "at": 50.5,  "source": "Sec. II-B (critiques of Proof-of-Learning; verifying claimed training)",
+      "text": "Now the electricity buys a model. But it raises a hard question: how do you prove the training was real?" },
+    { "id": "pay",      "at": 58.5,  "source": "Sec. IV-B (Sharing Updatable Models: the balance moves by the loss before an update minus the loss after it)",
+      "text": "Then, the incentives. A contract pays each contributor by how much their data improved the model. Send in junk, and you lose money." },
+    { "id": "deposit",  "at": 68.0,  "source": "Sec. IV-B (deposit, refund, take; in simulation the bad agents deplete their balance)",
+      "text": "You also put down a deposit. Good data gets it back. Bad data forfeits it." },
+    { "id": "built",    "at": 75.0,  "source": "Sec. IV-B (DeepChain on Corda with MNIST: accuracy up, throughput down, time up as parties join; LearningChain: privacy against accuracy)",
+      "text": "And when people actually built these systems, the measurements were sobering. More participants made the model more accurate, and the network slower. More privacy cost accuracy." },
+    { "id": "seams",    "at": 88.0,  "source": "Sec. V (challenges: scalability, energy, consensus designed for machine learning)",
+      "text": "So our survey ends on the open problems: speed, energy, and rules of agreement designed for learning rather than for currency." },
+    { "id": "close",    "at": 98.0,  "source": "the author's path (old lab film, closing line)",
+      "text": "One of those problems, proving that training really happened, became my doctoral research." },
+    { "id": "card",     "at": 105.0, "source": "", "text": "" }
+  ]
+}

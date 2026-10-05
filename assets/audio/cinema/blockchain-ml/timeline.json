@@ -1,0 +1,219 @@
+{
+ "film": "blockchain-ml",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 112.705,
+ "authored": 112.0,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   8.35,
+   8.0
+  ],
+  [
+   17.35,
+   17.0
+  ],
+  [
+   27.85,
+   27.5
+  ],
+  [
+   36.35,
+   36.0
+  ],
+  [
+   50.85,
+   50.5
+  ],
+  [
+   58.85,
+   58.5
+  ],
+  [
+   68.705,
+   68.0
+  ],
+  [
+   75.705,
+   75.0
+  ],
+  [
+   88.705,
+   88.0
+  ],
+  [
+   98.705,
+   98.0
+  ],
+  [
+   105.705,
+   105.0
+  ],
+  [
+   112.705,
+   112.0
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 6.211,
+   "len": 6.43,
+   "head": 0.219,
+   "file": "hook.mp3",
+   "file_start": 0.131,
+   "hash": "11fdd12e5e54",
+   "text": "People who have never met want to train one AI model together. Why would any of them trust the others?",
+   "source": "Ural and Yoshigoe 2023, Sec. I, IV (collaborative and federated training among parties that do not trust each other)"
+  },
+  {
+   "id": "problems",
+   "at": 8.0,
+   "real": 8.35,
+   "speech": 7.427,
+   "len": 7.66,
+   "head": 0.233,
+   "file": "problems.mp3",
+   "file_start": 8.117,
+   "hash": "a327134585d9",
+   "text": "Someone can slip in bad data and still collect a reward. And the finished model keeps no record of what went into it.",
+   "source": "Sec. IV-A (data poisoning; a trained model carries no record of its training)"
+  },
+  {
+   "id": "ledger",
+   "at": 17.0,
+   "real": 17.35,
+   "speech": 8.766,
+   "len": 8.98,
+   "head": 0.214,
+   "file": "ledger.mp3",
+   "file_start": 17.136,
+   "hash": "5305585fda8a",
+   "text": "A blockchain is a shared notebook that nobody can quietly rewrite. Write every step of the training into it, and tampering stops being invisible.",
+   "source": "Sec. II-A, IV-A (immutability; recording the training transactions gives a tamper-evident record)"
+  },
+  {
+   "id": "private",
+   "at": 27.5,
+   "real": 27.85,
+   "speech": 7.58,
+   "len": 7.8,
+   "head": 0.22,
+   "file": "private.mp3",
+   "file_start": 27.63,
+   "hash": "9ce3c1255017",
+   "text": "The data itself never goes into the notebook. It stays with its owner. Only the model's updates are shared.",
+   "source": "Sec. IV-A (data stays on the owners' devices; only model parameters are shared and updated on the chain)"
+  },
+  {
+   "id": "work",
+   "at": 36.0,
+   "real": 36.35,
+   "speech": 13.242,
+   "len": 13.46,
+   "head": 0.218,
+   "file": "work.mp3",
+   "file_start": 36.132,
+   "hash": "e00f7e5c7c2e",
+   "text": "Ordinary blockchains agree by burning electricity on puzzles whose answers are worth nothing. So researchers aimed that effort at something useful: training the model. Whoever trains the best one writes the next page.",
+   "source": "Sec. II-B, IV-C (proof of work; proof of useful work; Proof of Learning: the miner with the best model writes the next block)"
+  },
+  {
+   "id": "real",
+   "at": 50.5,
+   "real": 50.85,
+   "speech": 6.642,
+   "len": 6.86,
+   "head": 0.218,
+   "file": "real.mp3",
+   "file_start": 50.632,
+   "hash": "c175a691e027",
+   "text": "Now the electricity buys a model. But it raises a hard question: how do you prove the training was real?",
+   "source": "Sec. II-B (critiques of Proof-of-Learning; verifying claimed training)"
+  },
+  {
+   "id": "pay",
+   "at": 58.5,
+   "real": 58.85,
+   "speech": 9.455,
+   "len": 9.67,
+   "head": 0.215,
+   "file": "pay.mp3",
+   "file_start": 58.635,
+   "hash": "76d2b708d04f",
+   "text": "Then, the incentives. A contract pays each contributor by how much their data improved the model. Send in junk, and you lose money.",
+   "source": "Sec. IV-B (Sharing Updatable Models: the balance moves by the loss before an update minus the loss after it)"
+  },
+  {
+   "id": "deposit",
+   "at": 68.0,
+   "real": 68.705,
+   "speech": 6.427,
+   "len": 6.65,
+   "head": 0.223,
+   "file": "deposit.mp3",
+   "file_start": 68.482,
+   "hash": "dd08af93f7b3",
+   "text": "You also put down a deposit. Good data gets it back. Bad data forfeits it.",
+   "source": "Sec. IV-B (deposit, refund, take; in simulation the bad agents deplete their balance)"
+  },
+  {
+   "id": "built",
+   "at": 75.0,
+   "real": 75.705,
+   "speech": 10.818,
+   "len": 11.04,
+   "head": 0.222,
+   "file": "built.mp3",
+   "file_start": 75.483,
+   "hash": "2ce11e7d0f41",
+   "text": "And when people actually built these systems, the measurements were sobering. More participants made the model more accurate, and the network slower. More privacy cost accuracy.",
+   "source": "Sec. IV-B (DeepChain on Corda with MNIST: accuracy up, throughput down, time up as parties join; LearningChain: privacy against accuracy)"
+  },
+  {
+   "id": "seams",
+   "at": 88.0,
+   "real": 88.705,
+   "speech": 7.08,
+   "len": 7.3,
+   "head": 0.22,
+   "file": "seams.mp3",
+   "file_start": 88.485,
+   "hash": "ca332b7998c0",
+   "text": "So our survey ends on the open problems: speed, energy, and rules of agreement designed for learning rather than for currency.",
+   "source": "Sec. V (challenges: scalability, energy, consensus designed for machine learning)"
+  },
+  {
+   "id": "close",
+   "at": 98.0,
+   "real": 98.705,
+   "speech": 5.424,
+   "len": 5.64,
+   "head": 0.216,
+   "file": "close.mp3",
+   "file_start": 98.489,
+   "hash": "26fa2932cddf",
+   "text": "One of those problems, proving that training really happened, became my doctoral research.",
+   "source": "the author's path (old lab film, closing line)"
+  },
+  {
+   "id": "card",
+   "at": 105.0,
+   "real": 105.705,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 105.705,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}
