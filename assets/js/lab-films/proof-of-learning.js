@@ -679,7 +679,7 @@
       ["Security", "\\mathbb{E}[C_{\\mathcal{A}}] \\ge \\mathbb{E}[C_{\\mathcal{T}}]\\ \\text{(design property)}",
         "Entropy of the process grows linearly in T, so \\(\\#\\text{paths}\\sim e^{\\Theta(T)}\\). This cost asymmetry is a <em>desideratum</em> (Jia 2021, Property 2), not a theorem, and was later shown bypassable (Zhang et al. 2022; Fang et al. 2023)."],
       ["SecurePoL", "\\text{Accept} \\iff (d_2\\le\\delta)\\ \\wedge\\ (\\mathcal{W}(f)=\\sigma)",
-        "The author combines a trajectory check with a feature watermark. A forger must address both checks; this is not a claim that every possible forgery requires genuine training (Ural &amp; Yoshigoe, IEEE Access 2025)."]
+        "The author combines a trajectory check with a watermark trained in during the logged run (feature triggers, sparse parameter perturbation, or an auxiliary head). A forger must address both checks; this is not a claim that every possible forgery requires genuine training (Ural &amp; Yoshigoe, IEEE Access 2025)."]
     ];
     var html = '<div class="lab-math__grid">';
     blocks.forEach(function (b) {

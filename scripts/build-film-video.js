@@ -16,12 +16,12 @@
  * timing, which means no dropped frames and no jitter no matter how slow the
  * machine is. Frames are piped straight into ffmpeg rather than written out.
  *
- * Sound: real time, because it cannot be anything else. The score is
- * synthesised into an AudioContext as the film plays and the narration is
- * plain Audio elements outside that graph, so the pass routes the narration in
- * through createMediaElementSource, taps everything that reaches the
- * destination, and records the lot. Recording in real time also keeps the
- * music's ducking under the voice, which is driven by playback.
+ * Sound: real time, because it cannot be anything else. The narration is
+ * plain Audio elements, so the pass routes each one through
+ * createMediaElementSource into an AudioContext, taps everything that reaches
+ * the destination, and records the lot. The films used to synthesise a score
+ * into that context, which is why it once existed before any line played; now
+ * the pass creates it itself before pressing play.
  */
 const puppeteer = require('puppeteer');
 const { spawn, spawnSync } = require('child_process');
@@ -209,6 +209,9 @@ async function recordAudio(browser, slug, range, opts) {
 
   const out = await page.evaluate(async (from, to) => {
     const f = window.LabAnim.films[Object.keys(window.LabAnim.films)[0]];
+    // nothing on the page makes an AudioContext any more; the patched
+    // constructor records this one as the capture context
+    if (!window.__cap.ctx) new window.AudioContext();
     f.seek(from);
     f.play();
     await new Promise(r => setTimeout(r, 300));
