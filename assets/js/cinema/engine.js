@@ -420,11 +420,40 @@ export function createCinema(film) {
   }
   const toggle = () => (playing ? pause() : play(true));
 
+  // Fullscreen. The lab pages show these films in an iframe that allows it, so
+  // the document can take the screen itself. iPhone Safari has no fullscreen
+  // for anything but a video element, and a CSS stand-in cannot get out of an
+  // iframe, so there the film opens on its own page in a new tab instead,
+  // which fills the screen in landscape.
+  const fsRoot = document.documentElement;
+  const fsCan = !!(fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen);
+  const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const fsBtn = wrap.querySelector('[data-act="fullscreen"]');
+  function toggleFullscreen() {
+    if (!fsCan) {
+      const u = new URL(location.href);
+      u.searchParams.delete('autoplay');
+      if (t > 0) u.searchParams.set('t', t.toFixed(1));
+      window.open(u.toString(), '_blank', 'noopener');
+      pause();
+      return;
+    }
+    if (fsOn()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else (fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen).call(fsRoot);
+  }
+  function fsChanged() {
+    if (fsBtn) fsBtn.setAttribute('aria-label', fsOn() ? 'Exit full screen' : 'Full screen');
+    layout(); seek(t);
+  }
+  document.addEventListener('fullscreenchange', fsChanged);
+  document.addEventListener('webkitfullscreenchange', fsChanged);
+
   if (!renderMode) {
     wrap.addEventListener('click', e => {
       const act = e.target.closest('[data-act]');
       if (act && act.dataset.act === 'replay') { seek(0); pause(); play(true); return; }
       if (act && act.dataset.act === 'sound') { setSound(audio.muted); if (!playing) play(true); return; }
+      if (act && act.dataset.act === 'fullscreen') { toggleFullscreen(); return; }
       if (act && act.dataset.act === 'seek') {
         const r = bar.getBoundingClientRect();
         jump(film.duration * clamp01((e.clientX - r.left) / r.width));
@@ -439,13 +468,17 @@ export function createCinema(film) {
       if (e.code === 'Space') { e.preventDefault(); toggle(); }
       else if (e.code === 'ArrowRight') jump(t + 5);
       else if (e.code === 'ArrowLeft') jump(t - 5);
+      else if (e.code === 'KeyF') toggleFullscreen();
     });
     addEventListener('resize', () => { layout(); seek(t); });
   }
 
   layout();
   const ready = (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
-    seek(0);
+    // ?t= starts the film part way in: the iPhone fullscreen path opens the
+    // film in its own tab at the moment the viewer left it
+    const startAt = parseFloat(params.get('t'));
+    seek(isFinite(startAt) && !renderMode ? startAt : 0);
     if (audio) setSound(false);
     if (!renderMode && params.get('autoplay') !== '0') setTimeout(() => play(false), 500);
   });
