@@ -1,0 +1,219 @@
+{
+ "film": "watermark",
+ "voice": "edge:en-GB-RyanNeural",
+ "duration": 100.478,
+ "authored": 100.0,
+ "anchors": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   6.85,
+   6.5
+  ],
+  [
+   13.478,
+   13.0
+  ],
+  [
+   21.478,
+   21.0
+  ],
+  [
+   28.478,
+   28.0
+  ],
+  [
+   34.478,
+   34.0
+  ],
+  [
+   43.978,
+   43.5
+  ],
+  [
+   53.478,
+   53.0
+  ],
+  [
+   58.978,
+   58.5
+  ],
+  [
+   68.978,
+   68.5
+  ],
+  [
+   82.478,
+   82.0
+  ],
+  [
+   91.978,
+   91.5
+  ],
+  [
+   100.478,
+   100.0
+  ]
+ ],
+ "audio": "soundtrack.mp3",
+ "lines": [
+  {
+   "id": "hook",
+   "at": 0.0,
+   "real": 0.35,
+   "speech": 5.465,
+   "len": 5.69,
+   "head": 0.225,
+   "file": "hook.mp3",
+   "file_start": 0.125,
+   "hash": "9694149b13c9",
+   "text": "Was this written by an AI? There is a way to tell, and it's hiding in the words.",
+   "source": "Kirchenbauer et al. 2023, abstract"
+  },
+  {
+   "id": "choice",
+   "at": 6.5,
+   "real": 6.85,
+   "speech": 6.228,
+   "len": 6.46,
+   "head": 0.232,
+   "file": "choice.mp3",
+   "file_start": 6.618,
+   "hash": "c7bf293ac547",
+   "text": "When an AI writes, every next word is a choice. Usually, many words would fit.",
+   "source": "Sec. 1.2 (many plausible next tokens when entropy is high)"
+  },
+  {
+   "id": "split",
+   "at": 13.0,
+   "real": 13.478,
+   "speech": 6.258,
+   "len": 6.48,
+   "head": 0.222,
+   "file": "split.mp3",
+   "file_start": 13.256,
+   "hash": "d94515b3d39d",
+   "text": "So before each word, a simple rule splits the whole vocabulary in two: a green list and a red list.",
+   "source": "Sec. 3, Alg. 2 (hash of the previous token seeds the green list)"
+  },
+  {
+   "id": "shuffle",
+   "at": 21.0,
+   "real": 21.478,
+   "speech": 5.034,
+   "len": 5.26,
+   "head": 0.226,
+   "file": "shuffle.mp3",
+   "file_start": 21.252,
+   "hash": "0340ae6a5afb",
+   "text": "The lists reshuffle with every word, and the AI is gently nudged to pick from green.",
+   "source": "Sec. 3 (soft watermark: green tokens promoted, not forced)"
+  },
+  {
+   "id": "reads",
+   "at": 28.0,
+   "real": 28.478,
+   "speech": 5.314,
+   "len": 5.54,
+   "head": 0.226,
+   "file": "reads.mp3",
+   "file_start": 28.252,
+   "hash": "b3c148056c55",
+   "text": "The text reads just as well. Without the rule, there is nothing to see.",
+   "source": "abstract (negligible impact on text quality, invisible to humans)"
+  },
+  {
+   "id": "human",
+   "at": 34.0,
+   "real": 34.478,
+   "speech": 7.94,
+   "len": 8.16,
+   "head": 0.22,
+   "file": "human.mp3",
+   "file_start": 34.258,
+   "hash": "b0aab37be18e",
+   "text": "Now check it. A person has no idea which words are green, so they land on green about half the time, like tossing a coin.",
+   "source": "Sec. 2 (a human is expected to hit green with half of their tokens)"
+  },
+  {
+   "id": "ai",
+   "at": 43.5,
+   "real": 43.978,
+   "speech": 7.656,
+   "len": 7.9,
+   "head": 0.244,
+   "file": "ai.mp3",
+   "file_start": 43.734,
+   "hash": "da320d7ffba6",
+   "text": "The AI's text lands on green again and again. A few sentences in, that's a coin coming up heads far too often to be luck.",
+   "source": "Sec. 2 (one-proportion z-test on the green count)"
+  },
+  {
+   "id": "check",
+   "at": 53.0,
+   "real": 53.478,
+   "speech": 3.669,
+   "len": 3.91,
+   "head": 0.241,
+   "file": "check.mp3",
+   "file_start": 53.237,
+   "hash": "3fdb29b860dd",
+   "text": "And checking needs only the rule, not the AI that wrote it.",
+   "source": "Sec. 2 (detection does not require access to the model)"
+  },
+  {
+   "id": "catch",
+   "at": 58.5,
+   "real": 58.978,
+   "speech": 8.601,
+   "len": 8.83,
+   "head": 0.229,
+   "file": "catch.mp3",
+   "file_start": 58.749,
+   "hash": "56c75f5af377",
+   "text": "It isn't magic. Rewrite a large part of the text and the pattern fades. And it's only there if the AI's maker switches it on.",
+   "source": "Sec. 7 (attacks: about a quarter of the tokens or more must change)"
+  },
+  {
+   "id": "turn",
+   "at": 68.5,
+   "real": 68.978,
+   "speech": 11.714,
+   "len": 11.93,
+   "head": 0.216,
+   "file": "turn.mp3",
+   "file_start": 68.762,
+   "hash": "645bd706dd40",
+   "text": "Text is one thing an AI makes. The model itself is another, and models get copied. That's the part I work on: a signature trained into the model, so its owner can prove it's theirs.",
+   "source": "Ural and Yoshigoe, IEEE Access 2024 and 2025"
+  },
+  {
+   "id": "close",
+   "at": 82.0,
+   "real": 82.478,
+   "speech": 7.146,
+   "len": 7.37,
+   "head": 0.224,
+   "file": "close.mp3",
+   "file_start": 82.254,
+   "hash": "10e635a2de85",
+   "text": "More and more of what we read and run is made by machines. Knowing where it came from is becoming a basic need.",
+   "source": "the author's view"
+  },
+  {
+   "id": "card",
+   "at": 91.5,
+   "real": 91.978,
+   "speech": 0.0,
+   "len": 0.0,
+   "head": 0.0,
+   "file": "",
+   "file_start": 91.978,
+   "hash": "",
+   "text": "",
+   "source": ""
+  }
+ ]
+}
