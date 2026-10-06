@@ -33,7 +33,7 @@ const BASE = process.env.FILM_BASE_URL || 'http://localhost:4000';
 
 function args(argv) {
   const a = { film: null, aspect: '4x5', fps: 30, crf: 17, frames: null, out: null, music: null,
-              musicOffset: 0, loudness: -15, fadeIn: 0.8, fadeOut: 3.5, muxOnly: false, from: 0, to: null };
+              musicOffset: 0, loudness: -15, fadeIn: 0.8, fadeOut: 3.5, muxOnly: false, from: 0, to: null, segment: 30 };
   for (let i = 2; i < argv.length; i++) {
     const k = argv[i], v = argv[i + 1];
     if (k === '--film') { a.film = v; i++; }
@@ -49,6 +49,7 @@ function args(argv) {
     else if (k === '--mux-only') a.muxOnly = true;
     else if (k === '--from') { a.from = Number(v); i++; }
     else if (k === '--to') { a.to = Number(v); i++; }
+    else if (k === '--segment') { a.segment = Number(v); i++; }
   }
   if (!a.film) throw new Error('--film is required');
   if (a.muxOnly && !a.music) throw new Error('--mux-only needs --music');
@@ -134,11 +135,7 @@ async function shot(page, W, H, t) {
     return;
   }
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    protocolTimeout: 3600000,
-    args: ['--ignore-gpu-blocklist', '--enable-gpu', '--use-angle=d3d11', '--enable-webgl'],
-  });
+  const browser = await launch();
   try {
     const { page, W, H, duration } = await open(browser, a);
     const gl = await page.evaluate(() => {
@@ -162,30 +159,87 @@ async function shot(page, W, H, t) {
     const from = a.from, to = a.to != null ? Math.min(a.to, duration) : duration;
     const n = Math.round((to - from) * a.fps);
     fs.mkdirSync(outDir, { recursive: true });
-    const proc = spawn(ffmpeg, ['-y', '-f', 'image2pipe', '-framerate', String(a.fps), '-i', '-',
-      '-c:v', 'libx264', '-preset', 'slow', '-crf', String(a.crf), '-pix_fmt', 'yuv420p',
-      '-profile:v', 'high', '-movflags', '+faststart', silent], { stdio: ['pipe', 'ignore', 'pipe'] });
-    let err = '';
-    proc.stderr.on('data', d => { err += d; if (err.length > 20000) err = err.slice(-20000); });
-    const closed = new Promise(res => proc.on('close', res));
+    await closeQuietly(browser);
+
+    /* Rendered in segments, each in a fresh browser, each its own file. A
+       two-minute film is an hour of rendering, and a full run in one Chrome
+       died twice at about frame 2500: Chrome went down, puppeteer went to
+       delete its temporary profile, Windows had the file locked (EBUSY), and
+       the hour was lost. Now a failed segment is retried in a new browser,
+       segments already written are kept, so a rerun resumes, and the parts are
+       joined at the end without re-encoding. Frame i is still from + i / fps. */
+    const SEG = Math.max(1, Math.round(a.segment * a.fps));
+    const partDir = path.join(outDir, 'parts', `${a.film}-${a.aspect}-${from}-${to.toFixed(2)}`);
+    fs.mkdirSync(partDir, { recursive: true });
+    const parts = [];
     const t0 = Date.now();
-    for (let i = 0; i < n; i++) {
-      const buf = await shot(page, W, H, from + i / a.fps);
-      if (!proc.stdin.write(buf)) await new Promise(r => proc.stdin.once('drain', r));
-      if (i % 30 === 0 || i === n - 1) {
-        const fps = (i + 1) / ((Date.now() - t0) / 1000);
-        process.stdout.write(`\r  ${i + 1}/${n} frames  ${fps.toFixed(1)} fps  eta ${Math.round((n - i - 1) / fps)}s   `);
+    let done = 0, rendered = 0;
+    for (let s = 0; s < n; s += SEG) {
+      const e = Math.min(n, s + SEG);
+      const part = path.join(partDir, `part-${String(s).padStart(6, '0')}.mp4`);
+      parts.push(part);
+      let ok = false;
+      if (fs.existsSync(part)) { try { ok = Math.abs(durationOf(part) - (e - s) / a.fps) < 0.1; } catch (x) { ok = false; } }
+      if (ok) { done += e - s; continue; }
+      for (let attempt = 1; ; attempt++) {
+        try {
+          await renderPart(a, s, e, from, part, i => {
+            const k = done + i + 1, r = rendered + i + 1, fps = r / ((Date.now() - t0) / 1000);
+            if (i % 30 === 0 || k === n) process.stdout.write(`\r  ${k}/${n} frames  ${fps.toFixed(1)} fps  eta ${Math.round((n - k) / fps)}s   `);
+          });
+          break;
+        } catch (x) {
+          try { fs.unlinkSync(part); } catch (y) {}
+          if (attempt >= 3) throw x;
+          console.error(`\n  segment from frame ${s} failed (${x.code || x.message}); retrying in a fresh browser`);
+        }
       }
+      done += e - s; rendered += e - s;
     }
-    proc.stdin.end();
-    const code = await closed;
     process.stdout.write('\n');
-    if (code !== 0) { console.error(err.slice(-3000)); throw new Error('ffmpeg failed'); }
-    console.log(`  ${path.relative(ROOT, silent)}  ${(fs.statSync(silent).size / 1e6).toFixed(1)} MB`);
+    const list = path.join(partDir, 'parts.txt');
+    fs.writeFileSync(list, parts.map(p => `file '${p.split(path.sep).join('/')}'`).join('\n') + '\n');
+    run(['-y', '-hide_banner', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', silent]);
+    console.log(`  ${path.relative(ROOT, silent)}  ${(fs.statSync(silent).size / 1e6).toFixed(1)} MB  (${parts.length} segments)`);
     console.log(probe(silent));
     if (a.music) mux(silent, a);
     else muxSoundtrack(silent, a);
   } finally {
-    await browser.close();
+    await closeQuietly(browser);
   }
 })().catch(e => { console.error(e); process.exit(1); });
+
+// A browser that has already gone down can throw while puppeteer cleans up its
+// temporary profile on Windows; that must not take a finished render with it.
+async function closeQuietly(browser) { try { await browser.close(); } catch (e) {} }
+
+function launch() {
+  return puppeteer.launch({
+    headless: true,
+    protocolTimeout: 3600000,
+    args: ['--ignore-gpu-blocklist', '--enable-gpu', '--use-angle=d3d11', '--enable-webgl'],
+  });
+}
+
+async function renderPart(a, s, e, from, file, tick) {
+  const browser = await launch();
+  try {
+    const { page, W, H } = await open(browser, a);
+    const proc = spawn(ffmpeg, ['-y', '-f', 'image2pipe', '-framerate', String(a.fps), '-i', '-',
+      '-c:v', 'libx264', '-preset', 'slow', '-crf', String(a.crf), '-pix_fmt', 'yuv420p',
+      '-profile:v', 'high', file], { stdio: ['pipe', 'ignore', 'pipe'] });
+    let err = '';
+    proc.stderr.on('data', d => { err += d; if (err.length > 20000) err = err.slice(-20000); });
+    const closed = new Promise(res => proc.on('close', res));
+    for (let i = s; i < e; i++) {
+      const buf = await shot(page, W, H, from + i / a.fps);
+      if (!proc.stdin.write(buf)) await new Promise(r => proc.stdin.once('drain', r));
+      tick(i - s);
+    }
+    proc.stdin.end();
+    const code = await closed;
+    if (code !== 0) { console.error(err.slice(-3000)); throw new Error('ffmpeg failed'); }
+  } finally {
+    await closeQuietly(browser);
+  }
+}
