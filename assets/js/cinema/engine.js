@@ -56,6 +56,18 @@ export function seeded(seed) {
 }
 export function mixColor(a, b, u) { return a.clone().lerp(b, clamp01(u)); }
 
+/* The author as every film's end card states him, inside the film's own
+   .end__u block. One copy, so the series cannot disagree with itself or with
+   the site: the films used to carry nine copies of a shorter title, and one
+   drifted. The long form of the headline is split by meaning (role, degree,
+   focus) rather than run together. A film's corner mark uses the short form,
+   "Dr. Ozgur Ural · Trustworthy AI for Mission-Critical Systems". */
+export const AUTHOR = '<span class="by">Written and produced by</span>Dr. Ozgur Ural' +
+  '<span>Machine Learning Research Scientist &amp; Senior Software Engineer</span>' +
+  '<span>U.S. Ph.D. in Electrical Engineering and Computer Science</span>' +
+  '<span>Trustworthy AI for Mission-Critical Systems</span>' +
+  '<span class="url">ozgurural.github.io</span>';
+
 /* Captions from a narration timeline (the voice build's word timings): runs of
    at most `maxc` characters, each shown from its first word to just after its
    last, in real time. The words carry no punctuation, so the tokens are taken
@@ -210,6 +222,9 @@ export function createCinema(film) {
     .cin__ui .tx { position: absolute; margin: 0; will-change: opacity, transform; }
     .cin__ui .tx .w { display: inline-block; white-space: pre; will-change: opacity, transform, filter; }
     .cin__ui .lb { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; }
+    .cin__ui .end__u .by { font: 500 17px/1.2 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase;
+                           color: #7fcfff; margin: 0 0 12px; }
+    .cin__ui .end__u .url { font: 500 24px/1.4 "JetBrains Mono", ui-monospace, monospace; color: #7fcfff; margin-top: 14px; }
   `;
   document.head.appendChild(css);
 

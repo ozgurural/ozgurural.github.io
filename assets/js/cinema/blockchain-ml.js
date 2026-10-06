@@ -18,7 +18,7 @@
  * they are on screen, and the author's own work appears only in the last
  * line, as where one of the open problems led.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, problems: 8, ledger: 17, private: 27.5, work: 36, real: 50.5, pay: 58.5, deposit: 68, built: 75, seams: 88,
             close: 98, card: 105 };
@@ -302,7 +302,7 @@ const film = {
            html: `<div class="end__t">What a blockchain buys machine learning</div>
                   <div class="end__s">Survey on Blockchain-Enhanced Machine Learning</div>
                   <div class="end__a">Ozgur Ural &amp; Kenji Yoshigoe &middot; IEEE Access, 2023</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ------------------------------------------------- panels under the chain */
     const pn = (at, out, y, html, update) => text({ at, out, cls: 'pn', words: false, dur: 0.5, rise: 16, place: { x: 980, y, w: 840 }, html, update });

@@ -23,7 +23,7 @@
  * frame says the panels are illustrations. Results are told in words; the
  * twenty-nine dots are the paper's twenty-nine detections.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, flood: 8.5, known: 17, compare: 26.5, test: 40, balance: 48, clean: 62, count: 71, spike: 84.5, result: 91,
             why: 102, close: 109, card: 117 };
@@ -284,7 +284,7 @@ const film = {
            html: `<div class="end__t">Hearing an attack in the noise</div>
                   <div class="end__s">Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</div>
                   <div class="end__a">&Ouml;zg&uuml;r Ural &amp; Cengiz Acart&uuml;rk &middot; ICISSP 2021</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ------------------------------------------------- panels under the stream */
     const PN = { x: 980, y: 590, w: 840 };

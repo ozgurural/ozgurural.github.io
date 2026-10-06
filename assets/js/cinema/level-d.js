@@ -31,7 +31,7 @@
  * right from the design eye), and the camera pulls back out of the cockpit
  * through the cut-away side to show the machine on its legs.
  */
-import { THREE, createCinema, captionsFromTimeline, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
@@ -238,7 +238,6 @@ const CSS = `
   .cin .end__u span { display: block; font: 400 25px/1.4 ${SANS}; color: #8fa2ba; margin-top: 8px; }
   .cin .end__n { font: 400 20px/1.5 ${SANS}; color: #8fa2ba; margin: 40px auto 0; max-width: 1150px; }
   .cin .end__s { font: 400 17px/1.5 ${MONO}; color: #7d8ea4; margin-top: 14px; letter-spacing: .02em; }
-  .cin .end__c { font: 500 22px/1.4 ${SANS}; color: #c9d4e3; margin-top: 30px; }
   .cin .chip { font: 500 22px/1 ${MONO}; padding: 9px 12px; border-radius: 8px; white-space: nowrap; background: rgba(6,12,24,.82);
                border: 1px solid rgba(127,207,255,.35); color: #cfe9ff; }
   .cin .chip.dim { font-size: 20px; color: #9fb3cc; border-color: rgba(127,207,255,.2); }
@@ -254,7 +253,7 @@ const CSS = `
   .cin .bignum small { display: block; font: 500 26px/1.3 ${SANS}; color: #aebcd0; margin-top: 8px; text-shadow: none; }
   .cin .bignum.red { color: #ff6272; text-shadow: 0 0 30px rgba(255,98,114,.5); }
   .cin .topband { position: absolute; }
-  .cin .sig { font: 500 17px/1 ${MONO}; letter-spacing: .22em; text-transform: uppercase; color: rgba(159,224,255,.62); }
+  .cin .sig { font: 500 16px/1 ${MONO}; letter-spacing: .12em; text-transform: uppercase; color: rgba(159,224,255,.62); }
   .cin .sig i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #6fd3ff; box-shadow: 0 0 8px #6fd3ff; margin-right: 12px; vertical-align: 2px; }
   .cin .prov { padding: 16px 20px 18px; border-radius: 12px; background: rgba(6,12,24,.84); border: 1px solid rgba(127,207,255,.28); }
   .cin .prov b { display: block; font: 500 15px/1 ${MONO}; letter-spacing: .2em; color: #6fd3ff; text-transform: uppercase; margin-bottom: 10px; }
@@ -539,7 +538,7 @@ const film = {
     const gone = 0.05;
 
     text({ at: T.promise + 1.0, out: T.card - 0.3, cls: 'sig', words: false, dur: 0.8, rise: 0,
-           place: { x: 1100, y: 1040, w: 700, align: 'right' }, html: '<i></i>Dr. Ozgur Ural &middot; ML Research Scientist' });
+           place: { x: 1000, y: 1040, w: 800, align: 'right' }, html: '<i></i>Dr. Ozgur Ural &middot; Trustworthy AI for Mission-Critical Systems' });
     scrim(T.reveal - 0.6, T.promise + 0.4); scrim(T.motion - 0.6, T.equiv - 0.1); scrim(T.tilt - 0.4, T.proof - 2.0);
     text({ at: T.proof - 0.3, out: T.card - 0.3, cls: 'topband', words: false, dur: 0.8, rise: 0, html: '', place: { x: 0, y: 0, w: 1920 },
            style: { height: '330px', background: 'linear-gradient(to bottom, rgba(3,5,10,.82) 0%, rgba(3,5,10,.45) 60%, rgba(3,5,10,0) 100%)' } });
@@ -600,10 +599,9 @@ const film = {
     text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 236, w: 1600, align: 'center' },
            html: `<div class="end__t">Inside a Level D flight simulator</div>
                   <div class="end__q">Fidelity earns the trust. Determinism keeps it.</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
-                  <div class="end__c">Written and produced by Dr. Ozgur Ural &middot; narration: synthetic voice</div>
-                  <div class="end__n">Informed by Dr. Ural&rsquo;s work on Level D full-flight simulators at Avion. No employer design is shown; stage times and the rack are illustrative. The thesis is Dr. Ural&rsquo;s view.</div>
-                  <div class="end__s">Sources: 14 CFR Part 60 &middot; 14 CFR Part 121, Appendix H &middot; EASA CS-FSTD(A) &middot; EASA CS-FSTD Issue 1 (2026)</div>` });
+                  <div class="end__u">${AUTHOR}</div>
+                  <div class="end__n">Informed by Dr. Ural&rsquo;s work on Level D full-flight simulators at Avion. No employer design is shown; stage times and the rack are illustrative. The thesis is Dr. Ural&rsquo;s view. Narration: synthetic voice.</div>
+                  <div class="end__s">Sources: EASA Part-FCL &middot; EASA CS-FSTD(A) &middot; EASA CS-FSTD Issue 1 (2026) &middot; 14 CFR Part 60 &middot; 14 CFR Part 121, Appendix H</div>` });
 
     // annotations pinned to the machine, as the reveal names its parts
     const mw = (x, y, z) => () => move.localToWorld(V(x, y, z));

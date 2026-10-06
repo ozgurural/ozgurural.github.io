@@ -23,7 +23,7 @@
  * a fixed pace and lights each tick it acts on. The AI is the series' model
  * body; its plans fly to the controller as sparks.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, beat: 8.5, think: 17, wait: 26, split: 36, stale: 46, contract: 55, limits: 65, share: 74.5, close: 86, card: 94 };
 const D = 100;
@@ -382,7 +382,7 @@ const film = {
            html: `<div class="end__t">AI meets the deadline</div>
                   <div class="end__s">Keep the model out of the waiting path, check how old each plan is, guard the limits separately, and keep the computers apart.</div>
                   <div class="end__a">An open research direction of the author &middot; not yet published</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* --------------------------------------------------------- labels */
     const at = v => () => v;

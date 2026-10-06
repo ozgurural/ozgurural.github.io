@@ -17,7 +17,7 @@
  * stays inside the tube passes. SecurePoL plants a secret in the model while
  * it trains, which only the owner can ask for.
  */
-import { THREE, createCinema, clamp01, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, clamp01, lerp, ramp, ease, win, seeded } from './engine.js';
 
 /* Authored cue times, one per narrated line. They mirror the `at` values in
    scripts/cinema/securepol.voice.json; the check below says so when they drift. */
@@ -645,7 +645,7 @@ const film = {
            html: `<div class="end__t">SecurePoL</div>
                   <div class="end__s">Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks</div>
                   <div class="end__a">Ozgur Ural &amp; Kenji Yoshigoe &middot; IEEE Access, 2025</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ----------------------------------------------------- pinned labels */
     label({ cls: 'chip', html: 'your model', anchor: () => honest.g.position, dx: 0, dy: 236, ax: 0.5, ay: 0,

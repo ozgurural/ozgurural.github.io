@@ -23,7 +23,7 @@
  * that much qualifying does not belong in a film for a general viewer. The
  * lab page keeps it, with its conditions.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, land: 5.5, step: 16.5, small: 28.5, large: 35.5, ravine: 44.5, momentum: 54.5, saddle: 66.5, close: 81.5, card: 94.5 };
 const D = 101;
@@ -343,7 +343,7 @@ const film = {
            html: `<div class="end__t">A walk downhill</div>
                   <div class="end__s">How a machine learns: the step, its size, momentum and saddles.</div>
                   <div class="end__a">After Polyak (1964), Nesterov (1983) and Dauphin et al. (2014)</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ----------------------------------------------------- pinned labels */
     const last = tr => tr.pts[tr.n];

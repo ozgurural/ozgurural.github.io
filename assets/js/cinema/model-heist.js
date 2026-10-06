@@ -20,7 +20,7 @@
  * The two running sums are a real simulation, seeded: the same noise is added
  * to both, and one of them also carries the mark. Nothing is drawn by hand.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, loud: 9, thin: 18.5, add: 28, score: 41, wide: 54, scrub: 62, limits: 75, close: 84, card: 95 };
 const D = 101.5;
@@ -257,7 +257,7 @@ const film = {
            html: `<div class="end__t">A whisper in the weights</div>
                   <div class="end__s">How a faint mark, spread over many numbers, is read back out of the noise.</div>
                   <div class="end__a">A teaching model &middot; related paper: Ural &amp; Yoshigoe, IEEE Access, 2024</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ------------------------------------------------- panels under the wall */
     const PN = { x: 980, y: 624, w: 840 };

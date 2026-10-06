@@ -20,7 +20,7 @@
  * figures on screen or in the voice. The cat and the ship are an illustration
  * of a trigger input, and the frame says so.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 /* Authored cue times, one per narrated line. They mirror the `at` values in
    scripts/cinema/watermark.voice.json; the check below says so when they drift. */
@@ -348,7 +348,7 @@ const film = {
            html: `<div class="end__t">Signing an AI model</div>
                   <div class="end__s">Three places to hide a signature in a model, and why it should be tied to the training record.</div>
                   <div class="end__a">Ural &amp; Yoshigoe &middot; IEEE Access 2024, 2025 &middot; Ph.D. dissertation, 2025</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ------------------------------------------------- panels under the model */
     const PN = { x: 980, y: 704, w: 840 };

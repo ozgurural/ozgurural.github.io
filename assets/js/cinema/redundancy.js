@@ -24,7 +24,7 @@
  * the cursor reaches a red tick in their row. Nothing is scripted to make the
  * vote fail; it fails when the ticks line up.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, vote: 5, rare: 15, catch: 27.5, ariane: 41.5, overflow: 53.5, break: 67.5, lesson: 76.5, cure: 87.5, close: 101, card: 113.5 };
 const D = 120;
@@ -348,7 +348,7 @@ const film = {
            html: `<div class="end__t">A backup that shares your mistake</div>
                   <div class="end__s">Why three computers can agree and all be wrong.</div>
                   <div class="end__a">Ariane 5 Flight 501 Inquiry Board report, 1996 &middot; majority voting with common-cause failure</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
+                  <div class="end__u">${AUTHOR}</div>` });
 
     /* ------------------------------------------------- panels under the stage */
     const PN = { x: 980, y: 690, w: 840 };
