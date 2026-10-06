@@ -61,22 +61,25 @@ export function mixColor(a, b, u) { return a.clone().lerp(b, clamp01(u)); }
    the site: the films used to carry nine copies of a shorter title, and one
    drifted. The long form of the headline is split by meaning (role, degree,
    focus) rather than run together. A film's corner mark uses the short form,
-   "Dr. Ozgur Ural · Trustworthy AI for Mission-Critical Systems". */
-export const AUTHOR = '<span class="by">Written and produced by</span>Dr. Ozgur Ural' +
+   "Dr. Ozgur Ural · Trustworthy AI for Mission-Critical Systems". The last
+   line says how the films are made, so the credit travels with any copy. */
+export const AUTHOR = '<span class="by">A film by</span>Dr. Ozgur Ural' +
   '<span>Machine Learning Research Scientist &amp; Senior Software Engineer</span>' +
   '<span>U.S. Ph.D. in Electrical Engineering and Computer Science</span>' +
   '<span>Trustworthy AI for Mission-Critical Systems</span>' +
-  '<span class="url">ozgurural.github.io</span>';
+  '<span class="url">ozgurural.github.io</span>' +
+  '<span class="cr">Narration: synthetic voice &middot; built with Claude Code</span>';
 
 /* Captions from a narration timeline (the voice build's word timings): runs of
    at most `maxc` characters, each shown from its first word to just after its
    last, in real time. The words carry no punctuation, so the tokens are taken
-   from the line's text when the counts agree. */
-export function captionsFromTimeline(tl, maxc = 42) {
+   from the line's text when the counts agree. `skip` names lines the film
+   already prints in large type, which a caption would only say twice. */
+export function captionsFromTimeline(tl, maxc = 42, skip = []) {
   const cues = [];
   for (const ln of (tl && tl.lines) || []) {
     const ws = ln.words || [];
-    if (!ln.text || !ws.length) continue;
+    if (!ln.text || !ws.length || skip.includes(ln.id)) continue;
     let tokens = ln.text.split(/\s+/);
     if (tokens.length !== ws.length) tokens = ws.map(w => w[0]);
     let chunk = [], start = null, end = 0;
@@ -160,14 +163,17 @@ export function createCinema(film) {
   ui.className = 'cin__ui';
   Object.assign(ui.style, { position: 'absolute', inset: '0', pointerEvents: 'none' });
   stage.appendChild(ui);
-  // Captions follow the sound: shown while the film is muted (a feed or an
-  // autoplay, where nobody hears the narration), hidden once the sound is on,
-  // and the CC button overrides either way. Never in the render: the mp4
-  // ships with a caption file instead.
+  // Captions are on unless the viewer turns them off, and the choice is kept
+  // for the next film. They used to follow the sound (shown only while muted)
+  // and nobody found the CC button; the vocabulary is technical and much of
+  // the audience hears English as a second language, so the sentence helps
+  // with the sound on too. 46px is about 4.3% of the frame, near what video
+  // players use; at 36px they were 7px tall on a phone. A render draws them
+  // only when asked (?captions=1), for a feed that plays muted.
   const cap = document.createElement('div');
   cap.className = 'cin-cap';
-  Object.assign(cap.style, { position: 'absolute', left: '50%', bottom: '70px', transform: 'translateX(-50%)', maxWidth: '1400px',
-    padding: '12px 24px', borderRadius: '12px', background: 'rgba(3,5,10,.8)', color: '#f4f7fb', font: '500 36px/1.35 "Inter", system-ui, sans-serif',
+  Object.assign(cap.style, { position: 'absolute', left: '50%', bottom: '92px', transform: 'translateX(-50%)', maxWidth: '1500px',
+    padding: '10px 22px', borderRadius: '12px', background: 'rgba(3,5,10,.78)', color: '#f4f7fb', font: '500 46px/1.3 "Inter", system-ui, sans-serif',
     textAlign: 'center', whiteSpace: 'nowrap', display: 'none', pointerEvents: 'none', zIndex: '5' });
   stage.appendChild(cap);
 
@@ -225,6 +231,7 @@ export function createCinema(film) {
     .cin__ui .end__u .by { font: 500 17px/1.2 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase;
                            color: #7fcfff; margin: 0 0 12px; }
     .cin__ui .end__u .url { font: 500 24px/1.4 "JetBrains Mono", ui-monospace, monospace; color: #7fcfff; margin-top: 14px; }
+    .cin__ui .end__u .cr { font: 400 19px/1.4 "Inter", system-ui, sans-serif; color: #7d8ea4; margin-top: 16px; }
   `;
   document.head.appendChild(css);
 
@@ -429,11 +436,12 @@ export function createCinema(film) {
     if (soundBtn) { soundBtn.innerHTML = on ? '&#128266;' : '&#128263;'; soundBtn.setAttribute('aria-label', on ? 'Mute' : 'Sound on'); }
     showCaption();
   }
-  const cues = renderMode ? [] : (film.captions || []);
+  const cues = renderMode && params.get('captions') !== '1' ? [] : (film.captions || []);
   const ccBtn = wrap.querySelector('[data-act="cc"]');
   if (ccBtn && !cues.length) ccBtn.hidden = true;
-  let ccForced = null;                       // null: follow the sound
-  const ccOn = () => (ccForced != null ? ccForced : !audio || audio.muted);
+  let cc = true;
+  if (!renderMode) try { cc = localStorage.getItem('cinema.cc') !== '0'; } catch (e) {}
+  const ccOn = () => cc;
   function showCaption() {
     if (!cues.length) return;
     let text = '';
@@ -524,17 +532,23 @@ export function createCinema(film) {
     wrap.addEventListener('click', e => {
       const act = e.target.closest('[data-act]');
       if (act && act.dataset.act === 'replay') { seek(0); pause(); play(true); return; }
-      if (act && act.dataset.act === 'sound') { setSound(audio.muted); if (!playing) play(true); return; }
+      if (act && act.dataset.act === 'sound') { const on = audio.muted; if (on && playing && t < 12) jump(0); setSound(on); if (!playing) play(true); return; }
       if (act && act.dataset.act === 'fullscreen') { toggleFullscreen(); return; }
-      if (act && act.dataset.act === 'cc') { ccForced = !ccOn(); showCaption(); return; }
+      if (act && act.dataset.act === 'cc') {
+        cc = !cc;
+        try { localStorage.setItem('cinema.cc', cc ? '1' : '0'); } catch (x) {}
+        showCaption();
+        return;
+      }
       if (act && act.dataset.act === 'seek') {
         const r = bar.getBoundingClientRect();
         jump(film.duration * clamp01((e.clientX - r.left) / r.width));
         return;
       }
       if (e.target.closest('a')) return;
-      // the first click on a muted autoplay means "let me hear it", not "stop"
-      if (playing && audio && audio.muted) { setSound(true); return; }
+      // the first click on a muted autoplay means "let me hear it", not "stop";
+      // in the opening seconds it starts again, so the hook is heard as made
+      if (playing && audio && audio.muted) { if (t < 12) jump(0); setSound(true); return; }
       toggle();
     });
     document.addEventListener('keydown', e => {

@@ -7,6 +7,13 @@
  *   node scripts/render-cinema.js --film securepol --aspect 4x5 --music dist/music/track.mp3
  *   node scripts/render-cinema.js --film securepol --aspect 4x5 --music dist/music/track.mp3 --mux-only
  *   node scripts/render-cinema.js --film securepol --aspect 4x5 --frames 0,6,20.5 --out dir
+ *   node scripts/render-cinema.js --film level-d --aspect 16x9 --captions     # captions burned in, for a feed
+ *
+ * --captions draws the film's own captions into the picture (?captions=1) and
+ * keeps those renders apart (-cc in every name, parts included): LinkedIn and
+ * X autoplay muted, and a burned-in line is the one form every client shows.
+ * Switch the platform's automatic captions off when uploading one, or the
+ * viewer gets two.
  *
  * Picture: every frame is CINEMA.seek(t) followed by a screenshot, so the
  * render never drops or stretches a frame however slow the machine is. It
@@ -33,7 +40,8 @@ const BASE = process.env.FILM_BASE_URL || 'http://localhost:4000';
 
 function args(argv) {
   const a = { film: null, aspect: '4x5', fps: 30, crf: 17, frames: null, out: null, music: null,
-              musicOffset: 0, loudness: -15, fadeIn: 0.8, fadeOut: 3.5, muxOnly: false, from: 0, to: null, segment: 30 };
+              musicOffset: 0, loudness: -15, fadeIn: 0.8, fadeOut: 3.5, muxOnly: false, from: 0, to: null, segment: 30,
+              captions: false };
   for (let i = 2; i < argv.length; i++) {
     const k = argv[i], v = argv[i + 1];
     if (k === '--film') { a.film = v; i++; }
@@ -50,6 +58,7 @@ function args(argv) {
     else if (k === '--from') { a.from = Number(v); i++; }
     else if (k === '--to') { a.to = Number(v); i++; }
     else if (k === '--segment') { a.segment = Number(v); i++; }
+    else if (k === '--captions') a.captions = true;
   }
   if (!a.film) throw new Error('--film is required');
   if (a.muxOnly && !a.music) throw new Error('--mux-only needs --music');
@@ -109,7 +118,8 @@ async function open(browser, a) {
   await page.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.error('  page error:', e.message));
   page.on('console', m => { if (m.type() === 'error') console.error('  console:', m.text()); });
-  await page.goto(`${BASE}/films/${a.film}/?render=1&aspect=${a.aspect}`, { waitUntil: 'networkidle0', timeout: 120000 });
+  await page.goto(`${BASE}/films/${a.film}/?render=1&aspect=${a.aspect}${a.captions ? '&captions=1' : ''}`,
+                  { waitUntil: 'networkidle0', timeout: 120000 });
   // `!!` matters: returning the ready promise itself would make puppeteer wait
   // on it and then read its undefined result as "not yet", forever
   await page.waitForFunction(() => !!window.CINEMA, { timeout: 60000 });
@@ -127,7 +137,8 @@ async function shot(page, W, H, t) {
   const a = args(process.argv);
   const outDir = path.join(ROOT, 'dist', 'video');
   const partial = a.to != null || a.from;
-  const silent = path.join(outDir, `${a.film}-film-${a.aspect}${partial ? `-${a.from}-${a.to}` : ''}.mp4`);
+  const cc = a.captions ? '-cc' : '';
+  const silent = path.join(outDir, `${a.film}-film-${a.aspect}${partial ? `-${a.from}-${a.to}` : ''}${cc}.mp4`);
 
   if (a.muxOnly) {
     if (!fs.existsSync(silent)) throw new Error(`no silent render at ${silent}; render it first`);
@@ -149,7 +160,7 @@ async function shot(page, W, H, t) {
       const out = a.out || path.join(ROOT, 'dist', 'frames', a.film);
       fs.mkdirSync(out, { recursive: true });
       for (const t of a.frames) {
-        const file = path.join(out, `${a.film}-${a.aspect}-${String(t.toFixed(2)).padStart(6, '0')}.png`);
+        const file = path.join(out, `${a.film}-${a.aspect}-${String(t.toFixed(2)).padStart(6, '0')}${cc}.png`);
         fs.writeFileSync(file, await shot(page, W, H, t));
         console.log('  ' + path.relative(ROOT, file));
       }
@@ -169,7 +180,7 @@ async function shot(page, W, H, t) {
        segments already written are kept, so a rerun resumes, and the parts are
        joined at the end without re-encoding. Frame i is still from + i / fps. */
     const SEG = Math.max(1, Math.round(a.segment * a.fps));
-    const partDir = path.join(outDir, 'parts', `${a.film}-${a.aspect}-${from}-${to.toFixed(2)}`);
+    const partDir = path.join(outDir, 'parts', `${a.film}-${a.aspect}-${from}-${to.toFixed(2)}${cc}`);
     fs.mkdirSync(partDir, { recursive: true });
     const parts = [];
     const t0 = Date.now();

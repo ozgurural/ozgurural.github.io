@@ -231,7 +231,9 @@ export function parallax(kit) {
     for (const [p, name] of [[CPT, 'Captain'], [FO, 'First officer']]) {
       E('rect', { x: p[0] - 52, y: p[1] - 18, width: 104, height: 92, rx: 16, fill: 'none', stroke: C.rule, 'stroke-width': 2 }, crew);
       E('circle', { cx: p[0], cy: p[1], r: 9, fill: C.ink }, crew);
-      T(crew, p[0], p[1] + 104, name, { size: 20, anchor: 'middle', fill: C.graphite });
+      // beside the seat rather than under it: the captions run along the bottom of the frame
+      const left = name === 'Captain';
+      T(crew, left ? p[0] - 66 : p[0] + 66, p[1] + 34, name, { size: 20, anchor: left ? 'end' : 'start', fill: C.graphite });
     }
     const A = E('g', {}, svg);
     const screen = S('line', { x1: 150, y1: IMG[1], x2: 770, y2: IMG[1], stroke: C.ink, 'stroke-width': 3 }, A);

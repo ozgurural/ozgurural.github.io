@@ -268,7 +268,8 @@ const film = {
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
-  captions: TL ? captionsFromTimeline(TL) : null,
+  // the opening line, the determinism statement and the closing line are on screen already
+  captions: TL ? captionsFromTimeline(TL, 42, ['open', 'determinism', 'coda']) : null,
   build(ctx) {
     const { scene, camera, renderer, text, label } = ctx;
     const style = document.createElement('style');
@@ -586,12 +587,12 @@ const film = {
     text({ at: W('slips', 'jolts') - 0.3, out: T.rack - 0.3, cls: 'bignum red', words: false, dur: 0.6, rise: 12, place: { x: 1160, y: 120, w: 640, align: 'right' },
            html: '864<small>jolts the pilot can feel</small>' });
     text({ at: W('rack', 'own') - 0.4, out: T.determinism - 0.3, cls: 'prov', words: false, dur: 0.6, rise: 10, place: { x: 1160, y: 120, w: 640 },
-           html: '<b>From Dr. Ural&rsquo;s work</b><span>This discipline comes from his work on Level D simulator systems at Avion. No employer design is shown.</span>' });
+           html: '<b>From Dr. Ozgur Ural&rsquo;s work</b><span>This discipline comes from his work on Level D simulator systems at Avion. No employer design is shown.</span>' });
     text({ at: T.determinism, out: T.why - 0.2, cls: 'stmt', place: { x: 260, y: 300, w: 1400, align: 'center' },
            html: '<div class="bigk">Determinism</div><div class="big" style="margin-top:22px">The <em>slowest</em> frame counts, not the average.</div>' });
-    kick(T.why, T.coda - 0.3, '<b>4</b> &middot; The thesis');
+    kick(T.why, T.coda - 0.3, '<b>4</b> &middot; Dr. Ozgur Ural&rsquo;s thesis');
     say(T.why, T.ai - gone, 'Why add AI?');
-    foot(W('why', 'model') - 0.2, T.ai - 0.3, 'Where AI would help is the author&rsquo;s view, not a description of any product.');
+    foot(W('why', 'model') - 0.2, T.ai - 0.3, 'Where AI would help is Dr. Ozgur Ural&rsquo;s view, not a description of any product.');
     say(T.ai, T.thesis - gone, 'One late answer is enough');
     say(T.thesis, T.coda - gone, 'The same answer, on every frame');
     text({ at: T.coda, out: T.card - 0.3, cls: 'stmt', place: { x: 260, y: 370, w: 1400, align: 'center' }, html: '<div class="big">Fidelity earns the trust.</div>' });
@@ -600,7 +601,7 @@ const film = {
            html: `<div class="end__t">Inside a Level D flight simulator</div>
                   <div class="end__q">Fidelity earns the trust. Determinism keeps it.</div>
                   <div class="end__u">${AUTHOR}</div>
-                  <div class="end__n">Informed by Dr. Ural&rsquo;s work on Level D full-flight simulators at Avion. No employer design is shown; stage times and the rack are illustrative. The thesis is Dr. Ural&rsquo;s view. Narration: synthetic voice.</div>
+                  <div class="end__n">Informed by Dr. Ozgur Ural&rsquo;s work on Level D full-flight simulators at Avion. No employer design is shown; stage times and the rack are illustrative. The thesis is his own.</div>
                   <div class="end__s">Sources: EASA Part-FCL &middot; EASA CS-FSTD(A) &middot; EASA CS-FSTD Issue 1 (2026) &middot; 14 CFR Part 60 &middot; 14 CFR Part 121, Appendix H</div>` });
 
     // annotations pinned to the machine, as the reveal names its parts
@@ -611,7 +612,7 @@ const film = {
     ann('The visual display', mw(-0.4, HY1 + 0.05, -3.0), W('reveal', 'cockpit') + 0.5, T.promise - 0.2, true);
     ann('Six actuators', () => V(1.9, 1.3, 1.6), W('reveal', 'six') - 0.1, T.promise - 0.2);
     ann('The instructor&rsquo;s station', mw(0.4, 1.25, 1.0), W('trust', 'pilot'), T.promise - 0.2, true);
-    ann('A person, for scale', () => V(2.2, 1.0, 6.6), W('reveal', 'legs') + 0.3, T.trust + 4, true);
+    ann('A person, for scale', () => V(2.2, 1.0, 6.6), W('reveal', 'legs') + 0.3, W('trust', 'europe') - 0.1, true);   // gone before the footnote takes its corner
     ann('Its whole reach', mw(1.7, 0.4, -2.6), W('motion', 'little') - 0.2, T.equiv - 0.4);
 
     // the forces on the pilot during the take-off cue, drawn over the machine
