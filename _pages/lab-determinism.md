@@ -14,7 +14,7 @@ header:
 <section class="lab-card lab-experiment" id="lab-det" style="margin-top: 0;">
   <span class="ep-eyebrow">AI architecture &middot; Physical systems &middot; Real-time execution</span>
   <p class="lab-card__lead">AI can plan the next move. <strong>The system still has to meet the next deadline.</strong> As robot models gain new capabilities, an architecture decision becomes more important: where should inference run, when may its answer be used, and what happens while it is unavailable? This film and executable experiment explore those choices around a 60 Hz controller.</p>
-  <div class="lab-card__usecase"><strong>Design study:</strong> <span>Open research direction of the author, not yet published. The traces below come from a synthetic scheduling model, not a deployed robot, an AI benchmark or a certification test. The work connects my interests in machine-learning security and real-time systems; it discloses no employer design. The regulated timing budget it starts from is animated in <a href="/lab/level-d-60hz/">Determinism at 60 Hz</a>.</span></div>
+  <div class="lab-card__usecase"><strong>Design study:</strong> <span>Open research direction of the author, not yet published. The traces below come from a synthetic scheduling model, not a deployed robot, an AI benchmark or a certification test. The work connects my interests in machine-learning security and real-time systems; it discloses no employer design. The regulated timing budget it starts from is explained in <a href="/lab/level-d-60hz/">Inside a Level D Flight Simulator</a>.</span></div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">

@@ -46,6 +46,7 @@
     "build:film-video": "node scripts/build-film-video.js",
     "render:cinema": "node scripts/render-cinema.js",
     "voice:cinema": "python scripts/cinema-voice.py",
+    "captions:cinema": "python scripts/cinema-captions.py",
     "check:cinema": "node scripts/cinema-sync-check.js",
     "films": "node scripts/build-film-video.js --all",
     "diff:film": "node scripts/diff-film-frame.js",

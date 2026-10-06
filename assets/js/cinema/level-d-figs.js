@@ -53,7 +53,6 @@ const P = pts => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1
 function caption(svg, x, y, n, title) {
   const tx = E('text', { x, y, 'font-family': MONO, 'font-size': 18, fill: C.graphite, 'letter-spacing': '.06em' }, svg);
   E('tspan', { 'font-weight': 500, fill: C.accent }, tx, `FIG. ${n}`);
-  E('tspan', { dx: 14, 'font-family': SANS, 'letter-spacing': '.01em', 'font-size': 19 }, tx, title);
   return tx;
 }
 function arrowHead(parent, color, size = 11) {
@@ -83,9 +82,9 @@ function figure(kit, o) {
 /* ---------------------------------------------------------- training path */
 export function training(kit) {
   const { W } = kit;
-  const t0 = W('trust', 'pilot'), tSim = W('trust', 'training'), tLine = W('trust', 'first'), tCheck = W('trust', 'check');
+  const t0 = W('trust', 'europe'), tSim = W('trust', 'learn'), tLine = W('trust', 'land'), tCheck = W('trust', 'instructor');
   return figure(kit, { at: t0 - 0.4, out: kit.T.promise - 0.05, x: 146, y: 690, w: 900, h: 270, scale: 0.8, panel: true, build(svg) {
-    caption(svg, 0, 18, 1, 'Training a pilot for a new airliner');
+    caption(svg, 0, 18, 1, 'Zero flight time training, in Europe');
     const base = S('line', { x1: 0, y1: 196, x2: 900, y2: 196, stroke: C.rule, 'stroke-width': 2 }, svg);
     const box = (x, y, w, h, stroke, sw = 2) => S('rect', { x, y, width: w, height: h, rx: 12, stroke, 'stroke-width': sw }, svg);
     const fill2 = E('rect', { x: 190, y: 92, width: 420, height: 94, rx: 12, fill: C.accent, opacity: 0 }, svg);
@@ -100,11 +99,11 @@ export function training(kit) {
     E('path', { d: 'M0 14 L44 14 Q52 14 54 18 Q52 22 44 22 L6 22 L0 14 Z M18 14 L26 2 L32 2 L28 14 M20 22 L28 32 L34 32 L30 22 M2 14 L0 6 L5 6 L9 14' }, plane);
     at(plane, 648, 132);
     const l1 = T(svg, 85, 238, 'Ground school', { size: 20, anchor: 'middle', fill: C.graphite });
-    const l2a = T(svg, 276, 132, 'Level C or D simulator', { size: 24, weight: 600, font: DISPLAY });
-    const l2b = T(svg, 276, 164, 'all flight training and checking', { size: 20, fill: C.accentT });
+    const l2a = T(svg, 276, 132, 'Level D simulator', { size: 24, weight: 600, font: DISPLAY });
+    const l2b = T(svg, 276, 164, 'the whole course', { size: 20, fill: C.accentT });
     const l3a = T(svg, 718, 152, 'Airline flights', { size: 22, weight: 600, font: DISPLAY });
-    const l3b = T(svg, 630, 238, 'first time in the real aircraft,', { size: 19, fill: C.graphite });
-    const l3c = T(svg, 630, 262, 'with a check pilot beside them', { size: 19, fill: C.graphite });
+    const l3b = T(svg, 630, 238, 'with an instructor', { size: 19, fill: C.graphite });
+    const l3c = T(svg, 630, 262, '', { size: 19, fill: C.graphite });
     const dot = E('circle', { r: 7, cy: 196, fill: C.accent }, svg);
     return t => {
       draw(base, ramp(t, t0, tLine + 1.2));
@@ -134,7 +133,6 @@ export function roadmap(kit) {
       const y = i * 128;
       T(g, 0, y + 56, n, { font: DISPLAY, size: 52, weight: 700, fill: i < 3 ? C.accent : C.graphite });
       T(g, 90, y + 50, a, { font: DISPLAY, size: 44, weight: 600, fill: i < 3 ? C.ink : C.graphite });
-      T(g, 90, y + 84, b, { size: 21, fill: C.graphite });
       const rule = S('line', { x1: 90, y1: y + 106, x2: 800, y2: y + 106, stroke: C.rule, 'stroke-width': 1.5 }, g);
       return { g, rule, t0 };
     });
@@ -147,7 +145,7 @@ export function senses(kit) {
   const { W } = kit;
   const t0 = kit.T.senses - 0.3;
   const cue = { eyes: W('senses', 'eyes'), inner: W('senses', 'inner'), hands: W('senses', 'hands'), seat: W('senses', 'seat'),
-                feed: W('senses', 'feed'), agree: W('senses', 'agreement') };
+                feed: W('senses', 'fool'), agree: W('senses', 'once') };
   return figure(kit, { at: t0, out: kit.T.eyes - 0.25, x: 860, y: 96, w: 980, h: 900, build(svg) {
     caption(svg, 200, 22, 2, 'Channels into the pilot');
     const defs = E('defs', {}, svg);
@@ -209,16 +207,15 @@ export function senses(kit) {
       const lead = S('path', { d: P([ch.o, [ch.l[0] + (ch.anchor === 'start' ? -14 : 14), ch.l[1] - 8]]), stroke: C.ink2, 'stroke-width': 1.5 }, g);
       const dot = E('circle', { cx: ch.o[0], cy: ch.o[1], r: 6, fill: C.accent, opacity: 0 }, g);
       const tx = T(g, ch.l[0], ch.l[1], ch.title, { size: 28, weight: 600, anchor: ch.anchor, font: DISPLAY });
-      const subs = (Array.isArray(ch.sub) ? ch.sub : [ch.sub]).map((s, i) => T(g, ch.l[0], ch.l[1] + 28 + i * 24, s, { size: 19, fill: C.graphite, anchor: ch.anchor }));
+      const subs = [];
       const link = S('path', { d: ch.path, stroke: C.accent, 'stroke-width': 2, 'stroke-opacity': 0.7 }, g);
       const sig = E('circle', { r: 5, fill: C.accentT, opacity: 0 }, g);
       return { ...ch, lead, dot, tx, subs, link, sig, len: 0 };
     });
     const vib = [0, 1, 2].map(i => E('path', { fill: 'none', stroke: C.warm, 'stroke-width': 2, d: '' }, g));
     const ring = E('circle', { cx: BR[0], cy: BR[1], r: 16, fill: 'none', stroke: C.ok, 'stroke-width': 3, opacity: 0 }, g);
-    const agree = T(g, 360, 92, 'cues must agree', { size: 24, weight: 600, anchor: 'middle', fill: C.ok });
-    const note = T(g, 0, 878, 'When they disagree, people get simulator sickness (the sensory conflict theory).',
-                   { size: 19, fill: C.graphite, style: 'italic' });
+    const agree = T(g, 360, 92, '', { size: 24, weight: 600, anchor: 'middle', fill: C.ok });
+    const note = T(g, 0, 878, '', { size: 19 });
     return t => {
       const u = ramp(t, t0, t0 + 1.6);
       for (const p of [seat, head, back, chest, arm, stick, hair, collar]) draw(p, u);
@@ -286,10 +283,10 @@ export function parallax(kit) {
       const dx = IMG[0] - p[0], dy = IMG[1] - p[1], k = (p[1] - 120) / -dy;
       return S('line', { x1: p[0], y1: p[1], x2: p[0] + dx * k, y2: p[1] + dy * k, stroke: C.warm, 'stroke-width': 1.8, 'stroke-dasharray': '1 1' }, A);
     });
-    const seeC = T(A, 640, 150, 'the captain sees it to the right', { size: 20, fill: C.warm });
-    const seeF = T(A, 40, 150, 'the first officer, to the left', { size: 20, fill: C.warm });
+    const seeC = T(A, 640, 150, '', { size: 20 });
+    const seeF = T(A, 40, 150, '', { size: 20 });
     const straight = [CPT, FO].map(p => S('line', { x1: p[0], y1: p[1] - 14, x2: p[0], y2: 90, stroke: C.rule, 'stroke-width': 1.6 }, A));
-    const realLab = T(A, 460, 80, 'the real runway is far ahead: straight ahead for both', { size: 19, anchor: 'middle', fill: C.graphite });
+    const realLab = T(A, 460, 80, '', { size: 19 });
     const B = E('g', {}, svg);
     const R = 560, cx = 460, cy = 720;
     const arc = [];
@@ -300,10 +297,10 @@ export function parallax(kit) {
     const bundle = [250, 330, 410, 510, 590, 670].map(x => S('line', { x1: x, y1: yAt(x), x2: x, y2: 702, stroke: C.accent,
       'stroke-width': x === 330 || x === 590 ? 3 : 1.6, opacity: x === 330 || x === 590 ? 1 : 0.5 }, B));
     const photons = [330, 590].map(x => [0, 1, 2].map(() => E('circle', { r: 4.5, cx: x, cy: 0, fill: C.accent }, B)));
-    const parLab = T(B, 20, 470, 'parallel rays,', { size: 21, fill: C.accentT, weight: 600 });
-    const parLab2 = T(B, 20, 498, 'as if from far away', { size: 21, fill: C.accentT });
+    const parLab = T(B, 20, 470, 'parallel light', { size: 22, fill: C.accentT, weight: 600 });
+    const parLab2 = T(B, 20, 498, '', { size: 21 });
     const ticks = [CPT, FO].map(p => S('path', { d: `M ${p[0] - 16} ${p[1] - 44} l 9 10 l 18 -22`, stroke: C.ok, 'stroke-width': 3.2 }, B));
-    const both = T(B, 460, 640, 'both see the runway straight ahead', { size: 21, weight: 600, anchor: 'middle', fill: C.ok });
+    const both = T(B, 460, 640, 'both see it straight ahead', { size: 21, weight: 600, anchor: 'middle', fill: C.ok });
     return t => {
       op(crew, ramp(t, t0, t0 + 0.6));
       op(A, 1 - ramp(t, kit.T.mirror - 0.1, kit.T.mirror + 0.6));
@@ -331,10 +328,10 @@ export function parallax(kit) {
 export function equivalence(kit) {
   const { W } = kit;
   const t0 = kit.T.equiv - 0.3, tG = W('equiv', 'gravity'), tA = W('equiv', 'acceleration'),
-        tEq = W('equiv', 'equivalence'), tE = W('equiv', 'einstein');
+        tEq = W('equiv', 'einstein'), tE = W('equiv', 'einstein') + 0.6;
   const TH = 15 * Math.PI / 180, L = 118;
   return figure(kit, { at: t0, out: kit.T.tilt - 0.3, x: 880, y: 128, w: 920, h: 780, build(svg) {
-    caption(svg, 0, 22, 4, 'The equivalence principle, with a pendulum for an inner ear');
+    caption(svg, 0, 22, 4, '');
     const mk = (x0, title) => {
       const g = E('g', {}, svg);
       T(g, x0 + 210, 110, title, { size: 24, weight: 600, anchor: 'middle', font: DISPLAY });
@@ -365,9 +362,8 @@ export function equivalence(kit) {
     const grav = E('line', { stroke: C.ink, 'stroke-width': 3 }, svg), gravH = arrowHead(svg, C.ink, 13);
     const gLab = T(svg, 868, 404, 'g', { size: 26, weight: 600, style: 'italic' });
     const eq = T(svg, 460, 330, '≡', { size: 64, anchor: 'middle', fill: C.accent });
-    const same = T(svg, 460, 560, 'Same angle. The inner ear cannot tell them apart.', { size: 25, weight: 600, anchor: 'middle', font: DISPLAY });
-    const who = T(svg, 460, 600, 'The equivalence principle: Einstein, 1907, the starting point of general relativity.',
-                  { size: 19, anchor: 'middle', fill: C.graphite, style: 'italic' });
+    const same = T(svg, 460, 560, 'Same angle. Same feeling.', { size: 25, weight: 600, anchor: 'middle', font: DISPLAY });
+    const who = T(svg, 460, 600, 'the equivalence principle', { size: 20, anchor: 'middle', fill: C.graphite, style: 'italic' });
     return t => {
       op(Lp.g, ramp(t, t0, t0 + 0.6)); op(Rp.g, ramp(t, t0 + 0.2, t0 + 0.8));
       const ua = ramp(t, tA - 0.2, tA + 4.5), drive = ua > 0 ? 1 : 0;
@@ -443,7 +439,7 @@ export function cueing(kit) {
 export function levels(kit) {
   const { W } = kit;
   const t0 = kit.T.proof - 0.2, tA = W('proof', 'level'), tD = W('proof', 'd'), tH = W('proof', 'highest');
-  return figure(kit, { at: t0, out: W('proof', 'list') - 0.2, x: 980, y: 170, w: 820, h: 720, build(svg) {
+  return figure(kit, { at: t0, out: W('proof', 'earn') - 0.2, x: 980, y: 170, w: 820, h: 720, build(svg) {
     caption(svg, 0, 22, 6, 'Full-flight simulator levels');
     const cols = ['A', 'B', 'C', 'D'].map((n, i) => {
       const x = 30 + i * 196, h = 140 + i * 110;
@@ -457,7 +453,7 @@ export function levels(kit) {
     const br = S('path', { d: 'M 422 640 L 422 652 L 772 652 L 772 640', stroke: C.graphite, 'stroke-width': 1.8 }, svg);
     const brL = T(svg, 597, 680, 'six-axis motion', { size: 19, anchor: 'middle', fill: C.graphite });
     const top = T(svg, 693, 92, 'the highest', { size: 24, weight: 700, anchor: 'middle', fill: C.accentT });
-    const src = T(svg, 0, 716, 'FAA 14 CFR Part 60 · EASA CS-FSTD(A)', { size: 16, fill: C.graphite, font: MONO });
+    const src = T(svg, 0, 716, '', { size: 16 });
     return t => {
       cols.forEach(c => {
         const h = c.h * Math.max(0, ease.outBack(ramp(t, c.ti, c.ti + 0.6)));
@@ -473,9 +469,9 @@ export function levels(kit) {
 /* ------------------------------------------- objective tests, every year */
 export function tests(kit) {
   const { W } = kit;
-  const tList = W('proof', 'list'), t0 = tList - 0.7, tEach = W('proof', 'each'), tFT = W('proof', 'maneuver'),
-        tBand = W('proof', 'narrow'), tDid = W('proof', 'did');
-  const tY = kit.T.yearly, tYear = W('yearly', 'year'), tDay = W('yearly', 'day'), tB = W('yearly', 'one'), tTime = W('yearly', 'time');
+  const t0 = W('proof', 'earn') - 0.5, tList = t0 - 9, tEach = t0, tFT = W('proof', 'maneuvers'),
+        tBand = W('proof', 'narrow'), tDid = W('proof', 'one');
+  const tY = kit.T.yearly, tYear = W('yearly', 'year'), tDay = 1e9, tB = W('yearly', 'one'), tTime = W('yearly', 'time');
   const COLS = 7, ROWS = 5, TW = 112, TH = 66, GX = 14, GY = 16, OX = 20, OY = 70, PICK = 9, DELAY = 23;
   const resp = (k, x) => {         // a family of step responses, one per test
     const r = seeded(k + 7), z = 0.3 + 0.5 * r(), w = 3 + 4 * r(), a = 0.5 + 0.45 * r(), d = 0.12 + 0.1 * r();
@@ -505,8 +501,6 @@ export function tests(kit) {
     E('rect', { x: BX - 50, y: BY - 30, width: BW + 80, height: BH + 110, rx: 12, fill: C.panel, stroke: C.rule, 'stroke-width': 1.5 }, big);
     E('line', { x1: BX, y1: BY + BH, x2: BX + BW, y2: BY + BH, stroke: C.ink2, 'stroke-width': 1.6 }, big);
     E('line', { x1: BX, y1: BY, x2: BX, y2: BY + BH, stroke: C.ink2, 'stroke-width': 1.6 }, big);
-    T(big, BX + BW, BY + BH + 30, 'time after a column input', { size: 17, anchor: 'end', fill: C.graphite });
-    T(big, BX + 10, BY + 4, 'pitch attitude', { size: 17, fill: C.graphite });
     const bx = u => BX + u * BW, by = v => BY + BH - 20 - v * (BH - 60);
     const bandPts = [];
     for (let i = 0; i <= 60; i++) { const u = i / 60; bandPts.push([bx(u), by(resp(PICK, u) + 0.07)]); }
@@ -517,17 +511,17 @@ export function tests(kit) {
     const simPts = [];
     for (let i = 0; i <= 120; i++) { const u = i / 120; simPts.push([bx(u), by(resp(PICK, u) + 0.025 * Math.sin(u * 9) - 0.01)]); }
     const sim = S('path', { d: P(simPts), stroke: C.accent, 'stroke-width': 3.2 }, big);
-    const kk = T(big, BX, BY + BH + 62, '● flight test (the real aircraft)    ━ simulator    ▒ tolerance band', { size: 17, fill: C.graphite });
+    const kk = T(big, BX, BY + BH + 62, '● the real aircraft    ━ the simulator', { size: 19, fill: C.graphite });
     const pass = E('g', {}, big);
     E('rect', { x: -70, y: -26, width: 140, height: 50, rx: 8, fill: C.panel, stroke: C.ok, 'stroke-width': 3 }, pass);
     T(pass, 0, 10, 'PASS', { size: 28, weight: 700, anchor: 'middle', fill: C.ok, ls: '.12em', font: DISPLAY });
     at(pass, BX + BW - 110, BY + 70);
-    const yr = E('g', { transform: 'translate(780 380)' }, svg);
+    const yr = E('g', { transform: 'translate(460 380)' }, svg);
     const ring = S('circle', { cx: 0, cy: 0, r: 96, stroke: C.ink2, 'stroke-width': 2.4, transform: 'rotate(-90)' }, yr);
     const months = [];
     for (let m = 0; m < 12; m++) { const a = m / 12 * 2 * Math.PI - Math.PI / 2; months.push(E('circle', { cx: 96 * Math.cos(a), cy: 96 * Math.sin(a), r: 5, fill: C.rule }, yr)); }
-    T(yr, 0, 8, 'every year', { size: 22, weight: 600, anchor: 'middle', font: DISPLAY });
-    T(yr, 0, 34, 'all tests again', { size: 17, anchor: 'middle', fill: C.graphite });
+    const yl = T(yr, 0, 8, 'every year', { size: 24, weight: 600, anchor: 'middle', font: DISPLAY });
+    const yt = T(yr, 0, 140, 'and one test is about time', { size: 20, anchor: 'middle', fill: C.warm, weight: 600 });
     const hand = E('line', { x1: 0, y1: 0, x2: 0, y2: -80, stroke: C.accent, 'stroke-width': 3, 'stroke-linecap': 'round' }, yr);
     const day = E('g', { transform: 'translate(780 640)' }, svg);
     const dayC = S('circle', { cx: 0, cy: 0, r: 52, stroke: C.ink2, 'stroke-width': 2.2 }, day);
@@ -536,23 +530,21 @@ export function tests(kit) {
     return t => {
       const gridIn = ramp(t, tList - 0.6, tList + 0.2), opened = ease.inOutCubic(ramp(t, tEach - 0.3, tEach + 0.5)),
             closed = ease.inOutCubic(ramp(t, tY - 0.4, tY + 0.4)), bigOn = opened * (1 - closed);
-      op(grid, gridIn * (1 - bigOn));
+      op(grid, 0); op(driver, 0); appear(yt, t, tTime - 0.3);
       thumbs.forEach((th, i) => {
         op(th.g, ramp(t, tList - 0.6 + i * 0.025, tList - 0.3 + i * 0.025));
         draw(th.tick, t < tY ? ramp(t, tList + 0.4 + i * 0.03, tList + 0.7 + i * 0.03) : ramp(t, tYear - 0.2 + i * 0.035, tYear + 0.1 + i * 0.035));
       });
       const shrink = ease.inOutCubic(ramp(t, tY - 0.2, tY + 0.6));
       grid.setAttribute('transform', `translate(0 ${(shrink * 40).toFixed(1)}) scale(${(1 - 0.35 * shrink).toFixed(4)})`);
-      op(driver, ramp(t, tList + 0.6, tList + 1.0) * (1 - bigOn) * (1 - shrink));
-      op(big, bigOn);
-      const s = 0.25 + 0.75 * opened;
-      big.setAttribute('transform', `translate(${lerp(OX + (PICK % COLS) * (TW + GX), 0, opened).toFixed(1)} ${lerp(OY + Math.floor(PICK / COLS) * (TH + GY), 0, opened).toFixed(1)}) scale(${s.toFixed(4)})`);
+      op(big, bigOn); big.style.opacity = '';
+      big.setAttribute('transform', `translate(${(-200 * closed).toFixed(1)} 0) scale(${(1 - 0.0 * closed).toFixed(4)})`);
       ft.forEach((d, i) => op(d, ramp(t, tFT - 0.2 + i * 0.03, tFT + 0.1 + i * 0.03)));
       op(band, ramp(t, tBand - 0.3, tBand + 0.3));
       draw(sim, ramp(t, tBand - 0.6, tDid));
       op(kk, ramp(t, tBand, tBand + 0.4));
       appear(pass, t, tDid + 0.1, 0.35, 0);
-      op(yr, ramp(t, tY + 0.2, tY + 0.7)); op(day, ramp(t, tDay - 0.4, tDay));
+      op(yr, ramp(t, tY + 0.2, tY + 0.7)); op(day, 0);
       const yu = ramp(t, tYear - 0.2, tYear + 1.6);
       draw(ring, yu);
       hand.setAttribute('transform', `rotate(${(yu * 360).toFixed(1)})`);
@@ -568,21 +560,20 @@ export function tests(kit) {
 }
 
 /* ----------------------------------------- the clock: delay, chain, tighter */
-export const MS = [8, 17, 25, 50, 34];     // the old film's illustrative stage budget
+export const MS = [8, 42, 50, 34];         // the old film's illustrative stage budget, flight model and systems as one
 const CUM = MS.reduce((a, m) => (a.push(a[a.length - 1] + m), a), [0]);
 export function clock(kit) {
   const { W } = kit;
   const t0 = kit.T.delay - 0.3;
-  const cue = { moves: W('delay', 'moves'), view: W('delay', 'view'), instr: W('delay', 'instruments'), cabin: W('delay', 'cabin'),
-                ms: W('delay', 'hundred'), blink: W('delay', 'blink'), miss: W('delay', 'miss'), qual: W('delay', 'qualify') };
-  const v = ['reads', 'works', 'runs', 'draws', 'moves'].map(w => W('chain', w));
-  const st = v.map((s, k) => [s, k < 4 ? v[k + 1] : W('chain', 'cabin') + 0.6]);
-  const tH = W('tighter', 'hundred'), tMiss = W('tighter', 'miss'), tFit = W('tighter', 'fit');
+  const cue = { moves: W('delay', 'moves'), view: W('delay', 'answer'), instr: W('delay', 'answer'), cabin: W('delay', 'answer'),
+                ms: W('delay', 'hundred'), blink: W('delay', 'blink'), miss: W('delay', 'slower'), qual: W('delay', 'fails') };
+  const v = ['reads', 'works', 'draws', 'moves'].map(w => W('chain', w));
+  const st = v.map((s, k) => [s, k < 3 ? v[k + 1] : W('chain', 'cabin') + 0.6]);
+  const tH = W('tighter', 'hundred'), tMiss = W('tighter', 'slow'), tFit = W('tighter', 'fit');
   const X0 = 90, PX = 7.4, AY = 330;          // 0 ms at x 90, 7.4 px a millisecond: 200 ms reaches x 1570
   const xm = ms => X0 + ms * PX;
-  const NAMES = [['control loading', 'reads the controls'], ['flight model', 'works out how it flies'], ['aircraft systems', 'runs its systems'],
-                 ['image generator', 'draws the world'], ['display and motion', 'updates the screens, moves the cabin']];
-  const COLS = ['#5FD6FF', '#6AA8FF', '#5DFFC8', '#C79BFF', '#FFB347'];
+  const NAMES = [['controls', ''], ['flight', ''], ['the world', ''], ['the cabin', '']];
+  const COLS = ['#5FD6FF', '#5DFFC8', '#C79BFF', '#FFB347'];
   return figure(kit, { at: t0, out: kit.T.frames - 0.3, x: 120, y: 430, w: 1680, h: 440, build(svg) {
     caption(svg, 0, 0, 8, 'Transport delay: from a control input to the answer');
     const axis = S('line', { x1: X0, y1: AY, x2: xm(200), y2: AY, stroke: C.ink2, 'stroke-width': 2 }, svg);
@@ -605,8 +596,8 @@ export function clock(kit) {
     const blink = E('g', {}, svg);
     E('rect', { x: xm(100), y: AY + 54, width: xm(200) - xm(100), height: 12, rx: 6, fill: C.rule }, blink);
     E('path', { d: `M ${xm(200) + 4} ${AY + 60} l 18 0 m -8 -6 l 8 6 l -8 6`, fill: 'none', stroke: C.graphite, 'stroke-width': 2 }, blink);
-    T(blink, xm(100), AY + 92, 'a blink of an eye: about 100 to 400 ms', { size: 18, fill: C.graphite });
-    const outs = [['view', 118, cue.view], ['instruments', 126, cue.instr], ['cabin', 134, cue.cabin]].map(([n, ms, c], i) => {
+    T(blink, xm(100), AY + 92, 'a blink', { size: 18, fill: C.graphite });
+    const outs = [['answer', 134, cue.view]].map(([n, ms, c], i) => {
       const g = E('g', {}, svg);
       E('line', { x1: xm(ms), x2: xm(ms), y1: AY - 8, y2: AY - 44 - i * 34, stroke: C.ok, 'stroke-width': 1.6 }, g);
       E('circle', { cx: xm(ms), cy: AY, r: 5, fill: C.ok }, g);
@@ -627,20 +618,20 @@ export function clock(kit) {
       const ld = T(g, 0, y + 19, ' ' + d, { size: 17, fill: C.graphite });
       return { r, ln, ld };
     });
-    const over = E('rect', { y: 92 + 4 * 40 - 4, height: 34, x: xm(100), width: xm(134) - xm(100), fill: 'none', stroke: C.late, 'stroke-width': 3, rx: 6 }, svg);
-    const overL = T(svg, xm(117), 92 + 4 * 40 + 58, '34 ms late', { size: 19, weight: 700, anchor: 'middle', fill: C.lateT });
+    const over = E('rect', { y: 92 + 3 * 40 - 4, height: 34, x: xm(100), width: xm(134) - xm(100), fill: 'none', stroke: C.late, 'stroke-width': 3, rx: 6 }, svg);
+    const overL = T(svg, xm(117), 92 + 3 * 40 + 58, 'too slow', { size: 20, weight: 700, anchor: 'middle', fill: C.lateT });
     const total = T(svg, xm(134) + 12, AY - 18, '134 ms', { size: 18, font: MONO, fill: C.ink2 });
     return t => {
       draw(axis, ramp(t, t0, t0 + 0.8)); op(ticks, ramp(t, t0 + 0.3, t0 + 0.9));
       appear(inp, t, t0 + 0.3, 0.4, 0); appear(inpL, t, t0 + 0.4);
       let ms = -1;
       if (t >= cue.moves && t < cue.miss) {
-        ms = t < cue.view ? lerp(0, 118, ramp(t, cue.moves, cue.view)) : t < cue.instr ? lerp(118, 126, ramp(t, cue.view, cue.instr)) : lerp(126, 134, ramp(t, cue.instr, cue.cabin));
+        ms = lerp(0, 134, ease.inOutSine(ramp(t, cue.moves, cue.moves + 1.8)));
       } else if (t >= cue.miss && t < kit.T.chain) {
         ms = lerp(0, 172, ease.inOutSine(ramp(t, cue.miss, cue.qual)));
       } else if (t >= kit.T.chain) {
         ms = 0;
-        for (let k = 0; k < 5; k++) if (t >= st[k][0]) ms = lerp(CUM[k], CUM[k + 1], ramp(t, st[k][0], st[k][1]));
+        for (let k = 0; k < 4; k++) if (t >= st[k][0]) ms = lerp(CUM[k], CUM[k + 1], ramp(t, st[k][0], st[k][1]));
       }
       pulse.setAttribute('cx', xm(Math.max(0, ms)).toFixed(1)); op(pulse, ms >= 0 ? 1 : 0);
       pulse.setAttribute('fill', ms > 150 || (t > kit.T.tighter && ms > 100) ? C.late : C.accent);
@@ -662,9 +653,9 @@ export function clock(kit) {
         b.r.setAttribute('width', (ramp(t, st[k][0], st[k][1]) * MS[k] * PX).toFixed(1));
         appear(b.ln, t, st[k][0] + 0.1); appear(b.ld, t, st[k][0] + 0.3);
         if (t > st[k][0]) b.ld.setAttribute('x', (xm(CUM[k + 1]) + 22 + b.ln.getComputedTextLength()).toFixed(1));
-        if (k === 4) b.r.setAttribute('fill', t > tMiss - 0.4 ? C.late : COLS[k]);
+        if (k === 3) b.r.setAttribute('fill', t > tMiss - 0.4 ? C.late : COLS[k]);
       });
-      appear(total, t, st[4][1] - 0.2);
+      appear(total, t, st[3][1] - 0.2);
       op(over, ramp(t, tFit, tFit + 0.4)); appear(overL, t, tMiss);
     };
   } });
@@ -674,7 +665,7 @@ export function clock(kit) {
 export function session(kit) {
   const { W } = kit;
   const t0 = kit.T.frames - 0.3, tSixty = W('frames', 'sixty'), tHours = W('frames', 'hours'), tThou = W('frames', 'thousand');
-  const tSlip = W('slips', 'slips'), tJolt = W('slips', 'jolts'), tBunch = W('slips', 'bunches'), tStut = W('slips', 'stutter');
+  const tSlip = W('slips', 'late'), tJolt = W('slips', 'jolts'), tBunch = 1e9, tStut = 1e9;
   // frame i: a row of 60 is one second, 60 rows a minute, 10 x 6 minutes an hour, 2 x 2 hours the session
   const GM = 4, GH = 26, MW = 60, HW = 10 * MW + 9 * GM, HH = 6 * MW + 5 * GM, FW = 2 * HW + GH, FH = 2 * HH + GH;
   const pos = i => {
@@ -745,7 +736,7 @@ export function session(kit) {
         if (scale.textContent !== lab) scale.textContent = lab;
         scale.style.opacity = String(ramp(t, tSixty - 0.3, tSixty + 0.2));
         const n = Math.round(864 * ramp(t, tSlip - 0.2, tJolt));
-        const html = n ? `<b>${n}</b> slips at one in a thousand` : '';
+        const html = n ? `<b>${n}</b> jolts` : '';
         if (count.innerHTML !== html) count.innerHTML = html;
         count.style.opacity = String(ramp(t, tSlip, tSlip + 0.3) * (1 - ramp(t, tStut - 0.6, tStut - 0.2)));
       };
@@ -766,11 +757,10 @@ export function rack(kit) {
   for (let f = Math.floor((tChk - t0) / CYC); f < 60; f++) fin[f][5] = 14.6 + r() * 0.8;
   return figure(kit, { at: t0, out: kit.T.count - 0.3, x: 880, y: 118, w: 920, h: 820, build(svg) {
     caption(svg, 0, 22, 10, 'One frame, nine computers');
-    for (let h = 0; h < 9; h++) T(svg, X0 - 18, Y0 + h * DY + 20, 'host ' + (h + 1), { size: 18, anchor: 'end', fill: C.graphite, font: MONO });
     E('line', { x1: X0, y1: Y0 + 9 * DY + 6, x2: xm(21), y2: Y0 + 9 * DY + 6, stroke: C.ink2, 'stroke-width': 1.6 }, svg);
     for (let m = 0; m <= 20; m += 5) T(svg, xm(m), Y0 + 9 * DY + 32, m + (m === 20 ? ' ms' : ''), { size: 16, anchor: 'middle', font: MONO, fill: C.ink2 });
     E('line', { x1: xm(DL), x2: xm(DL), y1: Y0 - 26, y2: Y0 + 9 * DY + 6, stroke: C.ink, 'stroke-width': 2.4, 'stroke-dasharray': '7 6' }, svg);
-    T(svg, xm(DL), Y0 - 36, 'one frame at 60 Hz: 16.7 ms', { size: 18, anchor: 'middle', weight: 600 });
+    T(svg, xm(DL), Y0 - 36, 'one frame', { size: 20, anchor: 'middle', weight: 600 });
     const bars = [], ovs = [], buds = [];
     for (let h = 0; h < 9; h++) {
       bars.push(E('rect', { x: X0, y: Y0 + h * DY, height: 28, width: 0, rx: 4, fill: C.rule }, svg));
@@ -778,13 +768,13 @@ export function rack(kit) {
       buds.push(E('path', { d: `M ${xm(BUD[h])} ${Y0 + h * DY - 6} l 0 40`, stroke: C.warm, 'stroke-width': 3, opacity: 0 }, svg));
     }
     const closeL = E('line', { y1: Y0 - 12, y2: Y0 + 9 * DY, stroke: C.accent, 'stroke-width': 3 }, svg);
-    const closeT = T(svg, 0, Y0 + 9 * DY + 62, 'the frame closes when the slowest host finishes', { size: 18, anchor: 'middle', fill: C.accentT, weight: 600 });
+    const closeT = T(svg, 0, Y0 + 9 * DY + 62, 'done when the slowest is done', { size: 18, anchor: 'middle', fill: C.accentT, weight: 600 });
     const avgR = E('rect', { x: X0, y: Y0 + 9 * DY + 92, height: 28, width: 0, rx: 4, fill: C.ok, 'fill-opacity': 0.7 }, svg);
     const avgT = T(svg, X0 - 18, Y0 + 9 * DY + 112, 'average', { size: 18, anchor: 'end', fill: C.ok, font: MONO, weight: 600 });
     const avgL = T(svg, 0, Y0 + 9 * DY + 112, 'looks fine', { size: 18, fill: C.ok, weight: 600 });
     const lateT = T(svg, xm(19.4) + 12, Y0 + 5 * DY + 20, 'frame late', { size: 19, fill: C.lateT, weight: 700 });
-    const flag = T(svg, xm(15.4) + 14, Y0 + 5 * DY + 20, 'over its own budget: flagged', { size: 18, fill: C.warm, weight: 700 });
-    const budL = T(svg, xm(13), Y0 - 64, 'each host: its own budget', { size: 18, fill: C.warm, anchor: 'middle', weight: 600 });
+    const flag = T(svg, xm(15.4) + 14, Y0 + 5 * DY + 20, 'over its limit', { size: 18, fill: C.warm, weight: 700 });
+    const budL = T(svg, xm(13), Y0 - 64, 'each one: its own limit', { size: 18, fill: C.warm, anchor: 'middle', weight: 600 });
     return t => {
       const f = Math.max(0, Math.floor((t - t0) / CYC)), ph = (t - t0) - f * CYC, row = fin[Math.min(59, f)];
       const g = ease.outCubic(clamp01(ph / 1.0));
@@ -895,28 +885,28 @@ export function maxNotMean(kit) {
 /* ------------------------------------------------- AI joins the loop */
 export function aiTail(kit) {
   const { W } = kit;
-  const t0 = kit.T.ai - 0.2, tAI = W('ai', 'ai'), tIn = W('ai', 'inside'), tLoops = W('ai', 'loops'),
-        tMany = W('ai', 'many'), tSlow = W('ai', 'slowest'), tPun = W('ai', 'punishes');
+  const t0 = kit.T.ai - 0.2, tAI = W('ai', 'adding'), tIn = W('ai', 'loop'), tLoops = 1e9,
+        tMany = W('ai', 'usually'), tSlow = W('ai', 'slower'), tPun = W('ai', 'punishes');
   const r = seeded(31), xs = [];
   for (let i = 0; i < 5000; i++) { const u = r(), v = r(); xs.push(Math.exp(Math.log(6) + 0.55 * Math.sqrt(-2 * Math.log(u + 1e-9)) * Math.cos(6.283 * v))); }
   const B = 48, MAXV = 40, hist = new Array(B).fill(0);
   for (const x of xs) if (x < MAXV) hist[Math.floor(x / MAXV * B)]++;
   const BUDGET = 14, mean = xs.reduce((a, b) => a + b, 0) / xs.length;
   return figure(kit, { at: t0, out: kit.T.thesis - 0.25, x: 880, y: 120, w: 920, h: 820, build(svg) {
-    caption(svg, 0, 22, 12, 'A learned model in the loop: response time, many runs');
+    caption(svg, 0, 22, 11, '');
     const X0 = 30, X1 = 900, Y0 = 430, top = Math.max(...hist);
     const xv = v => X0 + (X1 - X0) * v / MAXV;
     const bars = hist.map((h, i) => E('rect', { x: X0 + i * (X1 - X0) / B + 1, width: (X1 - X0) / B - 2, y: Y0, height: 0, fill: C.accent, 'fill-opacity': 0.8 }, svg));
     E('line', { x1: X0, y1: Y0, x2: X1, y2: Y0, stroke: C.ink2, 'stroke-width': 1.6 }, svg);
-    T(svg, X1, Y0 + 28, 'response time →', { size: 17, anchor: 'end', fill: C.graphite });
+    T(svg, X1, Y0 + 28, 'how long it takes →', { size: 18, anchor: 'end', fill: C.graphite });
     const bud = E('g', {}, svg);
     E('line', { x1: xv(BUDGET), x2: xv(BUDGET), y1: 100, y2: Y0, stroke: C.ink, 'stroke-width': 2.6, 'stroke-dasharray': '7 6' }, bud);
-    T(bud, xv(BUDGET) + 10, 118, 'its share of the frame', { size: 18, weight: 600 });
+    T(bud, xv(BUDGET) + 10, 118, 'its time limit', { size: 20, weight: 600 });
     const avg = E('g', {}, svg);
     E('path', { d: `M ${xv(mean)} ${Y0 + 8} l -8 14 l 16 0 z`, fill: C.ok }, avg);
     T(avg, xv(mean), Y0 + 46, 'average: fine', { size: 17, anchor: 'middle', fill: C.ok, weight: 600 });
-    const tail = T(svg, xv(26), 260, 'the slowest answers: too late', { size: 20, anchor: 'middle', fill: C.lateT, weight: 700 });
-    const tail2 = T(svg, xv(26), 288, 'however rare', { size: 18, anchor: 'middle', fill: C.lateT });
+    const tail = T(svg, xv(26), 260, 'the slow moments: too late', { size: 22, anchor: 'middle', fill: C.lateT, weight: 700 });
+    const tail2 = T(svg, xv(26), 288, '', { size: 18 });
     const chain = E('g', { transform: 'translate(0 560)' }, svg);
     const names = ['controls', 'flight model', 'systems', 'image', 'display, motion'];
     const blocks = names.map(n => { const g = E('g', {}, chain); E('rect', { x: 0, y: 0, width: 128, height: 54, rx: 10, fill: C.panel, stroke: C.rule, 'stroke-width': 2 }, g); T(g, 64, 33, n, { size: 17, anchor: 'middle', fill: C.ink2 }); return g; });
@@ -951,8 +941,8 @@ export function aiTail(kit) {
 /* --------------------------------------------------------- the thesis */
 export function thesis(kit) {
   const { W } = kit;
-  const t0 = kit.T.thesis, tTh = W('thesis', 'thesis'), tTests = W('thesis', 'tests'), tTime = W('thesis', 'timing'),
-        tAI = W('thesis', 'ai'), tSame = W('thesis', 'same'), tEv = W('thesis', 'evidence', 1), tNot = W('thesis', 'averages');
+  const t0 = kit.T.thesis, tTh = W('thesis', 'thesis'), tTests = W('thesis', 'fidelity'), tTime = W('thesis', 'determinism'),
+        tAI = W('thesis', 'ai'), tSame = W('thesis', 'same'), tEv = W('thesis', 'evidence'), tNot = W('thesis', 'averages');
   return figure(kit, { at: t0 - 0.2, out: kit.T.coda - 0.3, x: 900, y: 170, w: 900, h: 720, build(svg) {
     const lab = T(svg, 0, 22, "DR. OZGUR URAL'S THESIS", { size: 18, weight: 500, fill: C.accent, ls: '.16em', font: MONO });
     const head = E('g', {}, svg);
@@ -961,7 +951,7 @@ export function thesis(kit) {
     T(head, 650, 120, 'AI in the loop', { font: DISPLAY, size: 34, weight: 600, fill: C.warm });
     E('line', { x1: 0, y1: 144, x2: 900, y2: 144, stroke: C.ink2, 'stroke-width': 1.6 }, head);
     const row = (y, a, b) => { const g = E('g', {}, svg); T(g, 0, y, a, { font: DISPLAY, size: 34, weight: 600 }); T(g, 0, y + 30, b, { size: 19, fill: C.graphite }); E('line', { x1: 0, y1: y + 62, x2: 900, y2: y + 62, stroke: C.rule, 'stroke-width': 1.4 }, g); return g; };
-    const r1 = row(220, 'Fidelity', 'tested against the real aircraft'), r2 = row(350, 'Timing', 'proven every frame');
+    const r1 = row(220, 'Fidelity', 'tests against the real aircraft'), r2 = row(350, 'Determinism', 'proven on every frame');
     const tick = (x, y) => S('path', { d: `M ${x} ${y} l 12 13 l 24 -30`, stroke: C.ok, 'stroke-width': 4 }, svg);
     const k1 = tick(440, 212), k2 = tick(440, 342);
     const q = [[690, 222], [690, 352]].map(([x, y]) => T(svg, x, y, '?', { font: DISPLAY, size: 44, weight: 700, fill: C.graphite }));

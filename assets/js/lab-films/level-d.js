@@ -31,9 +31,10 @@
 
   function boot() {
     if (!window.LabAnim) return setTimeout(boot, 60);
-    if (!document.getElementById("lvd-film")) return;
     if (!window.katex && (boot._t = (boot._t || 0) + 1) < 25) return setTimeout(boot, 80);
-    build();
+    // the lab page now shows the cinema film in an iframe and keeps only the
+    // appendix, so the appendix must not wait for a film element that is gone
+    if (document.getElementById("lvd-film")) build();
     appendix();
   }
 

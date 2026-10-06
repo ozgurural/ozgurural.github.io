@@ -56,8 +56,8 @@ header:
 <nav class="lab-mission-deck" aria-label="Films from engineering practice">
   <a class="lab-mission-card" href="/lab/level-d-60hz/">
     <span class="lab-mission-card__code">06</span>
-    <strong>Determinism at 60 Hz</strong>
-    <span>A deadline is never met on average: the 150 ms qualification gate, 864,000 frames a session, and the straggler host that owns the frame.</span>
+    <strong>Inside a Level D Flight Simulator</strong>
+    <span>How a simulator fools a pilot's senses, how it is proven against the real aircraft, and why it can never be late: fidelity earns the trust, determinism keeps it.</span>
   </a>
 </nav>
 
