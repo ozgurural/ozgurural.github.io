@@ -176,13 +176,13 @@
    "id": "close",
    "at": 95.5,
    "real": 95.85,
-   "speech": 8.975,
-   "len": 9.19,
+   "speech": 7.965,
+   "len": 8.18,
    "head": 0.215,
    "file": "close.mp3",
    "file_start": 95.635,
-   "hash": "85cb4a6d75d3",
-   "text": "That is determinism: the slowest frame counts, not the average. It is the rule any AI added to this loop must keep, and the next film shows how.",
+   "hash": "8c22772b3daa",
+   "text": "That is determinism: the slowest frame counts, not the average. And it is the rule any AI added to this loop will have to keep.",
    "source": "old lab film, line 18 (closing line, in plainer words); the series link to the deadline film"
   },
   {

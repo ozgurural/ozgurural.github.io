@@ -7,8 +7,8 @@
  * one answer at a time. The thesis comes first and last, in the same words
  * ("a late answer is a wrong answer"; "the slowest frame counts, not the
  * average"), because a first cut that built up to it left viewers unsure what
- * the film was about. It is part 1 of 2: the close hands over to the deadline
- * film, which is where AI enters the loop. The facts it rests on:
+ * the film was about. It stands alone: no film refers to another (the
+ * owner's rule). The facts it rests on:
  *   - transport delay, from a pilot's primary flight control input to the
  *     motion, visual or instrument response, is a regulated ceiling (FAA 14
  *     CFR Part 60 and EASA CS-FSTD(A): 150 ms at Level C/D); a device over it
@@ -163,8 +163,6 @@ const CSS = `
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
-  .cin .end__n { font: 500 24px/1.4 "JetBrains Mono", monospace; color: #8fa2ba; margin-top: 34px; letter-spacing: .03em; }
-  .cin .end__n b { color: #ffcf5a; font-weight: 600; }
 `;
 
 /* ------------------------------------------------------------- the chain
@@ -422,7 +420,7 @@ const film = {
     scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
           'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
     text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film &middot; part 1 of 2' });
+           html: 'Dr. Ozgur Ural &middot; a research film' });
 
     text({ at: -3, out: T.input - gone, cls: 'blk', place: HD,
            html: '<div class="hd">A late answer is a <span class="red">wrong</span> answer.</div><div class="sb">A flight simulator has to answer its pilot within a <em>blink</em>, every single time. <b>Not on average.</b></div>' });
@@ -444,8 +442,11 @@ const film = {
         'An average hides it. So every computer gets its own time budget, <b>checked every frame</b>.');
     say(T.measure, T.close - 0.25, 'Count every <em>overrun</em>.',
         'While the simulator runs. Spot checks miss a short spike. A counter does not.');
-    text({ at: T.input + 1.0, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 868, w: 830 },
-           html: 'Informed by the author&rsquo;s Level D full-flight-simulator engineering at Avion.<span>No employer design is shown. The limits are public (FAA Part 60, EASA CS-FSTD); stage times and the rack are illustrative.</span>' });
+    // sources as footnotes, each only while its fact is on screen; the employer note lives on the end card
+    text({ at: T.input + 1.0, out: T.chain - 0.3, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 940, w: 830 },
+           html: 'Source: FAA 14 CFR Part 60; EASA CS-FSTD(A)' });
+    text({ at: T.tighter + 1.0, out: T.beat - 0.3, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 940, w: 830 },
+           html: 'Source: EASA CS-FSTD Issue 1 (2026), new devices' });
 
     /* the chain, named: one row lights as the narration reaches its computer */
     text({ at: T.chain + 3.2, out: T.tighter - 0.3, cls: 'chain', words: false, dur: 0.6, rise: 18, place: { x: 1120, y: 726, w: 720 },
@@ -460,14 +461,13 @@ const film = {
     text({ at: T.close + 1.6, out: T.card - 0.3, cls: 'cl__b', place: { x: 260, y: 380, w: 1400, align: 'center' },
            html: 'the <em>slowest</em> frame counts, not the average.' });
     text({ at: T.close + 5.2, out: T.card - 0.3, cls: 'cl__c', place: { x: 260, y: 650, w: 1400, align: 'center' },
-           html: 'It is the rule any AI added to this loop must keep.<br>Part 2 shows how.' });
+           html: 'It is the rule any AI added to this loop must keep.' });
     // the card is one block in normal flow, so the series line sits under the name and can never cover it
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 210, w: 1600, align: 'center' },
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
            html: `<div class="end__t">Determinism at 60 Hz</div>
                   <div class="end__s"><b>The slowest frame counts, not the average.</b> Why a flight simulator has to answer its pilot in time every frame, on every computer, measured while it runs.</div>
                   <div class="end__a">Informed by Level D full-flight-simulator engineering at Avion &middot; no employer design shown</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
-                  <div class="end__n">Part 2: <b>AI meets the deadline</b>, how an AI joins this loop and keeps the rule</div>` });
+                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
 
     /* the instrument: a trace per computer scrolling past, spot-check dots, the overrun tally */
     const SVGW = 760, SVGH = 400, ROWS = 6, RH = SVGH / ROWS;

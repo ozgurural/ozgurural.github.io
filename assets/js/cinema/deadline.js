@@ -146,8 +146,6 @@ const CSS = `
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
-  .cin .end__n { font: 500 24px/1.4 "JetBrains Mono", monospace; color: #8fa2ba; margin-top: 34px; letter-spacing: .03em; }
-  .cin .end__n b { color: #ffcf5a; font-weight: 600; }
 `;
 
 /* ------------------------------------------------------------ the schedule
@@ -350,7 +348,7 @@ const film = {
     scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
           'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
     text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film &middot; part 2 of 2' });
+           html: 'Dr. Ozgur Ural &middot; a research film' });
 
     text({ at: -3, out: T.beat - gone, cls: 'blk', place: HD,
            html: '<div class="hd">An AI can plan a robot&rsquo;s next move.</div><div class="sb">But what if the answer arrives <span class="red">after</span> the moment it was needed?</div>' });
@@ -380,12 +378,11 @@ const film = {
     text({ at: T.close + 2.4, out: T.card - 0.3, cls: 'cl__b', place: { x: 260, y: 420, w: 1400, align: 'center' },
            html: 'Can the system take it in <em>without losing its beat</em>?' });
     // one block in normal flow, so the series line sits under the name and can never cover it
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 210, w: 1600, align: 'center' },
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
            html: `<div class="end__t">AI meets the deadline</div>
                   <div class="end__s">Keep the model out of the waiting path, check how old each plan is, guard the limits separately, and keep the computers apart.</div>
                   <div class="end__a">An open research direction of the author &middot; not yet published</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
-                  <div class="end__n">Part 1: <b>Determinism at 60 Hz</b>, the timing rule this loop has to keep</div>` });
+                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
 
     /* --------------------------------------------------------- labels */
     const at = v => () => v;
