@@ -4,7 +4,11 @@
  *
  * It replaces the lab film of the same name and keeps its argument (lines in
  * scripts/narration.json, prefix "level-d"), told now as one question with
- * one answer at a time. The facts it rests on:
+ * one answer at a time. The thesis comes first and last, in the same words
+ * ("a late answer is a wrong answer"; "the slowest frame counts, not the
+ * average"), because a first cut that built up to it left viewers unsure what
+ * the film was about. It is part 1 of 2: the close hands over to the deadline
+ * film, which is where AI enters the loop. The facts it rests on:
  *   - transport delay, from a pilot's primary flight control input to the
  *     motion, visual or instrument response, is a regulated ceiling (FAA 14
  *     CFR Part 60 and EASA CS-FSTD(A): 150 ms at Level C/D); a device over it
@@ -31,8 +35,8 @@
  */
 import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
 
-const T = { hook: 0, input: 10.8, chain: 22.9, tighter: 39.6, beat: 47.6, session: 54, cluster: 67.4, rack: 72.8, straggler: 80.6, measure: 90.4, close: 98.9, card: 107.8 };
-const D = 114;
+const T = { hook: 0, input: 10.8, chain: 22.9, tighter: 39.6, beat: 47.6, session: 54, cluster: 64.0, rack: 69.4, straggler: 77.2, measure: 87.0, close: 95.5, card: 105.6 };
+const D = 111.8;
 
 const TL_DIR = new URL('../../audio/cinema/level-d/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
@@ -155,6 +159,7 @@ const CSS = `
   .cin .cl__c { font: 500 40px/1.3 "Inter", sans-serif; color: #9fd8ff; }
   .cin .end__t { font: 700 110px/1 "Space Grotesk", sans-serif; letter-spacing: -.02em; color: #f4f7fb; }
   .cin .end__s { font: 400 30px/1.4 "Inter", sans-serif; color: #aebcd0; margin: 22px auto 0; max-width: 980px; }
+  .cin .end__s b { color: #f4f7fb; font-weight: 600; }
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
@@ -417,20 +422,20 @@ const film = {
     scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
           'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
     text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film' });
+           html: 'Dr. Ozgur Ural &middot; a research film &middot; part 1 of 2' });
 
     text({ at: -3, out: T.input - gone, cls: 'blk', place: HD,
-           html: '<div class="hd">Faster than a <em>blink</em>. Every time.</div><div class="sb">A flight simulator has to answer its pilot in about the time of a blink. Not on average. Every single time. Here is why that is hard.</div>' });
+           html: '<div class="hd">A late answer is a <span class="red">wrong</span> answer.</div><div class="sb">A flight simulator has to answer its pilot within a <em>blink</em>, every single time. <b>Not on average.</b></div>' });
     say(T.input, T.chain - gone, 'The pilot moves. The world must <em>follow</em>.',
-        'The view and the cabin must answer within that blink. It is a rule: a simulator that misses it does not qualify for training pilots.');
+        'The view and the cabin must answer within that blink. It is written into the rules: a simulator that misses it cannot train pilots.');
     say(T.chain, T.tighter - gone, 'A chain of <em>computers</em> shares that blink.',
         'One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screen and moves the cabin.');
     say(T.tighter, T.beat - gone, 'The blink gets <span class="amber">shorter</span>.',
         'Europe&rsquo;s newest standard tightens it for the most realistic new simulators. The same chain no longer makes it.');
-    say(T.beat, T.session - gone, 'Not once. <em>All the time.</em>',
-        'The whole chain runs many times every second, for hours.');
-    say(T.session, T.cluster - gone, '&ldquo;Usually fast&rdquo; is not <span class="red">enough</span>.',
-        'Lay out one training session, frame by frame. A rare slip still comes back again and again, and every one is a jolt the pilot can feel.');
+    say(T.beat, T.session - gone, 'Not once. <em>Sixty times a second.</em>',
+        'For hours. Lay out one training session, frame by frame.');
+    say(T.session, T.cluster - gone, 'One slip in a thousand is <span class="red">hundreds of jolts</span>.',
+        'Every one is a jolt the pilot can feel. &ldquo;Usually fast&rdquo; is not enough.');
     say(T.cluster, T.rack - gone, 'Slips come in <span class="red">bunches</span>.',
         'So the pilot feels a stutter, not a blip.');
     say(T.rack, T.straggler - gone, 'Every frame waits for the <em>slowest</em>.',
@@ -453,16 +458,16 @@ const film = {
     text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 260, y: 300, w: 1400, align: 'center' },
            html: 'That is determinism:' });
     text({ at: T.close + 1.6, out: T.card - 0.3, cls: 'cl__b', place: { x: 260, y: 380, w: 1400, align: 'center' },
-           html: 'a time budget kept <em>every frame</em>, proven by measurement.' });
+           html: 'the <em>slowest</em> frame counts, not the average.' });
     text({ at: T.close + 5.2, out: T.card - 0.3, cls: 'cl__c', place: { x: 260, y: 650, w: 1400, align: 'center' },
-           html: 'Any AI added to this loop has to live inside it too.' });
+           html: 'It is the rule any AI added to this loop must keep.<br>Part 2 shows how.' });
     // the card is one block in normal flow, so the series line sits under the name and can never cover it
     text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 210, w: 1600, align: 'center' },
            html: `<div class="end__t">Determinism at 60 Hz</div>
-                  <div class="end__s">Why a flight simulator has to answer its pilot in time every frame, on every computer, and why an average proves nothing.</div>
+                  <div class="end__s"><b>The slowest frame counts, not the average.</b> Why a flight simulator has to answer its pilot in time every frame, on every computer, measured while it runs.</div>
                   <div class="end__a">Informed by Level D full-flight-simulator engineering at Avion &middot; no employer design shown</div>
                   <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
-                  <div class="end__n">Next in the series: <b>AI meets the deadline</b>, what happens when an AI joins this loop</div>` });
+                  <div class="end__n">Part 2: <b>AI meets the deadline</b>, how an AI joins this loop and keeps the rule</div>` });
 
     /* the instrument: a trace per computer scrolling past, spot-check dots, the overrun tally */
     const SVGW = 760, SVGH = 400, ROWS = 6, RH = SVGH / ROWS;

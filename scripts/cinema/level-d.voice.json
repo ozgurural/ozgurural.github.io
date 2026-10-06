@@ -7,19 +7,19 @@
   "rise": 30,
   "rise_on": "input"
  },
- "authored_duration": 114.0,
+ "authored_duration": 111.8,
  "lines": [
   {
    "id": "hook",
    "at": 0.0,
-   "source": "old lab film, line 0: fast on average, can one late response break the budget; transport delay ceiling (150 ms at Level C/D) against a blink of roughly 100 to 400 ms",
-   "text": "A flight simulator has to answer its pilot in about the time of a blink. Not on average. Every single time. Here is why that is hard."
+   "source": "old lab film, line 0: fast on average, can one late response break the budget; transport delay ceiling (150 ms at Level C/D) against a blink of roughly 100 to 400 ms. Thesis stated first.",
+   "text": "In a flight simulator, a late answer is a wrong answer. It has to answer its pilot within a blink, every single time. Not on average."
   },
   {
    "id": "input",
    "at": 10.8,
    "source": "old lab film, lines 1 and 3: transport delay runs from a primary flight control input to the motion, visual or instrument response (FAA Part 60, EASA CS-FSTD(A)); a device over the limit does not qualify",
-   "text": "When the pilot moves the controls, the view and the cabin must follow within that blink. The limit is written into the rules. A simulator that misses it does not qualify for training pilots."
+   "text": "When the pilot moves the controls, the view and the cabin must follow within that blink. It is written into the rules: a simulator that misses it cannot be used to train pilots."
   },
   {
    "id": "chain",
@@ -36,48 +36,42 @@
   {
    "id": "beat",
    "at": 47.6,
-   "source": "old lab film, lines 5 and 6: a fixed cadence (60 Hz), hour-long sessions",
-   "text": "And it is not done once. The whole chain runs many times every second, for hours."
-  },
-  {
-   "id": "session",
-   "at": 54.0,
-   "source": "old lab film, lines 6 to 8: a deadline is never met on average; a four-hour session at 60 Hz is 864,000 frames and one in a thousand is 864 stutters",
-   "text": "So usually fast is not enough. Lay out one training session, frame by frame. A slip that happens only once in a long while still comes back again and again, and every one is a jolt the pilot can feel."
+   "source": "old lab film, lines 5 to 8: a fixed cadence (60 Hz), hour-long sessions; a four-hour session at 60 Hz is 864,000 frames and one in a thousand is 864 stutters; a deadline is never met on average",
+   "text": "And not once, but sixty times a second, for hours. Lay out one training session, frame by frame. Even one slip in a thousand comes back hundreds of times, and every one is a jolt the pilot can feel."
   },
   {
    "id": "cluster",
-   "at": 67.4,
+   "at": 64.0,
    "source": "old lab film, line 9: real overruns cluster, so independence is the optimistic case",
    "text": "Worse, the slips bunch together, so the pilot feels a stutter, not a blip."
   },
   {
    "id": "rack",
-   "at": 72.8,
+   "at": 69.4,
    "source": "old lab film, lines 10 and 11: a rack of hosts publishes into one frame, which ends when the last host reports",
    "text": "Why do frames slip? The work is split across a rack of computers, and every frame has to wait for the slowest one."
   },
   {
    "id": "straggler",
-   "at": 80.6,
+   "at": 77.2,
    "source": "old lab film, lines 13 and 14: one straggler makes the frame late; budgets are allocated and enforced per host, a system average constrains nobody",
    "text": "One slow computer, and the whole frame is late. An average hides it. So every computer gets its own time budget, checked every frame."
   },
   {
    "id": "measure",
-   "at": 90.4,
+   "at": 87.0,
    "source": "old lab film, lines 15 to 17: instrument while the session runs; the overrun counter catches what sampled step time misses",
    "text": "And every overrun is counted while the simulator runs. Spot checks miss a short spike. A counter does not."
   },
   {
    "id": "close",
-   "at": 98.9,
-   "source": "old lab film, line 18 (closing line, in plainer words)",
-   "text": "That is determinism: a time budget kept every frame and proven by measurement. Any AI added to this loop has to live inside it too."
+   "at": 95.5,
+   "source": "old lab film, line 18 (closing line, in plainer words); the series link to the deadline film",
+   "text": "That is determinism: the slowest frame counts, not the average. It is the rule any AI added to this loop must keep, and the next film shows how."
   },
   {
    "id": "card",
-   "at": 107.8,
+   "at": 105.6,
    "source": "",
    "text": ""
   }

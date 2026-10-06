@@ -350,7 +350,7 @@ const film = {
     scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
           'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
     text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film' });
+           html: 'Dr. Ozgur Ural &middot; a research film &middot; part 2 of 2' });
 
     text({ at: -3, out: T.beat - gone, cls: 'blk', place: HD,
            html: '<div class="hd">An AI can plan a robot&rsquo;s next move.</div><div class="sb">But what if the answer arrives <span class="red">after</span> the moment it was needed?</div>' });
@@ -385,7 +385,7 @@ const film = {
                   <div class="end__s">Keep the model out of the waiting path, check how old each plan is, guard the limits separately, and keep the computers apart.</div>
                   <div class="end__a">An open research direction of the author &middot; not yet published</div>
                   <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
-                  <div class="end__n">Before this in the series: <b>Determinism at 60 Hz</b>, the timing rule this loop has to keep</div>` });
+                  <div class="end__n">Part 1: <b>Determinism at 60 Hz</b>, the timing rule this loop has to keep</div>` });
 
     /* --------------------------------------------------------- labels */
     const at = v => () => v;
