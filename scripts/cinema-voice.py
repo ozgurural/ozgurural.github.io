@@ -203,8 +203,33 @@ def mix(src, lines, dur, out_dir):
             inputs += ['-i', os.path.join(ROOT, music['file'])]
             d = int(-offset * 1000)
             place = f'adelay={d}|{d},'
-        graph += f";[{mi}:a]{place}atrim=0:{dur:.3f},afade=t=in:st=0:d=1.5,afade=t=out:st={dur - 4.0:.3f}:d=4.0,volume=0.6[mus]" \
-                 f";[voice]asplit=2[vo][key]" \
+        # A film longer than the track loops it: each entry in `loops` restarts
+        # the track at `from` (seconds into the track) at film time `at`, with an
+        # equal-power crossfade of `fade` seconds out of whatever was playing.
+        # level-d (263 s against a 144 s track) returns to the full section at
+        # 38 s twice, the second timed so the track's own ending lands on the card.
+        loops = music.get('loops', [])
+        if not loops:
+            graph += f";[{mi}:a]{place}atrim=0:{dur:.3f},afade=t=in:st=0:d=1.5,afade=t=out:st={dur - 4.0:.3f}:d=4.0,volume=0.6[mus]"
+        else:
+            starts = [0.0] + [lp['at'] for lp in loops]
+            fades = [lp.get('fade', 6.0) for lp in loops]
+            segs = []
+            for k, s0 in enumerate(starts):
+                end = starts[k + 1] + fades[k] if k + 1 < len(starts) else dur
+                length = end - s0
+                if k:
+                    inputs += ['-ss', f"{loops[k - 1]['from']:.3f}", '-i', os.path.join(ROOT, music['file'])]
+                idx = mi + k
+                fin = 'afade=t=in:st=0:d=1.5:curve=qsin' if k == 0 else f'afade=t=in:st=0:d={fades[k - 1]:.3f}:curve=qsin'
+                fout = f',afade=t=out:st={length - fades[k]:.3f}:d={fades[k]:.3f}:curve=qsin' if k + 1 < len(starts) else ''
+                ms = int(s0 * 1000)
+                delay = f',adelay={ms}|{ms}' if ms else ''
+                graph += f";[{idx}:a]{place if k == 0 else ''}atrim=0:{length:.3f},asetpts=PTS-STARTPTS,{fin}{fout}{delay}[m{k}]"
+                segs.append(f'[m{k}]')
+            graph += f";{''.join(segs)}amix=inputs={len(segs)}:normalize=0,apad=whole_dur={dur:.3f},atrim=0:{dur:.3f}," \
+                     f"afade=t=out:st={dur - 4.0:.3f}:d=4.0,volume=0.6[mus]"
+        graph += f";[voice]asplit=2[vo][key]" \
                  f";[mus][key]sidechaincompress=threshold=0.015:ratio=7:attack=40:release=650:makeup=1[bed]" \
                  f";[vo][bed]amix=inputs=2:normalize=0[mix]"
         print(f"  music: track {'from %.2fs' % offset if offset >= 0 else 'delayed %.2fs' % -offset}, swell on '{music['rise_on']}' at {rise_at:.2f}s")

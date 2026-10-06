@@ -21,7 +21,7 @@ header:
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
-      <iframe src="{{ '/films/level-d/' | relative_url }}?autoplay=0" title="Determinism at 60 Hz: a narrated film on timing in a Level D full-flight simulator" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="{{ '/films/level-d/' | relative_url }}?autoplay=0" title="Inside a Level D flight simulator: a narrated film by Dr. Ozgur Ural" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
   </div>
 
