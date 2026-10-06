@@ -1,8 +1,8 @@
 {
  "film": "level-d",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 266.15,
- "authored": 265.8,
+ "duration": 279.85,
+ "authored": 279.5,
  "anchors": [
   [
    0.0,
@@ -89,20 +89,24 @@
    222.3
   ],
   [
-   235.05,
-   234.7
+   237.35,
+   237.0
   ],
   [
-   252.45,
-   252.1
-  ],
-  [
-   259.15,
-   258.8
+   251.45,
+   251.1
   ],
   [
    266.15,
    265.8
+  ],
+  [
+   272.85,
+   272.5
+  ],
+  [
+   279.85,
+   279.5
   ]
  ],
  "audio": "soundtrack.mp3",
@@ -2843,167 +2847,422 @@
    ]
   },
   {
-   "id": "ai",
+   "id": "why",
    "at": 222.3,
    "real": 222.65,
-   "speech": 10.598,
-   "len": 10.82,
-   "head": 0.222,
-   "file": "ai.mp3",
-   "file_start": 222.428,
-   "hash": "a31db0552d25",
-   "text": "Now imagine adding AI to this loop. AI models are usually quick, but now and then much slower. Those slow moments are exactly what this rule punishes.",
-   "source": "the author's view; many learned models take input-dependent time (a generative model's answer length, for one), so their latency has a tail",
+   "speech": 12.879,
+   "len": 13.1,
+   "head": 0.221,
+   "file": "why.mp3",
+   "file_start": 222.429,
+   "hash": "cc2ac5ff31d3",
+   "text": "So why bring AI into a simulator at all? To make it even more real: a model of the aircraft learned from flight data, where physics is hard to write down, or a richer world drawn by a neural network.",
+   "source": "the author's view of why AI would enter a simulator: learned models of aircraft behaviour from flight data (system identification with neural networks; regimes such as stall and icing where physics-based models are hardest to validate) and neural rendering in the image generator; labelled as the author's view, no deployment claimed",
    "words": [
     [
-     "Now",
+     "So",
      0.0,
-     0.312
+     0.212
     ],
     [
-     "imagine",
-     0.325,
-     0.787
+     "why",
+     0.225,
+     0.462
     ],
     [
-     "adding",
-     0.8,
-     1.025
+     "bring",
+     0.475,
+     0.762
     ],
     [
      "AI",
-     1.037,
-     1.275
+     0.775,
+     1.075
+    ],
+    [
+     "into",
+     1.088,
+     1.4
+    ],
+    [
+     "a",
+     1.412,
+     1.475
+    ],
+    [
+     "simulator",
+     1.487,
+     2.075
+    ],
+    [
+     "at",
+     2.088,
+     2.25
+    ],
+    [
+     "all",
+     2.262,
+     2.6
+    ],
+    [
+     "To",
+     3.462,
+     3.612
+    ],
+    [
+     "make",
+     3.625,
+     3.85
+    ],
+    [
+     "it",
+     3.862,
+     3.962
+    ],
+    [
+     "even",
+     3.975,
+     4.225
+    ],
+    [
+     "more",
+     4.238,
+     4.413
+    ],
+    [
+     "real",
+     4.425,
+     4.8
+    ],
+    [
+     "a",
+     4.988,
+     5.025
+    ],
+    [
+     "model",
+     5.038,
+     5.325
+    ],
+    [
+     "of",
+     5.338,
+     5.425
+    ],
+    [
+     "the",
+     5.437,
+     5.562
+    ],
+    [
+     "aircraft",
+     5.575,
+     6.088
+    ],
+    [
+     "learned",
+     6.1,
+     6.387
+    ],
+    [
+     "from",
+     6.4,
+     6.562
+    ],
+    [
+     "flight",
+     6.575,
+     6.913
+    ],
+    [
+     "data",
+     6.925,
+     7.275
+    ],
+    [
+     "where",
+     7.5,
+     7.675
+    ],
+    [
+     "physics",
+     7.687,
+     8.113
+    ],
+    [
+     "is",
+     8.125,
+     8.262
+    ],
+    [
+     "hard",
+     8.275,
+     8.55
     ],
     [
      "to",
-     1.287,
-     1.425
+     8.562,
+     8.65
     ],
     [
-     "this",
-     1.438,
-     1.638
+     "write",
+     8.662,
+     8.95
     ],
     [
-     "loop",
-     1.65,
-     2.025
+     "down",
+     8.962,
+     9.325
     ],
     [
-     "AI",
-     2.887,
-     3.175
+     "or",
+     9.55,
+     9.65
     ],
     [
-     "models",
-     3.188,
-     3.588
+     "a",
+     9.662,
+     9.725
     ],
     [
-     "are",
-     3.6,
-     3.638
+     "richer",
+     9.738,
+     10.1
     ],
     [
-     "usually",
-     3.65,
-     4.05
+     "world",
+     10.113,
+     10.45
     ],
     [
-     "quick",
-     4.062,
-     4.45
+     "drawn",
+     10.462,
+     10.8
     ],
     [
-     "but",
-     4.637,
-     4.762
+     "by",
+     10.812,
+     11.012
+    ],
+    [
+     "a",
+     11.025,
+     11.113
+    ],
+    [
+     "neural",
+     11.125,
+     11.5
+    ],
+    [
+     "network",
+     11.513,
+     12.113
+    ]
+   ]
+  },
+  {
+   "id": "ai",
+   "at": 237.0,
+   "real": 237.35,
+   "speech": 12.294,
+   "len": 12.53,
+   "head": 0.236,
+   "file": "ai.mp3",
+   "file_start": 237.114,
+   "hash": "6db7ad64de93",
+   "text": "But now the AI sits inside the chain. Some models take longer on some inputs, and even a fixed one can stall when it shares a computer. One late answer, and the frame is late.",
+   "source": "generative models and detectors take input-dependent time; any model shares compute, memory and scheduling with the rest of the host; a fixed-size network on dedicated hardware can be bounded, which is what the thesis asks for",
+   "words": [
+    [
+     "But",
+     0.0,
+     0.187
     ],
     [
      "now",
-     4.775,
-     5.05
+     0.2,
+     0.375
+    ],
+    [
+     "the",
+     0.387,
+     0.537
+    ],
+    [
+     "AI",
+     0.55,
+     0.838
+    ],
+    [
+     "sits",
+     0.85,
+     1.137
+    ],
+    [
+     "inside",
+     1.15,
+     1.638
+    ],
+    [
+     "the",
+     1.65,
+     1.725
+    ],
+    [
+     "chain",
+     1.737,
+     2.225
+    ],
+    [
+     "Some",
+     3.088,
+     3.387
+    ],
+    [
+     "models",
+     3.4,
+     3.75
+    ],
+    [
+     "take",
+     3.762,
+     4.0
+    ],
+    [
+     "longer",
+     4.012,
+     4.312
+    ],
+    [
+     "on",
+     4.325,
+     4.45
+    ],
+    [
+     "some",
+     4.462,
+     4.687
+    ],
+    [
+     "inputs",
+     4.7,
+     5.125
     ],
     [
      "and",
-     5.062,
-     5.175
+     5.338,
+     5.462
     ],
     [
-     "then",
-     5.187,
-     5.375
+     "even",
+     5.475,
+     5.712
     ],
     [
-     "much",
-     5.387,
-     5.625
+     "a",
+     5.725,
+     5.775
     ],
     [
-     "slower",
-     5.637,
-     6.1
+     "fixed",
+     5.788,
+     6.113
     ],
     [
-     "Those",
-     6.962,
-     7.238
+     "one",
+     6.125,
+     6.375
     ],
     [
-     "slow",
-     7.25,
-     7.487
+     "can",
+     6.387,
+     6.538
     ],
     [
-     "moments",
-     7.5,
-     7.9
+     "stall",
+     6.55,
+     6.913
     ],
     [
-     "are",
-     7.912,
-     7.987
+     "when",
+     6.925,
+     7.063
     ],
     [
-     "exactly",
-     8.0,
-     8.462
+     "it",
+     7.075,
+     7.175
     ],
     [
-     "what",
-     8.475,
-     8.675
+     "shares",
+     7.187,
+     7.5
     ],
     [
-     "this",
-     8.687,
-     8.887
+     "a",
+     7.512,
+     7.562
     ],
     [
-     "rule",
-     8.9,
-     9.162
+     "computer",
+     7.575,
+     8.187
     ],
     [
-     "punishes",
-     9.175,
-     9.825
+     "One",
+     9.05,
+     9.338
+    ],
+    [
+     "late",
+     9.35,
+     9.637
+    ],
+    [
+     "answer",
+     9.65,
+     10.1
+    ],
+    [
+     "and",
+     10.412,
+     10.537
+    ],
+    [
+     "the",
+     10.55,
+     10.625
+    ],
+    [
+     "frame",
+     10.638,
+     10.95
+    ],
+    [
+     "is",
+     10.962,
+     11.1
+    ],
+    [
+     "late",
+     11.113,
+     11.525
     ]
    ]
   },
   {
    "id": "thesis",
-   "at": 234.7,
-   "real": 235.05,
-   "speech": 15.561,
-   "len": 15.79,
+   "at": 251.1,
+   "real": 251.45,
+   "speech": 12.921,
+   "len": 13.15,
    "head": 0.229,
    "file": "thesis.mp3",
-   "file_start": 234.821,
-   "hash": "d800432bb9d8",
-   "text": "So here is the thesis. A simulator earns trust in two ways: fidelity, proven by tests against the real aircraft, and determinism, proven on every frame. AI will have to earn trust the same way, with evidence, not averages.",
-   "source": "the author's thesis, labelled as such on screen",
+   "file_start": 251.221,
+   "hash": "18bc94d7ee61",
+   "text": "So here is the thesis. AI can raise the fidelity that earns the trust, but only if it keeps the determinism that keeps it: the same answer for the same input, delivered on every frame, and proven, not averaged.",
+   "source": "the author's thesis, labelled as such on screen: two senses of determinism, repeatable outputs (a test is only evidence if the same input gives the same answer) and a bounded worst-case time",
    "words": [
     [
      "So",
@@ -3031,186 +3290,186 @@
      1.475
     ],
     [
-     "A",
+     "AI",
      2.338,
-     2.487
+     2.612
     ],
     [
-     "simulator",
-     2.5,
-     3.05
+     "can",
+     2.625,
+     2.825
     ],
     [
-     "earns",
-     3.063,
-     3.338
+     "raise",
+     2.838,
+     3.1
     ],
     [
-     "trust",
-     3.35,
-     3.675
-    ],
-    [
-     "in",
-     3.688,
-     3.813
-    ],
-    [
-     "two",
-     3.825,
-     4.038
-    ],
-    [
-     "ways",
-     4.05,
-     4.438
+     "the",
+     3.112,
+     3.2
     ],
     [
      "fidelity",
-     4.637,
-     5.187
+     3.212,
+     3.725
     ],
     [
-     "proven",
-     5.387,
-     5.687
+     "that",
+     3.737,
+     3.962
     ],
     [
-     "by",
-     5.7,
-     5.862
-    ],
-    [
-     "tests",
-     5.875,
-     6.287
-    ],
-    [
-     "against",
-     6.3,
-     6.638
+     "earns",
+     3.975,
+     4.212
     ],
     [
      "the",
-     6.65,
-     6.75
-    ],
-    [
-     "real",
-     6.762,
-     7.088
-    ],
-    [
-     "aircraft",
-     7.1,
-     7.7
-    ],
-    [
-     "and",
-     7.912,
-     8.0
-    ],
-    [
-     "determinism",
-     8.013,
-     8.763
-    ],
-    [
-     "proven",
-     8.9,
-     9.238
-    ],
-    [
-     "on",
-     9.25,
-     9.412
-    ],
-    [
-     "every",
-     9.425,
-     9.625
-    ],
-    [
-     "frame",
-     9.638,
-     10.15
-    ],
-    [
-     "AI",
-     11.013,
-     11.325
-    ],
-    [
-     "will",
-     11.338,
-     11.475
-    ],
-    [
-     "have",
-     11.488,
-     11.638
-    ],
-    [
-     "to",
-     11.65,
-     11.75
-    ],
-    [
-     "earn",
-     11.763,
-     11.913
+     4.225,
+     4.3
     ],
     [
      "trust",
-     11.925,
-     12.25
+     4.312,
+     4.762
+    ],
+    [
+     "but",
+     4.95,
+     5.075
+    ],
+    [
+     "only",
+     5.088,
+     5.312
+    ],
+    [
+     "if",
+     5.325,
+     5.425
+    ],
+    [
+     "it",
+     5.437,
+     5.525
+    ],
+    [
+     "keeps",
+     5.538,
+     5.825
     ],
     [
      "the",
-     12.263,
-     12.338
+     5.838,
+     5.925
+    ],
+    [
+     "determinism",
+     5.937,
+     6.588
+    ],
+    [
+     "that",
+     6.6,
+     6.738
+    ],
+    [
+     "keeps",
+     6.75,
+     7.075
+    ],
+    [
+     "it",
+     7.088,
+     7.275
+    ],
+    [
+     "the",
+     7.45,
+     7.538
     ],
     [
      "same",
-     12.35,
-     12.637
+     7.55,
+     7.825
     ],
     [
-     "way",
-     12.65,
-     12.912
+     "answer",
+     7.838,
+     8.162
     ],
     [
-     "with",
-     13.175,
-     13.288
+     "for",
+     8.175,
+     8.275
     ],
     [
-     "evidence",
-     13.3,
-     13.775
+     "the",
+     8.287,
+     8.387
+    ],
+    [
+     "same",
+     8.4,
+     8.675
+    ],
+    [
+     "input",
+     8.687,
+     9.088
+    ],
+    [
+     "delivered",
+     9.3,
+     9.638
+    ],
+    [
+     "on",
+     9.65,
+     9.775
+    ],
+    [
+     "every",
+     9.787,
+     10.012
+    ],
+    [
+     "frame",
+     10.025,
+     10.437
+    ],
+    [
+     "and",
+     10.638,
+     10.725
+    ],
+    [
+     "proven",
+     10.738,
+     11.175
     ],
     [
      "not",
-     13.937,
-     14.2
+     11.325,
+     11.55
     ],
     [
-     "averages",
-     14.212,
-     14.8
+     "averaged",
+     11.562,
+     12.15
     ]
    ]
   },
   {
    "id": "coda",
-   "at": 252.1,
-   "real": 252.45,
+   "at": 265.8,
+   "real": 266.15,
    "speech": 4.547,
    "len": 4.78,
    "head": 0.233,
    "file": "coda.mp3",
-   "file_start": 252.217,
+   "file_start": 265.917,
    "hash": "7298ba17f4d6",
    "text": "Fidelity earns the trust. Determinism keeps it.",
    "source": "closing line",
@@ -3254,13 +3513,13 @@
   },
   {
    "id": "card",
-   "at": 258.8,
-   "real": 259.15,
+   "at": 272.5,
+   "real": 272.85,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 259.15,
+   "file_start": 272.85,
    "hash": "",
    "text": "",
    "source": "",

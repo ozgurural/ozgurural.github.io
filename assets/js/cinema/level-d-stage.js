@@ -95,8 +95,12 @@ export function buildStage(ctx, h) {
   const B0 = T.frames + 0.4, B1 = W('frames', 'session') - 0.4, BP = 0.24;
   for (let s = B0, i = 0; s < B1; s += BP, i++) add(s, 700, i === 9 ? [8, 42, 70, 34] : base, LIMIT, 'beat');
   // AI joins: most answers fit, a few do not
-  const AIMS = [6, 9, 5, 34, 8, 7, 29, 6, 10, 8];
-  for (let k = 0, s = W('ai', 'loop') + 0.4; s < T.thesis - 1.2; s += 1.35, k++) add(s, 150, [8, 42, AIMS[k % AIMS.length], 50, 34], LIMIT, 'ai');
+  for (let s = W('why', 'ai') + 0.6; s < T.ai - 0.3; s += 1.45) add(s, 150, [8, 42, 7, 50, 34], LIMIT, 'ai');
+  const LATE = [W('ai', 'longer') - 0.7, W('ai', 'stall') - 0.7, W('ai', 'late') - 0.7], AIMS = [8, 6, 9];
+  for (let k = 0, s = T.ai + 0.2; s < T.thesis - 1.0; s += 1.35, k++) {
+    const late = LATE.some(x => Math.abs(x - s) < 0.68);
+    add(s, 150, [8, 42, late ? 33 : AIMS[k % 3], 50, 34], LIMIT, 'ai');
+  }
   P.sort((a, b) => a.start - b.start);
   const msOf = (p, t) => {
     if (p.kind === 'chain') {
@@ -115,7 +119,7 @@ export function buildStage(ctx, h) {
   track.position.set((xAt(0) + xAt(165)) / 2, TY, TZ);
   root.add(track);
   const nodeGeo = new THREE.SphereGeometry(0.11, 16, 8);
-  const nodes = [0, 1, 2, 3, 4].map(i => { const m = new THREE.Mesh(nodeGeo, glow(i === 0 ? COL.input : COL.stage[Math.min(3, i - 1)])); root.add(m); return m; });
+  const nodes = [0, 1, 2, 3, 4, 5].map(i => { const m = new THREE.Mesh(nodeGeo, glow(i === 0 ? COL.input : COL.stage[Math.min(3, Math.max(0, i - 1))])); root.add(m); return m; });
   const aiNode = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.035, 8, 32), glow(COL.ai));
   root.add(aiNode);
   const trail = [0, 1, 2, 3, 4].map(() => { const m = new THREE.Mesh(new THREE.BoxGeometry(1, 0.12, 0.05), glow(COL.stage[0])); root.add(m); return m; });
@@ -221,7 +225,9 @@ export function buildStage(ctx, h) {
     t => win(t, W('proof', 'level') - 0.8 + Math.min(i, 3) * 0.3 + (i === 3 ? 0.4 : 0), W('proof', 'earn') + 0.6, 0.35, 0.4), 0.5, 1));
   chip('stamp ok', 'PASS', at(V(-4.8, 4.6, TZ)), t => win(t, W('proof', 'one') - 0.1, T.yearly + 0.8, 0.25, 0.4));
   chip('chip', 'every year', at(V(0, 0.2, -RING - 0.4)), t => win(t, W('yearly', 'year') - 0.2, T.delay - 2.2, 0.4, 0.4), 0.5, 0);
-  chip('chip ai', 'AI', () => aiNode.position.clone().add(V(0, 0.55, 0)), t => win(t, W('ai', 'adding'), T.thesis - 0.3, 0.4, 0.4), 0.5, 1);
+  chip('chip ai', 'AI', () => aiNode.position.clone().add(V(0, 0.55, 0)), t => win(t, W('why', 'ai'), T.thesis - 0.3, 0.4, 0.4), 0.5, 1);
+  chip('chip dim', 'a learned flight model', at(V(xAt(29), TY - 0.55, TZ)), t => win(t, W('why', 'model') - 0.2, T.ai - 0.3, 0.4, 0.4), 0.5, 0);
+  chip('chip dim', 'a world drawn by a network', at(V(xAt(84), TY - 0.55, TZ)), t => win(t, W('why', 'neural') - 0.3, T.ai - 0.3, 0.4, 0.4), 0.5, 0);
   chip('stamp red', 'TOO LATE', at(V(xAt(LIMIT) - 1.0, TY + 1.4, TZ)), t => {
     const c = current(t); if (!c || c.kind !== 'ai' || c.total <= LIMIT) return 0;
     return win(t, c.start + LIMIT / c.rate, arrive(c) + 1.0, 0.15, 0.3);
@@ -242,13 +248,21 @@ export function buildStage(ctx, h) {
 
   function update(t) {
     const pr = ctx.renderer.getPixelRatio();
-    const vClock = win(t, T.delay - 0.4, W('frames', 'session') + 0.8, 0.8, 1.0) + win(t, T.ai - 0.4, T.thesis - 0.2, 0.8, 0.6);
-    const vAI = win(t, W('ai', 'adding') - 0.2, T.thesis - 0.2, 0.6, 0.6);
+    const vClock = win(t, T.delay - 0.4, W('frames', 'session') + 0.8, 0.8, 1.0) + win(t, T.why - 0.4, T.thesis - 0.2, 0.8, 0.6);
+    const vAI = win(t, W('why', 'ai') - 0.2, T.thesis - 0.2, 0.6, 0.6);
     track.material.opacity = 0.6 * vClock;
     // node positions: the chain as it is, or with the AI slot in it
-    const nominal = vAI > 0.01 ? [0, 8, 50, 60, 110, 144] : [0, 8, 50, 100, 134];
-    nodes.forEach((n, i) => { const ms = vAI > 0.01 ? [0, 8, 50, 110, 144][i] : nominal[i]; n.position.set(xAt(ms), TY, TZ); n.material.opacity = 0.95 * vClock; });
-    aiNode.position.set(xAt(55), TY, TZ); aiNode.material.opacity = vAI; aiNode.rotation.y = t * 1.2;
+    // with AI in the chain the nodes sit where this pulse's stages end, so a slow answer visibly pushes the rest right
+    const cur = current(t);
+    const st = vAI > 0.01 ? (cur && cur.kind === 'ai' ? cur.stages : [8, 42, 7, 50, 34]) : MS;
+    const bnd = st.reduce((a, m) => (a.push(a[a.length - 1] + m), a), [0]);
+    nodes.forEach((n, i) => {
+      if (i >= bnd.length) { n.material.opacity = 0; return; }
+      n.position.set(xAt(bnd[i]), TY, TZ);
+      n.material.color.copy(i === 0 ? COL.input : vAI > 0.01 && i === 3 ? COL.ai : COL.stage[Math.min(3, vAI > 0.01 && i > 3 ? i - 2 : i - 1)]);
+      n.material.opacity = 0.95 * vClock;
+    });
+    aiNode.position.set(xAt(vAI > 0.01 ? (bnd[2] + bnd[3]) / 2 : 55), TY, TZ); aiNode.material.opacity = vAI; aiNode.rotation.y = t * 1.2;
     gate.material.opacity = 0.75 * vClock * ramp(t, W('delay', 'hundred') - 0.4, W('delay', 'hundred') + 0.2) * (1 - 0.55 * win(t, W('tighter', 'hundred'), T.frames, 0.8, 0.6));
     gateNew.position.x = xAt(gateMs(t)); gateNew.material.opacity = 0.8 * win(t, W('tighter', 'hundred') - 0.2, T.frames - 0.2, 0.5, 0.5);
     // the pulse

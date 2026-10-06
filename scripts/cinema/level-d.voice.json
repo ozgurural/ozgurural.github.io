@@ -19,7 +19,7 @@
    }
   ]
  },
- "authored_duration": 265.8,
+ "authored_duration": 279.5,
  "lines": [
   {
    "id": "open",
@@ -142,26 +142,32 @@
    "text": "That's determinism: the slowest frame counts, not the average."
   },
   {
-   "id": "ai",
+   "id": "why",
    "at": 222.3,
-   "source": "the author's view; many learned models take input-dependent time (a generative model's answer length, for one), so their latency has a tail",
-   "text": "Now imagine adding AI to this loop. AI models are usually quick, but now and then much slower. Those slow moments are exactly what this rule punishes."
+   "source": "the author's view of why AI would enter a simulator: learned models of aircraft behaviour from flight data (system identification with neural networks; regimes such as stall and icing where physics-based models are hardest to validate) and neural rendering in the image generator; labelled as the author's view, no deployment claimed",
+   "text": "So why bring AI into a simulator at all? To make it even more real: a model of the aircraft learned from flight data, where physics is hard to write down, or a richer world drawn by a neural network."
+  },
+  {
+   "id": "ai",
+   "at": 237.0,
+   "source": "generative models and detectors take input-dependent time; any model shares compute, memory and scheduling with the rest of the host; a fixed-size network on dedicated hardware can be bounded, which is what the thesis asks for",
+   "text": "But now the AI sits inside the chain. Some models take longer on some inputs, and even a fixed one can stall when it shares a computer. One late answer, and the frame is late."
   },
   {
    "id": "thesis",
-   "at": 234.7,
-   "source": "the author's thesis, labelled as such on screen",
-   "text": "So here is the thesis. A simulator earns trust in two ways: fidelity, proven by tests against the real aircraft, and determinism, proven on every frame. AI will have to earn trust the same way, with evidence, not averages."
+   "at": 251.1,
+   "source": "the author's thesis, labelled as such on screen: two senses of determinism, repeatable outputs (a test is only evidence if the same input gives the same answer) and a bounded worst-case time",
+   "text": "So here is the thesis. AI can raise the fidelity that earns the trust, but only if it keeps the determinism that keeps it: the same answer for the same input, delivered on every frame, and proven, not averaged."
   },
   {
    "id": "coda",
-   "at": 252.1,
+   "at": 265.8,
    "source": "closing line",
    "text": "Fidelity earns the trust. Determinism keeps it."
   },
   {
    "id": "card",
-   "at": 258.8,
+   "at": 272.5,
    "source": "",
    "text": ""
   }

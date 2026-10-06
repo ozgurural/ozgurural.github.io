@@ -42,8 +42,8 @@ import { buildStage } from './level-d-stage.js';
 
 const { C, DISPLAY, SANS, MONO } = FIG;
 
-const T = { open: 4.0, reveal: 9.3, trust: 18.8, promise: 33.1, senses: 43.5, eyes: 56.5, mirror: 65.9, motion: 78.3, equiv: 89.9, tilt: 102.0, agree: 112.4, proof: 123.2, yearly: 140.8, delay: 148.7, chain: 161.2, tighter: 170.2, frames: 180.8, slips: 192.8, rack: 200.5, determinism: 215.1, ai: 222.3, thesis: 234.7, coda: 252.1, card: 258.8 };
-const D = 265.8;
+const T = { open: 4.0, reveal: 9.3, trust: 18.8, promise: 33.1, senses: 43.5, eyes: 56.5, mirror: 65.9, motion: 78.3, equiv: 89.9, tilt: 102.0, agree: 112.4, proof: 123.2, yearly: 140.8, delay: 148.7, chain: 161.2, tighter: 170.2, frames: 180.8, slips: 192.8, rack: 200.5, determinism: 215.1, why: 222.3, ai: 237.0, thesis: 251.1, coda: 265.8, card: 272.5 };
+const D = 279.5;
 
 const TL_DIR = new URL('../../audio/cinema/level-d/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
@@ -572,7 +572,7 @@ const film = {
     foot(T.proof + 0.5, T.yearly - 0.3, 'Objective tests: <i>14 CFR Part 60, App. A</i>. Curve illustrative.');
     say(T.yearly, T.delay - 0.1, 'Again, every year');
     foot(T.yearly + 0.4, T.delay - 0.3, '<i>14 CFR 60.19</i>');
-    kick(T.delay, T.ai - 0.1, '<b>3</b> &middot; The clock');
+    kick(T.delay, T.why - 0.1, '<b>3</b> &middot; The clock');
     say(T.delay, T.chain - gone, 'A hundred and fifty milliseconds', { wide: true });
     foot(T.delay + 0.5, T.chain - 0.3, 'Transport delay, Level C and D: <i>14 CFR Part 60</i>');
     say(T.chain, T.tighter - gone, 'A chain of computers', { wide: true });
@@ -588,11 +588,13 @@ const film = {
            html: '864<small>jolts the pilot can feel</small>' });
     text({ at: W('rack', 'own') - 0.4, out: T.determinism - 0.3, cls: 'prov', words: false, dur: 0.6, rise: 10, place: { x: 1160, y: 120, w: 640 },
            html: '<b>From Dr. Ural&rsquo;s work</b><span>This discipline comes from his work on Level D simulator systems at Avion. No employer design is shown.</span>' });
-    text({ at: T.determinism, out: T.ai - 0.2, cls: 'stmt', place: { x: 260, y: 300, w: 1400, align: 'center' },
+    text({ at: T.determinism, out: T.why - 0.2, cls: 'stmt', place: { x: 260, y: 300, w: 1400, align: 'center' },
            html: '<div class="bigk">Determinism</div><div class="big" style="margin-top:22px">The <em>slowest</em> frame counts, not the average.</div>' });
-    kick(T.ai, T.coda - 0.3, '<b>4</b> &middot; The thesis');
-    say(T.ai, T.thesis - gone, 'Now add AI');
-    say(T.thesis, T.coda - gone, 'Evidence, not averages');
+    kick(T.why, T.coda - 0.3, '<b>4</b> &middot; The thesis');
+    say(T.why, T.ai - gone, 'Why add AI?');
+    foot(W('why', 'model') - 0.2, T.ai - 0.3, 'Where AI would help is the author&rsquo;s view, not a description of any product.');
+    say(T.ai, T.thesis - gone, 'One late answer is enough');
+    say(T.thesis, T.coda - gone, 'The same answer, on every frame');
     text({ at: T.coda, out: T.card - 0.3, cls: 'stmt', place: { x: 260, y: 370, w: 1400, align: 'center' }, html: '<div class="big">Fidelity earns the trust.</div>' });
     text({ at: W('coda', 'determinism') - 0.1, out: T.card - 0.3, cls: 'stmt', place: { x: 260, y: 480, w: 1400, align: 'center' }, html: '<div class="big"><em>Determinism</em> keeps it.</div>' });
     text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 236, w: 1600, align: 'center' },
@@ -654,7 +656,7 @@ const film = {
 
     // the machine on stage, or faded into the dark while a figure has the frame
     const vis = clamp01(win(t, -1, T.promise + 1.0, 0.1, 1.3) + win(t, T.motion - 1.6, T.equiv + 0.5, 1.2, 0.8) +
-                        win(t, T.tilt - 1.1, T.card - 0.3, 1.0, 0.9) * (1 - 0.85 * win(t, T.determinism - 0.3, T.ai - 0.4, 0.5, 0.6)) *
+                        win(t, T.tilt - 1.1, T.card - 0.3, 1.0, 0.9) * (1 - 0.85 * win(t, T.determinism - 0.3, T.why - 0.4, 0.5, 0.6)) *
                         (1 - 0.82 * ramp(t, T.coda - 0.4, T.coda + 0.4)));
     U.uFade.value = 1 - vis;
     rig.visible = vis > 0.002;
