@@ -31,7 +31,7 @@
  * right from the design eye), and the camera pulls back out of the cockpit
  * through the cut-away side to show the machine on its legs.
  */
-import { THREE, createCinema, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
+import { THREE, createCinema, captionsFromTimeline, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
@@ -269,6 +269,7 @@ const film = {
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL) : null,
   build(ctx) {
     const { scene, camera, renderer, text, label } = ctx;
     const style = document.createElement('style');
@@ -535,8 +536,6 @@ const film = {
     const foot = (a, b, html) => text({ at: a, out: b, cls: 'foot', words: false, dur: 0.5, rise: 0, place: { x: 120, y: 1012, w: 1680 }, html });
     const scrim = (a, b) => text({ at: a, out: b, cls: 'scrim', words: false, dur: 0.8, rise: 0, html: '', place: { x: 0, y: 0, w: 1050 },
       style: { height: '1080px', background: 'linear-gradient(to right, rgba(3,5,10,.88) 0%, rgba(3,5,10,.62) 62%, rgba(3,5,10,0) 100%)' } });
-    const chapter = (n, title, next) => text({ at: next - 2.0, out: next - 0.12, cls: 'chap', words: false, dur: 0.5, rise: 16, outDur: 0.35,
-      place: { x: 260, y: 330, w: 1400, align: 'center' }, html: `<div class="chap__k">Chapter ${n}</div><div class="chap__t">${title}</div>` });
     const gone = 0.05;
 
     text({ at: T.promise + 1.0, out: T.card - 0.3, cls: 'sig', words: false, dur: 0.8, rise: 0,
@@ -553,9 +552,8 @@ const film = {
     say(T.reveal, T.trust - gone, 'Inside a Level D flight simulator');
     say(T.trust, T.promise - gone, 'Trusted like the real aircraft');
     foot(W('trust', 'europe'), T.promise - 0.3, 'Zero flight time training: <i>EASA Part-FCL, FCL.730.A</i>');
-    say(T.promise, T.senses - 2.05, 'How does it earn that trust?');
-    chapter('1', 'Fooling the senses', T.senses);
-    kick(T.senses, T.proof - 2.3, '<b>1</b> &middot; Fooling the senses');
+    say(T.promise, T.senses - 0.4, 'How does it earn that trust?');
+    kick(T.senses, T.proof - 0.1, '<b>1</b> &middot; Fooling the senses');
     say(T.senses, T.eyes - gone, 'More than eyes');
     say(T.eyes, T.mirror - gone, 'Where is the runway?');
     say(T.mirror, T.motion - gone, 'A mirror puts it far away');
@@ -568,15 +566,13 @@ const film = {
     say(T.equiv, T.tilt - gone, 'Gravity or acceleration?');
     say(T.tilt, T.agree - gone, 'Borrowing gravity');
     foot(T.tilt + 0.5, T.proof - 0.3, 'Motion cueing: <i>14 CFR Part 60, App. A</i>');
-    say(T.agree, T.proof - 2.05, 'Your brain is fooled');
-    chapter('2', 'Proving it', T.proof);
-    kick(T.proof, T.delay - 2.3, '<b>2</b> &middot; Proving it');
+    say(T.agree, T.proof - 0.1, 'Your brain is fooled');
+    kick(T.proof, T.delay - 0.1, '<b>2</b> &middot; Proving it');
     say(T.proof, T.yearly - gone, 'Tested against the real aircraft');
     foot(T.proof + 0.5, T.yearly - 0.3, 'Objective tests: <i>14 CFR Part 60, App. A</i>. Curve illustrative.');
-    say(T.yearly, T.delay - 2.05, 'Again, every year');
-    foot(T.yearly + 0.4, T.delay - 2.1, '<i>14 CFR 60.19</i>');
-    chapter('3', 'The clock', T.delay);
-    kick(T.delay, T.ai - 2.3, '<b>3</b> &middot; The clock');
+    say(T.yearly, T.delay - 0.1, 'Again, every year');
+    foot(T.yearly + 0.4, T.delay - 0.3, '<i>14 CFR 60.19</i>');
+    kick(T.delay, T.ai - 0.1, '<b>3</b> &middot; The clock');
     say(T.delay, T.chain - gone, 'A hundred and fifty milliseconds', { wide: true });
     foot(T.delay + 0.5, T.chain - 0.3, 'Transport delay, Level C and D: <i>14 CFR Part 60</i>');
     say(T.chain, T.tighter - gone, 'A chain of computers', { wide: true });
@@ -592,9 +588,8 @@ const film = {
            html: '864<small>jolts the pilot can feel</small>' });
     text({ at: W('rack', 'own') - 0.4, out: T.determinism - 0.3, cls: 'prov', words: false, dur: 0.6, rise: 10, place: { x: 1160, y: 120, w: 640 },
            html: '<b>From Dr. Ural&rsquo;s work</b><span>This discipline comes from his work on Level D simulator systems at Avion. No employer design is shown.</span>' });
-    text({ at: T.determinism, out: T.ai - 2.05, cls: 'stmt', place: { x: 260, y: 300, w: 1400, align: 'center' },
+    text({ at: T.determinism, out: T.ai - 0.2, cls: 'stmt', place: { x: 260, y: 300, w: 1400, align: 'center' },
            html: '<div class="bigk">Determinism</div><div class="big" style="margin-top:22px">The <em>slowest</em> frame counts, not the average.</div>' });
-    chapter('4', 'The thesis', T.ai);
     kick(T.ai, T.coda - 0.3, '<b>4</b> &middot; The thesis');
     say(T.ai, T.thesis - gone, 'Now add AI');
     say(T.thesis, T.coda - gone, 'Evidence, not averages');
@@ -659,9 +654,8 @@ const film = {
 
     // the machine on stage, or faded into the dark while a figure has the frame
     const vis = clamp01(win(t, -1, T.promise + 1.0, 0.1, 1.3) + win(t, T.motion - 1.6, T.equiv + 0.5, 1.2, 0.8) +
-                        win(t, T.tilt - 1.1, T.proof - 1.9, 1.0, 0.9) + win(t, T.proof - 0.2, T.delay - 1.9, 1.0, 0.9) +
-                        win(t, T.delay - 0.2, T.ai - 1.9, 1.0, 0.9) * (1 - 0.85 * win(t, T.determinism - 0.3, T.ai - 2.2, 0.5, 0.5)) +
-                        win(t, T.ai - 0.2, T.card - 0.3, 1.0, 0.9) * (1 - 0.82 * ramp(t, T.coda - 0.4, T.coda + 0.4)));
+                        win(t, T.tilt - 1.1, T.card - 0.3, 1.0, 0.9) * (1 - 0.85 * win(t, T.determinism - 0.3, T.ai - 0.4, 0.5, 0.6)) *
+                        (1 - 0.82 * ramp(t, T.coda - 0.4, T.coda + 0.4)));
     U.uFade.value = 1 - vis;
     rig.visible = vis > 0.002;
     hall.visible = rig.visible;
@@ -708,7 +702,7 @@ const film = {
       pos = V(r * Math.cos(a), lerp(7.2, 5.8, u), r * Math.sin(a) - 0.6); look = V(0, 3.1, -0.6);
     } else if (t < T.tilt - 1.0) {
       pos = V(11.8, 6.6, 11.6).lerp(V(10.6, 6.0, 12.4), ease.inOutSine(ramp(t, T.motion - 1.6, T.equiv + 0.6))); look = V(0, 3.2, -0.8);
-    } else if (t < T.proof - 1.0) {
+    } else if (t < T.proof - 2.4) {
       pos = V(21.5, 4.1, -0.6).lerp(V(21.0, 4.3, 0.6), ease.inOutSine(ramp(t, T.tilt - 1.0, T.proof))); look = V(0, 3.6, -0.6);
     } else if (t < T.thesis - 1.0) {
       const FRONT = V(-0.6, 4.4, -23.0), FL = V(0, 2.5, -2.0);
@@ -719,6 +713,13 @@ const film = {
       // the session: up and over the floor of frames, toward the horizon
       const fu = win(t, W('frames', 'session') - 1.2, T.rack - 0.2, 2.2, 1.4);
       pos.lerp(V(0.4, 12.5, -30), fu); look.lerp(V(0, 0, 24), fu);
+      // arriving from the side view: round the machine on an arc
+      const tr = ease.inOutSine(ramp(t, T.proof - 2.4, T.proof - 0.2));
+      if (tr < 1) {
+        const sp = V(21.0, 4.3, 0.6), a0 = Math.atan2(sp.z + 0.6, sp.x), a1 = Math.atan2(pos.z + 0.6, pos.x);
+        const r0 = Math.hypot(sp.x, sp.z + 0.6), r1 = Math.hypot(pos.x, pos.z + 0.6), a = lerp(a0, a1, tr), r = lerp(r0, r1, tr);
+        pos = V(r * Math.cos(a), lerp(sp.y, pos.y, tr), r * Math.sin(a) - 0.6); look = V(0, 3.6, -0.6).lerp(look, tr);
+      }
     } else {
       const u = ease.inOutSine(ramp(t, T.thesis - 1.0, D));
       const a = lerp(-0.25, 0.35, u), r = 18;
@@ -729,7 +730,7 @@ const film = {
     else camera.up.set(0, 1, 0);
     camera.lookAt(look);
     const side = win(t, T.tilt - 1.0, T.proof - 1.0, 0.8, 0.6);
-    const front = win(t, T.proof - 1.0, T.thesis - 1.0, 0.8, 1.0);
+    const front = win(t, T.proof - 2.4, T.thesis - 1.0, 2.2, 1.0);
     const sx = lerp(lerp(0, 0.2, ease.inOutSine(ramp(t, 9.0, 12.8))) + 0.02 * side, 0.0, front), sy = lerp(lerp(-0.04, -0.17, side), -0.06, front);
     ctx.setViewShift(sx, sy);
     camera.updateMatrixWorld(true);

@@ -127,7 +127,7 @@ export function roadmap(kit) {
                  ['2', 'Prove it', 'test by test, against the real aircraft', W('promise', 'prove')],
                  ['3', 'Never be late', 'a time limit on every response', W('promise', 'late')],
                  ['4', 'And then: AI', 'what all of this means for the next thing in the loop', W('promise', 'late') + 0.8]];
-  return figure(kit, { at: W('promise', 'it') - 0.3, out: kit.T.senses - 2.05, x: 980, y: 250, w: 840, h: 560, build(svg) {
+  return figure(kit, { at: W('promise', 'it') - 0.3, out: kit.T.senses - 0.4, x: 980, y: 250, w: 840, h: 560, build(svg) {
     const rows = items.map(([n, a, b, t0], i) => {
       const g = E('g', {}, svg);
       const y = i * 128;

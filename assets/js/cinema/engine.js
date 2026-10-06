@@ -56,6 +56,32 @@ export function seeded(seed) {
 }
 export function mixColor(a, b, u) { return a.clone().lerp(b, clamp01(u)); }
 
+/* Captions from a narration timeline (the voice build's word timings): runs of
+   at most `maxc` characters, each shown from its first word to just after its
+   last, in real time. The words carry no punctuation, so the tokens are taken
+   from the line's text when the counts agree. */
+export function captionsFromTimeline(tl, maxc = 42) {
+  const cues = [];
+  for (const ln of (tl && tl.lines) || []) {
+    const ws = ln.words || [];
+    if (!ln.text || !ws.length) continue;
+    let tokens = ln.text.split(/\s+/);
+    if (tokens.length !== ws.length) tokens = ws.map(w => w[0]);
+    let chunk = [], start = null, end = 0;
+    tokens.forEach((tok, i) => {
+      const t0 = ln.real + ws[i][1], t1 = ln.real + ws[i][2];
+      if (chunk.length && ((chunk.join(' ') + ' ' + tok).length > maxc || /[.?!]$/.test(chunk[chunk.length - 1]))) {
+        cues.push([start, end, chunk.join(' ')]); chunk = []; start = null;
+      }
+      if (start == null) start = t0;
+      chunk.push(tok); end = t1;
+    });
+    if (chunk.length) cues.push([start, end, chunk.join(' ')]);
+  }
+  cues.forEach((c, i) => { c[1] = Math.min(c[1] + 0.35, i + 1 < cues.length ? cues[i + 1][0] - 0.02 : c[1] + 0.35); });
+  return cues;
+}
+
 /* ------------------------------------------------------------- the stage */
 const ASPECTS = { '4x5': [1080, 1350], '16x9': [1920, 1080] };
 
@@ -122,6 +148,16 @@ export function createCinema(film) {
   ui.className = 'cin__ui';
   Object.assign(ui.style, { position: 'absolute', inset: '0', pointerEvents: 'none' });
   stage.appendChild(ui);
+  // Captions follow the sound: shown while the film is muted (a feed or an
+  // autoplay, where nobody hears the narration), hidden once the sound is on,
+  // and the CC button overrides either way. Never in the render: the mp4
+  // ships with a caption file instead.
+  const cap = document.createElement('div');
+  cap.className = 'cin-cap';
+  Object.assign(cap.style, { position: 'absolute', left: '50%', bottom: '70px', transform: 'translateX(-50%)', maxWidth: '1400px',
+    padding: '12px 24px', borderRadius: '12px', background: 'rgba(3,5,10,.8)', color: '#f4f7fb', font: '500 36px/1.35 "Inter", system-ui, sans-serif',
+    textAlign: 'center', whiteSpace: 'nowrap', display: 'none', pointerEvents: 'none', zIndex: '5' });
+  stage.appendChild(cap);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(film.fov || 35, W / H, 0.1, 400);
@@ -376,6 +412,20 @@ export function createCinema(film) {
     audio.muted = !on;
     wrap.classList.toggle('is-muted', !on);
     if (soundBtn) { soundBtn.innerHTML = on ? '&#128266;' : '&#128263;'; soundBtn.setAttribute('aria-label', on ? 'Mute' : 'Sound on'); }
+    showCaption();
+  }
+  const cues = renderMode ? [] : (film.captions || []);
+  const ccBtn = wrap.querySelector('[data-act="cc"]');
+  if (ccBtn && !cues.length) ccBtn.hidden = true;
+  let ccForced = null;                       // null: follow the sound
+  const ccOn = () => (ccForced != null ? ccForced : !audio || audio.muted);
+  function showCaption() {
+    if (!cues.length) return;
+    let text = '';
+    if (ccOn()) for (const c of cues) { if (c[0] > t) break; if (t < c[1]) text = c[2]; }
+    if (cap.textContent !== text) cap.textContent = text;
+    cap.style.display = text ? 'block' : 'none';
+    if (ccBtn) ccBtn.setAttribute('aria-pressed', String(ccOn()));
   }
 
   function seek(time) {
@@ -390,6 +440,7 @@ export function createCinema(film) {
     if (clock) { const now = mmss(t) + ' / ' + total; if (clock.textContent !== now) clock.textContent = now; }
     if (bar) bar.setAttribute('aria-valuetext', mmss(t) + ' of ' + total);
     if (bar) bar.setAttribute('aria-valuenow', String(Math.round(100 * t / film.duration)));
+    showCaption();
     return t;
   }
   function loop(now) {
@@ -460,6 +511,7 @@ export function createCinema(film) {
       if (act && act.dataset.act === 'replay') { seek(0); pause(); play(true); return; }
       if (act && act.dataset.act === 'sound') { setSound(audio.muted); if (!playing) play(true); return; }
       if (act && act.dataset.act === 'fullscreen') { toggleFullscreen(); return; }
+      if (act && act.dataset.act === 'cc') { ccForced = !ccOn(); showCaption(); return; }
       if (act && act.dataset.act === 'seek') {
         const r = bar.getBoundingClientRect();
         jump(film.duration * clamp01((e.clientX - r.left) / r.width));
