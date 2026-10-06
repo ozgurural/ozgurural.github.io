@@ -1,0 +1,1 @@
+import{LineSegments2 as e}from"./LineSegments2.js";import{LineGeometry as s}from"./LineGeometry.js";import{LineMaterial as t}from"./LineMaterial.js";class i extends e{constructor(e=new s,i=new t({color:16777215*Math.random()})){super(e,i),this.isLine2=!0,this.type="Line2"}}export{i as Line2};

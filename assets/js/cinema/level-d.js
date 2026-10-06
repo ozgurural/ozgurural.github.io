@@ -1,42 +1,37 @@
 /*
- * Determinism at 60 Hz: why a flight simulator cannot be fast "on average",
- * in about two minutes.
+ * Inside a Level D flight simulator: what the machine is, how it fools a
+ * pilot's senses, how it is proven, why it can never be late, and what that
+ * means for the AI that will join loops like it. About five minutes.
  *
- * It replaces the lab film of the same name and keeps its argument (lines in
- * scripts/narration.json, prefix "level-d"), told now as one question with
- * one answer at a time. The thesis comes first and last, in the same words
- * ("a late answer is a wrong answer"; "the slowest frame counts, not the
- * average"), because a first cut that built up to it left viewers unsure what
- * the film was about. It stands alone: no film refers to another (the
- * owner's rule). The facts it rests on:
- *   - transport delay, from a pilot's primary flight control input to the
- *     motion, visual or instrument response, is a regulated ceiling (FAA 14
- *     CFR Part 60 and EASA CS-FSTD(A): 150 ms at Level C/D); a device over it
- *     does not qualify. "About the time of a blink": a blink lasts roughly
- *     100 to 400 ms;
- *   - EASA's CS-FSTD Issue 1 (ED Decision 2026/008/R, Subpart D test 6.a.1,
- *     p. 467) sets 100 ms for new devices at fidelity level S, motion,
- *     instruments and visual alike;
- *   - the chain is the generic one of a full-flight simulator (control
- *     loading, flight model, aircraft systems, image generator, display and
- *     motion), drawn to the old film's illustrative stage budget of 8, 17, 25,
- *     50 and 34 ms, so the tighter limit lands where image generation ends;
- *   - the simulator repeats it many times a second for hours, rare slips
- *     recur and cluster, a rack of hosts feeds each frame and the frame waits
- *     for the slowest, budgets are enforced per host, and an overrun counter
- *     catches what sampled step time misses.
+ * WORK IN PROGRESS (branch level-d-explainer): written, not yet run. First
+ * job on resuming: serve on 4001, open /films/level-d/, read the console,
+ * then tile stills (render-cinema --frames) and fix what they show.
  *
- * The picture is a loop: the pilot's input leaves the cabin, runs the chain
- * against a gate (the limit), and comes back up as the cabin's motion and the
- * horizon on its screen. No numbers are printed or spoken (see CLAUDE.md,
- * cinema films). No employer design is shown: the rig is the generic
- * six-actuator motion platform every full-flight simulator stands on and the
- * rack the generic multi-host layout.
+ * Ink on paper, numbered figures, sources as footnotes only while their fact
+ * is on screen, the thesis labelled as the author's. Every line's source is
+ * beside it in scripts/cinema/level-d.voice.json (14 CFR Part 60; 14 CFR
+ * Part 121 App. H; EASA CS-FSTD Issue 1; the lab film's determinism argument,
+ * stage times and rack marked illustrative). No employer design is shown.
+ * The opening is one shot: a night take-off on the simulator's mirror
+ * (rendered to a texture, mapped to be right from the design eye), and the
+ * camera pulls back out of the cockpit as the house lights come up. It stands
+ * alone: no film refers to another (the owner's rule).
  */
-import { THREE, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, createCinema, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
+import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
+import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import * as FIG from './level-d-figs.js';
 
-const T = { hook: 0, input: 10.8, chain: 22.9, tighter: 39.6, beat: 47.6, session: 54, cluster: 64.0, rack: 69.4, straggler: 77.2, measure: 87.0, close: 95.5, card: 105.6 };
-const D = 111.8;
+const { C, SERIF, SANS, MONO } = FIG;
+
+const T = { open: 4.5, reveal: 9.8, trust: 18.4, promise: 32.0, senses: 42.4, eyes: 56.2, mirror: 65.1, motion: 77.4, equiv: 88.7,
+            tilt: 98.9, agree: 111.0, washout: 119.5, hands: 126.5, levels: 136.6, tests: 145.6, yearly: 159.9, bridge: 167.3,
+            delay: 172.9, chain: 186.0, tighter: 204.5, frames: 214.6, slips: 225.4, rack: 236.8, budget: 245.6, count: 255.6,
+            determinism: 264.2, ai: 271.9, thesis: 285.7, coda: 301.8, card: 308.5 };
+const D = 316.5;
 
 const TL_DIR = new URL('../../audio/cinema/level-d/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
@@ -50,659 +45,638 @@ function makeWarp(anchors) {
     return a0 + (a1 - a0) * (real - r0) / (r1 - r0);
   };
 }
+// the film time at which the narration says the k-th `word` of line `id`
+const WORDS = {};
+if (TL) for (const l of TL.lines) WORDS[l.id] = (l.words || []).map(w => [w[0].toLowerCase().replace(/[^a-z0-9']/g, ''), w[1], w[2]]);
+function W(id, word, k = 0) {
+  let n = 0;
+  for (const w of WORDS[id] || []) if (w[0] === word && n++ === k) return T[id] + w[1];
+  if (TL) console.warn(`level-d: no word "${word}" (#${k}) in line "${id}"`);
+  return T[id] + 1;
+}
 
-/* -------------------------------------------------------------- palette */
-const HDR = (r, g, b, k = 1) => new THREE.Color(r * k, g * k, b * k);
-const COL = {
-  rig: HDR(1.3, 1.6, 2.2, 0.8),
-  track: HDR(0.35, 0.6, 1.0, 0.5),
-  stage: [HDR(0.4, 1.9, 2.4), HDR(0.45, 1.5, 2.6), HDR(0.4, 2.0, 1.5), HDR(1.5, 0.9, 2.6), HDR(2.5, 1.4, 0.4)],
-  head: HDR(2.2, 2.6, 3.0, 1.1),
-  ok: HDR(0.4, 2.0, 1.5, 1.0),
-  late: HDR(2.6, 0.45, 0.5, 1.15),
-  amber: HDR(2.5, 1.35, 0.35, 1.05),
-  gate: HDR(1.6, 2.2, 2.8, 1.0),
-  input: HDR(0.6, 1.8, 2.8, 0.9),
-  bg: new THREE.Color(0x03050a),
-};
-const STAGES = ['control loading', 'flight model', 'aircraft systems', 'image generator', 'display &amp; motion'];
-const STAGE_SAYS = ['reads the controls', 'works out how it flies', 'runs its systems', 'draws the world', 'updates the screen, moves the cabin'];
-const STAGE_CSS = ['#5fd6ff', '#6aa8ff', '#5dffc8', '#c79bff', '#ffb347'];
-const MS = [8, 17, 25, 50, 34];                       // the old film's illustrative stage budget
-const CUM = MS.reduce((a, m) => (a.push(a[a.length - 1] + m), a), [0]);   // 0, 8, 25, 50, 100, 134
-const TOTAL = CUM[CUM.length - 1];
-const LIMIT = 150, NEW_LIMIT = 100;
+const col = hex => new THREE.Color(hex);
+const PAPER = col(C.paper), NIGHT = col(C.night), INK = col(C.ink), CABIN_DARK = col('#07090D');
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+/* ----------------------------------------------------- the rig, in metres */
+const HP = 2.6;                                     // platform height at neutral
+const EYE = V(0, 1.75, -0.95);                      // the design eye, in the cabin's frame
+const MR = 2.4;                                     // mirror radius about the eye
+const RTW = 2560, RTH = 1280, RVF = 46;             // the out-the-window picture
+const BASE = [], TOPJ = [];
+for (let k = 0; k < 3; k++) for (const s of [-1, 1]) {
+  const ab = (k * 120 + 90 + s * 13) * Math.PI / 180, at = (k * 120 + 30 + s * 47) * Math.PI / 180;
+  BASE.push(V(2.45 * Math.cos(ab), 0.32, 2.45 * Math.sin(ab)));
+  TOPJ.push(V(1.75 * Math.cos(at), -0.08, 1.75 * Math.sin(at)));
+}
+
+/* -------------------------------------------- the night take-off, as seen */
+const RA = 2.3, Z0 = -150, TR = 29.0;
+function rwPose(tau) {
+  tau = Math.max(0, tau);
+  const tr = Math.min(tau, TR);
+  let dist = 0.5 * RA * tr * tr, pitch = 0, alt = 0;
+  const v = RA * tr;
+  if (tau > TR) {
+    const d = tau - TR;
+    dist += v * d + 0.4 * d * d;
+    pitch = Math.min(15, 3.2 * d);
+    const lift = Math.max(0, d - 2.4);
+    alt = lift < 3 ? 1.1 * lift * lift : 9.9 + 6.6 * (lift - 3);
+  }
+  return { z: Z0 - dist, alt, pitch, v };
+}
+// the opening is mid-roll, rotating at t 3.5; the cueing scenes release the brakes on "shove"
+const rwTau = t => (t < T.motion - 2 ? t + 25.5 : t - W('tilt', 'shove'));
+
+/* ------------------------------------------------------ the motion cue */
+function poseAt(t) {
+  const p = { x: 0, y: 0.004 * Math.sin(t * 0.9), z: 0, rx: 0.003 * Math.sin(t * 0.53 + 1), ry: 0, rz: 0 };
+  if (t < T.motion - 2) {
+    // the opening take-off: a sustained nose-up tilt for the push, more at rotation, then washed out
+    const tilt = 7.5 + 4 * ease.inOutSine(ramp(t, 3.5, 6.5));
+    p.rx += tilt * (1 - ease.inOutSine(ramp(t, 10, 17))) * Math.PI / 180;
+    p.y += (1 - ramp(t, 5.8, 6.4)) * 0.012 * Math.sin(t * 41) * Math.sin(t * 13.3);
+    return p;
+  }
+  if (t < T.equiv + 1) {
+    // six degrees of freedom, one at a time, then a slide to the end of its reach
+    const s0 = W('motion', 'six'), seq = ['rx', 'rz', 'ry', 'y', 'x', 'z'], amp = [0.14, 0.14, 0.16, 0.32, 0.38, 0.38];
+    seq.forEach((k, i) => { const a = s0 + 0.15 + i * 0.62; p[k] += amp[i] * Math.sin(Math.PI * clamp01((t - a) / 0.62)); });
+    const tS = W('motion', 'short');
+    p.z -= 0.95 * ease.outCubic(ramp(t, tS - 0.9, tS)) * (1 - ease.inOutSine(ramp(t, tS + 1.6, tS + 3.4)));
+    return p;
+  }
+  // the take-off cue: a shove forward that washes out, a tilt that builds slowly, then back to the middle
+  const tau = t - W('tilt', 'shove');
+  const back = ease.inOutSine(clamp01((t - W('washout', 'creeps')) / 6.5));
+  p.z -= 0.55 * (tau <= 0 ? 0 : (1 - Math.exp(-tau / 0.25)) * Math.exp(-tau / 1.1));
+  p.rx += Math.asin(FIG.CUE.tilt(tau, back));
+  return p;
+}
 
 /* -------------------------------------------------------------- shaders */
-const DUST = {
-  vertexShader: /* glsl */`
-    attribute float aSeed; uniform float uTime; uniform float uPR; uniform vec3 uKeepOut; varying float vA;
-    void main() {
-      vec3 p = position;
-      p.y += sin(uTime * 0.21 + aSeed * 6.283) * 0.35;
-      p.x += sin(uTime * 0.13 + aSeed * 11.0) * 0.5 + uTime * 0.04;
-      vec4 mv = modelViewMatrix * vec4(p, 1.0);
-      gl_PointSize = (0.9 + aSeed * 1.6) * uPR * (60.0 / -mv.z);
-      vA = (0.35 + 0.65 * fract(aSeed * 7.1)) * (0.6 + 0.4 * sin(uTime * (0.6 + aSeed) + aSeed * 40.0));
-      gl_Position = projectionMatrix * mv;
-      vec2 ndc = gl_Position.xy / gl_Position.w;
-      vA *= 1.0 - smoothstep(uKeepOut.z - 0.25, uKeepOut.z, dot(ndc, uKeepOut.xy));
-    }`,
-  fragmentShader: /* glsl */`
-    uniform float uAlpha; varying float vA;
-    void main() {
-      float d = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.0, d) * vA * uAlpha;
-      gl_FragColor = vec4(vec3(0.55, 0.75, 1.0) * a, 1.0);
-    }`,
-};
-// points with their own colour and brightness
-const SPARK = {
-  vertexShader: /* glsl */`
-    attribute float aA; attribute vec3 aC; uniform float uPR; uniform float uSize;
-    varying float vA; varying vec3 vC;
-    void main() {
-      vec4 mv = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = uSize * uPR * (40.0 / -mv.z) * (0.6 + 0.4 * aA);
-      vA = aA; vC = aC;
-      gl_Position = projectionMatrix * mv;
-    }`,
-  fragmentShader: /* glsl */`
-    varying float vA; varying vec3 vC;
-    void main() {
-      float d = length(gl_PointCoord - 0.5);
-      gl_FragColor = vec4(vC * smoothstep(0.5, 0.05, d) * vA, 1.0);
-    }`,
-};
-function mat(def, uniforms, extra = {}) {
-  const u = {};
-  for (const k in uniforms) u[k] = { value: uniforms[k] };
-  return new THREE.ShaderMaterial({ vertexShader: def.vertexShader, fragmentShader: def.fragmentShader,
-    uniforms: u, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, ...extra });
+const U = { uHouse: { value: 0 }, uFade: { value: 0 }, uPaper: { value: PAPER.clone() }, uNightC: { value: CABIN_DARK.clone() },
+            uLight: { value: V(-0.45, 0.82, 0.38).normalize() } };
+function paper(hex, shade = 0.26) {
+  return new THREE.ShaderMaterial({
+    uniforms: { ...U, uColor: { value: col(hex) }, uShade: { value: shade } },
+    vertexShader: /* glsl */`
+      varying vec3 vN;
+      void main() { vN = normalize(mat3(modelMatrix) * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: /* glsl */`
+      uniform vec3 uColor; uniform vec3 uPaper; uniform vec3 uNightC; uniform float uHouse; uniform float uFade;
+      uniform vec3 uLight; uniform float uShade; varying vec3 vN;
+      void main() {
+        vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;
+        float k = 1.0 - uShade * (1.0 - smoothstep(-0.35, 0.9, dot(n, uLight)));
+        vec3 c = mix(uColor * k, uPaper, uFade);
+        gl_FragColor = vec4(mix(uNightC, c, uHouse), 1.0);
+      }`,
+    polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 2, side: THREE.DoubleSide,
+  });
 }
-const lineMat = (color, opacity = 0) => new THREE.LineBasicMaterial({ color: color.clone(), transparent: true, opacity,
-  blending: THREE.AdditiveBlending, depthWrite: false });
-const basicMat = color => new THREE.MeshBasicMaterial({ color: color.clone(), transparent: true, opacity: 0,
-  blending: THREE.AdditiveBlending, depthWrite: false });
+const LINES = [];                                   // every ink line, recoloured each frame for the house lights
+function ink(width = 1.7, o = {}) {
+  const m = new LineMaterial({ color: INK.clone(), linewidth: width, worldUnits: !!o.world, dashed: !!o.dash,
+                               dashSize: o.dash ? o.dash[0] : 1, gapSize: o.dash ? o.dash[1] : 1 });
+  m.resolution.set(1920, 1080);
+  m.userData.base = col(o.color || C.ink);
+  LINES.push(m);
+  return m;
+}
+function edges(mesh, mat, threshold = 20) {
+  const l = new LineSegments2(new LineSegmentsGeometry().fromEdgesGeometry(new THREE.EdgesGeometry(mesh.geometry, threshold)), mat);
+  if (mat.dashed) l.computeLineDistances();
+  mesh.add(l);
+  return l;
+}
+function poly(points, mat, parent, closed = false) {
+  const pts = closed ? [...points, points[0]] : points;
+  const g = new LineGeometry();
+  g.setPositions(pts.flatMap(p => [p.x, p.y, p.z]));
+  const l = new Line2(g, mat);
+  if (mat.dashed) l.computeLineDistances();
+  parent.add(l);
+  return l;
+}
 
+/* ------------------------------------------------------------------ CSS */
 const CSS = `
-  .cin .kick { font: 500 23px/1.2 "JetBrains Mono", monospace; letter-spacing: .14em; color: #7fcfff; text-transform: uppercase; }
-  .cin .hd { font: 600 76px/1.08 "Space Grotesk", sans-serif; letter-spacing: -.012em; color: #f4f7fb; text-wrap: balance; }
-  .cin .sb { font: 400 36px/1.38 "Inter", sans-serif; color: #aebcd0; text-wrap: pretty; }
-  .cin .blk .sb { margin-top: 28px; max-width: 790px; }
-  .cin .sb b { color: #e8eef7; font-weight: 600; }
-  .cin em { font-style: normal; color: #6fd3ff; }
-  .cin .teal { color: #5dffc8; } .cin .amber { color: #ffb347; } .cin .red { color: #ff6272; }
-  .cin .scrim { position: absolute; }
-  .cin .chip { font: 500 25px/1 "JetBrains Mono", monospace; padding: 10px 13px; border-radius: 8px; white-space: nowrap;
-               background: rgba(6,12,24,.82); border: 1px solid rgba(127,207,255,.35); color: #cfe9ff; }
-  .cin .chip.red { border-color: rgba(255,98,114,.75); color: #ff8a96; }
-  .cin .chip.amber { border-color: rgba(255,179,71,.75); color: #ffc477; }
-  .cin .chip.in { border-color: rgba(95,214,255,.7); color: #a8e8ff; }
-  .cin .stamp { font: 700 28px/1 "Space Grotesk", sans-serif; letter-spacing: .1em; padding: 10px 15px; white-space: nowrap;
-                border: 2px solid currentColor; border-radius: 10px; background: rgba(6,10,18,.78); }
-  .cin .credit { font: 500 21px/1.5 "JetBrains Mono", monospace; letter-spacing: .03em; color: #8fd3ff; }
-  .cin .credit span { display: block; color: #9aa9be; }
-  .cin .chain { padding: 18px 22px 14px; border-radius: 16px; background: rgba(6,12,24,.82); border: 1px solid rgba(127,207,255,.2); }
-  .cin .chain__r { display: grid; grid-template-columns: 18px 250px 1fr; align-items: center; gap: 12px; margin-bottom: 9px;
-                   font: 500 23px/1.2 "JetBrains Mono", monospace; color: #8292a8; transition: none; }
-  .cin .chain__r i { width: 14px; height: 14px; border-radius: 50%; display: block; opacity: .45; }
-  .cin .chain__r span { font: 400 22px/1.2 "Inter", sans-serif; color: #7d8ea4; }   /* dimmed, still above 4.5:1 */
-  .cin .chain__r.on { color: #f4f7fb; } .cin .chain__r.on span { color: #c9d4e3; } .cin .chain__r.on i { opacity: 1; }
-  .cin .meter { padding: 22px 26px 18px; border-radius: 16px; background: rgba(6,12,24,.82); border: 1px solid rgba(127,207,255,.2); }
-  .cin .meter__t { font: 500 21px/1 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #8fa2ba; margin-bottom: 16px; display: flex; justify-content: space-between; }
-  .cin .meter__k { font: 400 21px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 12px; }
-  .cin .meter__k b { color: #7fcfff; font-weight: 600; } .cin .meter__k i { color: #ff8a96; font-style: normal; font-weight: 600; }
-  .cin .meter svg { display: block; }
-  .cin .cl__a { font: 500 44px/1.3 "Inter", sans-serif; color: #c9d4e3; }
-  .cin .cl__b { font: 600 84px/1.1 "Space Grotesk", sans-serif; letter-spacing: -.015em; color: #f4f7fb; text-wrap: balance; }
-  .cin .cl__c { font: 500 40px/1.3 "Inter", sans-serif; color: #9fd8ff; }
-  .cin .end__t { font: 700 110px/1 "Space Grotesk", sans-serif; letter-spacing: -.02em; color: #f4f7fb; }
-  .cin .end__s { font: 400 30px/1.4 "Inter", sans-serif; color: #aebcd0; margin: 22px auto 0; max-width: 980px; }
-  .cin .end__s b { color: #f4f7fb; font-weight: 600; }
-  .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
-  .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
-  .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+  @font-face { font-family: "Lora"; font-weight: 400 700; font-display: block;
+    src: url("/assets/webfonts/gf-arch/lora-500-600-latin.woff2") format("woff2"); }
+  .cin { --ink: ${C.ink}; --ink2: ${C.ink2}; --graphite: ${C.graphite}; --coral: ${C.coral}; --coralt: ${C.coralText}; }
+  .cin .kick { font: 600 18px/1.2 ${SANS}; letter-spacing: .16em; text-transform: uppercase; color: var(--graphite); }
+  .cin .kick b { color: var(--coralt); font-weight: 700; }
+  .cin .hd { font: 600 58px/1.1 ${SERIF}; letter-spacing: -.012em; color: var(--ink); text-wrap: balance; }
+  .cin .sb { font: 400 28px/1.48 ${SANS}; color: var(--ink2); text-wrap: pretty; margin-top: 22px; }
+  .cin .sb b { color: var(--ink); font-weight: 600; }
+  .cin .hd em, .cin .sb em { font-style: normal; color: var(--coralt); }
+  .cin .wide .sb { max-width: 1480px; }
+  .cin .foot { font: 400 17px/1.4 ${SANS}; color: var(--graphite); }
+  .cin .foot i { font-style: normal; color: var(--ink2); font-weight: 600; }
+  .cin .open { font: 500 54px/1.2 ${SERIF}; color: #F1EEE6; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+  .cin .chap__n { font: 600 120px/1 ${SERIF}; color: var(--coral); }
+  .cin .chap__t { font: 500 74px/1.1 ${SERIF}; color: var(--ink); margin-top: 18px; }
+  .cin .chap__k { font: 600 18px/1 ${SANS}; letter-spacing: .2em; text-transform: uppercase; color: var(--graphite); margin-top: 28px; }
+  .cin .big { font: 600 78px/1.1 ${SERIF}; color: var(--ink); text-wrap: balance; letter-spacing: -.012em; }
+  .cin .big em { font-style: normal; color: var(--coralt); }
+  .cin .bigk { font: 600 18px/1 ${SANS}; letter-spacing: .2em; text-transform: uppercase; color: var(--coralt); }
+  .cin .ann { display: flex; align-items: center; font: 500 21px/1.25 ${SANS}; color: var(--ink); }
+  .cin .ann i { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); flex: none; }
+  .cin .ann s { width: 40px; height: 1.6px; background: var(--ink); flex: none; text-decoration: none; }
+  .cin .ann span { margin-left: 10px; padding: 3px 8px; background: rgba(241,238,230,.86); border-radius: 4px; }
+  .cin .ann span small { display: block; font-size: 17px; color: var(--graphite); font-weight: 400; }
+  .cin .ann.l { flex-direction: row-reverse; }
+  .cin .ann.l span { margin: 0 10px 0 0; text-align: right; }
+  .cin .dof { font: 500 22px/1 ${MONO}; color: var(--graphite); }
+  .cin .dof span { display: inline-block; padding: 6px 10px; margin-right: 8px; border-radius: 6px; border: 1.5px solid transparent; }
+  .cin .dof span.on { color: var(--coralt); border-color: var(--coral); }
+  .cin .inset { border: 2px solid var(--ink); border-radius: 6px; }
+  .cin .inset__c { font: 600 18px/1.2 ${SANS}; letter-spacing: .14em; text-transform: uppercase; color: var(--ink2); margin-top: 10px; }
+  .cin .checks { font: 600 26px/1.4 ${SANS}; color: var(--ink); }
+  .cin .checks b { color: ${C.olive}; }
+  .cin .fig__scale { font: 600 22px/1.2 ${SANS}; color: var(--ink); margin-top: 14px; }
+  .cin .fig__count { font: 400 22px/1.2 ${SANS}; color: var(--coralt); margin-top: 8px; min-height: 28px; }
+  .cin .fig__count b { font: 600 34px/1 ${MONO}; margin-right: 8px; }
+  .cin .end__t { font: 600 92px/1.05 ${SERIF}; color: var(--ink); letter-spacing: -.015em; }
+  .cin .end__q { font: italic 400 34px/1.4 ${SERIF}; color: var(--ink2); margin-top: 22px; }
+  .cin .end__u { font: 600 34px/1.3 ${SANS}; color: var(--ink); margin-top: 56px; }
+  .cin .end__u span { display: block; font: 400 23px/1.45 ${SANS}; color: var(--graphite); margin-top: 6px; }
+  .cin .end__n { font: 400 19px/1.5 ${SANS}; color: var(--graphite); margin: 40px auto 0; max-width: 1100px; }
+  .cin .end__s { font: 400 16px/1.5 ${MONO}; color: var(--graphite); margin-top: 16px; }
 `;
-
-/* ------------------------------------------------------------- the chain
-   A pulse is one control input travelling the chain. Its head sits at the
-   milliseconds spent so far; the rate is how many of those one film second
-   shows, so the slow scenes are slow motion of the same chain. */
-const SC = 3.6 / LIMIT;                    // world units per millisecond
-const X0 = -1.1, TY = -0.62;               // where the chain starts, its height
-const xAt = ms => X0 + ms * SC;
-// [start, rate (ms per film second), extra ms the image generator took]
-const PULSES = [
-  [0.4, 110, 0], [2.2, 110, 0], [4.0, 110, 42], [6.6, 110, 0], [8.6, 110, 0],
-  [11.6, 110, 0], [13.6, 110, 0], [15.6, 110, 0], [17.8, 110, 34], [20.6, 110, 0],
-  [43.0, 55, 0],                           // the same chain against the shorter blink
-];
-const TIGHT = 10;
-const stageMs = (p, k) => MS[k] + (k === 3 ? p[2] : 0);
-const pulseTotal = p => MS.reduce((a, m, k) => a + stageMs(p, k), 0);
-const pulseMs = (p, t) => Math.max(0, Math.min(pulseTotal(p), (t - p[0]) * p[1]));
-// The chain scene's pulse is timed to the narration naming each computer, so
-// the dot enters a stage as its name is spoken.
-const CHAIN_T = [27.0, 28.8, 31.75, 33.6, 35.5, 37.9];
-function chainMs(t) {
-  if (t <= CHAIN_T[0]) return 0;
-  for (let k = 0; k < 5; k++) if (t < CHAIN_T[k + 1]) return lerp(CUM[k], CUM[k + 1], (t - CHAIN_T[k]) / (CHAIN_T[k + 1] - CHAIN_T[k]));
-  return TOTAL;
-}
-const chainStage = t => { for (let k = 4; k >= 0; k--) if (t >= CHAIN_T[k]) return k; return -1; };
-// the tighter gate slides in
-const gateMs = t => lerp(LIMIT, NEW_LIMIT, ease.inOutCubic(ramp(t, T.tighter + 0.6, T.tighter + 2.6)));
-// the limit a pulse is held to: the shorter one only in its own scene
-const limitOf = p => (p[0] > T.tighter && p[0] < T.beat ? NEW_LIMIT : LIMIT);
-
-/* ------------------------------------------------------------ the session
-   A floor of frames to the horizon, one tile a frame, in time order row by
-   row away from the camera; a red few, scattered, then gathered into bursts:
-   the same count, worse for the pilot because a burst is a longer stutter. */
-const RN = 6000, FW = 60;
-const rr = seeded(60);
-const SCATTER = [], BURST = [];
-for (let i = 0; i < 18; i++) SCATTER.push(Math.floor(rr() * RN));
-for (let b = 0; b < 4; b++) { const c = 600 + Math.floor(rr() * (RN - 1200)); for (let j = 0; j < 5; j++) BURST.push(c + j * 3); }
-BURST.length = SCATTER.length;
-function floorAt(i, out) {
-  const c = i % FW, r = Math.floor(i / FW);
-  return out.set(-0.6 + 3.55 * (c / (FW - 1)), -1.25, 0.6 - 0.48 * r);
-}
-
-/* -------------------------------------------------------------- the rack
-   Nine hosts, one frame a cycle, slowed down so a frame can be watched. A bar
-   grows while its host works and stops when it is done; the frame closes when
-   the last bar stops. Host 6 is the straggler once the narration names it. */
-const HOSTS = 9, CYC = 2.2, GROW = 1.5;
-const RX = 0.15, RL = 2.0, RY0 = 1.15, RDY = 0.29;
-const ENFORCE = T.straggler + 4.6;         // "so every computer gets its own time budget"
-const hr = seeded(9);
-const FINISH = [];
-for (let f = 0; f < 40; f++) {
-  const row = [];
-  for (let h = 0; h < HOSTS; h++) row.push(0.42 + hr() * 0.4);
-  const start = T.rack + 0.8 + f * CYC;
-  if (start >= T.straggler - 0.4 && f % 2 === 0) row[6] = 1.18 + hr() * 0.12;
-  FINISH.push(row);
-}
-const rackFrame = t => Math.max(0, Math.floor((t - T.rack - 0.8) / CYC));
-const rackPhase = t => ((t - T.rack - 0.8) % CYC + CYC) % CYC;
 
 /* ----------------------------------------------------------------- film */
 const film = {
-  title: 'Determinism at 60 Hz',
+  title: 'Inside a Level D flight simulator',
   aspect: '16x9',
+  fov: 30,
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
   build(ctx) {
-    const { scene, camera, text, label } = ctx;
+    const { scene, camera, renderer, text, label } = ctx;
     const style = document.createElement('style');
     style.textContent = CSS;
     document.head.appendChild(style);
+    if (document.fonts) document.fonts.load('600 58px Lora');
 
-    camera.fov = 33;
-    camera.updateProjectionMatrix();
-    ctx.setViewShift(0.2, -0.04);
-    scene.background = COL.bg;
+    // paper, not neon: no tone curve, no bloom, a light vignette and grain
+    renderer.toneMapping = THREE.NoToneMapping;
+    ctx.bloom.enabled = false;
+    ctx.grade.uniforms.uVignette.value = 0.14;
+    ctx.grade.uniforms.uGrain.value = 0.018;
+    scene.background = NIGHT.clone();
+    scene.add(camera);
 
-    /* dust, for depth */
-    const dr = seeded(11);
-    const DN = 1000, dp = new Float32Array(DN * 3), ds = new Float32Array(DN);
-    for (let i = 0; i < DN; i++) {
-      dp[i * 3] = (dr() - 0.5) * 40; dp[i * 3 + 1] = (dr() - 0.5) * 22; dp[i * 3 + 2] = -14 + dr() * 20;
-      ds[i] = dr();
+    /* ---------------------------------------- the night outside, as a texture */
+    const rw = { scene: new THREE.Scene(), cam: new THREE.PerspectiveCamera(RVF, RTW / RTH, 0.5, 40000) };
+    const rt = new THREE.WebGLRenderTarget(RTW, RTH, { samples: 4, type: THREE.HalfFloatType });
+    rw.scene.background = new THREE.Color(0, 0, 0);
+    const sky = new THREE.Mesh(new THREE.SphereGeometry(20000, 48, 24), new THREE.ShaderMaterial({
+      side: THREE.BackSide, depthWrite: false,
+      vertexShader: /* glsl */`varying vec3 vD; void main() { vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: /* glsl */`
+        varying vec3 vD;
+        void main() {
+          float h = normalize(vD).y;
+          vec3 top = vec3(0.004, 0.006, 0.014), hor = vec3(0.045, 0.05, 0.075), glow = vec3(0.09, 0.06, 0.04);
+          vec3 c = mix(hor, top, smoothstep(-0.01, 0.32, h)) + glow * exp(-abs(h) * 22.0) * 0.8;
+          if (h < 0.0) c = mix(c, vec3(0.006, 0.007, 0.009), smoothstep(0.0, -0.015, h));
+          gl_FragColor = vec4(c, 1.0);
+        }`,
+    }));
+    rw.scene.add(sky);
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(80000, 80000), new THREE.MeshBasicMaterial({ color: new THREE.Color(0.006, 0.007, 0.009) }));
+    ground.rotation.x = -Math.PI / 2;
+    rw.scene.add(ground);
+    const runwayMat = new THREE.ShaderMaterial({
+      uniforms: { uPool: { value: V(0, -200, 1) } },
+      vertexShader: /* glsl */`varying vec2 vP; void main() { vec4 w = modelMatrix * vec4(position, 1.0); vP = w.xz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+      fragmentShader: /* glsl */`
+        uniform vec3 uPool; varying vec2 vP;
+        void main() {
+          float x = vP.x, zz = -vP.y, paint = 0.0;
+          if (abs(x) < 0.45 && mod(zz, 50.0) < 30.0 && zz > 60.0 && zz < 2940.0) paint = 1.0;
+          if (abs(abs(x) - 22.0) < 0.45) paint = 1.0;
+          if (zz > 6.0 && zz < 36.0 && abs(x) > 3.0 && abs(x) < 20.0 && mod(abs(x) - 3.0, 3.6) < 1.8) paint = 1.0;
+          vec3 c = mix(vec3(0.022, 0.024, 0.028), vec3(0.62), paint);
+          float dz = vP.y - uPool.y, dx = x - uPool.x;
+          float pool = exp(-dz * dz / (2.0 * 75.0 * 75.0)) * exp(-dx * dx / (2.0 * 26.0 * 26.0)) * uPool.z;
+          gl_FragColor = vec4(c * (0.05 + 1.5 * pool), 1.0);
+        }`,
+    });
+    const runway = new THREE.Mesh(new THREE.PlaneGeometry(60, 3000), runwayMat);
+    runway.rotation.x = -Math.PI / 2;
+    runway.position.set(0, 0.03, -1500);
+    rw.scene.add(runway);
+    // edge, centreline (white, then red and white, then red), threshold, end, taxiway, a town, stars
+    const LP = [], LC = [], LS = [];
+    const light = (x, y, z, c, s) => { LP.push(x, y, z); LC.push(...c); LS.push(s); };
+    const WHITE = [1.7, 1.6, 1.35], YEL = [1.6, 1.25, 0.5], RED = [1.7, 0.18, 0.12], GREEN = [0.25, 1.6, 0.6], BLUE = [0.25, 0.45, 1.8];
+    for (let z = 0; z <= 3000; z += 60) for (const x of [-23.5, 23.5]) light(x, 0.4, -z, z > 2400 ? YEL : WHITE, 1.1);
+    for (let z = 15; z < 3000; z += 15) { const left = 3000 - z; light(0, 0.1, -z, left < 300 ? RED : left < 900 ? ((z / 15) % 2 ? RED : WHITE) : WHITE, 0.8); }
+    for (let x = -22; x <= 22; x += 3) { light(x, 0.3, 0, GREEN, 1.0); light(x, 0.3, -3000, RED, 1.0); }
+    for (let z = 0; z <= 3000; z += 30) for (const x of [185, 215]) light(x, 0.3, -z, BLUE, 0.9);
+    const tr = seeded(5);
+    for (let c = 0; c < 46; c++) {
+      const a = (tr() - 0.5) * 2.4 - Math.PI / 2, d = 3500 + tr() * 14000, cx = Math.cos(a) * d, cz = Math.sin(a) * d, n = 40 + tr() * 160;
+      for (let i = 0; i < n; i++) { const r = tr() * (300 + d * 0.06), b = tr() * 6.283; light(cx + r * Math.cos(b), 2, cz + r * Math.sin(b), tr() < 0.7 ? [1.5, 0.95, 0.45] : [1.2, 1.2, 1.1], 7 + tr() * 6); }
     }
-    const dg = new THREE.BufferGeometry();
-    dg.setAttribute('position', new THREE.BufferAttribute(dp, 3));
-    dg.setAttribute('aSeed', new THREE.BufferAttribute(ds, 1));
-    const dust = new THREE.Points(dg, mat(DUST, { uTime: 0, uPR: 1, uAlpha: 0.7, uKeepOut: new THREE.Vector3(-1, 0, 0.05) }));
-    scene.add(dust);
+    for (let i = 0; i < 420; i++) { const a = tr() * 6.283, e = 0.08 + tr() * 1.3; light(19000 * Math.cos(e) * Math.cos(a), 19000 * Math.sin(e), 19000 * Math.cos(e) * Math.sin(a), [0.5, 0.52, 0.6], 60 + tr() * 50); }
+    const lg = new THREE.BufferGeometry();
+    lg.setAttribute('position', new THREE.Float32BufferAttribute(LP, 3));
+    lg.setAttribute('aColor', new THREE.Float32BufferAttribute(LC, 3));
+    lg.setAttribute('aSize', new THREE.Float32BufferAttribute(LS, 1));
+    const lights = new THREE.Points(lg, new THREE.ShaderMaterial({
+      uniforms: { uScale: { value: RTH / (2 * Math.tan(RVF * Math.PI / 360)) } },
+      vertexShader: /* glsl */`
+        attribute vec3 aColor; attribute float aSize; uniform float uScale; varying vec3 vC; varying float vA;
+        void main() {
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          float d = -mv.z, s = aSize * uScale / max(d, 1.0);
+          gl_PointSize = clamp(s * 2.6, 2.2, 54.0);
+          vA = exp(-d * 0.00011) * clamp(s / 1.4, 0.3, 1.0);
+          vC = aColor;
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: /* glsl */`
+        varying vec3 vC; varying float vA;
+        void main() {
+          float r = length(gl_PointCoord - 0.5) * 2.0;
+          gl_FragColor = vec4(vC * (smoothstep(0.32, 0.0, r) + exp(-r * r * 6.0) * 0.5) * vA, 1.0);
+        }`,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    lights.frustumCulled = false;
+    rw.scene.add(lights);
 
-    /* the rig: a cabin on a six-actuator motion platform, drawn in edges */
-    const rig = new THREE.Group();
-    rig.position.set(1.32, 0.92, -0.4);
-    rig.scale.setScalar(0.74);
-    scene.add(rig);
-    const BASE = [], TOP = [];
-    for (let k = 0; k < 3; k++) {
-      for (const s of [-1, 1]) {
-        const ab = (k * 120 + s * 14) * Math.PI / 180, at = (k * 120 + 60 + s * 46) * Math.PI / 180;
-        BASE.push(new THREE.Vector3(1.05 * Math.cos(ab), -0.95, 1.05 * Math.sin(ab)));
-        TOP.push(new THREE.Vector3(0.62 * Math.cos(at), 0, 0.62 * Math.sin(at)));
+    /* --------------------------------------------------------- the hall */
+    const hall = new THREE.Group();
+    scene.add(hall);
+    const gp = [], gf = [];
+    const fadeAt = r => 1 - clamp01((Math.hypot(r.x, r.z) - 6) / 10);
+    for (let i = -16; i <= 16; i++) for (const [a, b] of [[V(i, 0, -16), V(i, 0, 16)], [V(-16, 0, i), V(16, 0, i)]]) {
+      for (let k = 0; k < 32; k++) {
+        const p = a.clone().lerp(b, k / 32), q = a.clone().lerp(b, (k + 1) / 32);
+        gp.push(p.x, 0, p.z, q.x, 0, q.z); gf.push(fadeAt(p), fadeAt(q));
       }
     }
-    const LEG = [[0, 5], [1, 0], [2, 1], [3, 2], [4, 3], [5, 4]];
-    const baseRing = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(BASE), lineMat(COL.rig));
-    rig.add(baseRing);
-    const legs = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(new Array(12).fill(0).map(() => new THREE.Vector3())), lineMat(COL.rig));
-    rig.add(legs);
-    const platform = new THREE.Group();
-    platform.position.y = 0.1;
-    rig.add(platform);
-    const topRing = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(TOP), lineMat(COL.rig));
-    platform.add(topRing);
-    const cabin = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.25, 0.8, 1.1)), lineMat(COL.rig));
-    cabin.position.y = 0.48;
-    platform.add(cabin);
-    const dome = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.95, 0.95, 0.62, 18, 1, true, -Math.PI * 0.42, Math.PI * 0.84), 1),
-      lineMat(COL.stage[3].clone().multiplyScalar(0.7)));
-    dome.position.set(0, 0.6, 0.12);
-    dome.rotation.y = Math.PI;
-    platform.add(dome);
-    // the pilot's view on the cabin's front screen: a horizon that answers the controls
-    const view = new THREE.Group();
-    view.position.set(0, 0.5, 0.57);
-    platform.add(view);
-    const horizon = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-0.5, 0, 0), new THREE.Vector3(0.5, 0, 0)]), lineMat(HDR(0.6, 1.6, 2.6)));
-    view.add(horizon);
-    const wing = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-0.16, 0, 0.01), new THREE.Vector3(-0.05, 0, 0.01),
-      new THREE.Vector3(0, -0.04, 0.01), new THREE.Vector3(0.05, 0, 0.01), new THREE.Vector3(0.16, 0, 0.01)]), lineMat(HDR(2.2, 2.2, 2.2)));
-    wing.position.set(0, 0.5, 0.58);
-    platform.add(wing);
+    const gg = new THREE.BufferGeometry();
+    gg.setAttribute('position', new THREE.Float32BufferAttribute(gp, 3));
+    gg.setAttribute('aF', new THREE.Float32BufferAttribute(gf, 1));
+    hall.add(new THREE.LineSegments(gg, new THREE.ShaderMaterial({
+      uniforms: { ...U, uRule: { value: col(C.rule) } },
+      vertexShader: /* glsl */`attribute float aF; varying float vF; void main() { vF = aF; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: /* glsl */`
+        uniform vec3 uRule; uniform vec3 uPaper; uniform vec3 uNightC; uniform float uHouse; uniform float uFade; varying float vF;
+        void main() { vec3 c = mix(uPaper, uRule, vF * 0.8 * (1.0 - uFade)); gl_FragColor = vec4(mix(uNightC, c, uHouse), 1.0); }`,
+    })));
+    const sc = document.createElement('canvas'); sc.width = sc.height = 128;
+    const sg = sc.getContext('2d'), grd = sg.createRadialGradient(64, 64, 4, 64, 64, 64);
+    grd.addColorStop(0, 'rgba(0,0,0,1)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
+    sg.fillStyle = grd; sg.fillRect(0, 0, 128, 128);
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), color: INK.clone(), transparent: true, opacity: 0.1, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.01;
+    hall.add(shadow);
 
-    /* the chain: a track, its stage nodes, the trail a pulse leaves, its head */
-    const track = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(xAt(0), TY, 0), new THREE.Vector3(xAt(LIMIT + 10), TY, 0)]), lineMat(COL.track));
-    scene.add(track);
-    const nodes = CUM.map((ms, i) => {
-      const n = new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 8), basicMat(i === 0 ? COL.input : COL.stage[Math.min(4, i - 1)]));
-      n.position.set(xAt(ms), TY, 0);
-      scene.add(n);
-      return n;
-    });
-    const trail = [0, 1, 2, 3, 4].map(k => {
-      const m = new THREE.Mesh(new THREE.BoxGeometry(1, 0.06, 0.02), basicMat(COL.stage[k].clone().multiplyScalar(0.5)));
-      scene.add(m);
+    /* ------------------------------------------------------------ the rig */
+    const rig = new THREE.Group();
+    scene.add(rig);
+    const L1 = ink(1.7), L2 = ink(1.15), PH = ink(1.3, { dash: [0.18, 0.12] });
+    const box = (w, h, d, x, y, z, hex, parent, shade, line = L1) => {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), paper(hex, shade));
+      m.position.set(x, y, z);
+      parent.add(m);
+      if (line) edges(m, line);
       return m;
-    });
-    const overrun = new THREE.Mesh(new THREE.BoxGeometry(1, 0.1, 0.02), basicMat(COL.late.clone().multiplyScalar(0.7)));
-    scene.add(overrun);
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.08, 20, 10), basicMat(COL.head));
-    scene.add(head);
-    // the loop: down from the cabin to the start of the chain, and back up from its end
-    const CAB = new THREE.Vector3(1.32, 1.28, -0.4);
-    const down = new THREE.QuadraticBezierCurve3(new THREE.Vector3(CAB.x - 0.45, CAB.y - 0.2, CAB.z), new THREE.Vector3(-0.9, 0.9, -0.2), new THREE.Vector3(xAt(0), TY, 0));
-    const up = new THREE.QuadraticBezierCurve3(new THREE.Vector3(xAt(TOTAL), TY, 0), new THREE.Vector3(2.75, 0.4, -0.2), new THREE.Vector3(CAB.x + 0.5, CAB.y - 0.2, CAB.z));
-    const mkPath = (curve, color) => {
-      const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(48)),
-        new THREE.LineDashedMaterial({ color: color.clone(), dashSize: 0.07, gapSize: 0.06, transparent: true, opacity: 0, depthWrite: false }));
-      l.computeLineDistances();
-      scene.add(l);
-      return l;
     };
-    const downLine = mkPath(down, COL.input), upLine = mkPath(up, COL.stage[4]);
-    const runner = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 8), basicMat(COL.head));
-    scene.add(runner);
-    function gateMesh(color) {
-      const g = new THREE.Group();
-      const sheet = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 1.3), basicMat(color));
-      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(0.05, 1.3)), lineMat(color));
-      g.add(sheet, edge);
-      g.position.set(xAt(LIMIT), TY + 0.18, 0);
-      scene.add(g);
-      return { g, sheet, edge };
+    const basePlate = new THREE.Mesh(new THREE.CylinderGeometry(2.75, 2.85, 0.18, 6), paper('#E6E0D4'));
+    basePlate.position.y = 0.09; basePlate.rotation.y = Math.PI / 6;
+    rig.add(basePlate); edges(basePlate, L1);
+    for (let k = 0; k < 3; k++) { const a = (k * 120 + 90) * Math.PI / 180; box(0.55, 0.22, 0.4, 2.45 * Math.cos(a), 0.29, 2.45 * Math.sin(a), '#DDD6C9', rig, 0.3).rotation.y = -a; }
+    const move = new THREE.Group();                 // everything the actuators carry
+    rig.add(move);
+    const plate = new THREE.Mesh(new THREE.CylinderGeometry(2.05, 2.05, 0.16, 3), paper('#E9E4DA'));
+    plate.rotation.y = Math.PI / 6 + Math.PI; plate.position.y = -0.04;
+    move.add(plate); edges(plate, L1);
+    box(3.3, 0.22, 4.1, 0, 0.17, 0, '#EFEBE3', move);                         // cabin floor
+    box(0.07, 2.3, 4.1, -1.62, 1.43, 0, '#F4F1EA', move, 0.22);              // far wall
+    box(3.3, 2.3, 0.07, 0, 1.43, 2.02, '#F2EFE8', move, 0.22);               // rear wall
+    box(3.3, 0.95, 0.07, 0, 0.75, -2.02, '#F2EFE8', move, 0.22);             // below the windows
+    box(3.3, 0.24, 0.07, 0, 2.46, -2.02, '#F2EFE8', move, 0.22);             // above them
+    box(0.12, 1.2, 0.07, 0, 1.82, -2.02, '#F2EFE8', move, 0.22);             // centre post
+    // the cut-away near wall and roof, as phantom lines; the rear door
+    poly([V(1.65, 0.28, -2.05), V(1.65, 2.58, -2.05), V(1.65, 2.58, 2.05), V(1.65, 0.28, 2.05)], PH, move, true);
+    poly([V(-1.65, 2.58, -2.05), V(1.65, 2.58, -2.05), V(1.65, 2.58, 2.05), V(-1.65, 2.58, 2.05)], PH, move, true);
+    poly([V(-0.42, 0.3, 2.06), V(-0.42, 2.1, 2.06), V(0.42, 2.1, 2.06), V(0.42, 0.3, 2.06)], L2, move);
+    for (const x of [-0.53, 0.53]) {
+      box(0.52, 0.12, 0.52, x, 0.98, -0.62, '#E3DDD2', move, 0.3);
+      box(0.52, 0.95, 0.12, x, 1.5, -0.33, '#E3DDD2', move, 0.3).rotation.x = -0.12;
     }
-    const gateOld = gateMesh(COL.gate), gateNew = gateMesh(COL.amber);
-
-    /* frames coming off the chain on the beat */
-    const FN = 40, fpos = new Float32Array(FN * 3), fa = new Float32Array(FN), fc = new Float32Array(FN * 3);
-    const fg = new THREE.BufferGeometry();
-    fg.setAttribute('position', new THREE.BufferAttribute(fpos, 3));
-    fg.setAttribute('aA', new THREE.BufferAttribute(fa, 1));
-    fg.setAttribute('aC', new THREE.BufferAttribute(fc, 3));
-    const frames = new THREE.Points(fg, mat(SPARK, { uPR: 1, uSize: 9 }));
-    frames.frustumCulled = false;
-    scene.add(frames);
-    /* the session floor, and its red frames drawn on top */
-    const v = new THREE.Vector3();
-    const rpos = new Float32Array(RN * 3), ra = new Float32Array(RN), rc = new Float32Array(RN * 3);
-    for (let i = 0; i < RN; i++) {
-      floorAt(i, v);
-      rpos.set([v.x, v.y, v.z], i * 3);
-      rc.set([COL.ok.r * 0.55, COL.ok.g * 0.55, COL.ok.b * 0.55], i * 3);
+    box(0.36, 0.62, 0.9, 0, 0.6, -1.3, '#E6E0D5', move, 0.3);                     // pedestal
+    box(2.7, 0.62, 0.14, 0, 1.12, -1.86, '#E8E3D9', move, 0.3).rotation.x = 0.28; // instrument panel
+    for (let i = 0; i < 6; i++) box(0.34, 0.28, 0.03, -0.95 + i * 0.38, 1.16, -1.77, '#2B2A27', move, 0.05, L2).rotation.x = 0.28;
+    box(2.5, 0.1, 0.34, 0, EYE.y - 0.27, -1.8, '#E8E3D9', move, 0.3);         // glareshield
+    box(1.0, 0.12, 0.9, 0, 2.43, -0.72, '#E6E0D5', move, 0.3);                // overhead panel
+    box(1.25, 0.08, 0.6, 0.35, 0.95, 0.95, '#E6E0D5', move, 0.3);             // instructor's desk
+    box(0.5, 0.36, 0.04, 0.12, 1.2, 0.72, '#2B2A27', move, 0.05, L2).rotation.x = -0.25;
+    box(0.5, 0.36, 0.04, 0.68, 1.2, 0.72, '#2B2A27', move, 0.05, L2).rotation.x = -0.25;
+    box(0.5, 0.1, 0.5, 0.35, 0.82, 1.55, '#E3DDD2', move, 0.3);
+    // the mirror: the out-the-window picture, mapped so it is right from the design eye
+    const NU = 72, NV = 14, PHI = 72 * Math.PI / 180, H0 = -0.66, H1 = 0.86;
+    const tx = Math.tan(RVF * Math.PI / 360) * RTW / RTH, ty = Math.tan(RVF * Math.PI / 360);
+    const mp = [], mu = [], mi = [];
+    for (let j = 0; j <= NV; j++) for (let i = 0; i <= NU; i++) {
+      const ph = -PHI + 2 * PHI * i / NU, h = H0 + (H1 - H0) * j / NV;
+      mp.push(EYE.x + MR * Math.sin(ph), EYE.y + h, EYE.z - MR * Math.cos(ph));
+      mu.push(0.5 + 0.5 * Math.tan(ph) / tx, 0.5 + 0.5 * (h / (MR * Math.cos(ph))) / ty);
     }
-    const rg = new THREE.BufferGeometry();
-    rg.setAttribute('position', new THREE.BufferAttribute(rpos, 3));
-    rg.setAttribute('aA', new THREE.BufferAttribute(ra, 1));
-    rg.setAttribute('aC', new THREE.BufferAttribute(rc, 3));
-    const ribbon = new THREE.Points(rg, mat(SPARK, { uPR: 1, uSize: 3.2 }));
-    ribbon.frustumCulled = false;
-    scene.add(ribbon);
-    const BN = SCATTER.length * 2, bpos = new Float32Array(BN * 3), ba = new Float32Array(BN), bc = new Float32Array(BN * 3);
-    [...SCATTER, ...BURST].forEach((i, j) => {
-      floorAt(i, v);
-      bpos.set([v.x, v.y, v.z], j * 3);
-      bc.set([COL.late.r * 0.8, COL.late.g * 0.8, COL.late.b * 0.8], j * 3);
-    });
-    const bg = new THREE.BufferGeometry();
-    bg.setAttribute('position', new THREE.BufferAttribute(bpos, 3));
-    bg.setAttribute('aA', new THREE.BufferAttribute(ba, 1));
-    bg.setAttribute('aC', new THREE.BufferAttribute(bc, 3));
-    const bad = new THREE.Points(bg, mat(SPARK, { uPR: 1, uSize: 6.5 }));
-    bad.frustumCulled = false;
-    scene.add(bad);
+    for (let j = 0; j < NV; j++) for (let i = 0; i < NU; i++) { const a = j * (NU + 1) + i, b = a + 1, c = a + NU + 1, d = c + 1; mi.push(a, c, b, b, c, d); }
+    const mg = new THREE.BufferGeometry();
+    mg.setAttribute('position', new THREE.Float32BufferAttribute(mp, 3));
+    mg.setAttribute('aUV', new THREE.Float32BufferAttribute(mu, 2));
+    mg.setIndex(mi);
+    const mirror = new THREE.Mesh(mg, new THREE.ShaderMaterial({
+      uniforms: { uMap: { value: rt.texture }, uPaper: U.uPaper, uFade: U.uFade },
+      vertexShader: /* glsl */`attribute vec2 aUV; varying vec2 vUV; void main() { vUV = aUV; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: /* glsl */`
+        uniform sampler2D uMap; uniform vec3 uPaper; uniform float uFade; varying vec2 vUV;
+        void main() {
+          vec3 c = vec3(0.004, 0.005, 0.008);
+          if (vUV.x > 0.0 && vUV.x < 1.0 && vUV.y > 0.0 && vUV.y < 1.0) c = texture2D(uMap, vUV).rgb;
+          float e = smoothstep(0.0, 0.05, vUV.x) * smoothstep(1.0, 0.95, vUV.x);
+          gl_FragColor = vec4(mix(c * mix(0.35, 1.0, e) + vec3(0.01, 0.012, 0.018), uPaper, uFade), 1.0);
+        }`,
+      side: THREE.DoubleSide,
+    }));
+    move.add(mirror);
+    // the display's housing: far half solid, near half cut away; projectors on top
+    const HR = 2.72, HY0 = EYE.y - 0.92, HY1 = EYE.y + 1.12, HA = 76 * Math.PI / 180;
+    const hood = new THREE.Mesh(new THREE.CylinderGeometry(HR, HR, HY1 - HY0, 36, 1, true, Math.PI, HA), paper('#F3F0E9', 0.3));
+    hood.position.set(EYE.x, (HY0 + HY1) / 2, EYE.z);
+    move.add(hood);
+    const arcPts = (y, a0, a1) => { const out = []; for (let i = 0; i <= 40; i++) { const a = a0 + (a1 - a0) * i / 40; out.push(V(EYE.x + HR * Math.sin(a), y, EYE.z + HR * Math.cos(a))); } return out; };
+    for (const y of [HY0, HY1]) { poly(arcPts(y, Math.PI, Math.PI + HA), L1, move); poly(arcPts(y, Math.PI - HA, Math.PI), PH, move); }
+    const ea = Math.PI + HA;
+    poly([V(EYE.x + HR * Math.sin(ea), HY0, EYE.z + HR * Math.cos(ea)), V(EYE.x + HR * Math.sin(ea), HY1, EYE.z + HR * Math.cos(ea))], L1, move);
+    const lidShape = new THREE.Shape();
+    lidShape.moveTo(0, 0);
+    for (let i = 0; i <= 40; i++) { const a = Math.PI + HA * i / 40; lidShape.lineTo(HR * Math.sin(a), -HR * Math.cos(a)); }
+    lidShape.lineTo(0, 0);
+    const lid = new THREE.Mesh(new THREE.ShapeGeometry(lidShape), paper('#EEEAE2', 0.2));
+    lid.rotation.x = -Math.PI / 2; lid.position.set(EYE.x, HY1, EYE.z);
+    move.add(lid);
+    for (const [x, z] of [[-1.3, -2.2], [-0.25, -2.75], [0.85, -2.45]]) box(0.42, 0.3, 0.55, x, HY1 + 0.15, z, '#E2DCCF', move, 0.3);
+    // the actuators: a body and a rod each, drawn as ink-edged tubes
+    const tube = (wInk, wFill, fillHex) => {
+      const a = new LineMaterial({ color: INK.clone(), linewidth: wInk, worldUnits: true }); a.resolution.set(1920, 1080); a.userData.base = INK.clone(); LINES.push(a);
+      const b = new LineMaterial({ color: col(fillHex), linewidth: wFill, worldUnits: true }); b.resolution.set(1920, 1080); b.userData.base = col(fillHex); LINES.push(b);
+      b.depthFunc = THREE.LessEqualDepth;
+      const la = new Line2(new LineGeometry(), a), lb = new Line2(new LineGeometry(), b);
+      la.renderOrder = 1; lb.renderOrder = 2;
+      rig.add(la, lb);
+      return [la, lb];
+    };
+    const legs = BASE.map(() => ({ body: tube(0.3, 0.22, '#E4DED3'), rod: tube(0.15, 0.09, '#F2EFE8') }));
+    const joint = new THREE.SphereGeometry(0.11, 14, 8);
+    const joints = [...BASE, ...TOPJ].map(() => { const j = new THREE.Mesh(joint, paper(C.ink, 0)); rig.add(j); return j; });
+    // a fixed access platform with its stairs, and a person for scale
+    box(1.6, 0.12, 1.2, 0, HP + 0.24, 3.35, '#E6E0D4', rig, 0.25);
+    for (const x of [-0.8, 0.8]) poly([V(x, HP + 0.3, 2.78), V(x, HP + 1.25, 2.78), V(x, HP + 1.25, 3.95)], L2, rig);
+    for (const x of [-0.75, 0.75]) { poly([V(x, 0.0, 6.3), V(x, HP + 0.18, 3.95)], L1, rig); poly([V(x, 0.9, 6.3), V(x, HP + 1.1, 3.95)], L2, rig); }
+    for (let i = 1; i < 9; i++) { const z = lerp(6.3, 3.95, i / 9), y = lerp(0, HP + 0.18, i / 9); poly([V(-0.75, y, z), V(0.75, y, z)], L2, rig); }
+    const ps = new THREE.Shape();
+    ps.moveTo(-0.2, 0); ps.lineTo(-0.17, 0.82); ps.lineTo(-0.24, 1.38); ps.quadraticCurveTo(-0.22, 1.5, -0.1, 1.5);
+    ps.lineTo(0.1, 1.5); ps.quadraticCurveTo(0.22, 1.5, 0.24, 1.38); ps.lineTo(0.17, 0.82); ps.lineTo(0.2, 0); ps.lineTo(-0.2, 0);
+    const person = new THREE.Group();
+    const headM = new THREE.Mesh(new THREE.CircleGeometry(0.115, 24), paper(C.graphite, 0));
+    headM.position.y = 1.64;
+    person.add(new THREE.Mesh(new THREE.ShapeGeometry(ps), paper(C.graphite, 0)), headM);
+    person.position.set(2.2, 0, 6.6);
+    rig.add(person);
+    // the pilot's view, as an inset: a plane that rides with the camera
+    const inset = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: rt.texture, depthTest: false, transparent: true, opacity: 0 }));
+    inset.renderOrder = 10;
+    camera.add(inset);
 
-    /* the rack */
-    const bars = [], hostGates = [];
-    for (let h = 0; h < HOSTS; h++) {
-      const y = RY0 - h * RDY;
-      const rail = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(RX, y, 0), new THREE.Vector3(RX + RL * 1.35, y, 0)]), lineMat(COL.track));
-      const bar = new THREE.Mesh(new THREE.BoxGeometry(1, 0.09, 0.02), basicMat(COL.ok));
-      const hg = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.2, 0.02), basicMat(COL.amber));
-      hg.position.set(RX + RL * 0.98, y, 0.01);
-      scene.add(rail, bar, hg);
-      bars.push({ rail, bar, y });
-      hostGates.push(hg);
-    }
-    const deadline = new THREE.Mesh(new THREE.PlaneGeometry(0.09, HOSTS * RDY + 0.3), basicMat(COL.gate.clone().multiplyScalar(0.45)));
-    deadline.position.set(RX + RL, RY0 - (HOSTS - 1) * RDY / 2, 0);
-    const closer = new THREE.Mesh(new THREE.PlaneGeometry(0.02, HOSTS * RDY + 0.2), basicMat(COL.head));
-    closer.position.set(RX, RY0 - (HOSTS - 1) * RDY / 2, 0.01);
-    scene.add(deadline, closer);
+    Object.assign(ctx, { rw, rt, runwayMat, sky, rig, move, legs, joints, mirror, person, inset, hall, shadow });
 
-    Object.assign(ctx, { dust, rig, platform, legs, baseRing, topRing, cabin, dome, view, horizon, wing, BASE, TOP, LEG,
-                         track, nodes, trail, overrun, head, down, up, downLine, upLine, runner, gateOld, gateNew,
-                         frames, fpos, fa, fc, ribbon, ra, bad, ba, bars, hostGates, deadline, closer });
-
-    /* ------------------------------------------------------------- type */
-    const KICK = { x: 120, y: 88, w: 900 };
-    const HD = { x: 120, y: 190, w: 830 };
-    const say = (at, out, hd, sb) => text({ at, out, cls: 'blk', place: HD,
-      html: `<div class="hd">${hd}</div>` + (sb ? `<div class="sb">${sb}</div>` : '') });
-    const scrim = (at, out, place, background) => text({ at, out, cls: 'scrim', words: false, dur: 0.8, rise: 0, html: '', place,
-      style: { height: place.h + 'px', background } });
+    /* --------------------------------------------------------------- type */
+    const kit = { text, T, W, project: ctx.project };
+    const HD = { x: 120, y: 150, w: 700 };
+    const say = (a, b, hd, sb, o = {}) => text({ at: a, out: b, cls: 'blk' + (o.wide ? ' wide' : ''), place: o.wide ? { x: 120, y: 132, w: 1600 } : HD,
+      dur: 0.5, stagger: 0.035, rise: 10, blur: 3, html: `<div class="hd">${hd}</div>` + (sb ? `<div class="sb">${sb}</div>` : '') });
+    const kick = (a, b, html) => text({ at: a, out: b, cls: 'kick', words: false, dur: 0.5, rise: 0, place: { x: 120, y: 84, w: 1200 }, html });
+    const foot = (a, b, html) => text({ at: a, out: b, cls: 'foot', words: false, dur: 0.5, rise: 0, place: { x: 120, y: 1014, w: 1640 }, html });
+    const chapter = (a, b, n, title) => text({ at: a, out: b, cls: 'chap', words: false, dur: 0.6, rise: 14, outDur: 0.4,
+      place: { x: 260, y: 330, w: 1400, align: 'center' }, html: `<div class="chap__n">${n}</div><div class="chap__t">${title}</div><div class="chap__k">Chapter ${n}</div>` });
     const gone = 0.05;
 
-    scrim(-3, T.close - 0.2, { x: 0, y: 0, w: 1000, h: 1080 },
-          'linear-gradient(to right, rgba(3,5,10,.86) 0%, rgba(3,5,10,.6) 60%, rgba(3,5,10,0) 100%)');
-    scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
-          'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
-    text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film' });
+    text({ at: T.open, out: T.reveal - 2.4, cls: 'open', place: { x: 260, y: 860, w: 1400, align: 'center' }, dur: 0.6, stagger: 0.06, rise: 8, blur: 4,
+           html: 'This take-off never left the ground.' });
+    kick(T.reveal - 0.4, T.promise + 0.8, 'Dr. Ozgur Ural &middot; a research film');
+    say(T.reveal, T.trust - gone, 'Inside a Level D flight simulator', 'It happened in here: a full-flight simulator. A copy of an airliner&rsquo;s cockpit, standing on six legs.');
+    say(T.trust, T.promise - gone, 'Trusted like the aircraft', 'The best of them stand in for the aircraft itself. A pilot can do <b>all the flight training and checking</b> for a new airliner in one, and first fly the real aircraft on an airline flight, with a check pilot beside them.');
+    foot(W('trust', 'pilot'), T.promise - 0.3, 'Source: <i>14 CFR Part 121, Appendix H</i>: at Level C and D, all pilot flight training and checking except operating experience, the line check and the aircraft walk-round.');
+    say(T.promise, T.senses - 3.4, 'How does a machine earn that much trust?', 'It has to fool every sense, prove it, and never be late.');
+    chapter(T.senses - 3.1, T.senses - 0.15, 'I', 'Fooling the senses');
+    kick(T.senses, T.levels - 3.3, '<b>I</b> &middot; Fooling the senses');
+    say(T.senses, T.eyes - gone, 'Four senses, one story', 'A pilot flies with more than eyes. The inner ear feels motion, the hands feel the controls, and the ears and the seat feel every rumble. The simulator must feed them all, and <b>keep them in agreement</b>.');
+    say(T.eyes, T.mirror - gone, 'The eyes: where is the runway?', 'Start with the eyes. On an ordinary screen, the two pilots would see the runway in different directions.');
+    say(T.mirror, T.motion - gone, 'A mirror puts it far away', 'So the picture is shown in a huge curved mirror, which sends its light out in <b>parallel rays</b>, as if from far away. Both pilots see the runway straight ahead.');
+    foot(T.eyes + 0.5, T.motion - 0.3, 'Source: <i>14 CFR Part 60, Appendix C, Attachment 2, &sect;18</i>: in a collimated display the rays from any point are parallel, so the runway appears straight ahead to both crew members.');
+    say(T.motion, T.equiv - gone, 'Six legs, a short reach', 'Now the inner ear. Six actuators can tilt and slide the whole cabin, but only a short way. So the simulator borrows a trick from physics.');
+    const DOF = ['pitch', 'roll', 'yaw', 'heave', 'sway', 'surge'];
+    text({ at: W('motion', 'six') - 0.2, out: T.equiv - 0.3, cls: 'dof', words: false, dur: 0.4, rise: 0, place: { x: 120, y: 560, w: 760 },
+           html: DOF.map(d => `<span>${d}</span>`).join(''),
+           update: (t, el) => { const s0 = W('motion', 'six'); el.querySelectorAll('span').forEach((s, i) => s.classList.toggle('on', t > s0 + 0.15 + i * 0.62 && t < s0 + 0.77 + i * 0.62)); } });
+    foot(W('motion', 'six'), T.equiv - 0.3, 'Levels C and D: a six-degrees-of-freedom platform: pitch, roll, yaw, heave, sway and surge (<i>14 CFR Part 60</i>).');
+    say(T.equiv, T.tilt - gone, 'Gravity or acceleration?', 'Your inner ear can&rsquo;t tell gravity from acceleration. Physicists call it the <b>equivalence principle</b>; Einstein built general relativity on it.');
+    say(T.tilt, T.agree - gone, 'Borrowing gravity', 'So for a take-off, the cabin gives a quick shove forward, then tilts its nose up, too slowly to notice. Gravity presses you back into the seat, just like acceleration.');
+    foot(T.tilt + 0.5, T.hands - 0.3, 'Source: <i>14 CFR Part 60, Appendix A, Attachment 2</i>: forward acceleration is cued by a momentary forward motion, with a nose-up tilt for the sustained force.');
+    say(T.agree, T.washout - gone, 'Eyes and inner ear agree', 'The screen tilts with you, so the runway still looks level. Eyes and inner ear agree, and the brain believes it.');
+    say(T.washout, T.hands - gone, 'Back to the middle, unnoticed', 'Then the cabin creeps back to the middle, below what you can sense, ready for the next cue.');
+    say(T.hands, T.levels - 3.4, 'Hands and ears', 'Motors make the controls push back like the real ones, and the sound and the runway rumble are matched to the aircraft too.');
+    foot(T.hands + 0.5, T.levels - 3.4, 'At Level D, sound is an objective test: a device that misses its tolerances can be qualified only at Level C (<i>14 CFR Part 60, Appendix A</i>).');
+    chapter(T.levels - 3.1, T.levels - 0.15, 'II', 'Proving it');
+    kick(T.levels, T.delay - 3.3, '<b>II</b> &middot; Proving it');
+    say(T.levels, T.tests - gone, 'Level A to Level D', 'Then it has to prove it. Regulators grade these simulators from Level A to Level D, and D is the highest.');
+    say(T.tests, T.yearly - gone, 'Tested against the real aircraft', 'To earn it, the simulator flies a long list of tests. Each replays a maneuver from the real aircraft&rsquo;s flight tests, and the simulator must stay inside a <b>narrow band</b> around what the aircraft did.');
+    foot(T.tests + 0.5, T.yearly - 0.3, 'Source: <i>14 CFR Part 60, Appendix A, Attachment 2</i>: each objective test is compared with validation data within stated tolerances. The curve shown is illustrative.');
+    say(T.yearly, T.bridge - gone, 'And again, every year', 'Every test is run again each year, and the machine must pass a check within a day before anyone trains in it.');
+    foot(T.yearly + 0.4, T.bridge - 0.3, 'Source: <i>14 CFR 60.19(a)</i>: all appropriate objective tests each year; a functional preflight check within the preceding 24 hours.');
+    say(T.bridge, T.delay - 3.4, 'One test is about time', 'One of those tests is about time.');
+    chapter(T.delay - 3.1, T.delay - 0.15, 'III', 'The clock');
+    kick(T.delay, T.ai - 3.3, '<b>III</b> &middot; The clock');
+    say(T.delay, T.chain - gone, 'A hundred and fifty milliseconds', 'When the pilot moves the controls, the view, the instruments and the cabin must respond within a hundred and fifty milliseconds, about the blink of an eye. Miss it, and the simulator does not qualify.', { wide: true });
+    foot(T.delay + 0.5, T.chain - 0.3, 'Source: <i>14 CFR Part 60, Appendix A</i>, transport delay: from the control input, through every host computer, to the motion, instrument and visual response.');
+    say(T.chain, T.tighter - gone, 'A chain of computers shares that blink', 'In that blink, the signal crosses a chain of computers. One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screens and moves the cabin.', { wide: true });
+    foot(T.chain + 0.5, T.tighter - 0.3, 'Stage times are illustrative. No employer design is shown.');
+    say(T.tighter, T.frames - gone, 'The blink gets shorter', 'Europe&rsquo;s newest standard cuts that to a hundred milliseconds for the most realistic new simulators. A chain that fit before can now miss.', { wide: true });
+    foot(T.tighter + 0.5, T.frames - 0.3, 'Source: <i>EASA CS-FSTD Issue 1 (2026), test 6.a.1</i>: 100 ms at fidelity level S, for new devices.');
+    say(T.frames, T.slips - gone, 'Not once: sixty times a second', 'And it&rsquo;s not done once. The loop runs sixty times a second, for hours: a four-hour session is <b>864,000 frames</b>.');
+    foot(T.frames + 0.5, T.slips - 0.3, '4 hours &times; 3,600 seconds &times; 60 frames = 864,000 frames.');
+    say(T.slips, T.rack - gone, 'Rare is not never', 'If one frame in a thousand slips, that&rsquo;s <b>864 jolts</b>. And slips come in bunches, so the pilot feels a stutter, not a blip.');
+    foot(T.slips + 0.5, T.rack - 0.3, 'Expected slips = frames &times; rate: 864,000 &times; 1/1,000 = 864, even before they bunch.');
+    say(T.rack, T.budget - gone, 'Every frame waits for the slowest', 'Why do frames slip? The work is split across a rack of computers, and every frame has to wait for the slowest one.');
+    say(T.budget, T.count - gone, 'Budget every computer', 'One slow computer makes the whole frame late, and an average hides it. So every computer gets its own time budget, <b>checked every frame</b>.');
+    foot(T.rack + 0.5, T.count - 0.3, 'Nine hosts and their times are illustrative.');
+    say(T.count, T.determinism - gone, 'Count every overrun', 'And every overrun is counted while it runs. A spot check can miss a short spike; a counter can&rsquo;t.');
+    text({ at: T.determinism, out: T.ai - 3.4, cls: 'stmt', place: { x: 260, y: 300, w: 1400, align: 'center' }, dur: 0.6, stagger: 0.05, rise: 10, blur: 3,
+           html: '<div class="bigk">Determinism</div><div class="big" style="margin-top:22px">The <em>slowest</em> frame counts, not the average.</div>' });
+    chapter(T.ai - 3.1, T.ai - 0.15, 'IV', 'The thesis');
+    kick(T.ai, T.coda - 0.3, '<b>IV</b> &middot; The thesis');
+    say(T.ai, T.thesis - gone, 'Now add AI', 'Next, we&rsquo;ll want AI inside loops like this: models that see, predict and decide. Many take longer on some inputs than on others, and their slowest answers are exactly what this rule punishes.');
+    foot(T.ai + 0.5, T.thesis - 0.3, 'An illustrative distribution: the response time of many models depends on the input (the length of a generated answer, for one).');
+    say(T.thesis, T.coda - gone, 'The thesis', 'A simulator is trusted because it brings evidence: tests against the real aircraft, and timing proven every frame. AI in the loop must earn trust the same way: <b>with evidence, not averages</b>.');
+    text({ at: T.coda, out: T.card - 0.3, cls: 'stmt', place: { x: 260, y: 360, w: 1400, align: 'center' }, dur: 0.6, stagger: 0.06, rise: 10, blur: 3,
+           html: '<div class="big">Fidelity earns the trust.</div>' });
+    text({ at: W('coda', 'determinism') - 0.1, out: T.card - 0.3, cls: 'stmt', place: { x: 260, y: 470, w: 1400, align: 'center' }, dur: 0.6, stagger: 0.06, rise: 10, blur: 3,
+           html: '<div class="big"><em>Determinism</em> keeps it.</div>' });
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 20, place: { x: 160, y: 236, w: 1600, align: 'center' },
+           html: `<div class="end__t">Inside a Level D flight simulator</div>
+                  <div class="end__q">Fidelity earns the trust. Determinism keeps it.</div>
+                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>
+                  <div class="end__n">Informed by the author&rsquo;s work on Level D full-flight simulators at Avion. No employer design is shown; stage times and the rack are illustrative. The thesis is the author&rsquo;s view.</div>
+                  <div class="end__s">Sources: 14 CFR Part 60 &middot; 14 CFR Part 121, Appendix H &middot; EASA CS-FSTD(A) &middot; EASA CS-FSTD Issue 1 (2026)</div>` });
 
-    text({ at: -3, out: T.input - gone, cls: 'blk', place: HD,
-           html: '<div class="hd">A late answer is a <span class="red">wrong</span> answer.</div><div class="sb">A flight simulator has to answer its pilot within a <em>blink</em>, every single time. <b>Not on average.</b></div>' });
-    say(T.input, T.chain - gone, 'The pilot moves. The world must <em>follow</em>.',
-        'The view and the cabin must answer within that blink. It is written into the rules: a simulator that misses it cannot train pilots.');
-    say(T.chain, T.tighter - gone, 'A chain of <em>computers</em> shares that blink.',
-        'One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screen and moves the cabin.');
-    say(T.tighter, T.beat - gone, 'The blink gets <span class="amber">shorter</span>.',
-        'Europe&rsquo;s newest standard tightens it for the most realistic new simulators. The same chain no longer makes it.');
-    say(T.beat, T.session - gone, 'Not once. <em>Sixty times a second.</em>',
-        'For hours. Lay out one training session, frame by frame.');
-    say(T.session, T.cluster - gone, 'One slip in a thousand is <span class="red">hundreds of jolts</span>.',
-        'Every one is a jolt the pilot can feel. &ldquo;Usually fast&rdquo; is not enough.');
-    say(T.cluster, T.rack - gone, 'Slips come in <span class="red">bunches</span>.',
-        'So the pilot feels a stutter, not a blip.');
-    say(T.rack, T.straggler - gone, 'Every frame waits for the <em>slowest</em>.',
-        'The work is split across a rack of computers, and a frame is only done when the last one is.');
-    say(T.straggler, T.measure - gone, 'One slow computer is <span class="red">enough</span>.',
-        'An average hides it. So every computer gets its own time budget, <b>checked every frame</b>.');
-    say(T.measure, T.close - 0.25, 'Count every <em>overrun</em>.',
-        'While the simulator runs. Spot checks miss a short spike. A counter does not.');
-    // sources as footnotes, each only while its fact is on screen; the employer note lives on the end card
-    text({ at: T.input + 1.0, out: T.chain - 0.3, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 940, w: 830 },
-           html: 'Source: FAA 14 CFR Part 60; EASA CS-FSTD(A)' });
-    text({ at: T.tighter + 1.0, out: T.beat - 0.3, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 940, w: 830 },
-           html: 'Source: EASA CS-FSTD Issue 1 (2026), new devices' });
+    // annotations pinned to the machine, as the reveal names its parts
+    const mw = (x, y, z) => () => move.localToWorld(V(x, y, z));
+    const ann = (html, anchor, a, b, left = false) => label({ cls: 'ann' + (left ? ' l' : ''), html: `<i></i><s></s><span>${html}</span>`,
+      anchor, ax: left ? 1 : 0, ay: 0.5, alpha: t => win(t, a, b, 0.45, 0.5) });
+    ann('The cockpit<small>an exact copy of one aircraft type</small>', mw(1.0, 1.55, -0.6), W('reveal', 'cockpit') - 0.1, T.promise - 0.2);
+    ann('The visual display<small>a wrap-around curved mirror</small>', mw(-0.4, HY1 + 0.05, -3.0), W('reveal', 'cockpit') + 0.5, T.promise - 0.2, true);
+    ann('Six actuators<small>the motion platform</small>', () => V(1.9, 1.3, 1.6), W('reveal', 'six') - 0.1, T.promise - 0.2);
+    ann('The instructor&rsquo;s station', mw(0.75, 1.45, 0.75), W('trust', 'pilot'), T.promise - 0.2);
+    ann('A person, for scale', () => V(2.2, 1.0, 6.6), W('reveal', 'legs') + 0.3, T.trust + 4, true);
+    ann('Motion envelope<small>its whole reach</small>', mw(1.7, 0.4, -2.6), W('motion', 'short') - 0.2, T.equiv - 0.4);
 
-    /* the chain, named: one row lights as the narration reaches its computer */
-    text({ at: T.chain + 3.2, out: T.tighter - 0.3, cls: 'chain', words: false, dur: 0.6, rise: 18, place: { x: 1120, y: 726, w: 720 },
-           html: STAGES.map((s, k) => `<div class="chain__r"><i style="background:${STAGE_CSS[k]}"></i>${s}<span>${STAGE_SAYS[k]}</span></div>`).join(''),
-           update: (t, el) => {
-             const k = chainStage(t);
-             el.querySelectorAll('.chain__r').forEach((r, i) => r.classList.toggle('on', t > CHAIN_T[5] ? true : i === k));
-           } });
+    // the forces on the pilot during the take-off cue, drawn over the machine
+    const F = text({ at: T.tilt + 1.5, out: T.agree + 3.5, cls: 'fig', words: false, dur: 0.4, rise: 0, place: { x: 0, y: 0, w: 1920 },
+      html: '<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="display:block;overflow:visible"></svg>' });
+    {
+      const svg = F.el.querySelector('svg');
+      const gl = FIG.E('line', { stroke: C.ink, 'stroke-width': 3.2, 'stroke-linecap': 'round' }, svg);
+      const fl = FIG.E('line', { stroke: C.coral, 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+      const gh = FIG.E('path', { fill: 'none', stroke: C.ink, 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+      const fh = FIG.E('path', { fill: 'none', stroke: C.coral, 'stroke-width': 3.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+      const gt = FIG.E('text', { 'font-family': SANS, 'font-size': 26, 'font-style': 'italic', 'font-weight': 600, fill: C.ink }, svg, 'g');
+      const ft = FIG.E('text', { 'font-family': SANS, 'font-size': 22, 'font-weight': 600, fill: C.coralText }, svg, 'felt as acceleration');
+      const eq = FIG.E('text', { 'font-family': SANS, 'font-size': 30, 'font-weight': 500, fill: C.ink, x: 1180, y: 150 }, svg);
+      for (const [s, it] of [['g', 1], [' · sin ', 0], ['θ', 1], [' = ', 0], ['a', 1]]) FIG.E('tspan', it ? { 'font-style': 'italic' } : {}, eq, s);
+      const head = (p, q) => { const a = Math.atan2(q.y - p.y, q.x - p.x); return `M ${q.x - 14 * Math.cos(a - 0.5)} ${q.y - 14 * Math.sin(a - 0.5)} L ${q.x} ${q.y} L ${q.x - 14 * Math.cos(a + 0.5)} ${q.y - 14 * Math.sin(a + 0.5)}`; };
+      F.update = t => {
+        const o = move.localToWorld(V(-0.53, EYE.y, -0.6));
+        const p0 = ctx.project(o), pg = ctx.project(o.clone().add(V(0, -1.4, 0)));
+        const th = move.rotation.x;
+        const pf = ctx.project(move.localToWorld(V(-0.53, EYE.y, -0.6 + 1.4 * Math.sin(th) / 0.26)));
+        const ug = ramp(t, W('tilt', 'gravity') - 0.3, W('tilt', 'gravity') + 0.2), uf = ramp(t, W('tilt', 'presses') - 0.2, W('tilt', 'presses') + 0.3);
+        const g1 = { x: lerp(p0.x, pg.x, ug), y: lerp(p0.y, pg.y, ug) }, f1 = { x: lerp(p0.x, pf.x, uf), y: lerp(p0.y, pf.y, uf) };
+        gl.setAttribute('x1', p0.x); gl.setAttribute('y1', p0.y); gl.setAttribute('x2', g1.x); gl.setAttribute('y2', g1.y);
+        fl.setAttribute('x1', p0.x); fl.setAttribute('y1', p0.y); fl.setAttribute('x2', f1.x); fl.setAttribute('y2', f1.y);
+        gh.setAttribute('d', ug > 0.05 ? head(p0, g1) : ''); fh.setAttribute('d', uf > 0.05 && th > 0.02 ? head(p0, f1) : '');
+        gt.setAttribute('x', g1.x + 12); gt.setAttribute('y', g1.y); gt.setAttribute('opacity', ug);
+        ft.setAttribute('x', f1.x + 14); ft.setAttribute('y', f1.y + 30); ft.setAttribute('opacity', uf);
+        eq.setAttribute('opacity', ramp(t, W('tilt', 'gravity') + 0.4, W('tilt', 'gravity') + 0.9));
+      };
+    }
+    text({ at: T.agree - 0.2, out: T.washout + 2, cls: 'insetbox', words: false, dur: 0.5, rise: 0, place: { x: 120, y: 618, w: 560 },
+           html: '<div class="inset" style="height:280px"></div><div class="inset__c">What the pilot sees: still level</div>' });
+    text({ at: W('agree', 'agree') - 0.2, out: T.washout - 0.3, cls: 'checks', words: false, dur: 0.4, rise: 6, place: { x: 760, y: 980, w: 900 },
+           html: 'eyes <b>&#10003;</b> &nbsp; inner ear <b>&#10003;</b> &nbsp; they agree' });
 
-    text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 260, y: 300, w: 1400, align: 'center' },
-           html: 'That is determinism:' });
-    text({ at: T.close + 1.6, out: T.card - 0.3, cls: 'cl__b', place: { x: 260, y: 380, w: 1400, align: 'center' },
-           html: 'the <em>slowest</em> frame counts, not the average.' });
-    text({ at: T.close + 5.2, out: T.card - 0.3, cls: 'cl__c', place: { x: 260, y: 650, w: 1400, align: 'center' },
-           html: 'It is the rule any AI added to this loop must keep.' });
-    // the card is one block in normal flow, so the series line sits under the name and can never cover it
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
-           html: `<div class="end__t">Determinism at 60 Hz</div>
-                  <div class="end__s"><b>The slowest frame counts, not the average.</b> Why a flight simulator has to answer its pilot in time every frame, on every computer, measured while it runs.</div>
-                  <div class="end__a">Informed by Level D full-flight-simulator engineering at Avion &middot; no employer design shown</div>
-                  <div class="end__u">Dr. Ozgur Ural<span>Machine Learning Research Scientist &amp; Senior Software Engineer, Ph.D. &middot; ozgurural.github.io</span></div>` });
-
-    /* the instrument: a trace per computer scrolling past, spot-check dots, the overrun tally */
-    const SVGW = 760, SVGH = 400, ROWS = 6, RH = SVGH / ROWS;
-    text({ at: T.measure + 0.4, out: T.close - 0.3, cls: 'meter', words: false, dur: 0.6, rise: 18, place: { x: 1050, y: 210, w: 812 },
-           html: `<div class="meter__t"><span>time per frame, each computer</span><span>overruns</span></div>
-                  <svg width="${SVGW}" height="${SVGH}" viewBox="0 0 ${SVGW} ${SVGH}"></svg>
-                  <div class="meter__k"><b>dots</b>: spot checks, which miss the spike &middot; <i>bars</i>: the counter, which does not</div>`,
-           update: (t, el) => {
-             const svg = el.querySelector('svg');
-             const lt = t - T.measure;
-             const W0 = 560, budget = 0.72;
-             let html = '';
-             for (let r = 0; r < ROWS; r++) {
-               const y0 = r * RH + RH - 12, amp = RH - 24;
-               const hot = r === 3;
-               let pts = '', samp = '', marks = 0;
-               for (let i = 0; i <= 80; i++) {
-                 const k = Math.floor(lt * 22) + i;
-                 const n = Math.sin(k * 12.9898 + r * 78.233) * 43758.5453;
-                 let st = 0.38 + 0.22 * (n - Math.floor(n));
-                 if (hot && k % 37 === 11) st = 1.0;            // one frame's spike, between two spot checks
-                 const x = (i / 80) * W0, y = y0 - st * amp;
-                 pts += `${x.toFixed(1)},${y.toFixed(1)} `;
-                 if (k % 9 === 0) samp += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#7fcfff"/>`;
-               }
-               if (hot) for (let k = 11; k <= Math.floor(lt * 22) + 80; k += 37) marks++;
-               const by = y0 - budget * amp;
-               html += `<line x1="0" x2="${W0}" y1="${by.toFixed(1)}" y2="${by.toFixed(1)}" stroke="#ffb347" stroke-opacity=".5" stroke-dasharray="6 6"/>`;
-               html += `<polyline points="${pts}" fill="none" stroke="${hot ? '#ff8a96' : '#5dffc8'}" stroke-opacity="${hot ? 1 : 0.75}" stroke-width="2.4"/>`;
-               html += samp;
-               let tally = '';
-               for (let m = 0; m < marks; m++) tally += `<rect x="${W0 + 40 + m * 14}" y="${y0 - 34}" width="7" height="34" rx="2" fill="#ff6272"/>`;
-               html += tally || `<rect x="${W0 + 40}" y="${y0 - 3}" width="40" height="3" rx="1.5" fill="#5dffc8" fill-opacity=".5"/>`;
-             }
-             svg.innerHTML = html;
-           } });
-
-    /* --------------------------------------------------------- labels */
-    const at = p => () => p;
-    const V = (x, y, z = 0) => new THREE.Vector3(x, y, z);
-    label({ cls: 'chip', html: 'a full-flight simulator', anchor: at(V(1.32, 1.9)), ax: 0.5, ay: 1,
-            alpha: t => win(t, -1, T.input + 0.5, 0.6, 0.6) });
-    // the gate's labels sit under the track, one at a time: above it they touched the rig's legs
-    label({ cls: 'stamp red', html: 'TOO LATE', anchor: at(V(xAt(LIMIT), TY - 0.3)), ax: 0.85, ay: 0,
-            alpha: t => win(t, 5.5, T.input - 0.3, 0.3, 0.5) });
-    label({ cls: 'chip in', html: 'the pilot moves the controls', anchor: at(V(xAt(0), TY + 0.3)), ax: 0, ay: 1,
-            alpha: t => win(t, T.input + 0.6, T.input + 4.4, 0.5, 0.4) });
-    label({ cls: 'chip amber', html: 'the view and the cabin answer', anchor: at(V(xAt(TOTAL), TY - 0.3)), ax: 1, ay: 0,
-            alpha: t => win(t, T.input + 4.6, 19.0, 0.5, 0.4) });
-    label({ cls: 'chip', html: 'the rule: about a blink', anchor: at(V(xAt(LIMIT), TY - 0.3)), ax: 0.85, ay: 0,
-            alpha: t => win(t, T.input + 1.4, T.input + 4.4, 0.5, 0.4) });
-    label({ cls: 'stamp red', html: 'DOES NOT QUALIFY', anchor: at(V(xAt(LIMIT), TY - 0.3)), ax: 0.85, ay: 0,
-            alpha: t => win(t, 19.4, T.chain - 0.2, 0.3, 0.5) });
-    label({ cls: 'chip', html: 'until now', anchor: at(V(xAt(LIMIT), TY - 0.62)), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.tighter + 2.0, T.beat - 0.3, 0.6, 0.5) });
-    label({ cls: 'chip amber', html: 'new simulators', anchor: t => V(xAt(gateMs(t)), TY - 0.62), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.tighter + 1.0, 44.9, 0.6, 0.4) });
-    label({ cls: 'stamp red', html: 'TOO LATE NOW', anchor: at(V(xAt(NEW_LIMIT), TY - 0.62)), ax: 0.5, ay: 0,
-            alpha: t => win(t, 45.1, T.beat - 0.3, 0.3, 0.5) });
-    label({ cls: 'chip', html: 'one training session: each tile is a frame', anchor: at(V(1.3, -1.25, 0.9)), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.session + 2.4, T.cluster - 0.2, 0.6, 0.5) });
-    label({ cls: 'chip red', html: 'the same slips, bunched together', anchor: at(V(1.3, -1.25, 0.9)), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.cluster + 1.0, T.rack - 0.3, 0.6, 0.5) });
-    label({ cls: 'chip', html: 'deadline', anchor: at(V(RX + RL, RY0 - (HOSTS - 1) * RDY - 0.3)), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.rack + 1.2, T.measure - 0.3, 0.6, 0.5) });
-    label({ cls: 'chip', html: 'each frame waits for the slowest computer', anchor: at(V(RX + RL * 0.62, RY0 + 0.36)), ax: 0.5, ay: 1,
-            alpha: t => win(t, T.rack + 2.6, T.straggler - 0.3, 0.6, 0.5) });
-    label({ cls: 'chip red', html: 'one slow computer: the whole frame is late', anchor: at(V(RX + RL * 0.62, RY0 + 0.36)), ax: 0.5, ay: 1,
-            alpha: t => win(t, T.straggler + 0.5, ENFORCE - 0.2, 0.6, 0.4) });
-    label({ cls: 'chip amber', html: 'its own budget catches it', anchor: at(V(RX + RL * 0.62, RY0 + 0.36)), ax: 0.5, ay: 1,
-            alpha: t => win(t, ENFORCE + 0.4, T.measure - 0.3, 0.6, 0.5) });
+    for (const f of ['training', 'roadmap', 'senses', 'parallax', 'equivalence', 'cueing', 'controls', 'levels', 'tests', 'clock',
+                     'session', 'rack', 'counter', 'maxNotMean', 'aiTail', 'thesis']) FIG[f](kit);
   },
 
   frame(t, ctx) {
-    const { camera, grade, dust, rig, platform, legs, baseRing, topRing, cabin, dome, view, horizon, wing, BASE, TOP, LEG,
-            track, nodes, trail, overrun, head, down, up, downLine, upLine, runner, gateOld, gateNew,
-            frames, fpos, fa, fc, ribbon, ra, bad, ba, bars, hostGates, deadline, closer } = ctx;
-    const pr = ctx.renderer.getPixelRatio();
-    const card = 1 - ramp(t, T.card - 0.2, T.card + 0.6);
-    const dimClose = 1 - 0.8 * ease.inOutSine(ramp(t, T.close - 0.4, T.close + 1.0));
+    const { camera, scene, renderer, rw, rt, runwayMat, sky, rig, move, legs, joints, person, inset, shadow, hall } = ctx;
 
-    /* camera: on the loop, up and over the floor for the session, front on for the rack */
-    const back = ease.inOutSine(win(t, T.session - 1.0, T.rack + 0.4, 2.2, 1.6));
-    camera.position.set(0.15 + 0.05 * Math.sin(t * 0.13), 0.1 + 0.03 * Math.sin(t * 0.11) + 1.6 * back, 9.2 + 0.6 * back);
-    camera.lookAt(0.2 + 0.35 * back, -0.9 * back, -9.0 * back);
+    // house lights: night in the cockpit, then paper; the machine fades into the paper while a figure has the frame
+    const L = ease.inOutSine(ramp(t, 5.9, 11.8));
+    U.uHouse.value = L;
+    scene.background.copy(NIGHT).lerp(PAPER, L);
+    const vis = clamp01(win(t, -1, T.promise + 1.0, 0.1, 1.3) + win(t, T.motion - 1.6, T.equiv + 0.5, 1.2, 0.8) +
+                        win(t, T.tilt - 1.1, T.hands + 0.2, 1.0, 0.9) + 0.55 * win(t, T.coda - 1.6, 1e9, 1.6, 0.1) * (1 - 0.6 * ramp(t, T.card - 0.4, T.card + 0.6)));
+    U.uFade.value = 1 - vis;
+    rig.visible = vis > 0.002;
+    hall.visible = rig.visible && L > 0.01;
+    shadow.material.opacity = 0.1 * vis * L;
+    for (const m of LINES) { m.color.copy(m.userData.base).lerp(PAPER, 1 - vis); if (L < 1) m.color.lerp(CABIN_DARK, 1 - L); }
 
-    /* which pulse is on the chain now, and how far it has got */
-    const BEAT0 = T.beat + 0.6, BEATP = 0.24;
-    let cur = null, ms = 0, tot = TOTAL, lim = LIMIT, arrive = 1e9, chainScene = false;
-    if (t >= CHAIN_T[0] - 2.6 && t < T.tighter) {
-      chainScene = true;
-      ms = chainMs(t); arrive = CHAIN_T[5];
-      cur = [CHAIN_T[0], 0, 0];
-    } else if (t >= BEAT0 && t < T.session + 1.2) {
-      const i = Math.floor((t - BEAT0) / BEATP);
-      cur = [BEAT0 + i * BEATP, 700, i === 17 ? 46 : 0];
-    } else if (t >= PULSES[TIGHT][0] && t < T.beat) {
-      cur = PULSES[TIGHT];
-    } else if (t < T.chain - 0.3) {
-      for (const p of PULSES) if (t >= p[0] && p[0] < T.chain) cur = p;
-    }
-    if (cur && !chainScene) { ms = pulseMs(cur, t); tot = pulseTotal(cur); lim = limitOf(cur); arrive = cur[0] + tot / cur[1]; }
-    const late = cur ? tot > lim : false;
-    const fast = cur && cur[1] > 300;
-
-    /* act one: the rig answers the chain */
-    const act1 = win(t, -1, T.session + 1.2, 0.8, 1.2) * card;
-    const rigOn = (win(t, -1, T.beat + 1.0, 0.8, 1.2) + win(t, T.close - 0.2, T.card + 0.4, 1.2, 0.8)) * card;
-    // the answer: when the chain delivers, the cabin pitches and the horizon rolls; a late one jolts
-    const answer = cur && !fast ? ease.outCubic(ramp(t, arrive + 0.2, arrive + 0.55)) * (1 - ramp(t, arrive + 1.0, arrive + 1.6)) : 0;
-    const jolt = cur && !fast && late ? win(t, arrive + 0.2, arrive + 1.1, 0.05, 0.6) * Math.sin((t - arrive) * 46) : 0;
-    platform.position.set(0, 0.1 + 0.02 * Math.sin(t * 0.9) + 0.03 * jolt, 0);
-    platform.rotation.set(0.1 * answer + 0.05 * jolt, 0, 0.02 * Math.sin(t * 0.55 + 1) - 0.05 * jolt);
-    platform.updateMatrix();
-    view.rotation.z = -0.32 * answer + 0.15 * jolt;
-    view.position.y = 0.5 - 0.1 * answer;
-    const lp = legs.geometry.attributes.position.array, tmp = new THREE.Vector3();
-    LEG.forEach(([b, k], i) => {
-      tmp.copy(TOP[k]).applyMatrix4(platform.matrix);
-      lp.set([BASE[b].x, BASE[b].y, BASE[b].z, tmp.x, tmp.y, tmp.z], i * 6);
+    // the platform, then the legs from the base joints to the joints it carries
+    const p = poseAt(t);
+    move.position.set(p.x, HP + p.y, p.z);
+    move.rotation.set(p.rx, p.ry, p.rz, 'YXZ');
+    move.updateMatrixWorld(true);
+    legs.forEach((leg, i) => {
+      const b = BASE[i], top = move.localToWorld(TOPJ[(i + 1) % 6].clone());
+      const d = top.clone().sub(b).normalize(), bodyEnd = b.clone().addScaledVector(d, 1.45), r0 = bodyEnd.clone().addScaledVector(d, -0.1);
+      for (const l of leg.body) l.geometry.setPositions([b.x, b.y, b.z, bodyEnd.x, bodyEnd.y, bodyEnd.z]);
+      for (const l of leg.rod) l.geometry.setPositions([r0.x, r0.y, r0.z, top.x, top.y, top.z]);
+      joints[i].position.copy(b);
+      joints[6 + i].position.copy(top);
     });
-    legs.geometry.attributes.position.needsUpdate = true;
-    rig.rotation.y = -0.55 + 0.12 * Math.sin(t * 0.08);
-    for (const m of [baseRing, legs, topRing, cabin]) m.material.opacity = 0.75 * rigOn * dimClose;
-    dome.material.opacity = 0.6 * rigOn * dimClose;
-    horizon.material.opacity = 0.95 * rigOn * dimClose;
-    horizon.material.color.copy(jolt !== 0 ? COL.late : HDR(0.6, 1.6, 2.6));
-    wing.material.opacity = 0.9 * rigOn * dimClose;
 
-    /* the chain and its gates */
-    track.material.opacity = 0.55 * act1;
-    nodes.forEach(n => { n.material.opacity = 0.9 * act1; });
-    const tightOn = win(t, T.tighter + 0.4, T.beat + 0.4, 0.6, 0.8);
-    const gOld = win(t, 1.2, T.session + 1.2, 0.6, 1.0) * card;
-    gateOld.sheet.material.opacity = 0.35 * gOld * (1 - 0.6 * tightOn);
-    gateOld.edge.material.opacity = 0.9 * gOld * (1 - 0.5 * tightOn);
-    gateNew.g.position.x = xAt(gateMs(t));
-    gateNew.sheet.material.opacity = 0.45 * tightOn * card;
-    gateNew.edge.material.opacity = 0.95 * tightOn * card;
-    // the loop the input travels: down from the cabin, along the chain, back up
-    const loopOn = win(t, 0.2, T.beat + 0.6, 0.8, 0.8) * card;
-    downLine.material.opacity = 0.5 * loopOn;
-    upLine.material.opacity = 0.5 * loopOn;
-
-    if (cur) {
-      const fadeAt = chainScene ? T.tighter - 0.4 : arrive + (fast ? 0 : 0.5);
-      const lit = (1 - ramp(t, fadeAt, fadeAt + (fast ? 0.04 : 0.6))) * act1;
-      let acc = 0;
-      for (let k = 0; k < 5; k++) {
-        const a0 = acc, a1 = acc + (chainScene ? MS[k] : stageMs(cur, k));
-        acc = a1;
-        const seg = Math.max(0, Math.min(ms, a1) - a0);
-        trail[k].scale.x = Math.max(1e-3, seg * SC);
-        trail[k].position.set(xAt(a0) + seg * SC / 2, TY, 0);
-        trail[k].material.opacity = (seg > 0 ? 0.95 : 0) * lit;
-      }
-      const over = Math.max(0, ms - lim);
-      overrun.scale.x = Math.max(1e-3, over * SC);
-      overrun.position.set(xAt(lim) + over * SC / 2, TY, 0.01);
-      overrun.material.opacity = (over > 0 ? 1 : 0) * lit;
-      head.position.set(xAt(ms), TY, 0.02);
-      head.material.opacity = (ms < tot ? 1 : 0.5) * lit;
-      head.material.color.copy(over > 0 ? COL.late : COL.head);
-      // the runner: down the input path just before the pulse starts, up the answer path after it lands
-      const t0 = cur[0];
-      const dn = ramp(t, t0 - 0.45, t0), upu = ramp(t, arrive, arrive + 0.35);
-      if (!fast && t < t0 && dn > 0) { runner.position.copy(down.getPoint(ease.inOutSine(dn))); runner.material.opacity = act1; runner.material.color.copy(COL.input); }
-      else if (!fast && t >= arrive && upu < 1) { runner.position.copy(up.getPoint(ease.inOutSine(upu))); runner.material.opacity = act1; runner.material.color.copy(late ? COL.late : COL.stage[4]); }
-      else runner.material.opacity = 0;
+    // the camera: in the pilot's seat, out through the cut-away side, then one framing per act
+    let pos, look;
+    const eyeW = move.localToWorld(EYE.clone()), aheadW = move.localToWorld(EYE.clone().add(V(0, 0, -3)));
+    if (t < 6.2) { pos = eyeW; look = aheadW; }
+    else if (t < 13.2) {
+      const u = ease.inOutCubic(ramp(t, 6.2, 13.2)), mid = V(2.6, 5.0, 1.8), end = V(12.5, 6.4, 13.5);
+      pos = eyeW.clone().lerp(mid, u).lerp(mid.clone().lerp(end, u), u);
+      look = aheadW.clone().lerp(V(0, 3.1, -0.8), ease.inOutSine(ramp(t, 6.4, 12.6)));
+    } else if (t < T.motion - 1.6) {
+      const u = ease.inOutSine(ramp(t, 13.2, T.promise + 1.0));
+      pos = V(12.5, 6.4, 13.5).lerp(V(15.5, 5.2, 7.5), u); look = V(0, 3.1, -0.8).lerp(V(0, 3.3, -0.6), u);
+    } else if (t < T.tilt - 1.0) {
+      pos = V(11.8, 6.6, 11.6).lerp(V(10.6, 6.0, 12.4), ease.inOutSine(ramp(t, T.motion - 1.6, T.equiv + 0.6))); look = V(0, 3.2, -0.8);
+    } else if (t < T.coda - 1.6) {
+      pos = V(21.5, 4.1, -0.6).lerp(V(21.0, 4.3, 0.6), ease.inOutSine(ramp(t, T.tilt - 1.0, T.hands + 0.4))); look = V(0, 3.6, -0.6);
     } else {
-      trail.forEach(m => { m.material.opacity = 0; });
-      overrun.material.opacity = 0; head.material.opacity = 0; runner.material.opacity = 0;
+      pos = V(14.5, 7.2, 15.5).lerp(V(16.0, 6.6, 12.5), ease.inOutSine(ramp(t, T.coda - 1.6, D))); look = V(0, 3.0, -0.6);
+    }
+    camera.position.copy(pos);
+    if (t < 6.2) camera.up.copy(move.localToWorld(V(0, 1, 0)).sub(move.localToWorld(V(0, 0, 0))).normalize());
+    else camera.up.set(0, 1, 0);
+    camera.lookAt(look);
+    const side = win(t, T.tilt - 1.0, T.hands + 0.2, 0.8, 0.6);
+    const sx = lerp(0, 0.2, ease.inOutSine(ramp(t, 6.4, 12.6))) + 0.02 * side, sy = lerp(-0.04, -0.17, side);
+    ctx.setViewShift(sx, sy);
+    camera.updateMatrixWorld(true);
+
+    // the night outside, rendered only when it can be seen
+    const tau = rwTau(t), rp = rwPose(tau);
+    const mirrorSeen = t < T.promise + 1.2 || (t > T.motion - 2 && t < T.hands + 0.4) || t > T.coda - 1.8;
+    const insetOn = win(t, T.agree - 0.2, T.washout + 2, 0.5, 0.5);
+    if (mirrorSeen || insetOn > 0) {
+      const jit = rp.alt < 0.5 ? rp.v / 70 : 0;
+      rw.cam.position.set(0.012 * jit * Math.sin(tau * 31), 4.2 + rp.alt + 0.02 * jit * Math.sin(tau * 47) * Math.sin(tau * 13), rp.z);
+      rw.cam.rotation.set(rp.pitch * Math.PI / 180 + 0.0012 * jit * Math.sin(tau * 23), 0, 0, 'YXZ');
+      rw.cam.updateMatrixWorld(true);
+      sky.position.copy(rw.cam.position);
+      runwayMat.uniforms.uPool.value.set(0, rp.z - 70, Math.exp(-rp.alt / 18));
+      const prev = renderer.getRenderTarget();
+      renderer.setRenderTarget(rt);
+      renderer.render(rw.scene, rw.cam);
+      renderer.setRenderTarget(prev);
     }
 
-    /* act two: frames on the beat, then the session floor */
-    const beatOn = win(t, T.beat + 0.3, T.session + 2.0, 0.8, 1.4) * card;
-    for (let i = 0; i < 40; i++) {
-      const born = BEAT0 + i * BEATP + 0.2, age = t - born;
-      const k = ease.outCubic(Math.min(1, Math.max(0, age) / 1.6));
-      fpos.set([xAt(TOTAL) + 0.25 + 0.5 * k, TY + 0.9 * k * k, -6 * k], i * 3);
-      const isLate = i === 17;
-      fa[i] = (age > 0 ? 1 : 0) * (1 - ramp(age, 1.0, 1.6)) * beatOn * (isLate ? 1.2 : 0.85);
-      const c = isLate ? COL.late : COL.ok;
-      fc.set([c.r, c.g, c.b], i * 3);
+    // the inset, placed on screen in stage pixels under its frame
+    inset.visible = insetOn > 0.001;
+    if (inset.visible) {
+      const d = 3, tanH = Math.tan(camera.fov * Math.PI / 360), Wd = 1920, Hd = 1080;
+      const xn = (120 + 280 - sx * Wd) / (Wd / 2) - 1, yn = 1 - (618 + 140 - sy * Hd) / (Hd / 2);
+      inset.position.set(xn * d * tanH * camera.aspect, yn * d * tanH, -d);
+      const wW = 556 / (Wd / 2) * d * tanH * camera.aspect;
+      inset.scale.set(wW, wW * RTH / RTW, 1);
+      inset.material.opacity = insetOn;
     }
-    frames.geometry.attributes.position.needsUpdate = true;
-    frames.geometry.attributes.aA.needsUpdate = true;
-    frames.geometry.attributes.aC.needsUpdate = true;
-    frames.material.uniforms.uPR.value = pr;
-    const ribOn = win(t, T.session - 0.2, T.rack + 0.6, 1.0, 1.2) * card;
-    const fill = ease.inOutSine(ramp(t, T.session + 1.5, T.session + 7.0));
-    for (let i = 0; i < RN; i++) ra[i] = (i / RN < fill ? 1 : 0) * 0.4 * ribOn;
-    ribbon.geometry.attributes.aA.needsUpdate = true;
-    ribbon.material.uniforms.uPR.value = pr;
-    const burst = ease.inOutSine(ramp(t, T.cluster + 0.4, T.cluster + 2.6));
-    const n = SCATTER.length;
-    for (let j = 0; j < n; j++) {
-      const shown = SCATTER[j] / RN < fill ? 1 : 0;
-      const pulse = 0.75 + 0.25 * Math.sin(t * 5 + j);
-      ba[j] = shown * (1 - burst) * ribOn * pulse;
-      ba[n + j] = burst * ribOn * pulse;
-    }
-    bad.geometry.attributes.aA.needsUpdate = true;
-    bad.material.uniforms.uPR.value = pr;
 
-    /* act three: the rack */
-    const rackOn = win(t, T.rack - 0.2, T.measure + 0.2, 0.8, 0.8) * card;
-    const f = rackFrame(t), ph = rackPhase(t);
-    const row = FINISH[Math.min(f, FINISH.length - 1)];
-    const grow = Math.min(1, ph / GROW);
-    const enforce = ramp(t, ENFORCE, ENFORCE + 0.7);
-    let slowest = 0, frameLate = false;
-    bars.forEach((b, h) => {
-      const fin = row[h];
-      const cap = enforce > 0 && fin > 0.98 ? 0.98 : fin;
-      const len = Math.min(grow * 1.35, cap);
-      slowest = Math.max(slowest, len);
-      b.bar.scale.x = Math.max(1e-3, len * RL);
-      b.bar.position.set(RX + len * RL / 2, b.y, 0);
-      b.rail.material.opacity = 0.35 * rackOn;
-      const caught = enforce > 0 && fin > 0.98 && len >= 0.98;
-      b.bar.material.color.copy(caught ? COL.amber : COL.ok).multiplyScalar(0.34);
-      b.bar.material.opacity = 0.9 * rackOn;
-      hostGates[h].material.opacity = 0.9 * enforce * rackOn;
-      if (len > 1.0) frameLate = true;
-    });
-    if (frameLate) bars.forEach(b => b.bar.material.color.lerp(COL.late.clone().multiplyScalar(0.55), 0.85));
-    deadline.material.opacity = 0.6 * rackOn;
-    closer.position.x = RX + slowest * RL;
-    closer.material.opacity = (ph > GROW + 0.05 ? 1 : 0.55) * rackOn;
-    closer.material.color.copy(frameLate ? COL.late : COL.head);
-
-    grade.uniforms.uFade.value = 1 - 0.86 * ramp(t, T.card - 0.2, T.card + 0.8);
-    dust.material.uniforms.uTime.value = t;
-    dust.material.uniforms.uPR.value = pr;
+    person.lookAt(camera.position.x, person.position.y, camera.position.z);
   },
 };
 

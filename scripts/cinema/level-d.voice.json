@@ -1,77 +1,191 @@
 {
  "film": "level-d",
  "voice": "edge:en-GB-RyanNeural",
- "rate": "+6%",
+ "rate": "+0%",
  "music": {
   "file": "dist/music/mixkit-587-discover.mp3",
   "rise": 30,
-  "rise_on": "input"
+  "rise_on": "reveal"
  },
- "authored_duration": 111.8,
+ "authored_duration": 316.5,
  "lines": [
   {
-   "id": "hook",
-   "at": 0.0,
-   "source": "old lab film, line 0: fast on average, can one late response break the budget; transport delay ceiling (150 ms at Level C/D) against a blink of roughly 100 to 400 ms. Thesis stated first.",
-   "text": "In a flight simulator, a late answer is a wrong answer. It has to answer its pilot within a blink, every single time. Not on average."
+   "id": "open",
+   "at": 4.5,
+   "source": "cold open over a night take-off drawn by the film",
+   "text": "This take-off never left the ground."
   },
   {
-   "id": "input",
-   "at": 10.8,
-   "source": "old lab film, lines 1 and 3: transport delay runs from a primary flight control input to the motion, visual or instrument response (FAA Part 60, EASA CS-FSTD(A)); a device over the limit does not qualify",
-   "text": "When the pilot moves the controls, the view and the cabin must follow within that blink. It is written into the rules: a simulator that misses it cannot be used to train pilots."
+   "id": "reveal",
+   "at": 9.8,
+   "source": "14 CFR Part 60, Appendix F, definition of a full flight simulator: a replica of a specific aircraft type's flight deck with a visual system and a motion cueing system; Level C and D require a six-degrees-of-freedom synergistic platform (Part 60 Table A1A/C1A item 5.c)",
+   "text": "It happened in here: a full-flight simulator. A copy of an airliner's cockpit, standing on six legs."
+  },
+  {
+   "id": "trust",
+   "at": 18.4,
+   "source": "14 CFR Part 121, Appendix H (Advanced Simulation), Level C and D FFS: all pilot flight training and checking required by part 121 except the operating experience of 121.434, the line check of 121.440 and the aircraft's exterior and interior inspection; operating experience is flown in line operations under a check pilot",
+   "text": "The best of them stand in for the aircraft itself. A pilot can do all the flight training and checking for a new airliner in one, and first fly the real aircraft on an airline flight, with a check pilot beside them."
+  },
+  {
+   "id": "promise",
+   "at": 32.0,
+   "source": "framing of the film: fidelity (the senses) and timing (the transport delay limit), both proven by test",
+   "text": "How does a machine earn that much trust? It has to fool every sense, prove it, and never be late."
+  },
+  {
+   "id": "senses",
+   "at": 42.4,
+   "source": "Part 60 Appendix A, Attachment 1: general requirements grouped as flight deck, programming, motion, visual and sound systems; control forces are objective tests in Attachment 2",
+   "text": "A pilot flies with more than eyes. The inner ear feels motion, the hands feel the controls, and the ears and the seat feel every rumble. The simulator must feed them all, and keep them in agreement."
+  },
+  {
+   "id": "eyes",
+   "at": 56.2,
+   "source": "Part 60 Appendix C, Attachment 2, 18.a (visual display systems): on a non-collimated display the angle to a point depends on where the viewer sits",
+   "text": "Start with the eyes. On an ordinary screen, the two pilots would see the runway in different directions."
+  },
+  {
+   "id": "mirror",
+   "at": 65.1,
+   "source": "Part 60 Appendix C, Attachment 2, 18.a: in a collimated display light rays from a given point are parallel, so the runway appears straight ahead to both crew members",
+   "text": "So the picture is shown in a huge curved mirror, which sends its light out in parallel rays, as if from far away. Both pilots see the runway straight ahead."
+  },
+  {
+   "id": "motion",
+   "at": 77.4,
+   "source": "six-degrees-of-freedom platform (pitch, roll, yaw, heave, sway, surge) with a limited excursion",
+   "text": "Now the inner ear. Six actuators can tilt and slide the whole cabin, but only a short way. So the simulator borrows a trick from physics."
+  },
+  {
+   "id": "equiv",
+   "at": 88.7,
+   "source": "the otolith organs sense the gravito-inertial force and cannot separate tilt from linear acceleration; the equivalence principle of general relativity",
+   "text": "Your inner ear can't tell gravity from acceleration. Physicists call it the equivalence principle; Einstein built general relativity on it."
+  },
+  {
+   "id": "tilt",
+   "at": 98.9,
+   "source": "Part 60 Appendix A, Attachment 2 (motion system frequency response test): when simulating forward acceleration the simulator is accelerated momentarily forward for the onset cue and simultaneously tilted nose-up to generate a sustained specific force",
+   "text": "So for a take-off, the cabin gives a quick shove forward, then tilts its nose up, too slowly to notice. Gravity presses you back into the seat, just like acceleration."
+  },
+  {
+   "id": "agree",
+   "at": 111.0,
+   "source": "the visual display is mounted on the moving cabin, so the scene stays level relative to the pilot; Part 60: the angular rates of the tilt do not occur in the aircraft and should be minimised",
+   "text": "The screen tilts with you, so the runway still looks level. Eyes and inner ear agree, and the brain believes it."
+  },
+  {
+   "id": "washout",
+   "at": 119.5,
+   "source": "classical washout: high-pass filtered motion returns the platform to neutral below the pilot's perception thresholds",
+   "text": "Then the cabin creeps back to the middle, below what you can sense, ready for the next cue."
+  },
+  {
+   "id": "hands",
+   "at": 126.5,
+   "source": "Part 60 Appendix A: control loading validated by static and dynamic control force tests; sound tested against the aircraft for Level D (a device failing sound tolerances can be qualified at Level C); motion effects include runway rumble",
+   "text": "Motors make the controls push back like the real ones, and the sound and the runway rumble are matched to the aircraft too."
+  },
+  {
+   "id": "levels",
+   "at": 136.6,
+   "source": "14 CFR Part 60: full flight simulators are qualified at Levels A, B, C and D; EASA CS-FSTD(A) uses the same four levels",
+   "text": "Then it has to prove it. Regulators grade these simulators from Level A to Level D, and D is the highest."
+  },
+  {
+   "id": "tests",
+   "at": 145.6,
+   "source": "Part 60 Appendix A, Attachment 2: each objective test result is compared against validation data (flight test data) within stated tolerances; a driver program that runs the tests automatically is required for Level C and D",
+   "text": "To earn it, the simulator flies a long list of tests. Each replays a maneuver from the real aircraft's flight tests, and the simulator must stay inside a narrow band around what the aircraft did."
+  },
+  {
+   "id": "yearly",
+   "at": 159.9,
+   "source": "14 CFR 60.19(a): the sponsor accomplishes all appropriate objective tests each year and completes a functional preflight check within the preceding 24 hours",
+   "text": "Every test is run again each year, and the machine must pass a check within a day before anyone trains in it."
+  },
+  {
+   "id": "bridge",
+   "at": 167.3,
+   "source": "transport delay is one of the objective tests (Part 60 Appendix A, Attachment 2, paragraph 15)",
+   "text": "One of those tests is about time."
+  },
+  {
+   "id": "delay",
+   "at": 172.9,
+   "source": "Part 60 Table A2A, transport delay: 150 ms for Level C and D, measured from the control input through the host computer to the motion, instrument and visual response (Attachment 2, paragraph 15); a blink lasts roughly 100 to 400 ms",
+   "text": "When the pilot moves the controls, the view, the instruments and the cabin must respond within a hundred and fifty milliseconds, about the blink of an eye. Miss it, and the simulator does not qualify."
   },
   {
    "id": "chain",
-   "at": 22.9,
+   "at": 186.0,
    "source": "old lab film, line 2: every stage spends the budget, image generation the largest share; the stages are the generic chain of a full-flight simulator",
-   "text": "In that blink, the signal crosses a chain of computers. One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screen and moves the cabin."
+   "text": "In that blink, the signal crosses a chain of computers. One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screens and moves the cabin."
   },
   {
    "id": "tighter",
-   "at": 39.6,
-   "source": "old lab film, line 4: EASA CS-FSTD Issue 1 (ED Decision 2026/008/R, p. 467) sets 100 ms at fidelity level S for new devices",
-   "text": "Europe's newest standard makes that blink shorter for the most realistic new simulators. The same chain no longer makes it."
+   "at": 204.5,
+   "source": "EASA CS-FSTD Issue 1 (ED Decision 2026/008/R, Subpart D test 6.a.1, p. 467): 100 ms at fidelity level S for new devices",
+   "text": "Europe's newest standard cuts that to a hundred milliseconds for the most realistic new simulators. A chain that fit before can now miss."
   },
   {
-   "id": "beat",
-   "at": 47.6,
-   "source": "old lab film, lines 5 to 8: a fixed cadence (60 Hz), hour-long sessions; a four-hour session at 60 Hz is 864,000 frames and one in a thousand is 864 stutters; a deadline is never met on average",
-   "text": "And not once, but sixty times a second, for hours. Lay out one training session, frame by frame. Even one slip in a thousand comes back hundreds of times, and every one is a jolt the pilot can feel."
+   "id": "frames",
+   "at": 214.6,
+   "source": "old lab film, lines 5 and 6: a fixed cadence (60 Hz), hour-long sessions; a four-hour session at 60 Hz is 4 x 3600 x 60 = 864,000 frames",
+   "text": "And it's not done once. The loop runs sixty times a second, for hours: a four-hour session is eight hundred and sixty-four thousand frames."
   },
   {
-   "id": "cluster",
-   "at": 64.0,
-   "source": "old lab film, line 9: real overruns cluster, so independence is the optimistic case",
-   "text": "Worse, the slips bunch together, so the pilot feels a stutter, not a blip."
+   "id": "slips",
+   "at": 225.4,
+   "source": "old lab film, lines 7 to 9: E[K] = N p, so one frame in a thousand is 864 stutters a session; real overruns cluster",
+   "text": "If one frame in a thousand slips, that's eight hundred and sixty-four jolts. And slips come in bunches, so the pilot feels a stutter, not a blip."
   },
   {
    "id": "rack",
-   "at": 69.4,
+   "at": 236.8,
    "source": "old lab film, lines 10 and 11: a rack of hosts publishes into one frame, which ends when the last host reports",
    "text": "Why do frames slip? The work is split across a rack of computers, and every frame has to wait for the slowest one."
   },
   {
-   "id": "straggler",
-   "at": 77.2,
+   "id": "budget",
+   "at": 245.6,
    "source": "old lab film, lines 13 and 14: one straggler makes the frame late; budgets are allocated and enforced per host, a system average constrains nobody",
-   "text": "One slow computer, and the whole frame is late. An average hides it. So every computer gets its own time budget, checked every frame."
+   "text": "One slow computer makes the whole frame late, and an average hides it. So every computer gets its own time budget, checked every frame."
   },
   {
-   "id": "measure",
-   "at": 87.0,
+   "id": "count",
+   "at": 255.6,
    "source": "old lab film, lines 15 to 17: instrument while the session runs; the overrun counter catches what sampled step time misses",
-   "text": "And every overrun is counted while the simulator runs. Spot checks miss a short spike. A counter does not."
+   "text": "And every overrun is counted while it runs. A spot check can miss a short spike; a counter can't."
   },
   {
-   "id": "close",
-   "at": 95.5,
-   "source": "old lab film, line 18 (closing line, in plainer words); the series link to the deadline film",
-   "text": "That is determinism: the slowest frame counts, not the average. And it is the rule any AI added to this loop will have to keep."
+   "id": "determinism",
+   "at": 264.2,
+   "source": "old lab film, closing line, in plainer words",
+   "text": "That's determinism: the slowest frame counts, not the average."
+  },
+  {
+   "id": "ai",
+   "at": 271.9,
+   "source": "the author's view; many learned models take input-dependent time (a generative model's answer length, for one), so their latency has a tail",
+   "text": "Next, we'll want AI inside loops like this: models that see, predict and decide. Many take longer on some inputs than on others, and their slowest answers are exactly what this rule punishes."
+  },
+  {
+   "id": "thesis",
+   "at": 285.7,
+   "source": "the author's thesis, labelled as such on screen",
+   "text": "So here is the thesis. A simulator is trusted because it brings evidence: tests against the real aircraft, and timing proven every frame. AI in the loop must earn trust the same way: with evidence, not averages."
+  },
+  {
+   "id": "coda",
+   "at": 301.8,
+   "source": "closing line",
+   "text": "Fidelity earns the trust. Determinism keeps it."
   },
   {
    "id": "card",
-   "at": 105.6,
+   "at": 308.5,
    "source": "",
    "text": ""
   }

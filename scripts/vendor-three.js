@@ -24,6 +24,10 @@ const ENTRIES = [
   'postprocessing/RenderPass.js',
   'postprocessing/UnrealBloomPass.js',
   'postprocessing/OutputPass.js',
+  // fat lines: WebGL draws GL_LINES one pixel wide whatever the material says,
+  // which is too thin for an ink drawing on paper (level-d)
+  'lines/LineSegments2.js',
+  'lines/Line2.js',
 ];
 
 function copy(from, to) {

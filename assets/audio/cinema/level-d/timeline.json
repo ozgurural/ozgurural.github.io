@@ -1,202 +1,4044 @@
 {
  "film": "level-d",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 112.15,
- "authored": 111.8,
+ "duration": 316.85,
+ "authored": 316.5,
  "anchors": [
   [
    0.0,
    0.0
   ],
   [
-   11.15,
-   10.8
+   10.15,
+   9.8
   ],
   [
-   23.25,
-   22.9
+   18.75,
+   18.4
   ],
   [
-   39.95,
-   39.6
+   32.35,
+   32.0
   ],
   [
-   47.95,
-   47.6
+   42.75,
+   42.4
   ],
   [
-   64.35,
-   64.0
+   56.55,
+   56.2
   ],
   [
-   69.75,
-   69.4
+   65.45,
+   65.1
   ],
   [
-   77.55,
-   77.2
+   77.75,
+   77.4
   ],
   [
-   87.35,
-   87.0
+   89.05,
+   88.7
   ],
   [
-   95.85,
-   95.5
+   99.25,
+   98.9
   ],
   [
-   105.95,
-   105.6
+   111.35,
+   111.0
   ],
   [
-   112.15,
-   111.8
+   119.85,
+   119.5
+  ],
+  [
+   126.85,
+   126.5
+  ],
+  [
+   136.95,
+   136.6
+  ],
+  [
+   145.95,
+   145.6
+  ],
+  [
+   160.25,
+   159.9
+  ],
+  [
+   167.65,
+   167.3
+  ],
+  [
+   173.25,
+   172.9
+  ],
+  [
+   186.35,
+   186.0
+  ],
+  [
+   204.85,
+   204.5
+  ],
+  [
+   214.95,
+   214.6
+  ],
+  [
+   225.75,
+   225.4
+  ],
+  [
+   237.15,
+   236.8
+  ],
+  [
+   245.95,
+   245.6
+  ],
+  [
+   255.95,
+   255.6
+  ],
+  [
+   264.55,
+   264.2
+  ],
+  [
+   272.25,
+   271.9
+  ],
+  [
+   286.05,
+   285.7
+  ],
+  [
+   302.15,
+   301.8
+  ],
+  [
+   308.85,
+   308.5
+  ],
+  [
+   316.85,
+   316.5
   ]
  ],
  "audio": "soundtrack.mp3",
  "lines": [
   {
-   "id": "hook",
-   "at": 0.0,
-   "real": 0.35,
-   "speech": 9.695,
-   "len": 9.91,
-   "head": 0.215,
-   "file": "hook.mp3",
-   "file_start": 0.135,
-   "hash": "5a745e78ce01",
-   "text": "In a flight simulator, a late answer is a wrong answer. It has to answer its pilot within a blink, every single time. Not on average.",
-   "source": "old lab film, line 0: fast on average, can one late response break the budget; transport delay ceiling (150 ms at Level C/D) against a blink of roughly 100 to 400 ms. Thesis stated first."
+   "id": "open",
+   "at": 4.5,
+   "real": 4.85,
+   "speech": 2.662,
+   "len": 2.88,
+   "head": 0.218,
+   "file": "open.mp3",
+   "file_start": 4.632,
+   "hash": "88e3e974548f",
+   "text": "This take-off never left the ground.",
+   "source": "cold open over a night take-off drawn by the film",
+   "words": [
+    [
+     "This",
+     0.0,
+     0.275
+    ],
+    [
+     "take-off",
+     0.288,
+     0.688
+    ],
+    [
+     "never",
+     0.7,
+     0.95
+    ],
+    [
+     "left",
+     0.962,
+     1.2
+    ],
+    [
+     "the",
+     1.212,
+     1.287
+    ],
+    [
+     "ground",
+     1.3,
+     1.875
+    ]
+   ]
   },
   {
-   "id": "input",
-   "at": 10.8,
-   "real": 11.15,
-   "speech": 10.142,
+   "id": "reveal",
+   "at": 9.8,
+   "real": 10.15,
+   "speech": 7.617,
+   "len": 7.85,
+   "head": 0.233,
+   "file": "reveal.mp3",
+   "file_start": 9.917,
+   "hash": "d79c14cb4cb9",
+   "text": "It happened in here: a full-flight simulator. A copy of an airliner's cockpit, standing on six legs.",
+   "source": "14 CFR Part 60, Appendix F, definition of a full flight simulator: a replica of a specific aircraft type's flight deck with a visual system and a motion cueing system; Level C and D require a six-degrees-of-freedom synergistic platform (Part 60 Table A1A/C1A item 5.c)",
+   "words": [
+    [
+     "It",
+     0.0,
+     0.175
+    ],
+    [
+     "happened",
+     0.187,
+     0.487
+    ],
+    [
+     "in",
+     0.5,
+     0.588
+    ],
+    [
+     "here",
+     0.6,
+     1.012
+    ],
+    [
+     "a",
+     1.212,
+     1.25
+    ],
+    [
+     "full-flight",
+     1.263,
+     1.85
+    ],
+    [
+     "simulator",
+     1.862,
+     2.575
+    ],
+    [
+     "A",
+     3.438,
+     3.563
+    ],
+    [
+     "copy",
+     3.575,
+     3.887
+    ],
+    [
+     "of",
+     3.9,
+     4.0
+    ],
+    [
+     "an",
+     4.012,
+     4.125
+    ],
+    [
+     "airliner's",
+     4.137,
+     4.625
+    ],
+    [
+     "cockpit",
+     4.637,
+     5.163
+    ],
+    [
+     "standing",
+     5.363,
+     5.825
+    ],
+    [
+     "on",
+     5.838,
+     5.975
+    ],
+    [
+     "six",
+     5.988,
+     6.313
+    ],
+    [
+     "legs",
+     6.325,
+     6.862
+    ]
+   ]
+  },
+  {
+   "id": "trust",
+   "at": 18.4,
+   "real": 18.75,
+   "speech": 12.65,
+   "len": 12.89,
+   "head": 0.24,
+   "file": "trust.mp3",
+   "file_start": 18.51,
+   "hash": "421c49c966c2",
+   "text": "The best of them stand in for the aircraft itself. A pilot can do all the flight training and checking for a new airliner in one, and first fly the real aircraft on an airline flight, with a check pilot beside them.",
+   "source": "14 CFR Part 121, Appendix H (Advanced Simulation), Level C and D FFS: all pilot flight training and checking required by part 121 except the operating experience of 121.434, the line check of 121.440 and the aircraft's exterior and interior inspection; operating experience is flown in line operations under a check pilot",
+   "words": [
+    [
+     "The",
+     0.0,
+     0.163
+    ],
+    [
+     "best",
+     0.175,
+     0.462
+    ],
+    [
+     "of",
+     0.475,
+     0.537
+    ],
+    [
+     "them",
+     0.55,
+     0.675
+    ],
+    [
+     "stand",
+     0.687,
+     1.025
+    ],
+    [
+     "in",
+     1.037,
+     1.15
+    ],
+    [
+     "for",
+     1.162,
+     1.25
+    ],
+    [
+     "the",
+     1.263,
+     1.4
+    ],
+    [
+     "aircraft",
+     1.412,
+     1.913
+    ],
+    [
+     "itself",
+     1.925,
+     2.538
+    ],
+    [
+     "A",
+     3.4,
+     3.55
+    ],
+    [
+     "pilot",
+     3.563,
+     3.962
+    ],
+    [
+     "can",
+     3.975,
+     4.113
+    ],
+    [
+     "do",
+     4.125,
+     4.3
+    ],
+    [
+     "all",
+     4.312,
+     4.45
+    ],
+    [
+     "the",
+     4.462,
+     4.55
+    ],
+    [
+     "flight",
+     4.562,
+     4.838
+    ],
+    [
+     "training",
+     4.85,
+     5.225
+    ],
+    [
+     "and",
+     5.238,
+     5.363
+    ],
+    [
+     "checking",
+     5.375,
+     5.687
+    ],
+    [
+     "for",
+     5.7,
+     5.838
+    ],
+    [
+     "a",
+     5.85,
+     5.913
+    ],
+    [
+     "new",
+     5.925,
+     6.188
+    ],
+    [
+     "airliner",
+     6.2,
+     6.675
+    ],
+    [
+     "in",
+     6.687,
+     6.8
+    ],
+    [
+     "one",
+     6.812,
+     7.125
+    ],
+    [
+     "and",
+     7.35,
+     7.488
+    ],
+    [
+     "first",
+     7.5,
+     7.862
+    ],
+    [
+     "fly",
+     7.875,
+     8.088
+    ],
+    [
+     "the",
+     8.1,
+     8.212
+    ],
+    [
+     "real",
+     8.225,
+     8.512
+    ],
+    [
+     "aircraft",
+     8.525,
+     9.037
+    ],
+    [
+     "on",
+     9.05,
+     9.138
+    ],
+    [
+     "an",
+     9.15,
+     9.25
+    ],
+    [
+     "airline",
+     9.263,
+     9.675
+    ],
+    [
+     "flight",
+     9.687,
+     10.1
+    ],
+    [
+     "with",
+     10.287,
+     10.412
+    ],
+    [
+     "a",
+     10.425,
+     10.475
+    ],
+    [
+     "check",
+     10.488,
+     10.775
+    ],
+    [
+     "pilot",
+     10.787,
+     11.162
+    ],
+    [
+     "beside",
+     11.175,
+     11.6
+    ],
+    [
+     "them",
+     11.613,
+     11.888
+    ]
+   ]
+  },
+  {
+   "id": "promise",
+   "at": 32.0,
+   "real": 32.35,
+   "speech": 6.96,
+   "len": 7.2,
+   "head": 0.24,
+   "file": "promise.mp3",
+   "file_start": 32.11,
+   "hash": "10d56b33e178",
+   "text": "How does a machine earn that much trust? It has to fool every sense, prove it, and never be late.",
+   "source": "framing of the film: fidelity (the senses) and timing (the transport delay limit), both proven by test",
+   "words": [
+    [
+     "How",
+     0.0,
+     0.25
+    ],
+    [
+     "does",
+     0.262,
+     0.412
+    ],
+    [
+     "a",
+     0.425,
+     0.475
+    ],
+    [
+     "machine",
+     0.488,
+     0.925
+    ],
+    [
+     "earn",
+     0.938,
+     1.088
+    ],
+    [
+     "that",
+     1.1,
+     1.263
+    ],
+    [
+     "much",
+     1.275,
+     1.487
+    ],
+    [
+     "trust",
+     1.5,
+     2.012
+    ],
+    [
+     "It",
+     2.875,
+     3.05
+    ],
+    [
+     "has",
+     3.063,
+     3.237
+    ],
+    [
+     "to",
+     3.25,
+     3.338
+    ],
+    [
+     "fool",
+     3.35,
+     3.625
+    ],
+    [
+     "every",
+     3.637,
+     3.838
+    ],
+    [
+     "sense",
+     3.85,
+     4.338
+    ],
+    [
+     "prove",
+     4.475,
+     4.8
+    ],
+    [
+     "it",
+     4.812,
+     4.987
+    ],
+    [
+     "and",
+     5.187,
+     5.338
+    ],
+    [
+     "never",
+     5.35,
+     5.625
+    ],
+    [
+     "be",
+     5.637,
+     5.737
+    ],
+    [
+     "late",
+     5.75,
+     6.2
+    ]
+   ]
+  },
+  {
+   "id": "senses",
+   "at": 42.4,
+   "real": 42.75,
+   "speech": 12.643,
+   "len": 12.82,
+   "head": 0.177,
+   "file": "senses.mp3",
+   "file_start": 42.573,
+   "hash": "f3e911332d83",
+   "text": "A pilot flies with more than eyes. The inner ear feels motion, the hands feel the controls, and the ears and the seat feel every rumble. The simulator must feed them all, and keep them in agreement.",
+   "source": "Part 60 Appendix A, Attachment 1: general requirements grouped as flight deck, programming, motion, visual and sound systems; control forces are objective tests in Attachment 2",
+   "words": [
+    [
+     "A",
+     0.0,
+     0.138
+    ],
+    [
+     "pilot",
+     0.15,
+     0.537
+    ],
+    [
+     "flies",
+     0.55,
+     0.925
+    ],
+    [
+     "with",
+     0.938,
+     1.075
+    ],
+    [
+     "more",
+     1.088,
+     1.25
+    ],
+    [
+     "than",
+     1.263,
+     1.412
+    ],
+    [
+     "eyes",
+     1.425,
+     1.925
+    ],
+    [
+     "The",
+     2.788,
+     2.938
+    ],
+    [
+     "inner",
+     2.95,
+     3.2
+    ],
+    [
+     "ear",
+     3.212,
+     3.413
+    ],
+    [
+     "feels",
+     3.425,
+     3.775
+    ],
+    [
+     "motion",
+     3.788,
+     4.188
+    ],
+    [
+     "the",
+     4.4,
+     4.475
+    ],
+    [
+     "hands",
+     4.488,
+     4.825
+    ],
+    [
+     "feel",
+     4.838,
+     5.075
+    ],
+    [
+     "the",
+     5.088,
+     5.163
+    ],
+    [
+     "controls",
+     5.175,
+     5.788
+    ],
+    [
+     "and",
+     5.975,
+     6.075
+    ],
+    [
+     "the",
+     6.088,
+     6.187
+    ],
+    [
+     "ears",
+     6.2,
+     6.55
+    ],
+    [
+     "and",
+     6.562,
+     6.65
+    ],
+    [
+     "the",
+     6.663,
+     6.75
+    ],
+    [
+     "seat",
+     6.762,
+     7.012
+    ],
+    [
+     "feel",
+     7.025,
+     7.325
+    ],
+    [
+     "every",
+     7.338,
+     7.55
+    ],
+    [
+     "rumble",
+     7.562,
+     8.062
+    ],
+    [
+     "The",
+     8.925,
+     9.075
+    ],
+    [
+     "simulator",
+     9.088,
+     9.638
+    ],
+    [
+     "must",
+     9.65,
+     9.912
+    ],
+    [
+     "feed",
+     9.925,
+     10.163
+    ],
+    [
+     "them",
+     10.175,
+     10.288
+    ],
+    [
+     "all",
+     10.3,
+     10.525
+    ],
+    [
+     "and",
+     10.7,
+     10.8
+    ],
+    [
+     "keep",
+     10.812,
+     11.05
+    ],
+    [
+     "them",
+     11.062,
+     11.175
+    ],
+    [
+     "in",
+     11.187,
+     11.25
+    ],
+    [
+     "agreement",
+     11.263,
+     11.825
+    ]
+   ]
+  },
+  {
+   "id": "eyes",
+   "at": 56.2,
+   "real": 56.55,
+   "speech": 7.271,
+   "len": 7.51,
+   "head": 0.239,
+   "file": "eyes.mp3",
+   "file_start": 56.311,
+   "hash": "36dee1bb2b69",
+   "text": "Start with the eyes. On an ordinary screen, the two pilots would see the runway in different directions.",
+   "source": "Part 60 Appendix C, Attachment 2, 18.a (visual display systems): on a non-collimated display the angle to a point depends on where the viewer sits",
+   "words": [
+    [
+     "Start",
+     0.0,
+     0.412
+    ],
+    [
+     "with",
+     0.425,
+     0.55
+    ],
+    [
+     "the",
+     0.562,
+     0.675
+    ],
+    [
+     "eyes",
+     0.687,
+     1.188
+    ],
+    [
+     "On",
+     2.05,
+     2.262
+    ],
+    [
+     "an",
+     2.275,
+     2.387
+    ],
+    [
+     "ordinary",
+     2.4,
+     2.813
+    ],
+    [
+     "screen",
+     2.825,
+     3.262
+    ],
+    [
+     "the",
+     3.438,
+     3.538
+    ],
+    [
+     "two",
+     3.55,
+     3.762
+    ],
+    [
+     "pilots",
+     3.775,
+     4.212
+    ],
+    [
+     "would",
+     4.225,
+     4.387
+    ],
+    [
+     "see",
+     4.4,
+     4.575
+    ],
+    [
+     "the",
+     4.588,
+     4.687
+    ],
+    [
+     "runway",
+     4.7,
+     5.187
+    ],
+    [
+     "in",
+     5.2,
+     5.375
+    ],
+    [
+     "different",
+     5.387,
+     5.775
+    ],
+    [
+     "directions",
+     5.788,
+     6.525
+    ]
+   ]
+  },
+  {
+   "id": "mirror",
+   "at": 65.1,
+   "real": 65.45,
+   "speech": 9.92,
+   "len": 10.15,
+   "head": 0.23,
+   "file": "mirror.mp3",
+   "file_start": 65.22,
+   "hash": "e2286c0610b8",
+   "text": "So the picture is shown in a huge curved mirror, which sends its light out in parallel rays, as if from far away. Both pilots see the runway straight ahead.",
+   "source": "Part 60 Appendix C, Attachment 2, 18.a: in a collimated display light rays from a given point are parallel, so the runway appears straight ahead to both crew members",
+   "words": [
+    [
+     "So",
+     0.0,
+     0.2
+    ],
+    [
+     "the",
+     0.212,
+     0.312
+    ],
+    [
+     "picture",
+     0.325,
+     0.675
+    ],
+    [
+     "is",
+     0.687,
+     0.862
+    ],
+    [
+     "shown",
+     0.875,
+     1.175
+    ],
+    [
+     "in",
+     1.188,
+     1.275
+    ],
+    [
+     "a",
+     1.287,
+     1.325
+    ],
+    [
+     "huge",
+     1.338,
+     1.787
+    ],
+    [
+     "curved",
+     1.8,
+     2.137
+    ],
+    [
+     "mirror",
+     2.15,
+     2.438
+    ],
+    [
+     "which",
+     2.563,
+     2.712
+    ],
+    [
+     "sends",
+     2.725,
+     2.962
+    ],
+    [
+     "its",
+     2.975,
+     3.113
+    ],
+    [
+     "light",
+     3.125,
+     3.413
+    ],
+    [
+     "out",
+     3.425,
+     3.625
+    ],
+    [
+     "in",
+     3.637,
+     3.737
+    ],
+    [
+     "parallel",
+     3.75,
+     4.25
+    ],
+    [
+     "rays",
+     4.262,
+     4.663
+    ],
+    [
+     "as",
+     4.838,
+     4.937
+    ],
+    [
+     "if",
+     4.95,
+     5.062
+    ],
+    [
+     "from",
+     5.075,
+     5.25
+    ],
+    [
+     "far",
+     5.262,
+     5.55
+    ],
+    [
+     "away",
+     5.562,
+     6.037
+    ],
+    [
+     "Both",
+     6.9,
+     7.212
+    ],
+    [
+     "pilots",
+     7.225,
+     7.663
+    ],
+    [
+     "see",
+     7.675,
+     7.838
+    ],
+    [
+     "the",
+     7.85,
+     7.95
+    ],
+    [
+     "runway",
+     7.962,
+     8.363
+    ],
+    [
+     "straight",
+     8.375,
+     8.712
+    ],
+    [
+     "ahead",
+     8.725,
+     9.162
+    ]
+   ]
+  },
+  {
+   "id": "motion",
+   "at": 77.4,
+   "real": 77.75,
+   "speech": 10.127,
    "len": 10.37,
-   "head": 0.228,
-   "file": "input.mp3",
-   "file_start": 10.922,
-   "hash": "42d12026cc2a",
-   "text": "When the pilot moves the controls, the view and the cabin must follow within that blink. It is written into the rules: a simulator that misses it cannot be used to train pilots.",
-   "source": "old lab film, lines 1 and 3: transport delay runs from a primary flight control input to the motion, visual or instrument response (FAA Part 60, EASA CS-FSTD(A)); a device over the limit does not qualify"
+   "head": 0.243,
+   "file": "motion.mp3",
+   "file_start": 77.507,
+   "hash": "e200f317ed39",
+   "text": "Now the inner ear. Six actuators can tilt and slide the whole cabin, but only a short way. So the simulator borrows a trick from physics.",
+   "source": "six-degrees-of-freedom platform (pitch, roll, yaw, heave, sway, surge) with a limited excursion",
+   "words": [
+    [
+     "Now",
+     0.0,
+     0.287
+    ],
+    [
+     "the",
+     0.3,
+     0.462
+    ],
+    [
+     "inner",
+     0.475,
+     0.687
+    ],
+    [
+     "ear",
+     0.7,
+     1.088
+    ],
+    [
+     "Six",
+     1.95,
+     2.312
+    ],
+    [
+     "actuators",
+     2.325,
+     2.95
+    ],
+    [
+     "can",
+     2.962,
+     3.112
+    ],
+    [
+     "tilt",
+     3.125,
+     3.438
+    ],
+    [
+     "and",
+     3.45,
+     3.537
+    ],
+    [
+     "slide",
+     3.55,
+     3.887
+    ],
+    [
+     "the",
+     3.9,
+     3.95
+    ],
+    [
+     "whole",
+     3.962,
+     4.25
+    ],
+    [
+     "cabin",
+     4.262,
+     4.65
+    ],
+    [
+     "but",
+     4.812,
+     4.95
+    ],
+    [
+     "only",
+     4.962,
+     5.212
+    ],
+    [
+     "a",
+     5.225,
+     5.288
+    ],
+    [
+     "short",
+     5.3,
+     5.625
+    ],
+    [
+     "way",
+     5.637,
+     6.062
+    ],
+    [
+     "So",
+     6.925,
+     7.163
+    ],
+    [
+     "the",
+     7.175,
+     7.275
+    ],
+    [
+     "simulator",
+     7.288,
+     7.838
+    ],
+    [
+     "borrows",
+     7.85,
+     8.212
+    ],
+    [
+     "a",
+     8.225,
+     8.287
+    ],
+    [
+     "trick",
+     8.3,
+     8.562
+    ],
+    [
+     "from",
+     8.575,
+     8.738
+    ],
+    [
+     "physics",
+     8.75,
+     9.363
+    ]
+   ]
+  },
+  {
+   "id": "equiv",
+   "at": 88.7,
+   "real": 89.05,
+   "speech": 8.933,
+   "len": 9.17,
+   "head": 0.237,
+   "file": "equiv.mp3",
+   "file_start": 88.813,
+   "hash": "99db51d8f6f4",
+   "text": "Your inner ear can't tell gravity from acceleration. Physicists call it the equivalence principle; Einstein built general relativity on it.",
+   "source": "the otolith organs sense the gravito-inertial force and cannot separate tilt from linear acceleration; the equivalence principle of general relativity",
+   "words": [
+    [
+     "Your",
+     0.0,
+     0.263
+    ],
+    [
+     "inner",
+     0.275,
+     0.525
+    ],
+    [
+     "ear",
+     0.537,
+     0.75
+    ],
+    [
+     "can't",
+     0.763,
+     1.063
+    ],
+    [
+     "tell",
+     1.075,
+     1.275
+    ],
+    [
+     "gravity",
+     1.287,
+     1.737
+    ],
+    [
+     "from",
+     1.75,
+     1.913
+    ],
+    [
+     "acceleration",
+     1.925,
+     2.737
+    ],
+    [
+     "Physicists",
+     3.6,
+     4.212
+    ],
+    [
+     "call",
+     4.225,
+     4.488
+    ],
+    [
+     "it",
+     4.5,
+     4.562
+    ],
+    [
+     "the",
+     4.575,
+     4.687
+    ],
+    [
+     "equivalence",
+     4.7,
+     5.212
+    ],
+    [
+     "principle",
+     5.225,
+     5.75
+    ],
+    [
+     "Einstein",
+     5.913,
+     6.425
+    ],
+    [
+     "built",
+     6.437,
+     6.7
+    ],
+    [
+     "general",
+     6.712,
+     7.125
+    ],
+    [
+     "relativity",
+     7.137,
+     7.75
+    ],
+    [
+     "on",
+     7.762,
+     7.925
+    ],
+    [
+     "it",
+     7.937,
+     8.162
+    ]
+   ]
+  },
+  {
+   "id": "tilt",
+   "at": 98.9,
+   "real": 99.25,
+   "speech": 10.948,
+   "len": 11.18,
+   "head": 0.232,
+   "file": "tilt.mp3",
+   "file_start": 99.018,
+   "hash": "01234e01c4c8",
+   "text": "So for a take-off, the cabin gives a quick shove forward, then tilts its nose up, too slowly to notice. Gravity presses you back into the seat, just like acceleration.",
+   "source": "Part 60 Appendix A, Attachment 2 (motion system frequency response test): when simulating forward acceleration the simulator is accelerated momentarily forward for the onset cue and simultaneously tilted nose-up to generate a sustained specific force",
+   "words": [
+    [
+     "So",
+     0.0,
+     0.25
+    ],
+    [
+     "for",
+     0.262,
+     0.4
+    ],
+    [
+     "a",
+     0.412,
+     0.475
+    ],
+    [
+     "take-off",
+     0.488,
+     1.025
+    ],
+    [
+     "the",
+     1.162,
+     1.25
+    ],
+    [
+     "cabin",
+     1.263,
+     1.563
+    ],
+    [
+     "gives",
+     1.575,
+     1.813
+    ],
+    [
+     "a",
+     1.825,
+     1.875
+    ],
+    [
+     "quick",
+     1.888,
+     2.15
+    ],
+    [
+     "shove",
+     2.163,
+     2.4
+    ],
+    [
+     "forward",
+     2.413,
+     2.813
+    ],
+    [
+     "then",
+     3.038,
+     3.188
+    ],
+    [
+     "tilts",
+     3.2,
+     3.487
+    ],
+    [
+     "its",
+     3.5,
+     3.638
+    ],
+    [
+     "nose",
+     3.65,
+     3.988
+    ],
+    [
+     "up",
+     4.0,
+     4.2
+    ],
+    [
+     "too",
+     4.413,
+     4.625
+    ],
+    [
+     "slowly",
+     4.637,
+     5.038
+    ],
+    [
+     "to",
+     5.05,
+     5.175
+    ],
+    [
+     "notice",
+     5.187,
+     5.775
+    ],
+    [
+     "Gravity",
+     6.637,
+     7.163
+    ],
+    [
+     "presses",
+     7.175,
+     7.525
+    ],
+    [
+     "you",
+     7.538,
+     7.625
+    ],
+    [
+     "back",
+     7.637,
+     7.925
+    ],
+    [
+     "into",
+     7.937,
+     8.175
+    ],
+    [
+     "the",
+     8.187,
+     8.275
+    ],
+    [
+     "seat",
+     8.287,
+     8.612
+    ],
+    [
+     "just",
+     8.812,
+     9.088
+    ],
+    [
+     "like",
+     9.1,
+     9.287
+    ],
+    [
+     "acceleration",
+     9.3,
+     10.187
+    ]
+   ]
+  },
+  {
+   "id": "agree",
+   "at": 111.0,
+   "real": 111.35,
+   "speech": 7.442,
+   "len": 7.68,
+   "head": 0.238,
+   "file": "agree.mp3",
+   "file_start": 111.112,
+   "hash": "f2f92b04af74",
+   "text": "The screen tilts with you, so the runway still looks level. Eyes and inner ear agree, and the brain believes it.",
+   "source": "the visual display is mounted on the moving cabin, so the scene stays level relative to the pilot; Part 60: the angular rates of the tilt do not occur in the aircraft and should be minimised",
+   "words": [
+    [
+     "The",
+     0.0,
+     0.163
+    ],
+    [
+     "screen",
+     0.175,
+     0.55
+    ],
+    [
+     "tilts",
+     0.562,
+     0.875
+    ],
+    [
+     "with",
+     0.888,
+     1.025
+    ],
+    [
+     "you",
+     1.037,
+     1.225
+    ],
+    [
+     "so",
+     1.412,
+     1.513
+    ],
+    [
+     "the",
+     1.525,
+     1.625
+    ],
+    [
+     "runway",
+     1.638,
+     2.063
+    ],
+    [
+     "still",
+     2.075,
+     2.375
+    ],
+    [
+     "looks",
+     2.387,
+     2.625
+    ],
+    [
+     "level",
+     2.637,
+     3.05
+    ],
+    [
+     "Eyes",
+     3.913,
+     4.212
+    ],
+    [
+     "and",
+     4.225,
+     4.338
+    ],
+    [
+     "inner",
+     4.35,
+     4.575
+    ],
+    [
+     "ear",
+     4.588,
+     4.762
+    ],
+    [
+     "agree",
+     4.775,
+     5.187
+    ],
+    [
+     "and",
+     5.425,
+     5.513
+    ],
+    [
+     "the",
+     5.525,
+     5.613
+    ],
+    [
+     "brain",
+     5.625,
+     5.95
+    ],
+    [
+     "believes",
+     5.962,
+     6.413
+    ],
+    [
+     "it",
+     6.425,
+     6.675
+    ]
+   ]
+  },
+  {
+   "id": "washout",
+   "at": 119.5,
+   "real": 119.85,
+   "speech": 5.237,
+   "len": 5.47,
+   "head": 0.233,
+   "file": "washout.mp3",
+   "file_start": 119.617,
+   "hash": "939fa358575d",
+   "text": "Then the cabin creeps back to the middle, below what you can sense, ready for the next cue.",
+   "source": "classical washout: high-pass filtered motion returns the platform to neutral below the pilot's perception thresholds",
+   "words": [
+    [
+     "Then",
+     0.0,
+     0.212
+    ],
+    [
+     "the",
+     0.225,
+     0.3
+    ],
+    [
+     "cabin",
+     0.312,
+     0.638
+    ],
+    [
+     "creeps",
+     0.65,
+     1.0
+    ],
+    [
+     "back",
+     1.013,
+     1.238
+    ],
+    [
+     "to",
+     1.25,
+     1.325
+    ],
+    [
+     "the",
+     1.338,
+     1.412
+    ],
+    [
+     "middle",
+     1.425,
+     1.787
+    ],
+    [
+     "below",
+     1.962,
+     2.237
+    ],
+    [
+     "what",
+     2.25,
+     2.425
+    ],
+    [
+     "you",
+     2.438,
+     2.525
+    ],
+    [
+     "can",
+     2.538,
+     2.7
+    ],
+    [
+     "sense",
+     2.712,
+     3.15
+    ],
+    [
+     "ready",
+     3.313,
+     3.538
+    ],
+    [
+     "for",
+     3.55,
+     3.65
+    ],
+    [
+     "the",
+     3.663,
+     3.738
+    ],
+    [
+     "next",
+     3.75,
+     4.05
+    ],
+    [
+     "cue",
+     4.062,
+     4.487
+    ]
+   ]
+  },
+  {
+   "id": "hands",
+   "at": 126.5,
+   "real": 126.85,
+   "speech": 6.864,
+   "len": 7.1,
+   "head": 0.236,
+   "file": "hands.mp3",
+   "file_start": 126.614,
+   "hash": "de28a06bf40f",
+   "text": "Motors make the controls push back like the real ones, and the sound and the runway rumble are matched to the aircraft too.",
+   "source": "Part 60 Appendix A: control loading validated by static and dynamic control force tests; sound tested against the aircraft for Level D (a device failing sound tolerances can be qualified at Level C); motion effects include runway rumble",
+   "words": [
+    [
+     "Motors",
+     0.0,
+     0.45
+    ],
+    [
+     "make",
+     0.462,
+     0.65
+    ],
+    [
+     "the",
+     0.662,
+     0.737
+    ],
+    [
+     "controls",
+     0.75,
+     1.3
+    ],
+    [
+     "push",
+     1.313,
+     1.588
+    ],
+    [
+     "back",
+     1.6,
+     1.838
+    ],
+    [
+     "like",
+     1.85,
+     2.038
+    ],
+    [
+     "the",
+     2.05,
+     2.137
+    ],
+    [
+     "real",
+     2.15,
+     2.525
+    ],
+    [
+     "ones",
+     2.538,
+     2.913
+    ],
+    [
+     "and",
+     3.088,
+     3.2
+    ],
+    [
+     "the",
+     3.212,
+     3.3
+    ],
+    [
+     "sound",
+     3.313,
+     3.65
+    ],
+    [
+     "and",
+     3.663,
+     3.75
+    ],
+    [
+     "the",
+     3.762,
+     3.85
+    ],
+    [
+     "runway",
+     3.862,
+     4.25
+    ],
+    [
+     "rumble",
+     4.262,
+     4.637
+    ],
+    [
+     "are",
+     4.65,
+     4.675
+    ],
+    [
+     "matched",
+     4.687,
+     5.012
+    ],
+    [
+     "to",
+     5.025,
+     5.088
+    ],
+    [
+     "the",
+     5.1,
+     5.238
+    ],
+    [
+     "aircraft",
+     5.25,
+     5.75
+    ],
+    [
+     "too",
+     5.762,
+     6.1
+    ]
+   ]
+  },
+  {
+   "id": "levels",
+   "at": 136.6,
+   "real": 136.95,
+   "speech": 7.819,
+   "len": 8.04,
+   "head": 0.221,
+   "file": "levels.mp3",
+   "file_start": 136.729,
+   "hash": "b8faebe636d5",
+   "text": "Then it has to prove it. Regulators grade these simulators from Level A to Level D, and D is the highest.",
+   "source": "14 CFR Part 60: full flight simulators are qualified at Levels A, B, C and D; EASA CS-FSTD(A) uses the same four levels",
+   "words": [
+    [
+     "Then",
+     0.0,
+     0.212
+    ],
+    [
+     "it",
+     0.225,
+     0.312
+    ],
+    [
+     "has",
+     0.325,
+     0.537
+    ],
+    [
+     "to",
+     0.55,
+     0.65
+    ],
+    [
+     "prove",
+     0.662,
+     0.962
+    ],
+    [
+     "it",
+     0.975,
+     1.237
+    ],
+    [
+     "Regulators",
+     2.1,
+     2.813
+    ],
+    [
+     "grade",
+     2.825,
+     3.187
+    ],
+    [
+     "these",
+     3.2,
+     3.45
+    ],
+    [
+     "simulators",
+     3.462,
+     4.05
+    ],
+    [
+     "from",
+     4.062,
+     4.225
+    ],
+    [
+     "Level",
+     4.238,
+     4.55
+    ],
+    [
+     "A",
+     4.562,
+     4.65
+    ],
+    [
+     "to",
+     4.663,
+     4.788
+    ],
+    [
+     "Level",
+     4.8,
+     5.125
+    ],
+    [
+     "D",
+     5.137,
+     5.475
+    ],
+    [
+     "and",
+     5.725,
+     5.863
+    ],
+    [
+     "D",
+     5.875,
+     6.162
+    ],
+    [
+     "is",
+     6.175,
+     6.325
+    ],
+    [
+     "the",
+     6.338,
+     6.413
+    ],
+    [
+     "highest",
+     6.425,
+     7.05
+    ]
+   ]
+  },
+  {
+   "id": "tests",
+   "at": 145.6,
+   "real": 145.95,
+   "speech": 12.087,
+   "len": 12.31,
+   "head": 0.223,
+   "file": "tests.mp3",
+   "file_start": 145.727,
+   "hash": "5efcaf6fbfc5",
+   "text": "To earn it, the simulator flies a long list of tests. Each replays a maneuver from the real aircraft's flight tests, and the simulator must stay inside a narrow band around what the aircraft did.",
+   "source": "Part 60 Appendix A, Attachment 2: each objective test result is compared against validation data (flight test data) within stated tolerances; a driver program that runs the tests automatically is required for Level C and D",
+   "words": [
+    [
+     "To",
+     0.0,
+     0.2
+    ],
+    [
+     "earn",
+     0.212,
+     0.437
+    ],
+    [
+     "it",
+     0.45,
+     0.613
+    ],
+    [
+     "the",
+     0.763,
+     0.863
+    ],
+    [
+     "simulator",
+     0.875,
+     1.4
+    ],
+    [
+     "flies",
+     1.412,
+     1.787
+    ],
+    [
+     "a",
+     1.8,
+     1.862
+    ],
+    [
+     "long",
+     1.875,
+     2.188
+    ],
+    [
+     "list",
+     2.2,
+     2.437
+    ],
+    [
+     "of",
+     2.45,
+     2.55
+    ],
+    [
+     "tests",
+     2.563,
+     3.175
+    ],
+    [
+     "Each",
+     4.038,
+     4.313
+    ],
+    [
+     "replays",
+     4.325,
+     4.775
+    ],
+    [
+     "a",
+     4.788,
+     4.838
+    ],
+    [
+     "maneuver",
+     4.85,
+     5.288
+    ],
+    [
+     "from",
+     5.3,
+     5.462
+    ],
+    [
+     "the",
+     5.475,
+     5.563
+    ],
+    [
+     "real",
+     5.575,
+     5.887
+    ],
+    [
+     "aircraft's",
+     5.9,
+     6.462
+    ],
+    [
+     "flight",
+     6.475,
+     6.788
+    ],
+    [
+     "tests",
+     6.8,
+     7.25
+    ],
+    [
+     "and",
+     7.462,
+     7.562
+    ],
+    [
+     "the",
+     7.575,
+     7.65
+    ],
+    [
+     "simulator",
+     7.663,
+     8.187
+    ],
+    [
+     "must",
+     8.2,
+     8.425
+    ],
+    [
+     "stay",
+     8.437,
+     8.637
+    ],
+    [
+     "inside",
+     8.65,
+     9.113
+    ],
+    [
+     "a",
+     9.125,
+     9.175
+    ],
+    [
+     "narrow",
+     9.187,
+     9.525
+    ],
+    [
+     "band",
+     9.537,
+     9.838
+    ],
+    [
+     "around",
+     9.85,
+     10.212
+    ],
+    [
+     "what",
+     10.225,
+     10.362
+    ],
+    [
+     "the",
+     10.375,
+     10.512
+    ],
+    [
+     "aircraft",
+     10.525,
+     11.013
+    ],
+    [
+     "did",
+     11.025,
+     11.325
+    ]
+   ]
+  },
+  {
+   "id": "yearly",
+   "at": 159.9,
+   "real": 160.25,
+   "speech": 6.331,
+   "len": 6.55,
+   "head": 0.219,
+   "file": "yearly.mp3",
+   "file_start": 160.031,
+   "hash": "4ce0fe577c0a",
+   "text": "Every test is run again each year, and the machine must pass a check within a day before anyone trains in it.",
+   "source": "14 CFR 60.19(a): the sponsor accomplishes all appropriate objective tests each year and completes a functional preflight check within the preceding 24 hours",
+   "words": [
+    [
+     "Every",
+     0.0,
+     0.275
+    ],
+    [
+     "test",
+     0.288,
+     0.613
+    ],
+    [
+     "is",
+     0.625,
+     0.75
+    ],
+    [
+     "run",
+     0.763,
+     0.975
+    ],
+    [
+     "again",
+     0.987,
+     1.225
+    ],
+    [
+     "each",
+     1.237,
+     1.437
+    ],
+    [
+     "year",
+     1.45,
+     1.813
+    ],
+    [
+     "and",
+     2.063,
+     2.175
+    ],
+    [
+     "the",
+     2.188,
+     2.25
+    ],
+    [
+     "machine",
+     2.262,
+     2.637
+    ],
+    [
+     "must",
+     2.65,
+     2.9
+    ],
+    [
+     "pass",
+     2.913,
+     3.175
+    ],
+    [
+     "a",
+     3.188,
+     3.25
+    ],
+    [
+     "check",
+     3.262,
+     3.525
+    ],
+    [
+     "within",
+     3.538,
+     3.763
+    ],
+    [
+     "a",
+     3.775,
+     3.838
+    ],
+    [
+     "day",
+     3.85,
+     4.063
+    ],
+    [
+     "before",
+     4.075,
+     4.425
+    ],
+    [
+     "anyone",
+     4.437,
+     4.775
+    ],
+    [
+     "trains",
+     4.788,
+     5.188
+    ],
+    [
+     "in",
+     5.2,
+     5.312
+    ],
+    [
+     "it",
+     5.325,
+     5.562
+    ]
+   ]
+  },
+  {
+   "id": "bridge",
+   "at": 167.3,
+   "real": 167.65,
+   "speech": 2.607,
+   "len": 2.86,
+   "head": 0.253,
+   "file": "bridge.mp3",
+   "file_start": 167.397,
+   "hash": "d33e59116eee",
+   "text": "One of those tests is about time.",
+   "source": "transport delay is one of the objective tests (Part 60 Appendix A, Attachment 2, paragraph 15)",
+   "words": [
+    [
+     "One",
+     0.0,
+     0.25
+    ],
+    [
+     "of",
+     0.262,
+     0.338
+    ],
+    [
+     "those",
+     0.35,
+     0.6
+    ],
+    [
+     "tests",
+     0.613,
+     0.95
+    ],
+    [
+     "is",
+     0.962,
+     1.075
+    ],
+    [
+     "about",
+     1.088,
+     1.362
+    ],
+    [
+     "time",
+     1.375,
+     1.85
+    ]
+   ]
+  },
+  {
+   "id": "delay",
+   "at": 172.9,
+   "real": 173.25,
+   "speech": 11.949,
+   "len": 12.19,
+   "head": 0.241,
+   "file": "delay.mp3",
+   "file_start": 173.009,
+   "hash": "543101976594",
+   "text": "When the pilot moves the controls, the view, the instruments and the cabin must respond within a hundred and fifty milliseconds, about the blink of an eye. Miss it, and the simulator does not qualify.",
+   "source": "Part 60 Table A2A, transport delay: 150 ms for Level C and D, measured from the control input through the host computer to the motion, instrument and visual response (Attachment 2, paragraph 15); a blink lasts roughly 100 to 400 ms",
+   "words": [
+    [
+     "When",
+     0.0,
+     0.25
+    ],
+    [
+     "the",
+     0.262,
+     0.35
+    ],
+    [
+     "pilot",
+     0.363,
+     0.763
+    ],
+    [
+     "moves",
+     0.775,
+     1.037
+    ],
+    [
+     "the",
+     1.05,
+     1.125
+    ],
+    [
+     "controls",
+     1.138,
+     1.763
+    ],
+    [
+     "the",
+     1.875,
+     1.962
+    ],
+    [
+     "view",
+     1.975,
+     2.35
+    ],
+    [
+     "the",
+     2.55,
+     2.637
+    ],
+    [
+     "instruments",
+     2.65,
+     3.188
+    ],
+    [
+     "and",
+     3.288,
+     3.388
+    ],
+    [
+     "the",
+     3.4,
+     3.475
+    ],
+    [
+     "cabin",
+     3.487,
+     3.825
+    ],
+    [
+     "must",
+     3.838,
+     4.075
+    ],
+    [
+     "respond",
+     4.088,
+     4.525
+    ],
+    [
+     "within",
+     4.538,
+     4.788
+    ],
+    [
+     "a",
+     4.8,
+     4.825
+    ],
+    [
+     "hundred",
+     4.838,
+     5.163
+    ],
+    [
+     "and",
+     5.175,
+     5.25
+    ],
+    [
+     "fifty",
+     5.262,
+     5.625
+    ],
+    [
+     "milliseconds",
+     5.637,
+     6.4
+    ],
+    [
+     "about",
+     6.625,
+     6.912
+    ],
+    [
+     "the",
+     6.925,
+     7.013
+    ],
+    [
+     "blink",
+     7.025,
+     7.288
+    ],
+    [
+     "of",
+     7.3,
+     7.388
+    ],
+    [
+     "an",
+     7.4,
+     7.488
+    ],
+    [
+     "eye",
+     7.5,
+     7.825
+    ],
+    [
+     "Miss",
+     8.687,
+     8.975
+    ],
+    [
+     "it",
+     8.988,
+     9.138
+    ],
+    [
+     "and",
+     9.325,
+     9.413
+    ],
+    [
+     "the",
+     9.425,
+     9.513
+    ],
+    [
+     "simulator",
+     9.525,
+     10.088
+    ],
+    [
+     "does",
+     10.1,
+     10.287
+    ],
+    [
+     "not",
+     10.3,
+     10.513
+    ],
+    [
+     "qualify",
+     10.525,
+     11.187
+    ]
+   ]
   },
   {
    "id": "chain",
-   "at": 22.9,
-   "real": 23.25,
-   "speech": 16.223,
-   "len": 16.44,
-   "head": 0.217,
+   "at": 186.0,
+   "real": 186.35,
+   "speech": 17.34,
+   "len": 17.57,
+   "head": 0.23,
    "file": "chain.mp3",
-   "file_start": 23.033,
-   "hash": "2bd9eb5aa352",
-   "text": "In that blink, the signal crosses a chain of computers. One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screen and moves the cabin.",
-   "source": "old lab film, line 2: every stage spends the budget, image generation the largest share; the stages are the generic chain of a full-flight simulator"
+   "file_start": 186.12,
+   "hash": "d5d356e70038",
+   "text": "In that blink, the signal crosses a chain of computers. One reads the controls. One works out how the aircraft flies. One runs its systems. One draws the world. The last updates the screens and moves the cabin.",
+   "source": "old lab film, line 2: every stage spends the budget, image generation the largest share; the stages are the generic chain of a full-flight simulator",
+   "words": [
+    [
+     "In",
+     0.0,
+     0.175
+    ],
+    [
+     "that",
+     0.187,
+     0.4
+    ],
+    [
+     "blink",
+     0.412,
+     0.775
+    ],
+    [
+     "the",
+     1.0,
+     1.088
+    ],
+    [
+     "signal",
+     1.1,
+     1.475
+    ],
+    [
+     "crosses",
+     1.487,
+     1.85
+    ],
+    [
+     "a",
+     1.862,
+     1.938
+    ],
+    [
+     "chain",
+     1.95,
+     2.237
+    ],
+    [
+     "of",
+     2.25,
+     2.325
+    ],
+    [
+     "computers",
+     2.338,
+     3.038
+    ],
+    [
+     "One",
+     3.9,
+     4.225
+    ],
+    [
+     "reads",
+     4.238,
+     4.55
+    ],
+    [
+     "the",
+     4.562,
+     4.65
+    ],
+    [
+     "controls",
+     4.663,
+     5.425
+    ],
+    [
+     "One",
+     6.288,
+     6.563
+    ],
+    [
+     "works",
+     6.575,
+     6.887
+    ],
+    [
+     "out",
+     6.9,
+     7.075
+    ],
+    [
+     "how",
+     7.088,
+     7.262
+    ],
+    [
+     "the",
+     7.275,
+     7.413
+    ],
+    [
+     "aircraft",
+     7.425,
+     7.95
+    ],
+    [
+     "flies",
+     7.962,
+     8.537
+    ],
+    [
+     "One",
+     9.4,
+     9.738
+    ],
+    [
+     "runs",
+     9.75,
+     10.037
+    ],
+    [
+     "its",
+     10.05,
+     10.225
+    ],
+    [
+     "systems",
+     10.238,
+     10.863
+    ],
+    [
+     "One",
+     11.725,
+     12.025
+    ],
+    [
+     "draws",
+     12.037,
+     12.362
+    ],
+    [
+     "the",
+     12.375,
+     12.45
+    ],
+    [
+     "world",
+     12.462,
+     13.025
+    ],
+    [
+     "The",
+     13.888,
+     14.038
+    ],
+    [
+     "last",
+     14.05,
+     14.4
+    ],
+    [
+     "updates",
+     14.412,
+     14.85
+    ],
+    [
+     "the",
+     14.863,
+     14.95
+    ],
+    [
+     "screens",
+     14.962,
+     15.513
+    ],
+    [
+     "and",
+     15.525,
+     15.638
+    ],
+    [
+     "moves",
+     15.65,
+     15.975
+    ],
+    [
+     "the",
+     15.987,
+     16.075
+    ],
+    [
+     "cabin",
+     16.088,
+     16.575
+    ]
+   ]
   },
   {
    "id": "tighter",
-   "at": 39.6,
-   "real": 39.95,
-   "speech": 7.436,
-   "len": 7.66,
-   "head": 0.224,
+   "at": 204.5,
+   "real": 204.85,
+   "speech": 8.716,
+   "len": 8.95,
+   "head": 0.234,
    "file": "tighter.mp3",
-   "file_start": 39.726,
-   "hash": "d564c63230e6",
-   "text": "Europe's newest standard makes that blink shorter for the most realistic new simulators. The same chain no longer makes it.",
-   "source": "old lab film, line 4: EASA CS-FSTD Issue 1 (ED Decision 2026/008/R, p. 467) sets 100 ms at fidelity level S for new devices"
+   "file_start": 204.616,
+   "hash": "f9029d7a6aa5",
+   "text": "Europe's newest standard cuts that to a hundred milliseconds for the most realistic new simulators. A chain that fit before can now miss.",
+   "source": "EASA CS-FSTD Issue 1 (ED Decision 2026/008/R, Subpart D test 6.a.1, p. 467): 100 ms at fidelity level S for new devices",
+   "words": [
+    [
+     "Europe's",
+     0.0,
+     0.462
+    ],
+    [
+     "newest",
+     0.475,
+     0.85
+    ],
+    [
+     "standard",
+     0.863,
+     1.263
+    ],
+    [
+     "cuts",
+     1.275,
+     1.575
+    ],
+    [
+     "that",
+     1.588,
+     1.75
+    ],
+    [
+     "to",
+     1.763,
+     1.888
+    ],
+    [
+     "a",
+     1.9,
+     1.938
+    ],
+    [
+     "hundred",
+     1.95,
+     2.3
+    ],
+    [
+     "milliseconds",
+     2.313,
+     3.025
+    ],
+    [
+     "for",
+     3.038,
+     3.113
+    ],
+    [
+     "the",
+     3.125,
+     3.2
+    ],
+    [
+     "most",
+     3.212,
+     3.512
+    ],
+    [
+     "realistic",
+     3.525,
+     4.025
+    ],
+    [
+     "new",
+     4.038,
+     4.238
+    ],
+    [
+     "simulators",
+     4.25,
+     5.05
+    ],
+    [
+     "A",
+     5.913,
+     6.063
+    ],
+    [
+     "chain",
+     6.075,
+     6.35
+    ],
+    [
+     "that",
+     6.363,
+     6.525
+    ],
+    [
+     "fit",
+     6.538,
+     6.775
+    ],
+    [
+     "before",
+     6.788,
+     7.1
+    ],
+    [
+     "can",
+     7.113,
+     7.288
+    ],
+    [
+     "now",
+     7.3,
+     7.488
+    ],
+    [
+     "miss",
+     7.5,
+     7.95
+    ]
+   ]
   },
   {
-   "id": "beat",
-   "at": 47.6,
-   "real": 47.95,
-   "speech": 13.561,
-   "len": 13.78,
-   "head": 0.219,
-   "file": "beat.mp3",
-   "file_start": 47.731,
-   "hash": "6f2f2f9e5520",
-   "text": "And not once, but sixty times a second, for hours. Lay out one training session, frame by frame. Even one slip in a thousand comes back hundreds of times, and every one is a jolt the pilot can feel.",
-   "source": "old lab film, lines 5 to 8: a fixed cadence (60 Hz), hour-long sessions; a four-hour session at 60 Hz is 864,000 frames and one in a thousand is 864 stutters; a deadline is never met on average"
+   "id": "frames",
+   "at": 214.6,
+   "real": 214.95,
+   "speech": 9.241,
+   "len": 9.48,
+   "head": 0.239,
+   "file": "frames.mp3",
+   "file_start": 214.711,
+   "hash": "18dc4949000e",
+   "text": "And it's not done once. The loop runs sixty times a second, for hours: a four-hour session is eight hundred and sixty-four thousand frames.",
+   "source": "old lab film, lines 5 and 6: a fixed cadence (60 Hz), hour-long sessions; a four-hour session at 60 Hz is 4 x 3600 x 60 = 864,000 frames",
+   "words": [
+    [
+     "And",
+     0.0,
+     0.2
+    ],
+    [
+     "it's",
+     0.212,
+     0.35
+    ],
+    [
+     "not",
+     0.363,
+     0.6
+    ],
+    [
+     "done",
+     0.613,
+     0.825
+    ],
+    [
+     "once",
+     0.838,
+     1.3
+    ],
+    [
+     "The",
+     2.163,
+     2.313
+    ],
+    [
+     "loop",
+     2.325,
+     2.562
+    ],
+    [
+     "runs",
+     2.575,
+     2.825
+    ],
+    [
+     "sixty",
+     2.838,
+     3.163
+    ],
+    [
+     "times",
+     3.175,
+     3.512
+    ],
+    [
+     "a",
+     3.525,
+     3.588
+    ],
+    [
+     "second",
+     3.6,
+     4.075
+    ],
+    [
+     "for",
+     4.275,
+     4.413
+    ],
+    [
+     "hours",
+     4.425,
+     4.788
+    ],
+    [
+     "a",
+     4.988,
+     5.05
+    ],
+    [
+     "four-hour",
+     5.062,
+     5.525
+    ],
+    [
+     "session",
+     5.538,
+     5.925
+    ],
+    [
+     "is",
+     5.937,
+     6.088
+    ],
+    [
+     "eight",
+     6.1,
+     6.3
+    ],
+    [
+     "hundred",
+     6.312,
+     6.6
+    ],
+    [
+     "and",
+     6.613,
+     6.7
+    ],
+    [
+     "sixty-four",
+     6.712,
+     7.35
+    ],
+    [
+     "thousand",
+     7.363,
+     7.863
+    ],
+    [
+     "frames",
+     7.875,
+     8.488
+    ]
+   ]
   },
   {
-   "id": "cluster",
-   "at": 64.0,
-   "real": 64.35,
-   "speech": 4.795,
-   "len": 5.02,
-   "head": 0.225,
-   "file": "cluster.mp3",
-   "file_start": 64.125,
-   "hash": "29d33533b1ac",
-   "text": "Worse, the slips bunch together, so the pilot feels a stutter, not a blip.",
-   "source": "old lab film, line 9: real overruns cluster, so independence is the optimistic case"
+   "id": "slips",
+   "at": 225.4,
+   "real": 225.75,
+   "speech": 9.609,
+   "len": 9.84,
+   "head": 0.231,
+   "file": "slips.mp3",
+   "file_start": 225.519,
+   "hash": "732521785d5c",
+   "text": "If one frame in a thousand slips, that's eight hundred and sixty-four jolts. And slips come in bunches, so the pilot feels a stutter, not a blip.",
+   "source": "old lab film, lines 7 to 9: E[K] = N p, so one frame in a thousand is 864 stutters a session; real overruns cluster",
+   "words": [
+    [
+     "If",
+     0.0,
+     0.2
+    ],
+    [
+     "one",
+     0.212,
+     0.45
+    ],
+    [
+     "frame",
+     0.462,
+     0.763
+    ],
+    [
+     "in",
+     0.775,
+     0.863
+    ],
+    [
+     "a",
+     0.875,
+     0.925
+    ],
+    [
+     "thousand",
+     0.938,
+     1.413
+    ],
+    [
+     "slips",
+     1.425,
+     1.875
+    ],
+    [
+     "that's",
+     2.075,
+     2.275
+    ],
+    [
+     "eight",
+     2.288,
+     2.45
+    ],
+    [
+     "hundred",
+     2.462,
+     2.762
+    ],
+    [
+     "and",
+     2.775,
+     2.862
+    ],
+    [
+     "sixty-four",
+     2.875,
+     3.45
+    ],
+    [
+     "jolts",
+     3.462,
+     4.05
+    ],
+    [
+     "And",
+     4.913,
+     5.113
+    ],
+    [
+     "slips",
+     5.125,
+     5.412
+    ],
+    [
+     "come",
+     5.425,
+     5.625
+    ],
+    [
+     "in",
+     5.637,
+     5.762
+    ],
+    [
+     "bunches",
+     5.775,
+     6.288
+    ],
+    [
+     "so",
+     6.525,
+     6.6
+    ],
+    [
+     "the",
+     6.613,
+     6.725
+    ],
+    [
+     "pilot",
+     6.738,
+     7.125
+    ],
+    [
+     "feels",
+     7.137,
+     7.475
+    ],
+    [
+     "a",
+     7.488,
+     7.538
+    ],
+    [
+     "stutter",
+     7.55,
+     7.962
+    ],
+    [
+     "not",
+     8.187,
+     8.387
+    ],
+    [
+     "a",
+     8.4,
+     8.462
+    ],
+    [
+     "blip",
+     8.475,
+     8.85
+    ]
+   ]
   },
   {
    "id": "rack",
-   "at": 69.4,
-   "real": 69.75,
-   "speech": 7.212,
-   "len": 7.44,
-   "head": 0.228,
+   "at": 236.8,
+   "real": 237.15,
+   "speech": 7.628,
+   "len": 7.87,
+   "head": 0.242,
    "file": "rack.mp3",
-   "file_start": 69.522,
-   "hash": "9149653f64c4",
+   "file_start": 236.908,
+   "hash": "72c6375bad96",
    "text": "Why do frames slip? The work is split across a rack of computers, and every frame has to wait for the slowest one.",
-   "source": "old lab film, lines 10 and 11: a rack of hosts publishes into one frame, which ends when the last host reports"
+   "source": "old lab film, lines 10 and 11: a rack of hosts publishes into one frame, which ends when the last host reports",
+   "words": [
+    [
+     "Why",
+     0.0,
+     0.287
+    ],
+    [
+     "do",
+     0.3,
+     0.425
+    ],
+    [
+     "frames",
+     0.437,
+     0.812
+    ],
+    [
+     "slip",
+     0.825,
+     1.212
+    ],
+    [
+     "The",
+     2.075,
+     2.212
+    ],
+    [
+     "work",
+     2.225,
+     2.525
+    ],
+    [
+     "is",
+     2.538,
+     2.663
+    ],
+    [
+     "split",
+     2.675,
+     2.938
+    ],
+    [
+     "across",
+     2.95,
+     3.287
+    ],
+    [
+     "a",
+     3.3,
+     3.362
+    ],
+    [
+     "rack",
+     3.375,
+     3.6
+    ],
+    [
+     "of",
+     3.612,
+     3.7
+    ],
+    [
+     "computers",
+     3.712,
+     4.3
+    ],
+    [
+     "and",
+     4.525,
+     4.675
+    ],
+    [
+     "every",
+     4.687,
+     4.925
+    ],
+    [
+     "frame",
+     4.937,
+     5.287
+    ],
+    [
+     "has",
+     5.3,
+     5.45
+    ],
+    [
+     "to",
+     5.462,
+     5.562
+    ],
+    [
+     "wait",
+     5.575,
+     5.85
+    ],
+    [
+     "for",
+     5.863,
+     5.95
+    ],
+    [
+     "the",
+     5.962,
+     6.05
+    ],
+    [
+     "slowest",
+     6.062,
+     6.537
+    ],
+    [
+     "one",
+     6.55,
+     6.875
+    ]
+   ]
   },
   {
-   "id": "straggler",
-   "at": 77.2,
-   "real": 77.55,
-   "speech": 9.241,
-   "len": 9.46,
-   "head": 0.219,
-   "file": "straggler.mp3",
-   "file_start": 77.331,
-   "hash": "78f846b8f9cd",
-   "text": "One slow computer, and the whole frame is late. An average hides it. So every computer gets its own time budget, checked every frame.",
-   "source": "old lab film, lines 13 and 14: one straggler makes the frame late; budgets are allocated and enforced per host, a system average constrains nobody"
+   "id": "budget",
+   "at": 245.6,
+   "real": 245.95,
+   "speech": 8.809,
+   "len": 9.05,
+   "head": 0.241,
+   "file": "budget.mp3",
+   "file_start": 245.709,
+   "hash": "a1d80cd81dbf",
+   "text": "One slow computer makes the whole frame late, and an average hides it. So every computer gets its own time budget, checked every frame.",
+   "source": "old lab film, lines 13 and 14: one straggler makes the frame late; budgets are allocated and enforced per host, a system average constrains nobody",
+   "words": [
+    [
+     "One",
+     0.0,
+     0.325
+    ],
+    [
+     "slow",
+     0.338,
+     0.6
+    ],
+    [
+     "computer",
+     0.613,
+     1.025
+    ],
+    [
+     "makes",
+     1.037,
+     1.287
+    ],
+    [
+     "the",
+     1.3,
+     1.362
+    ],
+    [
+     "whole",
+     1.375,
+     1.65
+    ],
+    [
+     "frame",
+     1.662,
+     1.975
+    ],
+    [
+     "late",
+     1.987,
+     2.325
+    ],
+    [
+     "and",
+     2.55,
+     2.637
+    ],
+    [
+     "an",
+     2.65,
+     2.737
+    ],
+    [
+     "average",
+     2.75,
+     3.075
+    ],
+    [
+     "hides",
+     3.088,
+     3.438
+    ],
+    [
+     "it",
+     3.45,
+     3.687
+    ],
+    [
+     "So",
+     4.55,
+     4.838
+    ],
+    [
+     "every",
+     4.85,
+     5.05
+    ],
+    [
+     "computer",
+     5.062,
+     5.462
+    ],
+    [
+     "gets",
+     5.475,
+     5.712
+    ],
+    [
+     "its",
+     5.725,
+     5.863
+    ],
+    [
+     "own",
+     5.875,
+     6.075
+    ],
+    [
+     "time",
+     6.088,
+     6.363
+    ],
+    [
+     "budget",
+     6.375,
+     6.8
+    ],
+    [
+     "checked",
+     6.975,
+     7.262
+    ],
+    [
+     "every",
+     7.275,
+     7.5
+    ],
+    [
+     "frame",
+     7.512,
+     8.05
+    ]
+   ]
   },
   {
-   "id": "measure",
-   "at": 87.0,
-   "real": 87.35,
-   "speech": 7.881,
-   "len": 8.11,
+   "id": "count",
+   "at": 255.6,
+   "real": 255.95,
+   "speech": 6.981,
+   "len": 7.22,
+   "head": 0.239,
+   "file": "count.mp3",
+   "file_start": 255.711,
+   "hash": "9d237ba1bb99",
+   "text": "And every overrun is counted while it runs. A spot check can miss a short spike; a counter can't.",
+   "source": "old lab film, lines 15 to 17: instrument while the session runs; the overrun counter catches what sampled step time misses",
+   "words": [
+    [
+     "And",
+     0.0,
+     0.238
+    ],
+    [
+     "every",
+     0.25,
+     0.513
+    ],
+    [
+     "overrun",
+     0.525,
+     1.013
+    ],
+    [
+     "is",
+     1.025,
+     1.15
+    ],
+    [
+     "counted",
+     1.162,
+     1.563
+    ],
+    [
+     "while",
+     1.575,
+     1.787
+    ],
+    [
+     "it",
+     1.8,
+     1.912
+    ],
+    [
+     "runs",
+     1.925,
+     2.412
+    ],
+    [
+     "A",
+     3.275,
+     3.425
+    ],
+    [
+     "spot",
+     3.438,
+     3.737
+    ],
+    [
+     "check",
+     3.75,
+     3.95
+    ],
+    [
+     "can",
+     3.962,
+     4.088
+    ],
+    [
+     "miss",
+     4.1,
+     4.288
+    ],
+    [
+     "a",
+     4.3,
+     4.35
+    ],
+    [
+     "short",
+     4.363,
+     4.712
+    ],
+    [
+     "spike",
+     4.725,
+     5.1
+    ],
+    [
+     "a",
+     5.3,
+     5.35
+    ],
+    [
+     "counter",
+     5.363,
+     5.712
+    ],
+    [
+     "can't",
+     5.725,
+     6.238
+    ]
+   ]
+  },
+  {
+   "id": "determinism",
+   "at": 264.2,
+   "real": 264.55,
+   "speech": 4.473,
+   "len": 4.63,
+   "head": 0.157,
+   "file": "determinism.mp3",
+   "file_start": 264.393,
+   "hash": "cde7a893cfe1",
+   "text": "That's determinism: the slowest frame counts, not the average.",
+   "source": "old lab film, closing line, in plainer words",
+   "words": [
+    [
+     "That's",
+     0.0,
+     0.263
+    ],
+    [
+     "determinism",
+     0.275,
+     0.987
+    ],
+    [
+     "the",
+     1.212,
+     1.313
+    ],
+    [
+     "slowest",
+     1.325,
+     1.788
+    ],
+    [
+     "frame",
+     1.8,
+     2.088
+    ],
+    [
+     "counts",
+     2.1,
+     2.538
+    ],
+    [
+     "not",
+     2.7,
+     2.937
+    ],
+    [
+     "the",
+     2.95,
+     3.062
+    ],
+    [
+     "average",
+     3.075,
+     3.625
+    ]
+   ]
+  },
+  {
+   "id": "ai",
+   "at": 271.9,
+   "real": 272.25,
+   "speech": 12.437,
+   "len": 12.67,
+   "head": 0.233,
+   "file": "ai.mp3",
+   "file_start": 272.017,
+   "hash": "ccb084aa821f",
+   "text": "Next, we'll want AI inside loops like this: models that see, predict and decide. Many take longer on some inputs than on others, and their slowest answers are exactly what this rule punishes.",
+   "source": "the author's view; many learned models take input-dependent time (a generative model's answer length, for one), so their latency has a tail",
+   "words": [
+    [
+     "Next",
+     0.0,
+     0.488
+    ],
+    [
+     "we'll",
+     0.625,
+     0.812
+    ],
+    [
+     "want",
+     0.825,
+     1.037
+    ],
+    [
+     "AI",
+     1.05,
+     1.338
+    ],
+    [
+     "inside",
+     1.35,
+     1.925
+    ],
+    [
+     "loops",
+     1.938,
+     2.212
+    ],
+    [
+     "like",
+     2.225,
+     2.425
+    ],
+    [
+     "this",
+     2.438,
+     2.7
+    ],
+    [
+     "models",
+     2.862,
+     3.262
+    ],
+    [
+     "that",
+     3.275,
+     3.45
+    ],
+    [
+     "see",
+     3.462,
+     3.813
+    ],
+    [
+     "predict",
+     4.025,
+     4.363
+    ],
+    [
+     "and",
+     4.45,
+     4.588
+    ],
+    [
+     "decide",
+     4.6,
+     5.238
+    ],
+    [
+     "Many",
+     6.1,
+     6.413
+    ],
+    [
+     "take",
+     6.425,
+     6.675
+    ],
+    [
+     "longer",
+     6.687,
+     6.987
+    ],
+    [
+     "on",
+     7.0,
+     7.137
+    ],
+    [
+     "some",
+     7.15,
+     7.4
+    ],
+    [
+     "inputs",
+     7.413,
+     7.762
+    ],
+    [
+     "than",
+     7.775,
+     7.912
+    ],
+    [
+     "on",
+     7.925,
+     8.038
+    ],
+    [
+     "others",
+     8.05,
+     8.388
+    ],
+    [
+     "and",
+     8.6,
+     8.7
+    ],
+    [
+     "their",
+     8.712,
+     8.838
+    ],
+    [
+     "slowest",
+     8.85,
+     9.312
+    ],
+    [
+     "answers",
+     9.325,
+     9.725
+    ],
+    [
+     "are",
+     9.738,
+     9.838
+    ],
+    [
+     "exactly",
+     9.85,
+     10.312
+    ],
+    [
+     "what",
+     10.325,
+     10.55
+    ],
+    [
+     "this",
+     10.562,
+     10.75
+    ],
+    [
+     "rule",
+     10.763,
+     11.025
+    ],
+    [
+     "punishes",
+     11.037,
+     11.675
+    ]
+   ]
+  },
+  {
+   "id": "thesis",
+   "at": 285.7,
+   "real": 286.05,
+   "speech": 14.311,
+   "len": 14.54,
    "head": 0.229,
-   "file": "measure.mp3",
-   "file_start": 87.121,
-   "hash": "92cceac5b37a",
-   "text": "And every overrun is counted while the simulator runs. Spot checks miss a short spike. A counter does not.",
-   "source": "old lab film, lines 15 to 17: instrument while the session runs; the overrun counter catches what sampled step time misses"
+   "file": "thesis.mp3",
+   "file_start": 285.821,
+   "hash": "04df0d266474",
+   "text": "So here is the thesis. A simulator is trusted because it brings evidence: tests against the real aircraft, and timing proven every frame. AI in the loop must earn trust the same way: with evidence, not averages.",
+   "source": "the author's thesis, labelled as such on screen",
+   "words": [
+    [
+     "So",
+     0.0,
+     0.225
+    ],
+    [
+     "here",
+     0.238,
+     0.525
+    ],
+    [
+     "is",
+     0.537,
+     0.675
+    ],
+    [
+     "the",
+     0.687,
+     0.787
+    ],
+    [
+     "thesis",
+     0.8,
+     1.475
+    ],
+    [
+     "A",
+     2.338,
+     2.475
+    ],
+    [
+     "simulator",
+     2.487,
+     3.012
+    ],
+    [
+     "is",
+     3.025,
+     3.212
+    ],
+    [
+     "trusted",
+     3.225,
+     3.65
+    ],
+    [
+     "because",
+     3.663,
+     3.888
+    ],
+    [
+     "it",
+     3.9,
+     4.05
+    ],
+    [
+     "brings",
+     4.062,
+     4.35
+    ],
+    [
+     "evidence",
+     4.363,
+     4.838
+    ],
+    [
+     "tests",
+     5.038,
+     5.387
+    ],
+    [
+     "against",
+     5.4,
+     5.725
+    ],
+    [
+     "the",
+     5.738,
+     5.838
+    ],
+    [
+     "real",
+     5.85,
+     6.175
+    ],
+    [
+     "aircraft",
+     6.187,
+     6.787
+    ],
+    [
+     "and",
+     7.0,
+     7.1
+    ],
+    [
+     "timing",
+     7.113,
+     7.5
+    ],
+    [
+     "proven",
+     7.512,
+     7.875
+    ],
+    [
+     "every",
+     7.887,
+     8.1
+    ],
+    [
+     "frame",
+     8.113,
+     8.613
+    ],
+    [
+     "AI",
+     9.475,
+     9.825
+    ],
+    [
+     "in",
+     9.838,
+     9.962
+    ],
+    [
+     "the",
+     9.975,
+     10.062
+    ],
+    [
+     "loop",
+     10.075,
+     10.275
+    ],
+    [
+     "must",
+     10.287,
+     10.55
+    ],
+    [
+     "earn",
+     10.562,
+     10.7
+    ],
+    [
+     "trust",
+     10.712,
+     11.025
+    ],
+    [
+     "the",
+     11.037,
+     11.112
+    ],
+    [
+     "same",
+     11.125,
+     11.4
+    ],
+    [
+     "way",
+     11.412,
+     11.7
+    ],
+    [
+     "with",
+     11.925,
+     12.05
+    ],
+    [
+     "evidence",
+     12.062,
+     12.537
+    ],
+    [
+     "not",
+     12.687,
+     12.95
+    ],
+    [
+     "averages",
+     12.962,
+     13.55
+    ]
+   ]
   },
   {
-   "id": "close",
-   "at": 95.5,
-   "real": 95.85,
-   "speech": 7.965,
-   "len": 8.18,
-   "head": 0.215,
-   "file": "close.mp3",
-   "file_start": 95.635,
-   "hash": "8c22772b3daa",
-   "text": "That is determinism: the slowest frame counts, not the average. And it is the rule any AI added to this loop will have to keep.",
-   "source": "old lab film, line 18 (closing line, in plainer words); the series link to the deadline film"
+   "id": "coda",
+   "at": 301.8,
+   "real": 302.15,
+   "speech": 4.547,
+   "len": 4.78,
+   "head": 0.233,
+   "file": "coda.mp3",
+   "file_start": 301.917,
+   "hash": "7298ba17f4d6",
+   "text": "Fidelity earns the trust. Determinism keeps it.",
+   "source": "closing line",
+   "words": [
+    [
+     "Fidelity",
+     0.0,
+     0.625
+    ],
+    [
+     "earns",
+     0.638,
+     0.925
+    ],
+    [
+     "the",
+     0.938,
+     1.013
+    ],
+    [
+     "trust",
+     1.025,
+     1.563
+    ],
+    [
+     "Determinism",
+     2.425,
+     3.175
+    ],
+    [
+     "keeps",
+     3.188,
+     3.525
+    ],
+    [
+     "it",
+     3.538,
+     3.788
+    ]
+   ]
   },
   {
    "id": "card",
-   "at": 105.6,
-   "real": 105.95,
+   "at": 308.5,
+   "real": 308.85,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 105.95,
+   "file_start": 308.85,
    "hash": "",
    "text": "",
-   "source": ""
+   "source": "",
+   "words": []
   }
  ]
 }

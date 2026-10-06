@@ -54,17 +54,28 @@ def speech_span(path):
 
 
 async def synth_edge(voice, text, out, rate):
+    """Write the mp3 and return the word timings edge reports while it speaks:
+    [[word, start, end], ...] in seconds from the start of the file."""
     import edge_tts
-    await edge_tts.Communicate(text, voice, rate=rate).save(out)
+    words = []
+    with open(out, 'wb') as f:
+        async for chunk in edge_tts.Communicate(text, voice, rate=rate, boundary='WordBoundary').stream():
+            if chunk['type'] == 'audio':
+                f.write(chunk['data'])
+            elif chunk['type'] == 'WordBoundary':
+                s0 = chunk['offset'] / 1e7
+                words.append([chunk['text'], round(s0, 3), round(s0 + chunk['duration'] / 1e7, 3)])
+    return words
 
 
 def synth(engine, text, out, rate='+0%'):
     kind, _, name = engine.partition(':')
     if kind == 'edge':
-        asyncio.run(synth_edge(name, text, out, rate))
+        return asyncio.run(synth_edge(name, text, out, rate))
     elif kind in ('chatterbox', 'kokoro'):
         import cinema_tts_models  # lives beside this script; needs the bench venv
         cinema_tts_models.synth(kind, name, text, out)
+        return None
     else:
         raise SystemExit(f'unknown voice engine {engine}')
 
@@ -84,25 +95,39 @@ def main():
     tl_path = os.path.join(out_dir, 'timeline.json')
     if os.path.exists(tl_path):
         old = {l['id']: l for l in json.load(open(tl_path, encoding='utf-8'))['lines']}
+    # Word timings, so a film can cue a picture on the word that names it
+    # rather than on a time read off a stopwatch. Kept per line with the hash
+    # of what produced them, beside the mp3s they describe.
+    words_path = os.path.join(out_dir, 'words.json')
+    words = json.load(open(words_path, encoding='utf-8')) if os.path.exists(words_path) else {}
 
     lines = []
     for ln in src['lines']:
         if not ln['text']:
             # a silent anchor: holds its cue until the last sentence has finished
-            lines.append({**ln, 'hash': '', 'file': '', 'head': 0.0, 'speech': 0.0, 'len': 0.0})
+            lines.append({**ln, 'hash': '', 'file': '', 'head': 0.0, 'speech': 0.0, 'len': 0.0, 'words': []})
             continue
         path = os.path.join(out_dir, f"{ln['id']}.mp3")
         key = hashlib.sha1(f"{engine}\n{src.get('rate', '')}\n{ln['text']}".encode()).hexdigest()[:12]
-        if not (os.path.exists(path) and old.get(ln['id'], {}).get('hash') == key):
+        fresh = os.path.exists(path) and old.get(ln['id'], {}).get('hash') == key
+        if engine.startswith('edge') and words.get(ln['id'], {}).get('hash') != key:
+            fresh = False
+        if not fresh:
             print(f"  voicing {ln['id']}")
             tmp = path + '.src'
-            synth(engine, ln['text'], tmp + ('.mp3' if engine.startswith('edge') else '.wav'), src.get('rate', '+0%'))
             got = tmp + ('.mp3' if engine.startswith('edge') else '.wav')
+            w = synth(engine, ln['text'], got, src.get('rate', '+0%'))
             ff(['-y', '-i', got, '-ar', '48000', '-ac', '1', '-b:a', '160k', path])
             os.remove(got)
+            if w is not None:
+                words[ln['id']] = {'hash': key, 'words': w}
         head, tail, total = speech_span(path)
+        # times relative to the first spoken word, which is where `real` puts it
+        wl = words.get(ln['id'], {}).get('words') or []
+        w0 = wl[0][1] if wl else 0.0
         lines.append({**ln, 'hash': key, 'file': f"{ln['id']}.mp3", 'head': round(head, 3),
-                      'speech': round(total - head - tail, 3), 'len': round(total, 3)})
+                      'speech': round(total - head - tail, 3), 'len': round(total, 3),
+                      'words': [[w[0], round(w[1] - w0, 3), round(w[2] - w0, 3)] for w in wl]})
 
     # the schedule: a line starts with its text unless the last one is still talking.
     # A silent line with `jump_to` is a cut: the film dips to black over DIP seconds,
@@ -131,7 +156,7 @@ def main():
 
     timeline = {'film': a.film, 'voice': engine, 'duration': round(dur, 3), 'authored': authored_end,
                 'anchors': anchors, 'audio': 'soundtrack.mp3',
-                'lines': [{k: ln[k] for k in ('id', 'at', 'real', 'speech', 'len', 'head', 'file', 'file_start', 'hash', 'text', 'source')}
+                'lines': [{k: ln[k] for k in ('id', 'at', 'real', 'speech', 'len', 'head', 'file', 'file_start', 'hash', 'text', 'source', 'words')}
                           for ln in lines]}
     stretch = max((b[0] - a_[0]) / max(1e-6, b[1] - a_[1]) for a_, b in zip(anchors, anchors[1:]))
     print(f"  {len(lines)} lines, film {authored_end:.1f}s authored -> {dur:.1f}s real, worst stretch x{stretch:.2f}")
@@ -141,6 +166,9 @@ def main():
     # LF, as git stores it: on Windows a plain 'w' writes CRLF, and every voice
     # build showed the whole timeline as changed
     json.dump(timeline, open(tl_path, 'w', encoding='utf-8', newline='\n'), indent=1)
+    keep = {l['id'] for l in lines}
+    json.dump({k: words[k] for k in sorted(words) if k in keep},
+              open(words_path, 'w', encoding='utf-8', newline='\n'), indent=1)
     print(f"  wrote {os.path.relpath(tl_path, ROOT)}")
 
 
