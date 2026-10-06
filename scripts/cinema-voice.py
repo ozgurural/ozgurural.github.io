@@ -18,8 +18,10 @@ two anchors plays slower to wait for it. Authored time never runs faster than
 real time, so a scene can stretch but is never rushed, and no sentence is cut.
 
 The music is placed so its own swell lands on a named line (`rise_on`), and
-it is ducked under the voice with a sidechain compressor. Licensed stock music
-lives in dist/ (gitignored); only the mixed soundtrack is committed.
+it is ducked under the voice with a sidechain compressor. A film longer than
+its track loops it through joints chosen in the track's own time (`loops`,
+see mix()); scripts/music-map.py finds the bars that can be joined. Licensed
+stock music lives in dist/ (gitignored); only the mixed soundtrack is committed.
 """
 import argparse, asyncio, hashlib, json, os, re, subprocess, sys
 
@@ -40,6 +42,18 @@ def ff(args, capture=True):
 def duration(path):
     m = re.search(r'Duration: (\d+):(\d+):([\d.]+)', ff(['-i', path, '-f', 'null', '-']))
     return int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])
+
+
+def music_end(path):
+    """Where a track's last note has died away (below -55 dB for good), in seconds from its start."""
+    log = ff(['-i', path, '-af', 'silencedetect=noise=-55dB:d=0.5', '-f', 'null', '-'])
+    total = duration(path)
+    starts = [float(x) for x in re.findall(r'silence_start: (-?[\d.]+)', log)]
+    ends = [float(x) for x in re.findall(r'silence_end: ([\d.]+)', log)]
+    # the container's duration runs a few ms past the last decoded sample (144.04 against 144.00 here)
+    if starts and (len(ends) < len(starts) or ends[-1] >= total - 0.1):
+        return starts[-1]
+    return total
 
 
 def speech_span(path):
@@ -85,6 +99,7 @@ def main():
     ap.add_argument('film')
     ap.add_argument('--voice', help='override the voice in the .voice.json')
     ap.add_argument('--no-mix', action='store_true')
+    ap.add_argument('--bed', help='also write the music alone (joints, no voice, no ducking) to this .wav, to check the joints')
     a = ap.parse_args()
 
     src = json.load(open(os.path.join(ROOT, 'scripts', 'cinema', f'{a.film}.voice.json'), encoding='utf-8'))
@@ -162,7 +177,7 @@ def main():
     print(f"  {len(lines)} lines, film {authored_end:.1f}s authored -> {dur:.1f}s real, worst stretch x{stretch:.2f}")
 
     if not a.no_mix:
-        mix(src, lines, dur, out_dir)
+        mix(src, lines, dur, out_dir, bed=a.bed and os.path.abspath(a.bed))
     # LF, as git stores it: on Windows a plain 'w' writes CRLF, and every voice
     # build showed the whole timeline as changed
     json.dump(timeline, open(tl_path, 'w', encoding='utf-8', newline='\n'), indent=1)
@@ -172,7 +187,7 @@ def main():
     print(f"  wrote {os.path.relpath(tl_path, ROOT)}")
 
 
-def mix(src, lines, dur, out_dir):
+def mix(src, lines, dur, out_dir, bed=None):
     music = src.get('music')
     inputs, chains = [], []
     lines = [ln for ln in lines if ln['file']]
@@ -195,44 +210,81 @@ def mix(src, lines, dur, out_dir):
         if offset < 0:
             raise SystemExit(f"music would start {-offset:.1f}s into the film: '{music['rise_on']}' is at "
                              f"{rise_at:.1f}s, after the track's swell at {music['rise']}s; choose an earlier rise_on")
+        # A film longer than the track loops it, through joints in the track's own
+        # time: when the music reaches `out` it carries on from `to`. Put both on
+        # the beat grid with `out - to` a whole number of bars, between passages
+        # that match, and the beat never stumbles (scripts/music-map.py lists the
+        # bars and which of them repeat). `xfade` is an equal-power crossfade
+        # across the joint and `pre` the share of it before the joint: a joint
+        # into different material can let the old passage recede just ahead of
+        # the downbeat instead of overlapping it. Because joints live in track
+        # time, retiming the film moves them with the music rather than tearing
+        # them apart; what retiming can still move is where the track's own
+        # ending falls, so that is printed and checked. level-d's loops were once
+        # set in film time and the film was later lengthened: the piano ending
+        # moved ten seconds off its last scene and the end card played in silence.
+        mfile = os.path.join(ROOT, music['file'])
+        mlen, mend = duration(mfile), music_end(mfile)
+        joints = music.get('loops', [])
+        segs, film_t, pos = [], 0.0, offset
+        for jn in joints:
+            if jn['out'] <= pos + 1.0:
+                raise SystemExit(f"music joint out={jn['out']}s is behind the playhead ({pos:.2f}s); list joints in the order they play")
+            segs.append([film_t, pos, jn['out']])
+            film_t += jn['out'] - pos
+            pos = jn['to']
+        segs.append([film_t, pos, mlen])
+        died = segs[-1][0] + (mend - segs[-1][1])        # film time the last note has gone
+        cut = died > dur - 0.2
+        inputs += ['-i', mfile]
         mi = n
-        if offset >= 0:
-            inputs += ['-ss', f'{offset:.3f}', '-i', os.path.join(ROOT, music['file'])]
-            place = ''
-        else:
-            inputs += ['-i', os.path.join(ROOT, music['file'])]
-            d = int(-offset * 1000)
-            place = f'adelay={d}|{d},'
-        # A film longer than the track loops it: each entry in `loops` restarts
-        # the track at `from` (seconds into the track) at film time `at`, with an
-        # equal-power crossfade of `fade` seconds out of whatever was playing.
-        # level-d (263 s against a 144 s track) returns to the full section at
-        # 38 s twice, the second timed so the track's own ending lands on the card.
-        loops = music.get('loops', [])
-        if not loops:
-            graph += f";[{mi}:a]{place}atrim=0:{dur:.3f},afade=t=in:st=0:d=1.5,afade=t=out:st={dur - 4.0:.3f}:d=4.0,volume=0.6[mus]"
-        else:
-            starts = [0.0] + [lp['at'] for lp in loops]
-            fades = [lp.get('fade', 6.0) for lp in loops]
-            segs = []
-            for k, s0 in enumerate(starts):
-                end = starts[k + 1] + fades[k] if k + 1 < len(starts) else dur
-                length = end - s0
-                if k:
-                    inputs += ['-ss', f"{loops[k - 1]['from']:.3f}", '-i', os.path.join(ROOT, music['file'])]
-                idx = mi + k
-                fin = 'afade=t=in:st=0:d=1.5:curve=qsin' if k == 0 else f'afade=t=in:st=0:d={fades[k - 1]:.3f}:curve=qsin'
-                fout = f',afade=t=out:st={length - fades[k]:.3f}:d={fades[k]:.3f}:curve=qsin' if k + 1 < len(starts) else ''
-                ms = int(s0 * 1000)
-                delay = f',adelay={ms}|{ms}' if ms else ''
-                graph += f";[{idx}:a]{place if k == 0 else ''}atrim=0:{length:.3f},asetpts=PTS-STARTPTS,{fin}{fout}{delay}[m{k}]"
-                segs.append(f'[m{k}]')
-            graph += f";{''.join(segs)}amix=inputs={len(segs)}:normalize=0,apad=whole_dur={dur:.3f},atrim=0:{dur:.3f}," \
-                     f"afade=t=out:st={dur - 4.0:.3f}:d=4.0,volume=0.6[mus]"
+        mg = f"[{mi}:a]asetpts=PTS-STARTPTS,asplit={len(segs)}" + ''.join(f'[s{k}]' for k in range(len(segs)))
+        names = []
+        for k, (f0, t0, t1) in enumerate(segs):
+            if k:
+                x, pre = joints[k - 1].get('xfade', 0.5), joints[k - 1].get('pre', 0.5)
+                fin, lead = x, x * pre
+            else:
+                fin, lead = 1.5, 0.0
+            if k + 1 < len(segs):
+                x, pre = joints[k].get('xfade', 0.5), joints[k].get('pre', 0.5)
+                fout, tail = x, x * (1 - pre)
+            else:
+                fout, tail = 0.0, 0.0
+            a0, a1 = t0 - lead, min(mlen, t1 + tail)
+            length = a1 - a0
+            fx = f"afade=t=in:st=0:d={fin:.3f}:curve=qsin"
+            if fout:
+                fx += f",afade=t=out:st={length - fout:.3f}:d={fout:.3f}:curve=qsin"
+            ms = int(round((f0 - lead) * 1000))
+            delay = f",adelay={ms}|{ms}" if ms > 0 else ''
+            mg += f";[s{k}]atrim=start={a0:.4f}:end={a1:.4f},asetpts=PTS-STARTPTS,{fx}{delay}[m{k}]"
+            names.append(f'[m{k}]')
+        # the track's own ending is the ending; only a track still playing when the film stops is faded
+        endfade = f",afade=t=out:st={dur - 4.0:.3f}:d=4.0" if cut else ''
+        mg += f";{''.join(names)}amix=inputs={len(names)}:normalize=0,apad=whole_dur={dur:.3f},atrim=0:{dur:.3f}{endfade},volume=0.6[mus]"
+        graph += ';' + mg
+        if bed:     # the music alone, joints and all, before the voice ducks it
+            ff(['-y', *inputs, '-filter_complex', mg, '-map', '[mus]', '-ar', '48000', '-ac', '2', bed])
+            print(f"    music bed -> {os.path.relpath(bed, ROOT)}")
+
+        def where(t):
+            for ln in lines:
+                if ln['real'] - 0.05 <= t <= ln['real'] + ln['speech'] + 0.05:
+                    return f"under '{ln['id']}'"
+            return 'in a pause'
+        print(f"  music: track from {offset:.2f}s, swell on '{music['rise_on']}' at {rise_at:.2f}s")
+        for k, jn in enumerate(joints):
+            print(f"    joint {jn['out']:.3f}s -> {jn['to']:.3f}s at film {segs[k + 1][0]:.2f}s, {where(segs[k + 1][0])}")
+        last = max(ln['real'] + ln['speech'] for ln in lines)
+        print(f"    last note dies at film {died:.2f}s (last line ends {last:.2f}s, film ends {dur:.2f}s)")
+        if cut:
+            print("    WARNING: the film stops before the music ends, so the ending is faded rather than heard; adjust the joints")
+        elif died < last or died < dur - 6.0:
+            print("    WARNING: the music ends well before the film does; add a bar or two to a joint")
         graph += f";[voice]asplit=2[vo][key]" \
                  f";[mus][key]sidechaincompress=threshold=0.015:ratio=7:attack=40:release=650:makeup=1[bed]" \
                  f";[vo][bed]amix=inputs=2:normalize=0[mix]"
-        print(f"  music: track {'from %.2fs' % offset if offset >= 0 else 'delayed %.2fs' % -offset}, swell on '{music['rise_on']}' at {rise_at:.2f}s")
     else:
         graph += ';[voice]anull[mix]'
     raw = os.path.join(out_dir, 'soundtrack.raw.wav')
