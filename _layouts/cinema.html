@@ -91,6 +91,15 @@
       <button class="cin-btn" type="button" data-act="replay" aria-label="Replay">&#8634;</button>
     </div>
   </div>
+  <script>
+    // embedded in the very page a link points to, that link goes nowhere
+    try {
+      var ref = document.referrer && new URL(document.referrer).pathname;
+      if (ref) document.querySelectorAll('.cin-links a').forEach(function (a) {
+        if (new URL(a.href, location.href).pathname === ref) a.style.display = 'none';
+      });
+    } catch (e) {}
+  </script>
   <script type="module" src="{{ '/assets/js/cinema/' | relative_url }}{{ page.film_module }}.js?v={{ site.time | date: '%s' }}"></script>
 </body>
 </html>

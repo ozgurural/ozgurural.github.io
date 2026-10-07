@@ -1040,6 +1040,67 @@ button:focus-visible {
   height: 100%;
   border: 0;
 }
+// Level D lab page: the write-up beside a rail of the numbers it argues from,
+// so a text column under a full-width film does not leave a third of the page
+// empty. One column below 1100px, where the rail follows the introduction.
+.lab-lvd > :not(.lab-lvd__facts) { max-width: 820px; }
+.lab-lvd__facts {
+  margin: 0 0 1.6rem;
+  padding: 0.95rem 1.1rem 1rem;
+  max-width: 820px;
+  background: var(--ds-surface-elev);
+  border: 1px solid var(--ds-line);
+  border-top: 2px solid var(--ds-accent);
+  border-radius: var(--ds-radius-sm);
+}
+.lab-lvd__facts-title {
+  margin: 0 0 0.9rem;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+}
+.lab-lvd__facts dl { margin: 0; display: grid; gap: 0.7rem; }
+.lab-lvd__facts dt {
+  font-family: var(--ds-font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ds-ink);
+}
+.lab-lvd__facts dd { margin: 0.15rem 0 0; font-size: 0.8rem; line-height: 1.4; color: var(--ds-muted); }
+@media (min-width: 601px) and (max-width: 1099px) {
+  .lab-lvd__facts dl { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+}
+@media (min-width: 1100px) {
+  .lab-lvd {
+    display: grid;
+    grid-template-columns: minmax(0, 820px) minmax(250px, 330px);
+    column-gap: 56px;
+    align-items: start;
+  }
+  .lab-lvd > * { grid-column: 1; }
+  .lab-lvd > .lab-lvd__facts { grid-column: 2; grid-row: 1 / span 12; margin: 0; }
+}
+// it stays in view while the write-up scrolls, but only where it fits: a
+// sticky box taller than the window hides its own last lines
+@media (min-width: 1100px) and (min-height: 760px) {
+  .lab-lvd > .lab-lvd__facts { position: sticky; top: 88px; }
+}
+
+// On a phone the film runs edge to edge: inside the text column it was 309px
+// across, captions and all, on a 375px screen.
+@media (max-width: 600px) {
+  .lab-film__frame--cinema {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+}
 
 .labf { 
   position: relative; 
@@ -1416,8 +1477,47 @@ button:focus-visible {
    pages that contain a film section (.lab-experiment) — never the rest of
    the site. Mobile already stacks the sidebar, so this only affects ≥1024px.
    -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Page width on wide screens. The theme kept two of twelve columns empty on
+   the right of every page (a suffix reserved for a table of contents no page
+   here uses), so on a 1440px screen the text stopped at 1132px and a third
+   of the screen stayed blank. The suffix is gone and the container is
+   narrower and centred, so the sidebar and the reading column sit together
+   in the middle of the screen. Lab pages keep the wide container: they hide
+   the sidebar and run the film across it. The masthead keeps its width so
+   all seven sections still fit in the bar.
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 925px) {
+  .page { padding-right: 0; }
+}
+@media screen and (min-width: 1280px) {
+  #main { max-width: 1120px; }
+  #main:has(.lab-experiment) { max-width: 1280px; }
+}
+
+/* Phones and tablets: the page first, the author card after it. The card
+   opened every page, so a visitor saw about 210px of profile before the
+   title of what they came for; the name is in the masthead. The home page
+   keeps it on top, where it is the point. */
+@media screen and (max-width: 1023px) {
+  #main { display: flex; flex-direction: column; }
+  #main > .sidebar {
+    order: 2;
+    margin-top: 2.5rem !important;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--ds-line);
+  }
+  .ep-home #main > .sidebar { order: 0; margin-top: 0.75rem !important; padding-top: 0; border-top: 0; }
+}
+
+// On a phone too: the stacked author card pushed the film below the first
+// screen (it started at 892px on a 375x812 phone); the name is in the masthead.
+#main:has(.lab-experiment) > .sidebar { display: none !important; }
+// and without the card's box, which the edge-to-edge film cut through
+@media screen and (max-width: 1023px) {
+  .lab-card.lab-experiment { border: none; background: transparent; box-shadow: none; padding-left: 0; padding-right: 0; }
+}
 @media screen and (min-width: 1024px) {
-  #main:has(.lab-experiment) > .sidebar { display: none !important; }
   #main:has(.lab-experiment) > .page {
     float: none !important;
     width: 100% !important;

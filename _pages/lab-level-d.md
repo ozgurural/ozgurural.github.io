@@ -3,27 +3,40 @@ permalink: /lab/level-d-60hz/
 oembed: "/lab/level-d-60hz/oembed.json"
 title: "Inside a Level D Flight Simulator"
 description: "How a Level D flight simulator fools a pilot's senses, is proven against the real aircraft and is never late, and what that means for AI in the loop."
-excerpt: "Fidelity earns the trust; determinism keeps it. Collimated displays, motion cueing, objective tests against flight data, the 150 ms gate, and the evidence any AI in the loop will owe."
+excerpt: "How a Level D flight simulator earns a pilot's trust, and what AI would have to live up to inside one."
 sitemap: true
 header:
-  og_image: "lab-og/og-det.png"
+  og_image: "lab-og/og-level-d-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-lvd" style="margin-top: 0;">
   <span class="ep-eyebrow">Simulation · Hard Real Time · Safety-Critical Systems</span>
-  <p class="lab-card__lead">✈ A Level D full-flight simulator is trusted to stand in for an airliner: in Europe, an experienced pilot can train for a new type entirely in one and fly the first landings in the real aircraft on airline flights, under an instructor. This page explains how a machine earns that trust, in a narrated film and in the engineering behind it: how it fools the pilot's senses, how it is proven against the real aircraft, why it must answer within 150 milliseconds on every single frame, and what that means for the AI that will join loops like it. The thesis is mine: <strong>fidelity earns the trust, and determinism keeps it.</strong></p>
-  <div class="lab-card__usecase">
-    <strong>Sources and scope:</strong>
-    <span>Every regulatory fact is public and cited where it is used: EASA Part-FCL (FCL.730.A, zero flight time training), EASA CS-FSTD(A) and, for new devices, <a href="https://www.easa.europa.eu/en/document-library/certification-specifications/cs-fstd-issue-1">CS-FSTD Issue 1</a> (2026), and <a href="https://www.ecfr.gov/current/title-14/chapter-I/subchapter-D/part-60">FAA 14 CFR Part 60</a> with Part 121, Appendix H. The engineering discipline is drawn from my work on Level D full-flight-simulator systems at Avion, including the live monitoring layer around those simulators. No employer design is disclosed: the machine shown is the generic six-actuator platform, cockpit and wrap-around display every full-flight simulator shares, and the stage times and rack in the film are illustrative. A companion design study, <a href="/lab/determinism/">AI Meets the Deadline</a>, works out one architecture for an AI planner above a loop like this one.</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
-      <iframe src="{{ '/films/level-d/' | relative_url }}?autoplay=0" title="Inside a Level D flight simulator: a narrated film by Dr. Ozgur Ural" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="{{ '/films/level-d/' | relative_url }}?autoplay=0" title="Inside a Level D flight simulator: a narrated film by Dr. Ozgur Ural" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
   </div>
+
+  <div class="lab-lvd">
+  <p class="lab-card__lead">✈ In Europe and the US, an experienced pilot can learn a new airliner entirely in a simulator, then land the real one for the first time on a regular airline flight. The film shows how a Level D simulator earns that trust, and what AI would have to live up to inside one. The engineering behind it follows, with every source.</p>
+  <div class="lab-card__usecase">
+    <strong>Sources:</strong>
+    <span>EASA Part-FCL (FCL.730.A), EASA CS-FSTD(A) and <a href="https://www.easa.europa.eu/en/document-library/certification-specifications/cs-fstd-issue-1">CS-FSTD Issue 1</a> (2026), <a href="https://www.ecfr.gov/current/title-14/chapter-I/subchapter-D/part-60">FAA 14 CFR Part 60</a> and Part 121, Appendix H. Drawn from my work on Level D full-flight simulators at Avion, including the live monitoring layer around them. No employer design is shown; the film's stage times and rack are illustrative.</span>
+  </div>
+  <aside class="lab-lvd__facts" aria-label="Key numbers">
+    <p class="lab-lvd__facts-title">Key numbers</p>
+    <dl>
+      <div><dt>Level D</dt><dd>The highest of the four levels a full-flight simulator can be qualified to.</dd></div>
+      <div><dt>0 hours</dt><dd>In the real aircraft before the first airline flight, under EASA zero flight time training.</dd></div>
+      <div><dt>150 ms</dt><dd>From a control input to the response, at Levels C and D.</dd></div>
+      <div><dt>100 ms</dt><dd>The new limit for the most realistic new simulators, EASA CS-FSTD Issue 1 (2026).</dd></div>
+      <div><dt>864,000</dt><dd>Frames in a four-hour session at 60 Hz.</dd></div>
+      <div><dt>864</dt><dd>Late frames in that session if one in a thousand misses its deadline.</dd></div>
+    </dl>
+  </aside>
 
   <details class="lab-reveal" open>
     <summary>👁 Fooling the senses</summary>
@@ -50,10 +63,10 @@ header:
 
   <details class="lab-reveal" open>
     <summary>🧭 The thesis</summary>
-    <p><strong>Fidelity earns the trust; determinism keeps it.</strong> A Level D simulator is not trusted because it is impressive. It is trusted because it brings two kinds of evidence: tests against the real aircraft, and timing proven on every frame by counters that cannot miss.</p>
+    <p><strong>Trust rests on two kinds of evidence.</strong> A Level D simulator is not trusted because it is impressive. It is trusted because it can show two things: that it behaves like the real aircraft, in tests against flight data, and that it answers on time on every frame, in counters that cannot miss a late one.</p>
     <p><strong>Why AI would enter the loop at all.</strong> The reason is fidelity. Some of an aircraft's behaviour is hard to write down from physics and hard to validate: the stall and beyond it, icing, ground effect. A model learned from flight data could capture what an equation misses. The image generator could draw a richer world with neural rendering inside the same frame budget. Adaptive instruction and assessment would also use AI, but they sit beside the loop rather than in it.</p>
     <p><strong>And why that is hard.</strong> A learned model that moves into the chain inherits its clock. Some models take time that depends on the input (a generative model's answer length, a detector's number of objects), and even a fixed-size network can stall when it shares memory, buses or a scheduler with the rest of the host. A model that samples, or a GPU kernel that sums in a different order, can also give a different answer to the same input, and a qualification test is only evidence if the same input gives the same result.</p>
-    <p><strong>The thesis.</strong> AI can raise the fidelity that earns a simulator its trust, but only if it keeps the determinism that keeps it: the same answer for the same input, delivered within its share of every frame, and proven by tests and counters rather than claimed by an average. A fixed-size network on dedicated, measured hardware can meet that bar; a model that cannot show it does not belong inside the loop. This is my view and an open research direction, not a published result; <a href="/lab/determinism/">AI Meets the Deadline</a> explores one architecture for keeping such a model out of the waiting path.</p>
+    <p><strong>The thesis.</strong> AI can make a simulator more realistic, and that is worth doing. Inside the loop, though, it has to be as predictable as everything else: the same answer for the same input, delivered within its share of every frame, and proven by tests and counters rather than claimed by an average. A fixed-size network on dedicated, measured hardware can meet that bar; a model that cannot show it does not belong inside the loop. This is my view and an open research direction, not a published result; <a href="/lab/determinism/">AI Meets the Deadline</a> explores one architecture for keeping such a model out of the waiting path.</p>
   </details>
 
   <details class="lab-reveal">
@@ -62,6 +75,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">

@@ -85,6 +85,8 @@ npm run check:liquid      # will Jekyll still build? (source scan, no server nee
 npm run test:films        # real voice startup, pause, end, replay, early hooks and credits
 ```
 
+**Look at the pages, too.** `node scripts/page-shots.js / /lab/ /publications/` (honours `FILM_BASE`; `--full` for whole pages) screenshots each page as a visitor first sees it at 1440x900 and on a 375x812 phone at 2x, through headless Chrome. Use it rather than the preview pane, whose hidden-tab paint lags: it showed a sidebar that measurement said was gone. It is how the layout below was found. The theme reserved two of twelve columns on the right of every page (a suffix for a table of contents no page uses), so on a 1440px screen text stopped at 1132px and a third of the screen was empty; the suffix is gone and `#main` is 1120px and centred at 1280px and up, except lab experiment pages, which hide the sidebar and keep 1280px for the film. On phones the author card now follows the page instead of opening it (it cost about 210px before every title), except on the home page.
+
 `audit-site.js` is a crawler rather than a file scan on purpose: half of these
 defects only exist in the rendered page, because Liquid decides the meta tags,
 the layout decides the heading order, and a relative link is only broken once it
