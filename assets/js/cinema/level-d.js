@@ -80,11 +80,16 @@ const COL = {
 const HP = 2.6;                                     // platform height at neutral
 const EYE = V(0, 1.75, -0.95);                      // the design eye, in the cabin's frame
 const MR = 2.4;                                     // mirror radius about the eye
-// The out-the-window picture. On a phone it is shown at most about 750px
-// across, and at full size, 4x multisampled in half float, it was some 130 MB
-// of GPU memory on its own: half the size and 2x is about 20 MB.
-const SMALL = !/[?&]render=1/.test(location.search) && Math.min(screen.width, screen.height) < 820;
-const RTW = SMALL ? 1280 : 2560, RTH = SMALL ? 640 : 1280, RVF = 46;
+// The out-the-window picture is 2560x1280 everywhere but a phone or tablet,
+// as it always was. At that size, 4x multisampled in half float, it was some
+// 130 MB of GPU memory on a phone that shows it 750px wide, so a touch device
+// draws it at about 4/3 of the pixels its stage is drawn at (1024 in a phone's
+// small player, about 1800 full screen sideways). A first cut chose by screen
+// size and caught laptops at 150% display scaling, whose screens report
+// 1280x720: the opening went soft there.
+const RTW = 2560, RTH = 1280, RVF = 46;          // the most it is drawn at, and its 2:1 shape
+const PHONE = !/[?&]render=1/.test(location.search) && matchMedia('(pointer: coarse)').matches;
+const DB = new THREE.Vector2();
 const BASE = [], TOPJ = [];
 for (let k = 0; k < 3; k++) for (const s of [-1, 1]) {
   const ab = (k * 120 + 90 + s * 13) * Math.PI / 180, at = (k * 120 + 30 + s * 47) * Math.PI / 180;
@@ -295,7 +300,7 @@ const film = {
 
     /* ---------------------------------------- the night outside, as a texture */
     const rw = { scene: new THREE.Scene(), cam: new THREE.PerspectiveCamera(RVF, RTW / RTH, 0.5, 40000) };
-    const rt = new THREE.WebGLRenderTarget(RTW, RTH, { samples: SMALL ? 2 : 4, type: THREE.HalfFloatType });
+    const rt = new THREE.WebGLRenderTarget(1024, 512, { samples: PHONE ? 2 : 4, type: THREE.HalfFloatType });   // sized per frame
     rw.scene.background = new THREE.Color(0, 0, 0);
     const sky = new THREE.Mesh(new THREE.SphereGeometry(20000, 48, 24), new THREE.ShaderMaterial({
       side: THREE.BackSide, depthWrite: false,
@@ -528,7 +533,7 @@ const film = {
     inset.renderOrder = 10;
     camera.add(inset);
 
-    Object.assign(ctx, { dust, rw, rt, runwayMat, sky, rig, move, legs, joints, screens, person, inset, hall, gridMat, mirror });
+    Object.assign(ctx, { dust, rw, rt, lights, runwayMat, sky, rig, move, legs, joints, screens, person, inset, hall, gridMat, mirror });
     ctx.stage = buildStage(ctx, { T, W, move, EYE });
 
     /* --------------------------------------------------------------- type */
@@ -652,7 +657,7 @@ const film = {
   },
 
   frame(t, ctx) {
-    const { camera, renderer, dust, rw, rt, runwayMat, sky, rig, move, legs, joints, screens, person, inset, hall, gridMat, mirror } = ctx;
+    const { camera, renderer, dust, rw, rt, lights, runwayMat, sky, rig, move, legs, joints, screens, person, inset, hall, gridMat, mirror } = ctx;
     // the near half of the mirror is cut away as the camera leaves the cockpit, like the wall beside it
     mirror.material.uniforms.uCut.value = lerp(1.3, -0.02, ease.inOutSine(ramp(t, 10.2, 11.8)));
     const pr = renderer.getPixelRatio();
@@ -752,6 +757,12 @@ const film = {
       rw.cam.updateMatrixWorld(true);
       sky.position.copy(rw.cam.position);
       runwayMat.uniforms.uPool.value.set(0, rp.z - 70, Math.exp(-rp.alt / 18));
+      renderer.getDrawingBufferSize(DB);
+      const want = PHONE ? Math.min(RTW, Math.max(1024, Math.ceil(DB.x * 4 / 3 / 64) * 64)) : RTW;
+      if (rt.width !== want) {
+        rt.setSize(want, want / 2);
+        lights.material.uniforms.uScale.value = (want / 2) / (2 * Math.tan(RVF * Math.PI / 360));
+      }
       const prev = renderer.getRenderTarget();
       renderer.setRenderTarget(rt);
       renderer.render(rw.scene, rw.cam);
