@@ -557,7 +557,10 @@ const film = {
     // footnote, and the owner, watching it, found it too much to read and too
     // fast to follow. Captions for muted feeds go in a caption file instead.
     text({ at: T.open, out: T.reveal - 1.6, cls: 'open', place: { x: 260, y: 860, w: 1400, align: 'center' }, html: 'This take-off never left the ground.' });
-    kick(T.reveal - 0.4, T.promise + 0.8, 'Dr. Ozgur Ural &middot; a research film');
+    // the byline from the first second, the way a film opens on its credit: a
+    // feed decides in about three, and it used to arrive only at 0:09
+    text({ at: 0.8, out: T.promise + 0.8, cls: 'kick', words: false, dur: 1.4, rise: 0, place: { x: 120, y: 84, w: 1300 },
+           html: 'Dr. Ozgur Ural &middot; a research film' });
     say(T.reveal, T.trust - gone, 'Inside a Level D flight simulator');
     say(T.trust, T.promise - gone, 'Trusted like the real aircraft');
     foot(W('trust', 'europe'), T.promise - 0.3, 'Zero flight time training: <i>EASA Part-FCL, FCL.730.A</i>');
