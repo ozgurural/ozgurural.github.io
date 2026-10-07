@@ -61,14 +61,12 @@ export function mixColor(a, b, u) { return a.clone().lerp(b, clamp01(u)); }
    the site: the films used to carry nine copies of a shorter title, and one
    drifted. The long form of the headline is split by meaning (role, degree,
    focus) rather than run together. A film's corner mark uses the short form,
-   "Dr. Ozgur Ural · Trustworthy AI for Mission-Critical Systems". The last
-   line says how the films are made, so the credit travels with any copy. */
+   "Dr. Ozgur Ural · Trustworthy AI for Mission-Critical Systems". */
 export const AUTHOR = '<span class="by">A film by</span>Dr. Ozgur Ural' +
   '<span>Machine Learning Research Scientist &amp; Senior Software Engineer</span>' +
   '<span>U.S. Ph.D. in Electrical Engineering and Computer Science</span>' +
   '<span>Trustworthy AI for Mission-Critical Systems</span>' +
-  '<span class="url">ozgurural.github.io</span>' +
-  '<span class="cr">Narration: synthetic voice &middot; built with Claude Code</span>';
+  '<span class="url">ozgurural.github.io</span>';
 
 /* Captions from a narration timeline (the voice build's word timings): runs of
    at most `maxc` characters, each shown from its first word to just after its
@@ -231,7 +229,6 @@ export function createCinema(film) {
     .cin__ui .end__u .by { font: 500 17px/1.2 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase;
                            color: #7fcfff; margin: 0 0 12px; }
     .cin__ui .end__u .url { font: 500 24px/1.4 "JetBrains Mono", ui-monospace, monospace; color: #7fcfff; margin-top: 14px; }
-    .cin__ui .end__u .cr { font: 400 19px/1.4 "Inter", system-ui, sans-serif; color: #7d8ea4; margin-top: 16px; }
   `;
   document.head.appendChild(css);
 
