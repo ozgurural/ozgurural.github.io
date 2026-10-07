@@ -17,7 +17,7 @@
  * -z); the camera for these chapters looks at the rig's front from -z, so
  * screen left is +x and the chain runs left to right as x falls.
  */
-import { THREE, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
+import { THREE, setLinePoints, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
@@ -65,7 +65,7 @@ function fatLine(color, width, dash) {
   m.resolution.set(1920, 1080);
   return new Line2(new LineGeometry(), m);
 }
-const setLine = (l, pts) => { l.geometry.setPositions(pts.flatMap(p => [p.x, p.y, p.z])); if (l.material.dashed) l.computeLineDistances(); };
+const setLine = (l, pts) => setLinePoints(l, pts);      // in place: see engine.js
 
 /* ------------------------------------------------------------ the chain */
 const XS = 6.6, SC = 0.0825, TY = 0.95, TZ = -6.8;     // 0 ms at x 6.6, 160 ms at x -6.6

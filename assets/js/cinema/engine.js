@@ -56,6 +56,50 @@ export function seeded(seed) {
 }
 export function mixColor(a, b, u) { return a.clone().lerp(b, clamp01(u)); }
 
+/* Move a fat line (Line2 / LineSegments2 from three/addons) without a new GPU
+   buffer every frame. LineGeometry.setPositions() and computeLineDistances()
+   allocate fresh buffers on each call and the old ones stay alive: on a phone
+   viewport, Level D's live WebGLBuffers rose from 388 to 1138 between 40 and
+   130 s and did not fall after a forced GC (scripts/cinema-memory.js). Phones
+   kill a tab that runs out of memory, and the film seemed to close itself.
+   This writes into one buffer sized for the most points the line has carried,
+   draws only the segments in use, and keeps dash distances in a second buffer
+   of the same size. `pts` is Vector3s, a polyline, or pairs with `pairs`.
+   When a line outgrows its buffer the buffer doubles, and three.js is told to
+   recount: it fixes how many segments a geometry may draw (_maxInstanceCount)
+   the first time it draws it and never again, so a line that began as one
+   segment drew one segment for the rest of the film. Level D's test curve and
+   year ring had shown only their first segment since they were written. */
+export function setLinePoints(line, pts, pairs = false) {
+  const g = line.geometry, n = pairs ? pts.length >> 1 : Math.max(0, pts.length - 1);
+  let st = g.attributes.instanceStart;
+  if (!st || !st.data.userData || !st.data.userData.live || st.data.count < n) {
+    const cap = Math.max(1, n, st && st.data.userData && st.data.userData.live ? 2 * st.data.count : 0);
+    delete g._maxInstanceCount;
+    const buf = new THREE.InstancedInterleavedBuffer(new Float32Array(cap * 6), 6, 1).setUsage(THREE.DynamicDrawUsage);
+    buf.userData = { live: true };
+    g.setAttribute('instanceStart', new THREE.InterleavedBufferAttribute(buf, 3, 0));
+    g.setAttribute('instanceEnd', new THREE.InterleavedBufferAttribute(buf, 3, 3));
+    if (line.material.dashed) {
+      const db = new THREE.InstancedInterleavedBuffer(new Float32Array(cap * 2), 2, 1).setUsage(THREE.DynamicDrawUsage);
+      g.setAttribute('instanceDistanceStart', new THREE.InterleavedBufferAttribute(db, 1, 0));
+      g.setAttribute('instanceDistanceEnd', new THREE.InterleavedBufferAttribute(db, 1, 1));
+    }
+    line.frustumCulled = false;          // its bounds are no longer recomputed
+    st = g.attributes.instanceStart;
+  }
+  const a = st.data.array, dist = line.material.dashed ? g.attributes.instanceDistanceStart.data : null;
+  let d = 0;
+  for (let i = 0; i < n; i++) {
+    const p = pairs ? pts[2 * i] : pts[i], q = pairs ? pts[2 * i + 1] : pts[i + 1], o = 6 * i;
+    a[o] = p.x; a[o + 1] = p.y; a[o + 2] = p.z; a[o + 3] = q.x; a[o + 4] = q.y; a[o + 5] = q.z;
+    if (dist) { dist.array[2 * i] = d; d += p.distanceTo(q); dist.array[2 * i + 1] = d; }
+  }
+  st.data.needsUpdate = true;
+  if (dist) dist.needsUpdate = true;
+  g.instanceCount = n;
+}
+
 /* The author as every film's end card states him, inside the film's own
    .end__u block. One copy, so the series cannot disagree with itself or with
    the site: the films used to carry nine copies of a shorter title, and one
@@ -502,24 +546,48 @@ export function createCinema(film) {
   // for anything but a video element, and a CSS stand-in cannot get out of an
   // iframe, so there the film opens on its own page in a new tab instead,
   // which fills the screen in landscape.
+  // Where the browser has fullscreen for the page (desktop, Android, iPad) it
+  // is used, and a phone is turned sideways the way a video player turns it.
+  // iPhone Safari gives fullscreen only to a <video>: there the page the film
+  // is embedded in lifts the frame over everything (assets/js/_main.js), and a
+  // film on its own page already fills the window; either way a phone held
+  // upright is asked to turn. Opening the film in a new tab, as this used to,
+  // is left for a page on another site, which cannot be asked to do that.
   const fsRoot = document.documentElement;
   const fsCan = !!(fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen);
-  const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const embedded = window.parent !== window;
+  const ownParent = (() => { try { return embedded && window.parent.location.origin === location.origin; } catch (e) { return false; } })();
+  const touch = matchMedia('(pointer: coarse)').matches;
+  let pseudo = false;
+  const fsOn = () => pseudo || !!(document.fullscreenElement || document.webkitFullscreenElement);
   const fsBtn = wrap.querySelector('[data-act="fullscreen"]');
+  function setPseudo(on) {
+    pseudo = on;
+    document.documentElement.classList.toggle('is-pseudo-fs', on);
+    if (ownParent) window.parent.postMessage({ type: 'cinema:fullscreen', on }, location.origin);
+    fsChanged();
+  }
   function toggleFullscreen() {
     if (!fsCan) {
-      const u = new URL(location.href);
-      u.searchParams.delete('autoplay');
-      if (t > 0) u.searchParams.set('t', t.toFixed(1));
-      window.open(u.toString(), '_blank', 'noopener');
-      pause();
+      if (embedded && !ownParent) {
+        const u = new URL(location.href);
+        u.searchParams.delete('autoplay');
+        if (t > 0) u.searchParams.set('t', t.toFixed(1));
+        window.open(u.toString(), '_blank', 'noopener');
+        pause();
+        return;
+      }
+      setPseudo(!pseudo);
       return;
     }
-    if (fsOn()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    else (fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen).call(fsRoot);
+    if (fsOn()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    const req = (fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen).call(fsRoot);
+    if (touch && screen.orientation && screen.orientation.lock)
+      Promise.resolve(req).then(() => screen.orientation.lock('landscape')).catch(() => {});
   }
   function fsChanged() {
     if (fsBtn) fsBtn.setAttribute('aria-label', fsOn() ? 'Exit full screen' : 'Full screen');
+    if (!fsOn() && screen.orientation && screen.orientation.unlock) try { screen.orientation.unlock(); } catch (e) {}
     layout(); seek(t);
   }
   document.addEventListener('fullscreenchange', fsChanged);

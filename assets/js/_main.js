@@ -199,3 +199,19 @@ $(document).ready(function () {
   }
 
 });
+
+/* A cinema film in an iframe asks for the whole screen where the browser has
+   no fullscreen for it (iPhone Safari gives that only to a <video>): lift its
+   frame over the page, the way a video player fills the screen, and put it
+   back when the film asks again. Same origin only; a film embedded on another
+   site falls back to opening on its own page. See assets/js/cinema/engine.js. */
+window.addEventListener('message', function (e) {
+  if (e.origin !== location.origin || !e.data || e.data.type !== 'cinema:fullscreen') return;
+  var frames = document.querySelectorAll('iframe');
+  for (var i = 0; i < frames.length; i++) {
+    if (frames[i].contentWindow !== e.source) continue;
+    var box = frames[i].closest('.lab-film__frame') || frames[i];
+    box.classList.toggle('is-pseudo-fs', !!e.data.on);
+    document.documentElement.classList.toggle('cin-fs-lock', !!e.data.on);
+  }
+});

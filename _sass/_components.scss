@@ -1033,6 +1033,30 @@ button:focus-visible {
   width: 100%;
 }
 
+// A film lifted over the page by its own fullscreen button where the browser
+// has no fullscreen for it (iPhone Safari): see assets/js/_main.js. #main is a
+// stacking context (z-index 10), so it is raised too, or the masthead would
+// sit on top of the film.
+.lab-film__frame.is-pseudo-fs {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  width: 100vw !important;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 !important;
+  border: 0;
+  border-radius: 0;
+  aspect-ratio: auto;
+  background: #000;
+}
+html.cin-fs-lock, html.cin-fs-lock body { overflow: hidden; }
+html.cin-fs-lock #main { z-index: 2147483000; }
+// The fade-in on the section keeps an identity transform and will-change:
+// transform, which makes a fixed box fixed to the section, not the screen
+// (the film landed at 16,224 instead of 0,0).
+html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !important; }
+
 // a cinema film (/films/<slug>/) shown in the same frame
 .lab-film__frame--cinema iframe {
   display: block;

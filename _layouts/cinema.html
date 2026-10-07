@@ -30,7 +30,7 @@
     html, body { margin: 0; height: 100%; background: #03050a; color: #e8eef7; }
     body { display: flex; flex-direction: column; align-items: center; justify-content: center;
            font-family: "Inter", system-ui, sans-serif; overflow: hidden; }
-    .cin-wrap { position: relative; width: 100vw; height: 100vh; display: flex;
+    .cin-wrap { position: relative; width: 100vw; height: 100vh; height: 100dvh; display: flex;
                 align-items: center; justify-content: center; }
     .cin-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
     .cin-controls { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center;
@@ -56,6 +56,15 @@
                 padding: 9px 14px; border-radius: 999px; background: rgba(10,16,28,.8); border: 1px solid rgba(160,200,255,.35); }
     .cin-wrap.is-muted:not(.is-paused) .cin-hint { display: block; }
     .is-render .cin-controls, .is-render .cin-links, .is-render .cin-hint { display: none !important; }
+    /* full screen on a phone held upright: ask for it to be turned, then get out of the way */
+    .cin-rotate { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); display: none; white-space: nowrap;
+                  font: 600 14px/1 "Inter", sans-serif; color: #e8eef7; padding: 10px 16px; border-radius: 999px;
+                  background: rgba(10,16,28,.85); border: 1px solid rgba(160,200,255,.35); pointer-events: none; }
+    @media (orientation: portrait) {
+      .is-pseudo-fs .cin-rotate { display: block; animation: cin-turn 4.5s forwards; }
+      .is-pseudo-fs .cin-hint { display: none !important; }
+    }
+    @keyframes cin-turn { 0%, 75% { opacity: 1; } 100% { opacity: 0; } }
     /* A lab page on a phone shows the film about 320x180: at full size the
        controls took nearly half the picture and the links sat on the title.
        Smaller, but every target stays above 24px. */
@@ -81,6 +90,7 @@
       {% for l in page.links %}<a href="{{ l.url }}"{% if l.url contains '://' %} target="_blank" rel="noopener"{% else %} target="_top"{% endif %}>{{ l.label }}</a>{% endfor %}
     </nav>
     <button class="cin-hint" type="button" data-act="sound">&#128266; Tap for sound</button>
+    <div class="cin-rotate" aria-hidden="true">&#8635; Turn your phone sideways</div>
     <div class="cin-controls">
       <button class="cin-btn" type="button" data-act="play" aria-label="Play">&#9654;</button>
       <button class="cin-btn" type="button" data-act="sound" aria-label="Sound on">&#128263;</button>

@@ -31,7 +31,7 @@
  * right from the design eye), and the camera pulls back out of the cockpit
  * through the cut-away side to show the machine on its legs.
  */
-import { THREE, AUTHOR, createCinema, captionsFromTimeline, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, setLinePoints, lerp, ramp, ease, win, clamp01, seeded } from './engine.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
@@ -80,7 +80,11 @@ const COL = {
 const HP = 2.6;                                     // platform height at neutral
 const EYE = V(0, 1.75, -0.95);                      // the design eye, in the cabin's frame
 const MR = 2.4;                                     // mirror radius about the eye
-const RTW = 2560, RTH = 1280, RVF = 46;             // the out-the-window picture
+// The out-the-window picture. On a phone it is shown at most about 750px
+// across, and at full size, 4x multisampled in half float, it was some 130 MB
+// of GPU memory on its own: half the size and 2x is about 20 MB.
+const SMALL = !/[?&]render=1/.test(location.search) && Math.min(screen.width, screen.height) < 820;
+const RTW = SMALL ? 1280 : 2560, RTH = SMALL ? 640 : 1280, RVF = 46;
 const BASE = [], TOPJ = [];
 for (let k = 0; k < 3; k++) for (const s of [-1, 1]) {
   const ab = (k * 120 + 90 + s * 13) * Math.PI / 180, at = (k * 120 + 30 + s * 47) * Math.PI / 180;
@@ -291,7 +295,7 @@ const film = {
 
     /* ---------------------------------------- the night outside, as a texture */
     const rw = { scene: new THREE.Scene(), cam: new THREE.PerspectiveCamera(RVF, RTW / RTH, 0.5, 40000) };
-    const rt = new THREE.WebGLRenderTarget(RTW, RTH, { samples: 4, type: THREE.HalfFloatType });
+    const rt = new THREE.WebGLRenderTarget(RTW, RTH, { samples: SMALL ? 2 : 4, type: THREE.HalfFloatType });
     rw.scene.background = new THREE.Color(0, 0, 0);
     const sky = new THREE.Mesh(new THREE.SphereGeometry(20000, 48, 24), new THREE.ShaderMaterial({
       side: THREE.BackSide, depthWrite: false,
@@ -675,8 +679,8 @@ const film = {
     legs.forEach((leg, i) => {
       const b = BASE[i], top = move.localToWorld(TOPJ[(i + 1) % 6].clone());
       const d = top.clone().sub(b).normalize(), bodyEnd = b.clone().addScaledVector(d, 1.45), r0 = bodyEnd.clone().addScaledVector(d, -0.1);
-      for (const l of leg.body) l.geometry.setPositions([b.x, b.y, b.z, bodyEnd.x, bodyEnd.y, bodyEnd.z]);
-      for (const l of leg.rod) l.geometry.setPositions([r0.x, r0.y, r0.z, top.x, top.y, top.z]);
+      for (const l of leg.body) setLinePoints(l, [b, bodyEnd]);
+      for (const l of leg.rod) setLinePoints(l, [r0, top]);
       joints[i].position.copy(b);
       joints[6 + i].position.copy(top);
     });
