@@ -43,6 +43,7 @@ for (let i = 2; i < process.argv.length; i++) {
   else if (k === '--maxc') { a.maxc = Number(v); i++; }
   else if (k === '--still') { a.still = Number(v); i++; }
   else if (k === '--crf') { a.crf = Number(v); i++; }
+  else if (k === '--preset') { a.preset = v; i++; }
 }
 if (!a.film || !a.video) { console.error('usage: --film <slug> --video <16x9 mp4 without captions> [--skip ids] [--still t]'); process.exit(1); }
 
@@ -160,17 +161,24 @@ function run(args) {
   }
 
   // ---- compose
+  // The background and the fade are looped stills, so each is cut to the
+  // film's length: an overlay with an endless input never ends either (the
+  // first full run kept encoding the last frame for an hour after the film).
+  const dur = Number((/Duration: (\d+):(\d+):([\d.]+)/.exec(spawnSync(ffmpeg, ['-i', a.video], { encoding: 'utf8' }).stderr) || [])
+    .slice(1).reduce((s, x) => s * 60 + Number(x), 0));
+  if (!dur) throw new Error(`no duration in ${a.video}`);
+  const D = a.still != null ? '1' : dur.toFixed(3);
   const filter = [
     `[1:v]scale=${FW}:${FILM.h}:flags=lanczos+accurate_rnd+full_chroma_int,setsar=1[f]`,
     `[0:v][f]overlay=0:${FILM.y}:shortest=1[b]`,
     `[2:v]format=rgba[c]`,
-    `[b][3:v]overlay=0:0[b2]`,
+    `[b][3:v]overlay=0:0:shortest=1[b2]`,
     `[b2][c]overlay=0:${CAP.y}:eof_action=pass,format=yuv420p[v]`,
   ].join(';');
-  const inputs = ['-loop', '1', '-framerate', '30', '-i', path.join(work, 'bg.png'),
+  const inputs = ['-loop', '1', '-framerate', '30', '-t', D, '-i', path.join(work, 'bg.png'),
                   ...(a.still != null ? ['-ss', String(a.still)] : []), '-i', a.video,
                   ...(a.still != null ? ['-i', path.join(work, 'still-cap.png')] : ['-f', 'concat', '-safe', '0', '-i', path.join(work, 'captions.txt')]),
-                  '-loop', '1', '-framerate', '30', '-i', path.join(work, 'fade.png')];
+                  '-loop', '1', '-framerate', '30', '-t', D, '-i', path.join(work, 'fade.png')];
   if (a.still != null) {
     const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-9x16-${a.still}.png`);
     run(['-y', ...inputs, '-filter_complex', filter.replace(',format=yuv420p', ''), '-map', '[v]', '-frames:v', '1', out]);
@@ -178,8 +186,8 @@ function run(args) {
     return;
   }
   const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-9x16.mp4`);
-  run(['-y', ...inputs, '-filter_complex', filter, '-map', '[v]', '-map', '1:a?',
-       '-c:v', 'libx264', '-preset', 'slow', '-crf', String(a.crf), '-profile:v', 'high', '-level', '4.2',
+  run(['-y', '-progress', path.join(work, 'progress.txt'), ...inputs, '-filter_complex', filter, '-map', '[v]', '-map', '1:a?', '-t', dur.toFixed(3),
+       '-c:v', 'libx264', '-preset', a.preset || 'slow', '-crf', String(a.crf), '-profile:v', 'high', '-level', '4.2',
        '-r', '30', '-g', '60', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709',
        '-c:a', 'copy', '-movflags', '+faststart', out]);
   console.log(`  ${path.relative(ROOT, out)}  ${(fs.statSync(out).size / 1e6).toFixed(1)} MB`);
