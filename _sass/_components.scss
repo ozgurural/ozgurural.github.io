@@ -1517,6 +1517,102 @@ html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !im
 @media screen and (min-width: 1280px) {
   #main { max-width: 1120px; }
   #main:has(.lab-experiment) { max-width: 1280px; }
+  // the bar lines up with the page under it: the name over the author card
+  .masthead__inner-wrap { max-width: 1120px; }
+  body:has(.lab-experiment) .masthead__inner-wrap { max-width: 1280px; }
+}
+
+/* The author card and the page as two grid columns. The theme fixed the card
+   to the window and sized it as a share of the window (span 2 of 12, up to
+   250px) while the page column was placed as a share of #main, so once #main
+   was narrower than the window the two disagreed: the card ran 6 to 66px
+   into the page at every width from 1024 up, and its longer lines ("Avion
+   Full Flight Simulators") printed over the first words of the page
+   (scripts/layout-check.js). Here both widths come from one place. The card
+   is sticky rather than fixed, so it still stays in view while the page
+   scrolls, now inside its own column. */
+@media screen and (min-width: 1024px) {
+  #main:has(> .sidebar):not(:has(.lab-experiment)) {
+    display: grid;
+    grid-template-columns: clamp(200px, 18vw, 248px) minmax(0, 1fr);
+    column-gap: clamp(2rem, 3.6vw, 3.5rem);
+    align-items: start;
+
+    > .sidebar {
+      grid-column: 1;
+      position: sticky;
+      top: var(--masthead-h, 0px);
+      float: none;
+      width: auto;
+      max-width: none;
+      margin: 0;
+      height: auto;
+      max-height: calc(100vh - var(--masthead-h, 0px));
+      padding-top: 0;
+    }
+    // icon and label as two columns, so a label that wraps ("Avion Full
+    // Flight Simulators") lines up under itself; the theme's hanging indent
+    // was 8px wider than the icon and its gap
+    > .sidebar .author__urls a {
+      display: grid;
+      grid-template-columns: 1.3em minmax(0, 1fr);
+      column-gap: 0.6em;
+      align-items: baseline;
+      padding-left: 0;
+      text-indent: 0;
+      > i, > svg { margin: 0; justify-self: center; }
+    }
+    > :not(.sidebar) {
+      grid-column: 2;
+      float: none;
+      width: auto;
+      max-width: none;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+/* The bar. The resume was the last item of a list that folds from the end
+   into the menu, and the bar was capped at 1280px while its items needed
+   1358, so the resume was behind the menu button on every screen, a 1920px
+   one included. It is now a button outside the folding list, so it is always
+   there, and the items are set a little smaller so all of them fit beside it
+   once the bar is as wide as the page (1120px). */
+.masthead__menu { display: flex; align-items: center; gap: 0.85rem; }
+.masthead__menu > #site-nav { flex: 1 1 auto; min-width: 0; }
+// The name on the left; search, the menu button and the resume together on
+// the right. The button used to be pinned to the bar's right edge with the
+// search icon wherever the list happened to end, so on a phone the two
+// icons floated in the middle of the bar. Room for the button is left by the
+// script, and only when it shows.
+#site-nav { display: flex; align-items: center; }
+.greedy-nav .visible-links { display: flex; align-items: center; flex: 1 1 auto; min-width: 0; padding-right: 0; }
+.greedy-nav .visible-links li { display: block; }
+.greedy-nav .visible-links #search-toggle { margin-left: auto; }
+.greedy-nav > button { position: static; order: 2; flex: none; margin-left: 0.25rem; }
+.greedy-nav > button.hidden { display: none; }
+.greedy-nav .visible-links a,
+.greedy-nav .hidden-links a { font-size: 15.5px; }
+.greedy-nav .visible-links a { margin: 0 0.62rem; }
+.masthead__menu-item--lg { padding-right: 0.9em; }
+.masthead__cta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.36rem 0.95rem;
+  border: 1px solid var(--ds-accent);
+  border-radius: 999px;
+  color: var(--ds-accent);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  &:hover, &:focus-visible { background: var(--ds-accent); color: var(--ds-bg); text-decoration: none; }
 }
 
 /* Phones and tablets: the page first, the author card after it. The card

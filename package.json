@@ -64,6 +64,7 @@
     "build:three": "node scripts/vendor-three.js",
     "verify:icons": "node scripts/verify-icon-subset.js",
     "check:links": "node scripts/check-external-links.js",
+    "check:layout": "node scripts/layout-check.js",
     "check:liquid": "node scripts/check-liquid.js",
     "check:scholar": "node scripts/check-scholar-meta.js",
     "apply:trims": "node scripts/apply-trims.js"

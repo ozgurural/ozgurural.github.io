@@ -22,5 +22,10 @@ main:
     url: /life/
   - title: "Advisory & Service"
     url: /services/
+  # cta: drawn as a button at the end of the bar that never folds into the
+  # menu (the greedy nav hid it on every screen); label is the visible text,
+  # title the accessible name
   - title: "Resume (PDF)"
+    label: "Resume"
     url: /Ozgur_Ural_PhD_Resume.pdf
+    cta: true

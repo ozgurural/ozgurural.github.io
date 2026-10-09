@@ -9,6 +9,7 @@
             <a href="{{ base_path }}/"{% if page.url == '/' or page.url == '/index.html' %} aria-current="page"{% endif %}>Dr. Ozgur Ural</a>
           </li>
           {% for link in site.data.navigation.main %}
+            {% if link.cta %}{% continue %}{% endif %}
             {% if link.url contains 'http' %}
               {% assign domain = '' %}
             {% else %}
@@ -27,6 +28,9 @@
         </ul>
         <ul id="nav-overflow" class="hidden-links hidden"></ul>
       </nav>
+      {% for link in site.data.navigation.main %}{% if link.cta %}
+      <a class="masthead__cta" href="{% unless link.url contains 'http' %}{{ base_path }}{% endunless %}{{ link.url }}" aria-label="{{ link.title }}">{{ link.label | default: link.title }}</a>
+      {% endif %}{% endfor %}
     </div>
   </div>
 </div>
