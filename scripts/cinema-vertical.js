@@ -5,7 +5,8 @@
  *
  *   FILM_BASE_URL=http://localhost:4001 node scripts/cinema-vertical.js --film level-d \
  *     --video dist/video/level-d-film-16x9-narrated.mp4 --skip open,determinism,coda
- *   ... --still 13.2                      # one frame to dist/video/<film>-9x16-<t>.png
+ *   ... --still 13.2                      # one frame to dist/video/<film>-<frame>-<t>.png
+ *   ... --frame 1x1                       # square, for a feed seen on desktops (X)
  *
  * Why: LinkedIn is mostly read on phones, and a 16:9 upload is a strip about
  * 211px tall on a 375px-wide screen, with captions burned in at 46px of 1920
@@ -33,7 +34,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const BASE = process.env.FILM_BASE_URL || process.env.FILM_BASE || 'http://localhost:4000';
-const a = { film: null, video: null, out: null, skip: [], maxc: 48, still: null, crf: 14 };
+const a = { film: null, video: null, out: null, skip: [], maxc: 48, still: null, crf: 14, frame: '9x16' };
 for (let i = 2; i < process.argv.length; i++) {
   const k = process.argv[i], v = process.argv[i + 1];
   if (k === '--film') { a.film = v; i++; }
@@ -44,13 +45,25 @@ for (let i = 2; i < process.argv.length; i++) {
   else if (k === '--still') { a.still = Number(v); i++; }
   else if (k === '--crf') { a.crf = Number(v); i++; }
   else if (k === '--preset') { a.preset = v; i++; }
+  else if (k === '--frame') { a.frame = v; i++; }
 }
 if (!a.film || !a.video) { console.error('usage: --film <slug> --video <16x9 mp4 without captions> [--skip ids] [--still t]'); process.exit(1); }
 
-// The frame, in pixels of 1080x1920. Safe 4:5 zone: y 285 to 1635.
-const FW = 1080, FH = 1920;
-const FILM = { y: 700, h: 608 };                 // 1920x1080 scaled to 1080 wide
-const CAP = { y: 1352, h: 220 };                 // two lines of 54px fit in 150
+// The frames, in pixels. 9x16 is the phone cut (safe 4:5 zone: y 285 to
+// 1635). 1x1 is for X: its desktop timeline shows a 9:16 video about 290px
+// wide, so the film inside it was a thumbnail, while a square one is the full
+// width of the post (about 506px) on a desktop and on a phone alike.
+const FRAMES = {
+  '9x16': { w: 1080, h: 1920, film: 700, cap: 1352, capH: 220, capPx: 54, head: 392, kick: 26, gap: 26, title: 86,
+            foot: 1560, footPx: 24, mask: '#000 0, rgba(0,0,0,.35) 18%, transparent 34%, transparent 70%, rgba(0,0,0,.35) 84%, #000 100%' },
+  '1x1':  { w: 1080, h: 1080, film: 186, cap: 818, capH: 150, capPx: 48, head: 46, kick: 21, gap: 14, title: 54,
+            foot: 1006, footPx: 20, mask: 'rgba(0,0,0,.6) 0, transparent 22%, transparent 78%, rgba(0,0,0,.6) 100%' },
+};
+const L = FRAMES[a.frame];
+if (!L) { console.error(`--frame is one of ${Object.keys(FRAMES).join(', ')}`); process.exit(1); }
+const FW = L.w, FH = L.h;
+const FILM = { y: L.film, h: 608 };              // 1920x1080 scaled to 1080 wide
+const CAP = { y: L.cap, h: L.capH };
 const BG = '#030409';                     // the film's own edge, sampled across the film: 0 to 9
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -67,7 +80,7 @@ function run(args) {
 }
 
 (async () => {
-  const work = path.join(ROOT, 'dist', 'video', 'vertical', a.film);
+  const work = path.join(ROOT, 'dist', 'video', 'vertical', `${a.film}-${a.frame}`);
   fs.rmSync(work, { recursive: true, force: true });
   fs.mkdirSync(work, { recursive: true });
   const browser = await puppeteer.launch({ headless: true });
@@ -95,12 +108,12 @@ function run(args) {
       .grid { position: absolute; inset: 0;
         background-image: linear-gradient(rgba(120,160,220,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,160,220,.07) 1px, transparent 1px);
         background-size: 54px 54px; background-position: 0 0;
-        -webkit-mask-image: linear-gradient(180deg, #000 0, rgba(0,0,0,.35) 18%, transparent 34%, transparent 70%, rgba(0,0,0,.35) 84%, #000 100%); }
-      .foot { position: absolute; left: 0; right: 0; top: 1560px; text-align: center;
-        font: 500 24px/1 "JetBrains Mono", monospace; letter-spacing: .12em; color: #6f8296; }
-      .head { position: absolute; left: 72px; right: 72px; top: 392px; }
-      .kick { font: 500 26px/1 "JetBrains Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: #7cc4f2; }
-      h1 { margin: 26px 0 0; font: 600 86px/1.04 "Space Grotesk", sans-serif; letter-spacing: -.01em; color: #f4f7fb; text-wrap: balance; }
+        -webkit-mask-image: linear-gradient(180deg, ${L.mask}); }
+      .foot { position: absolute; left: 0; right: 0; top: ${L.foot}px; text-align: center;
+        font: 500 ${L.footPx}px/1 "JetBrains Mono", monospace; letter-spacing: .12em; color: #6f8296; }
+      .head { position: absolute; left: 72px; right: 72px; top: ${L.head}px; }
+      .kick { font: 500 ${L.kick}px/1 "JetBrains Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: #7cc4f2; }
+      h1 { margin: ${L.gap}px 0 0; font: 600 ${L.title}px/1.04 "Space Grotesk", sans-serif; letter-spacing: -.01em; color: #f4f7fb; text-wrap: balance; }
       .film { position: absolute; left: 0; top: ${FILM.y}px; width: ${FW}px; height: ${FILM.h}px; background: #000; }
       .rule { position: absolute; left: 72px; width: 120px; height: 2px; background: rgba(124,196,242,.55); }
     </style></head><body>
@@ -128,12 +141,12 @@ function run(args) {
     await p.setContent(`<!doctype html><html><head><style>${fontCSS}
       body { width: ${FW}px; height: ${CAP.h}px; background: transparent; }
       .c { margin: 0 auto; width: 940px; text-align: center; text-wrap: balance;
-           font: 500 54px/1.3 "Inter", sans-serif; color: #f4f7fb; }
+           font: 500 ${L.capPx}px/1.3 "Inter", sans-serif; color: #f4f7fb; }
     </style></head><body><div class="c"></div></body></html>`, { waitUntil: 'load' });
     await p.evaluate(() => document.fonts.ready);
     const shot = async (file, text) => {
-      const lines = await p.evaluate(t => { const c = document.querySelector('.c'); c.innerHTML = t;
-        return Math.round(c.getBoundingClientRect().height / (54 * 1.3)); }, text);
+      const lines = await p.evaluate((t, px) => { const c = document.querySelector('.c'); c.innerHTML = t;
+        return Math.round(c.getBoundingClientRect().height / (px * 1.3)); }, text, L.capPx);
       if (lines > 2) throw new Error(`caption wraps to ${lines} lines: ${text}`);
       await p.screenshot({ path: file, omitBackground: true, clip: { x: 0, y: 0, width: FW, height: CAP.h } });
     };
@@ -180,12 +193,12 @@ function run(args) {
                   ...(a.still != null ? ['-i', path.join(work, 'still-cap.png')] : ['-f', 'concat', '-safe', '0', '-i', path.join(work, 'captions.txt')]),
                   '-loop', '1', '-framerate', '30', '-t', D, '-i', path.join(work, 'fade.png')];
   if (a.still != null) {
-    const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-9x16-${a.still}.png`);
+    const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-${a.frame}-${a.still}.png`);
     run(['-y', ...inputs, '-filter_complex', filter.replace(',format=yuv420p', ''), '-map', '[v]', '-frames:v', '1', out]);
     console.log(`  ${path.relative(ROOT, out)}`);
     return;
   }
-  const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-9x16.mp4`);
+  const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-${a.frame}.mp4`);
   run(['-y', '-progress', path.join(work, 'progress.txt'), ...inputs, '-filter_complex', filter, '-map', '[v]', '-map', '1:a?', '-t', dur.toFixed(3),
        '-c:v', 'libx264', '-preset', a.preset || 'slow', '-crf', String(a.crf), '-profile:v', 'high', '-level', '4.2',
        '-r', '30', '-g', '60', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709',
