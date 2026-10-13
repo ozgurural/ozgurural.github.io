@@ -49,7 +49,7 @@ redirect_from:
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Leiden, Netherlands. Open to research collaboration, industry R&amp;D, technical advisory and speaking.</span>
+    <span>Leiden, Netherlands. Interested in research scientist roles in ML and AI, and open to research collaboration, advisory and speaking.</span>
   </p>
   <div class="ep-hero__cta">
     <a href="#research-agenda"><i class="fas fa-book-open"></i> Research agenda</a>
@@ -177,4 +177,4 @@ redirect_from:
 
 ## Get in touch
 
-For research collaboration, industry R&D, [technical advisory or speaking](/services/), write to me by [email](mailto:drozgurural@gmail.com), or browse the [publications](/publications/), [projects](/projects/), [field notes](/blog/) and [essays](/essays/).
+For research scientist roles in ML and AI, research collaboration, [technical advisory or speaking](/services/), write to me by [email](mailto:drozgurural@gmail.com), or browse the [publications](/publications/), [projects](/projects/), [field notes](/blog/) and [essays](/essays/).
