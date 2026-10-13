@@ -60,7 +60,7 @@ redirect_from:
 
 <ul class="ep-stats ep-stats--four">
   <li><span class="num">12+</span><span class="label">Years shipping mission-critical software</span></li>
-  <li><span class="num">14</span><span class="label">Engineers led on a defence security product</span></li>
+  <li><span class="num">Level&nbsp;D</span><span class="label">Flight simulators, the highest certification grade</span></li>
   <li><span class="num">~50&nbsp;GB/s</span><span class="label">Simulator telemetry pipeline, sustained</span></li>
   <li><span class="num">Ph.D.</span><span class="label">U.S. doctorate&nbsp;· 3 IEEE Access papers</span></li>
 </ul>
@@ -96,7 +96,7 @@ redirect_from:
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Engineering Leadership</span>
     <h3>Direction, standards, teams</h3>
-    <p>I led a 14-engineer team shipping a data-leakage-prevention product at Havelsan, built mission-critical UAV software at STM, and now lead Avion's enterprise AI strategy: the adoption roadmap and the reference architecture behind it.</p>
+    <p>I lead Avion's enterprise AI strategy: the adoption roadmap and the reference architecture behind it. Before that I built mission-critical UAV software at STM and led the engineering team that shipped Havelsan's data-leakage-prevention product.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Real-time &amp; Fault-Tolerant Systems</span>
