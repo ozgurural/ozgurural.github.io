@@ -5,11 +5,11 @@ excerpt: "Slow, indirect writing about machine learning, security, and the syste
 ---
 
 <p class="ep-lead">
-  Slow, indirect writing on the ideas behind my research: proof-of-learning, watermarking, adversarial machine learning, the quiet drift of distributed systems. Each piece is a small parable. They argue by example rather than by exposition; meaning is meant to gather behind the eyes after the page is closed.
+  Slow, indirect writing on the ideas behind my research: proof-of-learning, watermarking, adversarial machine learning, the quiet drift of distributed systems. Each piece is a small parable. They argue by example rather than by exposition.
 </p>
 
 <p class="ep-lead ep-lead--secondary">
-  Read at the speed of a long walk. Approximately one essay every couple of months. Suggestions, corrections, or arguments are very welcome: <a href="mailto:drozgurural@gmail.com?subject=Essay%20feedback">write to me</a>.
+  Read at the speed of a long walk. Suggestions, corrections, or arguments are very welcome: <a href="mailto:drozgurural@gmail.com?subject=Essay%20feedback">write to me</a>.
 </p>
 
 <article class="ep-essay" id="watchmakers-trial">

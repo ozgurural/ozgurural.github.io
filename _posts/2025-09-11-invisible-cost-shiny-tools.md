@@ -1,4 +1,8 @@
 ---
+# Unpublished 2026-10-13: generic startup and career advice, off the site's
+# subject (trustworthy AI, real-time systems) and in a voice that read as
+# generated. Kept in the repo; delete this and the next line to restore.
+published: false
 title: "The Invisible Cost of Shiny Tools"
 date: 2025-09-11
 permalink: /posts/2025/09/invisible-cost-shiny-tools/

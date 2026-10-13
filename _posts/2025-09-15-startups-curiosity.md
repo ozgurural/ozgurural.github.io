@@ -1,4 +1,8 @@
 ---
+# Unpublished 2026-10-13: generic startup and career advice, off the site's
+# subject (trustworthy AI, real-time systems) and in a voice that read as
+# generated. Kept in the repo; delete this and the next line to restore.
+published: false
 title: "Why Great Engineering Teams Run on Curiosity"
 date: 2025-09-15
 permalink: /posts/2025/09/startups-curiosity/

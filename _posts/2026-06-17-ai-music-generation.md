@@ -1,4 +1,8 @@
 ---
+# Unpublished 2026-10-13: an unedited generated music sample, off the site's
+# subject (trustworthy AI, real-time systems) and in a voice that read as
+# generated. Kept in the repo; delete this and the next line to restore.
+published: false
 title: "An Experiment with AI Music Generation"
 date: 2026-06-17
 permalink: /posts/2026/06/ai-music-generation/

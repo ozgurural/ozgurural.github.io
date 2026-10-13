@@ -1,12 +1,12 @@
 ---
 permalink: /life/
-title: "Perspectives & Leadership"
+title: "Personal"
 author_profile: true
 layout: archive
-description: "Essays on system architecture, engineering leadership, and what twelve years of shipping mission-critical software teaches about resilient systems."
+description: "Personal notes by Dr. Ozgur Ural: the Ph.D. years in Florida, living in the US and the Netherlands, and sailing with the METU team."
 
 ---
-<p class="ep-lead">Essays and notes on system architecture, driving technical excellence, the academia-to-industry transition, and what over a decade of shipping mission-critical software has taught me about building resilient systems. Written more loosely than the <a href="/blog/">field notes</a>.</p>
+<p class="ep-lead">Notes from outside work: the Ph.D. years in Florida, living in the US and then the Netherlands, and racing with the METU sailing team. The technical writing is in the <a href="/blog/">field notes</a>.</p>
 
 {% include base_path %}
 {% for post in site.categories.life %}

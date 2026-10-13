@@ -18,8 +18,6 @@ main:
     url: /blog/
   - title: "Essays"
     url: /essays/
-  - title: "Perspectives"
-    url: /life/
   - title: "Advisory & Service"
     url: /services/
   # cta: drawn as a button at the end of the bar that never folds into the

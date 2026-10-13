@@ -269,6 +269,27 @@
   .ep-stats--four .num { font-size: 1.6rem; }
 }
 
+/* Proposed workflows on /projects/: a compact list, one sentence each, so
+   proposals do not take the room of delivered work. */
+.ep-concepts {
+  list-style: none;
+  margin: 0.5rem 0 2.25rem;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.ep-concepts > li {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-left: 2px solid var(--ds-line);
+  background: var(--ds-surface);
+  border-radius: 0 var(--ds-radius) var(--ds-radius) 0;
+  color: var(--ds-muted);
+  font-size: 0.97rem;
+  line-height: 1.55;
+}
+.ep-concepts > li strong { color: var(--ds-ink); font-weight: 600; }
+
 /* --------------------------------------------------------------------------
    Research agenda: numbered questions, each with its problem, the evidence
    and where it stands (published, open direction, in industry).

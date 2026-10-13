@@ -10,7 +10,7 @@ description: "Field notes on ML security, proof-of-learning, distributed systems
 
 ---
 
-<p class="ep-lead">Field notes on ML security, distributed systems, and high-reliability software, written for researchers and engineering leaders. For longer-form parables, see the <a href="/essays/">Essays</a>; for interactive demos, visit the <a href="/lab/">Lab</a>.</p>
+<p class="ep-lead">Field notes on ML security, real-time and distributed systems, and the research behind my papers, written for researchers and engineering leaders. For longer-form parables, see the <a href="/essays/">Essays</a>; for animated explainers, the <a href="/lab/">Research Lab</a>; for personal notes, <a href="/life/">Personal</a>.</p>
 
 {% include base_path %}
 {% for post in site.categories.technical %}
