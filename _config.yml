@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "U.S. Ph.D. (Embry-Riddle, 2025). Four first-author papers, three in IEEE Access on verifiable ML. Twelve years building mission-critical systems."
+description              : &description "Trustworthy AI for mission-critical systems: twelve years shipping UAV, security and flight-simulation software, a U.S. Ph.D., three IEEE Access papers."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -28,7 +28,7 @@ author:
   avatar           : "ozgururalpp.webp"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "U.S. Ph.D. (Embry-Riddle) | ML research scientist & senior software engineer | Architect of mission-critical systems"
+  bio              : "ML research scientist & senior software engineer | Trustworthy AI for mission-critical systems | U.S. Ph.D. (Embry-Riddle)"
   location         : "Leiden, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"

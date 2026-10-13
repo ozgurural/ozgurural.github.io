@@ -259,6 +259,82 @@
   margin: 0;
 }
 
+/* Four figures two by two, at every width. Auto-fit left the fourth alone
+   on a second row beside the author card, and four across squeezed each
+   uppercase label into five lines of a 185px card. */
+.ep-stats--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ep-stats--four .num { white-space: nowrap; }
+@media (max-width: 420px) {
+  .ep-stats--four > li { padding: 1rem 1.05rem; }
+  .ep-stats--four .num { font-size: 1.6rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Research agenda: numbered questions, each with its problem, the evidence
+   and where it stands (published, open direction, in industry).
+   -------------------------------------------------------------------------- */
+.ep-agenda {
+  counter-reset: agenda;
+  list-style: none;
+  margin: 1.25rem 0 2.5rem;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.ep-agenda > li {
+  counter-increment: agenda;
+  position: relative;
+  margin: 0;
+  padding: 1.2rem 1.35rem 1.3rem 4.1rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-1);
+}
+.ep-agenda > li::before {
+  content: counter(agenda, decimal-leading-zero);
+  position: absolute;
+  left: 1.25rem;
+  top: 1.15rem;
+  font-family: var(--ds-font-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ds-accent);
+}
+.ep-agenda__status {
+  display: inline-block;
+  font-family: var(--ds-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  margin-bottom: 0.4rem;
+}
+.ep-agenda h3 {
+  font-family: var(--ds-font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ds-ink);
+  margin: 0 0 0.5rem;
+}
+.ep-agenda p {
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--ds-body);
+  margin: 0 0 0.55rem;
+}
+.ep-agenda p.ep-agenda__done {
+  color: var(--ds-muted);
+  margin: 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--ds-accent);
+}
+@media (max-width: 599px) {
+  .ep-agenda > li { padding: 1.1rem 1.1rem 1.2rem; }
+  .ep-agenda > li::before { position: static; display: block; margin-bottom: 0.3rem; }
+}
+
 /* --------------------------------------------------------------------------
    Timeline — news / announcements rail
    -------------------------------------------------------------------------- */

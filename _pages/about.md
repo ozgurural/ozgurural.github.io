@@ -1,8 +1,8 @@
 ---
 permalink: /
-title: "Machine Learning & Mission-Critical Systems"
+title: "Trustworthy AI for Mission-Critical Systems"
 hide_title: true
-excerpt: "U.S. Ph.D. (Embry-Riddle, 2025) in machine learning security. Four first-author papers, three in IEEE Access. Twelve years on mission-critical systems."
+excerpt: "Trustworthy AI for mission-critical systems: twelve years shipping UAV, security and flight-simulation software, a U.S. Ph.D., three IEEE Access papers."
 author_profile: true
 redirect_from:
   - /about/
@@ -16,7 +16,7 @@ redirect_from:
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
   "jobTitle": {{ site.data.person.job_title | jsonify }},
-  "description": "Researcher and architect building verifiable, trustworthy AI for systems that cannot be allowed to fail: proof-of-learning, model watermarking, and adversarial robustness, applied across defence, aviation, and critical infrastructure. Three IEEE Access papers.",
+  "description": "Machine learning research scientist and senior software engineer working on trustworthy AI for mission-critical systems: verifiable training and model provenance, robustness, and AI inside real-time loops. Twelve years of UAV, security and flight-simulation software; U.S. Ph.D.; three IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
   "email": "drozgurural@gmail.com",
@@ -36,35 +36,61 @@ redirect_from:
 }
 </script>
 <!-- Ambient constellation is rendered site-wide via #tsparticles (see
-     _layouts/default.html + particles-config.js); the home page no longer
-     needs its own layer. The career narrative lives in the timeline below. -->
+     _layouts/default.html + particles-config.js). The page is ordered for a
+     reader from industry: the problem space and what was built first, the
+     research agenda with its evidence, then experience; the full publication
+     record lives on /publications/. -->
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">Verifiable &amp; Trustworthy ML · Applied GenAI · Mission-Critical Systems</span>
-  <h1 class="ep-hero__title"><span class="accent">Verifiable machine learning.</span><br>Reliable systems under failure.</h1>
+  <span class="ep-eyebrow">Trustworthy AI · Real-time &amp; safety-critical systems · Applied ML research</span>
+  <h1 class="ep-hero__title"><span class="accent">Trustworthy AI</span><br>for mission-critical systems.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, a machine-learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>. I research proof-of-learning, model watermarking, and adversarial robustness, and build real-time flight-simulation platforms.
+    I'm <strong>Dr. Ozgur Ural</strong>, a machine learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>, where I build real-time software for Level D flight simulators and lead the company's AI strategy. My research asks what it takes to trust a model: evidence of how it was trained and who owns it, robustness against attackers, and predictable timing when it runs inside a real-time loop.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Leiden, Netherlands. Open to technical advisory, speaking, and research collaboration.</span>
+    <span>Leiden, Netherlands. Open to research collaboration, industry R&amp;D, technical advisory and speaking.</span>
   </p>
   <div class="ep-hero__cta">
-    <a href="/publications/"><i class="fas fa-book-open"></i> Read my research</a>
-    <a href="/services/"><i class="fas fa-handshake"></i> Advisory &amp; speaking</a>
+    <a href="#research-agenda"><i class="fas fa-book-open"></i> Research agenda</a>
+    <a href="/Ozgur_Ural_PhD_Resume.pdf"><i class="fas fa-file-lines"></i> Resume</a>
     <a href="mailto:drozgurural@gmail.com"><i class="fas fa-envelope"></i> Get in touch</a>
   </div>
 </section>
 
-<ul class="ep-stats">
-  <li><span class="num">12+</span><span class="label">Years in mission-critical software</span></li>
-  <li><span class="num">Ph.D.</span><span class="label">ML research&nbsp;· ERAU (USA) 2025</span></li>
-  <li><span class="num">4</span><span class="label">First-author papers&nbsp;· 3 in IEEE Access</span></li>
+<ul class="ep-stats ep-stats--four">
+  <li><span class="num">12+</span><span class="label">Years shipping mission-critical software</span></li>
+  <li><span class="num">14</span><span class="label">Engineers led on a defence security product</span></li>
+  <li><span class="num">~50&nbsp;GB/s</span><span class="label">Simulator telemetry pipeline, sustained</span></li>
+  <li><span class="num">Ph.D.</span><span class="label">U.S. doctorate&nbsp;· 3 IEEE Access papers</span></li>
 </ul>
 
-## Leadership & Core Domains
+## Research agenda {#research-agenda}
 
-<p class="ep-pillars__note">I work where hands-on engineering meets organizational scale: setting architectural direction, raising engineering standards, and keeping complex systems, from mission-critical C++ to cloud-native microservices, correct under load and under failure.</p>
+<p class="ep-pillars__note">Three questions, each from a system that has to work the first time. For each: the problem, what I have built or shown, and where it stands.</p>
+
+<ol class="ep-agenda">
+  <li>
+    <span class="ep-agenda__status">Published · IEEE Access 2023–2025 · Ph.D. 2025</span>
+    <h3>Proving how a model was trained, and who owns it</h3>
+    <p>Models are bought, fine-tuned and shipped by people who did not train them. Proof-of-learning lets a trainer show the training was really done; a watermark lets an owner show a model is theirs. Each can be forged on its own.</p>
+    <p class="ep-agenda__done">My Ph.D. and three first-author IEEE Access papers combine the two, so verification succeeds only when the training record and the watermark agree, and test the result against spoofing and adversarial attacks. <a href="/publications/">Publications</a></p>
+  </li>
+  <li>
+    <span class="ep-agenda__status">Open research direction, not yet published</span>
+    <h3>AI inside real-time, safety-critical loops</h3>
+    <p>A flight simulator answers the pilot within 150 milliseconds, sixty times a second, for hours, and is certified on it. Learned models can make it more realistic, but their timing depends on the input and on whatever shares the processor.</p>
+    <p class="ep-agenda__done">I bring twelve years of hard-real-time and simulator software, from UAV mission control at STM to Level D simulators at Avion, and argue that a model earns a place in the loop only if every frame stays on time. <a href="/lab/level-d-60hz/">The argument, as a film</a></p>
+  </li>
+  <li>
+    <span class="ep-agenda__status">In industry · Avion, 2026</span>
+    <h3>Generative AI an engineering company can govern</h3>
+    <p>In an engineering company the useful knowledge sits in its own documents and processes, and an AI system has to respect where that data is allowed to go.</p>
+    <p class="ep-agenda__done">I wrote Avion's AI adoption roadmap and a reference architecture spanning on-premises inference, governed cloud APIs and edge workloads, and built engineering-knowledge retrieval prototypes. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
+  </li>
+</ol>
+
+## What I bring to an industry team
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
@@ -73,117 +99,82 @@ redirect_from:
     <p>I led a 14-engineer team shipping a data-leakage-prevention product at Havelsan, built mission-critical UAV software at STM, and now lead Avion's enterprise AI strategy: the adoption roadmap and the reference architecture behind it.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Fault-Tolerant Distributed Systems</span>
-    <h3>Correct when parts fail</h3>
+    <span class="ep-pillar__tag">Real-time &amp; Fault-Tolerant Systems</span>
+    <h3>Correct on time, and when parts fail</h3>
     <p>Real-time simulator software and the services around it (C, C++, Scala, TypeScript, gRPC), including a telemetry pipeline that sustains about 50 GB/s through batching and bounded-queue backpressure.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Trustworthy ML & Security</span>
-    <h3>Securing AI pipelines</h3>
-    <p>My Ph.D. and three first-author IEEE Access papers defend ML training integrity against spoofing attacks, through feature-based model watermarking and proof-of-learning verification.</p>
+    <span class="ep-pillar__tag">Security, then ML Security</span>
+    <h3>Thinking like the attacker</h3>
+    <p>Seven years building security products (Comodo's secure web gateway and patch manager, Havelsan's DLP) before turning to ML security. A model earns trust by surviving contact with an adversary, not by scoring well on a clean test set.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Adversarial Robustness</span>
-    <h3>Models that survive adversaries</h3>
-    <p>I test where models break: provenance verification, adversarial examples, and the limits of a claimed model identity. A model earns trust by surviving contact with an adversary, not by scoring well on a clean test set.</p>
+    <span class="ep-pillar__tag">Research into Practice</span>
+    <h3>Evidence a product team can use</h3>
+    <p>I turn a research question into something a team can judge: reproducible experiments, working prototypes, and explainers for non-specialists, like the films in the <a href="/lab/">Research Lab</a>.</p>
   </li>
 </ul>
-
-## Timeline
-
-<ol class="ep-timeline">
-  <li>
-    <span class="when">2026</span>
-    <span class="what">Authored <a href="https://www.aviongroup.aero/">Avion</a>'s AI adoption roadmap and an enterprise reference architecture covering on-premises inference, governed cloud APIs, and edge workloads. Built the platform presenting the strategy and developed engineering-knowledge retrieval prototypes. <a href="/projects/">Projects</a> distinguishes implemented work from proposed agent workflows.</span>
-  </li>
-  <li>
-    <span class="when">Dec 2025</span>
-    <span class="what">Published <em>SecurePoL: Integration of Watermarking with Proof-of-Learning to Enhance Security Against Spoofing Attacks</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/document/11293969">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">Dec 2025</span>
-    <span class="what">Joined the Program Committee for the <em>2nd Workshop on NLP Applied to Information and Cyber Security</em> (NLPAICS 2026), University of Alicante. <a href="https://nlpaics2026.gplsi.es/">Conference</a>.</span>
-  </li>
-  <li>
-    <span class="when">Aug 2025</span>
-    <span class="what">Conferred Ph.D. in Electrical Engineering &amp; Computer Science (ERAU). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>. My doctoral research was guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>. Dr. Yoshigoe and I continued the work after graduation: SecurePoL (IEEE Access, December 2025) is joint work. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
-  </li>
-  <li>
-    <span class="when">2021–2025</span>
-    <span class="what">Graduate Research Assistant at Embry-Riddle Aeronautical University. Three IEEE Access publications on proof-of-learning and model watermarking.</span>
-  </li>
-  <li>
-    <span class="when">Nov 2024</span>
-    <span class="what">First-author paper <em>Feature-Based Model Watermarking for PoL</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10741282">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">Dec 2023</span>
-    <span class="what">Published the survey <em>Blockchain-Enhanced Machine Learning</em> in IEEE Access. <a href="https://ieeexplore.ieee.org/abstract/document/10366252">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">Oct 2023</span>
-    <span class="what">Joined <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a> as Senior Software Engineer. Architecting real-time simulation platforms and cloud-native infrastructure for Level D flight simulators.</span>
-  </li>
-  <li>
-    <span class="when">May 2021</span>
-    <span class="what">Published <em>Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data</em> at ICISSP, co-authored with my M.Sc. advisor <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>. <a href="https://www.scitepress.org/PublishedPapers/2021/102016/102016.pdf">Read paper</a>.</span>
-  </li>
-  <li>
-    <span class="when">2020–2021</span>
-    <span class="what">Software Team Lead at <a href="https://www.havelsan.com/en">Havelsan</a>. Led a 14-engineer team delivering the <a href="https://www.havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp"><em>Havelsan DLP</em></a> data leakage prevention product for defence and government clients.</span>
-  </li>
-  <li>
-    <span class="when">2019–2020</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>. Developed critical mission-control and ground-control systems for <a href="https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav"><em>Kargu</em></a>, STM's rotary-wing loitering munition in service with the Turkish Armed Forces, alongside the <a href="https://www.stm.com.tr/en/togan-multi-rotor-uas"><em>Togan</em></a> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
-  </li>
-  <li>
-    <span class="when">2014–2019</span>
-    <span class="what">Expert Software Engineer at <a href="https://www.comodo.com">Comodo Cybersecurity</a>. Worked on the <a href="https://cdome.comodo.com/">Comodo Dome Secure Web Gateway</a>, the enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a> and the Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>, leading the design and development of Windows services and applications in C++.</span>
-  </li>
-  <li>
-    <span class="when">2014</span>
-    <span class="what">Graduated METU Computer Engineering with two competition wins: <strong>1st prize</strong> at the national project competition of <a href="https://www.tubitak.gov.tr">TÜBİTAK</a> (Turkey's national science and technology council), and <strong>2nd prize</strong> at the METU Computer Engineering (CENG) graduation Demo Day.</span>
-  </li>
-  <li>
-    <span class="when">2010–2014</span>
-    <span class="what">B.Sc. in Computer Engineering at <a href="https://www.metu.edu.tr/">Middle East Technical University (METU)</a>, Turkey's top-ranked and most selective computer engineering program (English-medium): admission among roughly the top 1,000 of more than 2 million national university-entrance candidates.</span>
-  </li>
-</ol>
 
 ## Selected Work
 
 <ul class="ep-cards ep-cards--two">
   <li>
+    <div class="meta">2026 · Avion · Industry</div>
+    <h3 class="title"><a href="/enterprise-ai-architecture.html">Enterprise AI strategy and reference architecture</a></h3>
+    <p class="desc">The adoption roadmap and architecture I wrote for Avion: on-premises inference, governed cloud APIs and edge workloads.</p>
+  </li>
+  <li>
     <div class="meta">2025 · IEEE Access</div>
     <h3 class="title"><a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
-    <p class="desc">Defends proof-of-learning protocols against spoofing by integrating feature-based model watermarking with verification.</p>
+    <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well.</p>
   </li>
   <li>
-    <div class="meta">2025 · ERAU Dissertation</div>
-    <h3 class="title"><a href="https://commons.erau.edu/edt/905/">Enhancing Proof-of-Learning Security Against Spoofing Attacks</a></h3>
-    <p class="desc">Doctoral thesis formalizing watermark-augmented PoL, threat models, and empirical robustness analysis.</p>
-  </li>
-  <li>
-    <div class="meta">2024 · IEEE Access</div>
-    <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10741282">Feature-Based Model Watermarking for PoL</a></h3>
-    <p class="desc">First-author paper introducing the watermarking-based defense layer for proof-of-learning systems.</p>
+    <div class="meta">2026 · Research film</div>
+    <h3 class="title"><a href="/lab/level-d-60hz/">Inside a Level D flight simulator</a></h3>
+    <p class="desc">How a simulator earns a pilot's trust, and what AI would have to keep to run inside one. Every rule is cited from the regulation text.</p>
   </li>
   <li>
     <div class="meta">2023 · IEEE Access · Survey</div>
     <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10366252">Survey on Blockchain-Enhanced Machine Learning</a></h3>
-    <p class="desc">My most-cited paper: a survey of the design space where distributed ledgers meet learning systems.</p>
+    <p class="desc">My most-cited paper: the design space where distributed ledgers meet learning systems.</p>
   </li>
 </ul>
 
-## Scientific Impact & Professional Service
+## Experience
 
-My research examines what evidence can support claims about a model's training history and ownership, and how those claims can fail under attack. The [publication record](/publications/) links to the papers, methods, and reported evaluations.
+<ol class="ep-timeline">
+  <li>
+    <span class="when">2023–now</span>
+    <span class="what"><strong>Senior Software Engineer, <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a>.</strong> Real-time simulation platforms and cloud-native infrastructure for Level D flight simulators. Since 2026 also the company's AI adoption roadmap and enterprise reference architecture, the platform presenting it, and engineering-knowledge retrieval prototypes.</span>
+  </li>
+  <li>
+    <span class="when">2021–2025</span>
+    <span class="what"><strong>Ph.D. in Electrical Engineering &amp; Computer Science, Embry-Riddle Aeronautical University</strong> (Graduate Research Assistant). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>, guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>. Three IEEE Access papers, and SecurePoL (December 2025) with Dr. Yoshigoe after graduation. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+  </li>
+  <li>
+    <span class="when">2020–2021</span>
+    <span class="what"><strong>Software Team Lead, <a href="https://www.havelsan.com/en">Havelsan</a>.</strong> Led a 14-engineer team delivering the <a href="https://www.havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp"><em>Havelsan DLP</em></a> data leakage prevention product for defence and government clients.</span>
+  </li>
+  <li>
+    <span class="when">2019–2020</span>
+    <span class="what"><strong>Expert Software Engineer, <a href="https://www.stm.com.tr/en">STM Defence Technologies</a>.</strong> Mission-control and ground-control systems for <a href="https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav"><em>Kargu</em></a>, STM's rotary-wing loitering munition in service with the Turkish Armed Forces, and the <a href="https://www.stm.com.tr/en/togan-multi-rotor-uas"><em>Togan</em></a> reconnaissance UAV. Hard-real-time and safety-critical, where a missed deadline is a mission failure.</span>
+  </li>
+  <li>
+    <span class="when">2014–2019</span>
+    <span class="what"><strong>Expert Software Engineer, <a href="https://www.comodo.com">Comodo Cybersecurity</a>.</strong> The <a href="https://cdome.comodo.com/">Comodo Dome Secure Web Gateway</a>, the enterprise <a href="https://www.itarian.com/patch-management.php">Patch Manager</a> and the Chromium-based <a href="https://www.comodo.com/home/browsers-toolbars/browser.php">Dragon browser</a>, leading the design and development of Windows services and applications in C++.</span>
+  </li>
+  <li>
+    <span class="when">2010–2014</span>
+    <span class="what"><strong>B.Sc. in Computer Engineering, <a href="https://www.metu.edu.tr/">Middle East Technical University (METU)</a>.</strong> Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with <strong>1st prize</strong> at <a href="https://www.tubitak.gov.tr">TÜBİTAK</a>'s national project competition and <strong>2nd prize</strong> at the METU CENG graduation Demo Day.</span>
+  </li>
+</ol>
 
-I review manuscripts and conference submissions across machine learning, security, and distributed systems:
-- **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy, and distributed systems
-- **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante
-- **Reviewer**, IEEE and ACM conferences in security, machine learning, and distributed systems
+## Peer Review & Service
+
+- **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante. [Conference](https://nlpaics2026.gplsi.es/)
+- **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy and distributed systems
+- **Reviewer**, IEEE and ACM conferences in security, machine learning and distributed systems
 
 ## Get in touch
 
-For research collaboration, [technical advisory, or speaking engagements](/services/), reach out by [email](mailto:drozgurural@gmail.com), or browse my [publications](/publications/), [projects](/projects/), [field notes](/blog/), and [essays](/essays/).
+For research collaboration, industry R&D, [technical advisory or speaking](/services/), write to me by [email](mailto:drozgurural@gmail.com), or browse the [publications](/publications/), [projects](/projects/), [field notes](/blog/) and [essays](/essays/).

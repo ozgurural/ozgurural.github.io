@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal academic portfolio site for Dr. Ozgur Ural, built on a custom Jekyll template and hosted on GitHub Pages at `ozgurural.github.io`. The site positions Ozgur for CTO/principal engineering roles — copy should lead with leadership and impact, not just academic credentials.
+Personal academic portfolio site for Dr. Ozgur Ural, built on a custom Jekyll template and hosted on GitHub Pages at `ozgurural.github.io`. The site positions Ozgur for industry Principal Research Scientist roles: copy should lead with the problems he works on, what he has built and at what scale, and leadership, with publications as the evidence rather than the headline. The home page is ordered that way (hero, figures, a research agenda where each question carries its problem, its evidence and its status, what he brings to an industry team, selected work mixing industry and papers, experience as roles only, then service); the publication-by-publication record lives on /publications/, not in the home timeline.
 
 ## Development Commands
 
