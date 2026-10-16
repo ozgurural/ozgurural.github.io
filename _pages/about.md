@@ -1,8 +1,8 @@
 ---
 permalink: /
-title: "Trustworthy AI for Mission-Critical Systems"
+title: "ML Research & Software Architecture"
 hide_title: true
-excerpt: "Trustworthy AI for mission-critical systems: twelve years shipping UAV, security and flight-simulation software, a U.S. Ph.D., three IEEE Access papers."
+excerpt: "Dr. Ozgur Ural: Senior Software Engineer working on ML security research, software architecture and enterprise AI. U.S. Ph.D. and three first-author IEEE Access papers."
 author_profile: true
 redirect_from:
   - /about/
@@ -16,7 +16,7 @@ redirect_from:
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
   "jobTitle": {{ site.data.person.job_title | jsonify }},
-  "description": "Machine learning research scientist and senior software engineer working on trustworthy AI for mission-critical systems: verifiable training and model provenance, robustness, and AI inside real-time loops. Twelve years of UAV, security and flight-simulation software; U.S. Ph.D.; three IEEE Access papers.",
+  "description": "Senior Software Engineer at Avion, leading enterprise AI strategy and researching training verification, model ownership and adversarial robustness. Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University, USA; three first-author IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
   "email": "drozgurural@gmail.com",
@@ -42,55 +42,68 @@ redirect_from:
      record lives on /publications/. -->
 
 <section class="ep-hero">
-  <span class="ep-eyebrow">Trustworthy AI · Real-time &amp; safety-critical systems · Applied ML research</span>
-  <h1 class="ep-hero__title"><span class="accent">Trustworthy AI</span><br>for mission-critical systems.</h1>
+  <span class="ep-eyebrow">ML security · Model provenance · Distributed systems</span>
+  <h1 class="ep-hero__title"><span class="accent">Machine learning research.</span><br>Software architecture.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, a machine learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>, where I build real-time software for Level D flight simulators and lead the company's AI strategy. My research asks what it takes to trust a model: evidence of how it was trained and who owns it, robustness against attackers, and predictable timing when it runs inside a real-time loop.
-  </p>
-  <p class="ep-hero__status">
-    <span class="ep-status-dot" aria-hidden="true"></span>
-    <span>Leiden, Netherlands. Interested in research scientist roles in ML and AI, and open to research collaboration, advisory and speaking.</span>
+    I'm <strong>Dr. Ozgur Ural</strong>. I research how to verify a model's training and ownership, and design software architectures for enterprise AI. My background combines a U.S. Ph.D., three first-author IEEE Access papers and twelve years of software engineering. At Avion, I lead the enterprise AI strategy and reference architecture.
   </p>
   <div class="ep-hero__cta">
-    <a href="#research-agenda"><i class="fas fa-book-open"></i> Research agenda</a>
-    <a href="/Ozgur_Ural_PhD_Resume.pdf"><i class="fas fa-file-lines"></i> Resume</a>
-    <a href="mailto:drozgurural@gmail.com"><i class="fas fa-envelope"></i> Get in touch</a>
+    <a href="/publications/"><i class="fas fa-book-open" aria-hidden="true"></i> Read my research</a>
+    <a href="/projects/">Architecture &amp; projects</a>
   </div>
 </section>
 
-<ul class="ep-stats ep-stats--four">
-  <li><span class="num">12+</span><span class="label">Years shipping mission-critical software</span></li>
-  <li><span class="num">Level&nbsp;D</span><span class="label">Flight simulators, the highest certification grade</span></li>
-  <li><span class="num">~50&nbsp;GB/s</span><span class="label">Simulator telemetry pipeline, sustained</span></li>
-  <li><span class="num">Ph.D.</span><span class="label">U.S. doctorate&nbsp;· 3 IEEE Access papers</span></li>
+## Selected research &amp; architecture
+
+<ul class="ep-cards ep-cards--two">
+  <li>
+    <div class="meta">2025 · IEEE Access</div>
+    <h3 class="title"><a href="/publication/2025-secureproofoflearning">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
+    <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well.</p>
+  </li>
+  <li>
+    <div class="meta">2026 · Avion · Architecture</div>
+    <h3 class="title"><a href="/enterprise-ai-architecture.html">Enterprise AI strategy and reference architecture</a></h3>
+    <p class="desc">The adoption roadmap and reference architecture I wrote for Avion, spanning on-premises inference, governed cloud APIs and edge workloads. The design distinguishes prototypes from proposed capabilities.</p>
+  </li>
+  <li>
+    <div class="meta">2024 · IEEE Access</div>
+    <h3 class="title"><a href="/publication/2024-ieee-access-watermarking">Model watermarking for Proof-of-Learning</a></h3>
+    <p class="desc">Studies how feature-based model watermarking can strengthen proof-of-learning against spoofing attacks.</p>
+  </li>
+  <li>
+    <div class="meta">2023 · IEEE Access · Survey</div>
+    <h3 class="title"><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a></h3>
+    <p class="desc">Reviews the design space where distributed ledgers meet learning systems.</p>
+  </li>
 </ul>
 
 ## Research agenda {#research-agenda}
 
-<p class="ep-pillars__note">Three questions, each from a system that has to work the first time. For each: the problem, what I have built or shown, and where it stands.</p>
+<p class="ep-pillars__note">Training evidence, adversarial robustness and the conditions for using learned systems in practice. Published work and open directions are identified below.</p>
 
 <ol class="ep-agenda">
   <li>
     <span class="ep-agenda__status">Published · IEEE Access 2023–2025 · Ph.D. 2025</span>
     <h3>Proving how a model was trained, and who owns it</h3>
     <p>Models are bought, fine-tuned and shipped by people who did not train them. Proof-of-learning lets a trainer show the training was really done; a watermark lets an owner show a model is theirs. Each can be forged on its own.</p>
-    <p class="ep-agenda__done">My Ph.D. and three first-author IEEE Access papers combine the two, so verification succeeds only when the training record and the watermark agree, and test the result against spoofing and adversarial attacks. <a href="/publications/">Publications</a></p>
+    <p class="ep-agenda__done">My dissertation and SecurePoL study combine the two, so verification succeeds only when the training record and the watermark agree, and evaluate the result against specified spoofing attacks. <a href="/publications/">Publications</a></p>
   </li>
   <li>
-    <span class="ep-agenda__status">Open research direction, not yet published</span>
-    <h3>AI inside real-time, safety-critical loops</h3>
-    <p>A flight simulator answers the pilot within 150 milliseconds, sixty times a second, for hours, and is certified on it. Learned models can make it more realistic, but their timing depends on the input and on whatever shares the processor.</p>
-    <p class="ep-agenda__done">I bring twelve years of hard-real-time and simulator software, from UAV mission control at STM to Level D simulators at Avion, and argue that a model earns a place in the loop only if every frame stays on time. <a href="/lab/level-d-60hz/">The argument, as a film</a></p>
+    <span class="ep-agenda__status">Published · IEEE Access 2024–2025</span>
+    <h3>Testing security claims against an adversary</h3>
+    <p>A verifier can accept a plausible training record that was never honestly produced. A watermark can also be attacked. The useful question is which attacks a defence withstands, under which assumptions and at what cost.</p>
+    <p class="ep-agenda__done">My research studies spoofing attacks on proof-of-learning and the use of model watermarking to strengthen verification. <a href="/publication/2024-ieee-access-watermarking">Watermarking study</a> · <a href="/publication/2025-secureproofoflearning">SecurePoL</a></p>
   </li>
   <li>
-    <span class="ep-agenda__status">In industry · Avion, 2026</span>
-    <h3>Generative AI an engineering company can govern</h3>
-    <p>In an engineering company the useful knowledge sits in its own documents and processes, and an AI system has to respect where that data is allowed to go.</p>
-    <p class="ep-agenda__done">I wrote Avion's AI adoption roadmap and a reference architecture spanning on-premises inference, governed cloud APIs and edge workloads, and built engineering-knowledge retrieval prototypes. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
+    <span class="ep-agenda__status">Open research direction of the author, not yet published</span>
+    <h3>From model quality to system-level evidence</h3>
+    <p>Accuracy alone does not establish that a learned component is useful inside a larger system. Timing, the freshness of its inputs and the behaviour when it is unavailable also need to be evaluated.</p>
+    <p class="ep-agenda__done">I am exploring these questions through an executable architecture experiment with asynchronous inference, expiry checks and fallback. <a href="/lab/determinism/">AI Meets the Deadline</a> states the model's assumptions and separates synthetic traces from measured results.</p>
   </li>
 </ol>
 
-## What I bring to an industry team
+## Technical leadership &amp; research practice
 
 <ul class="ep-pillars">
   <li class="ep-pillar">
@@ -99,9 +112,9 @@ redirect_from:
     <p>I lead Avion's enterprise AI strategy: the adoption roadmap and the reference architecture behind it. Before that I built mission-critical UAV software at STM and led the engineering team that shipped Havelsan's data-leakage-prevention product.</p>
   </li>
   <li class="ep-pillar">
-    <span class="ep-pillar__tag">Real-time &amp; Fault-Tolerant Systems</span>
-    <h3>Correct on time, and when parts fail</h3>
-    <p>Real-time simulator software and the services around it (C, C++, Scala, TypeScript, gRPC), including a telemetry pipeline that sustains about 50 GB/s through batching and bounded-queue backpressure.</p>
+    <span class="ep-pillar__tag">Research Engineering</span>
+    <h3>From a question to an experiment</h3>
+    <p>Hands-on research in proof-of-learning and model watermarking, backed by twelve years building software in security, distributed systems and simulation. I use that engineering experience to turn research questions into implementations that can be inspected and tested.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Security, then ML Security</span>
@@ -115,31 +128,6 @@ redirect_from:
   </li>
 </ul>
 
-## Selected Work
-
-<ul class="ep-cards ep-cards--two">
-  <li>
-    <div class="meta">2026 · Avion · Industry</div>
-    <h3 class="title"><a href="/enterprise-ai-architecture.html">Enterprise AI strategy and reference architecture</a></h3>
-    <p class="desc">The adoption roadmap and architecture I wrote for Avion: on-premises inference, governed cloud APIs and edge workloads.</p>
-  </li>
-  <li>
-    <div class="meta">2025 · IEEE Access</div>
-    <h3 class="title"><a href="https://ieeexplore.ieee.org/document/11293969">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
-    <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well.</p>
-  </li>
-  <li>
-    <div class="meta">2026 · Research film</div>
-    <h3 class="title"><a href="/lab/level-d-60hz/">Inside a Level D flight simulator</a></h3>
-    <p class="desc">How a simulator earns a pilot's trust, and what AI would have to keep to run inside one. Every rule is cited from the regulation text.</p>
-  </li>
-  <li>
-    <div class="meta">2023 · IEEE Access · Survey</div>
-    <h3 class="title"><a href="https://ieeexplore.ieee.org/abstract/document/10366252">Survey on Blockchain-Enhanced Machine Learning</a></h3>
-    <p class="desc">My most-cited paper: the design space where distributed ledgers meet learning systems.</p>
-  </li>
-</ul>
-
 ## Experience
 
 <ol class="ep-timeline">
@@ -149,7 +137,7 @@ redirect_from:
   </li>
   <li>
     <span class="when">2021–2025</span>
-    <span class="what"><strong>Ph.D. in Electrical Engineering &amp; Computer Science, Embry-Riddle Aeronautical University</strong> (Graduate Research Assistant). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>, guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>. Three IEEE Access papers, and SecurePoL (December 2025) with Dr. Yoshigoe after graduation. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
+    <span class="what"><strong>Ph.D. in Electrical Engineering &amp; Computer Science, Embry-Riddle Aeronautical University</strong> (Graduate Research Assistant). Dissertation: <em>Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking</em>, guided by Dr. Kenji Yoshigoe (Committee Chair) and IEEE Fellow <a href="https://informationsystems.umbc.edu/home/faculty-and-staff/new-faculty-spotlights/houbing-herbert-song/">Dr. Houbing Song</a>. Three first-author IEEE Access papers, including SecurePoL (December 2025) with Dr. Yoshigoe after graduation. <a href="https://commons.erau.edu/edt/905/">Dissertation</a> · <a href="https://www.parchment.com/u/award/f48bdb435249f1ac871ed66e818ef1ae">Verify diploma</a>.</span>
   </li>
   <li>
     <span class="when">2020–2021</span>
@@ -174,7 +162,3 @@ redirect_from:
 - **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante. [Conference](https://nlpaics2026.gplsi.es/)
 - **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy and distributed systems
 - **Reviewer**, IEEE and ACM conferences in security, machine learning and distributed systems
-
-## Get in touch
-
-For research scientist roles in ML and AI, research collaboration, [technical advisory or speaking](/services/), write to me by [email](mailto:drozgurural@gmail.com), or browse the [publications](/publications/), [projects](/projects/), [field notes](/blog/) and [essays](/essays/).
