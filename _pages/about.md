@@ -156,9 +156,3 @@ redirect_from:
     <span class="what"><strong>B.Sc. in Computer Engineering, <a href="https://www.metu.edu.tr/">Middle East Technical University (METU)</a>.</strong> Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with <strong>1st prize</strong> at <a href="https://www.tubitak.gov.tr">TÜBİTAK</a>'s national project competition and <strong>2nd prize</strong> at the METU CENG graduation Demo Day.</span>
   </li>
 </ol>
-
-## Peer Review & Service
-
-- **Program Committee Member**, *2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026)*, University of Alicante. [Conference](https://nlpaics2026.gplsi.es/)
-- **Journal Referee**, *IEEE Access*, and other peer-reviewed journals in ML security, privacy and distributed systems
-- **Reviewer**, IEEE and ACM conferences in security, machine learning and distributed systems

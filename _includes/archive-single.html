@@ -55,9 +55,16 @@
       <p class="archive__item-excerpt" itemprop="description">{{ archive_excerpt }}</p>
     {% endif %}
     
+    {% if post.collection == 'publications' and post.citation %}
+      <details class="archive__citation">
+        <summary>Citation</summary>
+        <p>{{ post.citation }}</p>
+      </details>
+    {% endif %}
+
     {% if post.citation or post.paperurl or post.slidesurl or post.bibtexurl %}
       <p>
-        {% if post.citation %}Recommended citation: {{ post.citation }}<br />{% endif %}
+        {% if post.citation and post.collection != 'publications' %}Recommended citation: {{ post.citation }}<br />{% endif %}
         {% assign links = "" | split: "," %}
         
         {% if post.paperurl %}

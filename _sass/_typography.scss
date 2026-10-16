@@ -272,6 +272,23 @@ body { background-color: transparent; }
   color: var(--ds-muted);
   line-height: 1.6;
 }
+.archive__citation {
+  margin: 0.5rem 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.archive__citation summary {
+  width: fit-content;
+  min-height: 28px;
+  color: var(--ds-accent-2);
+  cursor: pointer;
+}
+.archive__citation p {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--ds-line);
+  color: var(--ds-muted);
+}
 .page__meta {
   font-family: var(--ds-font-mono);
   font-size: 0.78rem;

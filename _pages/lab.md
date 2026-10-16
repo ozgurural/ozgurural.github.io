@@ -11,7 +11,7 @@ header:
   <span class="ep-eyebrow">Animated research</span>
   <h2 class="lab-hero__title">Watch the mathematics move.</h2>
   <p class="lab-hero__copy">
-    Twelve cinematic explainers, grouped by what they are. Five animate results from my own papers on proof-of-learning, model watermarking, blockchain-enhanced ML and rare-event detection. One comes from the hard-real-time systems I engineer. One is an unpublished architecture experiment connecting AI inference to real-time execution. Three animate foundational results that belong to other people, credited as such. Two are open questions I am still working on, labelled so they are not mistaken for reviewed work. The films distinguish published results from teaching models and proposed experiments, with sources and assumptions stated on their pages.
+    Twelve animated explainers on ML security, distributed systems and the mathematics behind them. Published research, engineering practice and open directions are labelled separately. Each film states its sources and assumptions.
   </p>
   <div class="lab-hero__actions">
     <a href="/lab/training-fingerprint/">▶ Start with my research: SecurePoL</a>
