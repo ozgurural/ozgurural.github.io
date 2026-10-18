@@ -81,14 +81,14 @@
    "id": "step",
    "at": 16.5,
    "real": 16.85,
-   "speech": 11.065,
-   "len": 11.28,
+   "speech": 10.925,
+   "len": 11.14,
    "head": 0.215,
    "file": "step.mp3",
    "file_start": 16.635,
-   "hash": "9cf3a73cd884",
-   "text": "But it can't see the landscape. It can only feel the slope under its feet. So it takes a step downhill, feels again, and repeats. Billions of times.",
-   "source": "gradient descent: step against the gradient, repeat"
+   "hash": "51d2d9c2e8ba",
+   "text": "But it can't see the landscape. It can only feel the slope under its feet. So it takes a step downhill, feels again, and repeats, sometimes millions of times.",
+   "source": "gradient descent: step against the gradient, repeat (a training run is thousands to millions of steps)"
   },
   {
    "id": "small",

@@ -95,10 +95,12 @@ const LABS = [
     key: "wm-compare",
     eyebrow: "ML security · Watermarking",
     icon: "⚖️",
-    title: "Watermarking Wars",
-    sub: "Capacity vs. robustness, four strategies.",
-    tagline: "White-box deltas, triggers, green-lists, auxiliary heads",
-    badge: "4 STRATEGIES",
+    title: "Signing an AI model",
+    sub: "Three places to hide a signature.",
+    tagline: "Secret triggers, weight patterns, auxiliary heads",
+    badge: "3 FAMILIES",
+    // the system emoji font draws this glyph about twice as wide as the one the card was first cut with
+    iconSize: 90,
     bg: "#3b0764",
     accent: "#e879f9",
   },
@@ -187,7 +189,7 @@ function svg(lab) {
 
   <!-- Icon + Title block. Title font-size scales down for long titles
        so it never clips against the 5-star pip block on the right. -->
-  <text x="80" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="140" font-weight="700" fill="${lab.key === "ai-deadline" ? lab.accent : "#000"}">${esc(lab.icon)}</text>
+  <text x="80" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${lab.iconSize || 140}" font-weight="700" fill="${lab.key === "ai-deadline" ? lab.accent : "#000"}">${esc(lab.icon)}</text>
   <text x="250" y="265" font-family="Georgia, 'Times New Roman', serif" font-size="${
     lab.title.length > 18 ? 70 : lab.title.length > 14 ? 80 : 96
   }" font-weight="800" fill="#f8fafc">${esc(lab.title)}</text>

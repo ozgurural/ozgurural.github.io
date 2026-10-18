@@ -321,7 +321,7 @@ const film = {
     say(T.land, T.step - gone, 'A landscape of <em>every version</em> of the model.',
         'Height is how wrong that version is. Learning means finding low ground.');
     say(T.step, T.small - gone, 'It can only feel the <em>slope</em>.',
-        'So it takes a step downhill, feels again, and repeats. Billions of times.');
+        'So it takes a step downhill, feels again, and repeats, sometimes millions of times.');
     say(T.small, T.large - gone, 'Everything depends on the <em>size of the step</em>.', 'Too small, and it crawls.');
     say(T.large, T.ravine - gone, 'Too large, and it <span class="red">flies off</span>.',
         'It overshoots the valley, and each bounce is bigger than the last.');
