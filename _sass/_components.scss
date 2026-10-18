@@ -1981,8 +1981,9 @@ details.ep-concept[open] .desc {
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  // Keep the constellation visible without drawing through the reading layer.
-  opacity: 0.42;
+  // Dimmed so it does not draw through the reading layer; 0.42 made it read as
+  // switched off, 0.65 keeps it alive behind the text.
+  opacity: 0.65;
   // Hover is detected on `window`, so the box never needs to catch pointer
   // events; leaving it clickable let this fixed layer swallow footer clicks.
   pointer-events: none;

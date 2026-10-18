@@ -33,6 +33,8 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
 
 ## Industry
 
+<p class="ep-lead">The Avion cards describe my role, the architecture and the engineering practice. They disclose no customer, budget or security specifics of the company.</p>
+
 <ul class="ep-cards ep-cards--two">
   <li>
     <div class="meta">2026 · Avion · Enterprise AI</div>
