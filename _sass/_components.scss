@@ -1517,6 +1517,11 @@ html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !im
   font-family: var(--ds-font-mono);
   font-size: 0.72rem; color: var(--ds-muted);
 }
+.lab-film__alt {
+  margin: 0.7rem 0 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem; color: var(--ds-muted);
+}
 .lab-film__legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
 .lab-film__legend i {
   width: 12px; height: 3px; border-radius: 2px; display: inline-block;
@@ -1757,7 +1762,8 @@ html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !im
     .lab-card.lab-experiment > .lab-card__usecase,
     .lab-card.lab-experiment > .lab-card__mission,
     .lab-card.lab-experiment > .lab-reveal { max-width: 820px; }
-  .lab-card.lab-experiment > .lab-film__legend { max-width: 1180px; }
+  .lab-card.lab-experiment > .lab-film__legend,
+  .lab-card.lab-experiment > .lab-film__alt { max-width: 1180px; }
 }
 
 /* Fullscreen support */

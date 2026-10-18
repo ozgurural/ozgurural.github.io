@@ -26,6 +26,8 @@ header:
     </div>
   </div>
 
+  <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/cyber-events/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
+
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
