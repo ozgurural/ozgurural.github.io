@@ -16,11 +16,11 @@ const BG = "#0c2a47";      // deep site blue
 const ACCENT = "#38bdf8";  // brand sky, matches the flagship lab card + particles
 
 const CARD = {
-  eyebrow: "ML RESEARCH · SOFTWARE ARCHITECTURE",
+  eyebrow: "TRUSTWORTHY AI · MISSION-CRITICAL SYSTEMS",
   title: "Dr. Ozgur Ural",
-  sub: "ML security research and distributed-systems architecture.",
+  sub: "Proving how models are trained and owned, and AI that keeps real-time deadlines.",
   tagline: "U.S. Ph.D. · Three first-author IEEE Access papers",
-  role: "Senior Software Engineer · Enterprise AI Strategy",
+  role: "ML Research Scientist · Senior Software Engineer",
   badge: "PH.D. · IEEE ACCESS",
 };
 

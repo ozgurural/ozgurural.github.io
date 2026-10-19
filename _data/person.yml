@@ -3,7 +3,7 @@
 # when the two disagreed search engines were given two versions of one
 # person. knows_about lists subjects only: names, schools and job titles
 # belong in their own properties, not here.
-job_title: "Senior Software Engineer"
+job_title: "Machine Learning Research Scientist & Senior Software Engineer, Ph.D."
 knows_about:
   - Machine Learning
   - Trustworthy Machine Learning

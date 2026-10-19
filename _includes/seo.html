@@ -27,7 +27,7 @@
 {% endif %}
 
 {% if page.url == "/" %}
-<title>{{ page.seo_title | default: "Dr. Ozgur Ural | ML Research & Software Architecture" }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
+<title>{{ page.seo_title | default: "Dr. Ozgur Ural | Machine Learning Research Scientist, Ph.D." }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 {% else %}
 <title>{{ seo_title | default: "Dr. Ozgur Ural" }}{% if paginator %}{% unless paginator.page == 1 %} {{ site.title_separator }} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}{% endif %}</title>
 {% endif %}
