@@ -20,7 +20,7 @@ const CARD = {
   title: "Dr. Ozgur Ural",
   sub: "Proving how models are trained and owned, and AI that keeps real-time deadlines.",
   tagline: "U.S. Ph.D. · Three first-author IEEE Access papers",
-  role: "ML Research Scientist · Senior Software Engineer",
+  role: "Machine Learning Research Scientist · Senior Software Engineer",
   badge: "PH.D. · IEEE ACCESS",
 };
 
