@@ -4,7 +4,7 @@ seo_title: "Feature-Based Watermarking for Proof-of-Learning"
 collection: publications
 category: manuscripts
 permalink: /publication/2024-ieee-access-watermarking
-excerpt: "Feature-based model watermarking scheme that binds ownership proofs to internal activations, surviving fine-tuning and transfer attacks on Proof-of-Learning."
+excerpt: "Feature-based model watermarking couples an ownership check to a Proof-of-Learning training record to study defences against spoofing."
 date: 2024-11-01
 venue: "IEEE Access"
 paperurl: "https://ieeexplore.ieee.org/abstract/document/10741282"
@@ -31,11 +31,11 @@ Proof-of-Learning lets a party prove they trained a model rather than downloaded
 
 ## The idea
 
-This paper attaches a second, independent condition to the proof. A watermark is embedded during training in the model's internal features, so a checkpoint has to be consistent with the recorded trajectory **and** carry the secret mark. The two conditions are checked together, which means defeating one is not enough. A forger who reconstructs a plausible training path still has to produce a model carrying a mark they were never in a position to embed.
+This paper attaches a second condition to the proof. A watermark is embedded during training in the model's internal features, so a checkpoint has to be consistent with the recorded trajectory **and** carry the secret mark. The two conditions are checked together, which means defeating one is not enough. A forger who reconstructs a plausible training path still has to produce a model carrying a mark they were never in a position to embed.
 
 ## Why the mark goes in the features
 
-Placing the signal in internal activations rather than in the output behaviour is what makes it survive ordinary handling. Fine-tuning and transfer, the operations a thief performs to make a stolen model look like their own, perturb the weights but do not erase a feature-level signal that was learned during training. Removing it means disturbing the representation the model depends on, which costs the accuracy that made the model worth stealing.
+The paper studies embedding a watermark into model features or parameters during training and checking it alongside the training record. Robustness depends on the embedding and the attack. Fine-tuning, pruning and other edits need evaluation under an explicit threat model; a watermark check alone does not establish a universal lower bound on the accuracy cost of removal.
 
 ## Where it sits in the work
 

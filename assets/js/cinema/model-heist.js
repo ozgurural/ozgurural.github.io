@@ -1,29 +1,16 @@
 /*
- * A whisper in the weights: how a faint mark spread over many numbers is read
- * back, in a hundred seconds.
- *
- * It replaces the lab film "Model Heist Detector" and keeps its argument in
- * order: one large mark is conspicuous and fragile; a small shift along a
- * secret pattern across many weights is not; reading it back is a matched
- * filter, in which the aligned marks add up and independent noise mostly
- * cancels; the result is a single score, tested against a threshold chosen
- * for its false-alarm rate; the separation grows with the breadth of the mark;
- * a bounded perturbation moves the score by at most its own size, which is a
- * statement about this test and not about every watermark; and the whole
- * thing rests on independent noise and a clean reference.
- *
- * This is the lab film's own teaching model (a Gaussian matched filter and a
- * one-sided test), not a formula from a paper, and the frame says so. The
- * paper it sits beside is Ural and Yoshigoe, IEEE Access 2024, which embeds a
- * feature-based watermark and checks it together with the training record.
- *
- * The two running sums are a real simulation, seeded: the same noise is added
- * to both, and one of them also carries the mark. Nothing is drawn by hand.
+ * Model recognition as a calibrated statistical claim.
+ * The Gaussian matched-filter illustration is authored teaching material,
+ * not the detector or a benchmark from Ural and Yoshigoe (IEEE Access 2024).
+ * That paper is research context for combining a watermark with PoL; no
+ * robustness or ownership guarantee is inferred from this toy experiment.
+ * Curves, false-alarm regions and attack shifts share one mathematical state.
  */
-import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, lerp, ramp, ease, win, seeded } from './engine.js';
+import { BASE_K, MAX_K, evidenceState, gaussianSamples, simulatedSums } from './model-heist-stats.js';
 
-const T = { hook: 0, loud: 9, thin: 18.5, add: 28, score: 41, wide: 54, scrub: 62, limits: 75, close: 84, card: 95 };
-const D = 101.5;
+const T = { hook: 0, loud: 8, thin: 15, add: 24, score: 35, wide: 47, scrub: 56, limits: 68, close: 78, card: 88 };
+const D = 95;
 
 const TL_DIR = new URL('../../audio/cinema/model-heist/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
@@ -46,17 +33,12 @@ const COL = { bg: new THREE.Color(0x03050a) };
 /* ------------------------------------------------- the simulation behind the sums */
 // K numbers, each with noise of size one. The marked model also carries a nudge of EPS along the secret pattern.
 // Reading it back multiplies each number by its sign in the pattern and adds: the nudges all count the same way.
-const K = 220, EPS = 0.3;
-const SUM_MARKED = [0], SUM_INNOCENT = [0];
-{
-  const rnd = seeded(2024);
-  const gauss = () => Math.sqrt(-2 * Math.log(Math.max(1e-9, rnd()))) * Math.cos(6.283185 * rnd());
-  for (let k = 1; k <= K; k++) {
-    const n = gauss();
-    SUM_INNOCENT.push(SUM_INNOCENT[k - 1] + n);
-    SUM_MARKED.push(SUM_MARKED[k - 1] + n + EPS);
-  }
-}
+const { marked: SUM_MARKED, unmarked: SUM_UNMARKED } = simulatedSums(seeded(2024));
+const NULL_SCORES = gaussianSamples(seeded(73), 24);
+export const statisticsAt = t => evidenceState(
+  ease.inOutSine(ramp(t, T.wide + 1.2, T.wide + 6)),
+  ease.inOutSine(ramp(t, T.scrub + 2, T.scrub + 6)),
+  ease.inOutSine(ramp(t, T.limits + 1.5, T.limits + 6)));
 
 /* -------------------------------------------------------------- shaders */
 /* The model's numbers, as a wall of points. Each has a sign in the secret pattern. */
@@ -64,15 +46,17 @@ const WALL = {
   vertexShader: /* glsl */`
     attribute float aSeed; attribute float aSign; attribute float aIdx;
     uniform float uTime; uniform float uPR; uniform float uPattern; uniform float uScanX; uniform float uScanAmt;
-    uniform float uSpike; uniform float uSpikeAmt; uniform float uCut; uniform float uShake;
+    uniform float uSpike; uniform float uSpikeAmt; uniform float uCut; uniform float uShake; uniform float uBreadth; uniform float uCorrelated;
     varying vec3 vCol; varying float vA;
     void main() {
       vec3 p = position;
       p.xy += uShake * 0.07 * vec2(sin(uTime * 37.0 + aSeed * 91.0), cos(uTime * 29.0 + aSeed * 57.0));
+      p.x += uCorrelated * aSign * 0.1 * sin(uTime * 2.5);
       vec3 neutral = vec3(0.42, 0.68, 1.0) * (0.55 + 0.6 * fract(aSeed * 7.3));
       vec3 sgn = aSign > 0.0 ? vec3(2.0, 1.45, 0.45) : vec3(1.2, 0.7, 2.0);
       float read = uScanAmt * (1.0 - step(uScanX, p.x));
-      vCol = mix(neutral, sgn, max(uPattern, 0.85 * read));
+      float marked = 1.0 - step(uBreadth, aSeed);
+      vCol = mix(neutral, sgn, max(uPattern, 0.85 * read) * marked);
       float size = 3.4 + 2.6 * fract(aSeed * 3.7);
       float spike = abs(aIdx - uSpike) < 0.5 ? 1.0 : 0.0;
       size *= 1.0 + 5.5 * spike * uSpikeAmt * (1.0 - uCut);
@@ -86,7 +70,7 @@ const WALL = {
     uniform float uAlpha; varying vec3 vCol; varying float vA;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      gl_FragColor = vec4(vCol * smoothstep(0.5, 0.05, d) * vA * uAlpha, 1.0);
+      gl_FragColor = vec4(vCol * (1.0 - smoothstep(0.05, 0.5, d)) * vA * uAlpha, 1.0);
     }`,
 };
 
@@ -109,7 +93,7 @@ const DUST = {
     uniform float uAlpha; varying float vA;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.0, d) * vA * uAlpha;
+      float a = (1.0 - smoothstep(0.0, 0.5, d)) * vA * uAlpha;
       gl_FragColor = vec4(vec3(0.55, 0.75, 1.0) * a, 1.0);
     }`,
 };
@@ -141,8 +125,8 @@ const CSS = `
   .cin .chip.r { border-color: rgba(255,98,114,.75); color: #ff8a96; } .cin .chip.au { border-color: rgba(255,207,90,.7); color: #ffcf5a; }
   .cin .credit { font: 500 21px/1.5 "JetBrains Mono", monospace; letter-spacing: .03em; color: #8fd3ff; }
   .cin .credit span { display: block; color: #9aa9be; }
-  .cin .pn { padding: 16px 22px 18px; border-radius: 16px; background: rgba(6,12,24,.84); border: 1px solid rgba(127,207,255,.2); }
-  .cin .pn__t { font: 500 21px/1.2 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #8fa2ba; margin-bottom: 10px; }
+  .cin .pn { box-sizing: border-box; padding: 16px 22px 18px; border-radius: 16px; background: rgba(6,12,24,.84); border: 1px solid rgba(127,207,255,.2); }
+  .cin .pn__t { font: 500 21px/1.2 "JetBrains Mono", monospace; letter-spacing: .07em; text-transform: uppercase; color: #8fa2ba; margin-bottom: 10px; }
   .cin .pn svg { display: block; width: 100%; height: auto; overflow: visible; }
   .cin .pn svg text { font: 500 20px "JetBrains Mono", monospace; }
   .cin .cl__a { font: 500 44px/1.3 "Inter", sans-serif; color: #c9d4e3; }
@@ -155,15 +139,16 @@ const CSS = `
 `;
 
 const WX = 2.9, WY = 1.45;                                   // half the wall's width and height, in world units
-const bell = (mu, x) => Math.exp(-0.5 * (x - mu) * (x - mu));
+const bell = (mu, x, sigma = 1) => Math.exp(-0.5 * ((x - mu) / sigma) ** 2) / sigma;
 
 /* ----------------------------------------------------------------- film */
 const film = {
-  title: 'A whisper in the weights',
+  title: 'Could this AI be a copy?',
   aspect: '16x9',
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL, 42) : null,
   build(ctx) {
     const { scene, camera, text, label } = ctx;
     const style = document.createElement('style');
@@ -202,7 +187,7 @@ const film = {
     wg.setAttribute('aSign', new THREE.BufferAttribute(w2, 1));
     wg.setAttribute('aIdx', new THREE.BufferAttribute(w3, 1));
     const SPIKE = 13 * NX + 29;
-    const wallMat = mat(WALL, { uTime: 0, uPR: 1, uAlpha: 1, uPattern: 0, uScanX: -9, uScanAmt: 0, uSpike: SPIKE, uSpikeAmt: 0, uCut: 0, uShake: 0 });
+    const wallMat = mat(WALL, { uTime: 0, uPR: 1, uAlpha: 1, uPattern: 0, uScanX: -9, uScanAmt: 0, uSpike: SPIKE, uSpikeAmt: 0, uCut: 0, uShake: 0, uBreadth: .25, uCorrelated: 0 });
     const wall = new THREE.Points(wg, wallMat);
     wall.frustumCulled = false;
     scene.add(wall);
@@ -213,123 +198,122 @@ const film = {
     scene.add(sweep);
     Object.assign(ctx, { dust, wallMat, sweep });
 
-    /* ------------------------------------------------------------- type */
-    const KICK = { x: 120, y: 88, w: 900 };
+    /* A question about AI evidence, with the statistical assumptions visible. */
     const HD = { x: 120, y: 190, w: 760 };
     const say = (at, out, hd, sb) => text({ at, out, cls: 'blk', place: HD,
-      html: `<div class="hd">${hd}</div>` + (sb ? `<div class="sb">${sb}</div>` : '') });
-    const scrim = (at, out, place, background) => text({ at, out, cls: 'scrim', words: false, dur: 0.8, rise: 0, html: '', place,
+      html: `<div class="hd">${hd}</div><div class="sb">${sb}</div>` });
+    const scrim = (at, out, place, background) => text({ at, out, cls: 'scrim', words: false, dur: .8, rise: 0, html: '', place,
       style: { height: place.h + 'px', background } });
-    const gone = 0.05;
+    const gone = .05;
+    scrim(-3, T.close - .2, { x: 0, y: 0, w: 1000, h: 1080 },
+      'linear-gradient(to right,rgba(3,5,10,.9),rgba(3,5,10,.7) 62%,transparent)');
+    scrim(T.close - .3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
+      'radial-gradient(ellipse at center,rgba(3,5,10,.92),rgba(3,5,10,.45))');
+    text({ at: -3, out: T.close - .3, cls: 'kick', words: false, dur: .01,
+      place: { x: 120, y: 88, w: 1000 }, html: 'Dr. Ozgur Ural &middot; model security' });
+    say(-3, T.loud - gone, 'Could this AI be <em>a copy</em>?',
+      'Recognising a model means testing a claim.');
+    say(T.loud, T.thin - gone, 'An obvious mark gives away <span class="amber">the target</span>.',
+      'A conspicuous signature is easy to look for.');
+    say(T.thin, T.add - gone, 'A faint <em>signed pattern</em>.',
+      'A teaching example with access to weights, a secret key and a clean reference.');
+    say(T.add, T.score - gone, 'Align the changes. <em>Add them</em>.',
+      'The hidden signal reinforces. Independent noise partly cancels.');
+    say(T.score, T.wide - gone, 'First test models <em>without the mark</em>.',
+      'Their scores reveal where chance matches can happen.');
+    say(T.wide, T.scrub - gone, 'More small marks, <span class="green">clearer separation</span>.',
+      'Each nudge stays fixed. The total perturbation grows.');
+    say(T.scrub, T.limits - gone, 'An attack can <span class="amber">shift the score</span>.',
+      'A norm bound limits this score shift. It says nothing by itself about accuracy cost.');
+    say(T.limits, T.close - gone, 'What if noise <span class="red">follows the pattern</span>?',
+      'The same threshold can produce more false alarms. Recalibrate the test.');
+    text({ at: -3, out: T.close - .2, cls: 'credit', words: false, dur: .4,
+      place: { x: 120, y: 780, w: 790 },
+      html: 'Gaussian teaching model. Separate from the paper.<span>Research context: Ural &amp; Yoshigoe, IEEE Access 2024.</span>' });
+    text({ at: T.close, out: T.card - .2, cls: 'cl__a',
+      place: { x: 220, y: 260, w: 1480, align: 'center' }, html: 'Recognising a model means' });
+    text({ at: T.close + 1.7, out: T.card - .2, cls: 'cl__b',
+      place: { x: 220, y: 390, w: 1480, align: 'center' }, html: '<em>testing a claim</em>.' });
+    text({ at: T.close + 3.5, out: T.card - .2, cls: 'credit', words: false,
+      place: { x: 220, y: 640, w: 1480, align: 'center' }, html: 'Dr. Ozgur Ural’s research perspective<span>Test unrelated models and realistic edits before interpreting a match.</span>' });
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: .9, rise: 24,
+      place: { x: 160, y: 230, w: 1600, align: 'center' },
+      html: `<div class="end__t">Could this AI be a copy?</div>
+        <div class="end__s">Model security. Statistical evidence. Calibration.</div>
+        <div class="end__a">An illustrative statistical test &middot; research context: IEEE Access 2024</div>
+        <div class="end__u">${AUTHOR}</div>` });
 
-    scrim(-3, T.close - 0.2, { x: 0, y: 0, w: 1000, h: 1080 },
-          'linear-gradient(to right, rgba(3,5,10,.9) 0%, rgba(3,5,10,.7) 62%, rgba(3,5,10,0) 100%)');
-    scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
-          'radial-gradient(ellipse 60% 52% at 50% 50%, rgba(3,5,10,.92) 0%, rgba(3,5,10,.78) 55%, rgba(3,5,10,.2) 100%)');
-    text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film' });
+    const PN = { x: 990, y: 610, w: 820 };
+    const SW = 800, SH = 220;
+    const low = Math.min(...SUM_UNMARKED, ...SUM_MARKED), high = Math.max(...SUM_UNMARKED, ...SUM_MARKED);
+    const px = n => 14 + 772 * n / BASE_K;
+    const py = v => lerp(184, 34, (v - low) / (high - low));
+    const sumPath = (values, n) => values.slice(0, n + 1).map((v, i) => `${i ? 'L' : 'M'}${px(i).toFixed(2)} ${py(v).toFixed(2)}`).join('');
+    text({ at: T.add + .6, out: T.score - gone, cls: 'pn sum-demo', words: false, dur: .5, rise: 12, place: PN,
+      html: `<div class="pn__t">Same noise · one simulated read</div><svg viewBox="0 0 ${SW} ${SH}">
+        <path d="M14 ${py(0)}H786" stroke="#39536b" stroke-width="2"/>
+        <path data-k="i" fill="none" stroke="#6fd3ff" stroke-width="4" stroke-linejoin="round"/>
+        <path data-k="m" fill="none" stroke="#ffcf5a" stroke-width="4" stroke-linejoin="round"/>
+        <text x="22" y="213" fill="#6fd3ff">without mark</text><text x="390" y="213" fill="#ffcf5a">with signed mark</text></svg>`,
+      update: (t, el) => {
+        const n = Math.round(BASE_K * ramp(t, T.add + 2, T.add + 10.6));
+        el.dataset.samples = String(n); el.dataset.gap = String(SUM_MARKED[n] - SUM_UNMARKED[n]);
+        el.querySelector('[data-k="i"]').setAttribute('d', sumPath(SUM_UNMARKED, n));
+        el.querySelector('[data-k="m"]').setAttribute('d', sumPath(SUM_MARKED, n));
+      } });
 
-    text({ at: -3, out: T.loud - gone, cls: 'blk', place: HD,
-           html: '<div class="hd">Your AI model <span class="red">leaks</span>.</div><div class="sb">Someone retrains it a little, so it no longer looks like yours. Can a hidden mark survive that?</div>' });
-    say(T.loud, T.thin - gone, 'One big mark is <span class="amber">fragile</span>.',
-        'It is easy to find, easy to cut out, and it can hurt the model.');
-    say(T.thin, T.add - gone, 'So spread it <em>thin</em>.',
-        'A nudge so small, across so many of the model&rsquo;s numbers, that no single one looks unusual.');
-    say(T.add, T.score - gone, 'Line them up, and <em>add</em>.',
-        'The pattern adds up. The noise points every which way, and mostly cancels.');
-    say(T.score, T.wide - gone, 'One <em>score</em>.',
-        'An innocent model lands near zero. A marked one lands far away. You draw a line between them, knowing how rarely chance would cross it.');
-    say(T.wide, T.scrub - gone, 'Wider is <span class="green">stronger</span>.',
-        'The wider you spread the mark, the further apart the two land, while every nudge stays tiny.');
-    say(T.scrub, T.limits - gone, 'A shake moves the score <em>only so far</em>.',
-        'As far as the shake, and no further. That is a limit on this test, not a promise that no mark can ever be removed.');
-    say(T.limits, T.close - 0.25, 'It rests on <span class="amber">assumptions</span>.',
-        'Random noise, and a clean copy of your pattern. Break them, and the advantage shrinks.');
-    text({ at: T.thin + 0.8, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 900, w: 800 },
-           html: 'A teaching model of one statistical check, with random noise assumed.<span>Related paper: Ural &amp; Yoshigoe, IEEE Access, 2024.</span>' });
+    const BW = 800, BH = 220, BY = 181;
+    const x = v => 18 + (v + 7) * 764 / 18;
+    const y = (mu, v, sigma) => BY - 135 * bell(mu, v, sigma);
+    const points = (mu, sigma, from = -7) => Array.from({ length: 121 }, (_, i) => {
+      const v = from + (11 - from) * i / 120;
+      return `L${x(v).toFixed(2)} ${y(mu, v, sigma).toFixed(2)}`;
+    }).join('');
+    const area = (mu, sigma, from = -7) => `M${x(from)} ${BY}${points(mu, sigma, from)}L${x(11)} ${BY}Z`;
+    text({ at: T.score + .5, out: T.close - .2, cls: 'pn score-demo', words: false, dur: .5, rise: 12, place: PN,
+      html: `<div class="pn__t">Simulated scores · fixed threshold</div><svg viewBox="0 0 ${BW} ${BH}">
+        <path d="M18 ${BY}H782" stroke="#39536b" stroke-width="2"/>
+        <path data-k="i" fill="rgba(111,211,255,.12)" stroke="#6fd3ff" stroke-width="3"/>
+        <path data-k="m" fill="rgba(255,207,90,.12)" stroke="#ffcf5a" stroke-width="3"/>
+        <path data-k="tail" fill="rgba(255,98,114,.6)"/>
+        ${NULL_SCORES.map((_, i) => `<circle class="null-sample" data-index="${i}" r="4" cy="${BY - 8 - i % 4 * 6}"/>`).join('')}
+        <path data-k="l" stroke="#ff8a96" stroke-width="3" stroke-dasharray="6 5"/>
+        <text x="${x(-2)}" y="213" text-anchor="middle" fill="#6fd3ff">without mark</text>
+        <text x="${x(7)}" y="213" text-anchor="middle" fill="#ffcf5a">marked</text>
+        <text data-k="lt" y="27" text-anchor="middle" fill="#ff8a96">chance matches</text>
+        <path data-k="arrow" fill="none" stroke="#f4f7fb" stroke-width="3"/>
+        <text data-k="at" x="780" y="27" text-anchor="end" fill="#f4f7fb">score shift</text></svg>`,
+      update: (t, el) => {
+        const st = statisticsAt(t);
+        for (const [key, value] of Object.entries(st)) el.dataset[key] = String(value);
+        el.querySelector('[data-k="i"]').setAttribute('d', area(0, st.sigma));
+        const m = el.querySelector('[data-k="m"]');
+        m.setAttribute('d', area(st.mean, st.sigma)); m.setAttribute('opacity', String(ramp(t, T.score + 3.8, T.score + 4.5)));
+        const show = ramp(t, T.score + 1.5, T.score + 2.2);
+        const tail = el.querySelector('[data-k="tail"]'); tail.setAttribute('d', area(0, st.sigma, st.threshold)); tail.setAttribute('opacity', String(show));
+        el.querySelectorAll('.null-sample').forEach((dot, i) => {
+          const value = NULL_SCORES[i] * st.sigma, flagged = value > st.threshold;
+          dot.setAttribute('cx', String(x(value))); dot.setAttribute('fill', flagged ? '#ff6272' : '#6fd3ff');
+          dot.setAttribute('opacity', String(ramp(t, T.score + .7 + i * .35, T.score + 1 + i * .35)));
+          dot.dataset.flagged = String(flagged);
+        });
+        const ln = el.querySelector('[data-k="l"]'); ln.setAttribute('d', `M${x(st.threshold)} ${BY + 4}V35`); ln.setAttribute('opacity', String(show));
+        const lt = el.querySelector('[data-k="lt"]'); lt.setAttribute('x', String(x(st.threshold))); lt.setAttribute('opacity', String(show));
+        const sh = win(t, T.scrub + 2, T.limits - .3, .3, .4);
+        const ar = el.querySelector('[data-k="arrow"]'); ar.setAttribute('d', `M${x(st.cleanMean)} 38H${x(st.mean)}m8 -6l-8 6l8 6`); ar.setAttribute('opacity', String(sh));
+        el.querySelector('[data-k="at"]').setAttribute('opacity', String(sh));
+        el.querySelector('.pn__t').textContent = st.sigma > 1.05 ? 'Noise aligned with the key · same threshold' : 'Simulated scores · fixed threshold';
+      } });
 
-    text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 220, y: 250, w: 1480, align: 'center' },
-           html: 'A whisper, repeated across a million numbers, can be heard over the noise.' });
-    text({ at: T.close + 5.0, out: T.card - 0.3, cls: 'cl__b', place: { x: 220, y: 400, w: 1480, align: 'center' },
-           html: 'We pair a mark like this with <em>a record of the training itself</em>.' });
-
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 240, w: 1600, align: 'center' },
-           html: `<div class="end__t">A whisper in the weights</div>
-                  <div class="end__s">How a faint mark, spread over many numbers, is read back out of the noise.</div>
-                  <div class="end__a">A teaching model &middot; related paper: Ural &amp; Yoshigoe, IEEE Access, 2024</div>
-                  <div class="end__u">${AUTHOR}</div>` });
-
-    /* ------------------------------------------------- panels under the wall */
-    const PN = { x: 980, y: 624, w: 840 };
-    // adding up: the same noise in both, and the mark in one
-    const SW = 800, SH = 236, X0 = 14, YB = 196, SY = 2.2;        // svg box; y of the zero line; pixels per unit of sum
-    const px = k => X0 + (SW - 200) * k / K, py = v => YB - 44 - v * SY;
-    const line = (sum, n) => { let d = ''; for (let k = 0; k <= n; k++) d += (k ? 'L' : 'M') + px(k).toFixed(1) + ' ' + py(sum[k]).toFixed(1); return d; };
-    text({ at: T.add + 1.0, out: T.score - gone, cls: 'pn', words: false, dur: 0.5, rise: 16, place: PN,
-           html: `<div class="pn__t">adding up, one number at a time</div>
-                  <svg viewBox="0 0 ${SW} ${SH}"><path d="M${X0} ${py(0)}H${SW - 186}" stroke="rgba(127,207,255,.3)" stroke-width="2"/>
-                  <path data-k="i" fill="none" stroke="#6fd3ff" stroke-width="4" stroke-linejoin="round"/>
-                  <path data-k="m" fill="none" stroke="#ffcf5a" stroke-width="5" stroke-linejoin="round"/>
-                  <text data-k="mt" fill="#ffcf5a">with the mark</text><text data-k="it" fill="#6fd3ff">without</text></svg>`,
-           update: (t, el) => {
-             const n = Math.round(K * ramp(t, T.add + 2.0, T.add + 10.6));
-             el.querySelector('[data-k="i"]').setAttribute('d', line(SUM_INNOCENT, n));
-             el.querySelector('[data-k="m"]').setAttribute('d', line(SUM_MARKED, n));
-             [['mt', SUM_MARKED], ['it', SUM_INNOCENT]].forEach(([k, s]) => {
-               const tx = el.querySelector(`[data-k="${k}"]`);
-               tx.setAttribute('x', (px(n) + 12).toFixed(1)); tx.setAttribute('y', (py(s[n]) + 7).toFixed(1));
-               tx.setAttribute('opacity', String(ramp(t, T.add + 3.4, T.add + 4.0)));
-             });
-           } });
-
-    // the score: where an innocent model lands, where a marked one lands, and the line between them
-    const BW = 800, BH = 236, U = 52, BX = 190, BY = 196, LINE = 3;   // pixels per unit; x of zero; baseline; the threshold
-    const curve = mu => { let d = ''; for (let i = 0; i <= 70; i++) { const x = mu - 3.4 + i * 6.8 / 70;
-      d += (i ? 'L' : 'M') + (BX + (x) * U).toFixed(1) + ' ' + (BY - 150 * bell(mu, x)).toFixed(1); } return d; };
-    ctx.spread = t => {
-      // how far the marked model lands from zero: as measured, then wider, then shaken, then with the assumptions broken
-      const wide = ease.inOutSine(ramp(t, T.wide + 1.2, T.wide + 5.6)), shake = ease.inOutSine(ramp(t, T.scrub + 2.2, T.scrub + 5.4));
-      const broke = ease.inOutSine(ramp(t, T.limits + 3.0, T.limits + 6.6));
-      return lerp(lerp(5.4, 7.4, wide) - 1.3 * shake, 2.5, broke);
-    };
-    text({ at: T.score + 0.8, out: T.close - 0.3, cls: 'pn', words: false, dur: 0.5, rise: 16, place: PN,
-           html: `<div class="pn__t">the score</div>
-                  <svg viewBox="0 0 ${BW} ${BH}"><path d="M10 ${BY}H${BW - 10}" stroke="rgba(127,207,255,.3)" stroke-width="2"/>
-                  <path data-k="i" d="${curve(0)}" fill="rgba(111,211,255,.14)" stroke="#6fd3ff" stroke-width="4"/>
-                  <path data-k="m" fill="rgba(255,207,90,.14)" stroke="#ffcf5a" stroke-width="4"/>
-                  <path data-k="l" d="M${BX + LINE * U} ${BY + 8}V26" stroke="#ff8a96" stroke-width="3" stroke-dasharray="7 6"/>
-                  <text x="${BX}" y="${BY + 28}" text-anchor="middle" fill="#6fd3ff">innocent</text>
-                  <text data-k="mt" y="${BY + 28}" text-anchor="middle" fill="#ffcf5a">marked</text>
-                  <text data-k="lt" x="${BX + LINE * U - 10}" y="40" text-anchor="end" fill="#ff8a96">the line</text>
-                  <path data-k="arrow" fill="none" stroke="#f4f7fb" stroke-width="3"/><text data-k="at" fill="#f4f7fb">the shake</text></svg>`,
-           update: (t, el) => {
-             const mu = ctx.spread(t), x = BX + mu * U;
-             const m = el.querySelector('[data-k="m"]'), shown = String(ramp(t, T.score + 5.0, T.score + 5.8));
-             m.setAttribute('d', curve(mu)); m.setAttribute('opacity', shown);
-             const mt = el.querySelector('[data-k="mt"]'); mt.setAttribute('x', x.toFixed(1)); mt.setAttribute('opacity', shown);
-             const ln = String(ramp(t, T.score + 8.4, T.score + 9.0));
-             el.querySelector('[data-k="l"]').setAttribute('opacity', ln); el.querySelector('[data-k="lt"]').setAttribute('opacity', ln);
-             // the shake: an arrow from where the score was to where it is now, exactly as long as the shake
-             const sh = win(t, T.scrub + 2.2, T.limits - 0.2, 0.4, 0.4), from = BX + 7.4 * U;
-             const ar = el.querySelector('[data-k="arrow"]'), at = el.querySelector('[data-k="at"]');
-             ar.setAttribute('d', `M${from} 60H${x.toFixed(1)}m10 -8l-10 8l10 8`); ar.setAttribute('opacity', String(sh));
-             at.setAttribute('x', ((from + x) / 2).toFixed(1)); at.setAttribute('y', '48'); at.setAttribute('text-anchor', 'middle'); at.setAttribute('opacity', String(sh));
-           } });
-
-    /* ----------------------------------------------------- pinned labels */
     const P3 = (x, y, z = 0) => new THREE.Vector3(x, y, z);
-    label({ cls: 'chip', html: 'the model: millions of numbers', anchor: () => P3(0, -WY), dx: 0, dy: 26, ax: 0.5, ay: 0,
-            alpha: t => win(t, 0.8, 3.6, 0.5, 0.4) });
-    label({ cls: 'chip r', html: 'retrained a little', anchor: () => P3(0, -WY), dx: 0, dy: 26, ax: 0.5, ay: 0,
-            alpha: t => win(t, 3.9, T.loud - 0.3, 0.4, 0.4) });
-    label({ cls: 'chip au', html: 'one big mark', anchor: () => spikeAt, dx: 0, dy: -44, ax: 0.5, ay: 1,
-            alpha: t => win(t, T.loud + 1.6, T.loud + 5.6, 0.4, 0.3) });
-    label({ cls: 'chip r', html: 'found, and cut out', anchor: () => spikeAt, dx: 0, dy: -44, ax: 0.5, ay: 1,
-            alpha: t => win(t, T.loud + 5.9, T.thin - 0.2, 0.3, 0.4) });
-    label({ cls: 'chip au', html: 'the secret pattern: which way each number is nudged', anchor: () => P3(0, -WY), dx: 0, dy: 26, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.thin + 2.2, T.thin + 6.6, 0.4, 0.4) });
-    label({ cls: 'chip', html: 'the nudges themselves: too small to see', anchor: () => P3(0, -WY), dx: 0, dy: 26, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.thin + 6.9, T.add - 0.2, 0.4, 0.4) });
+    label({ cls: 'chip', html: 'schematic parameter samples', anchor: () => P3(0, -WY), dx: 0, dy: 20, ax: .5, ay: 0,
+      alpha: t => win(t, .8, T.loud - .3, .4, .4) });
+    label({ cls: 'chip au', html: 'obvious target', anchor: () => spikeAt, dx: 0, dy: -44, ax: .5, ay: 1,
+      alpha: t => win(t, T.loud + 1.5, T.loud + 5.5, .4, .3) });
+    label({ cls: 'chip r', html: 'removed', anchor: () => spikeAt, dx: 0, dy: -44, ax: .5, ay: 1,
+      alpha: t => win(t, T.loud + 5.9, T.thin - .2, .3, .4) });
+    label({ cls: 'chip au', html: 'secret signed pattern', anchor: () => P3(0, -WY), dx: 0, dy: 20, ax: .5, ay: 0,
+      alpha: t => win(t, T.thin + 2, T.add - .3, .4, .4) });
   },
 
   /* ------------------------------------------------------------ frame */
@@ -340,13 +324,16 @@ const film = {
     camera.lookAt(0, 0, 0);
     const u = wallMat.uniforms;
     u.uTime.value = t; u.uPR.value = pr;
+    const st = statisticsAt(t);
+    u.uBreadth.value = st.count / MAX_K;
+    u.uCorrelated.value = st.sigma - 1;
     // retrained a little; and later, shaken by a thief
     u.uShake.value = win(t, 3.6, T.loud - 0.6, 0.5, 0.8) + win(t, T.scrub + 1.6, T.scrub + 6.0, 0.6, 0.8);
     // the one big mark: there, found, cut out
     u.uSpikeAmt.value = ease.outCubic(ramp(t, T.loud + 1.0, T.loud + 1.8)) * (1 - ramp(t, T.thin - 0.4, T.thin));
     u.uCut.value = ramp(t, T.loud + 5.6, T.loud + 6.1);
     // the pattern, shown once to the owner; then the reading sweep that lights each number by its sign as it is counted
-    u.uPattern.value = win(t, T.thin + 2.0, T.thin + 6.8, 0.8, 0.9) * 0.9;
+    u.uPattern.value = Math.max(win(t, T.thin + 2, T.thin + 7.5, .8, .9), win(t, T.wide + .5, T.close - .5, .5, .5)) * .9;
     const reading = ramp(t, T.add + 2.0, T.add + 10.6);
     u.uScanX.value = lerp(-WX - 0.1, WX + 0.1, reading);
     u.uScanAmt.value = win(t, T.add + 1.8, T.score + 0.6, 0.3, 0.8);

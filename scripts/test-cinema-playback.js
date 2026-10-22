@@ -35,9 +35,21 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
       audioPaused: window.testAudio[0].paused,
       muted: window.testAudio[0].muted
     }));
+    // Use an explicit captionless fixture: production films gain captions over
+    // time and should not silently change the condition this regression tests.
+    await page.setRequestInterception(true);
+    const captionless = async request => {
+      if (new URL(request.url()).pathname === '/assets/js/cinema/model-heist.js') {
+        await request.respond({ status: 200, contentType: 'text/javascript', body:
+          "import { createCinema } from './engine.js'; createCinema({ title: 'Captionless fixture', aspect: '16x9', duration: 5, build() {}, frame() {} });" });
+      } else await request.continue();
+    };
+    page.on('request', captionless);
     await open('model-heist');
     assert.equal(await page.$eval('[data-act="cc"]', el => getComputedStyle(el).display), 'none',
       'films without captions do not show a dead CC button');
+    await page.setRequestInterception(false);
+    page.off('request', captionless);
 
     await open('securepol');
     assert.notEqual(await page.$eval('[data-act="cc"]', el => getComputedStyle(el).display), 'none',

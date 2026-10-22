@@ -15,8 +15,8 @@
        √k·ε, noise std σ (flat), so d = √k·ε/σ. No mixing with the all-ones sum.
      • The confidence chip is driven by Power = Φ(d − z_α), NOT 1−α.
      • AUC = Φ(d/√2) stated exactly.
-     • The scrub-paradox’s √k cost holds because w is SECRET (the thief cannot
-       align his budget δ with w); |ΔS| = |⟨w,δ⟩| ≤ ‖δ‖ ≤ ρ. Stated on stage.
+     • For any unit-norm w, |ΔS| = |⟨w,δ⟩| ≤ ‖δ‖ ≤ ρ. The bound does not
+       depend on secrecy and implies no universal accuracy cost of removal.
      • Assumptions (white noise, σ known, clean reference, single test) in appendix.
    ============================================================================= */
 (function () {
@@ -435,7 +435,7 @@
       // py 130 put this under a one-line title; the sentence wraps to two lines,
       // so its top rode 10 units into the title's box. Measured on stage: title
       // occupies 63.3-87.6, caption 77.3-126.5. Dropped clear of it.
-      var cap = s.caption("the matched filter at the core of the author's 2024 watermarking method.", { px: 300, py: 148, size: "0.9rem", color: GREY });
+      var cap = s.caption("a Gaussian teaching model, separate from the related 2024 paper's detector.", { px: 300, py: 148, size: "0.9rem", color: GREY });
       s.fadeIn(cap, { at: 3.0, dur: 1.5 });
       lower(s, "Under the stated Gaussian assumptions this becomes a Z-test. The threshold trades detection power against false alarms.", 9.0, { maxWidth: "85%", px: 60, py: 535 });
     }, { subtitle: "Provenance collapses to one number: the shift d." });
@@ -600,10 +600,10 @@
       ["Matched filter", "S=\\langle w,\\ \\hat\\theta-\\theta_{\\text{ref}}\\rangle,\\quad \\|w\\|=1",
         "The owner shifts the weights along a secret unit pattern w; the verifier correlates the leaked weights against w. This is the Neyman–Pearson optimal linear detector for a known signal in white Gaussian noise."],
       ["Effect size", "d = \\frac{\\sqrt{k}\\,\\varepsilon}{\\sigma}",
-        "Signal projects coherently to amplitude \\(\\sqrt{k}\\,\\varepsilon\\); the noise projection \\(w^\\top n\\sim N(0,\\sigma^2)\\) stays flat because \\(\\|w\\|=1\\). The √k is the crux: robustness is bought by spreading, not deepening."],
+        "Signal projects coherently to amplitude \\(\\sqrt{k}\\,\\varepsilon\\); the noise projection \\(w^\\top n\\sim N(0,\\sigma^2)\\) stays flat because \\(\\|w\\|=1\\). This fixes the per-coordinate perturbation: total perturbation norm grows with k. The gain does not hold at fixed total signal norm."],
       ["Power", "\\text{Power}=\\Phi(d-z_\\alpha),\\quad \\text{AUC}=\\Phi(d/\\sqrt2)",
         "\\(Z\\sim N(0,1)\\) under \\(H_0\\), \\(N(d,1)\\) under \\(H_1\\). Reject when \\(Z\\gt z_\\alpha=\\Phi^{-1}(1-\\alpha)\\). Per-weight \\(\\varepsilon/\\sigma\\ll1\\) can coexist with large \\(d\\) and high detection power. This is not certainty."],
-      ["Why it survives", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
+      ["Bounded score shift", "|\\Delta S| = |\\langle w,\\delta\\rangle| \\le \\|\\delta\\| \\le \\rho",
         "A norm-bounded scrub \\(\\|\\delta\\|\\le\\rho\\) changes the statistic by at most \\(\\rho\\), regardless of direction. Relating this norm budget to a real model's utility requires additional evidence. The detector assumes white noise, known σ, a clean reference \\(\\theta_{\\text{ref}}=\\theta\\), and a single pre-registered test."]
     ];
     var html = '<div class="lab-math__grid">';
@@ -611,7 +611,7 @@
       html += '<div class="lab-math__item"><div class="lab-math__name">' + b[0] + '</div><div class="lab-math__eq">' +
         window.katex.renderToString(b[1], { throwOnError: false, displayMode: true }) + '</div><p class="lab-math__note">' + b[2] + '</p></div>';
     });
-    html += '</div><p class="lab-math__refs">Neyman–Pearson lemma · Ural, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024.</p>';
+    html += '</div><p class="lab-math__refs">Gaussian matched-filter teaching model. Research context only: Ural and Yoshigoe, <em>Feature-Based Model Watermarking for PoL</em>, IEEE Access 2024; this test is not the paper’s detector.</p>';
     host.innerHTML = html;
     host.querySelectorAll(".lab-math__note").forEach(function (el) {
       el.innerHTML = el.innerHTML.replace(/\\\((.+?)\\\)/g, function (_, t) { try { return window.katex.renderToString(t, { throwOnError: false }); } catch (e) { return t; } });

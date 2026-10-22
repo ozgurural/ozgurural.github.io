@@ -13,15 +13,15 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-wm" style="margin-top: 0;">
   <span class="ep-eyebrow">ML security · Model provenance</span>
-  <p class="lab-card__lead">🕵️ Someone leaks your AI and fine-tunes it just enough to look different. Before you publish, you spread a faint statistical signature across many weights, each mark small against the noise. This animation explores why <strong>k tiny correlated marks</strong> read through a matched filter can give detection power that grows as <strong>√k</strong> in the stated model. Robustness still depends on calibration, the attack, and the assumptions behind the test.</p>
+  <p class="lab-card__lead">Your AI model leaks, and its weights are changed. Could you still recognise a copy? This film uses a statistical teaching model to show how a faint signed pattern accumulates, how a threshold controls chance matches, and how noise aligned with that pattern can invalidate the original calibration. The test assumes access to weights, a clean reference and a secret key.</p>
   <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>This film animates the detection side of the problem: a mark spread across many parameters, read back with a matched filter, and why the evidence grows as √k. The aggregate Gaussian Z-test is the film's model of that step, not a formula taken from the paper. The paper it accompanies, <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024), embeds the mark in the model's internal features rather than its output behaviour, and checks it alongside the Proof-of-Learning trajectory so that a forger has to satisfy both conditions at once.</span>
+    <strong>Research context:</strong>
+    <span>The Gaussian matched-filter test is an illustrative model authored for this explainer. It is not the detector, formula or empirical benchmark in <a href="/publication/2024-ieee-access-watermarking">Ural and Yoshigoe’s IEEE Access 2024 paper</a>. That paper studies combining an embedded watermark with verification of the training record. The film explores the broader question of how to interpret statistical evidence of model provenance.</span>
   </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
-      <iframe src="{{ '/films/model-heist/' | relative_url }}?autoplay=0" title="A whisper in the weights: a narrated film on reading a faint watermark out of the noise" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="{{ '/films/model-heist/' | relative_url }}?autoplay=0" title="Could this AI be a copy? A film about model security and statistical evidence" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
   </div>
 
@@ -32,9 +32,9 @@ header:
     <summary>🧠 What did you just learn?</summary>
     <p><strong>Tiny secrets in many places can be less conspicuous than one big secret.</strong> A model has many internal numbers. Stamping one large value into a single weight is easy to target and may dent accuracy. Instead, the owner shifts the weights along a <em>secret unit pattern</em> w across k coordinates, each by a tiny ε that is small relative to the assumed noise floor.</p>
     <p><strong>Detection is a matched filter, a one-sided Z-test.</strong> The verifier correlates the leaked weights against the secret pattern, <em>S = ⟨w, θ̂ − θ<sub>ref</sub>⟩</em>. The aligned marks add coherently to amplitude √k·ε, while the fine-tuning noise projects to a flat σ (because ‖w‖ = 1). Normalised, the statistic is N(0,1) for an innocent model and N(d,1) for a watermarked one, with effect size <em>d = √k·ε/σ</em>. Detection power is Φ(d − z<sub>α</sub>) at false-positive rate α.</p>
-    <p><strong>The √k can improve detection power without making each mark loud.</strong> Per weight, ε/σ can remain small. In the stated model, the aggregate d = √k·ε/σ can cross a chosen threshold as k grows, and the ROC curve approaches high power (AUC = Φ(d/√2)) when the assumptions hold. More breadth is not the same as certainty in every deployment.</p>
-    <p><strong>The scrubbing trade-off.</strong> To erase a spread mark, an attacker must change the coordinates that contribute to the secret pattern. Because <em>w is secret</em>, the simple bound ‖δ‖ ≤ ρ ⇒ |ΔS| = |⟨w, δ⟩| ≤ ρ describes how much the score can move for a bounded perturbation. The utility cost of a real scrubbing attack depends on its access, retraining procedure, and calibration; this is not a universal un-removability result.</p>
-    <p><strong>Scientific Context:</strong> This film illustrates one possible statistical check for model provenance after a leak. The Z-test formulation and its coupling to <a href="/lab/training-fingerprint/">Proof-of-Learning</a> are discussed in the author's paper: <a href="/publication/2024-ieee-access-watermarking">"Feature-Based Model Watermarking for PoL"</a> (IEEE Access 2024).</p>
+    <p><strong>The √k can improve detection power without making each mark loud.</strong> Per weight, ε/σ can remain small. In the stated model, the aggregate d = √k·ε/σ can cross a chosen threshold as k grows, and the ROC curve approaches high power (AUC = Φ(d/√2)) when the assumptions hold. This keeps the per-coordinate change fixed, so the total perturbation norm grows with breadth. It is not a free gain at fixed total perturbation budget, or a guarantee in every deployment.</p>
+    <p><strong>The scrubbing trade-off.</strong> To erase a spread mark, an attacker must change the coordinates that contribute to the secret pattern. For any unit-norm pattern <em>w</em>, the Cauchy–Schwarz bound ‖δ‖ ≤ ρ ⇒ |ΔS| = |⟨w, δ⟩| ≤ ρ describes how much the score can move for a bounded perturbation. The utility cost of a real scrubbing attack depends on its access, retraining procedure, and calibration; this is not a universal un-removability result.</p>
+    <p><strong>Scientific Context:</strong> The film’s Gaussian Z-test is a separate teaching model. The related <a href="/publication/2024-ieee-access-watermarking">IEEE Access 2024 paper</a> studies joint watermark and <a href="/lab/training-fingerprint/">Proof-of-Learning</a> verification; it does not supply this test or its illustrative curves. A detection score supports an investigation under the stated assumptions, rather than establishing a legal ownership verdict.</p>
   </details>
 
   <details class="lab-reveal">

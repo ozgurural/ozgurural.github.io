@@ -1,185 +1,1164 @@
 {
  "film": "model-heist",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 101.85,
- "authored": 101.5,
+ "duration": 97.951,
+ "authored": 95,
  "anchors": [
   [
    0.0,
    0.0
   ],
   [
-   9.35,
-   9.0
+   9.742,
+   8
   ],
   [
-   18.85,
-   18.5
+   16.839,
+   15
   ],
   [
-   28.35,
-   28.0
+   25.839,
+   24
   ],
   [
-   41.35,
-   41.0
+   37.163,
+   35
   ],
   [
-   54.35,
-   54.0
+   49.163,
+   47
   ],
   [
-   62.35,
-   62.0
+   58.951,
+   56
   ],
   [
-   75.35,
-   75.0
+   70.951,
+   68
   ],
   [
-   84.35,
-   84.0
+   80.951,
+   78
   ],
   [
-   95.35,
-   95.0
+   90.951,
+   88
   ],
   [
-   101.85,
-   101.5
+   97.951,
+   95
   ]
  ],
  "audio": "soundtrack.mp3",
  "lines": [
   {
    "id": "hook",
-   "at": 0.0,
+   "at": 0,
    "real": 0.35,
-   "speech": 8.582,
-   "len": 8.81,
+   "speech": 8.992,
+   "len": 9.22,
    "head": 0.228,
    "file": "hook.mp3",
    "file_start": 0.122,
-   "hash": "fb92afe50a5e",
-   "text": "Your AI model leaks. Someone retrains it a little, so it no longer looks like yours. Can a hidden mark survive that?",
-   "source": "old lab film, scene 1"
+   "hash": "871e68f31860",
+   "text": "Your AI model leaks. Someone changes its weights. Could you still recognise a copy? Recognition needs a test.",
+   "source": "Illustrative model-recognition scenario",
+   "words": [
+    [
+     "Your",
+     0.0,
+     0.283
+    ],
+    [
+     "AI",
+     0.295,
+     0.531
+    ],
+    [
+     "model",
+     0.542,
+     0.849
+    ],
+    [
+     "leaks",
+     0.861,
+     1.344
+    ],
+    [
+     "Someone",
+     2.155,
+     2.568
+    ],
+    [
+     "changes",
+     2.58,
+     3.004
+    ],
+    [
+     "its",
+     3.016,
+     3.158
+    ],
+    [
+     "weights",
+     3.169,
+     3.665
+    ],
+    [
+     "Could",
+     4.478,
+     4.667
+    ],
+    [
+     "you",
+     4.679,
+     4.75
+    ],
+    [
+     "still",
+     4.761,
+     5.021
+    ],
+    [
+     "recognise",
+     5.033,
+     5.504
+    ],
+    [
+     "a",
+     5.516,
+     5.575
+    ],
+    [
+     "copy",
+     5.587,
+     5.941
+    ],
+    [
+     "Recognition",
+     6.754,
+     7.45
+    ],
+    [
+     "needs",
+     7.462,
+     7.709
+    ],
+    [
+     "a",
+     7.721,
+     7.78
+    ],
+    [
+     "test",
+     7.792,
+     8.264
+    ]
+   ]
   },
   {
    "id": "loud",
-   "at": 9.0,
-   "real": 9.35,
-   "speech": 7.63,
-   "len": 7.85,
-   "head": 0.22,
+   "at": 8,
+   "real": 9.742,
+   "speech": 6.697,
+   "len": 6.91,
+   "head": 0.213,
    "file": "loud.mp3",
-   "file_start": 9.13,
-   "hash": "905061b34da1",
-   "text": "You could hide one big mark in one place. But a big mark is easy to find, easy to cut out, and it can hurt the model.",
-   "source": "old lab film, scene 2 (one large mark is conspicuous and can hurt accuracy)"
+   "file_start": 9.529,
+   "hash": "5e260eed60c8",
+   "text": "An obvious mark gives an attacker a target. What if the signature were spread across many small changes?",
+   "source": "Illustrative conspicuous-mark example, not an empirical claim",
+   "words": [
+    [
+     "An",
+     0.0,
+     0.189
+    ],
+    [
+     "obvious",
+     0.2,
+     0.578
+    ],
+    [
+     "mark",
+     0.59,
+     0.884
+    ],
+    [
+     "gives",
+     0.896,
+     1.12
+    ],
+    [
+     "an",
+     1.132,
+     1.215
+    ],
+    [
+     "attacker",
+     1.226,
+     1.604
+    ],
+    [
+     "a",
+     1.616,
+     1.675
+    ],
+    [
+     "target",
+     1.686,
+     2.264
+    ],
+    [
+     "What",
+     3.074,
+     3.286
+    ],
+    [
+     "if",
+     3.298,
+     3.392
+    ],
+    [
+     "the",
+     3.404,
+     3.498
+    ],
+    [
+     "signature",
+     3.51,
+     3.958
+    ],
+    [
+     "were",
+     3.97,
+     4.099
+    ],
+    [
+     "spread",
+     4.111,
+     4.394
+    ],
+    [
+     "across",
+     4.406,
+     4.736
+    ],
+    [
+     "many",
+     4.748,
+     4.984
+    ],
+    [
+     "small",
+     4.996,
+     5.314
+    ],
+    [
+     "changes",
+     5.326,
+     5.963
+    ]
+   ]
   },
   {
    "id": "thin",
-   "at": 18.5,
-   "real": 18.85,
-   "speech": 6.747,
-   "len": 6.96,
-   "head": 0.213,
+   "at": 15,
+   "real": 16.839,
+   "speech": 7.529,
+   "len": 7.75,
+   "head": 0.221,
    "file": "thin.mp3",
-   "file_start": 18.637,
-   "hash": "b6afae8f8514",
-   "text": "So spread it thin: a nudge so small, across so many of the model's numbers, that no single one looks unusual.",
-   "source": "scene 3 (a small shift along a secret pattern across many weights)"
+   "file_start": 16.618,
+   "hash": "e3a4c88cd1fa",
+   "text": "Suppose we add a tiny signed pattern across the weights. With a clean reference and access to the model file, we can test for it.",
+   "source": "Authored Gaussian teaching model; requires weights, a clean reference and a secret signed key",
+   "words": [
+    [
+     "Suppose",
+     0.0,
+     0.472
+    ],
+    [
+     "we",
+     0.484,
+     0.625
+    ],
+    [
+     "add",
+     0.637,
+     0.731
+    ],
+    [
+     "a",
+     0.743,
+     0.802
+    ],
+    [
+     "tiny",
+     0.814,
+     1.132
+    ],
+    [
+     "signed",
+     1.144,
+     1.45
+    ],
+    [
+     "pattern",
+     1.462,
+     1.733
+    ],
+    [
+     "across",
+     1.745,
+     2.075
+    ],
+    [
+     "the",
+     2.087,
+     2.17
+    ],
+    [
+     "weights",
+     2.182,
+     2.653
+    ],
+    [
+     "With",
+     3.464,
+     3.665
+    ],
+    [
+     "a",
+     3.676,
+     3.724
+    ],
+    [
+     "clean",
+     3.735,
+     4.007
+    ],
+    [
+     "reference",
+     4.018,
+     4.384
+    ],
+    [
+     "and",
+     4.396,
+     4.478
+    ],
+    [
+     "access",
+     4.49,
+     4.856
+    ],
+    [
+     "to",
+     4.867,
+     4.95
+    ],
+    [
+     "the",
+     4.962,
+     5.033
+    ],
+    [
+     "model",
+     5.044,
+     5.316
+    ],
+    [
+     "file",
+     5.327,
+     5.693
+    ],
+    [
+     "we",
+     5.882,
+     5.964
+    ],
+    [
+     "can",
+     5.976,
+     6.129
+    ],
+    [
+     "test",
+     6.141,
+     6.448
+    ],
+    [
+     "for",
+     6.459,
+     6.589
+    ],
+    [
+     "it",
+     6.601,
+     6.813
+    ]
+   ]
   },
   {
    "id": "add",
-   "at": 28.0,
-   "real": 28.35,
-   "speech": 10.487,
-   "len": 10.7,
-   "head": 0.213,
+   "at": 24,
+   "real": 25.839,
+   "speech": 10.924,
+   "len": 11.14,
+   "head": 0.216,
    "file": "add.mp3",
-   "file_start": 28.137,
-   "hash": "b1550d74301d",
-   "text": "To read it back, line every nudge up against your secret pattern, and add them together. The pattern adds up. The noise points every which way, and mostly cancels.",
-   "source": "scene 3 (matched filter: the aligned marks add coherently, independent noise adds in quadrature)"
+   "file_start": 25.623,
+   "hash": "a782528dc656",
+   "text": "Align the changes with the secret pattern, then add. The signal reinforces. Independent noise partly cancels. This is one simulated reading.",
+   "source": "Matched-filter identity under independent zero-mean noise; simulated paired sums",
+   "words": [
+    [
+     "Align",
+     0.0,
+     0.354
+    ],
+    [
+     "the",
+     0.366,
+     0.436
+    ],
+    [
+     "changes",
+     0.448,
+     0.873
+    ],
+    [
+     "with",
+     0.884,
+     0.991
+    ],
+    [
+     "the",
+     1.002,
+     1.073
+    ],
+    [
+     "secret",
+     1.085,
+     1.439
+    ],
+    [
+     "pattern",
+     1.45,
+     1.84
+    ],
+    [
+     "then",
+     2.052,
+     2.205
+    ],
+    [
+     "add",
+     2.217,
+     2.512
+    ],
+    [
+     "The",
+     3.323,
+     3.488
+    ],
+    [
+     "signal",
+     3.5,
+     3.9
+    ],
+    [
+     "reinforces",
+     3.912,
+     4.856
+    ],
+    [
+     "Independent",
+     5.669,
+     6.341
+    ],
+    [
+     "noise",
+     6.353,
+     6.636
+    ],
+    [
+     "partly",
+     6.648,
+     7.002
+    ],
+    [
+     "cancels",
+     7.014,
+     7.698
+    ],
+    [
+     "This",
+     8.511,
+     8.783
+    ],
+    [
+     "is",
+     8.794,
+     8.912
+    ],
+    [
+     "one",
+     8.924,
+     9.195
+    ],
+    [
+     "simulated",
+     9.207,
+     9.761
+    ],
+    [
+     "reading",
+     9.773,
+     10.198
+    ]
+   ]
   },
   {
    "id": "score",
-   "at": 41.0,
-   "real": 41.35,
-   "speech": 11.891,
-   "len": 12.12,
-   "head": 0.229,
+   "at": 35,
+   "real": 37.163,
+   "speech": 9.283,
+   "len": 9.53,
+   "head": 0.247,
    "file": "score.mp3",
-   "file_start": 41.121,
-   "hash": "cfeb4e836157",
-   "text": "What comes out is a single score. An innocent model lands near zero. A marked one lands far away. You draw a line between them, knowing how rarely chance would cross it.",
-   "source": "scene 4 (a one-sided Z-test: N(0,1) for an innocent model, N(d,1) for a marked one; the threshold sets the false-alarm rate)"
+   "file_start": 36.916,
+   "hash": "2e7a9d3f6c9c",
+   "text": "First test models without the mark. Their scores show where chance matches can happen. Choose a threshold, then compare the marked scores.",
+   "source": "Null calibration in the Gaussian teaching model, not a probability of ownership",
+   "words": [
+    [
+     "First",
+     0.0,
+     0.413
+    ],
+    [
+     "test",
+     0.425,
+     0.66
+    ],
+    [
+     "models",
+     0.672,
+     1.002
+    ],
+    [
+     "without",
+     1.014,
+     1.321
+    ],
+    [
+     "the",
+     1.333,
+     1.391
+    ],
+    [
+     "mark",
+     1.403,
+     1.863
+    ],
+    [
+     "Their",
+     2.674,
+     2.886
+    ],
+    [
+     "scores",
+     2.898,
+     3.299
+    ],
+    [
+     "show",
+     3.311,
+     3.523
+    ],
+    [
+     "where",
+     3.535,
+     3.759
+    ],
+    [
+     "chance",
+     3.771,
+     4.113
+    ],
+    [
+     "matches",
+     4.125,
+     4.502
+    ],
+    [
+     "can",
+     4.514,
+     4.632
+    ],
+    [
+     "happen",
+     4.643,
+     5.056
+    ],
+    [
+     "Choose",
+     5.87,
+     6.165
+    ],
+    [
+     "a",
+     6.176,
+     6.235
+    ],
+    [
+     "threshold",
+     6.247,
+     6.79
+    ],
+    [
+     "then",
+     7.002,
+     7.143
+    ],
+    [
+     "compare",
+     7.155,
+     7.556
+    ],
+    [
+     "the",
+     7.568,
+     7.662
+    ],
+    [
+     "marked",
+     7.674,
+     7.969
+    ],
+    [
+     "scores",
+     7.981,
+     8.57
+    ]
+   ]
   },
   {
    "id": "wide",
-   "at": 54.0,
-   "real": 54.35,
-   "speech": 5.503,
-   "len": 5.74,
-   "head": 0.237,
+   "at": 47,
+   "real": 49.163,
+   "speech": 9.388,
+   "len": 9.6,
+   "head": 0.212,
    "file": "wide.mp3",
-   "file_start": 54.113,
-   "hash": "181e5fbac8da",
-   "text": "And the wider you spread the mark, the further apart the two land, while every nudge stays tiny.",
-   "source": "scene 5 (effect size d grows as the square root of the number of marked weights)"
+   "file_start": 48.951,
+   "hash": "b3d8daaccd03",
+   "text": "Spread the same tiny change across more weights, and the scores separate. But the total change grows too. This assumes independent noise.",
+   "source": "Mean separation EPS times sqrt(k), fixed per-coordinate perturbation, independent unit-variance noise",
+   "words": [
+    [
+     "Spread",
+     0.0,
+     0.342
+    ],
+    [
+     "the",
+     0.354,
+     0.425
+    ],
+    [
+     "same",
+     0.436,
+     0.696
+    ],
+    [
+     "tiny",
+     0.708,
+     1.026
+    ],
+    [
+     "change",
+     1.038,
+     1.344
+    ],
+    [
+     "across",
+     1.356,
+     1.686
+    ],
+    [
+     "more",
+     1.698,
+     1.863
+    ],
+    [
+     "weights",
+     1.875,
+     2.276
+    ],
+    [
+     "and",
+     2.476,
+     2.571
+    ],
+    [
+     "the",
+     2.583,
+     2.665
+    ],
+    [
+     "scores",
+     2.677,
+     3.042
+    ],
+    [
+     "separate",
+     3.054,
+     3.609
+    ],
+    [
+     "But",
+     4.419,
+     4.584
+    ],
+    [
+     "the",
+     4.596,
+     4.679
+    ],
+    [
+     "total",
+     4.691,
+     5.056
+    ],
+    [
+     "change",
+     5.068,
+     5.386
+    ],
+    [
+     "grows",
+     5.398,
+     5.728
+    ],
+    [
+     "too",
+     5.74,
+     6.07
+    ],
+    [
+     "This",
+     6.884,
+     7.132
+    ],
+    [
+     "assumes",
+     7.143,
+     7.544
+    ],
+    [
+     "independent",
+     7.556,
+     8.134
+    ],
+    [
+     "noise",
+     8.146,
+     8.653
+    ]
+   ]
   },
   {
    "id": "scrub",
-   "at": 62.0,
-   "real": 62.35,
-   "speech": 10.396,
-   "len": 10.61,
-   "head": 0.214,
+   "at": 56,
+   "real": 58.951,
+   "speech": 9.269,
+   "len": 9.48,
+   "head": 0.211,
    "file": "scrub.mp3",
-   "file_start": 62.136,
-   "hash": "35b817d4b3e2",
-   "text": "A thief who shakes the weights to hide it can only move the score by as much as they shake. That is a limit on this test. It doesn't promise that no mark can ever be removed.",
-   "source": "scene 6 (a perturbation of bounded norm moves the score by at most that norm; not a universal claim)"
+   "file_start": 58.74,
+   "hash": "7642a3b54eea",
+   "text": "An attack can shift the score. Here, a bound on the weight change limits that shift. It does not tell us how much accuracy an attacker loses.",
+   "source": "Cauchy-Schwarz bound for a unit-norm key and a bounded perturbation; no accuracy-cost theorem",
+   "words": [
+    [
+     "An",
+     0.0,
+     0.141
+    ],
+    [
+     "attack",
+     0.153,
+     0.436
+    ],
+    [
+     "can",
+     0.448,
+     0.601
+    ],
+    [
+     "shift",
+     0.613,
+     0.884
+    ],
+    [
+     "the",
+     0.896,
+     0.967
+    ],
+    [
+     "score",
+     0.979,
+     1.439
+    ],
+    [
+     "Here",
+     2.25,
+     2.603
+    ],
+    [
+     "a",
+     2.757,
+     2.827
+    ],
+    [
+     "bound",
+     2.839,
+     3.11
+    ],
+    [
+     "on",
+     3.122,
+     3.205
+    ],
+    [
+     "the",
+     3.217,
+     3.275
+    ],
+    [
+     "weight",
+     3.287,
+     3.558
+    ],
+    [
+     "change",
+     3.57,
+     3.912
+    ],
+    [
+     "limits",
+     3.924,
+     4.254
+    ],
+    [
+     "that",
+     4.266,
+     4.431
+    ],
+    [
+     "shift",
+     4.443,
+     4.915
+    ],
+    [
+     "It",
+     5.728,
+     5.917
+    ],
+    [
+     "does",
+     5.929,
+     6.094
+    ],
+    [
+     "not",
+     6.106,
+     6.259
+    ],
+    [
+     "tell",
+     6.271,
+     6.459
+    ],
+    [
+     "us",
+     6.471,
+     6.577
+    ],
+    [
+     "how",
+     6.589,
+     6.742
+    ],
+    [
+     "much",
+     6.754,
+     7.014
+    ],
+    [
+     "accuracy",
+     7.025,
+     7.521
+    ],
+    [
+     "an",
+     7.533,
+     7.591
+    ],
+    [
+     "attacker",
+     7.603,
+     7.969
+    ],
+    [
+     "loses",
+     7.981,
+     8.535
+    ]
+   ]
   },
   {
    "id": "limits",
-   "at": 75.0,
-   "real": 75.35,
-   "speech": 7.62,
-   "len": 7.85,
-   "head": 0.23,
+   "at": 68,
+   "real": 70.951,
+   "speech": 8.701,
+   "len": 8.93,
+   "head": 0.229,
    "file": "limits.mp3",
-   "file_start": 75.12,
-   "hash": "3e1077795aa3",
-   "text": "And it rests on assumptions: random noise, and a clean copy of your pattern. Break them, and the advantage shrinks.",
-   "source": "scene 5, appendix (assumptions: independent noise, a clean reference)"
+   "file_start": 70.722,
+   "hash": "08b66f4c8434",
+   "text": "Now let noise follow the pattern. Models without the mark cross the same threshold more often. The detector needs recalibration.",
+   "source": "Gaussian common noise component aligned with the key; covariance I plus (sigma squared minus 1) uu transpose",
+   "words": [
+    [
+     "Now",
+     0.0,
+     0.271
+    ],
+    [
+     "let",
+     0.283,
+     0.472
+    ],
+    [
+     "noise",
+     0.484,
+     0.814
+    ],
+    [
+     "follow",
+     0.825,
+     1.073
+    ],
+    [
+     "the",
+     1.085,
+     1.167
+    ],
+    [
+     "pattern",
+     1.179,
+     1.651
+    ],
+    [
+     "Models",
+     2.462,
+     2.875
+    ],
+    [
+     "without",
+     2.886,
+     3.169
+    ],
+    [
+     "the",
+     3.181,
+     3.24
+    ],
+    [
+     "mark",
+     3.252,
+     3.535
+    ],
+    [
+     "cross",
+     3.547,
+     3.818
+    ],
+    [
+     "the",
+     3.83,
+     3.912
+    ],
+    [
+     "same",
+     3.924,
+     4.207
+    ],
+    [
+     "threshold",
+     4.219,
+     4.714
+    ],
+    [
+     "more",
+     4.726,
+     4.938
+    ],
+    [
+     "often",
+     4.95,
+     5.375
+    ],
+    [
+     "The",
+     6.188,
+     6.341
+    ],
+    [
+     "detector",
+     6.353,
+     6.79
+    ],
+    [
+     "needs",
+     6.801,
+     7.061
+    ],
+    [
+     "recalibration",
+     7.073,
+     7.992
+    ]
+   ]
   },
   {
    "id": "close",
-   "at": 84.0,
-   "real": 84.35,
-   "speech": 9.312,
-   "len": 9.53,
-   "head": 0.218,
+   "at": 78,
+   "real": 80.951,
+   "speech": 7.983,
+   "len": 8.21,
+   "head": 0.228,
    "file": "close.mp3",
-   "file_start": 84.132,
-   "hash": "c2836638cf3a",
-   "text": "A whisper, repeated across a million numbers, can be heard over the noise. In our research, we pair a mark like this with a record of the training itself.",
-   "source": "the author's view; Ural and Yoshigoe, IEEE Access 2024"
+   "file_start": 80.723,
+   "hash": "039e84ec609b",
+   "text": "Recognising a model means testing a claim. Try unrelated models and realistic edits before deciding what a match means.",
+   "source": "Dr. Ozgur Ural research perspective, not a result claimed by the accompanying paper",
+   "words": [
+    [
+     "Recognising",
+     0.0,
+     0.696
+    ],
+    [
+     "a",
+     0.708,
+     0.743
+    ],
+    [
+     "model",
+     0.755,
+     1.073
+    ],
+    [
+     "means",
+     1.085,
+     1.38
+    ],
+    [
+     "testing",
+     1.392,
+     1.792
+    ],
+    [
+     "a",
+     1.804,
+     1.851
+    ],
+    [
+     "claim",
+     1.863,
+     2.394
+    ],
+    [
+     "Try",
+     3.205,
+     3.523
+    ],
+    [
+     "unrelated",
+     3.535,
+     4.042
+    ],
+    [
+     "models",
+     4.054,
+     4.443
+    ],
+    [
+     "and",
+     4.455,
+     4.584
+    ],
+    [
+     "realistic",
+     4.596,
+     5.115
+    ],
+    [
+     "edits",
+     5.127,
+     5.386
+    ],
+    [
+     "before",
+     5.398,
+     5.669
+    ],
+    [
+     "deciding",
+     5.681,
+     6.165
+    ],
+    [
+     "what",
+     6.176,
+     6.341
+    ],
+    [
+     "a",
+     6.353,
+     6.4
+    ],
+    [
+     "match",
+     6.412,
+     6.695
+    ],
+    [
+     "means",
+     6.707,
+     7.261
+    ]
+   ]
   },
   {
    "id": "card",
-   "at": 95.0,
-   "real": 95.35,
+   "at": 88,
+   "real": 90.951,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 95.35,
+   "file_start": 90.951,
    "hash": "",
    "text": "",
-   "source": ""
+   "source": "",
+   "words": []
   }
  ]
 }
