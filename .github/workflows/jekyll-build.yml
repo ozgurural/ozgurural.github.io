@@ -26,7 +26,7 @@ jobs:
           JEKYLL_ENV: production
       - name: Build local preview for keyboard checks
         run: bundle exec jekyll build --safe --config _config.yml,_config.dev4001.yml --destination dist/ci-site
-      - name: Test cinema keyboard controls
+      - name: Test cinema playback and keyboard controls
         env:
           CI: 'true'
           FILM_BASE: http://localhost:4001
@@ -38,6 +38,7 @@ jobs:
           for attempt in {1..30}; do
             if curl --fail --silent --output /dev/null "$FILM_BASE/films/level-d/?autoplay=0"; then
               npm run test:cinema-controls
+              npm run test:cinema-playback
               exit 0
             fi
             if ! kill -0 "$server_pid" 2>/dev/null; then

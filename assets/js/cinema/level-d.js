@@ -624,7 +624,7 @@ const film = {
     ann('The visual display', mw(-0.4, HY1 + 0.05, -3.0), W('reveal', 'cockpit') + 0.5, T.promise - 0.2, true);
     ann('Six actuators', () => V(1.9, 1.3, 1.6), W('reveal', 'six') - 0.1, T.promise - 0.2);
     ann('The instructor&rsquo;s station', mw(0.4, 1.25, 1.0), W('trust', 'pilot'), T.promise - 0.2, true);
-    ann('A person, for scale', () => V(2.2, 1.0, 6.6), W('reveal', 'legs') + 0.3, W('trust', 'europe') - 0.1, true);   // gone before the footnote takes its corner
+    ann('A person, for scale', () => V(2.2, 1.7, 6.6), W('reveal', 'legs') + 0.3, W('trust', 'europe') - 0.1, true);   // pin to the head so the reveal keeps the label in frame
     ann('Its whole reach', mw(1.7, 0.4, -2.6), W('motion', 'little') - 0.2, T.equiv - 0.4);
 
     // the forces on the pilot during the take-off cue, drawn over the machine

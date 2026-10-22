@@ -426,7 +426,7 @@ export function createCinema(film) {
      picture and the type are drawn at authored time; grain and the progress
      bar follow real time. */
   const warp = film.warp || (x => x);
-  let t = 0, playing = false, raf = 0, wall0 = 0, t0 = 0;
+  let t = 0, playing = false, raf = 0, wall0 = 0, t0 = 0, playRequest = 0;
   const fill = wrap.querySelector('.cin-bar__fill');
   const bar = wrap.querySelector('.cin-bar');
   // elapsed / total as m:ss; the slider's aria-valuetext says the same for a screen reader
@@ -470,6 +470,7 @@ export function createCinema(film) {
     }, { once: true });
   }
   if (audio) recoverOnError(audio);
+  let soundChosen = false;
   function setSound(on) {
     if (!audio) return;
     audio.muted = !on;
@@ -521,15 +522,25 @@ export function createCinema(film) {
     wrap.classList.remove('is-paused');
     if (playBtn) { playBtn.innerHTML = '&#10074;&#10074;'; playBtn.setAttribute('aria-label', 'Pause'); }
     t0 = t; wall0 = performance.now();
+    const request = ++playRequest;
     if (audio) {
-      if (fromGesture) setSound(true);
-      audio.currentTime = t;
-      audio.play().catch(() => { setSound(false); audio.play().catch(() => {}); });
+      if (fromGesture && !soundChosen) setSound(true);
+      const track = audio;
+      track.currentTime = t;
+      track.play().catch(error => {
+        // pause() aborts a pending play promise. Retrying that rejection used
+        // to restart audio behind a paused picture. Only autoplay denial for
+        // the current play request should retry muted.
+        if (!playing || request !== playRequest || audio !== track || error.name !== 'NotAllowedError') return;
+        setSound(false);
+        track.play().catch(() => {});
+      });
     }
     raf = requestAnimationFrame(loop);
   }
   function pause() {
     playing = false;
+    playRequest++;
     cancelAnimationFrame(raf);
     if (audio) audio.pause();
     wrap.classList.add('is-paused');
@@ -597,7 +608,16 @@ export function createCinema(film) {
     wrap.addEventListener('click', e => {
       const act = e.target.closest('[data-act]');
       if (act && act.dataset.act === 'replay') { seek(0); pause(); play(true); return; }
-      if (act && act.dataset.act === 'sound') { const on = audio.muted; if (on && playing && t < 12) jump(0); setSound(on); if (!playing) play(true); return; }
+      if (act && act.dataset.act === 'play') { toggle(); return; }
+      if (act && act.dataset.act === 'sound') {
+        if (!audio) return;
+        const on = audio.muted;
+        soundChosen = true;
+        if (on && playing && t < 12) jump(0);
+        setSound(on);
+        if (on && !playing) play();
+        return;
+      }
       if (act && act.dataset.act === 'fullscreen') { toggleFullscreen(); return; }
       if (act && act.dataset.act === 'cc') {
         cc = !cc;
@@ -613,7 +633,7 @@ export function createCinema(film) {
       if (e.target.closest('a')) return;
       // the first click on a muted autoplay means "let me hear it", not "stop";
       // in the opening seconds it starts again, so the hook is heard as made
-      if (playing && audio && audio.muted) { if (t < 12) jump(0); setSound(true); return; }
+      if (playing && audio && audio.muted && !soundChosen) { if (t < 12) jump(0); setSound(true); return; }
       toggle();
     });
     document.addEventListener('keydown', e => {

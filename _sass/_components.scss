@@ -1153,7 +1153,9 @@ html.cin-fs-lock #main { z-index: 2147483000; }
 // The fade-in on the section keeps an identity transform and will-change:
 // transform, which makes a fixed box fixed to the section, not the screen
 // (the film landed at 16,224 instead of 0,0).
-html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !important; }
+// Disable the transition too: interpolating to none keeps an identity matrix
+// for 0.6s, so the entering player is still offset and its controls are clipped.
+html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !important; transition: none !important; }
 
 // a cinema film (/films/<slug>/) shown in the same frame
 .lab-film__frame--cinema iframe {
