@@ -4,13 +4,21 @@ const puppeteer = require('puppeteer');
 const BASE = process.env.FILM_BASE || 'http://localhost:4001';
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: true,
+    // Hosted Linux runners have no GPU and restrict Chrome's sandbox setup.
+    // These flags apply only to the disposable CI browser testing this build.
+    args: process.env.CI ? ['--no-sandbox', '--enable-unsafe-swiftshader'] : []
+  });
   try {
     const page = await browser.newPage();
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.setViewport({ width: 640, height: 360 });
-    await page.goto(BASE + '/films/level-d/?autoplay=0', { waitUntil: 'networkidle2' });
+    const response = await page.goto(BASE + '/films/level-d/?autoplay=0', { waitUntil: 'networkidle2' });
+    assert.equal(response.status(), 200, 'the built cinema page is available');
+    const moduleUrl = await page.$eval('script[type="module"][src]', el => el.src);
+    assert.equal(new URL(moduleUrl).origin, new URL(BASE).origin, 'test the local build rather than production assets');
     await page.waitForFunction(() => !!window.CINEMA);
     await page.evaluate(() => window.CINEMA.ready);
     const paused = () => page.$eval('.cin-wrap', el => el.classList.contains('is-paused'));

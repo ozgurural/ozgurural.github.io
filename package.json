@@ -56,6 +56,7 @@
     "audit:overlap": "node scripts/audit-overlap.js",
     "audit:site": "node scripts/audit-site.js",
     "test:interactions": "node scripts/test-site-interactions.js",
+    "test:cinema-controls": "node scripts/test-cinema-controls.js",
     "test:films": "node scripts/test-film-playback.js",
     "check:narration": "node scripts/extract-narration.js --check",
     "build:icon-fonts": "python scripts/subset-icon-fonts.py",
