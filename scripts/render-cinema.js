@@ -3,10 +3,10 @@
  * Render a cinema film (the short WebGL films under /films/) to mp4, or pull
  * single frames out of it as PNG for review.
  *
- *   node scripts/render-cinema.js --film securepol --aspect 4x5
- *   node scripts/render-cinema.js --film securepol --aspect 4x5 --music dist/music/track.mp3
- *   node scripts/render-cinema.js --film securepol --aspect 4x5 --music dist/music/track.mp3 --mux-only
- *   node scripts/render-cinema.js --film securepol --aspect 4x5 --frames 0,6,20.5 --out dir
+ *   node scripts/render-cinema.js --film securepol --aspect 16x9
+ *   node scripts/render-cinema.js --film securepol --aspect 16x9 --music dist/music/track.mp3
+ *   node scripts/render-cinema.js --film securepol --aspect 16x9 --music dist/music/track.mp3 --mux-only
+ *   node scripts/render-cinema.js --film securepol --aspect 16x9 --frames 0,6,20.5 --out dir
  *   node scripts/render-cinema.js --film level-d --aspect 16x9 --captions     # captions burned in, for a feed
  *
  * --captions draws the film's own captions into the picture (?captions=1) and
@@ -39,7 +39,7 @@ const ROOT = path.resolve(__dirname, '..');
 const BASE = process.env.FILM_BASE_URL || 'http://localhost:4000';
 
 function args(argv) {
-  const a = { film: null, aspect: '4x5', fps: 30, crf: 17, frames: null, out: null, music: null,
+  const a = { film: null, aspect: '16x9', fps: 30, crf: 17, frames: null, out: null, music: null,
               musicOffset: 0, loudness: -15, fadeIn: 0.8, fadeOut: 3.5, muxOnly: false, from: 0, to: null, segment: 30,
               captions: false };
   for (let i = 2; i < argv.length; i++) {
@@ -61,6 +61,7 @@ function args(argv) {
     else if (k === '--captions') a.captions = true;
   }
   if (!a.film) throw new Error('--film is required');
+  if (!['16x9', '4x5'].includes(a.aspect)) throw new Error('--aspect must be 16x9 or 4x5');
   if (a.muxOnly && !a.music) throw new Error('--mux-only needs --music');
   return a;
 }
@@ -124,7 +125,13 @@ async function open(browser, a) {
   // on it and then read its undefined result as "not yet", forever
   await page.waitForFunction(() => !!window.CINEMA, { timeout: 60000 });
   await page.evaluate(() => window.CINEMA.ready);
-  const duration = await page.evaluate(() => window.CINEMA.duration);
+  const { W: actualW, H: actualH, aspect, duration } = await page.evaluate(() => {
+    const { W, H, aspect, duration } = window.CINEMA;
+    return { W, H, aspect, duration };
+  });
+  if (W !== actualW || H !== actualH) {
+    throw new Error(`${a.film} uses ${aspect} (${actualW}x${actualH}); use --aspect ${aspect} to avoid cropping`);
+  }
   return { page, W, H, duration };
 }
 
