@@ -20,10 +20,10 @@
  * the target was named on an ordinary day, and which keywords failed the test.
  * The words in the three columns are ones that appear in the tweets the paper
  * prints; only "erisilemiyor" and "hacklendi" are named there as keywords. The
- * frame says the panels are illustrations. Results are told in words; the
- * twenty-nine dots are the paper's twenty-nine detections.
+ * frame distinguishes schematic emphasis from reported corpus sizes. The
+ * twenty-nine dots are the paper's twenty-nine detections: 22 positive, 7 false.
  */
-import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, clamp01, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, flood: 8.5, known: 17, compare: 26.5, test: 40, balance: 48, clean: 62, count: 71, spike: 84.5, result: 91,
             why: 102, close: 109, card: 117 };
@@ -48,8 +48,8 @@ const HDR = (r, g, b, k = 1) => new THREE.Color(r * k, g * k, b * k);
 const COL = { bg: new THREE.Color(0x03050a) };
 
 /* -------------------------------------------------------------- shaders */
-/* The stream: every point is a post, drifting past. A few are about the
-   attack. How many are shown, and how many of those are red, are the two
+/* The stream: every point represents a post, drifting past. Red points
+   represent candidate reports. How many are shown, and how many are red, are the two
    things the film turns up and down. */
 const STREAM = {
   vertexShader: /* glsl */`
@@ -64,14 +64,14 @@ const STREAM = {
       vCol = mix(vec3(0.42, 0.68, 1.0), vec3(2.2, 0.38, 0.45), red);
       vec4 mv = modelViewMatrix * vec4(p, 1.0);
       gl_PointSize = (3.0 + 2.6 * fract(aSeed * 7.3) + 3.0 * red) * uPR * (24.0 / -mv.z);
-      vA = step(aRank, uDensity) * smoothstep(7.0, 5.2, p.x) * smoothstep(-3.0, -1.2, p.x) * (0.55 + 0.45 * sin(uTime * (0.9 + aSeed) + aSeed * 50.0) + 0.5 * red);
+      vA = step(aRank, uDensity) * (1.0 - smoothstep(5.2, 7.0, p.x)) * smoothstep(-3.0, -1.2, p.x) * (0.55 + 0.45 * sin(uTime * (0.9 + aSeed) + aSeed * 50.0) + 0.5 * red);
       gl_Position = projectionMatrix * mv;
     }`,
   fragmentShader: /* glsl */`
     uniform float uAlpha; varying vec3 vCol; varying float vA;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      gl_FragColor = vec4(vCol * smoothstep(0.5, 0.05, d) * vA * uAlpha, 1.0);
+      gl_FragColor = vec4(vCol * (1.0 - smoothstep(0.05, 0.5, d)) * vA * uAlpha, 1.0);
     }`,
 };
 
@@ -94,7 +94,7 @@ const DUST = {
     uniform float uAlpha; varying float vA;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.0, d) * vA * uAlpha;
+      float a = (1.0 - smoothstep(0.0, 0.5, d)) * vA * uAlpha;
       gl_FragColor = vec4(vec3(0.55, 0.75, 1.0) * a, 1.0);
     }`,
 };
@@ -161,7 +161,7 @@ const CSS = `
   .cin .bars { position: relative; display: flex; align-items: flex-end; gap: 6px; height: 190px; padding-bottom: 2px; border-bottom: 2px solid rgba(127,207,255,.3); }
   .cin .bars i { flex: 1; height: 0; border-radius: 4px 4px 0 0; background: #6fd3ff; }
   .cin .bars u { position: absolute; left: 0; right: 0; bottom: 34%; border-top: 3px dashed #ffcf5a; }
-  .cin .bars u::after { content: "its own usual level"; position: absolute; left: 0; bottom: 8px; font: 500 20px/1 "JetBrains Mono", monospace; color: #ffcf5a; }
+  .cin .bars u::after { content: "history-based threshold"; position: absolute; left: 0; bottom: 8px; font: 500 20px/1 "JetBrains Mono", monospace; color: #ffcf5a; }
   .cin .dots { display: grid; grid-template-columns: repeat(15, 34px); gap: 12px; margin-bottom: 16px; }
   .cin .dots i { width: 34px; height: 34px; border-radius: 50%; opacity: 0; }
   .cin .dots i.g { background: #5dffa0; box-shadow: 0 0 12px rgba(93,255,160,.6); } .cin .dots i.r { background: #ff6272; box-shadow: 0 0 12px rgba(255,98,114,.6); }
@@ -175,6 +175,17 @@ const CSS = `
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+  .cin .diagram { display: block; width: 100%; overflow: visible; }
+  .cin .diagram text { font: 500 26px "JetBrains Mono", monospace; fill: #dfe9f6; }
+  .cin .diagram .muted { fill: #8fa2ba; font-size: 21px; }
+  .cin .diagram .path { fill: none; stroke: #6fd3ff; stroke-width: 2; opacity: .45; }
+  .cin .diagram .packet { fill: #0a1424; stroke: #6fd3ff; stroke-width: 2; }
+  .cin .diagram .hot { fill: #ffcf5a; }
+  .cin .diagram .review { fill: #5dffa0; }
+  .cin .pn__note { font: 400 25px/1.4 "Inter", sans-serif; color: #aebcd0; margin-top: 16px; }
+  .cin .cols strong { display: block; font: 600 34px/1.2 "Space Grotesk", sans-serif; color: #6fd3ff; margin-bottom: 12px; }
+  .cin .result-score { display: flex; gap: 36px; margin: 20px 0; font: 600 34px/1.2 "Space Grotesk", sans-serif; }
+  .cin .dots i.r { box-shadow: none; background: transparent; border: 3px solid #ff6272; box-sizing: border-box; }
 `;
 
 const bump = (t, at, w) => Math.exp(-Math.pow((t - at) / w, 2));
@@ -192,6 +203,7 @@ const film = {
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL, 42) : [],
   build(ctx) {
     const { scene, camera, text, label } = ctx;
     const style = document.createElement('style');
@@ -251,34 +263,34 @@ const film = {
            html: 'Dr. Ozgur Ural &middot; a research film' });
 
     text({ at: -3, out: T.flood - gone, cls: 'blk', place: HD,
-           html: '<div class="hd">A website goes <span class="red">down</span>.</div><div class="sb">Before any official statement, people are already posting about it. Can a machine hear that?</div>' });
+           html: '<div class="hd">A website goes <span class="red">down</span>.</div><div class="sb">Public reports can arrive before an official statement.</div>' });
     say(T.flood, T.known - gone, 'The trouble is the <em>flood</em>.',
-        'Millions of ordinary posts, and somewhere in them, a handful about a real attack.');
-    say(T.known, T.compare - gone, 'No examples to <em>learn from</em>.',
-        'In Turkish, there was no ready-made collection. So we started from one attack whose answer we already knew.');
+        'Most of the stream is unrelated to security.');
+    say(T.known, T.compare - gone, 'Start with an attack we <em>already know</em>.',
+        'No ready-made Turkish security corpus was available to this study.');
     say(T.compare, T.test - gone, 'Before, during, <em>after</em>.',
-        'December 2015: Turkey&rsquo;s domain servers are attacked. We compared what people wrote. The words that stood out became our vocabulary.');
+        'nic.tr DDoS attack, December 2015.<br>Compare the corpora to build a candidate vocabulary.');
     say(T.test, T.balance - gone, 'Every word had to <em>earn its place</em>.',
-        'If it brought more false alarms than real detections, it was out.');
+        'More useful detections, without too many false alarms.');
     say(T.balance, T.clean - gone, 'Too many words, or <span class="amber">too few</span>.',
-        'Too many, and the analyst drowns in false alarms. Too few, and the attack is noticed late. So we set the bar in advance.');
+        'The keyword list controls which texts enter the system.');
     say(T.clean, T.count - gone, 'Many spellings, <em>one word</em>.',
-        'Posts are messy, and Turkish packs a lot into one word. So the text is cleaned up first.');
-    say(T.count, T.spike - gone, 'It doesn&rsquo;t read. It <em>counts</em>.',
-        'How often is each possible target named, day by day? It waits for a day that doesn&rsquo;t look like the others.');
+        'Normalise the text before matching terms and target names.');
+    say(T.count, T.spike - gone, 'Count mentions of <em>each target</em>.',
+        'Filtered text → daily mentions → a threshold from that target&rsquo;s history.');
     say(T.spike, T.result - gone, 'That jump was the <span class="red">alarm</span>.',
-        'On the day of the attack, the count for the target jumped.');
-    say(T.result, T.why - gone, 'About three alarms in four were <span class="green">real</span>.',
-        'And we published the false ones too, like a post that only asked: was your account hacked?');
-    say(T.why, T.close - 0.25, 'It reads <em>Turkish</em>.',
-        'So it caught incidents that a tool built for English would have missed.');
-    text({ at: T.known + 0.8, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 900, w: 800 },
-           html: 'Ural &amp; Acart&uuml;rk, ICISSP 2021<span>The panels are illustrations of the method.</span>' });
+        'nic.tr was detected on the first day.<br>An alert is a lead for investigation.');
+    say(T.result, T.why - gone, '<span class="green">22 confirmed.</span><br><span class="red">7 false alarms.</span>',
+        'One sample run. Count the false alarms too.');
+    say(T.why, T.close - 0.25, 'Local-language <em>threat monitoring</em>.',
+        'A Turkish warning about remote patient monitoring applications surfaced in the study.');
+    text({ at: T.known + 0.8, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 780, w: 800 },
+           html: 'Ural &amp; Acart&uuml;rk, ICISSP 2021<span>Reported counts; schematic flows and timelines.</span>' });
 
     text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 220, y: 320, w: 1480, align: 'center' },
-           html: 'Most of the world doesn&rsquo;t write in English.' });
+           html: 'Dr. Ozgur Ural&rsquo;s view' });
     text({ at: T.close + 2.6, out: T.card - 0.3, cls: 'cl__b', place: { x: 220, y: 410, w: 1480, align: 'center' },
-           html: 'A tool that listens only in English is <em>deaf to most of it</em>.' });
+           html: 'Investigate the language<br>your users <em>report in</em>.' });
 
     text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 230, w: 1600, align: 'center' },
            html: `<div class="end__t">Hearing an attack in the noise</div>
@@ -288,7 +300,7 @@ const film = {
 
     /* ------------------------------------------------- panels under the stream */
     const PN = { x: 980, y: 590, w: 840 };
-    const pn = (at, out, y, html, update) => text({ at, out, cls: 'pn', words: false, dur: 0.5, rise: 16, place: { x: PN.x, y, w: PN.w }, html, update });
+    const pn = (at, out, y, html, update) => text({ at, out, cls: 'pn', words: false, dur: 0.5, rise: 16, place: { x: PN.x, y: y - 160, w: PN.w }, html, update });
 
     // what people post
     pn(T.hook + 2.6, T.flood - gone, 640, `<div class="pn__t">a few minutes later</div>
@@ -296,8 +308,26 @@ const film = {
         <div class="line"><span class="say">can&rsquo;t reach it since this morning</span><span class="say">same here</span></div>`,
        (t, el) => cue([...el.querySelectorAll('.say')], t, [T.hook + 3.0, T.hook + 4.2, T.hook + 5.4]));
 
+    pn(T.flood + 0.5, T.known - gone, 620, `<div class="pn__t">keyword filtering · schematic</div>
+        <svg class="diagram filter-flow" viewBox="0 0 840 250" aria-hidden="true">
+          <text x="12" y="30">public text</text><text x="330" y="30">keywords</text><text x="600" y="30">candidates</text>
+          <path class="path" d="M100 80H720M100 124H720M100 168H720"/>
+          <rect class="packet" x="340" y="60" width="120" height="140" rx="18"/>
+          <path d="M365 85H435L410 130V171H390V130Z" fill="none" stroke="#ffcf5a" stroke-width="3"/>
+          ${Array.from({ length: 6 }, (_, i) => `<g class="post" data-hit="${i === 1 || i === 4}"><rect class="packet" x="-46" y="-14" width="92" height="28" rx="6"/><path d="M-29 0h58" stroke="${i === 1 || i === 4 ? '#ffcf5a' : '#6fd3ff'}" stroke-width="3"/></g>`).join('')}
+          <text x="12" y="238" class="muted">A matching word selects a lead, not a confirmed attack.</text>
+        </svg>`, (t, el) => {
+          el.querySelectorAll('.post').forEach((post, i) => {
+            const u = ((Math.max(0, t - T.flood - 0.6) + i * 0.48) % 3.2) / 3.2;
+            const hit = post.dataset.hit === 'true';
+            const x = lerp(65, 765, u), y = 80 + (i % 3) * 44 + (!hit ? 80 * ramp(u, 0.48, 0.85) : 0);
+            post.setAttribute('transform', `translate(${x} ${y})`);
+            post.style.opacity = String(win(u, 0, 1, 0.08, 0.08) * (hit ? 1 : 1 - ramp(u, 0.45, 0.7)));
+          });
+        });
+
     // nothing to learn from, and where we started
-    pn(T.known + 0.8, T.compare - gone, 620, `<div class="pn__t">ready-made examples, in Turkish</div>
+    pn(T.known + 0.8, T.compare - gone, 620, `<div class="pn__t">labelled security corpus · study context</div>
         <div class="line">${'<span class="slot"></span>'.repeat(6)}<span class="chip r">none</span></div>
         <div class="pn__t" style="margin-top:22px">our starting point</div>
         <div class="line"><span class="chip au">one attack we already knew the answer to</span></div>`,
@@ -310,8 +340,9 @@ const film = {
     const WORDS = [['ddos', '', [0.25, 1, 0.75]], ['sald&#305;r&#305;', 'attack', [0.3, 1, 0.8]],
                    ['eri&#351;ilemiyor', 'unreachable', [0.2, 1, 0.6]], ['hacklendi', 'hacked', [0.3, 0.9, 0.6]]];
     pn(T.compare + 2.2, T.test - gone, 590, `<div class="pn__t">what people wrote about the target &middot; illustration</div>
-        <div class="cols">${['the year before', 'the day', 'two weeks after'].map((h, c) =>
-          `<div><b>${h}</b>${WORDS.map(([w, g, k]) => `<i data-k="${k[c]}">${w}${g ? ` <small style="color:#8fa2ba;font-size:.78em">${g}</small>` : ''}</i>`).join('')}</div>`).join('')}</div>`,
+        <div class="cols">${['year before', 'attack day', 'two weeks'].map((h, c) =>
+          `<div><b>${h}</b><strong>${['2,310 tweets', '28 tweets', '~400 tweets'][c]}</strong>${WORDS.map(([w, g, k]) => `<i data-k="${k[c]}">${w}${g ? ` <small style="color:#8fa2ba;font-size:.78em">${g}</small>` : ''}</i>`).join('')}</div>`).join('')}</div>
+        <div class="pn__note">Corpus sizes are reported. Word emphasis is schematic, not measured TF-IDF scores.</div>`,
        (t, el) => {
          cue([...el.querySelectorAll('.cols > div')], t, [T.compare + 4.4, T.compare + 6.2, T.compare + 7.6]);
          const out = ease.inOutSine(ramp(t, T.compare + 9.6, T.compare + 10.8));
@@ -325,42 +356,76 @@ const film = {
        });
 
     // each word, kept or dropped
-    pn(T.test + 0.8, T.balance - gone, 640, `<div class="pn__t">each word, tested</div>
+    pn(T.test + 0.8, T.balance - gone, 640, `<div class="pn__t">compare detections with and without the term</div>
         <div class="verd"><span>eri&#351;ilemiyor <small>unreachable</small></span><span class="chip g">kept</span></div>
         <div class="verd"><span>hacklendi <small>hacked</small></span><span class="chip g">kept</span></div>
-        <div class="verd"><span>a word that fires on everyday posts</span><span class="chip r">out</span></div>`,
-       (t, el) => cue([...el.querySelectorAll('.verd')], t, [T.test + 1.4, T.test + 2.4, T.test + 4.0]));
+        <div class="verd"><span>a candidate adding too many false alarms</span><span class="chip r">out</span></div>
+        <div class="pn__note">The rejected row is a generic example; the paper does not name a rejected word.</div>`,
+       (t, el) => {
+         cue([...el.querySelectorAll('.verd')], t, [T.test + 1.4, T.test + 2.4, T.test + 4.0]);
+         el.querySelectorAll('.verd .chip').forEach((tag, i) => {
+           const u = ease.outCubic(ramp(t, T.test + 2.1 + i * 1.0, T.test + 2.7 + i * 1.0));
+           tag.style.opacity = String(u); tag.style.transform = `translateX(${(1 - u) * 52}px)`;
+         });
+       });
 
     // the trade-off, and the bar set in advance
     pn(T.balance + 0.8, T.clean - gone, 620, `<div class="pn__t">how many words to listen for</div>
         <div class="slider"><u></u></div>
         <div class="ends"><span>too few<small>the attack is noticed late</small></span><span>too many<small>false alarms pile up</small></span></div>
-        <div class="line"><span class="chip g">${OK} caught on the day</span><span class="chip g">${OK} fewer than one false alarm in three</span></div>`,
+        <svg class="diagram queue" viewBox="0 0 840 110" aria-hidden="true"><text x="0" y="28" class="muted">analyst queue · schematic</text>
+          ${Array.from({ length: 7 }, (_, i) => `<rect class="queue-item packet" x="${i * 116}" y="46" width="94" height="44" rx="8"/>`).join('')}</svg>
+        <div class="line"><span class="chip g">${OK} detect on the first day</span><span class="chip g">${OK} ≤30% false alarms</span></div>`,
        (t, el) => {
          const many = ease.inOutSine(ramp(t, T.balance + 1.2, T.balance + 3.2)), few = ease.inOutSine(ramp(t, T.balance + 4.6, T.balance + 6.8));
          const settle = ease.inOutCubic(ramp(t, T.balance + 8.6, T.balance + 10.0));
          const x = lerp(lerp(lerp(0.5, 0.94, many), 0.06, few), 0.5, settle);
          el.querySelector('.slider u').style.left = (100 * x).toFixed(2) + '%';
+         el.querySelectorAll('.queue-item').forEach((item, i) => {
+           const filled = clamp01((x * 7 - i) * 2);
+           item.style.opacity = String(0.08 + filled * 0.92);
+           item.style.stroke = x > 0.75 ? '#ffb347' : '#6fd3ff';
+           item.setAttribute('transform', `translate(0 ${-filled * 4 * Math.sin(t * 2 - i)})`);
+         });
          cue([...el.querySelectorAll('.line > *')], t, [T.balance + 10.3, T.balance + 11.4]);
        });
 
     // cleaning the text
-    pn(T.clean + 0.8, T.count - gone, 640, `<div class="pn__t">cleaned up first &middot; illustration</div>
-        <div class="merge"><div class="in"><span>erisilemiyo</span><span>eri&#351;ilemiyorrr</span><span>ER&#304;&#350;&#304;LEM&#304;YOR</span></div>
-          <div class="ar">&rarr;</div><div class="out">eri&#351;ilemiyor</div></div>`,
+    pn(T.clean + 0.8, T.count - gone, 620, `<div class="pn__t">normalisation · illustrative spellings</div>
+        <svg class="diagram normalise" viewBox="0 0 840 310" aria-hidden="true">
+          ${['erisilemiyo', 'erişilemiyorrr', 'ERİŞİLEMİYOR'].map((word, i) => `<g class="variant"><rect class="packet" x="0" y="${38 + i * 82}" width="300" height="56" rx="10"/><text x="18" y="${74 + i * 82}">${word}</text></g>
+            <path class="path route" d="M315 ${66 + i * 82}C430 ${66 + i * 82} 430 148 540 148" pathLength="1"/>
+            <circle class="normalise-pulse hot" r="7"/>`).join('')}
+          <g class="canonical"><rect x="550" y="112" width="280" height="72" rx="12" fill="#081b22" stroke="#5dffa0" stroke-width="3"/>
+            <text x="690" y="156" text-anchor="middle">erişilemiyor</text></g>
+          <text x="550" y="240" class="muted">one matching form</text>
+        </svg>`,
        (t, el) => {
-         cue([...el.querySelectorAll('.in span')], t, [T.clean + 1.4, T.clean + 2.0, T.clean + 2.6]);
-         cue([el.querySelector('.ar'), el.querySelector('.out')], t, [T.clean + 5.2, T.clean + 5.6]);
+         el.querySelectorAll('.variant').forEach((item, i) => {
+           const u = ease.inOutCubic(ramp(t, T.clean + 2 + i * 1.0, T.clean + 3.6 + i * 1.0));
+           item.style.opacity = String(1 - 0.65 * u);
+           const pulse = el.querySelectorAll('.normalise-pulse')[i];
+           pulse.setAttribute('cx', String(lerp(315, 540, u)));
+           pulse.setAttribute('cy', String(lerp(66 + i * 82, 148, ease.inOutSine(u))));
+           pulse.style.opacity = String(win(u, 0, 1, 0.12, 0.12));
+           const route = el.querySelectorAll('.route')[i]; route.style.strokeDasharray = '1'; route.style.strokeDashoffset = String(1 - u);
+         });
+         el.querySelector('.canonical').style.opacity = String(ramp(t, T.clean + 3.2, T.clean + 4.0));
        });
 
     // counting one target, day by day
     const br = seeded(19);
     const DAYS = Array.from({ length: 27 }, () => 0.08 + 0.17 * br());
-    pn(T.count + 0.8, T.result - gone, 590, `<div class="pn__t">how often one possible target is named, day by day</div>
+    pn(T.count + 0.8, T.result - gone, 590, `<div class="pn__t">daily mentions of nic.tr · illustrative counts</div>
+        <svg class="diagram count-flow" viewBox="0 0 840 90" aria-hidden="true"><text x="0" y="32">filtered text</text><path class="path" d="M240 24H560"/>
+          <circle class="entity-pulse hot" r="7" cy="24"/><text x="590" y="32">nic.tr</text><text x="0" y="76" class="muted">Only mentions of this target enter its daily count.</text></svg>
         <div class="bars">${DAYS.map(() => '<i></i>').join('')}<i data-last></i><u></u></div>
-        <div class="line" style="margin:16px 0 0"><span class="chip">targets: institutions, government bodies, countries</span><span class="stamp red">ALARM</span></div>`,
+        <div class="line" style="margin:16px 0 0"><span class="chip">one target, its own history</span><span class="stamp red">REVIEW ALERT</span></div>`,
        (t, el) => {
          const bars = el.querySelectorAll('.bars i');
+         const pulse = ((Math.max(0, t - T.count - 1) / 1.25) % 1);
+         el.querySelector('.entity-pulse').setAttribute('cx', String(lerp(240, 560, pulse)));
+         el.querySelector('.entity-pulse').style.opacity = String(Math.sin(Math.PI * pulse));
          DAYS.forEach((h, i) => { bars[i].style.height = (100 * h * ease.outCubic(ramp(t, T.count + 2.4 + i * 0.36, T.count + 2.8 + i * 0.36))).toFixed(1) + '%'; });
          const jump = ease.outCubic(ramp(t, T.spike + 0.5, T.spike + 1.5));
          const last = bars[bars.length - 1];
@@ -374,28 +439,34 @@ const film = {
 
     // the test run: the paper's twenty-nine detections, and one of the seven that were not events
     const DOTS = 'ggrgggrgggggrggggrggggrgrgggr';
-    pn(T.result + 0.8, T.why - gone, 600, `<div class="pn__t">the alarms of one test run</div>
+    pn(T.result + 0.8, T.why - gone, 500, `<div class="pn__t">437 documents → 29 alerts</div>
         <div class="dots">${[...DOTS].map(c => `<i class="${c}"></i>`).join('')}</div>
-        <div class="tweet">&ldquo;&hellip; yoksa hesab&#305;n&#305;z m&#305; hacklendi?&rdquo;<small>&ldquo;&hellip; or was your account hacked?&rdquo; A question, not an attack: a false alarm.</small></div>`,
+        <div class="result-score"><span class="green">22 confirmed</span><span class="red">7 false alarms</span></div>
+        <div class="tweet">&ldquo;&hellip; yoksa hesab&#305;n&#305;z m&#305; <b class="gold">hacklendi?</b>&rdquo;<small>&ldquo;&hellip; or was your account hacked?&rdquo; A question, not an attack: a false alarm.</small></div>
+        <div class="pn__note">This run does not establish how many events were missed.</div>`,
        (t, el) => {
          el.querySelectorAll('.dots i').forEach((d, i) => { const u = ease.outCubic(ramp(t, T.result + 1.2 + i * 0.07, T.result + 1.5 + i * 0.07)); d.style.opacity = String(u); d.style.transform = `scale(${(0.4 + 0.6 * u).toFixed(3)})`; });
-         cue([el.querySelector('.tweet')], t, [T.result + 5.6]);
+         cue([el.querySelector('.tweet')], t, [T.result + 5.0]);
        });
 
     // why it matters that it reads Turkish
-    pn(T.why + 0.6, T.close - 0.3, 640, `<div class="pn__t">a warning published only in Turkish</div>
-        <div class="verd"><span>a tool built for English</span><span class="chip r">${NO} missed</span></div>
-        <div class="verd"><span>this system</span><span class="chip g">${OK} caught</span></div>`,
-       (t, el) => cue([...el.querySelectorAll('.verd')], t, [T.why + 1.4, T.why + 2.8]));
+    pn(T.why + 0.6, T.close - 0.3, 620, `<div class="pn__t">reported example · 26 Apr 2019 · Sec. 4.2.2</div>
+        <svg class="diagram local-case" viewBox="0 0 840 265" aria-hidden="true">
+          <rect class="packet" x="10" y="30" width="440" height="180" rx="14"/>
+          <text x="30" y="74" class="hot">Turkish report</text><text x="30" y="124">Remote patient monitoring</text><text x="30" y="166">Vulnerability reported</text>
+          <path class="path" d="M470 120H650"/><circle class="review-pulse hot" r="7" cy="120"/>
+          <circle cx="735" cy="90" r="25" fill="none" stroke="#6fd3ff" stroke-width="3"/><path d="M690 180q0-55 45-55t45 55" fill="none" stroke="#6fd3ff" stroke-width="3"/>
+          <text x="735" y="232" text-anchor="middle" class="review">analyst review</text>
+        </svg>`, (t, el) => {
+          const u = ((Math.max(0, t - T.why - 0.9) / 2.2) % 1);
+          el.querySelector('.review-pulse').setAttribute('cx', String(lerp(470, 650, ease.inOutSine(u))));
+          el.querySelector('.review-pulse').style.opacity = String(Math.sin(Math.PI * u));
+        });
 
     /* ----------------------------------------------------- pinned labels */
     const P3 = (x, y, z = 0) => new THREE.Vector3(x, y, z);
     label({ cls: 'chip r', html: 'a website: unreachable', anchor: () => P3(0, 0), dx: 0, dy: 0, ax: 0.5, ay: 0.5,
             alpha: t => win(t, T.hook + 0.9, T.flood - 0.3, 0.5, 0.5) });
-    label({ cls: 'chip', html: 'ordinary posts', anchor: () => P3(-0.9, 1.45), dx: 0, dy: 0, ax: 0.5, ay: 1,
-            alpha: t => win(t, T.flood + 2.4, T.known - 0.3, 0.4, 0.4) });
-    label({ cls: 'chip r', html: 'about a real attack', anchor: () => P3(1.3, -1.45), dx: 0, dy: 0, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.flood + 5.2, T.known - 0.3, 0.4, 0.4) });
   },
 
   /* ------------------------------------------------------------ frame */

@@ -39,6 +39,7 @@ jobs:
             if curl --fail --silent --output /dev/null "$FILM_BASE/films/level-d/?autoplay=0"; then
               npm run test:cinema-controls
               npm run test:cinema-playback
+              npm run test:cinema-cyber-events
               exit 0
             fi
             if ! kill -0 "$server_pid" 2>/dev/null; then
