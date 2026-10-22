@@ -617,9 +617,19 @@ export function createCinema(film) {
       toggle();
     });
     document.addEventListener('keydown', e => {
+      // Native controls own Space/Enter. Intercepting Space here activated
+      // playback instead of the focused caption, sound or fullscreen button.
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.target.closest('input, select, textarea, [contenteditable]:not([contenteditable="false"])')) return;
+      if (e.code === 'Space' && e.target.closest('button, a')) return;
+      if (e.target.closest('[data-act="seek"]') && (e.code === 'Home' || e.code === 'End')) {
+        e.preventDefault();
+        jump(e.code === 'Home' ? 0 : film.duration);
+        return;
+      }
       if (e.code === 'Space') { e.preventDefault(); toggle(); }
-      else if (e.code === 'ArrowRight') jump(t + 5);
-      else if (e.code === 'ArrowLeft') jump(t - 5);
+      else if (e.code === 'ArrowRight') { e.preventDefault(); jump(t + 5); }
+      else if (e.code === 'ArrowLeft') { e.preventDefault(); jump(t - 5); }
       else if (e.code === 'KeyF') toggleFullscreen();
     });
     addEventListener('resize', () => { layout(); seek(t); });
