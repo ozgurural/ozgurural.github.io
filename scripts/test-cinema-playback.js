@@ -47,6 +47,20 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
     await page.evaluate(t => window.CINEMA.seek(t), cue('copy') + 1);
     assert.match(await page.$eval('.cin-cap', el => el.textContent), /trained model/,
       'SecurePoL displays the spoken phrase, rather than an empty caption track');
+    await page.setViewport({ width: 812, height: 375, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+    await page.waitForFunction(() => !!window.CINEMA);
+    await page.evaluate(() => window.CINEMA.ready);
+    await page.evaluate(t => window.CINEMA.seek(t), cue('copy') + 1);
+    assert.equal(await page.evaluate(() => {
+      const cap = document.querySelector('.cin-cap').getBoundingClientRect();
+      return [...document.querySelectorAll('.cin-controls button, [data-act="seek"], .cin-time')].some(el => {
+        const r = el.getBoundingClientRect();
+        return r.left < cap.right && r.right > cap.left && r.top < cap.bottom && r.bottom > cap.top;
+      });
+    }), false, 'landscape phone controls do not cross the paused caption');
+    await page.setViewport({ width: 640, height: 360, deviceScaleFactor: 1, isMobile: false, hasTouch: false });
+    await page.waitForFunction(() => !!window.CINEMA);
+    await page.evaluate(() => window.CINEMA.ready);
     const handoff = async t => page.evaluate(t => {
       window.CINEMA.seek(t);
       return document.querySelector('.handoff').innerHTML;

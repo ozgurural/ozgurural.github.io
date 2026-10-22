@@ -40,6 +40,9 @@ Validation completed:
 - Cinema keyboard and playback regression tests, including actual caption text,
   backwards seeking of the handoff and source-note/caption separation. The
   existing CI workflow runs these tests on every push.
+- Compact controls also apply to short landscape viewports. At 812×375 the
+  previous seek bar crossed paused captions; a regression check now keeps
+  interactive controls outside the caption rectangle.
 - All 16 spoken lines sampled near the start and end of speech: visible text
   remains on screen throughout.
 - All cue boundaries sampled at 960×540, 375×812 and 812×375: no text clipping,
