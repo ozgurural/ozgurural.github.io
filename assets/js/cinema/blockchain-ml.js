@@ -1,28 +1,18 @@
 /*
- * What a blockchain buys machine learning, in under two minutes.
- *
- * Source: O. Ural and K. Yoshigoe, "Survey on Blockchain-Enhanced Machine
- * Learning", IEEE Access 11 (2023) 145331-145362, read on IEEE Xplore before
- * this was written. It replaces the lab film on the same survey and keeps its
- * line of argument: what a tamper-evident record does for training (Sec. II-A,
- * IV-A); data stays with its owner and only parameters reach the chain
- * (IV-A); consensus work aimed at training instead of a hash puzzle, where the
- * miner with the best model writes the next block (II-B, IV-C), and the hard
- * question that leaves; incentive contracts that pay by the loss a contribution
- * removes, and the deposit that bad data forfeits (IV-B, Sharing Updatable
- * Models); what the prototypes measured (DeepChain: accuracy up, throughput
- * down as parties join; LearningChain: privacy against accuracy); and the
- * challenges the survey closes on (Sec. V).
- *
- * A survey reviews other people's mechanisms. The frame says so for as long as
- * they are on screen, and the author's own work appears only in the last
- * line, as where one of the open problems led.
+ * Who improved the AI? Evaluation, privacy and incentives in collaborative ML.
+ * Research basis: Ural and Yoshigoe, IEEE Access 11 (2023), 145331-145362,
+ * DOI 10.1109/ACCESS.2023.3344669. Sec. IV-B.2: the SUM balance equation
+ * and the separate Deposit/Refund/Take mechanism; IV-B.3: DeepChain's
+ * Corda/MNIST prototype; IV-C.2: ML competitions for block rights.
+ * The generalisation example is an illustrative teaching model. The closing
+ * design perspective and proposed use are labelled as the author's view.
+ * A survey reviews mechanisms; this film does not claim to have invented them.
  */
-import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, lerp, ramp, ease, win, seeded } from './engine.js';
 
-const T = { hook: 0, problems: 8, ledger: 17, private: 27.5, work: 36, real: 50.5, pay: 58.5, deposit: 68, built: 75, seams: 88,
-            close: 98, card: 105 };
-const D = 112;
+const T = { hook: 0, problems: 7, ledger: 15, private: 23, work: 32, real: 42, pay: 50, deposit: 62, built: 71, seams: 82,
+            close: 90, card: 98 };
+const D = 105;
 
 const TL_DIR = new URL('../../audio/cinema/blockchain-ml/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
@@ -36,6 +26,13 @@ function makeWarp(anchors) {
     return a0 + (a1 - a0) * (real - r0) / (r1 - r0);
   };
 }
+const wordCue = (id, word, fallback) => {
+  const line = TL && TL.lines.find(l => l.id === id);
+  const boundary = line && line.words && line.words.find(w => w[0].toLowerCase() === word);
+  return boundary ? makeWarp(TL.anchors)(line.real + boundary[1]) : fallback;
+};
+const PAY_BETTER = wordCue('pay', 'after', T.pay + 3.35);
+const PAY_WORSE = wordCue('pay', 'higher', T.pay + 8.58);
 
 
 /* -------------------------------------------------------------- palette */
@@ -88,7 +85,7 @@ const DUST = {
     uniform float uAlpha; varying float vA;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.0, d) * vA * uAlpha;
+      float a = (1.0 - smoothstep(0.0, 0.5, d)) * vA * uAlpha;
       gl_FragColor = vec4(vec3(0.55, 0.75, 1.0) * a, 1.0);
     }`,
 };
@@ -105,7 +102,7 @@ const MOTES = {
     uniform vec3 uColor; uniform float uAlpha;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      gl_FragColor = vec4(uColor * smoothstep(0.5, 0.05, d) * uAlpha, 1.0);
+      gl_FragColor = vec4(uColor * (1.0 - smoothstep(0.05, 0.5, d)) * uAlpha, 1.0);
     }`,
 };
 
@@ -115,11 +112,6 @@ function mat(def, uniforms, extra = {}) {
   return new THREE.ShaderMaterial({ vertexShader: def.vertexShader, fragmentShader: def.fragmentShader,
     uniforms: u, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, ...extra });
 }
-
-/* ---------------------------------------------------------------- icons */
-const OK = '<svg class="ic nosplit" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const NO = '<svg class="ic nosplit" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>';
-
 
 const CSS = `
   .cin .kick { font: 500 23px/1.2 "JetBrains Mono", monospace; letter-spacing: .14em; color: #7fcfff; text-transform: uppercase; }
@@ -138,21 +130,18 @@ const CSS = `
   .cin .credit { font: 500 21px/1.5 "JetBrains Mono", monospace; letter-spacing: .03em; color: #8fd3ff; }
   .cin .credit span { display: block; color: #9aa9be; }
   .cin .pn { padding: 16px 22px 18px; border-radius: 16px; background: rgba(6,12,24,.82); border: 1px solid rgba(127,207,255,.2); }
-  .cin .pn__t { font: 500 21px/1.2 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #8fa2ba; margin-bottom: 14px; }
-  .cin .bal { display: grid; grid-template-columns: 270px 1fr; align-items: center; gap: 14px; margin-bottom: 11px;
-              font: 500 26px/1 "JetBrains Mono", monospace; color: #e4ecf6; }
-  .cin .bal div { height: 22px; border-radius: 6px; background: rgba(127,207,255,.1); }
-  .cin .bal i { display: block; height: 100%; width: 30%; border-radius: 6px; background: #5dffa0; }
-  .cin .verd { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 14px; margin-bottom: 12px; opacity: 0;
-               font: 500 28px/1.2 "JetBrains Mono", monospace; color: #e4ecf6; }
-  .cin .pair { display: grid; grid-template-columns: 230px 1fr 1fr; align-items: center; gap: 16px; margin-bottom: 14px; opacity: 0;
-               font: 500 25px/1.2 "JetBrains Mono", monospace; color: #e4ecf6; }
-  .cin .pair span { display: grid; grid-template-columns: 118px 1fr; align-items: center; gap: 8px; font-size: 21px; color: #aebcd0; }
-  .cin .pair span div { height: 20px; border-radius: 5px; background: rgba(127,207,255,.1); }
-  .cin .pair i { display: block; height: 100%; border-radius: 5px; }
-  .cin .three { display: flex; gap: 14px; }
-  .cin .three div { flex: 1; padding: 20px 18px; border-radius: 14px; background: rgba(6,12,24,.82); border: 1px solid rgba(255,179,71,.4);
-                    font: 600 30px/1.2 "Space Grotesk", sans-serif; color: #f4f7fb; opacity: 0; }
+  .cin .pn__t { font: 500 21px/1.2 "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: #8fa2ba; margin-bottom: 14px; }
+  .cin .note { font: 400 22px/1.35 "Inter", sans-serif; color: #aebcd0; margin-top: 12px; }
+  .cin .loss-row { display: grid; grid-template-columns: 210px 1fr 100px; align-items: center; gap: 18px; margin: 14px 0; font: 500 26px/1.2 "JetBrains Mono", monospace; }
+  .cin .track { height: 24px; border-radius: 5px; background: #172332; }
+  .cin .track i { display: block; height: 100%; border-radius: inherit; background: #6fd3ff; }
+  .cin .reward-tag { font: 500 27px/1.25 "JetBrains Mono", monospace; margin-top: 18px; }
+  .cin .flow { display: flex; align-items: center; gap: 14px; }
+  .cin .flow b { flex: 1; padding: 18px 12px; border: 1px solid #39536b; border-radius: 10px; font: 500 27px/1.25 "Space Grotesk", sans-serif; color: #e4ecf6; text-align: center; }
+  .cin .flow .arrow { color: #6fd3ff; font-size: 32px; }
+  .cin .gate { font: 500 26px/1.3 "Inter", sans-serif; padding: 15px 0; border-bottom: 1px solid #243447; }
+  .cin .gate:last-child { border-bottom: 0; }
+  .cin .status { float: right; font: 500 25px/1.3 "JetBrains Mono", monospace; }
   .cin .cl__a { font: 500 46px/1.3 "Inter", sans-serif; color: #c9d4e3; }
   .cin .cl__b { font: 600 88px/1.1 "Space Grotesk", sans-serif; letter-spacing: -.015em; color: #f4f7fb; text-wrap: balance; }
   .cin .end__t { font: 700 92px/1.05 "Space Grotesk", sans-serif; letter-spacing: -.02em; color: #f4f7fb; }
@@ -170,11 +159,12 @@ const cue = (els, t, times, dur = 0.4) => els.forEach((el, i) => {
 
 /* ----------------------------------------------------------------- film */
 const film = {
-  title: 'What a blockchain buys machine learning',
+  title: 'Who improved the AI?',
   aspect: '16x9',
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL, 42) : null,
   build(ctx) {
     const { scene, camera, text, label } = ctx;
     const style = document.createElement('style');
@@ -203,7 +193,7 @@ const film = {
 
     /* the shared model, in the middle */
     const model = new THREE.Group();
-    const mShell = wire(new THREE.IcosahedronGeometry(0.66, 1), COL.ok, 0.9);
+    const mShell = wire(new THREE.IcosahedronGeometry(0.66, 1), COL.ok, 0.7);
     const mCore = new THREE.Mesh(new THREE.SphereGeometry(0.36, 32, 16), mat(RIM, { uColor: COL.ok.clone(), uAlpha: 1.1, uReveal: 2, uPow: 1.6 }));
     model.add(mShell, mCore);
     scene.add(model);
@@ -228,7 +218,7 @@ const film = {
     });
 
     /* the notebook: a chain of pages, each fastened to the one before */
-    const CHY = -2.12, blocks = [];
+    const CHY = -0.6, blocks = [];
     for (let k = 0; k < 9; k++) {
       const b = wire(new THREE.BoxGeometry(0.32, 0.32, 0.32), COL.gold, 0);
       b.position.set(-2.4 + 0.6 * k, CHY, 0);
@@ -255,116 +245,128 @@ const film = {
 
     Object.assign(ctx, { dust, model, mShell, mCore, who, blocks, HEAD, sparks, sseed, spos });
 
-    /* ------------------------------------------------------------- type */
-    const KICK = { x: 120, y: 88, w: 900 };
+    /* The question stays about AI. The ledger is one supporting mechanism. */
     const HD = { x: 120, y: 190, w: 800 };
     const say = (at, out, hd, sb) => text({ at, out, cls: 'blk', place: HD,
-      html: `<div class="hd">${hd}</div>` + (sb ? `<div class="sb">${sb}</div>` : '') });
-    const scrim = (at, out, place, background) => text({ at, out, cls: 'scrim', words: false, dur: 0.8, rise: 0, html: '', place,
-      style: { height: place.h + 'px', background } });
+      html: `<div class="hd">${hd}</div><div class="sb">${sb}</div>` });
     const gone = 0.05;
+    text({ at: -3, out: T.close - 0.2, cls: 'scrim', words: false, rise: 0,
+      place: { x: 0, y: 0, w: 1000 }, style: { height: '1080px', background: 'linear-gradient(to right,rgba(3,5,10,.9),rgba(3,5,10,.65) 65%,transparent)' }, html: '' });
+    text({ at: T.close - 0.3, out: 1e9, cls: 'scrim', words: false, rise: 0,
+      place: { x: 0, y: 0, w: 1920 }, style: { height: '1080px', background: 'radial-gradient(ellipse at center,rgba(3,5,10,.9),rgba(3,5,10,.55))' }, html: '' });
+    text({ at: -3, out: T.close - 0.3, cls: 'kick', words: false, dur: 0.01,
+      place: { x: 120, y: 88, w: 1200 }, html: 'Dr. Ozgur Ural &middot; learning across organisations' });
 
-    scrim(-3, T.close - 0.2, { x: 0, y: 0, w: 1000, h: 1080 },
-          'linear-gradient(to right, rgba(3,5,10,.88) 0%, rgba(3,5,10,.62) 60%, rgba(3,5,10,0) 100%)');
-    scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
-          'radial-gradient(ellipse 60% 52% at 50% 50%, rgba(3,5,10,.92) 0%, rgba(3,5,10,.76) 55%, rgba(3,5,10,.2) 100%)');
-    text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film' });
+    say(-3, T.problems - gone, 'Who improved <em>the AI</em>?',
+      'Five organisations train one model. Who deserves the credit?');
+    say(T.problems, T.ledger - gone, 'A better training score can <span class="red">fool you</span>.',
+      'An update can fit its own data and make the shared model worse.');
+    say(T.ledger, T.private - gone, 'A record is <em>not a verdict</em>.',
+      'A shared ledger makes recorded transactions harder to rewrite. It does not judge an update.');
+    say(T.private, T.work - gone, 'Keep data local. Protect the <em>updates</em>, too.',
+      'In federated learning, raw data can stay with each organisation.');
+    say(T.work, T.real - gone, 'Could training itself <em>earn a block</em>?',
+      'Some consensus designs replace hash puzzles with an ML competition.');
+    say(T.real, T.pay - gone, 'A good score. A <span class="amber">real training run</span>?',
+      'Model performance and evidence of training answer different questions.');
+    say(T.pay, T.deposit - gone, 'Reward the <span class="green">improvement</span>.',
+      'Measure loss before and after a contribution on the same evaluation data.');
+    say(T.deposit, T.built - gone, 'A deposit is only as good as <em>its test</em>.',
+      'Model agreement is the rule here. It is not an oracle for truth.');
+    say(T.built, T.seams - gone, 'Better AI can still be a <span class="amber">slower system</span>.',
+      'DeepChain reported higher accuracy with more parties, alongside lower throughput as gradients increased.');
+    say(T.seams, T.close - gone, 'Before connecting <em>the organisations</em>…',
+      'Choose the evaluation, protect the shared updates, and test the cost.');
 
-    text({ at: -3, out: T.problems - gone, cls: 'blk', place: HD,
-           html: '<div class="hd">Strangers, training one AI model <em>together</em>.</div><div class="sb">Why would any of them trust the others?</div>' });
-    say(T.problems, T.ledger - gone, 'Two problems.',
-        'Someone can slip in <span class="red">bad data</span> and still collect a reward. And the finished model keeps no record of what went into it.');
-    say(T.ledger, T.private - gone, 'A notebook nobody can <em>quietly rewrite</em>.',
-        'That is a blockchain. Write every step of the training into it, and tampering stops being invisible.');
-    say(T.private, T.work - gone, 'The data <em>stays home</em>.',
-        'It never goes into the notebook. It stays with its owner. Only the model&rsquo;s updates are shared.');
-    say(T.work, T.real - gone, 'Aim the effort at something <em>useful</em>.',
-        'Ordinary blockchains burn electricity on puzzles worth nothing. Here the work is training, and whoever trains the best model writes the next page.');
-    say(T.real, T.pay - gone, 'Was the training <span class="amber">real</span>?',
-        'Now the electricity buys a model. But it raises a hard question: how do you prove it?');
-    say(T.pay, T.deposit - gone, 'Paid by how much you <span class="green">helped</span>.',
-        'A contract pays each contributor by how much their data improved the model. Send in junk, and you lose money.');
-    say(T.deposit, T.built - gone, 'And a <em>deposit</em>.', 'Good data gets it back. Bad data forfeits it.');
-    say(T.built, T.seams - gone, 'What the prototypes <span class="amber">measured</span>.',
-        'More participants made the model more accurate, and the network slower. More privacy cost accuracy.');
-    say(T.seams, T.close - 0.25, 'The open problems.',
-        'Speed, energy, and rules of agreement designed for learning rather than for currency.');
-    text({ at: T.ledger + 0.8, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 880, w: 820 },
-           html: 'Ural &amp; Yoshigoe, &ldquo;Survey on Blockchain-Enhanced Machine Learning&rdquo;, IEEE Access, 2023<span>The mechanisms shown are ones the survey reviews, not ones it proposes.</span>' });
+    text({ at: T.problems, out: T.close - 0.2, cls: 'credit', words: false,
+      place: { x: 120, y: 780, w: 820 },
+      html: 'Research basis: Ural &amp; Yoshigoe, IEEE Access 2023<span>A survey of published systems. Diagrams are schematic.</span>' });
+    text({ at: T.close, out: T.card - 0.2, cls: 'cl__a', place: { x: 220, y: 270, w: 1480, align: 'center' },
+      html: 'Before you decide who gets paid,' });
+    text({ at: T.close + 1.8, out: T.card - 0.2, cls: 'cl__b', place: { x: 220, y: 390, w: 1480, align: 'center' },
+      html: 'define what <em>better AI</em> means.' });
+    text({ at: T.close + 3.8, out: T.card - 0.2, cls: 'credit', words: false,
+      place: { x: 220, y: 660, w: 1480, align: 'center' }, html: 'Dr. Ozgur Ural’s research perspective' });
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24,
+      place: { x: 160, y: 230, w: 1600, align: 'center' },
+      html: `<div class="end__t">Who improved the AI?</div>
+        <div class="end__s">Evaluation. Privacy. Evidence of training.</div>
+        <div class="end__a">Research basis: Ural &amp; Yoshigoe, IEEE Access 2023</div>
+        <div class="end__u">${AUTHOR}</div>` });
 
-    text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 220, y: 330, w: 1480, align: 'center' },
-           html: 'One of those problems, proving that training really happened,' });
-    text({ at: T.close + 3.0, out: T.card - 0.3, cls: 'cl__b', place: { x: 220, y: 420, w: 1480, align: 'center' },
-           html: 'became my <em>doctoral research</em>.' });
+    const pn = (at, out, html, update, cls = '') => text({ at, out, cls: 'pn ' + cls,
+      words: false, dur: 0.45, rise: 12, place: { x: 980, y: 630, w: 840 }, html, update });
+    const bar = (name, kind, label = '') => `<div class="loss-row"><span>${name}</span><div class="track"><i data-bar="${kind}"></i></div><span data-label="${kind}">${label}</span></div>`;
+    pn(T.problems + 0.3, T.ledger - gone,
+      '<div class="pn__t">One misleading update · illustrative loss</div>' +
+      bar('own data', 'fit', 'lower') + bar('separate test', 'test', 'higher') +
+      '<div class="note">Lower loss is better. Evaluate beyond the contributor’s own data.</div>',
+      (t, el) => {
+        const u = ease.inOutSine(ramp(t, T.problems + 1, T.problems + 5.6));
+        for (const [key, value, color] of [['fit', lerp(.72, .25, u), '#5dffa0'], ['test', lerp(.45, .74, u), '#ff6272']]) {
+          const b = el.querySelector(`[data-bar="${key}"]`); b.style.width = value * 100 + '%'; b.style.background = color;
+        }
+      }, 'generalisation');
+    pn(T.ledger + 0.5, T.private - gone,
+      '<div class="pn__t">Two separate checks</div><div class="gate">Transaction recorded<span class="status green">on record</span></div>' +
+      '<div class="gate">Contribution helped<span class="status amber">needs a test</span></div>' +
+      '<div class="note">Tamper evidence does not certify model quality.</div>',
+      (t, el) => cue([...el.querySelectorAll('.gate')], t, [T.ledger + .8, T.ledger + 3.6]), 'record-check');
+    pn(T.private + 0.4, T.work - gone,
+      '<div class="pn__t">Federated training · schematic</div><div class="flow"><b>Local data</b><span class="arrow">→</span><b>Model update</b><span class="arrow">→</span><b>Shared model</b></div>' +
+      '<div class="note">Updates can leak information. Privacy needs its own protection.</div>',
+      (t, el) => {
+        const arrows = el.querySelectorAll('.arrow');
+        arrows.forEach((e, i) => { e.style.opacity = String(.25 + .75 * (.5 + .5 * Math.sin((t - T.private) * 3 - i * 1.8))); });
+      }, 'private-flow');
+    pn(T.real + 0.3, T.pay - gone,
+      '<div class="pn__t">Different claims need different evidence</div><div class="gate">Is the model useful?<span class="status">Evaluate it</span></div>' +
+      '<div class="gate">Was the work done?<span class="status amber">Verify the run</span></div>',
+      (t, el) => cue([...el.querySelectorAll('.gate')], t, [T.real + .8, T.real + 3.7]));
 
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 230, w: 1600, align: 'center' },
-           html: `<div class="end__t">What a blockchain buys machine learning</div>
-                  <div class="end__s">Survey on Blockchain-Enhanced Machine Learning</div>
-                  <div class="end__a">Ozgur Ural &amp; Kenji Yoshigoe &middot; IEEE Access, 2023</div>
-                  <div class="end__u">${AUTHOR}</div>` });
+    // Reward is computed from the very same schematic loss values being drawn.
+    // These are sequential marginal contributions, not Shapley-value attribution.
+    pn(T.pay + 0.3, T.deposit - gone,
+      '<div class="pn__t">SUM reward rule · illustrative contributions</div>' +
+      bar('before update', 'before') + bar('after update', 'after') +
+      '<div class="reward-tag"></div><div class="note">Balance change = loss before − loss after. Same evaluation data.</div>',
+      (t, el) => {
+        const harmful = t >= PAY_WORSE;
+        const at = harmful ? PAY_WORSE : PAY_BETTER;
+        const u = ease.inOutSine(ramp(t, at, at + 2.5));
+        const before = harmful ? .42 : .68;
+        const after = lerp(before, harmful ? .61 : .42, u);
+        el.dataset.delta = (before - after).toFixed(4);
+        el.dataset.example = harmful ? 'harmful' : 'helpful';
+        el.querySelector('[data-bar="before"]').style.width = before * 100 + '%';
+        const b = el.querySelector('[data-bar="after"]'); b.style.width = after * 100 + '%';
+        b.style.background = harmful ? '#ff6272' : '#5dffa0';
+        const tag = el.querySelector('.reward-tag'); tag.className = 'reward-tag ' + (harmful ? 'red' : 'green');
+        tag.textContent = u < .06 ? 'Evaluate the next contribution…' : harmful ? 'Loss rises → balance decreases' : 'Loss falls → balance increases';
+      }, 'reward-demo');
+    pn(T.deposit + 0.3, T.built - gone,
+      '<div class="pn__t">SUM deposit rule · a separate mechanism</div><div class="flow"><b>Deposit</b><span class="arrow">→</span><b>Wait</b><span class="arrow">→</span><b class="decision">Check label</b></div>' +
+      '<div class="note">After the waiting period: agreement permits a refund; disagreement can cost part of the deposit.</div>',
+      (t, el) => {
+        const e = el.querySelector('.decision'); const done = t >= T.deposit + 4.2;
+        e.textContent = done ? 'Disagrees: penalty' : 'Check label'; e.style.borderColor = done ? '#ff6272' : '#39536b';
+        e.style.color = done ? '#ff8a96' : '#e4ecf6';
+      }, 'deposit-demo');
+    pn(T.built + 0.3, T.seams - gone,
+      '<div class="pn__t">DeepChain · reported directions, not magnitudes</div>' +
+      '<div class="gate">More parties<span class="status green">Accuracy ↑</span></div>' +
+      '<div class="gate">More gradients<span class="status red">Throughput ↓</span></div>' +
+      '<div class="note">Corda / MNIST prototype. These are not universal scaling laws.</div>',
+      (t, el) => cue([...el.querySelectorAll('.gate')], t, [T.built + 1.4, T.built + 4.3]));
+    pn(T.seams + .3, T.close - gone,
+      '<div class="pn__t">A design review for collaborative AI</div><div class="flow"><b>Evaluation</b><b>Privacy</b><b>Incentives</b></div>' +
+      '<div class="note">Proposed use: organisations that need to learn together and audit contributions.</div>',
+      (t, el) => cue([...el.querySelectorAll('.flow b')], t, [T.seams + .6, T.seams + 2.2, T.seams + 3.8]));
 
-    /* ------------------------------------------------- panels under the chain */
-    const pn = (at, out, y, html, update) => text({ at, out, cls: 'pn', words: false, dur: 0.5, rise: 16, place: { x: 980, y, w: 840 }, html, update });
-
-    // paid by the improvement: three balances rise, the one that sent junk falls
-    const WHO = ['contributor A', 'contributor B', 'contributor C', 'sent junk'];
-    pn(T.pay + 1.0, T.deposit - gone, 750, `<div class="pn__t">balance, after each contribution</div>` +
-       WHO.map(w => `<div class="bal"><span>${w}</span><div><i></i></div></div>`).join(''),
-       (t, el) => el.querySelectorAll('.bal i').forEach((b, i) => {
-         const g = ease.inOutSine(ramp(t, T.pay + 2.0 + i * 0.3, T.pay + 8.0));
-         const w = i < 3 ? lerp(0.3, [0.82, 0.64, 0.74][i], g) : lerp(0.3, 0.04, g);
-         b.style.width = (100 * w).toFixed(1) + '%';
-         b.style.background = i < 3 ? '#5dffa0' : '#ff6272';
-       }));
-
-    pn(T.deposit + 0.6, T.built - gone, 780, `<div class="pn__t">the deposit</div>
-        <div class="verd"><span>good data</span><span class="chip g">${OK} returned</span></div>
-        <div class="verd"><span>bad data</span><span class="chip r">${NO} forfeited</span></div>`,
-       (t, el) => cue([...el.querySelectorAll('.verd')], t, [T.deposit + 2.2, T.deposit + 4.0]));
-
-    // what was measured when these systems were built: one thing gained, another lost
-    const row = (name, a, b) => `<div class="pair"><b style="font-weight:500">${name}</b>
-        <span>${a}<div><i data-k="a"></i></div></span><span>${b}<div><i data-k="b"></i></div></span></div>`;
-    pn(T.built + 0.8, T.seams - gone, 750, `<div class="pn__t">as measured in the prototypes the survey reviews</div>` +
-       row('more participants', 'accuracy', 'speed') + row('more privacy', 'privacy', 'accuracy'),
-       (t, el) => {
-         const rows = el.querySelectorAll('.pair');
-         cue([...rows], t, [T.built + 3.4, T.built + 8.2]);
-         [[T.built + 3.8, T.built + 7.6], [T.built + 8.6, T.built + 11.4]].forEach(([a, b], r) => {
-           const g = ease.inOutSine(ramp(t, a, b));
-           const up = rows[r].querySelector('[data-k="a"]'), down = rows[r].querySelector('[data-k="b"]');
-           up.style.width = (100 * lerp(0.4, 0.88, g)).toFixed(1) + '%'; up.style.background = '#5dffa0';
-           down.style.width = (100 * lerp(0.75, 0.3, g)).toFixed(1) + '%'; down.style.background = '#ff6272';
-         });
-       });
-
-    text({ at: T.seams + 1.0, out: T.close - 0.3, cls: 'three', words: false, dur: 0.01, rise: 0, place: { x: 980, y: 780, w: 840 },
-           html: '<div>speed</div><div>energy</div><div>rules built for learning</div>',
-           update: (t, el) => cue([...el.querySelectorAll('div')], t, [T.seams + 3.0, T.seams + 3.8, T.seams + 4.8]) });
-
-    /* ----------------------------------------------------- pinned labels */
-    const P3 = (x, y, z = 0) => new THREE.Vector3(x, y, z);
-    label({ cls: 'chip', html: 'one shared model', anchor: () => P3(0, -0.8), dx: 0, dy: 8, ax: 0.5, ay: 0,
-            alpha: t => win(t, 1.0, T.problems - 0.3, 0.5, 0.4) });
-    label({ cls: 'chip r', html: 'bad data', anchor: () => who[2].p, dx: -30, dy: 0, ax: 1, ay: 0.5,
-            alpha: t => win(t, T.problems + 1.4, T.ledger - 0.2, 0.4, 0.4) });
-    label({ cls: 'chip', html: 'no record of what went in', anchor: () => P3(0, -0.8), dx: 0, dy: 8, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.problems + 5.2, T.ledger - 0.2, 0.4, 0.4) });
-    label({ cls: 'chip au', html: 'every step, written down', anchor: () => P3(0, -2.12), dx: 0, dy: 44, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.ledger + 2.4, T.ledger + 6.4, 0.4, 0.4) });
-    label({ cls: 'chip r', html: 'change one page, and it shows', anchor: () => P3(0, -2.12), dx: 0, dy: 44, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.ledger + 6.9, T.private - 0.2, 0.4, 0.4) });
-    label({ cls: 'chip', html: 'the data stays here', anchor: () => who[4].p, dx: 10, dy: -52, ax: 1, ay: 1,
-            alpha: t => win(t, T.private + 1.6, T.work - 0.2, 0.4, 0.4) });
-    label({ cls: 'chip', html: 'only updates travel', anchor: () => who[3].p.clone().multiplyScalar(0.62), dx: 26, dy: 0, ax: 0, ay: 0.5,
-            alpha: t => win(t, T.private + 5.0, T.work - 0.2, 0.4, 0.4) });
-    label({ cls: 'chip', html: 'a puzzle worth nothing', anchor: () => P3(2.4, -2.12), dx: 0, dy: 44, ax: 1, ay: 0,
-            alpha: t => win(t, T.work + 1.6, T.work + 6.4, 0.4, 0.4) });
-    label({ cls: 'chip g', html: 'the work is training', anchor: () => P3(0, -0.8), dx: 0, dy: 8, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.work + 8.2, T.real + 0.4, 0.4, 0.4) });
-    label({ cls: 'chip au', html: 'how do you prove it?', anchor: () => P3(0, -0.8), dx: 0, dy: 8, ax: 0.5, ay: 0,
-            alpha: t => win(t, T.real + 3.6, T.pay - 0.2, 0.4, 0.4) });
+    label({ cls: 'chip', html: 'one shared AI model', anchor: () => new THREE.Vector3(0, -.8), dx: 0, dy: 8, ax: .5, ay: 0,
+      alpha: t => win(t, .8, T.problems - .2, .4, .4) });
+    label({ cls: 'chip au', html: 'ML competition', anchor: () => new THREE.Vector3(0, -.8), dx: 0, dy: 8, ax: .5, ay: 0,
+      alpha: t => win(t, T.work + 1, T.real - .2, .4, .4) });
   },
 
   /* ------------------------------------------------------------ frame */
@@ -374,40 +376,42 @@ const film = {
     camera.position.set(Math.sin(t * 0.21) * 0.22, Math.sin(t * 0.17 + 1) * 0.13, 12);
     camera.lookAt(0, 0, 0);
     const out = 1 - ramp(t, T.close - 0.4, T.close + 0.7);
+    const ledgerView = win(t, T.ledger, T.private - 0.2, 0.45, 0.5);
+    const networkAlpha = out * (1 - ledgerView);
 
     // the participants: one sends bad data, twice: once unnoticed, once when a contract is watching
     const slow = lerp(0.7, 0.28, ease.inOutSine(ramp(t, T.built + 3.4, T.built + 7.6)));
     const home = win(t, T.private + 1.0, T.work - 0.2, 0.6, 0.6);
     who.forEach((n, i) => {
-      const bad = i === 2 ? Math.max(win(t, T.problems + 0.8, T.ledger + 0.4, 0.4, 0.6), win(t, T.pay + 4.6, T.built - 0.2, 0.4, 0.6)) : 0;
+      const bad = i === 2 ? Math.max(win(t, T.problems + 0.8, T.ledger + 0.4, 0.4, 0.6), win(t, PAY_WORSE, T.built - 0.2, 0.4, 0.6)) : 0;
       const c = COL.ok.clone().lerp(COL.bad, bad);
-      n.sh.material.color.copy(c); n.sh.material.opacity = 0.95 * out;
-      n.co.material.uniforms.uColor.value.copy(c); n.co.material.uniforms.uAlpha.value = 1.1 * out;
+      n.sh.material.color.copy(c); n.sh.material.opacity = 0.75 * networkAlpha;
+      n.co.material.uniforms.uColor.value.copy(c); n.co.material.uniforms.uAlpha.value = 0.8 * networkAlpha;
       n.g.rotation.set(0, 0, 0); n.sh.rotation.set(t * 0.4 + i, t * 0.5, 0);
-      n.data.material.opacity = out * (0.75 + 0.25 * home);
+      n.data.material.opacity = networkAlpha * (0.75 + 0.25 * home);
       n.data.scale.setScalar(1 + 0.6 * home * (0.7 + 0.3 * Math.sin(t * 3 + i)));
-      n.line.material.color.copy(c); n.line.material.opacity = 0.35 * out;
+      n.line.material.color.copy(c); n.line.material.opacity = 0.35 * networkAlpha;
       const f = (t * slow + i * 0.23) % 1;
       n.dot.position.copy(n.p).multiplyScalar(lerp(0.86, 0.46, f));
       n.dot.material.color.copy(bad > 0.5 ? COL.bad : HDR(1.6, 2.4, 3.0));
-      n.dot.material.opacity = out * Math.sin(Math.PI * f);
+      n.dot.material.opacity = networkAlpha * Math.sin(Math.PI * f);
     });
 
     // the model: tainted while bad data goes in unseen, brighter while the network's work is training it
     const tainted = win(t, T.problems + 1.6, T.ledger + 0.6, 0.6, 0.8);
     const useful = win(t, T.work + 7.0, T.real + 1.0, 0.8, 1.0);
     const mc = COL.ok.clone().lerp(COL.bad, 0.5 * tainted);
-    mShell.material.color.copy(mc); mShell.material.opacity = 0.9 * out;
+    mShell.material.color.copy(mc); mShell.material.opacity = 0.7 * networkAlpha;
     mCore.material.uniforms.uColor.value.copy(mc);
-    mCore.material.uniforms.uAlpha.value = out * (1.1 + 0.9 * useful);
+    mCore.material.uniforms.uAlpha.value = networkAlpha * (0.7 + 0.5 * useful);
     model.rotation.set(0.3 * Math.sin(t * 0.4), t * 0.35, 0);
     model.scale.setScalar(1 + 0.12 * useful);
 
     // the notebook: pages appear as steps are written; change one, and every page after it shows it
-    const tamper = win(t, T.ledger + 6.6, T.ledger + 9.8, 0.2, 0.7);
+    const tamper = win(t, T.ledger + 4.4, T.private - 0.2, 0.2, 0.7);
     blocks.forEach((bl, k) => {
-      const a = ease.outCubic(ramp(t, bl.at, bl.at + 0.45)) * out;
-      const hit = k >= 3 ? tamper * ramp(t, T.ledger + 6.6 + (k - 3) * 0.14, T.ledger + 6.9 + (k - 3) * 0.14) : 0;
+      const a = ease.outCubic(ramp(t, bl.at, bl.at + 0.45)) * ledgerView;
+      const hit = k >= 3 ? tamper * ramp(t, T.ledger + 4.4 + (k - 3) * 0.14, T.ledger + 4.7 + (k - 3) * 0.14) : 0;
       const c = COL.gold.clone().lerp(COL.bad, hit);
       bl.b.material.color.copy(c); bl.b.material.opacity = a * 0.95;
       bl.b.scale.setScalar(0.4 + 0.6 * a + 0.25 * bump(t, bl.at + 0.2, 0.2));

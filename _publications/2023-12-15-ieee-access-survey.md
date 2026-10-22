@@ -30,7 +30,7 @@ Machine learning has three problems a distributed ledger is unusually well suite
 
 ## What goes on the chain, and what does not
 
-Recording every transaction tied to the training process makes tampering evident rather than invisible. The important detail is what stays off the chain. Raw data remains with its owner, while parameters, the transactions around them, and validation results are shared. That division is what makes the arrangement privacy-preserving rather than merely public.
+Recording every transaction tied to the training process makes tampering evident rather than invisible. The important detail is what stays off the chain. Raw data remains with its owner, while parameters, the transactions around them, and validation results are shared. That division avoids publishing raw data, but shared parameters can still leak information. Privacy requires additional protection.
 
 It is also worth being precise about the guarantee. A record of the process is evidence of what happened. It is not a judgement of whether the data was any good, and that takes a separate mechanism.
 
@@ -50,13 +50,13 @@ In the Sharing Updatable Model framework, a smart contract called CollaborativeT
 
 *b<sub>t</sub> = b<sub>t−1</sub> + L(h<sub>t−1</sub>, D) − L(h<sub>t</sub>, D)*
 
-that is, the loss on a held-out set before the update minus the loss after it. Submit noise and the term is negative. A companion mechanism makes the stake real: deposit currency when submitting, receive a refund after a waiting period if the data holds up, and forfeit it when the model disagrees with the label. In simulation the honest and dishonest populations separate cleanly while accuracy is preserved.
+that is, the loss on a held-out set before the update minus the loss after it. A contribution that increases evaluation loss receives a negative balance change. A separate mechanism uses a stake: deposit currency when submitting, receive a refund after a waiting period if the data agrees with the model, and risk losing part of the deposit on disagreement. In simulation the honest and dishonest populations separate cleanly while accuracy is preserved.
 
 ## What the prototypes actually measured
 
 The survey's most useful contribution is refusing to stop at the argument. **DeepChain** was built and measured as a Corda prototype trained on MNIST, with parties uploading local gradients and workers paid through a processing contract. Accuracy improves as more parties join, exactly as the argument predicts, but throughput falls as the gradient count grows and total training time climbs with every party added.
 
-**LearningChain** shows the companion trade-off from another angle. Differential-privacy noise buys real privacy and costs real test accuracy, while an l-nearest aggregation rule blunts Byzantine workers rather than eliminating them.
+**LearningChain** shows the companion trade-off from another angle. It combines differential privacy for local gradients with an l-nearest aggregation rule intended to resist Byzantine workers. The ledger itself supplies neither protection.
 
 ## Where the seams are
 

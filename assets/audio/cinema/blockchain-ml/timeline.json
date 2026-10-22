@@ -1,219 +1,1392 @@
 {
  "film": "blockchain-ml",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 112.705,
- "authored": 112.0,
+ "duration": 110.219,
+ "authored": 105,
  "anchors": [
   [
    0.0,
    0.0
   ],
   [
-   8.35,
-   8.0
+   7.71,
+   7
   ],
   [
-   17.35,
-   17.0
+   15.71,
+   15
   ],
   [
-   27.85,
-   27.5
+   23.71,
+   23
   ],
   [
-   36.35,
-   36.0
+   33.601,
+   32
   ],
   [
-   50.85,
-   50.5
+   44.387,
+   42
   ],
   [
-   58.85,
-   58.5
+   52.387,
+   50
   ],
   [
-   68.705,
-   68.0
+   64.387,
+   62
   ],
   [
-   75.705,
-   75.0
+   74.27,
+   71
   ],
   [
-   88.705,
-   88.0
+   86.521,
+   82
   ],
   [
-   98.705,
-   98.0
+   95.219,
+   90
   ],
   [
-   105.705,
-   105.0
+   103.219,
+   98
   ],
   [
-   112.705,
-   112.0
+   110.219,
+   105
   ]
  ],
  "audio": "soundtrack.mp3",
  "lines": [
   {
    "id": "hook",
-   "at": 0.0,
+   "at": 0,
    "real": 0.35,
-   "speech": 6.211,
-   "len": 6.43,
-   "head": 0.219,
+   "speech": 6.96,
+   "len": 7.18,
+   "head": 0.22,
    "file": "hook.mp3",
-   "file_start": 0.131,
-   "hash": "11fdd12e5e54",
-   "text": "People who have never met want to train one AI model together. Why would any of them trust the others?",
-   "source": "Ural and Yoshigoe 2023, Sec. I, IV (collaborative and federated training among parties that do not trust each other)"
+   "file_start": 0.13,
+   "hash": "1b3d7b6833b5",
+   "text": "Five organisations train one AI model together. Who actually made it better, and who should get paid?",
+   "source": "Illustrative collaborative-AI scenario; survey Sec. IV-B",
+   "words": [
+    [
+     "Five",
+     0.0,
+     0.401
+    ],
+    [
+     "organisations",
+     0.413,
+     1.167
+    ],
+    [
+     "train",
+     1.179,
+     1.486
+    ],
+    [
+     "one",
+     1.498,
+     1.745
+    ],
+    [
+     "AI",
+     1.757,
+     2.064
+    ],
+    [
+     "model",
+     2.075,
+     2.358
+    ],
+    [
+     "together",
+     2.37,
+     2.83
+    ],
+    [
+     "Who",
+     3.641,
+     3.853
+    ],
+    [
+     "actually",
+     3.865,
+     4.183
+    ],
+    [
+     "made",
+     4.195,
+     4.408
+    ],
+    [
+     "it",
+     4.419,
+     4.514
+    ],
+    [
+     "better",
+     4.525,
+     4.844
+    ],
+    [
+     "and",
+     5.033,
+     5.127
+    ],
+    [
+     "who",
+     5.139,
+     5.304
+    ],
+    [
+     "should",
+     5.316,
+     5.492
+    ],
+    [
+     "get",
+     5.504,
+     5.705
+    ],
+    [
+     "paid",
+     5.716,
+     6.224
+    ]
+   ]
   },
   {
    "id": "problems",
-   "at": 8.0,
-   "real": 8.35,
-   "speech": 7.427,
-   "len": 7.66,
-   "head": 0.233,
+   "at": 7,
+   "real": 7.71,
+   "speech": 6.381,
+   "len": 6.6,
+   "head": 0.219,
    "file": "problems.mp3",
-   "file_start": 8.117,
-   "hash": "a327134585d9",
-   "text": "Someone can slip in bad data and still collect a reward. And the finished model keeps no record of what went into it.",
-   "source": "Sec. IV-A (data poisoning; a trained model carries no record of its training)"
+   "file_start": 7.491,
+   "hash": "2905fccfad20",
+   "text": "An update can fit its own data and still make the shared model worse. Test it on separate data.",
+   "source": "Illustrative generalisation example, not a measured result from the survey",
+   "words": [
+    [
+     "An",
+     0.0,
+     0.177
+    ],
+    [
+     "update",
+     0.189,
+     0.566
+    ],
+    [
+     "can",
+     0.578,
+     0.719
+    ],
+    [
+     "fit",
+     0.731,
+     0.92
+    ],
+    [
+     "its",
+     0.932,
+     1.073
+    ],
+    [
+     "own",
+     1.085,
+     1.262
+    ],
+    [
+     "data",
+     1.274,
+     1.545
+    ],
+    [
+     "and",
+     1.557,
+     1.757
+    ],
+    [
+     "still",
+     1.769,
+     2.052
+    ],
+    [
+     "make",
+     2.064,
+     2.241
+    ],
+    [
+     "the",
+     2.252,
+     2.323
+    ],
+    [
+     "shared",
+     2.335,
+     2.63
+    ],
+    [
+     "model",
+     2.641,
+     2.936
+    ],
+    [
+     "worse",
+     2.948,
+     3.384
+    ],
+    [
+     "Test",
+     4.195,
+     4.549
+    ],
+    [
+     "it",
+     4.561,
+     4.655
+    ],
+    [
+     "on",
+     4.667,
+     4.785
+    ],
+    [
+     "separate",
+     4.797,
+     5.209
+    ],
+    [
+     "data",
+     5.221,
+     5.646
+    ]
+   ]
   },
   {
    "id": "ledger",
-   "at": 17.0,
-   "real": 17.35,
-   "speech": 8.766,
-   "len": 8.98,
-   "head": 0.214,
+   "at": 15,
+   "real": 15.71,
+   "speech": 7.451,
+   "len": 7.66,
+   "head": 0.209,
    "file": "ledger.mp3",
-   "file_start": 17.136,
-   "hash": "5305585fda8a",
-   "text": "A blockchain is a shared notebook that nobody can quietly rewrite. Write every step of the training into it, and tampering stops being invisible.",
-   "source": "Sec. II-A, IV-A (immutability; recording the training transactions gives a tamper-evident record)"
+   "file_start": 15.501,
+   "hash": "a298a36d3fbd",
+   "text": "A blockchain can make recorded transactions harder to rewrite. But a permanent record does not tell you whether an update helped.",
+   "source": "Survey Sec. II-A and IV-A; ledger integrity is distinct from contribution quality",
+   "words": [
+    [
+     "A",
+     0.0,
+     0.13
+    ],
+    [
+     "blockchain",
+     0.141,
+     0.625
+    ],
+    [
+     "can",
+     0.637,
+     0.778
+    ],
+    [
+     "make",
+     0.79,
+     0.991
+    ],
+    [
+     "recorded",
+     1.002,
+     1.427
+    ],
+    [
+     "transactions",
+     1.439,
+     2.064
+    ],
+    [
+     "harder",
+     2.075,
+     2.37
+    ],
+    [
+     "to",
+     2.382,
+     2.488
+    ],
+    [
+     "rewrite",
+     2.5,
+     3.101
+    ],
+    [
+     "But",
+     3.912,
+     4.066
+    ],
+    [
+     "a",
+     4.077,
+     4.125
+    ],
+    [
+     "permanent",
+     4.136,
+     4.561
+    ],
+    [
+     "record",
+     4.573,
+     4.891
+    ],
+    [
+     "does",
+     4.903,
+     5.056
+    ],
+    [
+     "not",
+     5.068,
+     5.257
+    ],
+    [
+     "tell",
+     5.268,
+     5.445
+    ],
+    [
+     "you",
+     5.457,
+     5.563
+    ],
+    [
+     "whether",
+     5.575,
+     5.858
+    ],
+    [
+     "an",
+     5.87,
+     5.941
+    ],
+    [
+     "update",
+     5.952,
+     6.294
+    ],
+    [
+     "helped",
+     6.306,
+     6.707
+    ]
+   ]
   },
   {
    "id": "private",
-   "at": 27.5,
-   "real": 27.85,
-   "speech": 7.58,
-   "len": 7.8,
-   "head": 0.22,
+   "at": 23,
+   "real": 23.71,
+   "speech": 9.491,
+   "len": 9.72,
+   "head": 0.229,
    "file": "private.mp3",
-   "file_start": 27.63,
-   "hash": "9ce3c1255017",
-   "text": "The data itself never goes into the notebook. It stays with its owner. Only the model's updates are shared.",
-   "source": "Sec. IV-A (data stays on the owners' devices; only model parameters are shared and updated on the chain)"
+   "file_start": 23.481,
+   "hash": "e80e2253e59d",
+   "text": "In federated learning, raw data can stay with each organisation. Updates travel instead. Those updates still need privacy protection.",
+   "source": "Survey Sec. IV-B.1; privacy qualification is a general limitation of parameter sharing",
+   "words": [
+    [
+     "In",
+     0.0,
+     0.2
+    ],
+    [
+     "federated",
+     0.212,
+     0.743
+    ],
+    [
+     "learning",
+     0.755,
+     1.12
+    ],
+    [
+     "raw",
+     1.333,
+     1.521
+    ],
+    [
+     "data",
+     1.533,
+     1.851
+    ],
+    [
+     "can",
+     1.863,
+     2.005
+    ],
+    [
+     "stay",
+     2.016,
+     2.264
+    ],
+    [
+     "with",
+     2.276,
+     2.441
+    ],
+    [
+     "each",
+     2.453,
+     2.689
+    ],
+    [
+     "organisation",
+     2.7,
+     3.573
+    ],
+    [
+     "Updates",
+     4.384,
+     4.867
+    ],
+    [
+     "travel",
+     4.879,
+     5.209
+    ],
+    [
+     "instead",
+     5.221,
+     5.74
+    ],
+    [
+     "Those",
+     6.554,
+     6.849
+    ],
+    [
+     "updates",
+     6.86,
+     7.261
+    ],
+    [
+     "still",
+     7.273,
+     7.533
+    ],
+    [
+     "need",
+     7.544,
+     7.768
+    ],
+    [
+     "privacy",
+     7.78,
+     8.158
+    ],
+    [
+     "protection",
+     8.169,
+     8.771
+    ]
+   ]
   },
   {
    "id": "work",
-   "at": 36.0,
-   "real": 36.35,
-   "speech": 13.242,
-   "len": 13.46,
-   "head": 0.218,
+   "at": 32,
+   "real": 33.601,
+   "speech": 10.386,
+   "len": 10.61,
+   "head": 0.224,
    "file": "work.mp3",
-   "file_start": 36.132,
-   "hash": "e00f7e5c7c2e",
-   "text": "Ordinary blockchains agree by burning electricity on puzzles whose answers are worth nothing. So researchers aimed that effort at something useful: training the model. Whoever trains the best one writes the next page.",
-   "source": "Sec. II-B, IV-C (proof of work; proof of useful work; Proof of Learning: the miner with the best model writes the next block)"
+   "file_start": 33.377,
+   "hash": "821ae66119ad",
+   "text": "Some researchers go further: let training replace hash puzzles. The best model earns the next block. That is one design, not how every blockchain works.",
+   "source": "Survey Sec. IV-C.2, Proof of Learning ML competition, not all blockchains",
+   "words": [
+    [
+     "Some",
+     0.0,
+     0.283
+    ],
+    [
+     "researchers",
+     0.295,
+     0.79
+    ],
+    [
+     "go",
+     0.802,
+     1.002
+    ],
+    [
+     "further",
+     1.014,
+     1.462
+    ],
+    [
+     "let",
+     1.639,
+     1.804
+    ],
+    [
+     "training",
+     1.816,
+     2.158
+    ],
+    [
+     "replace",
+     2.17,
+     2.524
+    ],
+    [
+     "hash",
+     2.535,
+     2.795
+    ],
+    [
+     "puzzles",
+     2.807,
+     3.384
+    ],
+    [
+     "The",
+     4.195,
+     4.349
+    ],
+    [
+     "best",
+     4.36,
+     4.655
+    ],
+    [
+     "model",
+     4.667,
+     4.962
+    ],
+    [
+     "earns",
+     4.974,
+     5.233
+    ],
+    [
+     "the",
+     5.245,
+     5.327
+    ],
+    [
+     "next",
+     5.339,
+     5.646
+    ],
+    [
+     "block",
+     5.658,
+     6.011
+    ],
+    [
+     "That",
+     6.825,
+     7.073
+    ],
+    [
+     "is",
+     7.084,
+     7.202
+    ],
+    [
+     "one",
+     7.214,
+     7.426
+    ],
+    [
+     "design",
+     7.438,
+     7.898
+    ],
+    [
+     "not",
+     8.051,
+     8.216
+    ],
+    [
+     "how",
+     8.228,
+     8.405
+    ],
+    [
+     "every",
+     8.417,
+     8.653
+    ],
+    [
+     "blockchain",
+     8.665,
+     9.148
+    ],
+    [
+     "works",
+     9.16,
+     9.655
+    ]
+   ]
   },
   {
    "id": "real",
-   "at": 50.5,
-   "real": 50.85,
-   "speech": 6.642,
-   "len": 6.86,
+   "at": 42,
+   "real": 44.387,
+   "speech": 7.582,
+   "len": 7.8,
    "head": 0.218,
    "file": "real.mp3",
-   "file_start": 50.632,
-   "hash": "c175a691e027",
-   "text": "Now the electricity buys a model. But it raises a hard question: how do you prove the training was real?",
-   "source": "Sec. II-B (critiques of Proof-of-Learning; verifying claimed training)"
+   "file_start": 44.169,
+   "hash": "2f8d5e3cc073",
+   "text": "A useful model and a verified training run are different claims. A good score alone does not prove how the model was trained.",
+   "source": "Survey Sec. II-B and V; distinguish performance evaluation from proof of computation",
+   "words": [
+    [
+     "A",
+     0.0,
+     0.13
+    ],
+    [
+     "useful",
+     0.141,
+     0.578
+    ],
+    [
+     "model",
+     0.59,
+     0.861
+    ],
+    [
+     "and",
+     0.873,
+     0.943
+    ],
+    [
+     "a",
+     0.955,
+     0.991
+    ],
+    [
+     "verified",
+     1.002,
+     1.521
+    ],
+    [
+     "training",
+     1.533,
+     1.934
+    ],
+    [
+     "run",
+     1.946,
+     2.158
+    ],
+    [
+     "are",
+     2.17,
+     2.252
+    ],
+    [
+     "different",
+     2.264,
+     2.63
+    ],
+    [
+     "claims",
+     2.641,
+     3.208
+    ],
+    [
+     "A",
+     4.018,
+     4.172
+    ],
+    [
+     "good",
+     4.184,
+     4.36
+    ],
+    [
+     "score",
+     4.372,
+     4.643
+    ],
+    [
+     "alone",
+     4.655,
+     4.974
+    ],
+    [
+     "does",
+     4.985,
+     5.139
+    ],
+    [
+     "not",
+     5.15,
+     5.363
+    ],
+    [
+     "prove",
+     5.375,
+     5.669
+    ],
+    [
+     "how",
+     5.681,
+     5.811
+    ],
+    [
+     "the",
+     5.823,
+     5.893
+    ],
+    [
+     "model",
+     5.905,
+     6.176
+    ],
+    [
+     "was",
+     6.188,
+     6.318
+    ],
+    [
+     "trained",
+     6.33,
+     6.86
+    ]
+   ]
   },
   {
    "id": "pay",
-   "at": 58.5,
-   "real": 58.85,
-   "speech": 9.455,
-   "len": 9.67,
-   "head": 0.215,
+   "at": 50,
+   "real": 52.387,
+   "speech": 10.513,
+   "len": 10.73,
+   "head": 0.217,
    "file": "pay.mp3",
-   "file_start": 58.635,
-   "hash": "76d2b708d04f",
-   "text": "Then, the incentives. A contract pays each contributor by how much their data improved the model. Send in junk, and you lose money.",
-   "source": "Sec. IV-B (Sharing Updatable Models: the balance moves by the loss before an update minus the loss after it)"
+   "file_start": 52.17,
+   "hash": "642f92495df4",
+   "text": "Loss measures prediction error. Compare it before and after an update on the same test data. Lower loss raises the balance. Higher loss lowers it.",
+   "source": "Survey Sec. IV-B.2, SUM prediction-market balance equation",
+   "words": [
+    [
+     "Loss",
+     0.0,
+     0.283
+    ],
+    [
+     "measures",
+     0.295,
+     0.601
+    ],
+    [
+     "prediction",
+     0.613,
+     1.097
+    ],
+    [
+     "error",
+     1.108,
+     1.439
+    ],
+    [
+     "Compare",
+     2.25,
+     2.709
+    ],
+    [
+     "it",
+     2.721,
+     2.839
+    ],
+    [
+     "before",
+     2.851,
+     3.228
+    ],
+    [
+     "and",
+     3.24,
+     3.346
+    ],
+    [
+     "after",
+     3.358,
+     3.617
+    ],
+    [
+     "an",
+     3.629,
+     3.712
+    ],
+    [
+     "update",
+     3.724,
+     4.148
+    ],
+    [
+     "on",
+     4.16,
+     4.242
+    ],
+    [
+     "the",
+     4.254,
+     4.325
+    ],
+    [
+     "same",
+     4.337,
+     4.632
+    ],
+    [
+     "test",
+     4.643,
+     4.915
+    ],
+    [
+     "data",
+     4.926,
+     5.339
+    ],
+    [
+     "Lower",
+     6.153,
+     6.471
+    ],
+    [
+     "loss",
+     6.483,
+     6.754
+    ],
+    [
+     "raises",
+     6.766,
+     7.143
+    ],
+    [
+     "the",
+     7.155,
+     7.238
+    ],
+    [
+     "balance",
+     7.25,
+     7.768
+    ],
+    [
+     "Higher",
+     8.582,
+     8.889
+    ],
+    [
+     "loss",
+     8.9,
+     9.148
+    ],
+    [
+     "lowers",
+     9.16,
+     9.514
+    ],
+    [
+     "it",
+     9.525,
+     9.773
+    ]
+   ]
   },
   {
    "id": "deposit",
-   "at": 68.0,
-   "real": 68.705,
-   "speech": 6.427,
-   "len": 6.65,
-   "head": 0.223,
+   "at": 62,
+   "real": 64.387,
+   "speech": 9.483,
+   "len": 9.7,
+   "head": 0.217,
    "file": "deposit.mp3",
-   "file_start": 68.482,
-   "hash": "dd08af93f7b3",
-   "text": "You also put down a deposit. Good data gets it back. Bad data forfeits it.",
-   "source": "Sec. IV-B (deposit, refund, take; in simulation the bad agents deplete their balance)"
+   "file_start": 64.17,
+   "hash": "5d2dc61d70cc",
+   "text": "Another rule uses a deposit. After a waiting period, agreement with the model permits a refund. Disagreement can cost part of the deposit.",
+   "source": "Survey Sec. IV-B.2, separate SUM Deposit Refund Take mechanism, waiting period and partial penalty",
+   "words": [
+    [
+     "Another",
+     0.0,
+     0.366
+    ],
+    [
+     "rule",
+     0.377,
+     0.66
+    ],
+    [
+     "uses",
+     0.672,
+     1.002
+    ],
+    [
+     "a",
+     1.014,
+     1.073
+    ],
+    [
+     "deposit",
+     1.085,
+     1.639
+    ],
+    [
+     "After",
+     2.45,
+     2.804
+    ],
+    [
+     "a",
+     2.816,
+     2.863
+    ],
+    [
+     "waiting",
+     2.875,
+     3.252
+    ],
+    [
+     "period",
+     3.264,
+     3.676
+    ],
+    [
+     "agreement",
+     3.865,
+     4.29
+    ],
+    [
+     "with",
+     4.301,
+     4.408
+    ],
+    [
+     "the",
+     4.419,
+     4.49
+    ],
+    [
+     "model",
+     4.502,
+     4.808
+    ],
+    [
+     "permits",
+     4.82,
+     5.186
+    ],
+    [
+     "a",
+     5.198,
+     5.257
+    ],
+    [
+     "refund",
+     5.268,
+     5.905
+    ],
+    [
+     "Disagreement",
+     6.719,
+     7.356
+    ],
+    [
+     "can",
+     7.367,
+     7.497
+    ],
+    [
+     "cost",
+     7.509,
+     7.804
+    ],
+    [
+     "part",
+     7.816,
+     8.051
+    ],
+    [
+     "of",
+     8.063,
+     8.122
+    ],
+    [
+     "the",
+     8.134,
+     8.205
+    ],
+    [
+     "deposit",
+     8.216,
+     8.759
+    ]
+   ]
   },
   {
    "id": "built",
-   "at": 75.0,
-   "real": 75.705,
-   "speech": 10.818,
-   "len": 11.04,
-   "head": 0.222,
+   "at": 71,
+   "real": 74.27,
+   "speech": 11.851,
+   "len": 12.07,
+   "head": 0.219,
    "file": "built.mp3",
-   "file_start": 75.483,
-   "hash": "2ce11e7d0f41",
-   "text": "And when people actually built these systems, the measurements were sobering. More participants made the model more accurate, and the network slower. More privacy cost accuracy.",
-   "source": "Sec. IV-B (DeepChain on Corda with MNIST: accuracy up, throughput down, time up as parties join; LearningChain: privacy against accuracy)"
+   "file_start": 74.051,
+   "hash": "f683952754a9",
+   "text": "In the DeepChain prototype, more parties improved accuracy. More gradients reduced throughput, and more parties increased training time. Better AI can still mean a slower system.",
+   "source": "Survey Sec. IV-B.3, DeepChain Corda and MNIST prototype, reported directions only",
+   "words": [
+    [
+     "In",
+     0.0,
+     0.165
+    ],
+    [
+     "the",
+     0.177,
+     0.283
+    ],
+    [
+     "DeepChain",
+     0.295,
+     0.79
+    ],
+    [
+     "prototype",
+     0.802,
+     1.498
+    ],
+    [
+     "more",
+     1.651,
+     1.863
+    ],
+    [
+     "parties",
+     1.875,
+     2.311
+    ],
+    [
+     "improved",
+     2.323,
+     2.854
+    ],
+    [
+     "accuracy",
+     2.866,
+     3.467
+    ],
+    [
+     "More",
+     4.278,
+     4.525
+    ],
+    [
+     "gradients",
+     4.537,
+     5.068
+    ],
+    [
+     "reduced",
+     5.08,
+     5.457
+    ],
+    [
+     "throughput",
+     5.469,
+     5.917
+    ],
+    [
+     "and",
+     6.094,
+     6.212
+    ],
+    [
+     "more",
+     6.224,
+     6.412
+    ],
+    [
+     "parties",
+     6.424,
+     6.872
+    ],
+    [
+     "increased",
+     6.884,
+     7.344
+    ],
+    [
+     "training",
+     7.356,
+     7.768
+    ],
+    [
+     "time",
+     7.78,
+     8.205
+    ],
+    [
+     "Better",
+     9.018,
+     9.337
+    ],
+    [
+     "AI",
+     9.349,
+     9.596
+    ],
+    [
+     "can",
+     9.608,
+     9.773
+    ],
+    [
+     "still",
+     9.785,
+     10.056
+    ],
+    [
+     "mean",
+     10.068,
+     10.221
+    ],
+    [
+     "a",
+     10.233,
+     10.28
+    ],
+    [
+     "slower",
+     10.292,
+     10.634
+    ],
+    [
+     "system",
+     10.646,
+     11.129
+    ]
+   ]
   },
   {
    "id": "seams",
-   "at": 88.0,
-   "real": 88.705,
-   "speech": 7.08,
-   "len": 7.3,
-   "head": 0.22,
+   "at": 82,
+   "real": 86.521,
+   "speech": 8.298,
+   "len": 8.52,
+   "head": 0.222,
    "file": "seams.mp3",
-   "file_start": 88.485,
-   "hash": "ca332b7998c0",
-   "text": "So our survey ends on the open problems: speed, energy, and rules of agreement designed for learning rather than for currency.",
-   "source": "Sec. V (challenges: scalability, energy, consensus designed for machine learning)"
+   "file_start": 86.299,
+   "hash": "f6aa4f97643d",
+   "text": "For organisations learning together, ask three questions: who evaluates the updates, what stays private, and is the improvement worth the cost?",
+   "source": "Author design perspective grounded in survey Sec. V; proposed use, not a deployment claim",
+   "words": [
+    [
+     "For",
+     0.0,
+     0.2
+    ],
+    [
+     "organisations",
+     0.212,
+     0.991
+    ],
+    [
+     "learning",
+     1.002,
+     1.274
+    ],
+    [
+     "together",
+     1.285,
+     1.675
+    ],
+    [
+     "ask",
+     1.91,
+     2.17
+    ],
+    [
+     "three",
+     2.182,
+     2.406
+    ],
+    [
+     "questions",
+     2.417,
+     2.96
+    ],
+    [
+     "who",
+     3.184,
+     3.278
+    ],
+    [
+     "evaluates",
+     3.29,
+     3.809
+    ],
+    [
+     "the",
+     3.821,
+     3.915
+    ],
+    [
+     "updates",
+     3.927,
+     4.422
+    ],
+    [
+     "what",
+     4.646,
+     4.799
+    ],
+    [
+     "stays",
+     4.811,
+     5.094
+    ],
+    [
+     "private",
+     5.106,
+     5.59
+    ],
+    [
+     "and",
+     5.802,
+     5.896
+    ],
+    [
+     "is",
+     5.908,
+     6.038
+    ],
+    [
+     "the",
+     6.05,
+     6.132
+    ],
+    [
+     "improvement",
+     6.144,
+     6.663
+    ],
+    [
+     "worth",
+     6.675,
+     6.946
+    ],
+    [
+     "the",
+     6.958,
+     7.04
+    ],
+    [
+     "cost",
+     7.052,
+     7.583
+    ]
+   ]
   },
   {
    "id": "close",
-   "at": 98.0,
-   "real": 98.705,
-   "speech": 5.424,
-   "len": 5.64,
-   "head": 0.216,
+   "at": 90,
+   "real": 95.219,
+   "speech": 4.27,
+   "len": 4.49,
+   "head": 0.22,
    "file": "close.mp3",
-   "file_start": 98.489,
-   "hash": "26fa2932cddf",
-   "text": "One of those problems, proving that training really happened, became my doctoral research.",
-   "source": "the author's path (old lab film, closing line)"
+   "file_start": 94.999,
+   "hash": "00dbad5637c9",
+   "text": "Before you decide who gets paid, define what better AI means.",
+   "source": "Author research perspective, not an experimental result",
+   "words": [
+    [
+     "Before",
+     0.0,
+     0.307
+    ],
+    [
+     "you",
+     0.318,
+     0.448
+    ],
+    [
+     "decide",
+     0.46,
+     0.873
+    ],
+    [
+     "who",
+     0.884,
+     0.991
+    ],
+    [
+     "gets",
+     1.002,
+     1.238
+    ],
+    [
+     "paid",
+     1.25,
+     1.616
+    ],
+    [
+     "define",
+     1.781,
+     2.17
+    ],
+    [
+     "what",
+     2.182,
+     2.347
+    ],
+    [
+     "better",
+     2.358,
+     2.594
+    ],
+    [
+     "AI",
+     2.606,
+     2.936
+    ],
+    [
+     "means",
+     2.948,
+     3.538
+    ]
+   ]
   },
   {
    "id": "card",
-   "at": 105.0,
-   "real": 105.705,
+   "at": 98,
+   "real": 103.219,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 105.705,
+   "file_start": 103.219,
    "hash": "",
    "text": "",
-   "source": ""
+   "source": "",
+   "words": []
   }
  ]
 }

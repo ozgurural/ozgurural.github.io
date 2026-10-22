@@ -1,8 +1,8 @@
 ---
 layout: cinema
 permalink: /films/blockchain-ml/
-title: "What a blockchain buys machine learning"
-description: "Strangers want to train one AI model together. A narrated film on what a blockchain adds: a record nobody can quietly rewrite, work aimed at training, pay by contribution, and what the prototypes measured (Ural & Yoshigoe, IEEE Access 2023)."
+title: "Who improved the AI?"
+description: "Five organisations train one AI model. Who actually helped? A short visual story about evaluation, contribution rewards, privacy and evidence of training, grounded in Ural and Yoshigoe's IEEE Access survey."
 film_module: blockchain-ml
 noindex: true
 sitemap: false
