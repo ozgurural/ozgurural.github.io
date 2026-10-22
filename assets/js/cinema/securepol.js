@@ -8,16 +8,15 @@
  * narration and its timing are written.
  *
  * The viewer is assumed to be bright and to know nothing about the subject, so
- * there are no figures on screen and none in the voice: results are stated in
- * words, and the two bars in the cost scene are drawn to the largest change the
- * paper measured. One picture carries the film. Training is a walk down a
+ * the voice explains the results in words; the two bars label the measured
+ * ranges and their different scales. One picture carries the film. Training is a walk down a
  * landscape (a real momentum descent on the function below, not a drawn
  * curve). Proof-of-Learning keeps snapshots along it and a verifier replays
  * them. Replay needs a tolerance, drawn as a tube, and a forged trail that
  * stays inside the tube passes. SecurePoL plants a secret in the model while
  * it trains, which only the owner can ask for.
  */
-import { THREE, AUTHOR, createCinema, clamp01, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, clamp01, lerp, ramp, ease, win, seeded } from './engine.js';
 
 /* Authored cue times, one per narrated line. They mirror the `at` values in
    scripts/cinema/securepol.voice.json; the check below says so when they drift. */
@@ -304,6 +303,15 @@ const CSS = `
   .cin .end__a { font: 500 26px/1.4 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 40px; letter-spacing: .04em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 60px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+  .cin .handoff { color: #c3cfdf; }
+  .cin .handoff svg { display: block; width: 100%; overflow: visible; }
+  .cin .handoff text { font: 500 24px "JetBrains Mono", monospace; fill: #c3cfdf; }
+  .cin .handoff .flow { stroke: #6fd3ff; stroke-width: 3; fill: none; }
+  .cin .handoff .packet { fill: #6fd3ff; }
+  .cin .handoff .record { stroke: #ffcf5a; fill: #0a1424; stroke-width: 2; }
+  .cin .handoff .decision { stroke: #5dffa0; fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+  .cin .use__q { font: 500 29px/1.4 "Inter", sans-serif; color: #c3cfdf; margin-top: 22px; }
+  .cin .evidence { font: 600 33px/1.4 "Space Grotesk", sans-serif; color: #5dffa0; }
 `;
 
 /* A street plan with one street that is not there. Mapmakers planted these so a
@@ -327,6 +335,7 @@ const film = {
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL, 42, ['hook', 'use', 'close']) : [],
   build(ctx) {
     const { scene, camera, text, label } = ctx;
     const style = document.createElement('style');
@@ -441,6 +450,15 @@ const film = {
     const HOVER_F = new THREE.Vector3(1.6, 2.4, 0).add(END);
     const introMid = new THREE.Vector3();
 
+    // An identical payload travels between the files. One allocated buffer is
+    // reused on every seek, including backwards seeks and phone playback.
+    const copyPos = new Float32Array(36 * 3);
+    const copyGeo = new THREE.BufferGeometry();
+    copyGeo.setAttribute('position', new THREE.BufferAttribute(copyPos, 3));
+    const copyBits = new THREE.Points(copyGeo, mat(MOTES, { uColor: COL.path, uAlpha: 0, uPR: 1, uSize: 3 }));
+    copyBits.frustumCulled = false;
+    scene.add(copyBits);
+
     /* the secret: points trained into the owner's model, joined only when the right question finds them */
     const mr = seeded(42);
     const MK = 13, markPos = [];
@@ -473,6 +491,13 @@ const film = {
     const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.72, 3.3, 40, 1, true),
                                 mat(BEAM, { uColor: COL.gold, uAlpha: 0 }, { side: THREE.DoubleSide }));
     scene.add(beam);
+    const questions = [honest, forged].map(() => {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.68, 0.018, 8, 64),
+        new THREE.MeshBasicMaterial({ color: COL.gold, transparent: true, opacity: 0,
+          blending: THREE.AdditiveBlending, depthWrite: false }));
+      scene.add(ring);
+      return ring;
+    });
 
     /* the scrub: fine-tuning the secret away walks the model off its recorded trail (Sec. III-C.5, VI-I) */
     const adir = new THREE.Vector3(0.75, 0, 0.66).normalize();
@@ -520,7 +545,7 @@ const film = {
 
     Object.assign(ctx, { terrain, dust, pathMat, comet, verifier, curve, arc, cks, tubeMat, forgedMat, fnodes, honest, forged,
                          HOVER_H, HOVER_F, END, FEND, COLH, COLF, introMid, motes, constellation, weave, wsrc, wdst, wpos, beam,
-                         attackMat, gap, aNode, AEND, keys, cam, N });
+                         attackMat, gap, aNode, AEND, keys, cam, N, copyBits, copyPos, questions });
 
     /* ------------------------------------------------------------- type */
     const KICK = { x: 120, y: 88, w: 900 };
@@ -554,7 +579,7 @@ const film = {
         'Training is a long walk downhill, every step making the model a little less wrong.');
     say(T.receipts, T.forged - gone, 'Proof-of-Learning <em>keeps that trail</em>.',
         'Snapshots of the model, with the data and settings behind every step. A verifier replays the <b>biggest steps</b> and checks where they land.');
-    text({ at: T.receipts + 0.8, out: T.lock - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 940, w: 800 },
+    text({ at: T.receipts + 0.8, out: T.lock - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 830, w: 800 },
            html: 'Proof-of-Learning: Jia et al., IEEE S&amp;P 2021' });
 
     // the catch
@@ -591,15 +616,15 @@ const film = {
     say(T.thief, 67.75, 'A thief can&rsquo;t name the questions.');
     say(67.8, T.scrub - gone, 'Scrub the secret out, and the model <span class="red">stops matching its own trail</span>.');
     say(T.scrub, T.cost - gone, 'Hiding that took <em>real training</em>.', 'In our tests: the very work they tried to skip.');
-    text({ at: T.thief + 3.4, out: T.cost - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 900, w: 800 },
+    text({ at: T.thief + 3.4, out: T.cost - gone, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 780, w: 800 },
            html: 'Tested against the spoofing attacks in the paper.<span>It raises the cost of those attacks; it is not a proof against every attack.</span>' });
 
-    // what it costs (Sec. VI-B, VI-F): bars drawn to the largest change the paper measured, no figures
+    // Report measured differences, rather than inventing absolute baselines.
     say(T.cost, T.use - gone, 'And the price is <em>small</em>.',
         'In our experiments the model stayed almost exactly as accurate, and training took only a little longer.');
     const BARS = [
-      ['Accuracy', [['without', [['', 92]]], ['with SecurePoL', [['g', 91.42]]]], 'almost exactly the same'],
-      ['Training time', [['without', [['', 85.25]]], ['with SecurePoL', [['g', 85.25], ['x', 14.75]]]], 'a little longer'],
+      ['Accuracy loss', [['0 to 1 percentage point', [['g', 58]]]], '0.00–0.58 percentage points'],
+      ['Training overhead', [['0 to 20 percent', [['x', 86.5]]]], '0.6–17.3% longer'],
     ];
     BARS.forEach(([title, rows, verdict], i) => {
       const t0 = T.cost + 0.8 + i * 0.5;
@@ -613,26 +638,62 @@ const film = {
              } });
     });
     text({ at: T.cost + 2.4, out: T.use - gone, cls: 'note', words: false, dur: 0.5, place: { x: 1010, y: 820, w: 800 },
-           html: 'Bars show the largest change measured across the three designs in the paper.' });
+           html: 'CIFAR-10 · ResNet-20 · three watermark designs.<br>Bars show the largest measured change; scales differ.' });
 
     // where it applies: the paper's three application scenarios (Sec. V-A), labelled as such
-    const ICON = {
-      hosp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13"/><path d="M3 21h18"/><path d="M12 9v6M9 12h6"/><path d="M10 21v-3h4v3"/></svg>',
-      car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16v-3l2.2-5h13.6L21 13v3"/><path d="M3 16h18"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/><path d="M6 12h12"/></svg>',
-      cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 11 3.5 3.5 0 0 0 7 18z"/><path d="M9.8 14.2l1.7 1.7 3.3-3.4"/></svg>',
-    };
     say(T.use, T.close - 0.25, 'This matters wherever a model <em>changes hands</em>.');
+    text({ at: T.use + 0.2, out: T.close - 0.25, cls: 'note', words: false, dur: 0.4,
+      place: { x: 120, y: 490, w: 740 },
+      html: 'Proposed application scenarios · paper, Sec. V-A' });
+    // One model plus its evidence changes hands. Each question gets a complete
+    // send, replay and check cycle, rather than accumulating three static cards.
+    text({ at: T.use + 0.2, out: T.close - 0.25, cls: 'handoff', words: false, dur: 0.5,
+      place: { x: 1030, y: 175, w: 770 },
+      html: `<svg viewBox="0 0 770 330" aria-hidden="true">
+        <path class="flow" d="M160 140H590" opacity=".3"/>
+        <path class="flow replay" d="M170 245H590" stroke-dasharray="7 9"/>
+        <g fill="none" stroke="#6fd3ff" stroke-width="3"><path d="M80 74l60 35v70l-60 35-60-35v-70zM20 109l60 35 60-35M80 144v70"/></g>
+        <text x="80" y="285" text-anchor="middle">supplier</text>
+        <g class="destination" transform="translate(670 144)">
+          <rect x="-68" y="-68" width="136" height="136" rx="24" fill="#0a1424" stroke="#6fd3ff" stroke-width="2"/>
+          <path class="decision" d="M-28 0l19 19 37-38" pathLength="1"/>
+        </g>
+        <text class="receiver" x="670" y="285" text-anchor="middle">verifier</text>
+        <g class="model-packet"><path d="M-20-12L0-24l20 12v24L0 24l-20-12z" fill="#0a1424" stroke="#6fd3ff" stroke-width="3"/></g>
+        <g class="proof-packet"><rect class="record" x="-25" y="-28" width="50" height="56" rx="5"/><path d="M-14-13h28M-14 0h28M-14 13h19" stroke="#ffcf5a" stroke-width="2"/></g>
+        <circle class="packet" r="6"/>
+        <text x="375" y="80" text-anchor="middle">model + training record</text>
+        <text class="check-label" x="375" y="305" text-anchor="middle" fill="#ffcf5a">replay + secret check</text>
+      </svg>`,
+      update: (t, el) => {
+        const starts = [T.hosp, T.car, T.cloud];
+        const i = t < T.car ? 0 : t < T.cloud ? 1 : 2;
+        const at0 = starts[i];
+        const send = ease.inOutCubic(ramp(t, at0 + 0.15, at0 + 1.45));
+        el.dataset.scenario = ['hospital', 'automotive', 'data provenance'][i];
+        el.querySelector('.receiver').textContent = ['hospital', 'carmaker', 'AI provider'][i];
+        el.querySelector('.model-packet').setAttribute('transform', `translate(${lerp(160, 590, send)} 140)`);
+        el.querySelector('.proof-packet').setAttribute('transform', `translate(${lerp(160, 590, ease.inOutCubic(ramp(t, at0 + 0.35, at0 + 1.65)))} 245)`);
+        const replay = ramp(t, at0 + 1.6, at0 + 2.5);
+        el.querySelector('.packet').setAttribute('cx', String(lerp(170, 590, replay)));
+        el.querySelector('.packet').setAttribute('cy', '245');
+        el.querySelector('.packet').style.opacity = String(win(t, at0 + 1.6, at0 + 2.55, 0.1, 0.1));
+        el.querySelector('.replay').style.strokeDashoffset = String(-replay * 100);
+        el.querySelector('.decision').style.strokeDasharray = '1';
+        el.querySelector('.decision').style.strokeDashoffset = String(1 - ramp(t, at0 + 2.5, at0 + 3.1));
+      } });
     const USES = [
-      ['hosp', T.hosp, 'A hospital', 'can confirm its model is <b>the one that was audited</b>.'],
-      ['car', T.car, 'A carmaker', 'can <b>replay a supplier&rsquo;s training</b> after an incident.'],
-      ['cloud', T.cloud, 'An AI provider', 'can show a model was <b>trained on licensed data</b>.'],
+      [T.hosp, T.car, 'A hospital', 'Is this the model that was audited?', 'Match the deployed model to its registered evidence.'],
+      [T.car, T.cloud, 'A carmaker', 'Can we check the supplier&rsquo;s training?', 'Replay recorded training steps after an incident.'],
+      [T.cloud, T.close, 'An AI provider', 'What data is this model tied to?', 'Check provenance against a registered dataset.'],
     ];
-    USES.forEach(([k, at0, t1, d], i) => {
-      text({ at: at0, out: T.close - 0.25, cls: 'use', words: false, dur: 0.6, rise: 22, place: { x: 1010, y: 190 + i * 222, w: 810 },
-             html: `${ICON[k]}<div><div class="use__t">${t1}</div><div class="use__d">${d}</div></div>` });
+    USES.forEach(([at0, out, title, question, evidence]) => {
+      text({ at: at0, out: out - 0.2, cls: 'application', words: false, dur: 0.35, outDur: 0.15, rise: 12,
+        place: { x: 1030, y: 550, w: 770 },
+        html: `<div class="use__t">${title}</div><div class="use__q">${question}</div><div class="evidence">${evidence}</div>` });
     });
-    text({ at: T.cloud + 1.2, out: T.close - 0.25, cls: 'note', words: false, dur: 0.5, place: { x: 1010, y: 872, w: 810 },
-           html: 'Application scenarios described in the paper.' });
+    text({ at: T.cloud + 0.2, out: T.close - 0.25, cls: 'note', words: false, dur: 0.35, place: { x: 1030, y: 810, w: 770 },
+      html: 'A provenance check needs trusted registration.<br>It does not establish a dataset&rsquo;s legal status.' });
 
     // the view
     text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 260, y: 320, w: 1400, align: 'center' },
@@ -686,7 +747,7 @@ const film = {
   frame(t, ctx) {
     const { camera, keys, cam, pathMat, comet, verifier, curve, arc, cks, tubeMat, forgedMat, fnodes, honest, forged,
             HOVER_H, HOVER_F, END, FEND, COLH, COLF, introMid, motes, constellation, weave, wsrc, wdst, wpos, beam,
-            attackMat, gap, aNode, terrain, dust, N, renderer, grade } = ctx;
+            attackMat, gap, aNode, terrain, dust, N, renderer, grade, copyBits, copyPos, questions } = ctx;
     const pr = renderer.getPixelRatio();
 
     ctx.cameraAt(keys, t, cam);
@@ -789,8 +850,23 @@ const film = {
     forged.shell.material.opacity = orbF * 0.9;
     // asked the secret question, the forger's model has nothing to say: a flicker of trying
     const ASK_H = T.both + 0.5, ASK_F = T.both + 3.1;
+    const revealSecret = win(t, ASK_H + 0.35, 68.2, 0.6, 0.4);
+    honest.shell.material.opacity *= lerp(1, 0.42, revealSecret);
+    honest.core.material.uniforms.uAlpha.value *= lerp(1, 0.16, revealSecret);
     const trying = t > ASK_F + 0.7 && t < 67.6 ? 0.9 + 0.5 * Math.abs(Math.sin(t * 23.0)) * (1 - ramp(t, ASK_F + 2.2, ASK_F + 3.0)) : 1.1;
     forged.core.material.uniforms.uAlpha.value = orbF * trying;
+
+    for (let i = 0; i < 36; i++) {
+      const u = clamp01((t - T.copy - 0.5 - i * 0.045) / 1.45);
+      const a = honest.g.position, b = forged.g.position;
+      const spread = Math.sin(Math.PI * u) * 0.22;
+      copyPos[i * 3] = lerp(a.x, b.x, u);
+      copyPos[i * 3 + 1] = lerp(a.y, b.y, u) + spread * Math.sin(i * 2.4);
+      copyPos[i * 3 + 2] = lerp(a.z, b.z, u) + spread * Math.cos(i * 2.4);
+    }
+    copyBits.geometry.attributes.position.needsUpdate = true;
+    copyBits.material.uniforms.uPR.value = pr;
+    copyBits.material.uniforms.uAlpha.value = win(t, T.copy + 0.5, T.copy + 3.7, 0.2, 0.3);
 
     // the weave: gold drawn from the walk into the model while it trains
     honest.g.updateMatrixWorld();
@@ -823,13 +899,36 @@ const film = {
     const bx = ease.inOutCubic(ramp(t, ASK_F, ASK_F + 0.7));
     beam.position.lerpVectors(HOVER_H, HOVER_F, bx);
     beam.position.y += 1.75;
-    beam.material.uniforms.uAlpha.value = win(t, ASK_H, 68.0, 0.5, 0.6) * 0.32;
+    beam.material.uniforms.uAlpha.value = (win(t, ASK_H, ASK_H + 2.4, 0.3, 0.4)
+      + win(t, ASK_F, ASK_F + 2.4, 0.3, 0.4)) * 0.1;
+    // A question arrives before an answer appears. The same challenge reaches
+    // the forger, but no matching gold response is returned.
+    questions.forEach((ring, i) => {
+      const at0 = i ? ASK_F : ASK_H;
+      const age = t - at0;
+      const pulse = ((Math.max(0, age) / 0.85) % 1);
+      ring.position.copy(i ? HOVER_F : HOVER_H);
+      ring.position.y += lerp(1.55, 0, ease.inOutSine(pulse));
+      ring.quaternion.copy(camera.quaternion);
+      ring.scale.setScalar(lerp(0.35, 1.15, pulse));
+      ring.material.opacity = win(t, at0, at0 + 2.45, 0.2, 0.3) * Math.sin(Math.PI * pulse) * 0.85;
+    });
 
     // the scrub
     attackMat.uniforms.uReveal.value = ease.inOutSine(ramp(t, 69.6, 71.4));
     attackMat.uniforms.uAlpha.value = win(t, 69.5, D + 1, 0.2, 0.1) * late;
     gap.material.opacity = win(t, 71.4, T.cost + 0.4, 0.4, 0.5);
     aNode.material.opacity = win(t, 71.1, T.cost + 0.4, 0.3, 0.5);
+    // Replaying the recorded endpoint visibly disagrees with the scrubbed
+    // endpoint. Keep this causal comparison alive through the explanation.
+    if (t >= 73.5 && t < T.cost) {
+      const replay = ((t - 73.5) / 2.1) % 1;
+      verifier.position.copy(curve.getPointAt(lerp(0.72, 1, ease.inOutCubic(clamp01(replay / 0.7)))));
+      verifier.material.opacity = win(replay, 0, 0.95, 0.1, 0.15);
+      pathMat.uniforms.uScan.value = lerp(0.72, 1, clamp01(replay / 0.7));
+      pathMat.uniforms.uScanAmt.value = verifier.material.opacity;
+      gap.material.opacity *= 0.65 + 0.35 * Math.sin(Math.PI * replay);
+    }
 
     // light: dim the world under the cards, and for the card at the end
     grade.uniforms.uFade.value = 1 - 0.55 * win(t, T.cost - 0.1, T.close + 0.3, 0.8, 0.8)

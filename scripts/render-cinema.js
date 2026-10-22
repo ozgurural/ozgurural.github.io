@@ -130,7 +130,9 @@ async function open(browser, a) {
 
 async function shot(page, W, H, t) {
   await page.evaluate(tt => window.CINEMA.seek(tt), t);
-  return page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: W, height: H } });
+  // PNG compression was the bottleneck on the film's grain, not WebGL.
+  // Faster lossless encoding preserves the pixels sent to ffmpeg.
+  return page.screenshot({ type: 'png', optimizeForSpeed: true, clip: { x: 0, y: 0, width: W, height: H } });
 }
 
 (async () => {

@@ -35,9 +35,40 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
       audioPaused: window.testAudio[0].paused,
       muted: window.testAudio[0].muted
     }));
-    await open('securepol');
+    await open('model-heist');
     assert.equal(await page.$eval('[data-act="cc"]', el => getComputedStyle(el).display), 'none',
       'films without captions do not show a dead CC button');
+
+    await open('securepol');
+    assert.notEqual(await page.$eval('[data-act="cc"]', el => getComputedStyle(el).display), 'none',
+      'SecurePoL offers captions for sound-off playback');
+    const securepol = require('../assets/audio/cinema/securepol/timeline.json');
+    const cue = id => securepol.lines.find(line => line.id === id).real;
+    await page.evaluate(t => window.CINEMA.seek(t), cue('copy') + 1);
+    assert.match(await page.$eval('.cin-cap', el => el.textContent), /trained model/,
+      'SecurePoL displays the spoken phrase, rather than an empty caption track');
+    const handoff = async t => page.evaluate(t => {
+      window.CINEMA.seek(t);
+      return document.querySelector('.handoff').innerHTML;
+    }, t);
+    const before = await handoff(cue('car') + 1);
+    assert.notEqual(await handoff(cue('car') + 2), before, 'the handoff advances while its explanation plays');
+    await handoff(cue('cloud') + 3);
+    assert.equal(await handoff(cue('car') + 1), before,
+      'seeking back resets the handoff and verdict without depending on previous playback');
+    for (const id of ['forged', 'scrub']) {
+      const overlap = await page.evaluate(t => {
+        window.CINEMA.seek(t);
+        const cap = document.querySelector('.cin-cap').getBoundingClientRect();
+        return [...document.querySelectorAll('.credit')]
+          .filter(el => el.style.visibility !== 'hidden' && Number(el.style.opacity) > 0.6)
+          .some(el => {
+            const r = el.getBoundingClientRect();
+            return r.left < cap.right && r.right > cap.left && r.top < cap.bottom && r.bottom > cap.top;
+          });
+      }, cue(id) + 1);
+      assert.equal(overlap, false, `${id}: captions keep the source and attack-scope notes readable`);
+    }
 
     await page.evaluate(() => { window.CINEMA.play(true); window.CINEMA.pause(); });
     await new Promise(resolve => setTimeout(resolve, 350));
