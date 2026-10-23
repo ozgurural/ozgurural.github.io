@@ -1,8 +1,8 @@
 ---
 permalink: /lab/
 title: "Research Lab"
-description: "Block Race, Model Heist Detector, SecurePoL, Redundancy Reactor, Gradient Pinball, ML Oracles and more. Real research math, animated from the equation up."
-excerpt: "Twelve cinematic explainers, grouped by what they are: five from my own IEEE Access and ICISSP papers on proof-of-learning, watermarking, blockchain-enhanced ML and rare-event detection, one from the hard-real-time simulator systems I engineer, one architecture experiment connecting AI inference to real-time execution, three animating foundational results credited to their authors, and two open questions labelled as unpublished. Each animates the real mathematics, derived rather than hand-waved."
+description: "Short films on who trained an AI model, learning across organisations and AI in real-time systems, each labelled as research, design study or teaching film."
+excerpt: "Twelve short films, grouped by what they are: published research, design studies and engineering practice, open research notes, and teaching films on foundational results."
 header:
   og_image: "lab-og/og-lab.png"
 ---
@@ -19,93 +19,87 @@ header:
   </div>
 </section>
 
-<h3 class="lab-deck-heading">From my published research</h3>
-<p class="lab-deck-note">Each of these animates a result from one of my own papers, with the mechanisms and the measured numbers the paper reports.</p>
+<h3 class="lab-deck-heading">Who trained a model, and whose is it?</h3>
+<p class="lab-deck-note">SecurePoL is the research. The two films after it each go deeper into one question it raises.</p>
 
-<nav class="lab-mission-deck" aria-label="Films from published research">
+<nav class="lab-mission-deck" aria-label="Films on model ownership">
   <a class="lab-mission-card" href="/lab/training-fingerprint/">
     <span class="lab-mission-card__code">01</span>
-    <strong>Proof-of-Learning (SecurePoL)</strong>
-    <span>A loss trajectory used as evidence of training provenance: inexpensive to record, harder to reproduce under the stated attack model. <em>IEEE Access 2025 and my dissertation.</em></span>
-  </a>
-  <a class="lab-mission-card" href="/lab/blockchain-ml/">
-    <span class="lab-mission-card__code">02</span>
-    <strong>Blockchain-Enhanced ML</strong>
-    <span>Consensus that trains instead of hashing, contracts that pay for the loss you removed, and what the prototypes actually measured. <em>IEEE Access 2023, my most-cited paper.</em></span>
+    <strong>SecurePoL: Proving How a Model Was Trained</strong>
+    <span>A training record and a watermark checked together, so a forged training claim has to pass both. <em>Published research: IEEE Access 2025 and my dissertation.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/model-heist/">
-    <span class="lab-mission-card__code">03</span>
-    <strong>Model Heist Detector</strong>
-    <span>A watermark spread across many weights: a Gaussian Z-test illustration whose detection depends on calibration and attack assumptions. <em>IEEE Access 2024.</em></span>
+    <span class="lab-mission-card__code">02</span>
+    <strong>Could This AI Be a Copy?</strong>
+    <span>Deeper: how a faint mark is read out of noise, and why the threshold needs calibrating. <em>A teaching model, not the paper's detector.</em></span>
   </a>
   <a class="lab-mission-card" href="/lab/watermarking-comparison/">
-    <span class="lab-mission-card__code">04</span>
-    <strong>Watermarking Models</strong>
-    <span>A side-by-side comparison of ML model watermarking architectures and their robustness. <em>Auxiliary-head analysis from my dissertation.</em></span>
-  </a>
-  <a class="lab-mission-card" href="/lab/cyber-events/">
-    <span class="lab-mission-card__code">05</span>
-    <strong>Security Event Detection</strong>
-    <span>Turn local-language posts and news into an investigation queue: filter the text, track unusual attention around a target and review the evidence. <em>ICISSP 2021.</em></span>
+    <span class="lab-mission-card__code">03</span>
+    <strong>Signing an AI Model</strong>
+    <span>Deeper: three kinds of model watermark, and what access each one needs to check. <em>From the comparison in my dissertation and SecurePoL.</em></span>
   </a>
 </nav>
 
-<h3 class="lab-deck-heading">From the systems I engineer</h3>
-<p class="lab-deck-note">Hard real time as it is actually regulated and measured, drawn from my work on Level D full-flight simulators. No employer design is disclosed.</p>
+<h3 class="lab-deck-heading">Research, design studies and practice</h3>
+<p class="lab-deck-note">Each card says what it is: published research, a design experiment, or engineering practice.</p>
 
-<nav class="lab-mission-deck" aria-label="Films from engineering practice">
+<nav class="lab-mission-deck" aria-label="Research, design studies and practice">
+  <a class="lab-mission-card" href="/lab/blockchain-ml/">
+    <span class="lab-mission-card__code">04</span>
+    <strong>Who Improved the AI?</strong>
+    <span>Five organisations train one model: how to evaluate an update, reward the contribution and keep data private, with a blockchain as one mechanism among several. <em>Systems reviewed in my survey, IEEE Access 2023.</em></span>
+  </a>
+  <a class="lab-mission-card" href="/lab/determinism/">
+    <span class="lab-mission-card__code">05</span>
+    <strong>AI Meets the Deadline</strong>
+    <span>Where should inference run? Test asynchronous proposals, expiry, fallback and contention around a 60 Hz loop. <em>Design experiment, not yet published.</em></span>
+  </a>
   <a class="lab-mission-card" href="/lab/level-d-60hz/">
     <span class="lab-mission-card__code">06</span>
     <strong>Inside a Level D Flight Simulator</strong>
-    <span>How a simulator fools a pilot's senses, how it is proven against the real aircraft, why it can never be late, and what AI would have to live up to inside one.</span>
+    <span>How a simulator earns a pilot's trust, and what AI would have to keep to run inside one. <em>Engineering practice; every rule cited from the regulation text.</em></span>
   </a>
-</nav>
-
-<h3 class="lab-deck-heading">Architecture experiments</h3>
-<p class="lab-deck-note">Executable design studies with explicit assumptions. Proposed architectures, not claims of deployment or qualification.</p>
-
-<nav class="lab-mission-deck" aria-label="Films exploring proposed architectures">
-  <a class="lab-mission-card" href="/lab/determinism/">
+  <a class="lab-mission-card" href="/lab/cyber-events/">
     <span class="lab-mission-card__code">07</span>
-    <strong>AI Meets the Deadline</strong>
-    <span>Where should inference run? Test asynchronous proposals, expiry, fallback and resource contention around a 60 Hz execution loop.</span>
+    <strong>Security Events in Turkish Text</strong>
+    <span>Turn local-language posts and news into an investigation queue without a labelled dataset. <em>Published research: ICISSP 2021.</em></span>
   </a>
 </nav>
 
-<h3 class="lab-deck-heading">The mathematics behind the field</h3>
-<p class="lab-deck-note">Results that belong to other people, animated because the derivations are worth seeing move. The papers are cited on each page.</p>
+<h3 class="lab-deck-heading">Open research notes</h3>
+<p class="lab-deck-note">Questions I am working on rather than results I have shown. Feedback and collaborators welcome.</p>
 
-<nav class="lab-mission-deck" aria-label="Films explaining foundational results">
-  <a class="lab-mission-card" href="/lab/gradient-pinball/">
-    <span class="lab-mission-card__code">08</span>
-    <strong>Gradient Pinball</strong>
-    <span>How machines learn: the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise. <em>After Polyak, Nesterov and Dauphin et al.</em></span>
-  </a>
-  <a class="lab-mission-card" href="/lab/block-race/">
-    <span class="lab-mission-card__code">09</span>
-    <strong>Block Race</strong>
-    <span>Why "6 confirmations" is a probability, not a promise: Bitcoin's §11 double-spend math, animated. <em>After Nakamoto.</em></span>
-  </a>
-  <a class="lab-mission-card" href="/lab/redundancy-reactor/">
-    <span class="lab-mission-card__code">10</span>
-    <strong>Redundancy Reactor</strong>
-    <span>Superlinear safety, until correlation installs a floor that destroyed Ariane 5. <em>Classical TMR and the Ariane 5 inquiry.</em></span>
-  </a>
-</nav>
-
-<h3 class="lab-deck-heading">Open directions, not yet published</h3>
-<p class="lab-deck-note">Questions I am working on rather than results I have proved. Labelled so no one mistakes them for reviewed work. Feedback and collaborators welcome.</p>
-
-<nav class="lab-mission-deck" aria-label="Films on open research directions">
+<nav class="lab-mission-deck" aria-label="Open research notes">
   <a class="lab-mission-card" href="/lab/oracles/">
-    <span class="lab-mission-card__code">11</span>
-    <strong>ML &amp; Blockchain Oracles</strong>
-    <span>By what mechanism can a deterministic chain accept a claim about a model it cannot re-execute?</span>
+    <span class="lab-mission-card__code">08</span>
+    <strong>Can a Contract Trust an AI Answer?</strong>
+    <span>A proof shows a model was computed correctly; it does not show the answer is right.</span>
   </a>
   <a class="lab-mission-card" href="/lab/universal-jira/">
+    <span class="lab-mission-card__code">09</span>
+    <strong>Can a Market Coordinate AI Agents?</strong>
+    <span>When agents propose the work they are paid for, how do you tell useful work from reward hunting?</span>
+  </a>
+</nav>
+
+<h3 class="lab-deck-heading">Foundations</h3>
+<p class="lab-deck-note">Teaching films on results that belong to other people, animated because the derivations are worth seeing move. The papers are cited on each page.</p>
+
+<nav class="lab-mission-deck" aria-label="Teaching films on foundational results">
+  <a class="lab-mission-card" href="/lab/gradient-pinball/">
+    <span class="lab-mission-card__code">10</span>
+    <strong>Gradient Pinball</strong>
+    <span>How neural networks learn: the learning-rate cliff, the √κ momentum speedup, and saddle points. <em>After Polyak, Nesterov and Dauphin et al.</em></span>
+  </a>
+  <a class="lab-mission-card" href="/lab/block-race/">
+    <span class="lab-mission-card__code">11</span>
+    <strong>Block Race</strong>
+    <span>Why "6 confirmations" is a probability, not a promise. <em>After Nakamoto, §11.</em></span>
+  </a>
+  <a class="lab-mission-card" href="/lab/redundancy-reactor/">
     <span class="lab-mission-card__code">12</span>
-    <strong>Universal Jira Board</strong>
-    <span>Can prediction markets price and settle engineering work without a central planner?</span>
+    <strong>Redundancy Reactor</strong>
+    <span>Voting makes independent faults rare; a shared cause sets a floor no number of copies removes. <em>Classical TMR and the Ariane 5 inquiry.</em></span>
   </a>
 </nav>
 

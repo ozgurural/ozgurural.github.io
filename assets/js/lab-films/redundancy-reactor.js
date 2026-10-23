@@ -441,7 +441,7 @@
             ctx.strokeStyle = h.rgba(RED, 0.9); ctx.lineWidth = 2;
             ctx.strokeRect(400, 368, 300, 52);
             ctx.fillStyle = h.rgba(WHT, 0.95); ctx.font = "600 13px 'JetBrains Mono',monospace";
-            ctx.fillText("MAJORITY VOTE: 2 of 2 agree", 414, 392);
+            ctx.fillText("BOTH UNITS: SAME ERROR", 414, 392);
             ctx.fillStyle = h.rgba(RED, 1); ctx.font = "600 12px 'JetBrains Mono',monospace";
             ctx.fillText("accepted, and wrong", 414, 412);
           }

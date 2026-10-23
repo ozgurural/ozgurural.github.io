@@ -1,7 +1,7 @@
 ---
 permalink: /lab/oracles/
 oembed: "/lab/oracles/oembed.json"
-title: "ML Oracles: Verifiable Claims for the Chain, animated"
+title: "ML Oracles: Can a Contract Trust an AI Answer?"
 description: "Can a contract trust an AI answer it did not compute? An animated comparison of zero-knowledge proofs, optimistic challenges, and their limits."
 excerpt: "A proof checks computation. A challenge window lets others dispute a claim. Neither makes an AI answer automatically true."
 sitemap: true
@@ -13,7 +13,7 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-oracles" style="margin-top: 0;">
   <span class="ep-eyebrow">Smart Contracts × Machine Learning</span>
-  <p class="lab-card__lead">An AI says a crop is damaged. Should a smart contract release the payment? An oracle can deliver the answer, but delivery is not verification. This animation compares <strong>zkML (Zero-Knowledge Machine Learning)</strong> with <strong>optimistic challenge windows</strong>, showing what each checks and what it leaves unresolved.</p>
+  <p class="lab-card__lead">An AI says a crop is damaged. Should a smart contract release the payment? Two existing mechanisms answer different questions: a <strong>zero-knowledge proof (zkML)</strong> shows the model was computed correctly, and an <strong>optimistic challenge window</strong> lets anyone dispute a claim before it settles. Neither shows that the answer is right. My open question is what a contract can accept about a model's output when correct computation is not a correct answer.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span><strong>Open research direction of the author</strong>, not yet published, and a natural continuation of the <a href="/publication/2023-ieee-access-survey">Blockchain-Enhanced ML survey</a> (IEEE Access 2023). The question: by what mechanism can a deterministic chain accept a claim about a probabilistic model it cannot re-execute? The film works through the candidate answers: zero-knowledge proofs of inference and optimistic challenge windows, and where each one currently breaks. Feedback and collaborators welcome.</span>

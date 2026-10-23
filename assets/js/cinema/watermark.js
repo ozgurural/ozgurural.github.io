@@ -363,7 +363,7 @@ const film = {
     // one: asked from the outside. An ordinary question, then the secret set: one match could be luck, a set is not
     const SECRET = [['secret photo 1', 'ship'], ['secret photo 2', 'frog'], ['secret photo 3', 'truck']];
     text({ at: T.says + 1.0, out: T.numbers - gone, cls: 'pn', words: false, dur: 0.5, rise: 16, place: { x: PN.x, y: 690, w: PN.w },
-           html: `<div class="pn__h"><div class="pn__t">from outside &middot; illustration</div><span class="stamp gold">${OK}A WHOLE SET: NOT LUCK</span></div>
+           html: `<div class="pn__h"><div class="pn__t">from outside &middot; illustration</div><span class="stamp gold">${OK}A WHOLE SET: UNLIKELY BY CHANCE</span></div>
                   <div class="qa"><span class="q">a photo of a cat</span><span class="ar">&rarr;</span><span class="a">&ldquo;cat&rdquo;</span></div>` +
                  SECRET.map(([q, a2]) => `<div class="qa s"><span class="q">${q}</span><span class="ar">&rarr;</span><span class="a">&ldquo;${a2}&rdquo;</span></div>`).join(''),
            update: (t, el) => {

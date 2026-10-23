@@ -1,10 +1,10 @@
 ---
 permalink: /lab/universal-jira/
 oembed: "/lab/universal-jira/oembed.json"
-title: "Universal Jira: Prediction Markets for Global Coordination, animated"
-seo_title: "Universal Jira: Prediction Markets, animated"
-description: "A cinematic explainer on how smart contracts and prediction markets can act as incentive-compatible coordination with no trusted central party."
-excerpt: "How do we coordinate global engineering without a central boss? We use the math of Automated Market Makers (AMMs), market prices, and oracle resolution to turn software bounties into a shared belief system."
+title: "Universal Jira: Can a Market Coordinate AI Agents?"
+seo_title: "Universal Jira: Can a Market Coordinate AI Agents?"
+description: "An open research note: when AI agents both propose work and are paid for it, how could a prediction market tell useful work from reward hunting?"
+excerpt: "An open research note. A market prices whether a task will be done and an oracle settles it; the hard part is the settlement once agents propose the work they are paid for."
 sitemap: true
 header:
   og_image: "lab-og/og-jira.png"
@@ -14,7 +14,7 @@ header:
 
 <section class="lab-card lab-experiment" id="lab-jira" style="margin-top: 0;">
   <span class="ep-eyebrow">Mechanism Design · Verification Without an Authority</span>
-  <p class="lab-card__lead">⮞ Every film in this lab circles one question: who verifies a claim when nobody is in charge? Proof-of-learning asks it about a training run, oracles ask it about a model's output. This one asks it about <strong>work</strong>. Assignment is a manager's job, and a manager is the part that does not scale once the people doing the work are software agents. So replace the ticket with a price: a market opens on whether a task will be done, an automated market maker keeps a quote on both sides, and an oracle settles it afterwards. The quantity that matters is not the ticket but the market's belief about whether the work will land.</p>
+  <p class="lab-card__lead">When AI agents both propose work and are paid for finishing it, how do you tell useful work from reward hunting? This note sketches one proposal: replace the ticket with a market on whether a task will be done, keep a price on both sides with an automated market maker, and let an oracle settle it afterwards. The weak point is the settlement, and that is the open question.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span><strong>Open research direction of the author</strong>, not yet published. The question: can a market price and settle engineering work without a central planner, and what has to be true of the settlement step once the agents proposing the work are the same ones being paid for it? The mechanism is built on standard foundations (DAO mechanism design, constant-product AMM invariants, Logarithmic Market Scoring Rules); the contribution under development is applying them as a coordination substrate for software delivery, and connecting the resolution problem to the verification work in my <a href="/publication/2025-dissertation">dissertation</a> and the <a href="/lab/oracles/">oracle film</a>. Feedback and collaborators welcome.</span>
@@ -30,6 +30,13 @@ header:
     <span><i style="background:#83C167"></i> developer effort</span>
     <span><i style="background:#9A72AC"></i> oracle resolution</span>
   </p>
+
+  <details class="lab-reveal" open>
+    <summary>Open problems, and a first test</summary>
+    <p><strong>Assumptions.</strong> Tasks can be stated as propositions with a resolution date; an oracle can judge whether a proposition came true; traders hold no private control over the outcome they bet on.</p>
+    <p><strong>Unsolved.</strong> The last assumption fails as soon as the agents trading on a task are the ones doing it: a market then rewards whoever can make a proposition resolve YES, which is not the same as useful work. Self-proposed tasks can be written to be easy to resolve. The oracle inherits the whole verification problem. Nothing here shows that the mechanism is incentive-compatible.</p>
+    <p><strong>A first test.</strong> A simulated backlog with honest agents and agents that propose trivial or self-resolving tasks; measure whether prices separate the two, how much value the second kind extracts, and how much of that a stricter settlement rule (independent review, a deposit forfeited on rejection) removes.</p>
+  </details>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>

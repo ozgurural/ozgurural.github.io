@@ -21,11 +21,12 @@ header:
     </div>
 
   <div class="lab-lvd">
-  <p class="lab-card__lead">A stolen model runs inside someone else&rsquo;s product. How does its owner show it is theirs? This film compares three kinds of <strong>model watermark</strong>, where the signature is trained into the model itself: <strong>black-box</strong> (answers to a set of secret inputs), <strong>white-box</strong> (a sparse pattern in the weights), and <strong>architecture-level</strong> (a non-intrusive auxiliary head). It ends on the weakness they share, and on tying the mark to the training record. A companion to the <a href="/lab/model-heist/"><em>Model Heist Detector</em></a>.</p>
+  <p class="lab-card__lead">A stolen model runs inside someone else&rsquo;s product. How does its owner show it is theirs? This film compares three kinds of <strong>model watermark</strong>, where the signature is trained into the model itself: <strong>black-box</strong> (answers to a set of secret inputs), <strong>white-box</strong> (a sparse pattern in the weights), and <strong>architecture-level</strong> (a non-intrusive auxiliary head). It ends on the weakness they share, and on tying the mark to the training record. A companion to <a href="/lab/model-heist/"><em>Could this AI be a copy?</em></a></p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span>The author&rsquo;s <a href="/publication/2025-secureproofoflearning">SecurePoL paper</a> (Ural &amp; Yoshigoe, IEEE Access 2025) and <a href="https://commons.erau.edu/edt/905/">dissertation</a>, which train one design from each of the three watermark families under one regime and compare them; trigger sets follow <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/adi">Adi et al. (2018)</a>. The examples in the film are illustrations, not a shared benchmark.</span>
   </div>
+  <p class="lab-film__alt">Part of the model-ownership series. Start with <a href="/lab/training-fingerprint/">SecurePoL</a>, the research it comes from.</p>
   <aside class="lab-lvd__facts" aria-label="At a glance">
     <p class="lab-lvd__facts-title">At a glance</p>
     <dl>

@@ -25,6 +25,7 @@ header:
     <strong>Research context:</strong>
     <span>The Gaussian matched-filter test is an illustrative model authored for this explainer. It is not the detector, formula or empirical benchmark in <a href="/publication/2024-ieee-access-watermarking">Ural and Yoshigoe’s IEEE Access 2024 paper</a>. That paper studies combining an embedded watermark with verification of the training record. The film explores the broader question of how to interpret statistical evidence of model provenance.</span>
   </div>
+  <p class="lab-film__alt">Part of the model-ownership series. Start with <a href="/lab/training-fingerprint/">SecurePoL</a>, the research it comes from.</p>
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/model-heist/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
   <aside class="lab-lvd__facts" aria-label="At a glance">
     <p class="lab-lvd__facts-title">At a glance</p>

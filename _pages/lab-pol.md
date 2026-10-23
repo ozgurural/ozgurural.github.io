@@ -26,6 +26,7 @@ header:
     <strong>Sources:</strong>
     <span>Proof-of-Learning: Jia et al., IEEE S&amp;P 2021. SecurePoL: Ural and Yoshigoe, <a href="/publication/2025-secureproofoflearning">IEEE Access 2025</a> (<a href="https://doi.org/10.1109/ACCESS.2025.3642198">DOI</a>, <a href="https://github.com/ozgurural/SecurePoL-with-Watermarking">code</a>), from my <a href="/publication/2025-dissertation">Ph.D. dissertation</a>. The film shows one of the paper's three watermark designs.</span>
   </div>
+  <p class="lab-film__alt">Go deeper: <a href="/lab/model-heist/">Could this AI be a copy?</a> on reading a mark as statistical evidence, and <a href="/lab/watermarking-comparison/">Signing an AI model</a> on which watermark suits which access.</p>
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/training-fingerprint/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
 
   <aside class="lab-lvd__facts" aria-label="Key numbers">
