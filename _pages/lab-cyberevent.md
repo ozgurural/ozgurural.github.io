@@ -1,10 +1,10 @@
 ---
 permalink: /lab/cyber-events/
 oembed: "/lab/cyber-events/oembed.json"
-title: "Detecting Cyber-Security Events in Turkish Social Media"
-seo_title: "Cyber-Security Event Detection, animated"
-description: "Detecting cyber-security events with no labelled corpus: a keyword vector learned from the nic.tr attack, Turkish morphology, and anomalies per entity."
-excerpt: "No labelled corpus, so a known incident becomes the training set. Sensitivity and certainty pull against each other, and the scoreboard is published in full: 29 detections, 22 real, 7 false."
+title: "From Local Reports to Security Alerts"
+seo_title: "Security Event Detection from Local-Language Reports"
+description: "Turn Turkish posts and news into an investigation queue: learn relevant terms, normalise the language and flag unusual attention around a target."
+excerpt: "An interpretable workflow for security analysts: find relevant local-language reports, track unusual activity around named targets and review the evidence behind each alert."
 sitemap: true
 header:
   og_image: "lab-og/og-cyber-events-film.jpg"
@@ -21,44 +21,40 @@ header:
     </div>
 
   <div class="lab-lvd">
-  <p class="lab-card__lead">🛰 Security incidents surface publicly before they surface officially: someone posts that a service is unreachable long before a statement is issued. Detecting that in Turkish meant building the system without the thing everyone else starts from: a labelled corpus. This animation follows the actual construction: learning the keyword vocabulary from an incident whose answer is already known (the nic.tr denial-of-service attack of December 2015), pruning it by A/B test on false positives, normalising an agglutinative language so the evidence survives, and detecting events as an <strong>anomaly in how often a named entity is mentioned</strong> rather than as a classifier verdict.</p>
-  <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>The author's <a href="/publication/AutomaticDetectionCyberSecurity">"Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data"</a> (Ural &amp; Acartürk, ICISSP 2021, pp. 66–76), extending the <a href="/publication/2019-metu-masters-thesis">M.Sc. thesis</a> completed at METU under <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>. The study used Turkish Twitter and the Hürriyet newspaper API, with normalisation through the <a href="https://tools.nlp.itu.edu.tr/">ITU NLP web service</a> (<a href="https://doi.org/10.3115/v1/E14-2001">Eryiğit, 2014</a>). Corpus sizes and detection totals are reported results; the panels in the film are illustrations of the method, not the original time-series data.</span>
-  </div>
-  <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/cyber-events/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
-  <aside class="lab-lvd__facts" aria-label="Key numbers">
-    <p class="lab-lvd__facts-title">Key numbers</p>
+  <p class="lab-card__lead">A service becomes unreachable. Local users start posting about it, and a news report adds context. Which reports should a security analyst investigate? This workflow turns a stream of Turkish posts and news into <strong>a queue of possible incidents, with source reports to check</strong>.</p>
+  <p>From my <a href="/publication/2019-metu-masters-thesis">M.Sc. research at METU</a> with <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>, published at <a href="/publication/AutomaticDetectionCyberSecurity">ICISSP 2021</a>. The contribution is a working path from language-specific text processing to alerts for analyst review.</p>
+
+  <h2>Where this workflow could help</h2>
+  <p><strong>Local incident monitoring.</strong> Follow reports naming an organisation or service and flag unusual attention for investigation. An analyst can check whether people are describing an outage, an attack or an ordinary conversation.</p>
+  <p><strong>Threat-intelligence triage.</strong> Bring local-language news and user reports into the same review queue, including warnings about vulnerable applications. The source text gives an analyst evidence to follow up.</p>
+  <p><strong>Building a research corpus.</strong> Collect candidate security reports for later review and labelling. The vocabulary and target list can be adjusted to the investigation.</p>
+  <p>These are potential uses of the workflow. The published study evaluated a Turkish-language research prototype.</p>
+
+  <aside class="lab-lvd__facts" aria-label="From text to investigation">
+    <p class="lab-lvd__facts-title">From text to investigation</p>
     <dl>
-      <div><dt>0</dt><dd>Labelled Turkish cyber-security datasets to start from.</dd></div>
-      <div><dt>2,310 · 28 · ~400</dt><dd>Tweets from the year before the nic.tr attack, the attack day and the fortnight after.</dd></div>
-      <div><dt>Day 1</dt><dd>The attack of 14 December 2015 was detected on its first day.</dd></div>
-      <div><dt>&lt; 30%</dt><dd>False-positive ceiling set in advance for the following two weeks, and met.</dd></div>
-      <div><dt>22 of 29</dt><dd>Real events among the detections in a sample run over 437 documents, about 76%.</dd></div>
+      <div><dt>Filter</dt><dd>Use a known incident to find relevant terms and test candidate keywords.</dd></div>
+      <div><dt>Normalise</dt><dd>Bring Turkish word forms into a form the detector can match.</dd></div>
+      <div><dt>Track</dt><dd>Compare mentions of each named target with its own history.</dd></div>
+      <div><dt>Investigate</dt><dd>Review the reports behind an alert before treating it as an incident.</dd></div>
     </dl>
   </aside>
   </div>
 
-  <details class="lab-reveal" open>
-    <summary>🧠 What did you just learn?</summary>
-    <p><strong>No labelled corpus, so the incident becomes the training set.</strong> There is no annotated Turkish cyber-security dataset to learn from. The way around it is to pick an incident whose answer is already known: the nic.tr denial-of-service attack of 14 December 2015, and pull three corpora around it: 2,310 tweets from the quiet year before, 28 from the attack day itself, and roughly 400 from the fortnight after. TF-IDF across those tells you which terms genuinely separate an attack from ordinary Turkish.</p>
-    <p><strong>Every candidate keyword is then A/B tested on false positives.</strong> A term enters the vector only if it raises detections without flooding the analyst's queue. That is the correct thing to optimise here: in a rare-event problem the false-positive term is multiplied by an enormous negative class, so it, not recall, is what decides whether anyone keeps using the tool.</p>
-    <p><strong>The vector is squeezed from both sides.</strong> Too many keywords and the system ingests more documents than it can process while false positives climb, so <em>certainty</em> falls. Too few and events are missed, or noticed days late instead of on the attack day, so <em>sensitivity</em> falls. No setting maximises both, which is why the paper pins both down as acceptance criteria in advance: detect nic.tr on the day, and stay under 30% false positives over the following two weeks. Both were met.</p>
-    <p><strong>Turkish decides how much evidence survives preprocessing.</strong> The language is agglutinative: meaning is built by stacking suffixes, so one stem yields a combinatorial family of surface forms that keyword matching sees as unrelated tokens. Every document is normalised through the ITU NLP web service before keyword and event detection. In this system, preprocessing is part of the detector rather than cleanup around a classifier.</p>
-    <p><strong>Detection is an anomaly, not a verdict.</strong> A named-entity vector lists what can be attacked (institutions, government organisations, countries) and each entity's daily mention count is compared against a threshold derived from its own history. On 14 December 2015, the first day of the attack, the tweets naming nic.tr were enough to cross its threshold, and the attack was detected that day. No classifier is asked whether that constitutes an attack; the deviation is the signal.</p>
-    <p><strong>And the scoreboard is published, not rounded away.</strong> A sample run over 437 documents (186 tweets and 251 Hürriyet articles) produced 29 detections: 22 real and 7 false, about 76% success. The paper prints its failure mode too: the keyword "hacklendi" firing on an everyday message asking whether someone's account was compromised, which describes no event at all. Reporting the false positives alongside the hits is what makes the number worth anything.</p>
+  <details class="lab-reveal">
+    <summary>How the method works</summary>
+    <p><strong>Start from a known incident.</strong> The study began without an annotated Turkish cyber-security corpus. It compared text from before, during and after the nic.tr denial-of-service attack. TF-IDF helped identify candidate terms; keyword tests checked whether adding a term found useful reports without introducing excessive false alarms.</p>
+    <p><strong>Make the language matchable.</strong> Turkish builds many word forms through suffixes. Normalising the text through the ITU NLP service lets the detector match forms that would otherwise appear unrelated.</p>
+    <p><strong>Look for a change around a target.</strong> In the filtered text, count daily mentions of a predefined organisation, institution or country. Compare each target with a threshold derived from its own history. This makes the alert traceable to the target, the time period and the reports behind it.</p>
+    <p><strong>Keep the analyst in the loop.</strong> A message asking whether an account was hacked can contain a security keyword without reporting an incident. An alert starts an investigation; source checking determines what happened.</p>
   </details>
 
   <details class="lab-reveal">
-    <summary>📐 The math, precisely</summary>
-    <div class="lab-math" data-role="cyb-appendix">
-      <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
-    </div>
+    <summary>Study scope, limitations and sources</summary>
+    <p>The study used historical Turkish Twitter and Hürriyet newspaper data. Its evaluation included confirmed incidents and false alerts, but did not establish how many events were missed. Applying the workflow to another language, source or time period requires fresh evaluation of vocabulary, normalisation and alert thresholds.</p>
+    <p>The film illustrates the workflow and reports the original experiment. It is not a comparison against current language models or evidence of a deployed monitoring service. The paper contains the full experimental counts and evaluation criteria.</p>
+    <p><a href="https://doi.org/10.5220/0010201600660076">Read the ICISSP paper</a> by Ural and Acartürk, extending the METU M.Sc. thesis. The text processing uses the <a href="https://tools.nlp.itu.edu.tr/">ITU NLP service</a> (<a href="https://doi.org/10.3115/v1/E14-2001">Eryiğit, 2014</a>).</p>
   </details>
+  <p class="lab-film__alt"><a href="{{ '/lab/cyber-events/embed/' | relative_url }}" target="_blank" rel="noopener">Explore the original technical animation</a> for the diagrams and formulas behind the workflow.</p>
   </div>
 </section>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
-<script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-<script defer src="{{ '/assets/js/lab-films/cyberevent.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>

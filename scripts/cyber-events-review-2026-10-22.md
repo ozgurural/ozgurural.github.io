@@ -58,3 +58,26 @@ Native exports and caption files are local artifacts in `dist/video/`. The
 export job uses lossless PNG capture, a medium H.264 preset at CRF 17, and a
 separate parts directory keyed by the film, timeline and layout bytes so this
 review cannot reuse earlier pictures of the same duration.
+
+## Website positioning, 23 October 2026
+
+The lab page, lab index card and publication summary now lead with the method
+and its possible uses: local incident monitoring, threat-intelligence triage
+and collecting candidate reports for research. The former numbers rail is a
+four-step workflow: filter, normalise, track and investigate. Experimental
+totals and success-rate headlines are omitted from these page summaries; the
+paper remains the source for the full evaluation.
+
+The historical research-prototype scope, false-alert limitation and lack of
+an established missed-event count remain explicit. Possible uses are labelled
+as such. No new model, deployment or contemporary benchmark result is claimed.
+The original films and their experimental narration retain their source data.
+The lab page links to the technical animation instead of also loading its
+legacy engine and mathematical appendix. The fallback share-card text is
+updated to describe the workflow rather than an unrelated accuracy example.
+
+Verification: safe production and isolated local builds, Liquid check, site
+audits of the lab page, publication page and lab index, nine-width layout
+checks, and desktop/mobile screenshots passed. Icon coverage passed across
+78 pages. The external-link crawl found 172 reachable links, no confirmed dead
+links and 40 unverified responses (request refusals, timeouts or fetch failures).

@@ -2,7 +2,7 @@
 layout: cinema
 permalink: /films/cyber-events/
 title: "Hearing an attack in the noise"
-description: "A website goes down, and people post about it before any statement. A narrated film on detecting cyber security events from Turkish posts and news without a labelled data set (Ural & Acarturk, ICISSP 2021)."
+description: "From Turkish posts and news to alerts for analyst review: a film on keyword selection, language normalisation and unusual activity around named targets (Ural & Acarturk, ICISSP 2021)."
 film_module: cyber-events
 noindex: true
 sitemap: false

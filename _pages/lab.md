@@ -45,8 +45,8 @@ header:
   </a>
   <a class="lab-mission-card" href="/lab/cyber-events/">
     <span class="lab-mission-card__code">05</span>
-    <strong>Rare-Event Detection</strong>
-    <span>Why a 99%-accurate detector is wrong most times it speaks, and what an agglutinative language does to your features. <em>ICISSP 2021.</em></span>
+    <strong>Security Event Detection</strong>
+    <span>Turn local-language posts and news into an investigation queue: filter the text, track unusual attention around a target and review the evidence. <em>ICISSP 2021.</em></span>
   </a>
 </nav>
 
