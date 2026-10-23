@@ -1,32 +1,41 @@
 ---
 permalink: /lab/gradient-pinball/
 oembed: "/lab/gradient-pinball/oembed.json"
-title: "Gradient Pinball: how machines learn, animated"
+title: "Gradient Pinball: How Machines Learn"
 description: "A cinematic explainer on gradient descent, momentum, and why high-dimensional loss landscapes are ruled by saddle points, not local minima."
 excerpt: "Every model on Earth learns by rolling downhill on a loss landscape. Here is the geometry of that descent: the learning-rate cliff, the √κ momentum speedup, and the saddle-point surprise, animated."
 sitemap: true
 header:
-  og_image: "lab-og/og-gd.png"
+  og_image: "lab-og/og-gradient-descent-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-gd" style="margin-top: 0;">
   <span class="ep-eyebrow">Deep Learning · Optimization</span>
-  <p class="lab-card__lead">⛰️ Most modern neural networks (language models, diffusion systems, the autocomplete on your phone) are trained with gradient-based optimization over a high-dimensional <strong>loss landscape</strong>. This animation builds that picture from the gradient up: the <em>learning-rate cliff</em>, the conditional <em>momentum speedup</em>, and the saddle-point geometry that can slow an optimizer in many dimensions.</p>
-  <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>The optimization mechanism at the core of the deep neural networks studied in the author's machine-learning security research. Saddle-point prevalence follows Dauphin et al., <em>NeurIPS 2014</em>; momentum analysis follows Polyak (1964) and Nesterov (1983).</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
       <iframe src="{{ '/films/gradient-descent/' | relative_url }}?autoplay=0" title="A walk downhill: a narrated film on how a machine learns" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
+
+  <div class="lab-lvd">
+  <p class="lab-card__lead">⛰️ Most modern neural networks (language models, diffusion systems, the autocomplete on your phone) are trained with gradient-based optimization over a high-dimensional <strong>loss landscape</strong>. This animation builds that picture from the gradient up: the <em>learning-rate cliff</em>, the conditional <em>momentum speedup</em>, and the saddle-point geometry that can slow an optimizer in many dimensions.</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>The optimization mechanism at the core of the deep neural networks studied in the author's machine-learning security research. Saddle-point prevalence follows Dauphin et al., <em>NeurIPS 2014</em>; momentum analysis follows Polyak (1964) and Nesterov (1983).</span>
   </div>
-
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/gradient-pinball/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
-
+  <aside class="lab-lvd__facts" aria-label="Key numbers">
+    <p class="lab-lvd__facts-title">Key numbers</p>
+    <dl>
+      <div><dt>&alpha; &lt; 2/&lambda;</dt><dd>Learning rates below this converge on a curvature &lambda;; above it, training diverges.</dd></div>
+      <div><dt>&alpha; = 1/&lambda;</dt><dd>The sweet spot on a single curvature.</dd></div>
+      <div><dt>&kappa; &rarr; &radic;&kappa;</dt><dd>What heavy-ball momentum does to the iteration count on a quadratic.</dd></div>
+      <div><dt>Saddles</dt><dd>Most high-error critical points in high dimensions (Dauphin et al., 2014).</dd></div>
+    </dl>
+  </aside>
+  </div>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -43,6 +52,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <!-- KaTeX for typeset equations (used by the cinematic engine) -->

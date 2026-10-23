@@ -14,7 +14,7 @@ sitemap: false
   "width": 960,
   "height": 540,
   "html": "<iframe src=\"https://ozgurural.github.io/films/blockchain-ml/?autoplay=0\" width=\"960\" height=\"540\" style=\"border:0;max-width:100%;aspect-ratio:16/9\" loading=\"lazy\" allow=\"autoplay; fullscreen\" allowfullscreen title=\"Who improved the AI? A film about collaborative learning\"></iframe>",
-  "thumbnail_url": "https://ozgurural.github.io/images/lab-og/og-bcml.png",
+  "thumbnail_url": "https://ozgurural.github.io/images/lab-og/og-blockchain-ml-film.jpg",
   "thumbnail_width": 1200,
   "thumbnail_height": 630
 }

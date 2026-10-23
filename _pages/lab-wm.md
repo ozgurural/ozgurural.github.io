@@ -1,32 +1,41 @@
 ---
 permalink: /lab/model-heist/
 oembed: "/lab/model-heist/oembed.json"
-title: "Model Heist Detector: AI watermarks, animated"
+title: "Could This AI Be a Copy? Model Watermarks"
 description: "How a watermark too faint to see in any single weight can become detectable across thousands of them under an explicit statistical model. A cinematic Z-test explainer."
 excerpt: "Spread a faint statistical signature across k weights, read it back through fine-tuning noise with a matched filter, and watch detection power rise as √k."
 sitemap: true
 header:
-  og_image: "lab-og/og-wm.png"
+  og_image: "lab-og/og-model-heist-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-wm" style="margin-top: 0;">
   <span class="ep-eyebrow">ML security · Model provenance</span>
-  <p class="lab-card__lead">Your AI model leaks, and its weights are changed. Could you still recognise a copy? This film uses a statistical teaching model to show how a faint signed pattern accumulates, how a threshold controls chance matches, and how noise aligned with that pattern can invalidate the original calibration. The test assumes access to weights, a clean reference and a secret key.</p>
-  <div class="lab-card__usecase">
-    <strong>Research context:</strong>
-    <span>The Gaussian matched-filter test is an illustrative model authored for this explainer. It is not the detector, formula or empirical benchmark in <a href="/publication/2024-ieee-access-watermarking">Ural and Yoshigoe’s IEEE Access 2024 paper</a>. That paper studies combining an embedded watermark with verification of the training record. The film explores the broader question of how to interpret statistical evidence of model provenance.</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
       <iframe src="{{ '/films/model-heist/' | relative_url }}?autoplay=0" title="Could this AI be a copy? A film about model security and statistical evidence" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
+
+  <div class="lab-lvd">
+  <p class="lab-card__lead">Your AI model leaks, and its weights are changed. Could you still recognise a copy? This film uses a statistical teaching model to show how a faint signed pattern accumulates, how a threshold controls chance matches, and how noise aligned with that pattern can invalidate the original calibration. The test assumes access to weights, a clean reference and a secret key.</p>
+  <div class="lab-card__usecase">
+    <strong>Research context:</strong>
+    <span>The Gaussian matched-filter test is an illustrative model authored for this explainer. It is not the detector, formula or empirical benchmark in <a href="/publication/2024-ieee-access-watermarking">Ural and Yoshigoe’s IEEE Access 2024 paper</a>. That paper studies combining an embedded watermark with verification of the training record. The film explores the broader question of how to interpret statistical evidence of model provenance.</span>
   </div>
-
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/model-heist/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
-
+  <aside class="lab-lvd__facts" aria-label="At a glance">
+    <p class="lab-lvd__facts-title">At a glance</p>
+    <dl>
+      <div><dt>d = &radic;k&middot;&epsilon;/&sigma;</dt><dd>Effect size: grows with the number of marked weights k at a fixed per-weight change &epsilon;.</dd></div>
+      <div><dt>AUC = &Phi;(d/&radic;2)</dt><dd>Detection quality in the stated Gaussian model.</dd></div>
+      <div><dt>|&Delta;S| &le; &rho;</dt><dd>How far a weight change of norm &rho; can move the score.</dd></div>
+      <div><dt>Teaching model</dt><dd>Not the detector or benchmark of the 2024 IEEE Access paper.</dd></div>
+    </dl>
+  </aside>
+  </div>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -43,6 +52,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">

@@ -1,32 +1,41 @@
 ---
 permalink: /lab/redundancy-reactor/
 oembed: "/lab/redundancy-reactor/oembed.json"
-title: "Redundancy Reactor: fault tolerance, animated"
+title: "Redundancy Reactor: When Three Computers Fail"
 description: "Majority voting buys superlinear safety, until correlation installs a floor you cannot vote past. An animated explainer ending in the Ariane 5 loss."
 excerpt: "Triple-modular redundancy, the binomial-tail gain, the correlation floor ρq, and why Ariane 5 was lost when its two identical navigation computers failed the same way."
 sitemap: true
 header:
-  og_image: "lab-og/og-tmr.png"
+  og_image: "lab-og/og-redundancy-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-tmr" style="margin-top: 0;">
   <span class="ep-eyebrow">Aerospace · Fault tolerance</span>
-  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong>, superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. The film shows the idea and the page below gives the mathematics: the binomial-tail gain, and how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat, the exact mechanism that destroyed Ariane 5 in 1996.</p>
-  <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>Triple Modular Redundancy with common-cause (β-factor) failure. The Ariane 5 Flight 501 case follows the ESA Inquiry Board report; the redundancy patterns mirror real-time safety-critical avionics architecture developed by the author.</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
       <iframe src="{{ '/films/redundancy/' | relative_url }}?autoplay=0" title="A backup that shares your mistake: a narrated film on redundancy and Ariane 5" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
+
+  <div class="lab-lvd">
+  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong>, superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. The film shows the idea and the page below gives the mathematics: the binomial-tail gain, and how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat, the exact mechanism that destroyed Ariane 5 in 1996.</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>Triple Modular Redundancy with common-cause (β-factor) failure. The Ariane 5 Flight 501 case follows the ESA Inquiry Board report; the redundancy patterns mirror real-time safety-critical avionics architecture developed by the author.</span>
   </div>
-
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/redundancy-reactor/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
-
+  <aside class="lab-lvd__facts" aria-label="Key numbers">
+    <p class="lab-lvd__facts-title">Key numbers</p>
+    <dl>
+      <div><dt>3q&sup2;(1&minus;q) + q&sup3;</dt><dd>Failure probability of triple redundancy with independent channels.</dd></div>
+      <div><dt>~33&times;</dt><dd>Safety gain from voting at q = 0.01.</dd></div>
+      <div><dt>&rho;q</dt><dd>The floor a shared cause sets, whatever the number of channels.</dd></div>
+      <div><dt>~72 ms</dt><dd>Between Ariane 5&rsquo;s two inertial units failing on the same error, 1996.</dd></div>
+    </dl>
+  </aside>
+  </div>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -44,6 +53,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">

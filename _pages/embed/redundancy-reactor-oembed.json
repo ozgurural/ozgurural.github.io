@@ -14,7 +14,7 @@ sitemap: false
   "width": 960,
   "height": 540,
   "html": "<iframe src=\"https://ozgurural.github.io/films/redundancy/?autoplay=0\" width=\"960\" height=\"540\" style=\"border:0;max-width:100%;aspect-ratio:16/9\" loading=\"lazy\" allow=\"autoplay; fullscreen\" allowfullscreen title=\"A backup that shares your mistake: a narrated film on redundancy and Ariane 5\"></iframe>",
-  "thumbnail_url": "https://ozgurural.github.io/images/lab-og/og-tmr.png",
+  "thumbnail_url": "https://ozgurural.github.io/images/lab-og/og-redundancy-film.jpg",
   "thumbnail_width": 1200,
   "thumbnail_height": 630
 }

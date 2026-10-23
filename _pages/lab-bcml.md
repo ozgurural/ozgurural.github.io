@@ -1,32 +1,41 @@
 ---
 permalink: /lab/blockchain-ml/
 oembed: "/lab/blockchain-ml/oembed.json"
-title: "Blockchain-Enhanced Machine Learning, animated"
+title: "Who Improved the AI? Collaborative Learning"
 description: "What a ledger buys machine learning: consensus that trains instead of hashing, contracts that pay for the improvement you caused, and the measured limits."
 excerpt: "Point the electricity at a model instead of a hash, pay contributors by the loss they removed, and read the prototypes honestly: accuracy rises with parties while throughput falls."
 sitemap: true
 header:
-  og_image: "lab-og/og-bcml.png"
+  og_image: "lab-og/og-blockchain-ml-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-bcml" style="margin-top: 0;">
   <span class="ep-eyebrow">Distributed Systems · Machine Learning · Consensus</span>
-  <p class="lab-card__lead">Five organisations train one AI model. Who improved it, and who should get paid? This film follows the questions behind collaborative learning: how to evaluate an update, what a training record can establish, how contribution rewards work, and why local data still needs privacy protection. A blockchain is one mechanism in the story, with its limits made explicit.</p>
-  <div class="lab-card__usecase">
-    <strong>Research basis:</strong>
-    <span><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a> (Ural &amp; Yoshigoe, IEEE Access, 2023). The SUM reward and deposit rules and the DeepChain prototype are systems reviewed in the survey. The generalisation example and proposed cross-organisation use are teaching illustrations, not new experimental results. The closing design perspective is Dr. Ozgur Ural’s.</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
       <iframe src="{{ '/films/blockchain-ml/' | relative_url }}?autoplay=0" title="Who improved the AI? A film about collaborative learning" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
+
+  <div class="lab-lvd">
+  <p class="lab-card__lead">Five organisations train one AI model. Who improved it, and who should get paid? This film follows the questions behind collaborative learning: how to evaluate an update, what a training record can establish, how contribution rewards work, and why local data still needs privacy protection. A blockchain is one mechanism in the story, with its limits made explicit.</p>
+  <div class="lab-card__usecase">
+    <strong>Research basis:</strong>
+    <span><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a> (Ural &amp; Yoshigoe, IEEE Access, 2023). The SUM reward and deposit rules and the DeepChain prototype are systems reviewed in the survey. The generalisation example and proposed cross-organisation use are teaching illustrations, not new experimental results. The closing design perspective is Dr. Ozgur Ural’s.</span>
   </div>
-
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/blockchain-ml/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
-
+  <aside class="lab-lvd__facts" aria-label="At a glance">
+    <p class="lab-lvd__facts-title">At a glance</p>
+    <dl>
+      <div><dt>3</dt><dd>Problems a shared ledger may help with: poisoned contributions, leaked training data, weights with no record of how they were made.</dd></div>
+      <div><dt>PoL · PoDL · PoQ</dt><dd>Consensus proposals that aim the network&rsquo;s work at training instead of hash puzzles.</dd></div>
+      <div><dt>b<sub>t</sub> = b<sub>t&minus;1</sub> + &Delta;L</dt><dd>A contributor&rsquo;s reward: held-out loss before the update minus after it.</dd></div>
+      <div><dt>DeepChain</dt><dd>A Corda prototype on MNIST: more parties raised accuracy, and training time with it.</dd></div>
+    </dl>
+  </aside>
+  </div>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -43,6 +52,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">

@@ -1,31 +1,41 @@
 ---
 permalink: /lab/watermarking-comparison/
 oembed: "/lab/watermarking-comparison/oembed.json"
-title: "Signing an AI model: model watermarking, animated"
+title: "Signing an AI Model: Three Kinds of Model Watermark"
 seo_title: "Signing an AI model, animated"
 description: "A narrated film on model watermarking: three places to hide a signature in a model (its answers, its weights, an auxiliary head), and why the mark should be tied to the training record."
 excerpt: "How do you claim ownership of a stolen model? Three kinds of model watermark compared: black-box feature triggers, white-box sparse parameter perturbations, and non-intrusive auxiliary heads."
 sitemap: true
 header:
-  og_image: "lab-og/og-wm-compare.png"
+  og_image: "lab-og/og-watermark-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-wm-compare" style="margin-top: 0;">
   <span class="ep-eyebrow">Machine Learning Security</span>
-  <p class="lab-card__lead">A stolen model runs inside someone else&rsquo;s product. How does its owner show it is theirs? This film compares three kinds of <strong>model watermark</strong>, where the signature is trained into the model itself: <strong>black-box</strong> (answers to a set of secret inputs), <strong>white-box</strong> (a sparse pattern in the weights), and <strong>architecture-level</strong> (a non-intrusive auxiliary head). It ends on the weakness they share, and on tying the mark to the training record. A companion to the <a href="/lab/model-heist/"><em>Model Heist Detector</em></a>.</p>
-  <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>The author&rsquo;s <a href="/publication/2025-secureproofoflearning">SecurePoL paper</a> (Ural &amp; Yoshigoe, IEEE Access 2025) and <a href="https://commons.erau.edu/edt/905/">dissertation</a>, which train one design from each of the three watermark families under one regime and compare them; trigger sets follow <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/adi">Adi et al. (2018)</a>. The examples in the film are illustrations, not a shared benchmark.</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
       <iframe src="{{ '/films/watermark/' | relative_url }}?autoplay=0" title="Signing an AI model: a narrated film on model watermarking" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
-  </div>
 
+  <div class="lab-lvd">
+  <p class="lab-card__lead">A stolen model runs inside someone else&rsquo;s product. How does its owner show it is theirs? This film compares three kinds of <strong>model watermark</strong>, where the signature is trained into the model itself: <strong>black-box</strong> (answers to a set of secret inputs), <strong>white-box</strong> (a sparse pattern in the weights), and <strong>architecture-level</strong> (a non-intrusive auxiliary head). It ends on the weakness they share, and on tying the mark to the training record. A companion to the <a href="/lab/model-heist/"><em>Model Heist Detector</em></a>.</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>The author&rsquo;s <a href="/publication/2025-secureproofoflearning">SecurePoL paper</a> (Ural &amp; Yoshigoe, IEEE Access 2025) and <a href="https://commons.erau.edu/edt/905/">dissertation</a>, which train one design from each of the three watermark families under one regime and compare them; trigger sets follow <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/adi">Adi et al. (2018)</a>. The examples in the film are illustrations, not a shared benchmark.</span>
+  </div>
+  <aside class="lab-lvd__facts" aria-label="At a glance">
+    <p class="lab-lvd__facts-title">At a glance</p>
+    <dl>
+      <div><dt>3</dt><dd>Watermark families compared, one design each, trained under one regime.</dd></div>
+      <div><dt>Black-box</dt><dd>Secret trigger inputs: needs only queries and answers.</dd></div>
+      <div><dt>White-box</dt><dd>A sparse pattern in the weights: needs the weights.</dd></div>
+      <div><dt>Auxiliary head</dt><dd>Can be pruned; SecurePoL pairs it with a training-record check.</dd></div>
+    </dl>
+  </aside>
+  </div>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -37,6 +47,7 @@ header:
     <p><strong>Conditional comparison.</strong> Capacity, utility impact, and robustness depend on access, detector calibration, and the attack tested. The film does not establish one universal ranking or bound across these mechanisms.</p>
   </details>
 
+  </div>
 </section>
 
 <!-- KaTeX for typeset equations (used by the cinematic engine) -->

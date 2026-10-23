@@ -1,33 +1,43 @@
 ---
 permalink: /lab/cyber-events/
 oembed: "/lab/cyber-events/oembed.json"
-title: "Detecting Cyber-Security Events in a Low-Resource Language, animated"
+title: "Detecting Cyber-Security Events in Turkish Social Media"
 seo_title: "Cyber-Security Event Detection, animated"
 description: "Detecting cyber-security events with no labelled corpus: a keyword vector learned from the nic.tr attack, Turkish morphology, and anomalies per entity."
 excerpt: "No labelled corpus, so a known incident becomes the training set. Sensitivity and certainty pull against each other, and the scoreboard is published in full: 29 detections, 22 real, 7 false."
 sitemap: true
 header:
-  og_image: "lab-og/og-cyb.png"
+  og_image: "lab-og/og-cyber-events-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-cyb" style="margin-top: 0;">
   <span class="ep-eyebrow">NLP · Security · Low-Resource Languages</span>
-  <p class="lab-card__lead">🛰 Security incidents surface publicly before they surface officially: someone posts that a service is unreachable long before a statement is issued. Detecting that in Turkish meant building the system without the thing everyone else starts from: a labelled corpus. This animation follows the actual construction: learning the keyword vocabulary from an incident whose answer is already known (the nic.tr denial-of-service attack of December 2015), pruning it by A/B test on false positives, normalising an agglutinative language so the evidence survives, and detecting events as an <strong>anomaly in how often a named entity is mentioned</strong> rather than as a classifier verdict.</p>
-  <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>The author's <a href="/publication/AutomaticDetectionCyberSecurity">"Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data"</a> (Ural &amp; Acartürk, ICISSP 2021, pp. 66–76), extending the <a href="/publication/2019-metu-masters-thesis">M.Sc. thesis</a> completed at METU under <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>. The study used Turkish Twitter and the Hürriyet newspaper API, with normalisation through the <a href="https://tools.nlp.itu.edu.tr/">ITU NLP web service</a> (<a href="https://doi.org/10.3115/v1/E14-2001">Eryiğit, 2014</a>). Corpus sizes and detection totals are reported results; the panels in the film are illustrations of the method, not the original time-series data.</span>
-  </div>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
       <iframe src="{{ '/films/cyber-events/' | relative_url }}?autoplay=0" title="Hearing an attack in the noise: a narrated film on detecting cyber security events in Turkish" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
+
+  <div class="lab-lvd">
+  <p class="lab-card__lead">🛰 Security incidents surface publicly before they surface officially: someone posts that a service is unreachable long before a statement is issued. Detecting that in Turkish meant building the system without the thing everyone else starts from: a labelled corpus. This animation follows the actual construction: learning the keyword vocabulary from an incident whose answer is already known (the nic.tr denial-of-service attack of December 2015), pruning it by A/B test on false positives, normalising an agglutinative language so the evidence survives, and detecting events as an <strong>anomaly in how often a named entity is mentioned</strong> rather than as a classifier verdict.</p>
+  <div class="lab-card__usecase">
+    <strong>Scientific Reference:</strong>
+    <span>The author's <a href="/publication/AutomaticDetectionCyberSecurity">"Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data"</a> (Ural &amp; Acartürk, ICISSP 2021, pp. 66–76), extending the <a href="/publication/2019-metu-masters-thesis">M.Sc. thesis</a> completed at METU under <a href="https://acarturk.net/">Prof. Cengiz Acartürk</a>. The study used Turkish Twitter and the Hürriyet newspaper API, with normalisation through the <a href="https://tools.nlp.itu.edu.tr/">ITU NLP web service</a> (<a href="https://doi.org/10.3115/v1/E14-2001">Eryiğit, 2014</a>). Corpus sizes and detection totals are reported results; the panels in the film are illustrations of the method, not the original time-series data.</span>
   </div>
-
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/cyber-events/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
-
+  <aside class="lab-lvd__facts" aria-label="Key numbers">
+    <p class="lab-lvd__facts-title">Key numbers</p>
+    <dl>
+      <div><dt>0</dt><dd>Labelled Turkish cyber-security datasets to start from.</dd></div>
+      <div><dt>2,310 · 28 · ~400</dt><dd>Tweets from the year before the nic.tr attack, the attack day and the fortnight after.</dd></div>
+      <div><dt>Day 1</dt><dd>The attack of 14 December 2015 was detected on its first day.</dd></div>
+      <div><dt>&lt; 30%</dt><dd>False-positive ceiling set in advance for the following two weeks, and met.</dd></div>
+      <div><dt>22 of 29</dt><dd>Real events among the detections in a sample run over 437 documents, about 76%.</dd></div>
+    </dl>
+  </aside>
+  </div>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -45,6 +55,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
