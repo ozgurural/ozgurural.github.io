@@ -23,17 +23,17 @@ header:
 <p class="lab-deck-note">SecurePoL is the research. The two films after it each go deeper into one question it raises.</p>
 
 <nav class="lab-mission-deck" aria-label="Films on model ownership">
-  <a class="lab-mission-card" href="/lab/training-fingerprint/">
+  <a class="lab-mission-card lab-mission-card--lead" href="/lab/training-fingerprint/">
     <span class="lab-mission-card__code">01</span>
     <strong>SecurePoL: Proving How a Model Was Trained</strong>
     <span>A training record and a watermark checked together, so a forged training claim has to pass both. <em>Published research: IEEE Access 2025 and my dissertation.</em></span>
   </a>
-  <a class="lab-mission-card" href="/lab/model-heist/">
+  <a class="lab-mission-card lab-mission-card--sub" href="/lab/model-heist/">
     <span class="lab-mission-card__code">02</span>
     <strong>Could This AI Be a Copy?</strong>
     <span>Deeper: how a faint mark is read out of noise, and why the threshold needs calibrating. <em>A teaching model, not the paper's detector.</em></span>
   </a>
-  <a class="lab-mission-card" href="/lab/watermarking-comparison/">
+  <a class="lab-mission-card lab-mission-card--sub" href="/lab/watermarking-comparison/">
     <span class="lab-mission-card__code">03</span>
     <strong>Signing an AI Model</strong>
     <span>Deeper: three kinds of model watermark, and what access each one needs to check. <em>From the comparison in my dissertation and SecurePoL.</em></span>

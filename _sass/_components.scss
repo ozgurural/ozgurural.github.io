@@ -645,6 +645,16 @@
   gap: 0.65rem;
   margin: 0 0 1.2rem;
 }
+/* The lead card of a deck spans it, so the research reads first and the
+   films that go deeper sit under it at half the width. */
+.lab-mission-card--lead {
+  grid-column: 1 / -1;
+  min-height: auto;
+  padding: 1.1rem 1.15rem 1.15rem;
+  border-color: var(--ds-accent);
+}
+.lab-mission-card--lead strong { font-size: 1.12rem; }
+.lab-mission-card--sub { min-height: auto; }
 .lab-mission-card {
   display: flex;
   flex-direction: column;

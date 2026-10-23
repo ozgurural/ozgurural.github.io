@@ -20,7 +20,7 @@ header:
     </div>
 
   <div class="lab-lvd">
-  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong>, superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. The film shows the idea and the page below gives the mathematics: the binomial-tail gain, and how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat, the exact mechanism that destroyed Ariane 5 in 1996.</p>
+  <p class="lab-card__lead">✈️ Run three flight computers and a majority voter, and one faulty channel gets outvoted. Done right, redundancy turns the failure rate from q into <strong>q<sup>m+1</sup></strong>, superlinear safety. But "three computers" is only "three independent failure paths" if they fail <em>differently</em>. The film shows the idea and the page below gives the mathematics: the binomial-tail gain, and how a shared cause installs a <strong>floor ρq</strong> no amount of redundancy can beat. Ariane 5 in 1996 is the historical example of a shared fault making redundancy useless.</p>
   <div class="lab-card__usecase">
     <strong>Scientific Reference:</strong>
     <span>Triple Modular Redundancy with common-cause (β-factor) failure. The Ariane 5 Flight 501 case follows the ESA Inquiry Board report; the redundancy patterns mirror real-time safety-critical avionics architecture developed by the author.</span>

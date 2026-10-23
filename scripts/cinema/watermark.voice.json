@@ -2,7 +2,7 @@
   "film": "watermark",
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
-  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "three" },
+  "music": {"file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "why", "loops": [{"out": 80.311, "to": 100.08, "xfade": 0.5}]},
   "authored_duration": 97.5,
   "lines": [
     { "id": "hook",    "at": 0.0,  "source": "Ural and Yoshigoe 2025, Sec. I, III-C (threat model)",
@@ -12,7 +12,7 @@
     { "id": "three",   "at": 17.0, "source": "Sec. II-B (three families of model watermark)",
       "text": "There are three places to hide it." },
     { "id": "says",    "at": 20.5, "source": "Sec. II-B, IV-B (feature-trigger marks, verified with black-box access)",
-      "text": "One: in what the model says. It learns odd answers to a set of secret questions. Ask from the outside. One match could be luck. A whole set is not." },
+      "text": "One: in what the model says. It learns odd answers to a set of secret questions. Ask from the outside. One match could be luck. A whole set is unlikely to be." },
     { "id": "numbers", "at": 31.5, "source": "Sec. IV-B, VI-J (parameter perturbation: two weights, near-zero cost, white-box)",
       "text": "Two: in its numbers. A tiny pattern written into just a couple of them. It costs almost nothing, but you need the file in your hands to read it." },
     { "id": "head",    "at": 42.5, "source": "Sec. IV-B, VI-J (auxiliary head: main task untouched, replaceable)",
