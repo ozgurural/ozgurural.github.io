@@ -1,32 +1,44 @@
 ---
 permalink: /lab/training-fingerprint/
 oembed: "/lab/training-fingerprint/oembed.json"
-title: "Proof-of-Learning (SecurePoL), animated"
+title: "SecurePoL: Proving How an AI Model Was Trained"
 description: "How Proof-of-Learning checks training records, where spoofing attacks exploit it, and how SecurePoL combines trajectory and watermark verification."
 excerpt: "Final weights can be copied. Training records and watermarks provide additional evidence, with security that depends on the verifier and threat model."
 sitemap: true
 header:
-  og_image: "lab-og/og-pol.png"
+  og_image: "lab-og/og-securepol-film.jpg"
 ---
 
 <a href="/lab/" class="lab-back"><span>←</span> Back to Research Lab</a>
 
 <section class="lab-card lab-experiment" id="lab-pol" style="margin-top: 0;">
-  <span class="ep-eyebrow">Machine Learning · Model provenance</span>
-  <p class="lab-card__lead">Final weights do not establish who trained a model. <strong>Proof-of-Learning</strong> records intermediate checkpoints and information needed to replay training segments. This film introduces that verification idea, its vulnerability to spoofing, and the additional watermark check in <strong>SecurePoL</strong>. The film is an illustration of the idea, not a proof of security.</p>
-  <div class="lab-card__usecase">
-    <strong>Scientific Reference:</strong>
-    <span>Proof-of-Learning (Jia et al., IEEE S&amp;P 2021); watermark coupling in the author's <a href="/publication/2025-secureproofoflearning">"SecurePoL"</a> (IEEE Access 2025) and <a href="/publication/2025-dissertation">Ph.D. Dissertation</a>.</span>
-  </div>
+  <span class="ep-eyebrow">Machine learning security · Model provenance</span>
 
   <div class="lab-film">
     <div class="lab-film__frame lab-film__frame--cinema">
-      <iframe src="{{ '/films/securepol/' | relative_url }}?autoplay=0" title="SecurePoL: a narrated film on Proof-of-Learning and model watermarking" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe src="{{ '/films/securepol/' | relative_url }}?autoplay=0" title="SecurePoL: a narrated film by Dr. Ozgur Ural on proving how an AI model was trained" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
   </div>
 
+  <div class="lab-lvd">
+  <p class="lab-card__lead">Someone copies your AI model and says they trained it. <strong>Proof-of-Learning</strong> keeps a record of training that others can re-check, but a determined forger can fabricate a plausible record. <strong>SecurePoL</strong>, my work with Dr. Kenji Yoshigoe, checks the training record and a watermark embedded during training together, so a forged training claim has to pass both. The film tells the idea in two minutes; the mechanism, the measurements and the limits follow.</p>
+  <div class="lab-card__usecase">
+    <strong>Sources:</strong>
+    <span>Proof-of-Learning: Jia et al., IEEE S&amp;P 2021. SecurePoL: Ural and Yoshigoe, <a href="/publication/2025-secureproofoflearning">IEEE Access 2025</a> (<a href="https://doi.org/10.1109/ACCESS.2025.3642198">DOI</a>, <a href="https://github.com/ozgurural/SecurePoL-with-Watermarking">code</a>), from my <a href="/publication/2025-dissertation">Ph.D. dissertation</a>. The film shows one of the paper's three watermark designs.</span>
+  </div>
   <p class="lab-film__alt">Prefer the technical version? <a href="{{ '/lab/training-fingerprint/embed/' | relative_url }}" target="_blank" rel="noopener">Watch the original animation</a>: the same idea step by step, with its diagrams and formulas.</p>
 
+  <aside class="lab-lvd__facts" aria-label="Key numbers">
+    <p class="lab-lvd__facts-title">Key numbers</p>
+    <dl>
+      <div><dt>3</dt><dd>Watermark designs compared: feature-based triggers, sparse parameter perturbations, an auxiliary head.</dd></div>
+      <div><dt>0.00 to 0.58</dt><dd>Percentage points of baseline accuracy changed across the three.</dd></div>
+      <div><dt>0.6 to 17.3%</dt><dd>Runtime overhead of the joint check.</dd></div>
+      <div><dt>&lt; 12 MB</dt><dd>Size of the proof log.</dd></div>
+      <div><dt><em>p</em><sup><em>m</em></sup></dt><dd>Chance that guessing passes all <em>m</em> secret watermark queries, if one passes with probability at most <em>p</em>.</dd></div>
+      <div><dt>CIFAR-10</dt><dd>With ResNet-20, where it was evaluated. Scaling to larger models remains open.</dd></div>
+    </dl>
+  </aside>
 
   <details class="lab-reveal" open>
     <summary>🧠 What did you just learn?</summary>
@@ -43,6 +55,7 @@ header:
       <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
     </div>
   </details>
+  </div>
 </section>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
