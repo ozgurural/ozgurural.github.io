@@ -2,11 +2,7 @@
   "film": "model-heist",
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
-  "music": {
-    "file": "dist/music/mixkit-587-discover.mp3",
-    "rise": 30,
-    "rise_on": "thin"
-  },
+  "music": {"file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "loud", "loops": [{"out": 52.07, "to": 77.487, "xfade": 0.5}]},
   "authored_duration": 95,
   "lines": [
     {

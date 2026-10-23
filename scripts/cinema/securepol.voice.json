@@ -2,7 +2,7 @@
   "film": "securepol",
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
-  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "receipts" },
+  "music": {"file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "copy"},
   "authored_duration": 120.0,
   "lines": [
     { "id": "hook",     "at": 0.0,   "source": "Sec. I",

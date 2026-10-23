@@ -2,7 +2,7 @@
   "film": "cyber-events",
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
-  "music": { "file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "known" },
+  "music": {"file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "flood"},
   "authored_duration": 123.0,
   "lines": [
     { "id": "hook",    "at": 0.0,   "source": "Ural and Acarturk 2021, Sec. 1.1 (an attack on a site is reported by social media users first)",

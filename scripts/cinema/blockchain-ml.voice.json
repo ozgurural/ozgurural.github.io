@@ -2,11 +2,7 @@
   "film": "blockchain-ml",
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
-  "music": {
-    "file": "dist/music/mixkit-587-discover.mp3",
-    "rise": 30,
-    "rise_on": "ledger"
-  },
+  "music": {"file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "ledger", "loops": [{"out": 80.311, "to": 100.08, "xfade": 0.5}]},
   "authored_duration": 105,
   "lines": [
     {
