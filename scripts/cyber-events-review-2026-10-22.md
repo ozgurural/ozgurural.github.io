@@ -52,7 +52,7 @@ Validation completed:
   before and after collection, three geometries and 13 textures throughout;
   reported JavaScript heap approximately 5 MB.
 - Representative desktop stills inspected with captions; portrait and landscape
-  screenshots saved in `dist/cyber-events-final/` for separate visual review.
+  screenshots saved in `dist/reviews/cyber-events-final/` for separate visual review.
 
 Native exports and caption files are local artifacts in `dist/video/`. The
 export job uses lossless PNG capture, a medium H.264 preset at CRF 17, and a

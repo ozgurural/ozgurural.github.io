@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Test artifact organiser
+        run: node --test scripts/test-organize-dist.js
       # Lockfiles are not tracked in this repository, so npm ci is unavailable.
       # The test uses committed assets and needs only production dependencies.
       - name: Install browser test dependencies
@@ -25,13 +27,14 @@ jobs:
         env:
           JEKYLL_ENV: production
       - name: Build local preview for keyboard checks
-        run: bundle exec jekyll build --safe --config _config.yml,_config.dev4001.yml --destination dist/ci-site
+        run: bundle exec jekyll build --safe --config _config.yml,_config.dev4001.yml --destination dist/builds/ci-site
       - name: Test cinema playback and keyboard controls
         env:
           CI: 'true'
           FILM_BASE: http://localhost:4001
         run: |
-          bundle exec jekyll serve --safe --skip-initial-build --no-watch --host 127.0.0.1 --port 4001 --config _config.yml,_config.dev4001.yml --destination dist/ci-site > dist/ci-jekyll.log 2>&1 &
+          mkdir -p dist/reviews/logs
+          bundle exec jekyll serve --safe --skip-initial-build --no-watch --host 127.0.0.1 --port 4001 --config _config.yml,_config.dev4001.yml --destination dist/builds/ci-site > dist/reviews/logs/ci-jekyll.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
 
@@ -45,12 +48,12 @@ jobs:
               exit 0
             fi
             if ! kill -0 "$server_pid" 2>/dev/null; then
-              cat dist/ci-jekyll.log
+              cat dist/reviews/logs/ci-jekyll.log
               exit 1
             fi
             sleep 1
           done
 
-          cat dist/ci-jekyll.log
+          cat dist/reviews/logs/ci-jekyll.log
           echo 'The local Jekyll server did not become ready in time.' >&2
           exit 1

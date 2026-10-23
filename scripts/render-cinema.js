@@ -166,7 +166,7 @@ async function shot(page, W, H, t) {
     console.log(`${a.film} ${a.aspect} ${W}x${H}, ${duration}s, GL: ${gl}`);
 
     if (a.frames) {
-      const out = a.out || path.join(ROOT, 'dist', 'frames', a.film);
+      const out = a.out || path.join(ROOT, 'dist', 'reviews', 'frames', a.film);
       fs.mkdirSync(out, { recursive: true });
       for (const t of a.frames) {
         const file = path.join(out, `${a.film}-${a.aspect}-${String(t.toFixed(2)).padStart(6, '0')}${cc}.png`);
@@ -189,7 +189,7 @@ async function shot(page, W, H, t) {
        segments already written are kept, so a rerun resumes, and the parts are
        joined at the end without re-encoding. Frame i is still from + i / fps. */
     const SEG = Math.max(1, Math.round(a.segment * a.fps));
-    const partDir = path.join(outDir, 'parts', `${a.film}-${a.aspect}-${from}-${to.toFixed(2)}${cc}`);
+    const partDir = path.join(ROOT, 'dist', 'cache', 'cinema', 'parts', `${a.film}-${a.aspect}-${from}-${to.toFixed(2)}${cc}`);
     fs.mkdirSync(partDir, { recursive: true });
     const parts = [];
     const t0 = Date.now();

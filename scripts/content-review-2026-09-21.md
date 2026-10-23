@@ -37,7 +37,7 @@ Also simplified older unsupported details in the recovered audio, UAV, doctorate
 - Narration timing: 11/11 checked, zero overrunning lines.
 - Icon coverage: 76 pages and 15 distinct glyphs checked; no missing glyphs.
 - Full site crawl after content recovery: 76 URLs, 72 HTML pages, zero broken URLs, zero browser errors. One overlong simulator SEO title was identified and shortened; the targeted repeat passed with zero issues.
-- Visually inspected the corrected audio page at 1280px and simulator page at 390px; no visible layout defects in the captured viewports. Captures are in dist/review-2026-09-21/.
+- Visually inspected the corrected audio page at 1280px and simulator page at 390px; no visible layout defects in the captured viewports. Captures are in dist/reviews/review-2026-09-21/.
 - Rejected-claim indicator sweep and front-matter/punctuation check: passed for all 30 content files. This checks known regressions, not factual completeness.
 
 No new paper mechanisms or numerical research results were introduced. No public deployment was performed by this review.

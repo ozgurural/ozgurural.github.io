@@ -84,10 +84,10 @@ const COLLECT = () => {
   // the tell is a zero advance width. Report anything the page draws that the
   // scanner would not have found.
   const cps = rendered.map(c => 'U+' + c.toString(16).toUpperCase().padStart(4, '0'));
-  fs.mkdirSync(path.join(__dirname, '..', 'dist'), { recursive: true });
-  fs.writeFileSync(path.join(__dirname, '..', 'dist', 'icons-rendered.txt'),
+  fs.mkdirSync(path.join(__dirname, '..', 'dist', 'reviews'), { recursive: true });
+  fs.writeFileSync(path.join(__dirname, '..', 'dist', 'reviews', 'icons-rendered.txt'),
                    cps.join(',') + '\n');
-  console.log('written to dist/icons-rendered.txt');
+  console.log('written to dist/reviews/icons-rendered.txt');
 
   const unnamed = rendered.filter(c => !table.has(c));
   if (unnamed.length) {

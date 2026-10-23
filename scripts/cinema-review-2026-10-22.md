@@ -85,7 +85,7 @@ audits of SecurePoL, Level D and its enclosing lab page reported no issues,
 broken URLs or browser errors.
 
 The raw review measurements and screenshots are local artifacts under
-`dist/cinema-review/`, excluded from the published site.
+`dist/reviews/cinema-review/`, excluded from the published site.
 
 ## Limits
 

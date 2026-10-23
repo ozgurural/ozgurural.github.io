@@ -4,7 +4,7 @@
  * for a visual review of the site.
  *
  *   node scripts/page-shots.js / /lab/ /publications/
- *   FILM_BASE=http://localhost:4001 node scripts/page-shots.js --full --out dist/shots /cv/
+ *   FILM_BASE=http://localhost:4001 node scripts/page-shots.js --full --out dist/reviews/shots /cv/
  *
  * Writes <out>/<slug>-desktop.png (1440x900) and <slug>-mobile.png (375x812 at
  * 2x, a phone's real pixels). --full captures the whole page instead of the
@@ -19,7 +19,7 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4000';
 const args = process.argv.slice(2);
 const full = args.includes('--full');
 const oi = args.indexOf('--out');
-const out = oi >= 0 ? args[oi + 1] : path.join(__dirname, '..', 'dist', 'shots');
+const out = oi >= 0 ? args[oi + 1] : path.join(__dirname, '..', 'dist', 'reviews', 'shots');
 // Git Bash rewrites an argument like /lab/ into C:/Program Files/Git/lab/
 // before node sees it (MSYS path conversion); take the path back out of it.
 const pages = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--out')

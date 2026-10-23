@@ -251,7 +251,7 @@ async function auditFilm(browser, slug) {
       // Written out in full, because the table truncates names and several
       // scenes carry apostrophes and maths symbols that make hand-matching them
       // a way to edit the wrong scene.
-      const out = path.join(ROOT, 'dist', 'trims.json');
+      const out = path.join(ROOT, 'dist', 'reviews', 'trims.json');
       fs.mkdirSync(path.dirname(out), { recursive: true });
       fs.writeFileSync(out, JSON.stringify(cuts.map(c => ({
         slug: c.slug, scene: c.scene, len: c.len, newLen: c.newLen, cut: c.cut })), null, 1));

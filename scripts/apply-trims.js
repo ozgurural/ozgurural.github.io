@@ -4,7 +4,7 @@
  *
  * The audit measures how long each scene holds a still picture after its last
  * sentence has finished, which is dead air that can go without redrawing
- * anything. It writes dist/trims.json; this edits the one number in each
+ * anything. It writes dist/reviews/trims.json; this edits the one number in each
  * film.scene(name, seconds, ...) call.
  *
  * Scene names are matched in full rather than by the truncated table the audit
@@ -24,7 +24,7 @@ const maxIdx = args.indexOf('--max');
 const MAX = maxIdx >= 0 ? Number(args[maxIdx + 1]) : Infinity;
 const SKIP = args.reduce((acc, a, i) => (a === '--skip' ? acc.concat([args[i + 1]]) : acc), []);
 
-const trims = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', 'trims.json'), 'utf8'));
+const trims = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', 'reviews', 'trims.json'), 'utf8'));
 const files = fs.readdirSync(FILMS_DIR).filter(f => f.endsWith('.js'));
 const cache = {};
 const read = f => (cache[f] = cache[f] !== undefined ? cache[f] : fs.readFileSync(path.join(FILMS_DIR, f), 'utf8'));

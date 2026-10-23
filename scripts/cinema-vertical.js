@@ -5,7 +5,7 @@
  *
  *   FILM_BASE_URL=http://localhost:4001 node scripts/cinema-vertical.js --film level-d \
  *     --video dist/video/level-d-film-16x9-narrated.mp4 --skip open,determinism,coda
- *   ... --still 13.2                      # one frame to dist/video/<film>-<frame>-<t>.png
+ *   ... --still 13.2                      # one frame to dist/reviews/thumbnails/<film>-<frame>-<t>.png
  *   ... --frame 1x1                       # square, for a feed seen on desktops (X)
  *
  * Why: LinkedIn is mostly read on phones, and a 16:9 upload is a strip about
@@ -80,7 +80,16 @@ function run(args) {
 }
 
 (async () => {
-  const work = path.join(ROOT, 'dist', 'video', 'vertical', `${a.film}-${a.frame}`);
+  const cache = path.join(ROOT, 'dist', 'cache', 'vertical');
+  const work = path.resolve(cache, `${a.film}-${a.frame}`);
+  const relative = path.relative(cache, work);
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('Invalid vertical cache path');
+  // Refuse junctions/symlinks before recursively clearing a work directory.
+  let current = ROOT;
+  for (const part of path.relative(ROOT, work).split(path.sep)) {
+    current = path.join(current, part);
+    if (fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink()) throw new Error(`Linked cache path: ${current}`);
+  }
   fs.rmSync(work, { recursive: true, force: true });
   fs.mkdirSync(work, { recursive: true });
   const browser = await puppeteer.launch({ headless: true });
@@ -193,7 +202,8 @@ function run(args) {
                   ...(a.still != null ? ['-i', path.join(work, 'still-cap.png')] : ['-f', 'concat', '-safe', '0', '-i', path.join(work, 'captions.txt')]),
                   '-loop', '1', '-framerate', '30', '-t', D, '-i', path.join(work, 'fade.png')];
   if (a.still != null) {
-    const out = a.out || path.join(ROOT, 'dist', 'video', `${a.film}-${a.frame}-${a.still}.png`);
+    const out = a.out || path.join(ROOT, 'dist', 'reviews', 'thumbnails', `${a.film}-${a.frame}-${a.still}.png`);
+    fs.mkdirSync(path.dirname(out), { recursive: true });
     run(['-y', ...inputs, '-filter_complex', filter.replace(',format=yuv420p', ''), '-map', '[v]', '-frames:v', '1', out]);
     console.log(`  ${path.relative(ROOT, out)}`);
     return;

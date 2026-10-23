@@ -21,7 +21,7 @@ const args = process.argv.slice(2);
 const SLUG = args[0];
 const PER = Number(args[1] && !args[1].startsWith('--') ? args[1] : 3);
 const outIdx = args.indexOf('--out');
-const OUT = outIdx >= 0 ? args[outIdx + 1] : path.join(__dirname, '..', 'dist', 'sheet');
+const OUT = outIdx >= 0 ? args[outIdx + 1] : path.join(__dirname, '..', 'dist', 'reviews', 'sheet');
 const scIdx = args.indexOf('--scene');
 const ONLY = scIdx >= 0 ? Number(args[scIdx + 1]) : null;
 

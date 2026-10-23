@@ -29,7 +29,7 @@ const args = process.argv.slice(2);
 const SLUG = args[0] || 'universal-jira';
 const T = Number(args[1] && !args[1].startsWith('--') ? args[1] : 34);
 const outIdx = args.indexOf('--out');
-const OUT = outIdx >= 0 ? args[outIdx + 1] : path.join(__dirname, '..', 'dist', 'diff');
+const OUT = outIdx >= 0 ? args[outIdx + 1] : path.join(__dirname, '..', 'dist', 'reviews', 'diff');
 const vidIdx = args.indexOf('--video');
 const VIDEO = vidIdx >= 0 ? args[vidIdx + 1] : null;
 

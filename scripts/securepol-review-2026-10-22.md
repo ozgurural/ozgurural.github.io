@@ -65,6 +65,6 @@ SecurePoL's forced 16:9 stage. Requested dimensions are now checked against the
 loaded film, with a clear error on mismatch. A default-aspect still and an
 explicit incompatible-aspect invocation were checked.
 
-Ignored local review artifacts are in `dist/securepol-final/`, including the
+Ignored local review artifacts are in `dist/reviews/securepol-final/`, including the
 layout audit, screenshots and PNG comparison images. Native exports and caption
 files live in `dist/video/` and are not published as repository binaries.
