@@ -46,6 +46,7 @@ for (let i = 2; i < process.argv.length; i++) {
   else if (k === '--crf') { a.crf = Number(v); i++; }
   else if (k === '--preset') { a.preset = v; i++; }
   else if (k === '--frame') { a.frame = v; i++; }
+  else if (k === '--title') { a.title = v; i++; }        // the band's title, when the film's own is not a hook in a feed
 }
 if (!a.film || !a.video) { console.error('usage: --film <slug> --video <16x9 mp4 without captions> [--skip ids] [--still t]'); process.exit(1); }
 
@@ -105,6 +106,7 @@ function run(args) {
       return { title: window.CINEMA.title, cues: m.captionsFromTimeline(tl, maxc, skip) };
     }, a.film, a.maxc, a.skip));
     await page.close();
+    if (a.title) title = a.title;
     console.log(`${a.film}: "${title}", ${cues.length} captions`);
 
     // ---- the background and title, and one transparent image per caption
