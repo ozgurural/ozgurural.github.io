@@ -323,7 +323,7 @@ const film = {
         'A label added on top is simply cut off. So the signature has to be <span class="gold">trained in</span>.');
     say(T.three, T.says - gone, 'There are <em>three places</em> to hide it.');
     say(T.says, T.numbers - gone, 'One: in what the model <em>says</em>.',
-        'It learns odd answers to a set of secret questions. Ask from the outside. One match could be luck. A whole set is not.');
+        'It learns odd answers to a set of secret questions. Ask from the outside. One match could be luck. A whole set is unlikely to be.');
     say(T.numbers, T.head - gone, 'Two: in its <em>numbers</em>.',
         'A tiny pattern written into just a couple of them. It costs almost nothing, but you need the file in your hands to read it.');
     say(T.head, T.which - gone, 'Three: in a small <em>extra part</em>.',
