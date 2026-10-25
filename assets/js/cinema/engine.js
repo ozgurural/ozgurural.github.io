@@ -440,7 +440,19 @@ export function createCinema(film) {
   // drift off its narration. Browsers refuse sound before a gesture, so an
   // autoplay starts muted and says so; any click on the film turns it on.
   let audio = !renderMode && film.audio ? new Audio(film.audio) : null;
-  if (audio) audio.preload = 'auto';
+  // A lab page embeds the film with autoplay=0, and fetching the whole
+  // soundtrack (2.8 MB for SecurePoL) for every visitor who only reads the page
+  // cost more than the rest of the page together. Such a film asks for the
+  // metadata only, and starts loading the track once the pointer or focus
+  // comes to it; play() loads it in any case.
+  if (audio) {
+    audio.preload = params.get('autoplay') === '0' ? 'metadata' : 'auto';
+    if (audio.preload !== 'auto') {
+      const warm = () => { if (audio) audio.preload = 'auto'; };
+      wrap.addEventListener('pointerenter', warm, { once: true });
+      wrap.addEventListener('focusin', warm, { once: true });
+    }
+  }
   else if (soundBtn) soundBtn.hidden = true;
   // A media element whose audio output fails (MEDIA_ERR_DECODE carrying
   // AUDIO_RENDERER_ERROR, as when an output device goes away mid-play) never
@@ -508,8 +520,16 @@ export function createCinema(film) {
     showCaption();
     return t;
   }
+  // set by play() while the soundtrack is still loading: the picture holds
+  // where it is until the track can be heard (2 s at most), instead of running
+  // ahead on the wall clock and jumping back when the track takes over
+  let waitFor = 0;
   function loop(now) {
     const heard = audio && !audio.paused && !audio.ended && audio.readyState >= 2;
+    if (waitFor) {
+      if (!heard && !audio.error && now - waitFor < 2000) { t0 = t; wall0 = now; raf = requestAnimationFrame(loop); return; }
+      waitFor = 0;
+    }
     const next = heard ? audio.currentTime : t0 + (now - wall0) / 1000;
     if (next >= film.duration) { seek(film.duration); pause(); return; }
     seek(next);
@@ -527,6 +547,7 @@ export function createCinema(film) {
       if (fromGesture && !soundChosen) setSound(true);
       const track = audio;
       track.currentTime = t;
+      waitFor = track.readyState >= 2 ? 0 : performance.now();
       track.play().catch(error => {
         // pause() aborts a pending play promise. Retrying that rejection used
         // to restart audio behind a paused picture. Only autoplay denial for
@@ -540,6 +561,7 @@ export function createCinema(film) {
   }
   function pause() {
     playing = false;
+    waitFor = 0;
     playRequest++;
     cancelAnimationFrame(raf);
     if (audio) audio.pause();
