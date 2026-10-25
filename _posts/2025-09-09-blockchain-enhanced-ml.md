@@ -34,22 +34,9 @@ Blockchain technology and machine learning (ML) have mostly evolved on separate 
 
 Our survey identifies three canonical architectures for combining blockchain with ML. The most promising for scalability is the **On-chain coordination, Off-chain computation** pattern:
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant SmartContract
-    participant OffChainWorker
-    participant Storage as IPFS/Storage
-
-    Client->>SmartContract: Request Model Training (Deposit Tokens)
-    SmartContract->>SmartContract: Emit "TrainingRequested" Event
-    OffChainWorker->>SmartContract: Listen for Event
-    OffChainWorker->>OffChainWorker: Perform Heavy ML Training (GPU)
-    OffChainWorker->>Storage: Upload Model Weights
-    Storage-->>OffChainWorker: Return Hash (CID)
-    OffChainWorker->>SmartContract: Submit Result (Model Hash + Proof)
-    SmartContract->>Client: Model Ready (Release Tokens)
-```
+<figure class="post-diagram">
+  <a href="{{ '/images/diagrams/blockchain-ml-sequence.svg' | relative_url }}"><img src="{{ '/images/diagrams/blockchain-ml-sequence.svg' | relative_url }}" alt="Sequence diagram of on-chain coordination with off-chain computation. The client asks the smart contract for model training and deposits tokens; the contract emits a TrainingRequested event; an off-chain worker hears the event, trains the model on a GPU, uploads the weights to IPFS or other storage and gets back a content hash (CID); the worker submits the model hash and a proof to the contract, which tells the client the model is ready and releases the tokens." width="1195" height="561" loading="lazy"></a>
+</figure>
 
 1. **On-chain coordination, off-chain computation:** Lightweight smart contracts log events and manage access control while heavy model training occurs off-chain. This pattern balances transparency with scalability and suits federated learning or model marketplaces.
 2. **Proof-of-Useful-Work:** Instead of wasteful hashing, miners perform ML training or inference to secure the blockchain. The result is a consensus mechanism where useful computation replaces traditional mining, linking network security with ML progress.

@@ -2373,3 +2373,13 @@ body.labf-embed .labf__chrome { display: none; }
 .cite-block h2 { margin-top: 0; font-size: 1.15rem; }
 .cite-block__ref, .cite-block__links { font-size: 0.9rem; }
 .cite-block__bib { margin: 0.75rem 0; font-size: 0.8rem; overflow-x: auto; white-space: pre; }
+
+// a static diagram drawn by scripts/render-mermaid.js; on a phone it keeps a
+// width its labels can be read at and scrolls sideways inside its own box
+.post-diagram { display: block; margin: 1.5rem 0; }  // the theme makes figure a flex row
+.post-diagram a { display: block; }
+.post-diagram img { display: block; width: 100%; height: auto; border: 1px solid var(--ds-line); border-radius: var(--ds-radius); }
+@media (max-width: 640px) {
+  .post-diagram { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .post-diagram img { width: 860px; max-width: none; }
+}

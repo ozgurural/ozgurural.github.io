@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Client
+    participant SmartContract
+    participant OffChainWorker
+    participant Storage as IPFS/Storage
+
+    Client->>SmartContract: Request Model Training (Deposit Tokens)
+    SmartContract->>SmartContract: Emit "TrainingRequested" Event
+    OffChainWorker->>SmartContract: Listen for Event
+    OffChainWorker->>OffChainWorker: Perform Heavy ML Training (GPU)
+    OffChainWorker->>Storage: Upload Model Weights
+    Storage-->>OffChainWorker: Return Hash (CID)
+    OffChainWorker->>SmartContract: Submit Result (Model Hash + Proof)
+    SmartContract->>Client: Model Ready (Release Tokens)
