@@ -442,13 +442,21 @@ export function createCinema(film) {
   let audio = !renderMode && film.audio ? new Audio(film.audio) : null;
   // A lab page embeds the film with autoplay=0, and fetching the whole
   // soundtrack (2.8 MB for SecurePoL) for every visitor who only reads the page
-  // cost more than the rest of the page together. Such a film asks for the
-  // metadata only, and starts loading the track once the pointer or focus
-  // comes to it; play() loads it in any case.
+  // cost more than the rest of the page together. Such a film requests nothing
+  // until the pointer or focus comes to it, or play() is called, and then loads
+  // the whole track in one go. Not 'metadata': Chrome then fetches the first
+  // bytes and parks the connection, and resuming on it when play came failed
+  // under load (MEDIA_ERR_NETWORK, "data source error"), which swapped in a
+  // fresh element through recoverOnError mid-playback.
+  const warmAudio = el => {
+    if (!el || el.preload === 'auto') return;
+    el.preload = 'auto';
+    if (el.readyState === 0) el.load();
+  };
   if (audio) {
-    audio.preload = params.get('autoplay') === '0' ? 'metadata' : 'auto';
+    audio.preload = params.get('autoplay') === '0' ? 'none' : 'auto';
     if (audio.preload !== 'auto') {
-      const warm = () => { if (audio) audio.preload = 'auto'; };
+      const warm = () => warmAudio(audio);
       wrap.addEventListener('pointerenter', warm, { once: true });
       wrap.addEventListener('focusin', warm, { once: true });
     }
@@ -546,6 +554,7 @@ export function createCinema(film) {
     if (audio) {
       if (fromGesture && !soundChosen) setSound(true);
       const track = audio;
+      warmAudio(track);
       track.currentTime = t;
       waitFor = track.readyState >= 2 ? 0 : performance.now();
       track.play().catch(error => {
