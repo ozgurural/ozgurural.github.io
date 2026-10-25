@@ -16,6 +16,17 @@
 % --- resume.sty inlined (commands adapted from Cies Breijs' MIT-licensed
 %     resume template, https://github.com/cies/resume) ---
 \usepackage{xcolor}
+
+% No hyphenation: an ATS reads the PDF's text layer, and a word broken at a
+% line end ("wa-termarking", "prove-nance") no longer matches its keyword.
+% Breaks at a word's own hyphen (air-gapped) are kept; the extra stretch
+% keeps justified lines from opening wide gaps.
+\hyphenpenalty=10000
+\emergencystretch=2em
+
+% parskip spaces bullets a full paragraph apart; a little less keeps the
+% resume to two pages without cutting content.
+\setlist[itemize]{itemsep=3pt, parsep=0pt, topsep=3pt}
 \definecolor{light}{gray}{0.55}
 \newcommand{\spacedhrule}[2]{\vspace{#1}\hrule\vspace{#2}}
 \newcommand{\maintitle}[3]{\noindent{\LARGE\textbf{#1}}\ifx&#2&\else\quad{\large #2}\fi\hfill{\small\color{light}#3}\par\vspace{0.3em}}
@@ -49,18 +60,17 @@ Leiden, Netherlands
 
 Machine learning research scientist and senior software engineer with 12+ years building production systems across cybersecurity, defense, and simulation, now leading enterprise AI strategy and applied GenAI at Avion. Completed a Ph.D. in Electrical Engineering and Computer Science at Embry-Riddle Aeronautical University in the United States (August 2025), with a machine-learning dissertation and three first-author IEEE Access publications on Proof-of-Learning and model watermarking. My work centers on \textbf{trustworthy AI for mission-critical systems}: evidence of how a model was trained and who owns it, robustness against attackers, and predictable timing when a model runs inside a real-time loop.
 
-Systems programming in C, C++ and Scala and real-time distributed architecture, combined with hands-on ML-security research. Experienced in leading engineering teams, owning complex technical deliverables end to end, and turning research questions into working prototypes.
+Systems programming in C, C++ and Scala, real-time distributed architecture and hands-on ML-security research; experienced in leading engineering teams and turning research questions into working prototypes.
 
-\spacedhrule{0.9em}{0.1em}
+\spacedhrule{0.6em}{0.1em}
 
 \roottitle{TECHNICAL SKILLS}
 \begin{itemize}[leftmargin=*]
   \item \textbf{Languages:} C, C++, Scala, Python, Go, Java, TypeScript, JavaScript
   \item \textbf{Systems and real-time:} multithreading, async I/O, low-latency, backpressure, Linux, networking, Boost, Qt/QML
   \item \textbf{Distributed and data:} gRPC, Protobuf, Redis, PostgreSQL, REST, real-time data pipelines
-  \item \textbf{Machine learning \& AI:} PyTorch, TensorFlow, scikit-learn, deep learning, LLMs, retrieval-augmented generation (RAG), AI agents, on-prem and air-gapped model deployment, federated and distributed ML training, large-scale model evaluation; trustworthy and verifiable ML (model watermarking, Proof-of-Learning, adversarial robustness, model provenance)
-  \item \textbf{Web and UI:} Svelte, TypeScript, HTML, CSS, Tailwind
-  \item \textbf{DevOps:} Docker, GitLab CI/CD, Jenkins, Git
+  \item \textbf{Machine learning \& AI:} PyTorch, TensorFlow, scikit-learn, deep learning, LLMs, retrieval-augmented generation (RAG), AI agents, on-prem and air-gapped model deployment, federated learning; trustworthy and verifiable ML (model watermarking, Proof-of-Learning, adversarial robustness, model provenance)
+  \item \textbf{Web and DevOps:} Svelte, HTML, CSS, Tailwind; Docker, GitLab CI/CD, Jenkins, Git
 \end{itemize}
 
 \roottitle{EXPERIENCE}
@@ -70,30 +80,23 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
     \bodytext{\begin{itemize}
       \item Lead Avion's enterprise AI strategy: authored the AI adoption roadmap and a three-tier architecture spanning air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge deployment.
       \item Designed the strategy's proposed AI workflows, each keeping a person accountable for the outcome (engineering-knowledge copilot with grounded citations and change-impact analysis, repository review agent, RFP accelerator, training-debrief writer); built engineering-knowledge retrieval prototypes and the strategy portal end to end (Flask, SQLite, Docker, GitLab CI/CD).
-      \item Developed real-time simulator software in C, C++, and Scala.
-      \item Built a low-latency data pipeline ingesting simulator telemetry, normalizing and serializing to JSON and Protobuf, caching in Redis, persisting in PostgreSQL, and serving the frontend via gRPC and HTTP; sustained approximately 50 GB/s real-time throughput using batching and bounded-queue backpressure.
+      \item Developed real-time simulator software in C, C++, and Scala, including a low-latency data pipeline ingesting simulator telemetry, normalizing and serializing to JSON and Protobuf, caching in Redis, persisting in PostgreSQL, and serving the frontend via gRPC and HTTP; sustained approximately 50 GB/s real-time throughput using batching and bounded-queue backpressure.
       \item Built web applications for the Avion Cloud Environment to monitor, configure, and diagnose core simulator components using TypeScript, Svelte, Scala, Python, and gRPC.
-      \item Containerized and deployed services with Docker; automated testing and deployments via GitLab CI/CD.
-      \item Applied multithreading and async I/O patterns with backpressure to meet rigorous real-time requirements.
     \end{itemize}}%
   }%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{https://daytonabeach.erau.edu/}{Embry-Riddle Aeronautical University, Daytona Beach}}{\textsc{Florida, USA}}{%
-  \headedsubsection{Graduate Research Assistant}{Sep 2021 -- Dec 2024}{%
+  \headedsubsection{Graduate Research Assistant}{Sep 2021 -- Dec 2024, May 2025 -- Oct 2025}{%
     \bodytext{\begin{itemize}
-      \item Advisor: \href{https://ieeexplore.ieee.org/author/37269327300}{Dr. Kenji Yoshigoe}. Dissertation: Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.
       \item Conducted original research on verifiable, trustworthy machine learning across proof-of-learning, model watermarking, and adversarial robustness, with three first-author papers in IEEE Access (2025 Journal Impact Factor 4.2, JCR 2026).
-      \item Peer reviewer for numerous journals, predominantly IEEE titles including IEEE Access, as well as ACM and artificial intelligence journals; program committee member for NLPAICS 2026 (University of Alicante).
     \end{itemize}}%
   }%
-  \vspace{0.12cm}
-  \headedsubsection{Graduate Research Assistant}{May 2025 -- Oct 2025}{}%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{https://havelsan.com.tr/en}{Havelsan}}{\textsc{Ankara, Turkey}}{%
   \headedsubsection{Software Team Lead}{Nov 2020 -- Aug 2021}{%
@@ -101,12 +104,11 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
     \begin{itemize}
       \item Led a team of 14 engineers (developers, QA, DevOps, support) delivering endpoint security software.
       \item Developed and maintained core features of the endpoint agent in C, C++, Java, and Go.
-      \item Coordinated with product and business stakeholders to align delivery with roadmap objectives.
     \end{itemize}}%
   }%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{https://www.stm.com.tr/en}{STM Defence Technologies}}{\textsc{Ankara, Turkey}}{%
   \headedsubsection{Expert Software Engineer}{Feb 2019 -- Nov 2020}{%
@@ -114,12 +116,11 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
     \begin{itemize}
       \item Developed critical components of the mission-control and ground-control systems in C++11 with Boost and Qt, under hard-real-time, safety-critical constraints.
       \item Designed and implemented Power-On and Continuous Built-In Tests for system reliability validation.
-      \item Worked with cross-functional teams to meet military-grade engineering and safety standards.
     \end{itemize}}%
   }%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{https://www.comodo.com}{Comodo Cybersecurity}}{\textsc{Ankara, Turkey}}{%
   \headedsubsection{Expert Software Engineer}{Jul 2014 -- Feb 2019}{%
@@ -127,12 +128,11 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
     \begin{itemize}
       \item Led design and development of Windows services and applications in C++17 with Boost and WinAPI.
       \item Established unit testing and code-review practices; implemented CI/CD pipelines with Jenkins.
-      \item Developed statistical reporting modules and advanced browser security features.
     \end{itemize}}%
   }%
 }
 
-\spacedhrule{0.9em}{0.1em}
+\spacedhrule{0.6em}{0.1em}
 
 \roottitle{EDUCATION}
 
@@ -144,7 +144,7 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
   }%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}{\textsc{Ankara, Turkey}}{%
   \headedsubsection{Master of Science in Cyber Security}{2015 -- 2019}{%
@@ -154,23 +154,23 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
   }%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}{\textsc{Ankara, Turkey}}{%
   \headedsubsection{Bachelor of Science in Computer Engineering}{2010 -- 2014}{%
     \begin{itemize}
-      \item Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates.
+      \item Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with First Prize in TUBITAK's national project competition and Second Prize at the METU Computer Engineering graduation Demo Day (2014).
     \end{itemize}%
   }%
 }
 
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \headedsection{\href{https://www.anadolu.edu.tr/en}{Anadolu University}}{\textsc{Eskisehir, Turkey}}{%
   \headedsubsection{Bachelor of Business Administration}{2012 -- 2017}{}%
 }
 
-\spacedhrule{0.9em}{0.1em}
+\spacedhrule{0.6em}{0.1em}
 
 \roottitle{PUBLICATIONS}
 
@@ -187,29 +187,17 @@ Systems programming in C, C++ and Scala and real-time distributed architecture, 
 
   \item Ural, O. and Erdur, E. (2016). \href{https://doi.org/10.13140/RG.2.2.24058.08649}{Secure Proxy on Cloud}. Technical report. DOI: 10.13140/RG.2.2.24058.08649.
 
-  \item Ural, O. (2014). Clover: Autonomous Cargo and Mail Delivery. Turkish Autonomous Robots Conference, Ankara, Turkey.
-
 \end{itemize}
 
 For full list and citation metrics: \href{https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate}{Google Scholar profile}. Narrated explainers of this research: \href{https://ozgurural.github.io/lab/}{ozgurural.github.io/lab}.
 
-\spacedhrule{0.9em}{0.1em}
+\spacedhrule{0.6em}{0.1em}
 
 \roottitle{PROFESSIONAL SERVICE}
 
 \begin{itemize}
-  \item \textbf{Journal Referee:} IEEE Access and peer-reviewed journals in security, machine learning, distributed systems, and blockchain.
-  \item \textbf{Program Committee Member (2026):} 2nd Workshop on NLP Applied to Information and Cyber Security (NLPAICS 2026), University of Alicante, Spain.
-  \item \textbf{Reviewer:} IEEE and ACM conferences in security, machine learning, and distributed systems.
-\end{itemize}
-
-\spacedhrule{0.9em}{0.1em}
-
-\roottitle{AWARDS AND HONORS}
-
-\begin{itemize}
-  \item First Prize, TUBITAK National Project Competition (Turkey's national science and technology council), June 2014.
-  \item Second Prize, METU Computer Engineering Graduation Projects (Demo Day), June 2014.
+  \item \textbf{Reviewer:} IEEE Access and other journals, IEEE and ACM conferences (security, ML, distributed systems).
+  \item \textbf{Program Committee (2026):} NLPAICS 2026, Workshop on NLP Applied to Information and Cyber Security, Alicante.
 \end{itemize}
 
 \end{document}
