@@ -32,8 +32,8 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
     };
     const state = () => page.evaluate(() => ({
       paused: document.querySelector('.cin-wrap').classList.contains('is-paused'),
-      audioPaused: window.testAudio[0].paused,
-      muted: window.testAudio[0].muted
+      audioPaused: window.testAudio.at(-1).paused,
+      muted: window.testAudio.at(-1).muted
     }));
     // Use an explicit captionless fixture: production films gain captions over
     // time and should not silently change the condition this regression tests.
@@ -108,6 +108,17 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
     assert.equal((await state()).paused, true, 'the Pause button always pauses muted playback');
     assert.equal((await state()).muted, true);
 
+    // Device/network recovery replaces the media element. Inspect and mock
+    // the current element, rather than the first (now detached) soundtrack.
+    const beforeRecovery = await page.evaluate(() => {
+      const count = window.testAudio.length;
+      window.testAudio.at(-1).dispatchEvent(new Event('error'));
+      return count;
+    });
+    await page.waitForFunction(count => window.testAudio.length > count, {}, beforeRecovery);
+    assert.deepEqual(await state(), { paused: true, audioPaused: true, muted: true },
+      'replacing a failed soundtrack preserves pause and mute');
+
     await page.click('.cin-controls [data-act="sound"]');
     assert.equal((await state()).muted, false, 'unmuting starts with sound');
     await page.evaluate(() => window.CINEMA.pause());
@@ -124,7 +135,7 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
     await page.click('.cin-controls [data-act="sound"]');
     await page.evaluate(() => window.CINEMA.pause());
     const stale = await page.evaluate(async () => {
-      const audio = window.testAudio[0], original = audio.play;
+      const audio = window.testAudio.at(-1), original = audio.play;
       let rejectOld, calls = 0;
       audio.play = () => ++calls === 1 ? new Promise((_, reject) => { rejectOld = reject; }) : Promise.resolve();
       window.CINEMA.play(true);
@@ -139,7 +150,7 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
     });
     assert.deepEqual(stale, { calls: 2, muted: false }, 'an obsolete denial cannot mute or replay the current request');
     const denied = await page.evaluate(async () => {
-      const audio = window.testAudio[0], original = audio.play;
+      const audio = window.testAudio.at(-1), original = audio.play;
       const attempts = [];
       audio.play = () => {
         attempts.push(audio.muted);
@@ -202,7 +213,7 @@ const BASE = process.env.FILM_BASE || 'http://localhost:4001';
     await page.waitForFunction(() => !document.documentElement.classList.contains('cin-fs-lock'));
     assert.equal(await page.$('.lab-film__frame.is-pseudo-fs'), null, 'exiting fullscreen restores the embedded player');
     assert.deepEqual(errors, [], 'no uncaught browser errors');
-    console.log('PASS: cancelled audio, autoplay denial races, mute/pause/resume, CC visibility, reveal annotation and mobile fullscreen');
+    console.log('PASS: cancelled/replaced audio, autoplay denial races, mute/pause/resume, CC visibility, reveal annotation and mobile fullscreen');
   } finally {
     await browser.close();
   }
