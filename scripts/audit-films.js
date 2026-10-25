@@ -279,7 +279,7 @@ ${real.length} scenes (signatures excluded). ` +
     if (r.error) { console.log(`${r.slug}: FAILED ${r.error}`); continue; }
     const held = r.overruns.reduce((a, o) => a + (o.overBy || 0), 0);
     totalOver += r.overruns.length; totalHeld += held;
-    const head = `${r.slug.padEnd(24)} ${String(r.duration).padStart(6)}s  ` +
+    const head = `${r.slug.padEnd(24)} ${String(+r.duration.toFixed(1)).padStart(6)}s  ` +
                  `${r.cues} lines  ${r.overruns.length} overrun`;
     console.log(held > 0.05 ? `${head}  (+${held.toFixed(1)}s of hold)` : head);
     for (const o of r.overruns) {
