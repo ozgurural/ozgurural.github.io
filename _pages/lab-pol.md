@@ -53,13 +53,13 @@ header:
   <details class="lab-reveal">
     <summary>📐 The math, precisely</summary>
     <div class="lab-math" data-role="pol-appendix">
-      <p>Rendered on load. If equations appear as raw text, your browser blocked the math font CDN.</p>
+      <p>Rendered on load. If equations appear as raw text, reload the page.</p>
     </div>
   </details>
   </div>
 </section>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{ '/assets/vendor/katex/katex.min.css' | relative_url }}">
+<script defer src="{{ '/assets/vendor/katex/katex.min.js' | relative_url }}"></script>
 <script defer src="{{ '/assets/js/lab-anim.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script defer src="{{ '/assets/js/lab-films/proof-of-learning.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
