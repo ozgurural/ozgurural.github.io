@@ -27,7 +27,7 @@ strategies the work compares and the spoofing experiments they are tested
 against. The published versions are the [IEEE Access
 paper](/publication/2024-ieee-access-watermarking) and
 [SecurePoL](/publication/2025-secureproofoflearning), and the
-[watermarking lab film](/lab/watermarking-comparison/) walks through why each
-strategy falls to a different attacker.
+[watermarking lab film](/lab/watermarking-comparison/) walks through the three strategies,
+what each needs before it can be verified, and the weakness they share.
 
 [View on GitHub](https://github.com/ozgurural/SecurePoL-with-Watermarking)

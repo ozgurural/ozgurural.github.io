@@ -24,7 +24,7 @@ Watermarking](/publication/2024-ieee-access-watermarking) and
 [SecurePoL](/publication/2025-secureproofoflearning), with the dissertation at
 [Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model
 Watermarking](/publication/2025-dissertation). The
-[Proof-of-Learning lab film](/lab/training-fingerprint/) is the three-minute
+[Proof-of-Learning lab film](/lab/training-fingerprint/) is the two-minute
 version of the argument.
 
 [View on GitHub](https://github.com/ozgurural/Adversarial-examples-for-Proof-of-Learning)
