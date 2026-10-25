@@ -1,4 +1,10 @@
 ---
+# Unpublished 2026-10-25: two of its six references do not exist (arXiv:2401.01234
+# is a statistics paper; no Sun et al. 2024 in IEEE TNSE on Crossref) and it tells
+# first-person stories with no evidence behind them (a compliance team advised, a
+# partner's NFT drop saved, testnet hack weeks). Kept in the repo; delete these
+# lines and the next to restore, after fixing both.
+published: false
 title: "ML-Enhanced Blockchain: Toward Intelligent, Adaptive Ledgers"
 seo_title: "ML-Enhanced Blockchain"
 date: 2025-09-09

@@ -19,13 +19,13 @@ In production settings, watermark checks are only useful when paired with solid 
 
 ## Toward resilient Proof-of-Learning
 
-During my doctorate at Embry-Riddle Aeronautical University I kept returning to the question: how do we prove a model was honestly trained when the hardware, datasets, and even contributors are distributed across continents? Our research investigates how watermarking strengthens Proof-of-Learning (PoL) by binding models to verifiable training artifacts. Feature-based schemes tie a model's internal representations to secret keys, making spoofing attacks detectable [1]. The most effective designs kept the verification script simple enough to run during vendor audits while still resisting collusion.
+During my doctorate at Embry-Riddle Aeronautical University I kept returning to the question: how do we prove a model was honestly trained when the hardware, datasets, and even contributors are distributed across continents? Our research investigates how watermarking strengthens Proof-of-Learning (PoL) by binding models to verifiable training artifacts. Feature-based schemes tie a model's internal representations to secret keys, making spoofing attacks detectable [1].
 
-A follow-up evaluation compared parameter, data, and feature watermarking across robustness metrics, highlighting trade-offs between security and computational cost [2]; that comparison still helps when teams ask, "Which watermark should we start with?" In practice, the answer varies: lighter parameter marks can protect rapid prototyping models, while feature marks are often better for externally shared or high-assurance deployments.
+SecurePoL then trained one design from each of three watermark families (feature-based triggers, sparse parameter perturbations and a non-intrusive auxiliary head) under one regime and compared them [6]. No single family wins, and the question that decides is access: a parameter mark costs almost nothing but can only be read with the weights in hand, a feature-trigger mark can be checked by querying the model from outside, and an auxiliary head leaves the main task untouched but can be replaced.
 
 ## Emerging applications and challenges
 
-Watermarking is moving from academic prototypes to industry as open model sharing proliferates. When Kenji Yoshigoe and I published our 2023 IEEE Access survey on blockchain-enhanced machine learning [2], the most common follow-up question from regulators and enterprise teams was, "How do we prove provenance once we decentralize training?" The conversations have only intensified as organizations deploy AI in regulated environments and need ownership trails for every neural component. Provenance controls help product leads sleep at night when releasing APIs, and they give compliance teams concrete evidence that the models feeding real-time dashboards are the ones they vetted.
+Watermarking is moving from academic prototypes to industry as open model sharing proliferates. Decentralized training raises the same question, which our 2023 IEEE Access survey on blockchain-enhanced machine learning examines through mechanisms such as Proof of Learning [2]. Provenance controls help product leads sleep at night when releasing APIs, and they give compliance teams concrete evidence that the models feeding real-time dashboards are the ones they vetted.
 
 Meanwhile, attackers explore watermark removal and collusion strategies, prompting defenses that combine robust statistics with cryptographic attestations [4,5]. The push and pull is healthy: every defensive iteration, such as mixing watermark keys with telemetry-derived sanity checks, sharpens practical guidance for product and policy teams.
 
@@ -46,3 +46,5 @@ Watermarks that survive pruning, quantization, and transfer learning will be ess
 [3] Uchida, Y., Nagai, Y., Sakazawa, S., & Satoh, S. (2017). *Embedding Watermarks into Deep Neural Networks*. ICMR.
 [4] Adi, Y., Baum, C., Cisse, M., Pinkas, B., & Keshet, J. (2018). *Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring*. USENIX Security.
 [5] Rouhani, B. D., Chen, H., & Koushanfar, F. (2019). *DeepSigns: A Generic Watermarking Framework for IP Protection of Deep Learning Models*. arXiv:1804.00750.
+
+[6] Dr. Ozgur Ural and Yoshigoe, K. (2025). *SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks*. IEEE Access, 13, 213067 to 213091.
