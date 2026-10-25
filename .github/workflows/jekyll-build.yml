@@ -19,6 +19,8 @@ jobs:
           node-version: '24'
       - name: Test artifact organiser
         run: node --test scripts/test-organize-dist.js
+      - name: Test film render selection
+        run: node --test scripts/test-film-render-targets.js
       # Lockfiles are not tracked in this repository, so npm ci is unavailable.
       # The test uses committed assets and needs only production dependencies.
       - name: Install browser test dependencies
@@ -40,6 +42,7 @@ jobs:
 
           for attempt in {1..30}; do
             if curl --fail --silent --output /dev/null "$FILM_BASE/films/level-d/?autoplay=0"; then
+              npm run test:home-film-links
               npm run test:cinema-controls
               npm run test:cinema-playback
               npm run test:cinema-cyber-events

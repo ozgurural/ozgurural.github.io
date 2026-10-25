@@ -58,6 +58,7 @@
     "audit:overlap": "node scripts/audit-overlap.js",
     "audit:site": "node scripts/audit-site.js",
     "test:interactions": "node scripts/test-site-interactions.js",
+    "test:home-film-links": "node scripts/test-home-film-links.js",
     "test:cinema-controls": "node scripts/test-cinema-controls.js",
     "test:cinema-playback": "node scripts/test-cinema-playback.js",
     "test:cinema-cyber-events": "node scripts/test-cinema-cyber-events.js",

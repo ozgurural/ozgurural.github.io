@@ -65,7 +65,7 @@ redirect_from:
     <a class="media" href="/lab/training-fingerprint/" tabindex="-1" aria-hidden="true"><img src="/images/cards/securepol.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 2:02</span></a>
     <div class="meta">2025 · IEEE Access</div>
     <h3 class="title"><a href="/publication/2025-secureproofoflearning">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
-    <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well.</p>
+    <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well. <a href="/lab/training-fingerprint/">Watch SecurePoL</a>.</p>
   </li>
   <li>
     <a class="media" href="/enterprise-ai-architecture.html" tabindex="-1" aria-hidden="true"><img src="/images/cards/enterprise-ai.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge">Interactive</span></a>
@@ -83,7 +83,7 @@ redirect_from:
     <a class="media" href="/lab/blockchain-ml/" tabindex="-1" aria-hidden="true"><img src="/images/cards/blockchain-ml.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 1:50</span></a>
     <div class="meta">2023 · IEEE Access · Survey</div>
     <h3 class="title"><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a></h3>
-    <p class="desc">Reviews the design space where distributed ledgers meet learning systems.</p>
+    <p class="desc">Reviews the design space where distributed ledgers meet learning systems. <a href="/lab/blockchain-ml/">Watch collaborative AI</a>.</p>
   </li>
 </ul>
 
