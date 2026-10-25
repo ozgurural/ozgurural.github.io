@@ -897,6 +897,51 @@
   line-height: 1.5;
   color: var(--ds-muted);
 }
+/* A frame from the film on top of its card (a gallery of films with no
+   pictures read as a reading list). The whole card is one link, so the image
+   is decorative and the title stays its name. */
+.lab-mission-card__media {
+  display: block;
+  margin: -0.82rem -0.85rem 0.75rem;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ds-line);
+  background: #05080f;
+}
+.lab-mission-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lab-mission-card:hover .lab-mission-card__media img { transform: scale(1.03); }
+/* the lead card spans the deck, so its frame sits beside the text instead of
+   filling the width above it */
+@media (min-width: 700px) {
+  .lab-mission-card--lead {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: 1.15rem;
+    align-content: start;
+  }
+  .lab-mission-card--lead .lab-mission-card__media {
+    grid-row: 1 / -1;
+    margin: -1.1rem 0 -1.15rem -1.15rem;
+    aspect-ratio: auto;
+    min-height: 100%;
+    border-bottom: 0;
+    border-right: 1px solid var(--ds-line);
+  }
+  /* the stills put their type on the left; crop from the right */
+  .lab-mission-card--lead .lab-mission-card__media img { object-position: 0% 50%; }
+  .lab-mission-card--lead .lab-mission-card__code { margin-top: 0.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-mission-card__media img { transition: none; }
+  .lab-mission-card:hover .lab-mission-card__media img { transform: none; }
+}
 
 .lab-card {
   margin: 1.75rem 0 2.25rem;
