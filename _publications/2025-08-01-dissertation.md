@@ -18,6 +18,9 @@ pdf: "https://commons.erau.edu/cgi/viewcontent.cgi?article=1944&context=edt"
 keywords: ["Proof-of-Learning", "model watermarking", "spoofing attacks", "verifiable machine learning"]
 author_list:
   - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
+venue_short: "Ph.D. dissertation"
+# the film that shows this work (shown on /publications/)
+film: { url: "/lab/training-fingerprint/", length: "2:02" }
 ---
 
 Doctoral dissertation, Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University (Daytona Beach, Florida). Advisor: Dr. Kenji Yoshigoe.

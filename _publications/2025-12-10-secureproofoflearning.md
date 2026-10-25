@@ -27,6 +27,9 @@ keywords: ["Proof-of-Learning", "model watermarking", "spoofing attacks", "model
 author_list:
   - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
   - { given: "Kenji", family: "Yoshigoe", orcid: "0000-0001-6040-4742" }
+venue_short: "IEEE Access"
+# the film that shows this work (shown on /publications/)
+film: { url: "/lab/training-fingerprint/", image: "securepol", length: "2:02" }
 ---
 
 SecurePoL presents a dual-layer framework that couples immutable Proof-of-Learning logs with three watermarking strategies (feature-based triggers, sparse parameter perturbations, and a non-intrusive auxiliary head), ensuring verification succeeds only when both the training trajectory and watermark are consistent.

@@ -62,21 +62,25 @@ redirect_from:
 
 <ul class="ep-cards ep-cards--two">
   <li>
+    <a class="media" href="/lab/training-fingerprint/" tabindex="-1" aria-hidden="true"><img src="/images/cards/securepol.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 2:02</span></a>
     <div class="meta">2025 · IEEE Access</div>
     <h3 class="title"><a href="/publication/2025-secureproofoflearning">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
     <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well.</p>
   </li>
   <li>
+    <a class="media" href="/enterprise-ai-architecture.html" tabindex="-1" aria-hidden="true"><img src="/images/cards/enterprise-ai.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge">Interactive</span></a>
     <div class="meta">2026 · Avion · Architecture</div>
     <h3 class="title"><a href="/enterprise-ai-architecture.html">Enterprise AI strategy and reference architecture</a></h3>
     <p class="desc">The adoption roadmap and reference architecture I wrote for Avion, spanning on-premises inference, governed cloud APIs and edge workloads. The design distinguishes prototypes from proposed capabilities.</p>
   </li>
   <li>
+    <a class="media" href="/lab/level-d-60hz/" tabindex="-1" aria-hidden="true"><img src="/images/cards/level-d.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 4:40</span></a>
     <div class="meta">2026 · Research film</div>
     <h3 class="title"><a href="/lab/level-d-60hz/">Inside a Level D flight simulator</a></h3>
     <p class="desc">How a certified simulator earns a pilot's trust, and what a learned model would have to keep to run inside its real-time loop. Every rule is cited from the regulation text.</p>
   </li>
   <li>
+    <a class="media" href="/lab/blockchain-ml/" tabindex="-1" aria-hidden="true"><img src="/images/cards/blockchain-ml.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 1:50</span></a>
     <div class="meta">2023 · IEEE Access · Survey</div>
     <h3 class="title"><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a></h3>
     <p class="desc">Reviews the design space where distributed ledgers meet learning systems.</p>

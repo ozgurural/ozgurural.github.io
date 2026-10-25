@@ -17,6 +17,7 @@ doi: "10.13140/RG.2.2.24058.08649"
 author_list:
   - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
   - { given: "Efe", family: "Erdur" }
+venue_short: "Technical report"
 ---
 This report presents a secure proxy solution for cloud-based services.
 

@@ -16,6 +16,7 @@ school: "Middle East Technical University"
 keywords: ["cyber security event detection", "Twitter", "natural language processing", "Turkish"]
 author_list:
   - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
+venue_short: "M.Sc. thesis, METU"
 ---
 
 Master's thesis in Cyber Security at Middle East Technical University, advised by [Prof. Cengiz Acartürk](https://acarturk.net/). It builds a system that detects cyber-security events from two live Turkish sources, a Twitter stream and newspaper data, and it is the work later extended into the co-authored [ICISSP 2021 paper](/publication/AutomaticDetectionCyberSecurity).

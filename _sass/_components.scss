@@ -477,6 +477,190 @@
   line-height: 1.55;
   max-width: var(--ds-measure);
 }
+/* A card can open on a picture of the work: a frame from its film, or the
+   interactive page itself. It runs to the card's edges, and its link is a
+   second way to the same place as the title, so it is hidden from assistive
+   tech and the tab order rather than announced twice. */
+.ep-cards > li { overflow: hidden; }
+.ep-cards .media {
+  position: relative;
+  display: block;
+  margin: -1rem -1.15rem 0.9rem;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ds-line);
+  background: #05080f;
+}
+.page__content .ep-cards .media::after { content: none; }
+.ep-cards .media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ep-cards > li:hover .media img { transform: scale(1.03); }
+.ep-cards .media__badge {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-ink);
+  background: rgba(5, 8, 15, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+.ep-cards .media__badge--play::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.3rem 0 0.3rem 0.5rem;
+  border-color: transparent transparent transparent var(--ds-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ep-cards .media img { transition: none; }
+  .ep-cards > li:hover .media img { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Publications (_includes/publication-entry.html): a picture or venue tile on
+   the left, authors, venue, one line and the links on the right; stacked on a
+   phone.
+   -------------------------------------------------------------------------- */
+.pub {
+  display: grid;
+  grid-template-columns: 13.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--ds-line);
+}
+.pub__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: #05080f;
+}
+.pub .pub__media::after { content: none; }
+.pub__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pub:hover .pub__media img { transform: scale(1.03); }
+.pub__media .media__badge {
+  position: absolute;
+  left: 0.45rem;
+  bottom: 0.45rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-ink);
+  background: rgba(5, 8, 15, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+.pub__media .media__badge--play::before {
+  content: "";
+  border-style: solid;
+  border-width: 0.27rem 0 0.27rem 0.45rem;
+  border-color: transparent transparent transparent var(--ds-accent);
+}
+.pub__media--tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 1rem;
+  background: linear-gradient(135deg, var(--ds-surface), #05080f);
+}
+.pub__tile-venue {
+  font-family: var(--ds-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--ds-accent);
+}
+.pub__tile-year {
+  margin-top: 0.2rem;
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--ds-muted);
+}
+.pub__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--ds-font-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.pub__title a { display: inline-block; color: var(--ds-ink); text-decoration: none; }
+.pub__title a:hover, .pub__title a:focus-visible { color: var(--ds-accent); }
+.pub__authors, .pub__venue {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ds-body);
+}
+.pub__authors strong { color: var(--ds-ink); font-weight: 600; }
+.pub__venue { color: var(--ds-muted); }
+.pub__desc {
+  margin: 0.5rem 0 0;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: var(--ds-muted);
+  max-width: var(--ds-measure);
+}
+.pub__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+}
+.pub .pub__links a {
+  display: inline-block;
+  padding: 0.32rem 0.7rem;
+  border: 1px solid var(--ds-line);
+  border-radius: 999px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.pub .pub__links a::after { content: none; }
+.pub .pub__links a:hover,
+.pub .pub__links a:focus-visible { border-color: var(--ds-accent); background: rgba(56, 189, 248, 0.08); }
+@media (max-width: 640px) {
+  .pub { grid-template-columns: 1fr; gap: 0.8rem; }
+  .pub__media--tile { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pub__media img { transition: none; }
+  .pub:hover .pub__media img { transform: none; }
+}
 
 /* --------------------------------------------------------------------------
    Tag / pill — small inline metadata

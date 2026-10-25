@@ -22,12 +22,12 @@ excerpt: "Peer-reviewed publications by Dr. Ozgur Ural on proof-of-learning, mod
         <h2>{{ category[1].title }}</h2><hr />
         {% assign title_shown = true %}
       {% endunless %}
-      {% include archive-single.html %}
+      {% include publication-entry.html %}
     {% endfor %}
   {% endfor %}
 {% else %}
   {% for post in site.publications reversed %}
-    {% include archive-single.html %}
+    {% include publication-entry.html %}
   {% endfor %}
 {% endif %}
 

@@ -12,6 +12,7 @@ bibkey: "ural2014autonomousdelivery"
 pub_type: "conference"
 author_list:
   - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
+venue_short: "Robotics conference"
 ---
 
 Undergraduate project demonstrating autonomous cargo and mail delivery.

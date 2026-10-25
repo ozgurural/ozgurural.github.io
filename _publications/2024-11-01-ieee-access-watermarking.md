@@ -25,6 +25,7 @@ keywords: ["Proof-of-Learning", "feature-based watermarking", "spoofing attacks"
 author_list:
   - { given: "Ozgur", family: "Ural", orcid: "0000-0003-1329-4303" }
   - { given: "Kenji", family: "Yoshigoe", orcid: "0000-0001-6040-4742" }
+venue_short: "IEEE Access"
 ---
 
 Proof-of-Learning lets a party prove they trained a model rather than downloaded it, by committing to the trajectory the optimizer actually took. The weakness is that the proof is a transcript, and a transcript can be forged: later work showed that an adversary can replicate the computational path of a legitimate model closely enough to pass verification.

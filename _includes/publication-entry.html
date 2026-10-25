@@ -1,0 +1,47 @@
+{% comment %}
+  One entry of /publications/. A reader from industry scans this list for
+  evidence: who wrote it, where it appeared, what it found, and where to see
+  it, so each entry carries its authors (the owner in bold), its venue and
+  year, one line, and its links. The left column is the film that shows the
+  work when there is one, and otherwise a tile naming the venue, so every row
+  lines up. The picture's link repeats the Film link, so it is hidden from
+  assistive tech and the tab order.
+{% endcomment %}
+{% assign year = post.date | date: "%Y" %}
+{% if post.description %}
+  {% assign pub_excerpt = post.description | markdownify | strip_html %}
+{% else %}
+  {% assign pub_excerpt = post.excerpt | markdownify | strip_html | truncatewords: 40 %}
+{% endif %}
+<article class="pub" itemscope itemtype="https://schema.org/ScholarlyArticle">
+  {% if post.film.image %}
+    <a class="pub__media" href="{{ post.film.url | relative_url }}" tabindex="-1" aria-hidden="true">
+      <img src="{{ '/images/cards/' | append: post.film.image | append: '.webp' | relative_url }}" alt="" width="640" height="336" loading="lazy" decoding="async">
+      <span class="media__badge media__badge--play">Film · {{ post.film.length }}</span>
+    </a>
+  {% else %}
+    <div class="pub__media pub__media--tile" aria-hidden="true">
+      <span class="pub__tile-venue">{{ post.venue_short | default: post.venue }}</span>
+      <span class="pub__tile-year">{{ year }}</span>
+    </div>
+  {% endif %}
+  <div class="pub__body">
+    <h3 class="pub__title" itemprop="headline"><a href="{{ post.url | relative_url }}" rel="permalink">{{ post.title }}</a></h3>
+    {% if post.author_list %}
+      <p class="pub__authors">
+        {%- for a in post.author_list -%}
+          {%- if a.family == "Ural" and a.given == "Ozgur" -%}<strong>{{ a.given }} {{ a.family }}</strong>{%- else -%}{{ a.given }} {{ a.family }}{%- endif -%}
+          {%- unless forloop.last -%}, {% endunless -%}
+        {%- endfor -%}
+      </p>
+    {% endif %}
+    <p class="pub__venue"><i>{{ post.venue }}</i>, {{ year }}</p>
+    <p class="pub__desc" itemprop="description">{{ pub_excerpt }}</p>
+    <p class="pub__links">
+      {%- if post.paperurl -%}<a href="{{ post.paperurl }}">{% if post.paperurl contains '.pdf' %}PDF{% else %}Paper{% endif %}</a>{%- endif -%}
+      {%- if post.code -%}<a href="{{ post.code }}">Code</a>{%- endif -%}
+      {%- if post.film.url -%}<a href="{{ post.film.url | relative_url }}">Film</a>{%- endif -%}
+      {%- if post.citation -%}<a href="{{ post.url | relative_url }}#cite-this-work">Cite</a>{%- endif -%}
+    </p>
+  </div>
+</article>
