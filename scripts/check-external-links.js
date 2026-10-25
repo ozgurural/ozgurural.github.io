@@ -11,13 +11,13 @@
  * A host that refuses automated requests is reported as unverified rather than
  * dead: the point is to find rot, not to argue with bot protection.
  *
- *   node scripts/check-external-links.js [--base http://localhost:4001]
+ *   node scripts/check-external-links.js [--base http://localhost:4001]   (or FILM_BASE)
  */
 const puppeteer = require('puppeteer');
 
 const argv = process.argv.slice(2);
 const arg = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
-const BASE = arg('--base', 'http://localhost:4001').replace(/\/$/, '');
+const BASE = arg('--base', process.env.FILM_BASE || 'http://localhost:4001').replace(/\/$/, '');
 const MAX_PAGES = Number(arg('--max', 90));
 const CONCURRENCY = Number(arg('--jobs', 6));
 const TIMEOUT = Number(arg('--timeout', 15000));
@@ -58,6 +58,7 @@ async function head(url) {
   const seen = new Set(['/']);
   const queue = ['/'];
   const ext = new Map();                    // url -> Set(pages)
+  let crawled = 0;
 
   while (queue.length && seen.size <= MAX_PAGES) {
     const p = queue.shift();
@@ -67,6 +68,7 @@ async function head(url) {
     if (!resp || resp.status() >= 400) continue;
     if (!(resp.headers()['content-type'] || '').includes('html')) continue;
 
+    crawled++;
     const found = await page.evaluate(() => {
       const o = { internal: [], external: [] };
       document.querySelectorAll('a[href]').forEach(a => {
@@ -85,6 +87,9 @@ async function head(url) {
     }
   }
   await browser.close();
+  // a start page that never loaded used to report "0 dead" and pass, which reads
+  // exactly like a clean site; say so and fail instead
+  if (!crawled) { console.error(`no page could be read from ${BASE}; is the dev server running there?`); process.exit(2); }
 
   const urls = [...ext.keys()].sort();
   console.log(`${seen.size} pages, ${urls.length} distinct external links`);

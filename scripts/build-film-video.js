@@ -33,7 +33,7 @@ const os = require('os');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'dist', 'video');
-const BASE = process.env.FILM_BASE_URL || 'http://localhost:4000';
+const BASE = process.env.FILM_BASE_URL || process.env.FILM_BASE || 'http://localhost:4000';
 
 // The films are whatever has an embed page, because that page is what the
 // render loads. Deriving it means adding a film is one file in _pages/embed
@@ -42,6 +42,11 @@ const FILMS = fs.readdirSync(path.join(ROOT, '_pages', 'embed'))
   .filter(f => f.endsWith('-embed.md'))
   .map(f => f.slice(0, -'-embed.md'.length))
   .sort();
+// `render: false` in an embed page keeps it out of --all: the page still serves
+// the old film to anyone who opens it, but it is not cut for upload. wm-compare
+// has a scene on watermarking generated text, which is not the owner's field.
+const NO_RENDER = new Set(FILMS.filter(s => /^render:s*falses*$/m.test(
+  fs.readFileSync(path.join(ROOT, '_pages', 'embed', s + '-embed.md'), 'utf8'))));
 
 function parseArgs(argv) {
   const a = { fps: 30, width: 1280, scale: 1.5, film: null, all: false,
@@ -493,7 +498,8 @@ function existingGood(slug, args, inputsHash) {
 
 (async () => {
   const args = parseArgs(process.argv);
-  const targets = args.all ? FILMS : [args.film];
+  const targets = args.all ? FILMS.filter(s => !NO_RENDER.has(s)) : [args.film];
+  if (args.all && NO_RENDER.size) console.log('not rendered (render: false): ' + [...NO_RENDER].join(', '));
   if (!targets[0]) {
     console.error('usage: --film <slug> | --all  [--scene N | --from S --to S] [--fps 30] [--force]');
     console.error('films: ' + FILMS.join(', '));
