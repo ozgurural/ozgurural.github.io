@@ -32,7 +32,7 @@ Blockchain technology and machine learning (ML) have mostly evolved on separate 
 
 ## Core Architectural Patterns
 
-Our survey identifies three canonical architectures for combining blockchain with ML. The most promising for scalability is the **On-chain coordination, Off-chain computation** pattern:
+Three patterns recur in the systems our survey reviews (the grouping is this article's; the survey does not rank them). The first keeps the ledger for coordination and does the heavy work elsewhere, which is how the survey's examples of scaling work: only references are stored on-chain, while the data itself sits off-chain, for instance in IPFS. This is the **on-chain coordination, off-chain computation** pattern:
 
 <figure class="post-diagram">
   <a href="{{ '/images/diagrams/blockchain-ml-sequence.svg' | relative_url }}"><img src="{{ '/images/diagrams/blockchain-ml-sequence.svg' | relative_url }}" alt="Sequence diagram of on-chain coordination with off-chain computation. The client asks the smart contract for model training and deposits tokens; the contract emits a TrainingRequested event; an off-chain worker hears the event, trains the model on a GPU, uploads the weights to IPFS or other storage and gets back a content hash (CID); the worker submits the model hash and a proof to the contract, which tells the client the model is ready and releases the tokens." width="1195" height="561" loading="lazy"></a>
@@ -40,7 +40,7 @@ Our survey identifies three canonical architectures for combining blockchain wit
 
 1. **On-chain coordination, off-chain computation:** Lightweight smart contracts log events and manage access control while heavy model training occurs off-chain. This pattern balances transparency with scalability and suits federated learning or model marketplaces.
 2. **Proof-of-Useful-Work:** Instead of wasteful hashing, miners perform ML training or inference to secure the blockchain. The result is a consensus mechanism where useful computation replaces traditional mining, linking network security with ML progress.
-3. **Decentralized data exchanges:** Blockchains act as registries and payment rails for dataset access, encouraging sharing while preserving ownership. Zero-knowledge proofs or differential privacy guard sensitive information.
+3. **Decentralized data exchanges:** Blockchains act as registries and payment rails for dataset access, encouraging sharing while preserving ownership. Privacy mechanisms such as differential privacy, which one of the reviewed frameworks builds in, guard sensitive information.
 
 ## Applications in the Wild
 
@@ -61,7 +61,7 @@ Despite the promise, integrating blockchain and ML introduces nontrivial challen
 
 Research continues to explore hybrid approaches that maintain decentralization without sacrificing performance. Cross-chain messaging, sharding, and hierarchical consensus may support global ML collaborations. Privacy-preserving cryptographic primitives are maturing, enabling verifiable yet confidential training. Economic mechanisms such as staking or slashing could discourage malicious behavior in decentralized learning networks.
 
-Our survey [1] concludes that **blockchain-enhanced ML is poised to reshape how data and models are shared, validated, and monetized**. As regulation and ethical guidelines demand greater accountability, blockchain offers a path to verifiable AI pipelines. Future systems may feature:
+Our survey [1] concludes that the integration **opens real opportunities in security, privacy, transparency and consensus designed for ML, and leaves pressing challenges in scalability, efficiency, model complexity and standardization**. It names privacy-preserving algorithms, consensus such as Proof-of-Learning, and decentralized marketplaces as the promising directions. As regulation and ethical guidelines demand greater accountability, blockchain offers a path to verifiable AI pipelines. Future systems may feature:
 
 1. Tokenized incentives for dataset curation and model validation.
 2. Distributed audit logs linking every model to its training evidence.
