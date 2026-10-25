@@ -265,6 +265,20 @@ SCSS in `_sass/` is organized around a design-system token layer (CSS custom pro
 
 **What was considered and not done.** A switch to a light, typographic theme of the kind many individual researchers use: rejected without the owner asking for it, since the films, the cards and the share images all share the dark look and a theme change is a taste call, not a defect. Al-folio-style academic furniture (news feed, citation counts per paper): it reads academic, which is not the target reader.
 
+### The resume (`cv/resume.tex`)
+
+`.github/workflows/build-cv.yml` rebuilds `Ozgur_Ural_PhD_Resume.pdf` with pdfLaTeX on every push that touches it and commits the PDF itself (`[skip ci]`), so edit only the `.tex`. Check a change locally without touching the tracked PDF: `cd cv && latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=<temp dir> resume.tex` (MiKTeX is installed), then read the PDF.
+
+Reviewed against the site and the publication records on 2026-10-25, and six things changed, each for a reason a later edit should keep:
+- The Avion bullet said "designed a suite of retrieval-augmented and autonomous AI agents ... autonomous repository agent". /projects/ lists those as proposed workflows, each with a person accountable (the repository agent never approves a release), and an interviewer will ask whether they shipped. It now says proposed workflows, and names what was built: the retrieval prototypes and the strategy portal.
+- A RESEARCH COMMUNICATION section names the Research Lab. For the industry research and leadership roles the site serves, explaining research to non-specialists is evidence, and the CV did not mention the films at all.
+- Publication lines carry the full record (volume and pages for 2024 and 2023, pages and DOI for ICISSP, all from the `_publications/` front matter, which came from Crossref), the 2016 report is a "Technical report" as on the site rather than a "Preprint", and the dissertation sits in date order.
+- The M.Sc. thesis link used the old GitHub user `ozzgural`, which only works through a redirect.
+- "Ranked 269th globally (QS 2026)" was dropped: the sources found disagree (269 and 305), and METU's own site gives 285th for QS 2025. It was replaced with the fact the site already states about the programme's intake.
+- "2025 JCR impact factor 4.2" became "2025 Journal Impact Factor 4.2, JCR 2026": 4.2 is the 2025 JIF from the June 2026 JCR release (Manusights, OOIR); Clarivate's own page could not be read, so re-check it there before a formal submission.
+
+**A shell trap that cost two attempts.** In this Bash, a backslash pair inside `node -e '...'` or a quoted heredoc reaches node as a single backslash, so a script looking for `\item` matches nothing (or fails to parse). When a script has to write LaTeX, build the backslash as `String.fromCharCode(92)` and interpolate it.
+
 ### Research Lab (`_pages/lab*.md` + `assets/js/lab-anim.js`)
 
 Each lab page is an interactive animated explainer. Films register themselves in `window.LabAnim.films`. When debugging overlap/layout issues:
