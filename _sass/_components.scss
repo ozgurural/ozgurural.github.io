@@ -1959,9 +1959,12 @@ html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !im
   &:hover, &:focus-visible { background: var(--ds-accent); color: var(--ds-bg); text-decoration: none; }
 }
 
-/* Phones and tablets: lead with the page, including on the home page. Keep
-   the full author profile and its contact links after the content; the name
-   remains visible in the masthead. */
+/* Phones and tablets: lead with the page, and keep the full author profile
+   after it; the name stays in the masthead. Except on the home page, where
+   the person is the subject: a visitor arriving from LinkedIn or a CV link
+   should see the face, the name and the links first (the compact card is
+   about 260px). It was moved below the home page too on 2026-10-17; the
+   owner noticed the photo and links had gone to the bottom. */
 @media screen and (max-width: 1023px) {
   #main { display: flex; flex-direction: column; }
   #main > .sidebar {
@@ -1970,6 +1973,7 @@ html.cin-fs-lock .ep-fade-in { transform: none !important; will-change: auto !im
     padding-top: 1.4rem;
     border-top: 1px solid var(--ds-line);
   }
+  .ep-home #main > .sidebar { order: 0; margin-top: 0.75rem !important; padding-top: 0; border-top: 0; }
 }
 
 // On a phone too: the stacked author card pushed the film below the first
