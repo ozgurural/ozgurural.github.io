@@ -2,6 +2,7 @@
   "film": "deadline",
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
+  "true_peak": -2.7,
   "music": {
     "file": "dist/music/mixkit-149-trip-hop-vibes.mp3",
     "rise": 24.794,

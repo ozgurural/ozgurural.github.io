@@ -90,6 +90,12 @@ The bed is ducked under speech and the complete programme mastered. Signal
 analysis and an available preview are not a claim of an end-to-end listening
 review. The opening sample includes actual mixed audio for review.
 
+The first delivered AAC measurement was -0.5 dBTP. Deadline now requests a
+-2.7 dBTP ceiling at source mastering to leave headroom for the MP3-to-AAC
+chain. The delivered AAC measures -14.6 LUFS and -1.8 dBTP. Both encoded video
+streams are byte-identical across this audio-only remux, and the narration
+timeline is unchanged. Other films retain the existing default ceiling.
+
 ## Preservation and verification record
 
 Previous source, audio, post, cover and both full exports are preserved in

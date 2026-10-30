@@ -289,7 +289,9 @@ def mix(src, lines, dur, out_dir, bed=None):
         graph += ';[voice]anull[mix]'
     raw = os.path.join(out_dir, 'soundtrack.raw.wav')
     ff(['-y', *inputs, '-filter_complex', graph, '-map', '[mix]', '-ar', '48000', '-ac', '2', raw])
-    target = f'I={TARGET}:TP=-1.5:LRA=11'
+    # A source can reserve more headroom for the MP3 -> AAC delivery chain.
+    # This changes mastering only, never narration timing or other films.
+    target = f"I={TARGET}:TP={src.get('true_peak', -1.5)}:LRA=11"
     log = ff(['-i', raw, '-af', f'loudnorm={target}:print_format=json', '-f', 'null', '-'])
     j = json.loads(log[log.rindex('{'):log.rindex('}') + 1])
     second = f"loudnorm={target}:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}" \
