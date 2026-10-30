@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const {createHash} = require('node:crypto');
 const puppeteer = require('puppeteer');
 const voice = require('./cinema/deadline.voice.json');
 const tl = require('../assets/audio/cinema/deadline/timeline.json');
@@ -12,6 +13,13 @@ const realAt = t => {
   let i = 0; while (i < a.length - 2 && t > a[i + 1][1]) i++;
   return a[i][0] + (t - a[i][1]) * (a[i + 1][0] - a[i][0]) / (a[i + 1][1] - a[i][1]);
 };
+const shareLine=tl.lines.find(l=>l.id==='share');
+const authoredAt = real => {
+ const a=tl.anchors;let i=0;while(i<a.length-2&&real>a[i+1][0])i++;
+ return a[i][1]+(real-a[i][0])*(a[i+1][1]-a[i][1])/(a[i+1][0]-a[i][0]);
+};
+const inferenceAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Inference')[1]);
+const isolateAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Isolation')[1]);
 
 (async () => {
   for (const line of voice.lines) {
@@ -41,8 +49,30 @@ const realAt = t => {
       };
       assert.equal((await read(30)).blocked, 'true', 'blocking inference visibly stalls control');
       assert.equal((await read(40)).blocked, 'false', 'separate inference no longer blocks this loop');
-      assert.equal((await read(78.2)).blocked, 'true', 'shared contention can still stall asynchronous control');
-      assert.equal((await read(83)).blocked, 'false', 'isolation removes the deliberately injected stall');
+      assert.equal((await read(inferenceAt+.25)).blocked, 'true', 'shared contention stalls control while the narrator names it');
+      assert.equal((await read(isolateAt+.6)).blocked, 'false', 'isolation removes the deliberately injected stall');
+      const phases = [[2,'door'],[30,'queue'],[40,'handoff'],[50,'snapshot'],[60,'admission'],[69,'action-gate'],[78,'shared'],[isolateAt+1.2,'isolated']];
+      for (const [at, expected] of phases) {
+        await seek(realAt(at));
+        assert.equal(await page.$eval('.cin', el => el.dataset.world), expected, `the story depicts ${expected}`);
+      }
+      await seek(realAt(2));
+      assert.equal(await page.$eval('.cin', el => el.dataset.window), 'open');
+      await seek(realAt(5));
+      assert.equal(await page.$eval('.cin', el => el.dataset.window), 'closed', 'the late key cannot keep its window open');
+      await seek(realAt(30));
+      await page.evaluate(() => document.documentElement.classList.add('is-render'));
+      const pixels = await page.screenshot({type:'png'});
+      await seek(realAt(83)); await seek(realAt(30));
+      const restored = await page.screenshot({type:'png'});
+      const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+      if (digest(restored) !== digest(pixels) && process.env.DEADLINE_SHOTS) {
+        fs.mkdirSync(process.env.DEADLINE_SHOTS, {recursive:true});
+        fs.writeFileSync(path.join(process.env.DEADLINE_SHOTS, `seek-before-${aspect}.png`), pixels);
+        fs.writeFileSync(path.join(process.env.DEADLINE_SHOTS, `seek-after-${aspect}.png`), restored);
+      }
+      assert.equal(digest(restored), digest(pixels), 'moving geometry and materials restore on backwards seek');
+      await page.evaluate(() => document.documentElement.classList.remove('is-render'));
       const initial = await read(30); await read(83);
       assert.equal((await read(30)).html, initial.html, 'backwards seek restores the actual status');
       await seek(tl.lines.find(l => l.id === 'contract').real + 1);
@@ -83,11 +113,11 @@ const realAt = t => {
       }
       assert.deepEqual(failures, [], aspect + ': spoken cue edges fit and clear captions');
       if (aspect === '9x16') {
-        for (const t of [2, 30, 50, 60, 69, 78, 91, 99]) {
+        for (const t of [2, 21, 24, 30, 40, 50, 60, 69, 78, inferenceAt+.25, isolateAt+1.2, 91, 97]) {
           await seek(realAt(t));
           if (process.env.DEADLINE_SHOTS) {
             fs.mkdirSync(process.env.DEADLINE_SHOTS, { recursive: true });
-            await page.screenshot({ path: path.join(process.env.DEADLINE_SHOTS, `phone-${t}.png`) });
+            await page.screenshot({ path: path.join(process.env.DEADLINE_SHOTS, `phone-${Number(t.toFixed(2))}.png`) });
           }
         }
         assert.ok(await page.$eval('html', el => el.classList.contains('cinema-portrait')));

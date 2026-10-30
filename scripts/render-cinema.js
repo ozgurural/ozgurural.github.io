@@ -243,14 +243,15 @@ function launch() {
 
 async function renderPart(a, s, e, from, file, tick) {
   const browser = await launch();
+  let proc, closed;
   try {
     const { page, W, H } = await open(browser, a);
-    const proc = spawn(ffmpeg, ['-y', '-f', 'image2pipe', '-framerate', String(a.fps), '-i', '-',
+    proc = spawn(ffmpeg, ['-y', '-f', 'image2pipe', '-framerate', String(a.fps), '-i', '-',
       '-c:v', 'libx264', '-preset', 'slow', '-crf', String(a.crf), '-pix_fmt', 'yuv420p',
       '-profile:v', 'high', file], { stdio: ['pipe', 'ignore', 'pipe'] });
     let err = '';
     proc.stderr.on('data', d => { err += d; if (err.length > 20000) err = err.slice(-20000); });
-    const closed = new Promise(res => proc.on('close', res));
+    closed = new Promise(res => proc.on('close', res));
     for (let i = s; i < e; i++) {
       const buf = await shot(page, W, H, from + i / a.fps);
       if (!proc.stdin.write(buf)) await new Promise(r => proc.stdin.once('drain', r));
@@ -260,6 +261,12 @@ async function renderPart(a, s, e, from, file, tick) {
     const code = await closed;
     if (code !== 0) { console.error(err.slice(-3000)); throw new Error('ffmpeg failed'); }
   } finally {
+    // A failed screenshot used to leave ffmpeg waiting on an open stdin,
+    // holding its partial file and preventing the render process from exiting.
+    // Close it before the caller removes/retries that exact segment.
+    if (proc && proc.exitCode === null) {
+      proc.stdin.destroy(); proc.kill(); await closed;
+    }
     await closeQuietly(browser);
   }
 }

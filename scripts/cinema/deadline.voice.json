@@ -3,78 +3,72 @@
   "voice": "edge:en-GB-RyanNeural",
   "rate": "+6%",
   "music": {
-    "file": "dist/music/mixkit-587-discover.mp3",
-    "rise": 30,
-    "rise_on": "beat",
-    "loops": [
-      {
-        "out": 80.311,
-        "to": 100.08,
-        "xfade": 0.5
-      }
-    ]
+    "file": "dist/music/mixkit-149-trip-hop-vibes.mp3",
+    "rise": 24.794,
+    "rise_on": "think",
+    "loops": []
   },
-  "authored_duration": 100.0,
+  "authored_duration": 98.5,
   "lines": [
     {
       "id": "hook",
       "at": 0.0,
-      "source": "Hypothetical planning scenario, not measured robot performance.",
-      "text": "The AI finds a plan. The moment has already passed. In a moving machine, a good answer can arrive too late."
+      "source": "The Matrix: knowing versus taking a path, as an explicit narrative reading. The architecture experiment is independent of that fiction.",
+      "text": "In The Matrix, knowing the way and taking it are different problems. A powerful AI can also lack control over the conditions for acting."
     },
     {
       "id": "beat",
       "at": 8.5,
-      "source": "lab-deadline-model.js: synthetic periodic jobs, deadline one period after release.",
-      "text": "In this experiment, the controller must act on every beat. It cannot pause the world while a model thinks."
+      "source": "The Matrix Reloaded: Keymaker access and timing dependency, source register in cinema-storytelling-runbook.md. Original schematic time window, not measured robot performance.",
+      "text": "With the Keymaker, that gap becomes a door and a narrow window. Our machine has its own window."
     },
     {
       "id": "think",
       "at": 17.0,
       "source": "Chosen latency pattern, not a claim that every inference system lacks a timing bound.",
-      "text": "The model answers quickly, until one request takes longer. A fast average tells us little about that missed moment."
+      "text": "One answer arrives in time. The next arrives late. A fast average cannot give that moment back."
     },
     {
       "id": "wait",
       "at": 26.0,
       "source": "Synthetic blocking baseline: unfinished work queues later controller jobs.",
-      "text": "Put that request in the controller's path. The controller waits, then the work behind it waits too. One delay becomes a queue."
+      "text": "Make the controller wait for inference. Now one late answer holds up the work behind it. Watch the queue."
     },
     {
       "id": "split",
       "at": 36.0,
       "source": "Synthetic async design: fixed controller and admission costs, bounded handoff and isolated worker assumed.",
-      "text": "Give the model a different role. It proposes; the controller decides when to use a proposal. Inference no longer blocks this loop."
+      "text": "Let the AI propose in another worker. A bounded handoff lets this controller keep moving. We have removed the waiting dependency."
     },
     {
       "id": "stale",
       "at": 46.0,
       "source": "Observation age and context validity differ from result arrival time.",
-      "text": "But the clock is only half the story. A plan can arrive now and still describe a state that has already changed."
+      "text": "But this proposal remembers a world that has moved on. Its arrival is new. Its observation is old."
     },
     {
       "id": "contract",
       "at": 55.0,
-      "source": "lab-deadline-model.js checks observation timestamp and context version. Baseline safety is not simulated.",
-      "text": "Stamp the observation, not just the arrival. Check its age and context before use. Otherwise, use the baseline controller."
+      "source": "The Matrix Revolutions Mobil Ave authority boundary, as an explicit analogy. Actual model checks observation age and context version; neither establishes action safety.",
+      "text": "In Revolutions, Neo's power does not control the Trainman's station. Here, a proposal needs admission: check the observation's age and context before use."
     },
     {
       "id": "limits",
       "at": 65.0,
       "source": "Architecture proposal: timing and freshness do not prove action safety; no plant is simulated.",
-      "text": "That is permission to be considered, not proof the action is safe. Action limits and the baseline need their own evidence."
+      "text": "Permission is conditional. Passing those checks does not make an action safe. Action limits and the baseline need their own evidence."
     },
     {
       "id": "share",
       "at": 74.5,
-      "source": "Injected shared stalls in lab-deadline-model.js. Asynchrony alone proves neither isolation nor a worst-case timing bound.",
-      "text": "Now let both share a constrained resource. The deadline breaks again. Asynchrony removes a dependency; resource isolation and worst-case analysis remain separate jobs."
+      "source": "Architect account in The Matrix Reloaded, not the claim that Zion is another simulation. Structural analogy only. Actual shared stalls are authored events; neither fiction nor analogy validates the engineering claim.",
+      "text": "The Architect describes Zion's rebellion inside a larger cycle. Here is a smaller dependency: two separate workers still share one machine. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence."
     },
     {
       "id": "close",
       "at": 86.0,
       "source": "Dr. Ozgur Ural's open architecture experiment. Timing is simulated; task success and proposal usefulness are not measured.",
-      "text": "This is my architecture experiment, not a robot benchmark. Ask two questions: did the controller act on time, and was the AI proposal still useful?"
+      "text": "This is my synthetic architecture experiment. Timing, useful AI input and safe action are different tests. Intelligence needs an execution contract."
     },
     {
       "id": "card",

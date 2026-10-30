@@ -1,5 +1,8 @@
 # AI Meets the Deadline: mobile story and delivery review
 
+Historical review of the first delivery. Its creative direction was rejected
+and is superseded by [the Matrix narrative review](deadline-matrix-review-2026-10-31.md).
+
 Scope: Deadline only. Baseline commit `4204f05`. The owner authorized a substantial
 mobile-focused update after the earlier research-only pass. Who Improved the AI
 and its media are unchanged. Shared changes only enable an additional aspect and

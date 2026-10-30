@@ -32,6 +32,22 @@ quantity, decision or consequence that matters to the explanation.
 This update authorizes research and this runbook, not a rewrite, render,
 soundtrack replacement, theme change or publication of a new film.
 
+### Subsequent implementation brief and acceptance, 31 October 2026
+
+The owner subsequently authorized an implementation and narrowed it to
+AI Meets the Deadline. A first pass improved engineering, mobile layout and
+timing but retained the music and barely expressed the Matrix lens. The owner
+rejected that as missing the brief, and also rejected the animation quality.
+
+For this task, technical checks alone cannot establish completion. Inspect
+actual moving scenes in addition to stills. The narrative must visibly earn
+its connections to access, timing, authority and the larger control boundary;
+adding the word "permission" to the old explanation does not satisfy that aim.
+The soundtrack must actually use a different source asset, rather than a
+retimed old mix. Keep each fiction connection separate from technical evidence.
+Do not label the result "state of the art" merely because it renders or passes CI.
+Preserve the earlier source and exports, and record what remains unverified.
+
 ## What this research establishes
 
 The scene anchors below were checked against the three dialogue transcripts
