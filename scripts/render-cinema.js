@@ -61,7 +61,7 @@ function args(argv) {
     else if (k === '--captions') a.captions = true;
   }
   if (!a.film) throw new Error('--film is required');
-  if (!['16x9', '4x5'].includes(a.aspect)) throw new Error('--aspect must be 16x9 or 4x5');
+  if (!['16x9', '4x5', '9x16'].includes(a.aspect)) throw new Error('--aspect must be 16x9, 4x5 or 9x16');
   if (a.muxOnly && !a.music) throw new Error('--mux-only needs --music');
   return a;
 }
@@ -114,7 +114,7 @@ function muxSoundtrack(silent, a) {
 }
 
 async function open(browser, a) {
-  const [W, H] = a.aspect === '16x9' ? [1920, 1080] : [1080, 1350];
+  const [W, H] = { '16x9': [1920, 1080], '4x5': [1080, 1350], '9x16': [1080, 1920] }[a.aspect];
   const page = await browser.newPage();
   await page.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.error('  page error:', e.message));

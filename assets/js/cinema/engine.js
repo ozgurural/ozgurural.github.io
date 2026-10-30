@@ -140,7 +140,7 @@ export function captionsFromTimeline(tl, maxc = 42, skip = []) {
 }
 
 /* ------------------------------------------------------------- the stage */
-const ASPECTS = { '4x5': [1080, 1350], '16x9': [1920, 1080] };
+const ASPECTS = { '4x5': [1080, 1350], '16x9': [1920, 1080], '9x16': [1080, 1920] };
 
 const GradeShader = {
   uniforms: {
@@ -180,6 +180,7 @@ export function createCinema(film) {
     : (innerWidth / innerHeight < 1.1 ? '4x5' : '16x9');
   const [W, H] = ASPECTS[aspect];
   const wide = aspect === '16x9';
+  document.documentElement.classList.toggle('cinema-portrait', aspect === '9x16');
 
   const host = document.getElementById('cin-stage');
   const wrap = document.getElementById('cin-wrap');
@@ -625,7 +626,7 @@ export function createCinema(film) {
     if (fsOn()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
     const req = (fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen).call(fsRoot);
     if (touch && screen.orientation && screen.orientation.lock)
-      Promise.resolve(req).then(() => screen.orientation.lock('landscape')).catch(() => {});
+      Promise.resolve(req).then(() => screen.orientation.lock(aspect === '9x16' ? 'portrait' : 'landscape')).catch(() => {});
   }
   function fsChanged() {
     if (fsBtn) fsBtn.setAttribute('aria-label', fsOn() ? 'Exit full screen' : 'Full screen');

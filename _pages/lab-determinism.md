@@ -15,14 +15,21 @@ header:
   <span class="ep-eyebrow">AI architecture &middot; Physical systems &middot; Real-time execution</span>
 
   <div class="lab-film">
-    <div class="lab-film__frame lab-film__frame--cinema">
+    <div class="lab-film__frame lab-film__frame--cinema deadline-film-frame">
       <iframe src="{{ '/films/deadline/' | relative_url }}?autoplay=0" title="AI meets the deadline: a narrated film on keeping an AI planner out of a real-time controller's waiting path" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
 
-  <p class="lab-card__lead">AI can plan the next move. <strong>The system still has to meet the next deadline.</strong> As robot models gain new capabilities, an architecture decision becomes more important: where should inference run, when may its answer be used, and what happens while it is unavailable? This film and executable experiment explore those choices around a 60 Hz controller.</p>
-  <div class="lab-card__usecase"><strong>Design study:</strong> <span>Open research direction of the author, not yet published. The traces below come from a synthetic scheduling model, not a deployed robot, an AI benchmark or a certification test. The work connects my interests in machine-learning security and real-time systems; it discloses no employer design. The regulated timing budget it starts from is explained in <a href="/lab/level-d-60hz/">Inside a Level D Flight Simulator</a>.</span></div>
+  <p class="lab-card__lead">The AI has an answer. <strong>Does it still have permission to act?</strong> A moving system needs more than a good plan: an execution deadline, an observation that is still relevant, and explicit authority over what happens next. This film and executable experiment explore those choices around a 60 Hz controller.</p>
+  <div class="lab-card__usecase"><strong>Design study:</strong> <span>Open research direction of the author, not yet published. The film uses schematic event timing; the traces below come from a synthetic scheduling model. Neither is a deployed robot, an AI benchmark or a certification test. The work connects my interests in machine-learning security and real-time systems; it discloses no employer design. The real-time engineering discipline behind it is explored in <a href="/lab/level-d-60hz/">Inside a Level D Flight Simulator</a>.</span></div>
 
   </div>
+
+  <style>
+    @media (max-width: 600px) {
+      #lab-det .deadline-film-frame { aspect-ratio: 9 / 16; }
+      #lab-det .deadline-film-frame iframe { height: 100%; }
+    }
+  </style>
 
   <h2>The decision: let intelligence improve without blocking execution</h2>
   <p>In this design, inference runs in a separate worker. The execution loop consumes an admitted proposal or uses a defined baseline controller. A proposal carries the observation time and context version it was computed from. Admission and expiry checks apply before use. That preserves a place for richer planning while making availability, freshness and timing explicit responsibilities.</p>

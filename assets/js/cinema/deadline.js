@@ -1,32 +1,22 @@
 /*
- * AI meets the deadline: why an AI planner belongs beside a real-time
- * controller, not in its waiting path, in about a hundred seconds.
- *
- * It replaces the lab film "AI Meets the Deadline" and keeps its argument,
- * scene for scene (scripts/narration.json, prefix "determinism"): a controller
- * on a fixed beat, inference on a variable clock; blocking inference misses
- * deadlines and the delay spills into later jobs; a separate worker the
- * controller never waits for keeps every beat on time; the new failure is the
- * stale plan, so plans carry the moment they were made and expire into a safe
- * default; freshness is one check and the action limits keep their own;
- * shared hardware can still cost the asynchronous loop its deadlines, which is
- * DeadlineModel's own result (async misses are zero when resources are
- * isolated and appear only under shared stalls, whatever the delay or outage).
- *
- * This is the author's open research direction, not a published paper, and
- * the frame says so. The ring is a drawn schedule, not a measurement: beats
- * are a fixed cadence, plans have seeded compute times, and a beat is red only
- * when the controller was not free to act at its deadline. No numbers are
- * printed or spoken (see CLAUDE.md, cinema films).
- *
- * The one metaphor: a controller is a ring keeping a beat. A hand sweeps it at
- * a fixed pace and lights each tick it acts on. The AI is the series' model
- * body; its plans fly to the controller as sparks.
+ * AI Meets the Deadline: a proposal does not own the execution clock.
+ * The original ring, model, mailbox, gate and shared-resource scenes remain.
+ * Native portrait reflows their framing and adds an event-driven readout.
+ * These are schematic authored events at a cinematic timescale, not the
+ * six-second interactive trace, a measured robot or a worst-case proof.
+ * The separate interactive teaching model is lab-deadline-model.js.
+ * Observation age, observation context and action admissibility are distinct.
+ * A baseline is not claimed safe without its own plant-specific evidence.
+ * Every visual and status is a function of seek time, including backwards seek.
  */
-import { THREE, AUTHOR, createCinema, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, lerp, ramp, ease, win, seeded } from './engine.js';
 
 const T = { hook: 0, beat: 8.5, think: 17, wait: 26, split: 36, stale: 46, contract: 55, limits: 65, share: 74.5, close: 86, card: 94 };
 const D = 100;
+// A genuinely reflowed portrait cut; the lab iframe or an explicit export
+// selects its dimensions without shrinking a landscape picture into a band.
+const requestedAspect = new URLSearchParams(location.search).get('aspect');
+const ASPECT = requestedAspect === '9x16' || (!requestedAspect && innerWidth / innerHeight < 0.8) ? '9x16' : '16x9';
 
 const TL_DIR = new URL('../../audio/cinema/deadline/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
@@ -47,7 +37,7 @@ const COL = {
   model: HDR(0.55, 1.25, 2.3, 0.85),
   ok: HDR(0.4, 2.0, 1.5, 1.0),       // teal: acted on time, with a fresh plan
   late: HDR(2.6, 0.45, 0.5, 1.1),    // red: the deadline passed
-  safe: HDR(2.5, 1.35, 0.35, 1.05),  // amber: on time, but the safe default
+  safe: HDR(2.5, 1.35, 0.35, 1.05),  // amber: on time, but the baseline
   plan: HDR(1.6, 2.4, 3.0, 1.0),
   ring: HDR(0.35, 0.6, 1.0, 0.55),
   slab: HDR(1.3, 1.6, 2.2, 0.75),
@@ -89,7 +79,7 @@ const DUST = {
     uniform float uAlpha; varying float vA;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.0, d) * vA * uAlpha;
+      float a = (1.0 - smoothstep(0.0, 0.5, d)) * vA * uAlpha;
       gl_FragColor = vec4(vec3(0.55, 0.75, 1.0) * a, 1.0);
     }`,
 };
@@ -108,7 +98,7 @@ const SPARK = {
     varying float vA; varying vec3 vC;
     void main() {
       float d = length(gl_PointCoord - 0.5);
-      gl_FragColor = vec4(vC * smoothstep(0.5, 0.05, d) * vA, 1.0);
+      gl_FragColor = vec4(vC * (1.0 - smoothstep(0.05, 0.5, d)) * vA, 1.0);
     }`,
 };
 function mat(def, uniforms, extra = {}) {
@@ -146,6 +136,27 @@ const CSS = `
   .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
   .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
   .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+  .cin .deadline-evidence { box-sizing: border-box; padding: 24px 30px; border: 1px solid #34566d; border-radius: 18px; background: rgba(3,9,17,.94); }
+  .cin .evidence-title { font: 600 28px/1.25 "Space Grotesk", sans-serif; color: #e8eef7; }
+  .cin .evidence-line { font: 500 25px/1.35 "Inter", sans-serif; color: #aebcd0; margin-top: 10px; }
+  .cin .evidence-track { height: 8px; background: #1b2a3c; margin-top: 18px; border-radius: 4px; overflow: hidden; }
+  .cin .evidence-track i { display: block; height: 100%; background: #6fd3ff; }
+  .cin--9x16 .hd { font-size: 86px; line-height: 1.06; }
+  .cin--9x16 .blk .sb { display: none; }
+  .cin--9x16 .kick { font-size: 30px; letter-spacing: .07em; }
+  .cin--9x16 .lb, .cin--9x16 .key { display: none; }
+  .cin--9x16 .credit { font: 500 29px/1.35 "Inter", sans-serif; }
+  .cin--9x16 .evidence-title { font-size: 47px; }
+  .cin--9x16 .evidence-line { font-size: 39px; }
+  .cin--9x16 .deadline-evidence { padding: 25px 32px; min-height: 190px; }
+  .cin--9x16 .cin-cap { font-size: 54px !important; line-height: 1.3 !important; bottom: 290px !important; max-width: 940px !important; width: 940px !important; white-space: normal !important; text-wrap: balance; padding: 12px 8px !important; }
+  .cin--9x16 .cl__a { font-size: 49px; }
+  .cin--9x16 .cl__b { font-size: 86px; }
+  .cin--9x16 .end__t { font-size: 86px; line-height: 1.08; }
+  .cin--9x16 .end__s { font-size: 43px; }
+  .cin--9x16 .end__a { font-size: 30px; margin-top: 28px; }
+  .cin--9x16 .end__u { font-size: 46px; margin-top: 46px; }
+  .cin--9x16 .end__u span { font-size: 32px; }
 `;
 
 /* ------------------------------------------------------------ the schedule
@@ -157,6 +168,7 @@ const C = new THREE.Vector3(-0.2, -0.12, 0), R = 1.32;    // the controller
 const M = new THREE.Vector3(2.15, 0.7, 0);                // the model
 const BOX = new THREE.Vector3(1.38, 0.32, 0);             // where plans are left
 const AGE = 1.55;              // a plan older than this is too old to use
+const contextAt = t => Math.floor(Math.max(0, t - T.stale) / 4);
 const ACT = T.wait + 1.0, ACT_END = T.split + 0.4;        // the blocking design
 // While the controller waits on the model it does not act: these are its
 // stalls. Each is a slow answer (wait scene) or a busy model on the same
@@ -201,14 +213,14 @@ function newestBy(b) {
   for (const p of PLANS) if (p.async && p.a <= b && (!best || p.a > best.a)) best = p;
   return best;
 }
-// What became of the beat whose deadline is b: 0 on time, 1 missed, 2 safe default.
+// What became of the beat whose deadline is b: 0 on time, 1 missed, 2 baseline.
 function status(b) {
   if (b > ACT && b < ACT_END && inStall(b)) return 1;
   if (b > T.share && b < SPLIT_AT && inStall(b)) return 1;
   if (Math.abs(b - 4.0) < P * 0.5) return 1;          // the hook: one answer that came too late
   if (b >= T.contract) {
     const p = newestBy(b);
-    if (!p || b - p.e > AGE) return 2;
+    if (!p || b - p.e > AGE || contextAt(p.e) !== contextAt(b)) return 2;
     if (b >= T.limits + 2.0 && p.bad) return 2;
   }
   return 0;
@@ -228,10 +240,11 @@ const angleOf = time => Math.PI / 2 - (2 * Math.PI * time) / (N * P);
 /* ----------------------------------------------------------------- film */
 const film = {
   title: 'AI meets the deadline',
-  aspect: '16x9',
+  aspect: ASPECT,
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
   audio: TL ? new URL(TL.audio, TL_DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL, ASPECT === '9x16' ? 72 : 58) : null,
   build(ctx) {
     const { scene, camera, text, label } = ctx;
     const style = document.createElement('style');
@@ -240,12 +253,16 @@ const film = {
 
     camera.fov = 33;
     camera.updateProjectionMatrix();
-    ctx.setViewShift(0.2, -0.04);
+    ctx.bloom.strength = .42;
+    // The time-offset grain hash bands at later times on the Intel renderer.
+    // Keep this film clean instead of shipping that compression-heavy artefact.
+    ctx.grade.uniforms.uGrain.value = 0;
+    ctx.setViewShift(ctx.wide ? 0.2 : 0, ctx.wide ? -0.04 : -0.015);
     scene.background = COL.bg;
 
     /* dust, for depth */
     const dr = seeded(11);
-    const DN = 1000, dp = new Float32Array(DN * 3), ds = new Float32Array(DN);
+    const DN = 400, dp = new Float32Array(DN * 3), ds = new Float32Array(DN);
     for (let i = 0; i < DN; i++) {
       dp[i * 3] = (dr() - 0.5) * 40; dp[i * 3 + 1] = (dr() - 0.5) * 22; dp[i * 3 + 2] = -14 + dr() * 20;
       ds[i] = dr();
@@ -335,12 +352,12 @@ const film = {
                          slab, slabA, slabB, sparks, spos, sa, sc });
 
     /* ------------------------------------------------------------- type */
-    const KICK = { x: 120, y: 88, w: 900 };
-    const HD = { x: 120, y: 190, w: 820 };
+    const KICK = ctx.wide ? { x: 120, y: 88, w: 900 } : { x: 72, y: 300, w: 936 };
+    const HD = ctx.wide ? { x: 120, y: 190, w: 820 } : { x: 72, y: 380, w: 936 };
     const say = (at, out, hd, sb) => text({ at, out, cls: 'blk', place: HD,
       html: `<div class="hd">${hd}</div>` + (sb ? `<div class="sb">${sb}</div>` : '') });
     const scrim = (at, out, place, background) => text({ at, out, cls: 'scrim', words: false, dur: 0.8, rise: 0, html: '', place,
-      style: { height: place.h + 'px', background } });
+      style: { height: (ctx.wide ? place.h : ctx.H) + 'px', background: ctx.wide ? background : 'transparent' } });
     const gone = 0.05;
 
     scrim(-3, T.close - 0.2, { x: 0, y: 0, w: 1000, h: 1080 },
@@ -348,41 +365,75 @@ const film = {
     scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
           'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
     text({ at: -3, out: T.close - 0.3, cls: 'kick', place: KICK, words: false, dur: 0.01,
-           html: 'Dr. Ozgur Ural &middot; a research film' });
+           html: 'Dr. Ozgur Ural &middot; design study' });
 
-    text({ at: -3, out: T.beat - gone, cls: 'blk', place: HD,
-           html: '<div class="hd">An AI can plan a robot&rsquo;s next move.</div><div class="sb">But what if the answer arrives <span class="red">after</span> the moment it was needed?</div>' });
-    say(T.beat, T.think - gone, 'A machine that moves runs on a <em>beat</em>.',
-        'Many times a second, its controller has to act. Not usually. <b>Every time.</b>');
-    say(T.think, T.wait - gone, 'An AI model keeps a <em>different clock</em>.',
-        'Most answers come back quickly. Some take far longer, and nobody can say in advance which.');
-    say(T.wait, T.split - gone, 'Make the controller <span class="red">wait</span>, and it misses its beat.',
-        'One slow answer costs it a beat. Then the next. The delay spills into everything queued behind it.');
-    say(T.split, T.stale - gone, 'Take the model out of the <em>waiting path</em>.',
-        'The controller keeps its beat whatever happens. The model works beside it and leaves its newest plan.');
-    say(T.stale, T.contract - gone, 'That changes how things <span class="amber">fail</span>.',
-        'Every beat is now on time, but a plan can describe a world that has already moved on.');
-    say(T.contract, T.limits - gone, 'Every plan carries the moment it was <em>made</em>.',
-        'If it is too old, the controller sets it aside and falls back to a <span class="amber">safe default</span>.');
-    say(T.limits, T.share - gone, 'Age is only <em>one check</em>.',
-        'A fresh plan can still be wrong, so the limits on what the machine may do keep their own guard.');
-    say(T.share, T.close - 0.25, 'One trap remains: a <span class="red">shared</span> computer.',
-        'A busy model can still steal the controller&rsquo;s time. Keep them apart, and test it under load.');
-    text({ at: T.beat + 1.2, out: T.close - 0.25, cls: 'credit', words: false, dur: 0.6, place: { x: 120, y: 868, w: 820 },
-           html: 'An open research direction of the author, not yet published.<span>The ring is a drawn schedule from a synthetic experiment, not a measurement of a deployed system.</span>' });
-    text({ at: T.split + 4.5, out: T.close - 0.3, cls: 'key', words: false, dur: 0.6, place: { x: 1080, y: 1000, w: 760 },
-           html: '<span><i style="background:#5dffc8"></i>on time</span><span><i style="background:#ffb347"></i>safe default</span><span><i style="background:#ff6272"></i>missed</span>' });
+    say(-3, T.beat - gone, 'The AI is ready.<br>The moment is <span class="red">gone</span>.',
+        'A good answer can arrive too late.');
+    say(T.beat, T.think - gone, 'The world will <em>not wait</em>.',
+        'A periodic controller has a deadline on every job.');
+    say(T.think, T.wait - gone, 'A fast average.<br>A <span class="amber">slow exception</span>.',
+        'The experiment injects variable inference delay.');
+    say(T.wait, T.split - gone, 'One delay becomes <span class="red">a queue</span>.',
+        'Work waiting behind inference also arrives late.');
+    say(T.split, T.stale - gone, 'It may <em>propose</em>.<br>It may not block.',
+        'The controller admits proposals through a bounded path.');
+    say(T.stale, T.contract - gone, 'Arrived now.<br>Observed <span class="amber">then</span>.',
+        'Result arrival and observation freshness are different clocks.');
+    say(T.contract, T.limits - gone, 'A proposal needs <em>permission</em>.',
+        'Observation age and context must both match the admission rule.');
+    say(T.limits, T.share - gone, 'Fresh does not<br>mean <span class="amber">safe</span>.',
+        'Action constraints and baseline behaviour need separate evidence.');
+    say(T.share, T.close - .25, 'Separate work.<br><span class="red">Shared resources</span>.',
+        'Asynchrony is not a worst-case execution-time guarantee.');
+    text({ at: -3, out: T.close - .25, cls: 'credit', words: false,
+      place: ctx.wide ? { x: 120, y: 1000, w: 800 } : { x: 72, y: 1730, w: 936 },
+      html: 'Synthetic architecture study. Not a deployed robot.<span>Dr. Ozgur Ural · open research direction, not yet published.</span>' });
 
-    text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 260, y: 330, w: 1400, align: 'center' },
-           html: 'Better AI will keep arriving.' });
-    text({ at: T.close + 2.4, out: T.card - 0.3, cls: 'cl__b', place: { x: 260, y: 420, w: 1400, align: 'center' },
-           html: 'Can the system take it in <em>without losing its beat</em>?' });
-    // one block in normal flow, so the series line sits under the name and can never cover it
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
-           html: `<div class="end__t">AI meets the deadline</div>
-                  <div class="end__s">Keep the model out of the waiting path, check how old each plan is, guard the limits separately, and keep the computers apart.</div>
-                  <div class="end__a">An open research direction of the author &middot; not yet published</div>
-                  <div class="end__u">${AUTHOR}</div>` });
+    // The readout is driven by the same schedule and proposals as the ring.
+    // It describes schematic events; there are no invented robot-success scores.
+    text({ at: -3, out: T.close - .2, cls: 'deadline-evidence', words: false, rise: 0, dur: .1,
+      place: ctx.wide ? { x: 1060, y: 710, w: 760 } : { x: 72, y: 1210, w: 936 },
+      html: '<div class="evidence-title"></div><div class="evidence-line"></div><div class="evidence-track"><i></i></div>',
+      update: (t, el) => {
+        const p = newestBy(t), age = p ? t - p.e : Infinity;
+        const contextMatches = !!p && contextAt(p.e) === contextAt(t);
+        const fresh = !!p && age <= AGE && contextMatches;
+        const blocked = handTime(t) < t - .01;
+        let title, detail, color = '#6fd3ff', amount = (t / P) % 1;
+        if (t < T.beat) { title = 'A PLAN IS NOT A TIMING CONTRACT'; detail = 'The deadline belongs to the controller.'; }
+        else if (t < T.think) { title = 'CONTROLLER: ACT ON EACH BEAT'; detail = 'The schedule keeps moving.'; }
+        else if (t < T.wait) {
+          const job = PLANS.find(p => t >= p.e && t < p.a);
+          title = job ? 'AI REQUEST: STILL THINKING' : 'AI REQUEST: RESULT AVAILABLE';
+          detail = 'Illustrative compute times, not hardware measurements.';
+          amount = job ? ramp(t, job.e, job.a) : 1;
+        } else if (t < T.split) {
+          title = blocked ? 'CONTROLLER: WAITING' : 'CONTROLLER: WORK RESUMES';
+          detail = 'The deadline clock never waited.'; color = blocked ? '#ff6272' : '#6fd3ff';
+        } else if (t < T.stale) { title = 'PROPOSE → ADMIT → ACT'; detail = 'Bounded handoff. Isolated worker assumed.'; }
+        else if (t < T.contract) { title = contextMatches ? 'ARRIVAL TIME ≠ OBSERVATION TIME' : 'THE CONTEXT HAS CHANGED'; detail = 'The new reply can describe the old state.'; color = '#ffb347'; }
+        else if (t < T.limits) { title = fresh ? 'PROPOSAL: ADMITTED' : 'PROPOSAL: REJECTED'; detail = fresh ? 'Age and context pass this rule.' : !contextMatches ? 'Context mismatch. Use baseline.' : 'Observation expired. Use baseline.'; color = fresh ? '#5dffc8' : '#ffb347'; amount = p ? Math.min(1, age / AGE) : 1; }
+        else if (t < T.share) { title = 'FRESHNESS IS ONLY ONE GATE'; detail = 'Action limits and baseline safety remain unproven.'; color = '#ffb347'; }
+        else { title = t >= SPLIT_AT ? 'RESOURCES ISOLATED IN THIS MODEL' : blocked ? 'SHARED RESOURCE: DEADLINE MISSED' : 'ASYNCHRONOUS ≠ ISOLATED'; detail = 'Worst-case timing still needs its own analysis.'; color = blocked ? '#ff6272' : '#6fd3ff'; }
+        el.dataset.fresh = String(fresh); el.dataset.contextMatches = String(contextMatches);
+        el.dataset.blocked = String(blocked); el.dataset.status = String(status(Math.floor(t / P) * P));
+        el.querySelector('.evidence-title').textContent = title;
+        el.querySelector('.evidence-title').style.color = color;
+        el.querySelector('.evidence-line').textContent = detail;
+        const bar = el.querySelector('.evidence-track i'); bar.style.width = (amount * 100).toFixed(2) + '%'; bar.style.background = color;
+      } });
+    text({ at: T.close, out: T.card - .05, outDur: .15, cls: 'cl__a',
+      place: ctx.wide ? { x: 260, y: 300, w: 1400, align: 'center' } : { x: 72, y: 650, w: 936, align: 'center' },
+      html: 'Did it act on time?' });
+    text({ at: T.close + 2.4, out: T.card - .05, outDur: .15, cls: 'cl__b',
+      place: ctx.wide ? { x: 260, y: 410, w: 1400, align: 'center' } : { x: 72, y: 790, w: 936, align: 'center' },
+      html: 'Was the AI proposal<br><em>still useful</em>?' });
+    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: .9, rise: 0,
+      place: ctx.wide ? { x: 160, y: 250, w: 1600, align: 'center' } : { x: 72, y: 540, w: 936, align: 'center' },
+      html: `<div class="end__t">AI meets the deadline</div>
+        <div class="end__s">Intelligence proposes.<br>Execution needs a contract.</div>
+        <div class="end__a">Synthetic design study · not yet published</div>
+        <div class="end__u">${AUTHOR}</div>` });
 
     /* --------------------------------------------------------- labels */
     const at = v => () => v;
@@ -396,9 +447,9 @@ const film = {
             alpha: t => win(t, 4.2, 7.6, 0.3, 0.5) });
     label({ cls: 'chip', html: 'newest plan', anchor: at(new THREE.Vector3(BOX.x, BOX.y - 0.3, 0)), ax: 0.5, ay: 0,
             alpha: t => win(t, T.split + 3.0, T.contract, 0.6, 0.6) });
-    label({ cls: 'chip amber', html: 'too old: safe default', anchor: at(new THREE.Vector3(BOX.x, BOX.y - 0.3, 0)), ax: 0.5, ay: 0,
+    label({ cls: 'chip amber', html: 'observation age + context', anchor: at(new THREE.Vector3(BOX.x, BOX.y - 0.3, 0)), ax: 0.5, ay: 0,
             alpha: t => win(t, T.contract + 3.2, T.limits - 0.2, 0.6, 0.5) });
-    label({ cls: 'chip red', html: 'outside the limits', anchor: at(new THREE.Vector3(GATE.x + 0.05, GATE.y - 0.42, 0)), ax: 0.5, ay: 0,
+    label({ cls: 'chip red', html: 'separate action gate', anchor: at(new THREE.Vector3(GATE.x + 0.05, GATE.y - 0.42, 0)), ax: 0.5, ay: 0,
             alpha: t => win(t, T.limits + 3.0, T.share - 0.2, 0.6, 0.5) });
     label({ cls: 'chip', html: 'one computer', anchor: at(new THREE.Vector3(0.5, -1.95, 0)), ax: 0.5, ay: 0,
             alpha: t => win(t, T.share + 1.4, SPLIT_AT - 0.2, 0.6, 0.4) });
@@ -415,7 +466,8 @@ const film = {
     camera.position.set(lerp(0.2, 0.05, ease.inOutSine(ramp(t, 0, T.share))) + 0.04 * Math.sin(t * 0.13),
                         0.1 + 0.03 * Math.sin(t * 0.11),
                         lerp(9.4, 8.6, ease.inOutSine(ramp(t, 0, T.share))) + 0.9 * win(t, T.share - 0.5, T.close + 4, 1.6, 2.0));
-    camera.lookAt(0.2, 0.0, 0);
+    if (!ctx.wide) camera.position.set(.5, .05, 20);
+    camera.lookAt(ctx.wide ? .2 : .5, 0, 0);
 
     // the close dims the stage so its sentence reads clean; the card takes it away
     const show = win(t, -1, T.card + 0.4, 0.8, 0.8) * (1 - 0.8 * ease.inOutSine(ramp(t, T.close - 0.4, T.close + 1.0)));
@@ -465,7 +517,7 @@ const film = {
     // present from the first frame: a paused film shows frame 0, and its sentence is about the model
     const mIn = win(t, -1, T.card + 0.4, 0.8, 0.8) * (1 - 0.8 * ease.inOutSine(ramp(t, T.close - 0.4, T.close + 1.0)));
     shell.material.opacity = (0.55 + 0.35 * busy) * mIn;
-    core.material.uniforms.uAlpha.value = (0.7 + 0.5 * busy + 1.1 * hog) * mIn;
+    core.material.uniforms.uAlpha.value = (0.4 + 0.25 * busy + 0.55 * hog) * mIn;
     model.rotation.set(0.35 + 0.05 * Math.sin(t * 0.3), t * 0.22, 0.08);
     model.scale.setScalar(0.62 * (1 + 0.18 * hog));
 
