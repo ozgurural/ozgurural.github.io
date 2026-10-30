@@ -32,6 +32,12 @@ that expose a dependency. There is no code rain, decorative glitch or shake.
 An unrelated cycling HUD progress bar was removed because it encoded no
 useful quantity. Native portrait and desktop compositions remain separate.
 
+The isolation transition replaces the common base with two initially
+contiguous surfaces, then separates them. The original common surface is
+hidden as soon as replacement starts: drawing all three together produced
+coplanar depth flicker in the encoded output. This correction affects only
+the transition inside the 80-100 second render segment.
+
 The resource counterexample now starts on the spoken word "Inference", and
 isolation on "Isolation", using word boundaries mapped back through the
 narration warp. The earlier fixed schedule would have shown isolation before

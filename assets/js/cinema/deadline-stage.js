@@ -174,10 +174,14 @@ export function frameDeadlineStage(t, ctx, state, T) {
   w.receiveFrame.material.color.setHex(t>=T.contract&&!state.fresh?AMBER:GREEN);
   w.shared.visible=t>=T.share-.8;
   w.floor.visible=t<T.share+.6;
-  w.pool.visible=isolated<.98;
+  // Once separation begins, draw only the two replacement surfaces. Drawing
+  // the original base underneath them produced coplanar depth flicker.
+  w.pool.visible=isolated===0;
   w.splitA.visible=w.splitB.visible=isolated>0;
-  w.splitA.position.x=-1.2-isolated*.28;
-  w.splitB.position.x=1.3+isolated*.28;
+  w.splitA.scale.x=isolated===1?1:lerp(2.5/2.1,1,isolated);
+  w.splitB.scale.x=isolated===1?1:lerp(2/1.7,1,isolated);
+  w.splitA.position.x=isolated===1?-1.2-isolated*.28:lerp(-1,-1.48,isolated);
+  w.splitB.position.x=isolated===1?1.3+isolated*.28:lerp(1.25,1.58,isolated);
   w.cableA.visible=w.cableB.visible=isolated<.75;
   w.glassA.scale.set(1,reveal,1); w.glassB.scale.set(1,reveal,1);
   w.poolMat.color.setHex(state.blocked?0x381c18:0x294333);
