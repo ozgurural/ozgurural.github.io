@@ -1,684 +1,426 @@
 /*
- * AI meets the deadline: why a real-time controller should use an AI's latest
- * answer rather than wait for it, and stop trusting an answer that is too old.
- *
- * The argument is the lab film's (scripts/narration.json, prefix
- * "determinism") and DeadlineModel's, cut to the one idea a viewer who knows
- * nothing about it can follow: a controller on a fixed beat, an AI on a
- * variable clock; waiting for the AI misses beats; not waiting keeps every
- * beat but lets the answer in use go stale; so answers carry the time they
- * were made and expire into a safe action. The shared-chip and action-limit
- * points of earlier cuts are left to the lab page.
- *
- * The telling (2026-10-31). The owner asked for plain narration and a visual
- * feast at the Level D film's standard; an earlier cut read "simple" as flat
- * 2D and was rejected. So this is the 3D world again, large and with the
- * camera moving through every shot, but every motion is the sentence being
- * spoken. A robot arm must keep its gripper over a part sliding on a track.
- * It moves only on its controller's beats (tiles rushing in along a conveyor
- * to a gate, and a clock ring on the floor whose hand stops while the
- * controller waits) and only to where the AI's answer in use says the part is.
- * Answers are sparks from the model; a slow answer is a slow spark. Waiting
- * for one freezes the arm red while the part slides away; using the latest
- * answer keeps every beat but sends the gripper to a ghost of where the part
- * was; an answer that is too old is set aside and the arm stops, amber. No
- * name in the voice; the open research direction is said on the card. Every
- * beat and answer comes from a fixed, seeded schedule computed once.
+ * AI meets the deadline, 2026-10-31: a late braking answer, the controller's
+ * clock, three inference chambers, an asynchronous handoff, two different
+ * worlds, an observation-age gate, a braking replay, and the shared chip.
+ * These are schematic illustrations, not a simulated plant or measurements.
+ * Claim ledger and review notes: scripts/cinema/deadline-review.md.
+ * Every pose and decision is a pure function of authored film time.
  */
-import { THREE, AUTHOR, createCinema, captionsFromTimeline, setLinePoints, lerp, ramp, ease, win, seeded } from './engine.js';
+import { THREE, AUTHOR, createCinema, captionsFromTimeline, setLinePoints, lerp, ramp, ease } from './engine.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 
-const T = { hook: 0, beat: 11.4, think: 22.4, wait: 33.4, split: 44.2, stale: 53.6, stamp: 64.6, rule: 75.8, open: 84.4, close: 96.4, card: 103.5 };
-const D = 107.5;
-
-const TL_DIR = new URL('../../audio/cinema/deadline/', import.meta.url);
-const TL = await fetch(new URL('timeline.json', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
-if (TL) for (const l of TL.lines) if (T[l.id] !== l.at) console.warn(`deadline: cue "${l.id}" is ${T[l.id]} here and ${l.at} in the voice script`);
-function makeWarp(anchors) {
-  return real => {
-    let i = 0;
-    while (i < anchors.length - 2 && real > anchors[i + 1][0]) i++;
-    const [r0, a0] = anchors[i], [r1, a1] = anchors[i + 1];
-    if (real >= r1) return a1 + (real - r1);
-    return a0 + (a1 - a0) * (real - r0) / (r1 - r0);
-  };
+const T = { hook: 0, rule: 7.3, beat: 13.2, think: 24, split: 34.2, stale: 44.5, stamp: 55, fallback: 63.8, open: 73.7, close: 85, card: 91 };
+const D = 98;
+const DIR = new URL('../../audio/cinema/deadline/', import.meta.url);
+const TL = await fetch(new URL('timeline.json', DIR)).then(r => r.ok ? r.json() : null).catch(() => null);
+if (TL) for (const l of TL.lines) if (T[l.id] !== l.at) throw new Error(`deadline: voice cue mismatch: ${l.id}`);
+function warp(real) {
+  if (!TL) return real;
+  let i = 0;
+  while (i < TL.anchors.length - 2 && real > TL.anchors[i + 1][0]) i++;
+  const [r0, a0] = TL.anchors[i], [r1, a1] = TL.anchors[i + 1];
+  return real >= r1 ? a1 + real - r1 : lerp(a0, a1, (real - r0) / (r1 - r0));
 }
-// authored time a spoken word begins (lines barely stretch, so at + offset is close enough)
-function W(id, word, fallback) {
-  const l = TL && TL.lines.find(x => x.id === id);
-  const w = l && l.words && l.words.find(x => x[0].toLowerCase().replace(/[^a-z']/g, '') === word);
-  return T[id] + 0.35 + (w ? w[1] : fallback);
+// Invert the real/authored warp so the visual event lands on the spoken word.
+function authored(real) {
+  if (!TL) return real;
+  for (let i = 1; i < TL.anchors.length; i++) {
+    const [r1, a1] = TL.anchors[i], [r0, a0] = TL.anchors[i - 1];
+    if (real <= r1) return lerp(a0, a1, (real - r0) / (r1 - r0));
+  }
+  return D;
 }
-
-/* -------------------------------------------------------------- palette */
+function W(id, word, fallback = 1) {
+  const l = TL?.lines.find(x => x.id === id);
+  const w = l?.words.find(x => x[0].toLowerCase().replace(/[^a-z]/g, '') === word);
+  return w ? authored(l.real + w[1]) : T[id] + fallback;
+}
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
-const HDR = (r, g, b, k = 1) => new THREE.Color(r * k, g * k, b * k);
-const COL = {
-  model: HDR(0.55, 1.25, 2.3, 0.85),
-  arm: HDR(1.0, 1.7, 2.6, 0.8),
-  ok: HDR(0.4, 2.0, 1.5, 1.0),       // teal: acted on time, with a fresh answer
-  late: HDR(2.6, 0.45, 0.5, 1.1),    // red: the beat was missed
-  safe: HDR(2.5, 1.35, 0.35, 1.05),  // amber: on time, but the safe action
-  plan: HDR(1.6, 2.4, 3.0, 1.0),
-  part: HDR(2.4, 2.0, 1.0, 1.0),
-  tile: HDR(0.45, 0.8, 1.4, 0.6),
-  floor: HDR(0.35, 0.6, 1.0, 0.5),
-  bg: new THREE.Color(0x03050a),
-};
-
-/* -------------------------------------------------------------- shaders */
-const RIM = {
-  vertexShader: /* glsl */`
-    varying vec3 vN; varying vec3 vV;
-    void main() {
-      vec4 mv = modelViewMatrix * vec4(position, 1.0);
-      vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz);
-      gl_Position = projectionMatrix * mv;
-    }`,
-  fragmentShader: /* glsl */`
-    uniform vec3 uColor; uniform float uAlpha; uniform float uPow;
-    varying vec3 vN; varying vec3 vV;
-    void main() {
-      float f = pow(clamp(1.0 - abs(dot(vN, vV)), 0.0, 1.0), uPow);
-      gl_FragColor = vec4(uColor * uAlpha * (0.05 + 0.95 * f), 1.0);
-    }`,
-};
-const DUST = {
-  vertexShader: /* glsl */`
-    attribute float aSeed; uniform float uTime; uniform float uPR; varying float vA;
-    void main() {
-      vec3 p = position;
-      p.y += sin(uTime * 0.21 + aSeed * 6.283) * 0.35;
-      p.x += sin(uTime * 0.13 + aSeed * 11.0) * 0.5 + uTime * 0.04;
-      vec4 mv = modelViewMatrix * vec4(p, 1.0);
-      gl_PointSize = (0.9 + aSeed * 1.6) * uPR * (60.0 / -mv.z);
-      vA = (0.35 + 0.65 * fract(aSeed * 7.1)) * (0.6 + 0.4 * sin(uTime * (0.6 + aSeed) + aSeed * 40.0));
-      gl_Position = projectionMatrix * mv;
-    }`,
-  fragmentShader: /* glsl */`
-    uniform float uAlpha; varying float vA;
-    void main() {
-      float d = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.0, d) * vA * uAlpha;
-      gl_FragColor = vec4(vec3(0.55, 0.75, 1.0) * a, 1.0);
-    }`,
-};
-const SPARK = {
-  vertexShader: /* glsl */`
-    attribute float aA; attribute vec3 aC; attribute float aS; uniform float uPR; uniform float uSize;
-    varying float vA; varying vec3 vC;
-    void main() {
-      vec4 mv = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = uSize * aS * uPR * (40.0 / -mv.z) * (0.55 + 0.45 * aA);
-      vA = aA; vC = aC;
-      gl_Position = projectionMatrix * mv;
-    }`,
-  fragmentShader: /* glsl */`
-    varying float vA; varying vec3 vC;
-    void main() {
-      float d = length(gl_PointCoord - 0.5);
-      gl_FragColor = vec4(vC * smoothstep(0.5, 0.05, d) * vA, 1.0);
-    }`,
-};
-function mat(def, uniforms, extra = {}) {
-  const u = {};
-  for (const k in uniforms) u[k] = { value: uniforms[k] };
-  return new THREE.ShaderMaterial({ vertexShader: def.vertexShader, fragmentShader: def.fragmentShader,
-    uniforms: u, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, ...extra });
-}
-const lineMat = (color, opacity = 0) => new THREE.LineBasicMaterial({ color: color.clone(), transparent: true, opacity,
-  blending: THREE.AdditiveBlending, depthWrite: false });
-const glow = (color, opacity = 0) => new THREE.MeshBasicMaterial({ color: color.clone(), transparent: true, opacity,
-  blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
-function fatLine(color, width, dash) {
-  const m = new LineMaterial({ color: color.clone(), linewidth: width, transparent: true, opacity: 0, dashed: !!dash,
-    dashSize: dash ? dash[0] : 1, gapSize: dash ? dash[1] : 1, blending: THREE.AdditiveBlending, depthWrite: false });
+const C = { bg: 0x03050a, ice: 0x88d7ff, teal: 0x5dffc8, red: 0xff6272, amber: 0xffb347, violet: 0xc79bff, white: 0xe8eef7, floor: 0x142c46 };
+const color = n => new THREE.Color(n);
+const glow = (n, opacity = 1, energy = 1) => new THREE.MeshBasicMaterial({ color: color(n).multiplyScalar(energy), transparent: true, opacity, depthWrite: false });
+const solid = (n, metalness = 0.55, roughness = 0.3) => new THREE.MeshStandardMaterial({ color: n, metalness, roughness });
+const GEO = new Map();
+function cached(key, build) { if (!GEO.has(key)) GEO.set(key, build()); return GEO.get(key); }
+function line(parent, pts, n = C.ice, width = 2.5, opacity = 1) {
+  const m = new LineMaterial({ color: n, linewidth: width, transparent: true, opacity, depthWrite: false });
   m.resolution.set(1920, 1080);
-  return new Line2(new LineGeometry(), m);
+  const o = new Line2(new LineGeometry(), m); o.frustumCulled = false;
+  setLinePoints(o, pts); parent.add(o); return o;
 }
-const circle = (c, r, y, n = 64) => {
-  const p = [];
-  for (let i = 0; i <= n; i++) { const a = Math.PI * 2 * i / n; p.push(V(c.x + r * Math.cos(a), y, c.z + r * Math.sin(a))); }
-  return p;
-};
+function boxGeo(w, h, d, r = 0.08) {
+  const key = `box:${w}:${h}:${d}:${r}`;
+  if (GEO.has(key)) return GEO.get(key);
+  r = Math.min(r, w / 4, h / 4, d / 4);
+  const s = new THREE.Shape(), x = -w / 2 + r, y = -h / 2 + r;
+  s.moveTo(x, -h / 2); s.lineTo(w / 2 - r, -h / 2);
+  s.quadraticCurveTo(w / 2, -h / 2, w / 2, y);
+  s.lineTo(w / 2, h / 2 - r); s.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2);
+  s.lineTo(x, h / 2); s.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r);
+  s.lineTo(-w / 2, y); s.quadraticCurveTo(-w / 2, -h / 2, x, -h / 2);
+  const g = new THREE.ExtrudeGeometry(s, { depth: d - 2 * r, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: r * 0.6, bevelThickness: r });
+  g.translate(0, 0, -d / 2 + r); GEO.set(key, g); return g;
+}
+function mesh(parent, g, m, x = 0, y = 0, z = 0) {
+  const o = new THREE.Mesh(g, m); o.position.set(x, y, z); parent.add(o); return o;
+}
+function box(parent, w, h, d, n, x = 0, y = 0, z = 0, material) {
+  return mesh(parent, boxGeo(w, h, d), material || solid(n), x, y, z);
+}
+function wire(parent, w, h, d, n, x = 0, y = 0, z = 0, opacity = 0.65) {
+  const o = new THREE.LineSegments(cached(`edges:${w}:${h}:${d}`, () => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d))), new THREE.LineBasicMaterial({ color: n, transparent: true, opacity }));
+  o.position.set(x, y, z); parent.add(o); return o;
+}
+function circle(parent, radius, n, x = 0, y = 0, z = 0, tube = 0.018) {
+  return mesh(parent, cached(`torus:${radius}:${tube}`, () => new THREE.TorusGeometry(radius, tube, 8, 96)), glow(n), x, y, z);
+}
+function group(parent, x = 0, y = 0, z = 0) {
+  const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g;
+}
+function floor(parent, size = 24) {
+  const ground = mesh(parent, new THREE.PlaneGeometry(size, size), solid(0x08111e, 0.65, 0.38));
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.06;
+  const grid = new THREE.GridHelper(size, size / 1.5, 0x22415b, 0x102235);
+  grid.material.transparent = true; grid.material.opacity = 0.4; parent.add(grid);
+}
+function robot(parent, x = 0, z = 0, scale = 1) {
+  const g = group(parent, x, 0, z); g.scale.setScalar(scale);
+  box(g, 1.85, 0.48, 1.35, 0x293c53, 0, 0.48, 0);
+  box(g, 1.34, 0.72, 1.1, 0xc4d2dc, -0.05, 1.03, 0);
+  box(g, 0.1, 0.28, 0.82, C.bg, 0.65, 1.09, 0);
+  const eyes = [];
+  for (const z0 of [-0.23, 0.23]) eyes.push(mesh(g, cached('eye', () => new THREE.SphereGeometry(0.06, 16, 8)), glow(C.ice, 1, 2), 0.73, 1.12, z0));
+  const wheels = [];
+  for (const x0 of [-0.58, 0.58]) for (const z0 of [-0.7, 0.7]) {
+    const wg = group(g, x0, 0.3, z0);
+    const tyre = mesh(wg, cached('tyre', () => new THREE.CylinderGeometry(0.29, 0.29, 0.17, 32)), solid(0x0b111a, 0.15, 0.7)); tyre.rotation.x = Math.PI / 2;
+    const hub = mesh(wg, cached('hub', () => new THREE.CylinderGeometry(0.15, 0.15, 0.185, 24)), solid(0x65859c)); hub.rotation.x = Math.PI / 2;
+    const mark = box(wg, 0.045, 0.25, 0.195, C.ice, 0, 0.08, 0, glow(C.ice, 0.8)); wheels.push(wg);
+  }
+  const bumper = box(g, 0.09, 0.13, 1.25, C.ice, 1.0, 0.49, 0, glow(C.ice, 1, 1.3));
+  const lid = mesh(g, cached('lid', () => new THREE.CylinderGeometry(0.21, 0.24, 0.1, 32)), solid(0x15283a), 0, 1.46, 0);
+  circle(g, 0.18, C.ice, 0, 1.52, 0).rotation.x = -Math.PI / 2;
+  return { g, wheels, bumper, eyes, lid };
+}
+function carton(parent, x, z, scale = 1, ghost = false) {
+  const g = group(parent, x, 0, z); g.scale.setScalar(scale);
+  box(g, 1.25, 1.25, 1.25, 0xa26c33, 0, 0.64, 0, ghost ? glow(C.amber, 0.12) : solid(0x9f6e3b, 0.08, 0.7));
+  wire(g, 1.26, 1.26, 1.26, C.amber, 0, 0.64, 0, ghost ? 0.4 : 0.6);
+  box(g, 0.16, 0.012, 1.27, 0xdbbc82, 0, 1.28, 0, ghost ? glow(C.amber, 0.25) : solid(0xdbbc82, 0.05, 0.9));
+  return g;
+}
+function bay(parent, { miniature = false, ghost = false } = {}) {
+  const root = group(parent); floor(root, miniature ? 12 : 24);
+  const bot = robot(root, -3.8, 0);
+  const obstacle = carton(root, 3.4, 0, 1, ghost);
+  for (const z of [-1.1, 1.1]) line(root, [V(-7, 0.015, z), V(7, 0.015, z)], C.ice, 2.2, 0.4);
+  const stop = box(root, 0.09, 0.018, 2.25, C.red, 0.5, 0.02, 0, glow(C.red, 0.8, 1.5));
+  // A few static warehouse ribs give scale, never a stream of passing objects.
+  if (!miniature) for (const x of [-7, -3, 1, 5, 9]) {
+    line(root, [V(x, 0, -4), V(x, 4.8, -4), V(x, 4.8, -7)], C.ice, 1.5, 0.13);
+    box(root, 1.3, 0.035, 0.035, C.ice, x, 4.4, -4, glow(C.ice, 0.6));
+  }
+  const wake = line(root, [V(-4, 0.025, 0), V(-4, 0.025, 0)], C.ice, 4, 0.4);
+  return { root, bot, obstacle, stop, wake };
+}
+function moveRobot(b, x, n) {
+  b.g.position.x = x;
+  for (const w of b.wheels) w.rotation.z = -x / 0.29;
+  b.bumper.material.color.set(n);
+  for (const e of b.eyes) e.material.color.set(n);
+}
+function brain(parent, x = 0, y = 2, z = 0, radius = 1.1) {
+  const g = group(parent, x, y, z);
+  const shell = new THREE.LineSegments(cached(`brain-shell:${radius}`, () => new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(radius, 1))), new THREE.LineBasicMaterial({ color: C.ice, transparent: true, opacity: 0.55 }));
+  g.add(shell);
+  const core = mesh(g, cached(`brain-core:${radius}`, () => new THREE.IcosahedronGeometry(radius * 0.56, 1)), solid(0x324e75, 0.7, 0.16));
+  const ring = circle(g, radius * 0.84, C.ice); ring.rotation.x = 1.0;
+  const ring2 = circle(g, radius * 0.7, C.violet, 0, 0, 0, 0.012); ring2.rotation.y = 1.2;
+  return { g, shell, core, ring, ring2 };
+}
+function animateBrain(b, t, slow = false) {
+  b.shell.rotation.set(0.18, t * 0.10, 0.1);
+  b.core.rotation.set(t * 0.08, -t * 0.12, 0.2);
+  b.ring.rotation.z = t * 0.13;
+  b.shell.material.color.set(slow ? C.amber : C.ice);
+}
+function clock(parent, x = 0, z = 0, radius = 1.8) {
+  const g = group(parent, x, 0, z);
+  mesh(g, new THREE.CylinderGeometry(radius, radius * 1.07, 0.32, 64), solid(0x162b41), 0, 0.18, 0);
+  const ring = circle(g, radius * 0.92, C.ice, 0, 0.36, 0); ring.rotation.x = -Math.PI / 2;
+  const dots = [];
+  for (let i = 0; i < 12; i++) {
+    const a = i / 12 * Math.PI * 2;
+    const tick = box(g, 0.045, 0.035, i % 3 ? 0.13 : 0.22, C.ice, Math.sin(a) * radius * 0.79, 0.37, Math.cos(a) * radius * 0.79, glow(C.ice, 0.65)); tick.rotation.y = a;
+    if (i % 2 === 0) dots.push(mesh(g, cached('clock-dot', () => new THREE.SphereGeometry(0.075, 16, 8)), glow(C.teal, 0.8), Math.sin(a) * radius * 0.6, 0.42, Math.cos(a) * radius * 0.6));
+  }
+  const hand = line(g, [V(0, 0.43, 0), V(0, 0.43, radius * 0.72)], C.white, 5);
+  mesh(g, cached('clock-hub', () => new THREE.SphereGeometry(0.13, 20, 10)), glow(C.white), 0, 0.43, 0);
+  return { g, radius, hand, dots, ring };
+}
+function runClock(c, phase, misses = false) {
+  const a = phase * Math.PI * 2 / 6;
+  setLinePoints(c.hand, [V(0, 0.43, 0), V(Math.sin(a) * c.radius * 0.72, 0.43, Math.cos(a) * c.radius * 0.72)]);
+  const k = Math.floor(phase) % 6;
+  c.dots.forEach((d, i) => { d.material.color.set(misses && i >= 3 ? C.red : C.teal); d.material.opacity = i === k ? 1 : 0.3; d.scale.setScalar(i === k ? 1.35 : 1); });
+}
+function chip(parent, x = 0, z = 0, size = 3) {
+  const g = group(parent, x, 0, z);
+  box(g, size, 0.24, size, 0x173249, 0, 0.2, 0);
+  wire(g, size * 0.94, 0.25, size * 0.94, C.ice, 0, 0.2, 0, 0.45);
+  for (let i = 0; i < 7; i++) for (const s of [-1, 1]) {
+    box(g, 0.06, 0.05, 0.3, 0x64809b, (i - 3) * size / 9, 0.12, s * (size / 2 + 0.12));
+    box(g, 0.3, 0.05, 0.06, 0x64809b, s * (size / 2 + 0.12), 0.12, (i - 3) * size / 9);
+  }
+  return g;
+}
 
-/* Sized for a phone: in the 9:16 feed cut the frame is 1080 wide. The speech
-   is in the captions; the frame carries a short headline and labels. */
 const CSS = `
-  .cin .hd { font: 600 80px/1.06 "Space Grotesk", sans-serif; letter-spacing: -.014em; color: #f4f7fb; text-wrap: balance; }
-  .cin em { font-style: normal; color: #6fd3ff; }
-  .cin .teal { color: #5dffc8; } .cin .amber { color: #ffb347; } .cin .red { color: #ff6272; }
-  .cin .scrim { position: absolute; }
-  .cin .chip { font: 600 36px/1 "Space Grotesk", sans-serif; padding: 12px 18px; border-radius: 12px; white-space: nowrap;
-               background: rgba(6,12,24,.8); border: 2px solid rgba(127,207,255,.45); color: #d8eeff; }
-  .cin .chip.red { border-color: rgba(255,98,114,.8); color: #ff8a96; }
-  .cin .chip.amber { border-color: rgba(255,179,71,.8); color: #ffc477; }
-  .cin .chip.teal { border-color: rgba(93,255,200,.7); color: #8dffd9; }
-  .cin .stamp { font: 700 52px/1 "Space Grotesk", sans-serif; letter-spacing: .08em; padding: 14px 22px; white-space: nowrap;
-                border: 3px solid currentColor; border-radius: 14px; background: rgba(6,10,18,.75); }
-  .cin .stamp.red { color: #ff6272; }
-  .cin .rule { font: 600 72px/1.1 "Space Grotesk", sans-serif; letter-spacing: -.012em; color: #f4f7fb; text-align: center; }
-  .cin .open { font: 500 40px/1.35 "Inter", sans-serif; color: #dfe8f3; text-align: center; }
-  .cin .credit { font: 500 22px/1.5 "JetBrains Mono", monospace; color: #9aa9be; }
-  .cin .cl__a { font: 500 48px/1.3 "Inter", sans-serif; color: #c9d4e3; }
-  .cin .cl__b { font: 600 96px/1.08 "Space Grotesk", sans-serif; letter-spacing: -.015em; color: #f4f7fb; text-wrap: balance; }
-  .cin .end__t { font: 700 110px/1 "Space Grotesk", sans-serif; letter-spacing: -.02em; color: #f4f7fb; }
-  .cin .end__s { font: 400 34px/1.4 "Inter", sans-serif; color: #aebcd0; margin: 22px auto 0; max-width: 1080px; }
-  .cin .end__a { font: 500 24px/1.7 "JetBrains Mono", monospace; color: #7fcfff; margin-top: 36px; letter-spacing: .03em; }
-  .cin .end__u { font: 600 36px/1.3 "Space Grotesk", sans-serif; color: #f4f7fb; margin-top: 52px; }
-  .cin .end__u span { display: block; font: 400 25px/1.4 "Inter", sans-serif; color: #8fa2ba; margin-top: 8px; }
+ .cin .dl-head {font:600 82px/1.05 "Space Grotesk",sans-serif;letter-spacing:-.025em;color:#f4f7fb;text-wrap:balance}
+ .cin .dl-head em,.cin .dl-rule em {color:#88d7ff;font-style:normal}
+ .cin .dl-red {color:#ff6272} .cin .dl-amber {color:#ffb347} .cin .dl-teal {color:#5dffc8}
+ .cin .dl-rule {font:600 86px/1.09 "Space Grotesk",sans-serif;letter-spacing:-.02em;color:#f4f7fb}
+ .cin .dl-tag {font:600 62px/1.15 "Space Grotesk",sans-serif;color:#dbefff;padding:13px 22px;border-radius:10px;background:rgba(3,9,18,.9);border:1px solid #355470;white-space:nowrap}
+ .cin .dl-tag.dl-red {color:#ff8291;border-color:#c75264}
+ .cin .dl-tag.dl-amber {color:#ffc477;border-color:#b88137}
+ .cin .dl-tag.dl-teal {color:#8dffda;border-color:#439c82}
+ .cin .dl-small {font:500 30px/1.4 "Inter",sans-serif;color:#aebcd0}
+ .cin .dl-note {font:500 36px/1.25 "Inter",sans-serif;color:#d1ddeb}
+ .cin .dl-credit {font:500 23px/1.4 "JetBrains Mono",monospace;color:#a6b5c9}
+ .cin .dl-end-title {font:600 92px/1.05 "Space Grotesk",sans-serif;color:#f4f7fb;letter-spacing:-.025em}
+ .cin .dl-end-note {font:500 46px/1.35 "Inter",sans-serif;color:#adc1d8;margin:25px auto 0;max-width:1580px}
+ .cin .end__u {font:600 56px/1.2 "Space Grotesk",sans-serif;color:#f4f7fb;margin-top:38px}
+ .cin .end__u span {display:block;font:400 30px/1.4 "Inter",sans-serif;color:#9bb0c9;margin-top:9px}
 `;
 
-/* ---------------------------------------------------------------- world
-   Floor at y 0. The arm's base on the left inside its clock ring; the part
-   slides on a track along x in front of it; the conveyor of beats runs behind
-   to the horizon; the model above. */
-const XA = -1.7, ZC = 0.45;
-const SH = V(XA, 0.7, ZC);                  // the arm's shoulder
-const L1 = 1.05, L2 = 0.92;
-const HUB = V(XA, 0.16, ZC);                // the controller, in the arm's base
-const RING = 0.95;
-const XC = XA + 1.25, AMP = 0.62;           // the part's track
-const PX = t => XC + AMP * Math.sin(0.7 * t + 0.3);
-const PY = 0.16;
-const ZB = ZC - 1.15, GATE = XA + 0.55, SPEED = 2.2;   // the conveyor of beats, and its gate
-const O1 = V(0.55, 1.95, -0.7), O2 = V(2.7, 1.6, -1.65);
-const MB = V(0.85, 1.15, -0.1);             // where answers are left once the controller stops waiting
-const OFF = 0.17;                           // further than this from the part, the gripper has lost it
-
-/* ------------------------------------------------------------ the schedule */
-const B = 0.2;                          // one beat (drawn slower than a real controller, so each one can be seen)
-const AGE = 0.6;                        // an answer older than this is too old to use
-const M1 = W('beat', 'beat', 2.4);      // the beats begin to drive the arm
-const M2 = W('wait', 'waits', 2.0);     // the controller waits for every answer
-const M3 = W('split', 'never', 0.8);    // it never waits, and uses the latest answer
-const M4 = W('stamp', 'too', 3.6);      // and stops trusting an answer that is too old
-const AI_ON = W('think', 'pace', 1.2);
-const FREEZE = [W('hook', 'but', 6.4) + 0.2, W('hook', 'but', 6.4) + 2.6];
-const centreAfter = s => Math.ceil((0.7 * s + 0.3) / Math.PI) * Math.PI / 0.7 - 0.3 / 0.7;
-const FORCED = [
-  { f: M2 + 0.3, d: 1.3 }, { f: M2 + 3.8, d: 1.6 },
-  { f: W('stale', 'gets', 4.0) - 0.35, d: 3.2 },
-  { f: centreAfter(M4 + 0.1) - 0.5, d: 1.7 },
-  { f: T.open + 3.0, d: 1.2 },
-];
-const rnd = seeded(2031);
-function duration(e, pSlow) {
-  for (const F of FORCED) if (!F.used && e >= F.f && e < F.f + 0.25) { F.used = true; return F.d; }
-  return rnd() < pSlow ? 0.8 + rnd() * 0.6 : 0.07 + rnd() * 0.1;
-}
-const REQ = [];
-for (let e = AI_ON; e < M2 - 0.3;) { const d = duration(e, 0.12); REQ.push({ e, a: e + d, kind: 'show' }); e += d + 0.02; }
-for (let e = M3; e < D;) { const d = duration(e, e > T.open ? 0.16 : 0); REQ.push({ e, a: e + d, kind: 'async' }); e += d + 0.02; }
-const NK = Math.ceil(D / B) + 2;
-const TICK = [];
-{
-  let hand = PX(0), pending = null, missed = 0;
-  for (let k = 0; k < NK; k++) {
-    const tk = k * B;
-    let out = -1, tgt = PX(tk), plan = null;
-    if (tk < M1) { tgt = PX(tk); }
-    else if (tk < M2) { out = 0; tgt = PX(tk); }
-    else if (tk < M3) {
-      if (pending && pending.a > tk) { out = 1; tgt = hand; plan = pending; }
-      else if (pending) { out = 0; tgt = PX(pending.e); plan = pending; pending = null; }
-      else {
-        const d = duration(tk, 0), r = { e: tk, a: tk + d, kind: 'block' };
-        REQ.push(r); plan = r;
-        if (d < B * 0.9) { out = 0; tgt = PX(tk); } else { out = 1; tgt = hand; pending = r; }
-      }
-    } else {
-      for (const r of REQ) if (r.kind === 'async' && r.a <= tk && (!plan || r.a > plan.a)) plan = r;
-      if (!plan) { out = 0; tgt = hand; }
-      else if (tk >= M4 && tk - plan.e > AGE) { out = 2; tgt = hand; }
-      else { out = 0; tgt = PX(plan.e); }
-    }
-    if (out === 1) missed++;
-    TICK.push({ t: tk, out, tgt, plan, from: hand, missed });
-    hand = tgt;
-  }
-  // how many beats in a row had been missed at each beat, and when that run ended, for the red pile at the gate
-  let run = 0;
-  for (const tk of TICK) { run = tk.out === 1 ? run + 1 : 0; tk.run = run; }
-  TICK[NK - 1].runEnd = 1e9;
-  for (let k = NK - 2; k >= 0; k--) TICK[k].runEnd = TICK[k].out === 1 ? (TICK[k + 1].out === 1 ? TICK[k + 1].runEnd : TICK[k + 1].t) : 0;
-}
-const tickAt = t => TICK[Math.max(0, Math.min(NK - 1, Math.floor(t / B)))];
-function gripX(t) {
-  if (t < M1) {
-    if (t > FREEZE[0] && t < FREEZE[1] + 0.5) return lerp(PX(FREEZE[0] - 0.06), PX(t - 0.06), ease.inOutSine(ramp(t, FREEZE[1], FREEZE[1] + 0.5)));
-    return PX(t - 0.06);
-  }
-  const tk = tickAt(t);
-  return lerp(PX(t - 0.06), lerp(tk.from, tk.tgt, ease.outCubic(ramp(t, tk.t, tk.t + 0.1))), ramp(t, M1, M1 + 0.4));
-}
-// clock time the controller has actually kept: the ring's hand stops on a missed beat
-const kept = t => t - tickAt(t).missed * B;
-const HIST = (() => {
-  const r = seeded(77), order = [];
-  for (let i = 0; i < 40; i++) { const slow = r() < 0.18, d = slow ? 0.8 + r() * 0.6 : 0.07 + r() * 0.1; order.push(Math.min(8, Math.floor(d / 0.18))); }
-  return order;
-})();
-const modelAt = t => O1.clone().lerp(O2, ease.inOutCubic(ramp(t, T.split + 0.6, T.split + 3.6)));
-const bigAt = t => ease.inOutCubic(ramp(t, T.open + 0.6, T.open + 3.0));
-
-/* camera: every shot moves from its first pose to its last; the cut between
-   shots is a 2 s ease from wherever the last shot had reached */
 const SHOTS = [
-  [T.hook - 3, V(0.8, 1.5, 5.2), V(-0.55, 0.75, 0.0), V(-0.25, 1.1, 3.7), V(-0.75, 0.55, 0.3)],
-  [T.beat, V(3.2, 0.55, 1.0), V(-1.3, 0.35, -0.5), V(0.5, 0.95, 2.6), V(-1.3, 0.45, -0.1)],
-  [T.think, V(2.9, 1.8, 3.4), V(1.2, 1.1, -1.2), V(-0.1, 2.1, 3.6), V(1.1, 1.1, -1.2)],
-  [T.wait, V(0.9, 1.6, 4.3), V(-0.9, 0.55, -0.1), V(-0.3, 1.1, 2.9), V(-0.95, 0.45, 0.1)],
-  [T.split, V(0.0, 1.9, 4.4), V(0.1, 1.0, -0.3), V(1.7, 2.6, 6.4), V(0.6, 0.9, -0.6)],
-  [T.stale, V(-0.1, 1.15, 3.1), V(-0.75, 0.4, 0.3), V(-1.9, 1.2, 3.0), V(-0.6, 0.4, 0.3)],
-  [T.stamp, V(2.7, 1.8, 4.1), V(0.0, 0.85, -0.1), V(1.0, 2.0, 3.9), V(-0.3, 0.8, 0.0)],
-  [T.rule, V(4.2, 2.4, 5.8), V(0.0, 0.75, -0.4), V(-3.6, 2.6, 5.8), V(0.0, 0.75, -0.4)],
-  [T.open, V(0.8, 2.9, 7.2), V(0.6, 1.25, -0.6), V(1.3, 4.6, 8.6), V(0.8, 1.1, -0.7)],
-  [T.close, V(0.6, 3.4, 8.8), V(0.5, 0.65, -0.5), V(0.9, 3.9, 11.0), V(0.6, 0.6, -0.5)],
+  // Each is its own set and composition. Slow dollies replace the old stream.
+  [0, T.beat, [4.5, 3.6, 9.0], [0, 0.7, 0], [3.5, 3.0, 8.6], [0.2, 0.7, 0]],
+  [T.beat, T.think, [5.1, 6.5, 8.1], [0, 0.1, 0], [3.3, 7.8, 7.1], [0, 0.2, 0]],
+  [T.think, T.split, [0.5, 4.4, 12.8], [0, 1.6, 0], [-0.5, 3.7, 11.6], [0, 1.7, 0]],
+  [T.split, T.stale, [5.0, 6.2, 11.5], [0, 1.2, 0], [3.2, 5.0, 10.4], [0, 1.1, 0]],
+  [T.stale, T.stamp, [0.3, 6.7, 12.9], [0, 0.7, 0], [-0.4, 5.4, 12.1], [0, 0.7, 0]],
+  [T.stamp, T.fallback, [1.0, 3.8, 11.4], [0, 1.65, 0], [-0.3, 3.2, 10.4], [0, 1.65, 0]],
+  [T.fallback, T.open, [3.8, 3.4, 9.1], [0, 0.65, 0], [2.8, 3.0, 8.5], [0, 0.65, 0]],
+  [T.open, T.close, [5.5, 7.6, 10.0], [0, 1.0, 0], [3.5, 7.2, 11.5], [0, 1.0, 0]],
+  [T.close, D, [4.7, 4.0, 11.3], [0, 0.8, 0], [5.4, 4.4, 12.8], [0, 0.7, 0]],
 ];
-function shotPose(i, t) {
-  const [t0, pA, lA, pB, lB] = SHOTS[i];
-  const t1 = i + 1 < SHOTS.length ? SHOTS[i + 1][0] : D;
-  const u = ease.inOutSine(ramp(t, t0, t1));
-  return { pos: pA.clone().lerp(pB, u), look: lA.clone().lerp(lB, u) };
-}
-function cameraAt(t) {
-  let i = 0;
-  while (i < SHOTS.length - 1 && t >= SHOTS[i + 1][0]) i++;
-  const cur = shotPose(i, t);
-  if (i === 0) return cur;
-  const prev = shotPose(i - 1, t), u = ease.inOutCubic(ramp(t, SHOTS[i][0], SHOTS[i][0] + 2.0));
-  return { pos: prev.pos.lerp(cur.pos, u), look: prev.look.lerp(cur.look, u) };
-}
-
-/* ----------------------------------------------------------------- film */
 const film = {
-  title: 'AI meets the deadline',
-  aspect: '16x9',
-  duration: TL ? TL.duration : D,
-  warp: TL ? makeWarp(TL.anchors) : null,
-  audio: TL ? new URL(TL.audio, TL_DIR).href : null,
-  // the closing line is already on screen in large type
-  captions: TL ? captionsFromTimeline(TL, 42, ['close']) : null,
+  title: 'AI meets the deadline', aspect: '16x9', duration: TL ? TL.duration : D,
+  warp, audio: TL ? new URL(TL.audio, DIR).href : null,
+  captions: TL ? captionsFromTimeline(TL, 42, ['rule', 'close']) : null,
   build(ctx) {
-    const { scene, camera, text, label } = ctx;
-    const style = document.createElement('style');
-    style.textContent = CSS;
-    document.head.appendChild(style);
-
-    camera.fov = 36;
-    camera.updateProjectionMatrix();
-    ctx.setViewShift(0.08, -0.06);
-    scene.background = COL.bg;
-    const add = o => { scene.add(o); return o; };
-
-    /* dust and a floor grid, for depth */
-    const dr = seeded(11);
-    const DN = 900, dp = new Float32Array(DN * 3), ds = new Float32Array(DN);
-    for (let i = 0; i < DN; i++) {
-      dp[i * 3] = (dr() - 0.5) * 40; dp[i * 3 + 1] = dr() * 14 - 2; dp[i * 3 + 2] = -16 + dr() * 20;
-      ds[i] = dr();
+    const { scene, camera, text } = ctx;
+    const style = document.createElement('style'); style.textContent = CSS; document.head.appendChild(style);
+    camera.fov = 38; camera.updateProjectionMatrix();
+    ctx.setViewShift(0, 0);
+    scene.background = color(C.bg); scene.fog = new THREE.FogExp2(C.bg, 0.029);
+    scene.add(new THREE.HemisphereLight(0xc1dcff, 0x142335, 2.4));
+    const key = new THREE.DirectionalLight(0xd5edff, 4.5); key.position.set(-4, 8, 6); scene.add(key);
+    const rim = new THREE.DirectionalLight(0x548fff, 3); rim.position.set(4, 5, -4); scene.add(rim);
+    const warm = new THREE.PointLight(0xffb56b, 35, 20); warm.position.set(3, 4, 2); scene.add(warm);
+    ctx.bloom.strength = 0.48; ctx.bloom.radius = 0.35;
+    const roots = SHOTS.map(() => group(scene));
+    const opening = bay(roots[0]);
+    const control = clock(roots[1], 0, 0, 2.35); floor(roots[1]);
+    const ctrlChip = chip(roots[1], 0, 0, 1.45); ctrlChip.position.y = 0.45;
+    const command = box(roots[1], 1.0, 0.1, 0.7, C.teal, 0, 0.9, 0, glow(C.teal, 0.65));
+    const capsules = [];
+    floor(roots[2]);
+    for (let i = 0; i < 3; i++) {
+      const x = (i - 1) * 3.3, root = group(roots[2], x, 0, 0);
+      mesh(root, new THREE.CylinderGeometry(1.03, 1.1, 0.25, 48), solid(0x1a3149), 0, 0.15, 0);
+      mesh(root, new THREE.CylinderGeometry(0.97, 0.97, 3.2, 48, 1, true), glow(C.ice, 0.035), 0, 1.88, 0);
+      for (const y of [0.4, 3.46]) circle(root, 0.98, C.ice, 0, y, 0).rotation.x = -Math.PI / 2;
+      const b = brain(root, 0, 2.65, 0, 0.68);
+      const rail = line(root, [V(0, 0.55, 0), V(0, 2.15, 0)], C.ice, 7, 0.25);
+      const progress = line(root, [V(0, 0.55, 0), V(0, 0.55, 0)], C.teal, 9);
+      const answer = box(root, 1.15, 0.18, 0.75, C.teal, 0, 0.6, 0, glow(C.teal, 0.7));
+      capsules.push({ root, b, rail, progress, answer });
     }
-    const dg = new THREE.BufferGeometry();
-    dg.setAttribute('position', new THREE.BufferAttribute(dp, 3));
-    dg.setAttribute('aSeed', new THREE.BufferAttribute(ds, 1));
-    const dust = add(new THREE.Points(dg, mat(DUST, { uTime: 0, uPR: 1, uAlpha: 0.6 })));
-    const grid = add(new THREE.GridHelper(40, 80, COL.floor, COL.floor));
-    grid.material.transparent = true; grid.material.opacity = 0; grid.material.blending = THREE.AdditiveBlending; grid.material.depthWrite = false;
+    floor(roots[3]);
+    const asyncClock = clock(roots[3], -2.7, 0, 1.6);
+    const asyncBrain = brain(roots[3], 2.8, 2.6, 0, 1.12);
+    chip(roots[3], 2.8, 0, 2.2);
+    const shelf = box(roots[3], 1.4, 0.16, 1.05, 0x234158, 0.1, 1.15, 0);
+    const latest = box(roots[3], 1.08, 0.2, 0.75, C.ice, 0.1, 1.43, 0, glow(C.ice, 0.65));
+    const handoff = line(roots[3], [V(2.8, 2.4, 0), V(0.1, 1.44, 0), V(-2.7, 0.8, 0)], C.ice, 3, 0.3);
+    const courier = box(roots[3], 0.32, 0.16, 0.22, C.ice, 0, 0, 0, glow(C.ice, 1, 1.4));
+    // Two literal worlds: the frozen observation and the changed live world.
+    const oldWorld = group(roots[4], -3.2, 0, 0), liveWorld = group(roots[4], 3.2, 0, 0);
+    const world = p => {
+      box(p, 5.3, 0.18, 4.4, 0x12283b, 0, 0, 0);
+      wire(p, 5.3, 0.18, 4.4, C.ice, 0, 0, 0);
+      for (const z of [-0.75, 0.75]) line(p, [V(-2.5, 0.13, z), V(2.5, 0.13, z)], C.ice, 3, 0.5);
+      const b = robot(p, -1.35, 0, 0.7), c = carton(p, 1.2, -1.4, 0.78);
+      return { b, c };
+    };
+    const snapshot = world(oldWorld), current = world(liveWorld);
+    wire(oldWorld, 5.45, 2.9, 4.55, C.amber, 0, 1.35, 0, 0.32);
+    const staleRoute = line(oldWorld, [V(-0.25, 0.18, 0), V(2.4, 0.18, 0)], C.teal, 6, 0.8);
+    const liveRoute = line(liveWorld, [V(-0.25, 0.18, 0), V(2.4, 0.18, 0)], C.teal, 6, 0.8);
+    // The expiry dial begins at observation, not at answer completion.
+    floor(roots[5]);
+    const ageRoot = group(roots[5], -2.3, 1.8, 0.25);
+    circle(ageRoot, 1.55, C.ice, 0, 0, 0, 0.016).material.opacity = 0.25;
+    const arcPts = Array.from({ length: 97 }, () => V(0, 0, 0));
+    const arc = line(ageRoot, arcPts, C.teal, 11);
+    const ageHand = line(ageRoot, [V(0, 0, 0), V(0, 1.2, 0)], C.white, 4);
+    const eye = mesh(ageRoot, new THREE.SphereGeometry(0.28, 32, 16), solid(0x30536e, 0.6, 0.18));
+    const token = group(roots[5], 2.25, 0.1, 0);
+    const tokenWorld = world(token); token.scale.setScalar(0.78); token.rotation.y = -0.16;
+    const tokenBorder = wire(token, 5.45, 2.3, 4.55, C.teal, 0, 1.05, 0, 0.7);
+    const rejected = line(roots[5], [V(1.3, 1.3, 1.9), V(3.2, 2.7, 1.9)], C.amber, 7, 0);
+    const replay = bay(roots[6]); replay.stop.material.color.set(C.teal);
+    // Shared hardware, then a candidate boundary to test, never a proof stamp.
+    floor(roots[7]);
+    const substrate = chip(roots[7], 0, 0, 6.2);
+    const loadGroup = group(roots[7], 1.55, 0.32, 0);
+    const loadBrain = brain(loadGroup, 0, 2.3, 0, 1.05);
+    const towers = [];
+    for (let i = 0; i < 6; i++) towers.push(box(loadGroup, 0.52, 1, 0.52, C.amber, (i % 3 - 1) * 0.68, 0.5, (Math.floor(i / 3) - 0.5) * 1.3, glow(C.amber, 0.16)));
+    const clockIsland = clock(roots[7], -1.8, 0, 1.15); clockIsland.g.position.y = 0.34;
+    const isolate = chip(roots[7], -1.8, 0, 2.75); isolate.position.y = 0.35;
+    const boundary = wire(roots[7], 2.9, 0.5, 3.0, C.teal, -1.8, 0.55, 0, 0);
+    const finale = bay(roots[8]); moveRobot(finale.bot, -1.2, C.teal);
+    const finalBrain = brain(roots[8], 2.2, 3.0, -2.0, 1.0);
+    Object.assign(ctx, { roots, opening, control, command, capsules, asyncClock, asyncBrain, latest, courier, snapshot, current,
+      staleRoute, liveRoute, arcPts, arc, ageHand, eye, token, tokenBorder, tokenWorld, rejected, replay, substrate, loadGroup,
+      loadBrain, towers, clockIsland, isolate, boundary, finale, finalBrain });
 
-    /* the conveyor of beats: rails to the horizon, a gate where each beat is due, and a pool of tiles */
-    const railA = add(fatLine(COL.tile, 2.4)), railB = add(fatLine(COL.tile, 2.4));
-    setLinePoints(railA, [V(GATE - 0.3, 0.01, ZB - 0.27), V(GATE + 16, 0.01, ZB - 0.27)]);
-    setLinePoints(railB, [V(GATE - 0.3, 0.01, ZB + 0.27), V(GATE + 16, 0.01, ZB + 0.27)]);
-    const gate = add(fatLine(COL.arm, 4.0));
-    setLinePoints(gate, [V(GATE, 0, ZB - 0.4), V(GATE, 0.7, ZB - 0.4), V(GATE, 0.7, ZB + 0.4), V(GATE, 0, ZB + 0.4)]);
-    const NT = 46, tileGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(0.3, 0.07, 0.42)), faceGeo = new THREE.PlaneGeometry(0.3, 0.42);
-    const tiles = [];
-    for (let i = 0; i < NT; i++) {
-      const g = new THREE.Group();
-      const edge = new THREE.LineSegments(tileGeo, lineMat(COL.tile));
-      const face = new THREE.Mesh(faceGeo, glow(COL.tile)); face.rotation.x = -Math.PI / 2; face.position.y = 0.036;
-      g.add(edge, face); add(g); tiles.push({ g, edge, face });
-    }
-
-    /* the clock ring around the controller: ticks, a hand, and a pulse each beat it acts */
-    const ring = add(fatLine(COL.arm, 3.0));
-    setLinePoints(ring, circle(HUB, RING, 0.015, 96));
-    const tickPts = [];
-    for (let k = 0; k < 12; k++) {
-      const a = (k / 12) * Math.PI * 2;
-      tickPts.push(V(HUB.x + (RING - 0.14) * Math.cos(a), 0.015, HUB.z + (RING - 0.14) * Math.sin(a)),
-                   V(HUB.x + RING * Math.cos(a), 0.015, HUB.z + RING * Math.sin(a)));
-    }
-    const ticks = add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(tickPts), lineMat(COL.arm)));
-    const hand = add(fatLine(COL.ok, 5.0));
-    const pulses = [add(fatLine(COL.ok, 3.0)), add(fatLine(COL.ok, 3.0))];
-
-    /* the arm */
-    const base = add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.34, 0.44, 0.26, 6)), lineMat(COL.arm)));
-    base.position.set(XA, 0.13, ZC);
-    const col = add(fatLine(COL.arm, 6.0)), link1 = add(fatLine(COL.arm, 7.0)), link2 = add(fatLine(COL.arm, 6.0));
-    const fingA = add(fatLine(COL.arm, 4.5)), fingB = add(fatLine(COL.arm, 4.5));
-    const joint = r => add(new THREE.Mesh(new THREE.SphereGeometry(r, 24, 12), mat(RIM, { uColor: COL.arm.clone(), uAlpha: 0, uPow: 1.3 })));
-    const jS = joint(0.13), jE = joint(0.11), jW = joint(0.085);
-    const hub = joint(0.16); hub.position.copy(HUB);
-
-    /* the part, its track, the ghost of where an answer saw it, and the gap when the gripper loses it */
-    const track = add(fatLine(COL.floor, 3.0));
-    setLinePoints(track, [V(XC - AMP - 0.35, 0.02, ZC), V(XC + AMP + 0.35, 0.02, ZC)]);
-    const part = add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.15, 1), mat(RIM, { uColor: COL.part.clone(), uAlpha: 0, uPow: 1.1 })));
-    const ghost = add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(0.15, 1)), lineMat(COL.safe)));
-    const gap = add(fatLine(COL.late, 4.0));
-    const beam = add(fatLine(COL.arm, 2.0, [0.05, 0.05]));
-
-    /* the model */
-    const model = new THREE.Group();
-    const shell = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(0.85, 1)), lineMat(COL.model, 0));
-    const core = new THREE.Mesh(new THREE.SphereGeometry(0.46, 32, 16), mat(RIM, { uColor: COL.model.clone(), uAlpha: 0, uPow: 1.6 }));
-    model.add(shell, core); add(model);
-    const pedestal = add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.CylinderGeometry(0.5, 0.6, 1.0, 6)), lineMat(COL.floor)));
-    pedestal.position.set(O2.x, 0.5, O2.z);
-
-    /* the think scene: answer times rising as columns behind the model */
-    const bars = [];
-    for (let k = 0; k < 9; k++) {
-      const g = new THREE.Group();
-      const c = k >= 4 ? COL.safe : COL.plan;
-      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(0.28, 1, 0.28)), lineMat(c));
-      const face = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 1), glow(c));
-      g.add(edge, face); g.position.set(-0.05 + k * 0.38, 0, -1.95); add(g); bars.push({ g, edge, face });
-    }
-    const axis = add(fatLine(COL.floor, 2.0));
-    setLinePoints(axis, [V(-0.3, 0.005, -1.75), V(3.2, 0.005, -1.75)]);
-
-    /* the waiting path, cut when the controller stops waiting */
-    const tether = add(fatLine(HDR(1.4, 1.8, 2.4), 3.4));
-    const cutA = add(fatLine(HDR(1.4, 1.8, 2.4), 3.4)), cutB = add(fatLine(HDR(1.4, 1.8, 2.4), 3.4));
-
-    /* the mailbox, the age ring of its latest answer, and its feed to the controller */
-    const box = add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(0.42, 0.42, 0.42)), lineMat(COL.plan)));
-    box.position.copy(MB);
-    const ageRing = add(fatLine(COL.ok, 5.0));
-    const feed = add(fatLine(HDR(1.2, 1.6, 2.2), 2.4, [0.1, 0.08]));
-    setLinePoints(feed, [MB, V(MB.x - 1.0, 0.8, 0.2), HUB.clone().add(V(0, 0.2, 0))]);
-
-    /* sparks: each answer flies from the model while it is being worked out */
-    const SN = REQ.length + 8;
-    const spos = new Float32Array(SN * 3), sa = new Float32Array(SN), sc = new Float32Array(SN * 3), ss = new Float32Array(SN).fill(1);
-    const sg = new THREE.BufferGeometry();
-    sg.setAttribute('position', new THREE.BufferAttribute(spos, 3));
-    sg.setAttribute('aA', new THREE.BufferAttribute(sa, 1));
-    sg.setAttribute('aC', new THREE.BufferAttribute(sc, 3));
-    sg.setAttribute('aS', new THREE.BufferAttribute(ss, 1));
-    const sparks = add(new THREE.Points(sg, mat(SPARK, { uPR: 1, uSize: 12 })));
-    sparks.frustumCulled = false;
-
-    Object.assign(ctx, { dust, grid, railA, railB, gate, tiles, ring, ticks, hand, pulses, base, col, link1, link2, fingA, fingB, jS, jE, jW, hub,
-                         track, part, ghost, gap, beam, model, shell, core, pedestal, bars, axis, tether, cutA, cutB, box, ageRing, feed,
-                         sparks, spos, sa, sc, ss, SN });
-
-    /* ------------------------------------------------------------- type */
-    const HD = { x: 110, y: 90, w: 980 };
-    const say = (at, out, hd) => text({ at, out, cls: 'blk', place: HD, html: `<div class="hd">${hd}</div>` });
-    const scrim = (at, out, place, background) => text({ at, out, cls: 'scrim', words: false, dur: 0.8, rise: 0, html: '', place,
-      style: { height: place.h + 'px', background } });
-    const gone = 0.05;
-    scrim(-3, T.close - 0.2, { x: 0, y: 0, w: 1500, h: 520 },
-          'radial-gradient(ellipse 1150px 440px at 0% 0%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.55) 55%, rgba(3,5,10,0) 100%)');
-    scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
-          'radial-gradient(ellipse 58% 52% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
-
-    say(-3, T.beat - gone, 'Right answer. <span class="red">Too late.</span>');
-    say(T.beat, T.think - gone, 'A machine runs on a <em>beat</em>.');
-    say(T.think, T.wait - gone, 'AI keeps its <em>own pace</em>.');
-    say(T.wait, T.split - gone, 'Waiting <span class="red">freezes</span> the arm.');
-    say(T.split, T.stale - gone, '<em>Never wait.</em>');
-    say(T.stale, T.stamp - gone, 'On time, but <span class="amber">out of date</span>.');
-    say(T.stamp, T.rule - gone, 'Too old? Do something <span class="amber">safe</span>.');
-    text({ at: W('rule', 'advises', 2.3) - 0.2, out: T.open - 0.1, cls: 'rule', place: { x: 160, y: 80, w: 1600 },
-           html: '<span style="color:#6fd3ff">The AI advises.</span> <span class="teal">The controller keeps the clock.</span>' });
-    text({ at: W('open', 'open', 4.0) - 0.2, out: T.close - 0.3, cls: 'open', words: false, dur: 0.7, place: { x: 260, y: 90, w: 1400 },
-           html: 'Open problem: large models, with proof that the timing holds.' });
-    text({ at: T.open + 0.8, out: T.close - 0.3, cls: 'credit', words: false, dur: 0.6, place: { x: 110, y: 1036, w: 1300 },
-           html: 'The guard pattern: L. Sha, &ldquo;Using Simplicity to Control Complexity,&rdquo; IEEE Software, 2001.' });
-    text({ at: T.close, out: T.card - 0.3, cls: 'cl__a', place: { x: 260, y: 360, w: 1400, align: 'center' },
-           html: 'AI will keep getting smarter.' });
-    text({ at: W('close', 'the', 2.2) - 0.1, out: T.card - 0.3, cls: 'cl__b', place: { x: 200, y: 450, w: 1520, align: 'center' },
-           html: 'The beat will never <em>wait</em> for it.' });
-    text({ at: T.card, out: 1e9, cls: 'end', words: false, dur: 0.9, rise: 24, place: { x: 160, y: 250, w: 1600, align: 'center' },
-           html: `<div class="end__t">AI meets the deadline</div>
-                  <div class="end__s">Use the AI&rsquo;s latest answer, never wait for it, and stop trusting an answer that is too old.</div>
-                  <div class="end__a">An open research direction &middot; not yet published &middot; schematic timing, not measured</div>
-                  <div class="end__u">${AUTHOR}</div>` });
-
-    /* --------------------------------------------------------- labels */
-    const at = v => () => v;
-    label({ cls: 'chip', html: 'AI', anchor: () => modelAt(0).clone().add(V(0, 0.8, 0)), ax: 0.5, ay: 1,
-            alpha: t => win(t, 0.6, T.think + 4, 0.6, 0.6) });
-    label({ cls: 'chip', html: 'the part', anchor: t => V(PX(t), PY - 0.25, ZC + 0.2), ax: 0.5, ay: 0,
-            alpha: t => win(t, 1.0, 6.0, 0.5, 0.5) });
-    label({ cls: 'stamp red', html: 'TOO LATE', anchor: () => V(PX(FREEZE[0] + 1.4), 0.75, ZC), ax: 0.5, ay: 1,
-            alpha: t => win(t, FREEZE[0] + 0.9, FREEZE[1] + 0.3, 0.25, 0.4) });
-    label({ cls: 'chip', html: 'controller', anchor: at(V(XA, -0.05, ZC + RING + 0.1)), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.beat + 1.5, T.think, 0.6, 0.6) });
-    label({ cls: 'chip teal', html: 'one beat, due now', anchor: at(V(GATE, 0.85, ZB)), ax: 0.5, ay: 1,
-            alpha: t => win(t, M1 + 0.8, T.think - 0.3, 0.6, 0.5) });
-    label({ cls: 'chip amber', html: 'a slow answer', anchor: at(V(2.25, 0.85, -1.95)), ax: 0.5, ay: 1,
-            alpha: t => win(t, AI_ON + 4.0, T.wait - 0.2, 0.6, 0.5) });
-    label({ cls: 'stamp red', html: 'WAITING', anchor: at(V(GATE + 0.3, 1.75, ZB)), ax: 0.5, ay: 1,
-            alpha: t => (tickAt(t).out === 1 && t > M2 && t < M3 ? 1 : 0) * win(t, T.wait, T.split, 0.2, 0.3) });
-    label({ cls: 'chip red', html: '', anchor: at(V(GATE + 0.3, 1.0, ZB)), ax: 0.5, ay: 1,
-            alpha: t => (tickAt(t).missed > 0 ? 1 : 0) * win(t, M2 + 0.5, M3, 0.4, 0.4),
-            update: (t, el) => { const s = `missed beats: ${tickAt(t).missed}`; if (el.textContent !== s) el.textContent = s; } });
-    label({ cls: 'chip', html: 'latest answer', anchor: at(V(MB.x, MB.y - 0.36, MB.z)), ax: 0.5, ay: 0,
-            alpha: t => win(t, T.split + 4.0, T.stale + 1, 0.6, 0.6) });
-    label({ cls: 'chip amber', html: 'where the part was', anchor: t => { const p = tickAt(t).plan; return p ? V(PX(p.e), 0.55, ZC) : null; }, ax: 0.5, ay: 1,
-            alpha: t => { const p = tickAt(t).plan; return (p && t > M3 ? Math.min(1, Math.abs(PX(p.e) - PX(t)) / 0.35) : 0) * win(t, W('stale', 'describes', 6.0) - 0.8, T.rule - 0.3, 0.4, 0.5); } });
-    label({ cls: 'chip amber', html: 'too old: stop', anchor: at(V(MB.x, MB.y - 0.62, MB.z)), ax: 0.5, ay: 0,
-            alpha: t => (tickAt(t).out === 2 ? 1 : 0) * win(t, M4, T.rule, 0.2, 0.4) });
-    label({ cls: 'chip', html: 'larger models', anchor: t => modelAt(t).clone().add(V(0.75 + 0.45 * bigAt(t), 0.35 * bigAt(t), 0)), ax: 0, ay: 0.5, dx: 12,
-            alpha: t => win(t, T.open + 1.0, T.close - 0.3, 0.6, 0.5) });
+    // Typography is composed in screen space, deliberately large for 1080-wide feeds.
+    const panel = (at, out, cls, html, x, y, w, more = {}) => text({ at, out, cls, html, words: false,
+      dur: 0.35, outDur: 0.15, rise: 0, place: { x, y, w }, ...more });
+    panel(-1, T.card, 'scrim', '', 0, 0, 1920, { style: { height: '335px', background: 'linear-gradient(#03050af5,#03050ab0 58%,transparent)' } });
+    const head = (at, out, html, w = 1600) => panel(at, out, 'dl-head', html, 100, 72, w);
+    head(-1, T.rule, 'Right answer.<br><span class="dl-red">Too late.</span>');
+    panel(T.rule, T.beat, 'dl-rule', '<em>Let AI think.</em><br>Keep the machine on time.', 100, 72, 1700);
+    head(T.beat, T.think, 'The next command<br><em>cannot wait.</em>');
+    head(T.think, T.split, 'Same model.<br><em>Different waiting times.</em>');
+    head(T.split, T.stale, 'AI works beside the clock.<br><em>The clock never waits.</em>');
+    head(T.stale, T.stamp, 'On time.<br><span class="dl-amber">Out of date.</span>');
+    head(T.stamp, T.fallback, 'An answer has an age.<br><em>Count from the observation.</em>');
+    head(T.fallback, T.open, 'Too old? <span class="dl-amber">Use the backup.</span>');
+    head(T.open, W('open', 'prove', 6), 'Two processes.<br><span class="dl-amber">Still one chip.</span>');
+    head(W('open', 'prove', 6), T.close, 'Can the clock hold<br><em>under load?</em>');
+    panel(T.close, T.card, 'dl-rule', '<em>Let AI think.</em><br>Keep the machine on time.', 100, 72, 1700);
+    panel(0.6, T.rule, 'dl-small', 'Dr. Ozgur Ural  /  Trustworthy AI', 104, 276, 1100);
+    // Persistent authorship stays outside the caption zone and the physical action.
+    panel(T.rule, T.card, 'dl-credit', 'Dr. Ozgur Ural &middot; Trustworthy AI for Mission-Critical Systems', 670, 1032, 1180,
+      { style: { textAlign: 'right' } });
+    panel(-1, T.close, 'dl-small', 'Schematic illustration', 100, 1030, 520);
+    const tag = (at, out, html, x, y, w = 600, cls = '') => panel(at, out, 'dl-tag ' + cls, html, x, y, w,
+      { style: { width: 'max-content', maxWidth: w + 'px' } });
+    tag(0.3, W('hook', 'late', 5.5), 'AI: thinking', 1320, 330);
+    tag(W('hook', 'late', 5.5), T.rule, 'STOP: too late', 1290, 330, 540, 'dl-red');
+    tag(0.3, T.rule, 'STOPPING LINE', 910, 808, 650, 'dl-red');
+    tag(T.beat + 0.5, W('beat', 'waiting', 5), 'controller', 1320, 420);
+    tag(W('beat', 'waiting', 5), T.think, 'AI still thinking', 1300, 420, 560, 'dl-amber');
+    tag(W('beat', 'miss', 8), T.think, 'COMMAND MISSED', 1150, 790, 650, 'dl-red');
+    for (let i = 0; i < 3; i++) tag(T.think + 0.4, T.split, ['answer one', 'answer two', 'answer three'][i], 360 + i * 490, 796, 450, i === 2 ? 'dl-amber' : 'dl-teal');
+    tag(T.split + 0.4, T.stale, 'controller', 300, 786);
+    tag(T.split + 0.4, T.stale, 'AI', 1455, 710);
+    tag(W('split', 'latest', 4), T.stale, 'latest finished', 770, 730);
+    tag(T.stale + 0.3, T.stamp, 'AI saw this', 240, 320, 700, 'dl-amber');
+    tag(T.stale + 0.3, T.stamp, 'World now', 1230, 320, 600);
+    tag(W('stale', 'clear', 6.7), T.stamp, 'PATH CLEAR', 290, 795, 650, 'dl-teal');
+    tag(W('stale', 'move', 3), T.stamp, 'PATH BLOCKED', 1210, 795, 650, 'dl-amber');
+    tag(T.stamp + 0.3, T.fallback, 'observation age', 280, 780, 650);
+    tag(T.stamp + 0.3, T.fallback, 'OBSERVED', 1240, 350, 500);
+    const finished = W('stamp', 'old', 5.9) - 0.6;
+    tag(finished, T.fallback, 'EXPIRED ON ARRIVAL', 1135, 795, 730, 'dl-amber');
+    tag(T.fallback + 0.3, W('fallback', 'brake', 3.3), 'AI answer expired', 1210, 360, 650, 'dl-amber');
+    tag(W('fallback', 'brake', 3.3), T.open, 'BACKUP: BRAKE', 1260, 360, 600, 'dl-amber');
+    panel(W('fallback', 'checked', 6), T.open, 'dl-note', 'Backup needs validation for the actual machine.', 100, 801, 1600);
+    tag(T.open + 0.3, W('open', 'prove', 6), 'shared resources', 1250, 790, 650, 'dl-amber');
+    tag(W('open', 'prove', 6), T.close, 'isolation to test', 1230, 790, 650, 'dl-teal');
+    panel(T.card, 1e9, 'scrim', '', 0, 0, 1920, { style: { height: '1080px', background: 'rgba(3,5,10,.88)' } });
+    panel(T.card, 1e9, 'dl-end', `<div class="dl-end-title">AI meets the deadline</div>
+      <div class="dl-end-note">Open research direction of the author, not yet published.<br>Schematic timing and braking, not measured or validated safety.</div>
+      <div class="end__u">${AUTHOR}</div>`, 160, 225, 1600, { style: { textAlign: 'center' }, dur: 0.7 });
   },
-
   frame(t, ctx) {
-    const { camera, grade } = ctx;
-    const pr = ctx.renderer.getPixelRatio();
-
-    const cam = cameraAt(t);
-    camera.position.copy(cam.pos).add(V(0.04 * Math.sin(t * 0.17), 0.03 * Math.sin(t * 0.13), 0));
-    camera.lookAt(cam.look);
-
-    const show = win(t, -1, T.card + 0.4, 0.8, 0.8) * (1 - 0.8 * ease.inOutSine(ramp(t, T.close - 0.4, T.close + 1.0)));
-    ctx.grid.material.opacity = 0.16 * show;
-    const tk = tickAt(t);
-    const driving = t >= M1;
-    const stalled = driving && tk.out === 1;
-    const safeNow = driving && tk.out === 2;
-
-    /* the conveyor: the tile for beat k reaches the gate when beat k is due */
-    const convIn = win(t, M1 - 1.5, 1e9, 1.0, 0.1) * show;
-    ctx.railA.material.opacity = 0.55 * convIn; ctx.railB.material.opacity = 0.55 * convIn;
-    ctx.gate.material.opacity = 0.9 * convIn;
-    ctx.gate.material.color.copy(stalled ? COL.late : COL.arm);
-    const kNow = Math.floor(t / B);
-    for (let i = 0; i < ctx.tiles.length; i++) {
-      const { g, edge, face } = ctx.tiles[i];
-      const k = kNow - 12 + i;
-      let x = 0, y = 0.04, a = 0, c = COL.tile, s = 1;
-      if (k >= 0 && k < NK) {
-        const b = TICK[k];
-        x = GATE + (b.t - t) * SPEED;
-        if (b.t > t) { a = 0.9 * (1 - ramp(x, GATE + 9, GATE + 13)); }
-        else if (b.out === 1) {
-          const end = b.runEnd;
-          if (t < end) { x = GATE + 0.02; y = 0.04 + (b.run - 1) * 0.085; a = 1; }
-          else { const u = t - end; x = GATE - u * 1.2; y = 0.04 + (b.run - 1) * 0.085 - 1.5 * u * u; a = Math.max(0, 1 - u / 0.6); }
-          c = COL.late;
-        } else if (b.out >= 0) {
-          const since = t - b.t;
-          x = GATE - since * 1.6; y = 0.04 + 0.2 * Math.min(1, since / 0.3); s = 1 - 0.5 * Math.min(1, since / 0.3);
-          a = Math.max(0, 1 - since / 0.35); c = b.out === 2 ? COL.safe : COL.ok;
-        }
-      }
-      g.position.set(x, y, ZB); g.scale.setScalar(s);
-      edge.material.color.copy(c); face.material.color.copy(c);
-      edge.material.opacity = a * convIn; face.material.opacity = 0.4 * a * convIn;
+    let idx = 0;
+    while (idx < SHOTS.length - 1 && t >= SHOTS[idx][1]) idx++;
+    ctx.roots.forEach((r, i) => { r.visible = i === idx; });
+    const [a, b, p0, l0, p1, l1] = SHOTS[idx], u = ease.inOutSine(ramp(t, a, b));
+    ctx.camera.position.set(lerp(p0[0], p1[0], u), lerp(p0[1], p1[1], u), lerp(p0[2], p1[2], u));
+    ctx.camera.lookAt(lerp(l0[0], l1[0], u), lerp(l0[1], l1[1], u), lerp(l0[2], l1[2], u));
+    // Explicitly reset every animated property, including on backward seeks.
+    const lateAt = W('hook', 'late', 5.5);
+    const x = lerp(-3.8, 1.45, ease.inOutSine(ramp(t, -1.1, lateAt + 0.7)));
+    moveRobot(ctx.opening.bot, x, t >= lateAt ? C.red : C.ice);
+    setLinePoints(ctx.opening.wake, [V(-4.5, 0.025, 0), V(x - 1, 0.025, 0)]);
+    ctx.opening.wake.material.color.set(t >= lateAt ? C.red : C.ice);
+    const waitAt = W('beat', 'waiting', 5), missAt = W('beat', 'miss', 8);
+    const beatPhase = (t - T.beat) / 1.5;
+    runClock(ctx.control, Math.max(0, beatPhase), t >= missAt);
+    const waiting = t >= waitAt;
+    ctx.command.material.color.set(waiting ? C.red : C.teal);
+    ctx.command.material.opacity = waiting ? 0.08 : 0.3 + 0.5 * Math.exp(-Math.max(0, beatPhase % 1) * 5);
+    ctx.command.position.y = 0.9 + 0.25 * ease.inOutSine(ramp(t, T.beat, waitAt));
+    const starts = [W('think', 'two', 1.5), W('think', 'two', 1.5), W('think', 'one', 3.7)];
+    const ends = [starts[0] + 1.4, starts[1] + 1.7, T.split - 0.9];
+    ctx.capsules.forEach((c, i) => {
+      const p = ramp(t, starts[i], ends[i]);
+      animateBrain(c.b, t, i === 2 && p < 1);
+      setLinePoints(c.progress, [V(0, 2.15, 0), V(0, lerp(2.15, 0.65, p), 0)]);
+      c.progress.material.color.set(i === 2 && p < 1 ? C.amber : C.teal);
+      c.answer.visible = p >= 1; c.answer.position.y = 0.6 + 0.15 * (1 - ramp(t, ends[i], ends[i] + 0.6));
+    });
+    const asyncPhase = Math.max(0, (t - T.split) / 1.5);
+    runClock(ctx.asyncClock, asyncPhase);
+    animateBrain(ctx.asyncBrain, t);
+    // Three deliberate handoffs, including a long quiet interval without a result.
+    const arrivals = [T.split + 2.0, T.split + 4.5, T.split + 8.6];
+    let arrival = arrivals[0];
+    for (const q of arrivals) if (t >= q - 1.0) arrival = q;
+    const travel = ramp(t, arrival - 1, arrival), pulse = Math.exp(-Math.max(0, t - arrival) * 4);
+    ctx.courier.visible = t >= arrival - 1 && t <= arrival;
+    ctx.courier.position.set(lerp(2.8, 0.1, travel), lerp(2.4, 1.44, travel), 0);
+    ctx.latest.scale.setScalar(1 + 0.08 * pulse); ctx.latest.visible = t >= arrivals[0];
+    const boxMove = ease.inOutSine(ramp(t, W('stale', 'box', 2.3), W('stale', 'move', 3.0) + 1.4));
+    ctx.current.c.position.z = lerp(-1.4, 0, boxMove);
+    ctx.liveRoute.material.color.set(boxMove > 0.65 ? C.amber : C.teal);
+    ctx.snapshot.c.position.z = -1.4; ctx.current.b.g.position.x = -1.35;
+    const observed = T.stamp + 0.1, expires = W('stamp', 'old', 5.9) - 0.7;
+    const freshness = 1 - ramp(t, observed, expires);
+    for (let i = 0; i < 97; i++) {
+      const q = Math.min(i / 96, freshness), ang = Math.PI / 2 - q * Math.PI * 2;
+      ctx.arcPts[i].set(1.55 * Math.cos(ang), 1.55 * Math.sin(ang), 0);
     }
-
-    /* the clock ring */
-    const ringIn = win(t, M1 - 1.0, 1e9, 0.8, 0.1) * show;
-    const ringCol = stalled ? COL.late : COL.arm;
-    ctx.ring.material.opacity = 0.8 * ringIn; ctx.ring.material.color.copy(ringCol);
-    ctx.ticks.material.opacity = 0.8 * ringIn; ctx.ticks.material.color.copy(ringCol);
-    const ha = -kept(t) * (Math.PI * 2) / 6;
-    setLinePoints(ctx.hand, [V(HUB.x, 0.02, HUB.z), V(HUB.x + (RING - 0.06) * Math.cos(ha), 0.02, HUB.z + (RING - 0.06) * Math.sin(ha))]);
-    ctx.hand.material.opacity = ringIn; ctx.hand.material.color.copy(stalled ? COL.late : COL.ok);
-    for (let j = 0; j < 2; j++) {
-      const b = TICK[Math.max(0, Math.min(NK - 1, kNow - j))], u = (t - b.t) / (2 * B);
-      setLinePoints(ctx.pulses[j], circle(HUB, RING + 0.05 + 0.8 * u, 0.02, 72));
-      ctx.pulses[j].material.color.copy(b.out === 2 ? COL.safe : COL.ok);
-      ctx.pulses[j].material.opacity = driving && b.out !== 1 && b.out >= 0 ? 0.7 * (1 - u) * ringIn : 0;
-    }
-
-    /* the part, and the gripper over it */
-    const px = PX(t), gx = gripX(t);
-    ctx.part.position.set(px, PY, ZC); ctx.part.rotation.set(t * 0.7, t * 0.9, 0);
-    const lost = Math.abs(gx - px) > OFF;
-    ctx.part.material.uniforms.uColor.value.copy(COL.part).lerp(safeNow ? COL.safe : COL.late, lost ? 0.6 : 0);
-    ctx.part.material.uniforms.uAlpha.value = 1.0 * show;
-    ctx.track.material.opacity = 0.6 * show;
-    const fired = driving ? Math.exp(-(t - tk.t) / 0.09) : 0;
-    const target = V(gx, 0.5 - 0.08 * fired, ZC);
-    const d = Math.min(L1 + L2 - 0.02, Math.max(0.3, target.distanceTo(SH)));
-    const aT = Math.atan2(target.y - SH.y, target.x - SH.x);
-    const cB = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
-    const E = V(SH.x + L1 * Math.cos(aT + cB), SH.y + L1 * Math.sin(aT + cB), ZC);
-    const Wr = V(SH.x + d * Math.cos(aT), SH.y + d * Math.sin(aT), ZC);
-    // the gripper hangs straight down over where it believes the part is
-    const close = lost ? 0 : 0.05;
-    const tipL = Wr.clone().add(V(-0.12 + close, -0.2, 0)), tipR = Wr.clone().add(V(0.12 - close, -0.2, 0));
-    setLinePoints(ctx.col, [V(XA, 0.26, ZC), SH]);
-    setLinePoints(ctx.link1, [SH, E]);
-    setLinePoints(ctx.link2, [E, Wr]);
-    setLinePoints(ctx.fingA, [Wr, tipL]);
-    setLinePoints(ctx.fingB, [Wr, tipR]);
-    const armCol = stalled ? COL.late : safeNow ? COL.safe : COL.arm;
-    for (const l of [ctx.col, ctx.link1, ctx.link2, ctx.fingA, ctx.fingB]) { l.material.opacity = 0.95 * show; l.material.color.copy(armCol); }
-    ctx.base.material.opacity = 0.75 * show;
-    ctx.jS.position.copy(SH); ctx.jE.position.copy(E); ctx.jW.position.copy(Wr);
-    for (const j of [ctx.jS, ctx.jE, ctx.jW]) { j.material.uniforms.uAlpha.value = (0.85 + 0.6 * fired) * show; j.material.uniforms.uColor.value.copy(armCol); }
-    ctx.hub.material.uniforms.uColor.value.copy(stalled ? COL.late : HDR(1.2, 2.0, 2.8));
-    ctx.hub.material.uniforms.uAlpha.value = (stalled ? 1.3 + 0.3 * Math.sin(t * 9) : 0.75 + 0.6 * fired) * show;
-    // a dashed line down from the gripper, and the gap to the part when it has lost it
-    setLinePoints(ctx.beam, [Wr.clone().add(V(0, -0.22, 0)), V(gx, 0.03, ZC)]);
-    ctx.beam.material.opacity = 0.5 * show;
-    setLinePoints(ctx.gap, [V(gx, 0.04, ZC), V(px, 0.04, ZC)]);
-    ctx.gap.material.color.copy(safeNow ? COL.safe : COL.late);
-    ctx.gap.material.opacity = (lost ? Math.min(1, (Math.abs(gx - px) - OFF) / 0.1) : 0) * show;
-    // the ghost of where the part was when the answer in use was made
-    const plan = tk.plan;
-    const ghostA = (t > M3 && plan ? Math.min(1, Math.abs(PX(plan.e) - px) / 0.25) : 0) * win(t, W('stale', 'describes', 6.0) - 1.2, T.rule - 0.3, 0.5, 0.5) * show;
-    if (plan) { ctx.ghost.position.set(PX(plan.e), PY, ZC); ctx.ghost.rotation.set(plan.e * 0.7, plan.e * 0.9, 0); }
-    ctx.ghost.material.opacity = 0.95 * ghostA;
-
-    /* the model: above the arm, then flown to its own pedestal; larger at the open question */
-    const mp = modelAt(t);
-    let busy = 0;
-    for (const r of REQ) if (r.e <= t && r.a >= t - 0.2) busy = Math.max(busy, win(t, r.e, r.a, 0.1, 0.2));
-    const flying = Math.sin(Math.PI * ramp(t, T.split + 0.6, T.split + 3.6));
-    const big = bigAt(t);
-    ctx.model.position.copy(mp).add(V(0, 0.45 * flying + 0.35 * big, 0));
-    ctx.model.rotation.set(0.35 + 0.05 * Math.sin(t * 0.3), t * 0.22 + 2.5 * flying, 0.08);
-    ctx.model.scale.setScalar(0.72 * (1 + 0.6 * big));
-    ctx.shell.material.opacity = (0.55 + 0.35 * busy) * show;
-    ctx.core.material.uniforms.uAlpha.value = (0.7 + 0.6 * busy) * show;
-    ctx.pedestal.material.opacity = 0.6 * win(t, T.split + 2.4, 1e9, 0.9, 0.1) * show;
-
-    /* the histogram of answer times */
-    const nIn = Math.floor(ramp(t, AI_ON + 0.5, AI_ON + 6.5) * HIST.length);
-    const counts = new Array(9).fill(0);
-    for (let i = 0; i < nIn; i++) counts[HIST[i]]++;
-    const hIn = win(t, AI_ON - 0.3, T.wait + 0.6, 0.6, 0.8) * show;
-    for (let k = 0; k < 9; k++) {
-      const h = counts[k] ? Math.max(0.14, counts[k] * 0.06) : 0.001;
-      const { g, edge, face } = ctx.bars[k];
-      g.scale.set(1, h, 1); g.position.y = h / 2;
-      edge.material.opacity = 0.95 * hIn; face.material.opacity = 0.32 * hIn;
-    }
-    ctx.axis.material.opacity = 0.7 * hIn;
-
-    /* the waiting path: taut while the controller waits on the model, cut when it stops waiting */
-    const tA = mp.clone().add(V(0, -0.5, 0)), tM = V(mp.x - 1.2, 1.4, 0.1), tB = HUB.clone().add(V(0, 0.16, 0));
-    setLinePoints(ctx.tether, [tA, tM, tB]);
-    ctx.tether.material.opacity = 0.8 * win(t, M2 - 0.8, T.split + 0.6, 0.6, 0.05) * show;
-    ctx.tether.material.color.copy(stalled && t < M3 ? COL.late : HDR(1.4, 1.8, 2.4));
-    const cut = ramp(t, T.split + 0.6, T.split + 2.0), cutIn = (t > T.split + 0.6 ? 1 - cut : 0) * show;
-    const midA = tA.clone().lerp(tM, 0.5), midB = tM.clone().lerp(tB, 0.5);
-    setLinePoints(ctx.cutA, [tA, midA.clone().add(V(0.1 * cut, -0.9 * cut * cut, 0))]);
-    setLinePoints(ctx.cutB, [tB, midB.clone().add(V(-0.1 * cut, -0.6 * cut * cut, 0))]);
-    ctx.cutA.material.opacity = 0.8 * cutIn; ctx.cutB.material.opacity = 0.8 * cutIn;
-
-    /* the mailbox, the age of the answer in use, the feed */
-    const asyncOn = win(t, T.split + 2.2, 1e9, 0.8, 0.1) * show;
-    let latest = null;
-    for (const r of REQ) if (r.kind === 'async' && r.a <= t && (!latest || r.a > latest.a)) latest = r;
-    const age = latest ? t - latest.e : 99;
-    const fresh = Math.max(0, 1 - age / AGE);
-    const land = latest ? Math.exp(-(t - latest.a) / 0.15) : 0;
-    ctx.box.rotation.set(0.5 + t * 0.15, 0.6 + t * 0.25, 0);
-    ctx.box.scale.setScalar(1 + 0.2 * land);
-    ctx.box.material.color.copy(t > M4 && fresh <= 0 ? COL.safe : COL.plan);
-    ctx.box.material.opacity = 0.95 * asyncOn;
-    ctx.feed.material.opacity = (0.35 + 0.4 * fired) * asyncOn;
-    ctx.feed.material.color.copy(safeNow ? COL.safe : HDR(1.2, 1.6, 2.2));
-    const ageIn = win(t, W('stamp', 'time', 2.0) - 0.5, 1e9, 0.6, 0.1) * show;
-    const rp = [], R0 = 0.5, n = Math.max(2, Math.round(64 * fresh));
-    for (let i = 0; i <= n; i++) { const a = Math.PI / 2 - (i / 64) * Math.PI * 2; rp.push(V(MB.x + R0 * Math.cos(a), MB.y + R0 * Math.sin(a), MB.z + 0.25)); }
-    setLinePoints(ctx.ageRing, rp);
-    ctx.ageRing.material.color.copy(COL.ok).lerp(COL.safe, 1 - fresh);
-    ctx.ageRing.material.opacity = (fresh > 0 ? 0.95 : 0) * ageIn;
-
-    /* sparks: each answer flies from the model while it is being worked out; a slow answer is a slow spark */
-    const { spos, sa, sc, ss } = ctx;
-    sa.fill(0);
-    const put = (j, p, a, c, s = 1) => { spos[j * 3] = p.x; spos[j * 3 + 1] = p.y; spos[j * 3 + 2] = p.z; sa[j] = a * show; sc[j * 3] = c.r; sc[j * 3 + 1] = c.g; sc[j * 3 + 2] = c.b; ss[j] = s; };
-    const hubTo = HUB.clone().add(V(0, 0.22, 0));
-    for (let j = 0; j < REQ.length; j++) {
-      const r = REQ[j];
-      if (t < r.e || t > r.a + 0.35) continue;
-      const from = modelAt(r.e).clone().add(V(0, 0.35 * bigAt(r.e), 0));
-      const to = r.kind === 'async' ? MB : hubTo;
-      const slow = r.a - r.e > 0.5;
-      if (t <= r.a) {
-        const u = ease.inOutSine(ramp(t, r.e, r.a));
-        const p = from.clone().lerp(to, u); p.y += 0.45 * Math.sin(Math.PI * u);
-        put(j, p, Math.min(1, ramp(t, r.e, r.e + 0.06)), slow ? COL.safe : COL.plan, slow ? 1.8 : 1);
-      } else put(j, to, 1 - ramp(t, r.a, r.a + 0.35), COL.plan, 1.4);
-    }
-    // the hook: answers that keep the arm with the part, then one that arrives after it has gone
-    {
-      const j = REQ.length, u = ease.inOutSine(ramp(t, FREEZE[0] - 0.2, FREEZE[1]));
-      const p = modelAt(0).clone().lerp(hubTo, u); p.y += 0.5 * Math.sin(Math.PI * u);
-      put(j, p, win(t, FREEZE[0] - 0.2, FREEZE[1] + 0.3, 0.2, 0.3), COL.safe, 1.8);
-      for (let q = 0; q < 6; q++) {
-        const e0 = 1.2 + q * 0.75;
-        if (e0 > FREEZE[0] - 0.4) break;
-        const v = ramp(t, e0, e0 + 0.35), pp = modelAt(0).clone().lerp(hubTo, ease.inOutSine(v)); pp.y += 0.4 * Math.sin(Math.PI * v);
-        put(REQ.length + 1 + q, pp, win(t, e0, e0 + 0.5, 0.05, 0.15), COL.plan, 1.2);
-      }
-    }
-    ctx.sparks.geometry.attributes.position.needsUpdate = true;
-    ctx.sparks.geometry.attributes.aA.needsUpdate = true;
-    ctx.sparks.geometry.attributes.aC.needsUpdate = true;
-    ctx.sparks.geometry.attributes.aS.needsUpdate = true;
-    ctx.sparks.material.uniforms.uPR.value = pr;
-
-    grade.uniforms.uFade.value = 1 - 0.86 * ramp(t, T.card - 0.2, T.card + 0.8);
-    ctx.dust.material.uniforms.uTime.value = t;
-    ctx.dust.material.uniforms.uPR.value = pr;
+    setLinePoints(ctx.arc, ctx.arcPts); ctx.arc.material.color.set(freshness < 0.25 ? C.amber : C.teal);
+    ctx.arc.material.opacity = freshness > 0 ? 1 : 0.08;
+    const theta = Math.PI / 2 - (1 - freshness) * Math.PI * 2;
+    setLinePoints(ctx.ageHand, [V(0, 0, 0), V(1.2 * Math.cos(theta), 1.2 * Math.sin(theta), 0)]);
+    const expired = t >= expires;
+    ctx.tokenBorder.material.color.set(expired ? C.amber : C.teal);
+    ctx.token.position.x = 2.25 + 0.8 * ease.inOutSine(ramp(t, expires, expires + 1.2));
+    ctx.token.position.y = 0.1 - 0.15 * ease.inOutSine(ramp(t, expires, expires + 1.2));
+    ctx.rejected.material.opacity = ramp(t, expires, expires + 0.25);
+    const brakeAt = W('fallback', 'brake', 3.3);
+    const drive = ramp(t, T.fallback - 0.5, brakeAt), brake = ramp(t, brakeAt, brakeAt + 1.25);
+    // Continuous position and velocity at braking, then a gentle stop before the line.
+    const brakingDistance = (2.1 / (brakeAt - (T.fallback - 0.5))) * 1.25 / 2;
+    const replayX = t <= brakeAt ? lerp(-3.8, -1.7, drive) : -1.7 + brakingDistance * (2 * brake - brake * brake);
+    moveRobot(ctx.replay.bot, replayX, t >= brakeAt ? C.amber : C.ice);
+    setLinePoints(ctx.replay.wake, [V(-4.5, 0.025, 0), V(replayX - 1, 0.025, 0)]);
+    ctx.replay.wake.material.color.set(t >= brakeAt ? C.amber : C.ice);
+    animateBrain(ctx.loadBrain, t, true);
+    const isolation = ease.inOutSine(ramp(t, W('open', 'prove', 6), T.close - 1.0));
+    ctx.isolate.position.x = lerp(-1.8, -3.2, isolation);
+    ctx.clockIsland.g.position.x = ctx.isolate.position.x;
+    ctx.loadGroup.position.x = lerp(1.55, 2.1, isolation);
+    ctx.substrate.scale.x = 1 - 0.25 * isolation;
+    ctx.substrate.position.x = 1.25 * isolation;
+    ctx.boundary.position.x = ctx.isolate.position.x;
+    ctx.boundary.material.opacity = isolation * 0.8;
+    runClock(ctx.clockIsland, Math.max(0, (t - T.open) / 1.5), isolation < 0.2);
+    ctx.towers.forEach((o, i) => { const h = 0.55 + 0.6 * (0.5 + 0.5 * Math.sin((t - T.open) * 0.7 + i)); o.scale.y = h; o.position.y = h / 2; });
+    animateBrain(ctx.finalBrain, t);
+    ctx.grade.uniforms.uFade.value = t >= T.card ? 0.35 : 1;
   },
 };
-
 createCinema(film);
