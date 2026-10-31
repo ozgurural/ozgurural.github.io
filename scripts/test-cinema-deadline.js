@@ -31,16 +31,16 @@ const timeline = require('../assets/audio/cinema/deadline/timeline.json');
         geo: c.renderer.info.memory.geometries
       };
     }, t);
-    const start = await sample(0.8), late = await sample(6.2), backup = await sample(72);
+    const start = await sample(0.8), late = await sample(8.5), backup = await sample(88);
     assert.ok(late.robot > start.robot + 3, 'robot visibly advances');
     assert.ok(late.robot + 1 > late.stop, 'late braking crosses the stopping line');
     assert.ok(backup.replay + 1 < backup.replayStop, 'backup stops before the line');
-    const before = await sample(46), after = await sample(53);
+    const before = await sample(57.5), after = await sample(66);
     assert.equal(before.oldZ, after.oldZ, 'observation stays frozen');
     assert.ok(after.nowZ - before.nowZ > 1, 'current world changes');
-    const age = await sample(61);
+    const age = await sample(76);
     assert.ok(age.expired > 0.99 && age.arc < 0.1, 'old observation is rejected');
-    assert.notDeepEqual((await sample(36)).hand, (await sample(40)).hand,
+    assert.notDeepEqual((await sample(49)).hand, (await sample(53)).hand,
       'controller clock moves between finished answers');
 
     // Measure actual ink, including inline spans and the complete author block.
@@ -67,16 +67,16 @@ const timeline = require('../assets/audio/cinema/deadline/timeline.json');
       if (findings.length) bad.push({ t, findings });
     }
     assert.deepEqual(bad, [], 'text stays inside the delivery frame');
-    const warmed = await sample(97);
+    const warmed = await sample(112);
     for (let t = 0; t < timeline.duration; t += 0.5) await sample(t);
-    assert.equal((await sample(97)).geo, warmed.geo, 'replay allocates no extra geometry');
+    assert.equal((await sample(112)).geo, warmed.geo, 'replay allocates no extra geometry');
     const digest = async t => {
       await page.evaluate(t => CINEMA.seek(t), t);
       return crypto.createHash('sha256').update(await page.screenshot({ type: 'png' })).digest('hex');
     };
-    for (const t of [6.2, 28, 39, 49.5, 62, 69, 80, 94]) {
+    for (const t of [8.5, 30, 42, 60, 74, 84, 96, 104]) {
       const original = await digest(t);
-      await page.evaluate(() => { CINEMA.seek(95); CINEMA.seek(0.1); });
+      await page.evaluate(() => { CINEMA.seek(112); CINEMA.seek(0.1); });
       assert.equal(await digest(t), original, 'identical frame after backward seek at ' + t);
     }
     assert.deepEqual(errors, [], 'no browser exceptions');

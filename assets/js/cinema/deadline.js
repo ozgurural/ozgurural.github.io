@@ -11,8 +11,8 @@ import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 
-const T = { hook: 0, rule: 7.3, beat: 13.2, think: 24, split: 34.2, stale: 44.5, stamp: 55, fallback: 63.8, open: 73.7, close: 85, card: 91 };
-const D = 98;
+const T = { hook: 0, rule: 10.6, beat: 22, think: 35, split: 45.8, stale: 56.6, stamp: 68.4, fallback: 77.7, open: 90.4, close: 101.2, card: 107.5 };
+const D = 114;
 const DIR = new URL('../../audio/cinema/deadline/', import.meta.url);
 const TL = await fetch(new URL('timeline.json', DIR)).then(r => r.ok ? r.json() : null).catch(() => null);
 if (TL) for (const l of TL.lines) if (T[l.id] !== l.at) throw new Error(`deadline: voice cue mismatch: ${l.id}`);
@@ -195,8 +195,13 @@ const CSS = `
  .cin .end__u span {display:block;font:400 30px/1.4 "Inter",sans-serif;color:#9bb0c9;margin-top:9px}
 `;
 
+/* One world, not nine cuts: each set stands at its own place along a gentle
+   zigzag, and the camera flies from one to the next (FLY seconds), so the film
+   reads as one journey; the fog keeps the neighbours as faint landmarks. */
+const FLY = 2.6;
+const AT = [[0, 0, 0], [22, 0, -7], [44, 0, 0], [66, 0, -7], [88, 0, 0], [110, 0, -7], [132, 0, 0], [154, 0, -7], [176, 0, 0]];
 const SHOTS = [
-  // Each is its own set and composition. Slow dollies replace the old stream.
+  // Each set has its own composition; slow dollies within a set, a flight between sets.
   [0, T.beat, [4.5, 3.6, 9.0], [0, 0.7, 0], [3.5, 3.0, 8.6], [0.2, 0.7, 0]],
   [T.beat, T.think, [5.1, 6.5, 8.1], [0, 0.1, 0], [3.3, 7.8, 7.1], [0, 0.2, 0]],
   [T.think, T.split, [0.5, 4.4, 12.8], [0, 1.6, 0], [-0.5, 3.7, 11.6], [0, 1.7, 0]],
@@ -210,7 +215,7 @@ const SHOTS = [
 const film = {
   title: 'AI meets the deadline', aspect: '16x9', duration: TL ? TL.duration : D,
   warp, audio: TL ? new URL(TL.audio, DIR).href : null,
-  captions: TL ? captionsFromTimeline(TL, 42, ['rule', 'close']) : null,
+  captions: TL ? captionsFromTimeline(TL, 42, ['close']) : null,
   build(ctx) {
     const { scene, camera, text } = ctx;
     const style = document.createElement('style'); style.textContent = CSS; document.head.appendChild(style);
@@ -220,9 +225,9 @@ const film = {
     scene.add(new THREE.HemisphereLight(0xc1dcff, 0x142335, 2.4));
     const key = new THREE.DirectionalLight(0xd5edff, 4.5); key.position.set(-4, 8, 6); scene.add(key);
     const rim = new THREE.DirectionalLight(0x548fff, 3); rim.position.set(4, 5, -4); scene.add(rim);
-    const warm = new THREE.PointLight(0xffb56b, 35, 20); warm.position.set(3, 4, 2); scene.add(warm);
+    const warm = new THREE.PointLight(0xffb56b, 35, 20); warm.position.set(3, 4, 2); scene.add(warm); ctx.warm = warm;
     ctx.bloom.strength = 0.48; ctx.bloom.radius = 0.35;
-    const roots = SHOTS.map(() => group(scene));
+    const roots = SHOTS.map((_, i) => group(scene, ...AT[i]));
     const opening = bay(roots[0]);
     const control = clock(roots[1], 0, 0, 2.35); floor(roots[1]);
     const ctrlChip = chip(roots[1], 0, 0, 1.45); ctrlChip.position.y = 0.45;
@@ -299,19 +304,21 @@ const film = {
     panel(T.rule, T.beat, 'dl-rule', '<em>Let AI think.</em><br>Keep the machine on time.', 100, 72, 1700);
     head(T.beat, T.think, 'The next command<br><em>cannot wait.</em>');
     head(T.think, T.split, 'Same model.<br><em>Different waiting times.</em>');
-    head(T.split, T.stale, 'AI works beside the clock.<br><em>The clock never waits.</em>');
+    head(T.split, T.stale, 'Rule 1<br><em>Never wait for the AI.</em>');
     head(T.stale, T.stamp, 'On time.<br><span class="dl-amber">Out of date.</span>');
-    head(T.stamp, T.fallback, 'An answer has an age.<br><em>Count from the observation.</em>');
-    head(T.fallback, T.open, 'Too old? <span class="dl-amber">Use the backup.</span>');
-    head(T.open, W('open', 'prove', 6), 'Two processes.<br><span class="dl-amber">Still one chip.</span>');
+    head(T.stamp, T.fallback, 'Rule 2<br><em>Too old? Throw it away.</em>');
+    head(T.fallback, T.open, 'Rule 3<br><em>Always have a safe backup.</em>');
+    head(T.open, W('open', 'question', 3), '1 Never wait. &nbsp;2 Too old? Throw it away.<br>3 Always have a safe backup.', 1760);
+    head(W('open', 'question', 3), W('open', 'prove', 6), 'Large models.<br><span class="dl-amber">One shared chip.</span>');
     head(W('open', 'prove', 6), T.close, 'Can the clock hold<br><em>under load?</em>');
     panel(T.close, T.card, 'dl-rule', '<em>Let AI think.</em><br>Keep the machine on time.', 100, 72, 1700);
     panel(0.6, T.rule, 'dl-small', 'Dr. Ozgur Ural  /  Trustworthy AI', 104, 276, 1100);
     // Persistent authorship stays outside the caption zone and the physical action.
     panel(T.rule, T.card, 'dl-credit', 'Dr. Ozgur Ural &middot; Trustworthy AI for Mission-Critical Systems', 670, 1032, 1180,
       { style: { textAlign: 'right' } });
-    panel(-1, T.close, 'dl-small', 'Schematic illustration', 100, 1030, 520);
-    const tag = (at, out, html, x, y, w = 600, cls = '') => panel(at, out, 'dl-tag ' + cls, html, x, y, w,
+    // tags sit in screen space over a set, so none appears while the camera is still flying to it
+    const landed = at => { const sh = SHOTS.find(q => at >= q[0] && at < q[1]); return sh && sh[0] > 0 ? Math.max(at, sh[0] + FLY - 0.3) : at; };
+    const tag = (at, out, html, x, y, w = 600, cls = '') => panel(landed(at), out, 'dl-tag ' + cls, html, x, y, w,
       { style: { width: 'max-content', maxWidth: w + 'px' } });
     tag(0.3, W('hook', 'late', 5.5), 'AI: thinking', 1320, 330);
     tag(W('hook', 'late', 5.5), T.rule, 'STOP: too late', 1290, 330, 540, 'dl-red');
@@ -344,10 +351,19 @@ const film = {
   frame(t, ctx) {
     let idx = 0;
     while (idx < SHOTS.length - 1 && t >= SHOTS[idx][1]) idx++;
-    ctx.roots.forEach((r, i) => { r.visible = i === idx; });
-    const [a, b, p0, l0, p1, l1] = SHOTS[idx], u = ease.inOutSine(ramp(t, a, b));
-    ctx.camera.position.set(lerp(p0[0], p1[0], u), lerp(p0[1], p1[1], u), lerp(p0[2], p1[2], u));
-    ctx.camera.lookAt(lerp(l0[0], l1[0], u), lerp(l0[1], l1[1], u), lerp(l0[2], l1[2], u));
+    const pose = (i, tt) => {
+      const [a, b, p0, l0, p1, l1] = SHOTS[i], u = ease.inOutSine(ramp(tt, a, b)), o = AT[i];
+      return { p: V(lerp(p0[0], p1[0], u) + o[0], lerp(p0[1], p1[1], u) + o[1], lerp(p0[2], p1[2], u) + o[2]),
+               l: V(lerp(l0[0], l1[0], u) + o[0], lerp(l0[1], l1[1], u) + o[1], lerp(l0[2], l1[2], u) + o[2]) };
+    };
+    const cur = pose(idx, t);
+    if (idx > 0) {
+      const prev = pose(idx - 1, t), f = ease.inOutCubic(ramp(t, SHOTS[idx][0], SHOTS[idx][0] + FLY));
+      // rise a little mid-flight, so the move reads as travel over the world
+      cur.p.lerp(prev.p, 1 - f).add(V(0, 2.2 * Math.sin(Math.PI * f), 0)); cur.l.lerp(prev.l, 1 - f);
+    }
+    ctx.camera.position.copy(cur.p); ctx.camera.lookAt(cur.l);
+    ctx.warm.position.copy(cur.l).add(V(3, 3.3, 2));
     // Explicitly reset every animated property, including on backward seeks.
     const lateAt = W('hook', 'late', 5.5);
     const x = lerp(-3.8, 1.45, ease.inOutSine(ramp(t, -1.1, lateAt + 0.7)));
