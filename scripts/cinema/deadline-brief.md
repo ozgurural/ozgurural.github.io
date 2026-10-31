@@ -6,6 +6,36 @@ Read `CLAUDE.md` first (house rules, cinema section) and
 `scripts/cinema-storytelling-runbook.md`. Work on a branch (for example
 `codex/deadline-film`), not on master.
 
+## The goal, above everything else
+
+The owner's goal, in his words (2026-10-31): the version that makes people
+watch it through and earns the most LinkedIn engagement; hiring managers and
+research leads at AI labs should think "wow" and message him. Everything else
+in this brief serves that goal, and **anything may change for it**: the
+concept, the story, the metaphor, the scenes, the length, the narration, the
+title, the visual language. Earlier cuts and the suggestions below are not
+binding. The only fixed things are scientific correctness and the house
+rules in `CLAUDE.md` (no em-dashes, no invented claims or measurements, the
+research direction labelled as unpublished, no decorative glitch effects).
+
+What tends to work for that audience, as a starting point, not a rule:
+
+- **The first two or three seconds decide whether anyone watches.** Open on
+  motion and a striking image, with the problem visible before a word is
+  needed. LinkedIn autoplays muted; the frame and burned-in captions must
+  carry it alone.
+- **A sharp, slightly surprising claim** a research lead would repeat, not a
+  lecture. The film should make the author look like someone who thinks
+  clearly about putting AI into real machines (physical AI and robot
+  foundation models are a current topic), without hype or fear-mongering.
+- **Spectacle in service of the idea.** The Level D film is the visual bar.
+- **Short enough to finish.** Probably 60 to 100 seconds; the owner allows
+  up to about two minutes if it holds attention.
+- **An ending that invites a reply**: the open problem, stated so that an
+  expert wants to comment.
+- There is no guarantee of likes; judge it by whether a busy hiring manager
+  would watch to the end and remember the author.
+
 ## What the film must achieve
 
 The owner, Dr. Ozgur Ural, wants a roughly two-minute narrated film that he
