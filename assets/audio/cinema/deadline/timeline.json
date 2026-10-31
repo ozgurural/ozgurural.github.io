@@ -1,7 +1,7 @@
 {
  "film": "deadline",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 106.875,
+ "duration": 106.8,
  "authored": 98.5,
  "anchors": [
   [
@@ -9,47 +9,47 @@
    0.0
   ],
   [
-   8.859,
+   9.672,
    8.5
   ],
   [
-   17.359,
+   18.194,
    17.0
   ],
   [
-   26.359,
+   27.194,
    26.0
   ],
   [
-   36.359,
+   37.194,
    36.0
   ],
   [
-   46.359,
+   47.194,
    46.0
   ],
   [
-   55.359,
+   56.194,
    55.0
   ],
   [
-   65.597,
+   66.883,
    65.0
   ],
   [
-   75.097,
+   76.383,
    74.5
   ],
   [
-   91.521,
+   91.446,
    86.0
   ],
   [
-   102.375,
+   102.3,
    94.0
   ],
   [
-   106.875,
+   106.8,
    98.5
   ]
  ],
@@ -59,251 +59,241 @@
    "id": "hook",
    "at": 0.0,
    "real": 0.35,
-   "speech": 8.109,
-   "len": 8.33,
-   "head": 0.221,
+   "speech": 8.922,
+   "len": 9.14,
+   "head": 0.218,
    "file": "hook.mp3",
-   "file_start": 0.129,
-   "hash": "17b7ee4f1435",
-   "text": "In The Matrix, knowing the way and taking it are different problems. A powerful AI can also lack control over the conditions for acting.",
-   "source": "The Matrix: knowing versus taking a path, as an explicit narrative reading. The architecture experiment is independent of that fiction.",
+   "file_start": 0.132,
+   "hash": "9df8160d2486",
+   "text": "A model finds the next move. The opportunity closes before its answer arrives. More intelligence cannot reopen that moment.",
+   "source": "An intentionally late proposal in the authored time-window illustration, not a claim about measured model accuracy or the value of reducing future latency.",
    "words": [
     [
-     "In",
+     "A",
      0.0,
-     0.165
+     0.13
+    ],
+    [
+     "model",
+     0.141,
+     0.424
+    ],
+    [
+     "finds",
+     0.436,
+     0.79
+    ],
+    [
+     "the",
+     0.802,
+     0.884
+    ],
+    [
+     "next",
+     0.896,
+     1.167
+    ],
+    [
+     "move",
+     1.179,
+     1.71
     ],
     [
      "The",
-     0.177,
-     0.236
+     2.521,
+     2.674
     ],
     [
-     "Matrix",
-     0.248,
-     0.778
+     "opportunity",
+     2.686,
+     3.228
     ],
     [
-     "knowing",
-     0.908,
-     1.215
+     "closes",
+     3.24,
+     3.688
     ],
     [
-     "the",
-     1.226,
-     1.297
+     "before",
+     3.7,
+     3.971
     ],
     [
-     "way",
-     1.309,
-     1.568
+     "its",
+     3.983,
+     4.124
     ],
     [
-     "and",
-     1.58,
-     1.686
+     "answer",
+     4.136,
+     4.525
     ],
     [
-     "taking",
-     1.698,
-     2.028
+     "arrives",
+     4.537,
+     5.15
     ],
     [
-     "it",
-     2.04,
-     2.134
+     "More",
+     5.964,
+     6.224
     ],
     [
-     "are",
-     2.146,
-     2.193
+     "intelligence",
+     6.235,
+     6.766
     ],
     [
-     "different",
-     2.205,
-     2.606
+     "cannot",
+     6.778,
+     7.143
     ],
     [
-     "problems",
-     2.618,
-     3.219
+     "reopen",
+     7.155,
+     7.521
     ],
     [
-     "A",
-     4.03,
-     4.183
+     "that",
+     7.533,
+     7.709
     ],
     [
-     "powerful",
-     4.195,
-     4.667
-    ],
-    [
-     "AI",
-     4.679,
-     4.867
-    ],
-    [
-     "can",
-     4.879,
-     5.044
-    ],
-    [
-     "also",
-     5.056,
-     5.304
-    ],
-    [
-     "lack",
-     5.316,
-     5.528
-    ],
-    [
-     "control",
-     5.54,
-     6.059
-    ],
-    [
-     "over",
-     6.07,
-     6.247
-    ],
-    [
-     "the",
-     6.259,
-     6.318
-    ],
-    [
-     "conditions",
-     6.33,
-     6.801
-    ],
-    [
-     "for",
-     6.813,
-     6.931
-    ],
-    [
-     "acting",
-     6.943,
-     7.379
+     "moment",
+     7.721,
+     8.193
     ]
    ]
   },
   {
    "id": "beat",
    "at": 8.5,
-   "real": 8.859,
-   "speech": 6.377,
-   "len": 6.6,
-   "head": 0.223,
+   "real": 9.672,
+   "speech": 8.122,
+   "len": 8.35,
+   "head": 0.228,
    "file": "beat.mp3",
-   "file_start": 8.636,
-   "hash": "5f6b00602aca",
-   "text": "With the Keymaker, that gap becomes a door and a narrow window. Our machine has its own window.",
-   "source": "The Matrix Reloaded: Keymaker access and timing dependency, source register in cinema-storytelling-runbook.md. Original schematic time window, not measured robot performance.",
+   "file_start": 9.444,
+   "hash": "c35e1d677bd9",
+   "text": "An execution loop has to keep acting. It cannot pause the world while a model thinks. Each opening has an expiry.",
+   "source": "Original periodic-window illustration. The separate lab-deadline-model.js implements chosen periodic controller jobs and deadlines, without simulating a plant.",
    "words": [
     [
-     "With",
+     "An",
      0.0,
-     0.189
+     0.177
     ],
     [
-     "the",
-     0.2,
-     0.271
+     "execution",
+     0.189,
+     0.743
     ],
     [
-     "Keymaker",
-     0.283,
-     0.825
-    ],
-    [
-     "that",
-     1.002,
-     1.156
-    ],
-    [
-     "gap",
-     1.167,
-     1.356
-    ],
-    [
-     "becomes",
-     1.368,
-     1.698
-    ],
-    [
-     "a",
-     1.71,
-     1.792
-    ],
-    [
-     "door",
-     1.804,
-     2.17
-    ],
-    [
-     "and",
-     2.182,
-     2.288
-    ],
-    [
-     "a",
-     2.3,
-     2.347
-    ],
-    [
-     "narrow",
-     2.358,
-     2.665
-    ],
-    [
-     "window",
-     2.677,
-     3.208
-    ],
-    [
-     "Our",
-     4.018,
-     4.242
-    ],
-    [
-     "machine",
-     4.254,
-     4.608
+     "loop",
+     0.755,
+     0.967
     ],
     [
      "has",
-     4.62,
-     4.773
+     0.979,
+     1.144
     ],
     [
-     "its",
-     4.785,
-     4.926
+     "to",
+     1.156,
+     1.238
     ],
     [
-     "own",
-     4.938,
-     5.127
+     "keep",
+     1.25,
+     1.498
     ],
     [
-     "window",
-     5.139,
-     5.646
+     "acting",
+     1.509,
+     1.946
+    ],
+    [
+     "It",
+     2.757,
+     2.922
+    ],
+    [
+     "cannot",
+     2.934,
+     3.264
+    ],
+    [
+     "pause",
+     3.275,
+     3.535
+    ],
+    [
+     "the",
+     3.547,
+     3.629
+    ],
+    [
+     "world",
+     3.641,
+     3.983
+    ],
+    [
+     "while",
+     3.995,
+     4.195
+    ],
+    [
+     "a",
+     4.207,
+     4.231
+    ],
+    [
+     "model",
+     4.242,
+     4.537
+    ],
+    [
+     "thinks",
+     4.549,
+     5.021
+    ],
+    [
+     "Each",
+     5.834,
+     6.106
+    ],
+    [
+     "opening",
+     6.117,
+     6.53
+    ],
+    [
+     "has",
+     6.542,
+     6.672
+    ],
+    [
+     "an",
+     6.684,
+     6.766
+    ],
+    [
+     "expiry",
+     6.778,
+     7.403
     ]
    ]
   },
   {
    "id": "think",
    "at": 17.0,
-   "real": 17.359,
+   "real": 18.194,
    "speech": 7.527,
    "len": 7.75,
    "head": 0.223,
    "file": "think.mp3",
-   "file_start": 17.136,
+   "file_start": 17.971,
    "hash": "aecf3f862ecc",
    "text": "One answer arrives in time. The next arrives late. A fast average cannot give that moment back.",
    "source": "Chosen latency pattern, not a claim that every inference system lacks a timing bound.",
@@ -398,12 +388,12 @@
   {
    "id": "wait",
    "at": 26.0,
-   "real": 26.359,
+   "real": 27.194,
    "speech": 7.664,
    "len": 7.9,
    "head": 0.236,
    "file": "wait.mp3",
-   "file_start": 26.123,
+   "file_start": 26.958,
    "hash": "a9e444053b48",
    "text": "Make the controller wait for inference. Now one late answer holds up the work behind it. Watch the queue.",
    "source": "Synthetic blocking baseline: unfinished work queues later controller jobs.",
@@ -508,12 +498,12 @@
   {
    "id": "split",
    "at": 36.0,
-   "real": 36.359,
+   "real": 37.194,
    "speech": 8.721,
    "len": 8.95,
    "head": 0.229,
    "file": "split.mp3",
-   "file_start": 36.13,
+   "file_start": 36.965,
    "hash": "8ba4c0898e5d",
    "text": "Let the AI propose in another worker. A bounded handoff lets this controller keep moving. We have removed the waiting dependency.",
    "source": "Synthetic async design: fixed controller and admission costs, bounded handoff and isolated worker assumed.",
@@ -628,12 +618,12 @@
   {
    "id": "stale",
    "at": 46.0,
-   "real": 46.359,
+   "real": 47.194,
    "speech": 7.618,
    "len": 7.85,
    "head": 0.232,
    "file": "stale.mp3",
-   "file_start": 46.127,
+   "file_start": 46.962,
    "hash": "84d407953754",
    "text": "But this proposal remembers a world that has moved on. Its arrival is new. Its observation is old.",
    "source": "Observation age and context validity differ from result arrival time.",
@@ -733,142 +723,142 @@
   {
    "id": "contract",
    "at": 55.0,
-   "real": 55.359,
-   "speech": 9.838,
-   "len": 10.06,
-   "head": 0.222,
+   "real": 56.194,
+   "speech": 10.289,
+   "len": 10.51,
+   "head": 0.221,
    "file": "contract.mp3",
-   "file_start": 55.137,
-   "hash": "6b90c3073d47",
-   "text": "In Revolutions, Neo's power does not control the Trainman's station. Here, a proposal needs admission: check the observation's age and context before use.",
-   "source": "The Matrix Revolutions Mobil Ave authority boundary, as an explicit analogy. Actual model checks observation age and context version; neither establishes action safety.",
+   "file_start": 55.973,
+   "hash": "f933affb0f17",
+   "text": "The proposal cannot grant itself permission. Check when its observation was made, and whether the context still holds. Otherwise, use the baseline controller.",
+   "source": "Admission is controlled by the execution policy in this design. Observation-age and context checks are necessary conditions here, not evidence of action safety.",
    "words": [
     [
-     "In",
+     "The",
      0.0,
-     0.2
-    ],
-    [
-     "Revolutions",
-     0.212,
-     0.861
-    ],
-    [
-     "Neo's",
-     1.085,
-     1.474
-    ],
-    [
-     "power",
-     1.486,
-     1.781
-    ],
-    [
-     "does",
-     1.792,
-     1.981
-    ],
-    [
-     "not",
-     1.993,
-     2.182
-    ],
-    [
-     "control",
-     2.193,
-     2.606
-    ],
-    [
-     "the",
-     2.618,
-     2.7
-    ],
-    [
-     "Trainman's",
-     2.712,
-     3.137
-    ],
-    [
-     "station",
-     3.149,
-     3.644
-    ],
-    [
-     "Here",
-     4.455,
-     4.82
-    ],
-    [
-     "a",
-     4.974,
-     5.044
+     0.141
     ],
     [
      "proposal",
-     5.056,
-     5.504
+     0.153,
+     0.637
     ],
     [
-     "needs",
-     5.516,
-     5.728
+     "cannot",
+     0.649,
+     0.932
     ],
     [
-     "admission",
-     5.74,
-     6.176
+     "grant",
+     0.943,
+     1.238
     ],
     [
-     "check",
-     6.377,
-     6.589
+     "itself",
+     1.25,
+     1.616
     ],
     [
-     "the",
-     6.601,
-     6.707
+     "permission",
+     1.627,
+     2.111
     ],
     [
-     "observation's",
-     6.719,
-     7.379
+     "Check",
+     2.922,
+     3.205
     ],
     [
-     "age",
-     7.391,
-     7.662
+     "when",
+     3.217,
+     3.358
+    ],
+    [
+     "its",
+     3.37,
+     3.476
+    ],
+    [
+     "observation",
+     3.488,
+     4.054
+    ],
+    [
+     "was",
+     4.066,
+     4.219
+    ],
+    [
+     "made",
+     4.231,
+     4.584
     ],
     [
      "and",
-     7.674,
-     7.745
+     4.797,
+     4.915
+    ],
+    [
+     "whether",
+     4.926,
+     5.15
+    ],
+    [
+     "the",
+     5.162,
+     5.233
     ],
     [
      "context",
-     7.757,
-     8.228
+     5.245,
+     5.716
     ],
     [
-     "before",
-     8.24,
-     8.535
+     "still",
+     5.728,
+     6.011
+    ],
+    [
+     "holds",
+     6.023,
+     6.554
+    ],
+    [
+     "Otherwise",
+     7.367,
+     8.004
     ],
     [
      "use",
-     8.547,
-     9.101
+     8.099,
+     8.299
+    ],
+    [
+     "the",
+     8.311,
+     8.405
+    ],
+    [
+     "baseline",
+     8.417,
+     8.912
+    ],
+    [
+     "controller",
+     8.924,
+     9.561
     ]
    ]
   },
   {
    "id": "limits",
    "at": 65.0,
-   "real": 65.597,
+   "real": 66.883,
    "speech": 8.565,
    "len": 8.78,
    "head": 0.215,
    "file": "limits.mp3",
-   "file_start": 65.382,
+   "file_start": 66.668,
    "hash": "0922b16d3779",
    "text": "Permission is conditional. Passing those checks does not make an action safe. Action limits and the baseline need their own evidence.",
    "source": "Architecture proposal: timing and freshness do not prove action safety; no plant is simulated.",
@@ -983,207 +973,182 @@
   {
    "id": "share",
    "at": 74.5,
-   "real": 75.097,
-   "speech": 16.024,
-   "len": 16.27,
-   "head": 0.246,
+   "real": 76.383,
+   "speech": 14.663,
+   "len": 14.88,
+   "head": 0.217,
    "file": "share.mp3",
-   "file_start": 74.851,
-   "hash": "41ceae4f2dc9",
-   "text": "The Architect describes Zion's rebellion inside a larger cycle. Here is a smaller dependency: two separate workers still share one machine. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence.",
-   "source": "Architect account in The Matrix Reloaded, not the claim that Zion is another simulation. Structural analogy only. Actual shared stalls are authored events; neither fiction nor analogy validates the engineering claim.",
+   "file_start": 76.166,
+   "hash": "ff8c62a35772",
+   "text": "Two workers now. Pull back and follow the dependency underneath. They still share one resource budget. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence.",
+   "source": "The authored shared-resource counterexample. Separate inference removes a waiting dependency under bounded handoff assumptions; it does not establish resource isolation or a worst-case execution bound.",
    "words": [
     [
-     "The",
+     "Two",
      0.0,
-     0.177
-    ],
-    [
-     "Architect",
-     0.189,
-     0.625
-    ],
-    [
-     "describes",
-     0.637,
-     1.097
-    ],
-    [
-     "Zion's",
-     1.108,
-     1.498
-    ],
-    [
-     "rebellion",
-     1.509,
-     1.969
-    ],
-    [
-     "inside",
-     1.981,
-     2.453
-    ],
-    [
-     "a",
-     2.465,
-     2.512
-    ],
-    [
-     "larger",
-     2.524,
-     2.866
-    ],
-    [
-     "cycle",
-     2.877,
-     3.349
-    ],
-    [
-     "Here",
-     4.16,
-     4.455
-    ],
-    [
-     "is",
-     4.466,
-     4.584
-    ],
-    [
-     "a",
-     4.596,
-     4.655
-    ],
-    [
-     "smaller",
-     4.667,
-     5.08
-    ],
-    [
-     "dependency",
-     5.091,
-     5.716
-    ],
-    [
-     "two",
-     5.893,
-     6.094
-    ],
-    [
-     "separate",
-     6.106,
-     6.471
+     0.236
     ],
     [
      "workers",
-     6.483,
-     6.849
+     0.248,
+     0.684
     ],
     [
-     "still",
-     6.86,
-     7.167
+     "now",
+     0.696,
+     1.073
     ],
     [
-     "share",
-     7.179,
-     7.403
+     "Pull",
+     1.884,
+     2.12
     ],
     [
-     "one",
-     7.415,
-     7.674
-    ],
-    [
-     "machine",
-     7.686,
-     8.169
-    ],
-    [
-     "Inference",
-     8.983,
-     9.443
-    ],
-    [
-     "can",
-     9.455,
-     9.632
-    ],
-    [
-     "stall",
-     9.643,
-     9.95
-    ],
-    [
-     "control",
-     9.962,
-     10.41
-    ],
-    [
-     "through",
-     10.422,
-     10.646
-    ],
-    [
-     "that",
-     10.658,
-     10.811
-    ],
-    [
-     "shared",
-     10.823,
-     11.106
-    ],
-    [
-     "resource",
-     11.117,
-     11.707
-    ],
-    [
-     "Isolation",
-     12.521,
-     13.169
+     "back",
+     2.132,
+     2.332
     ],
     [
      "and",
-     13.181,
-     13.287
+     2.344,
+     2.45
+    ],
+    [
+     "follow",
+     2.462,
+     2.709
+    ],
+    [
+     "the",
+     2.721,
+     2.804
+    ],
+    [
+     "dependency",
+     2.816,
+     3.452
+    ],
+    [
+     "underneath",
+     3.464,
+     4.101
+    ],
+    [
+     "They",
+     4.915,
+     5.103
+    ],
+    [
+     "still",
+     5.115,
+     5.41
+    ],
+    [
+     "share",
+     5.422,
+     5.646
+    ],
+    [
+     "one",
+     5.658,
+     5.905
+    ],
+    [
+     "resource",
+     5.917,
+     6.283
+    ],
+    [
+     "budget",
+     6.294,
+     6.778
+    ],
+    [
+     "Inference",
+     7.591,
+     8.051
+    ],
+    [
+     "can",
+     8.063,
+     8.24
+    ],
+    [
+     "stall",
+     8.252,
+     8.558
+    ],
+    [
+     "control",
+     8.57,
+     9.018
+    ],
+    [
+     "through",
+     9.03,
+     9.254
+    ],
+    [
+     "that",
+     9.266,
+     9.419
+    ],
+    [
+     "shared",
+     9.431,
+     9.714
+    ],
+    [
+     "resource",
+     9.726,
+     10.316
+    ],
+    [
+     "Isolation",
+     11.129,
+     11.778
+    ],
+    [
+     "and",
+     11.79,
+     11.896
     ],
     [
      "worst-case",
-     13.299,
-     13.83
+     11.908,
+     12.438
     ],
     [
      "timing",
-     13.841,
-     14.207
+     12.45,
+     12.816
     ],
     [
      "need",
-     14.219,
-     14.443
+     12.827,
+     13.051
     ],
     [
      "separate",
-     14.455,
-     14.82
+     13.063,
+     13.429
     ],
     [
      "evidence",
-     14.832,
-     15.327
+     13.441,
+     13.936
     ]
    ]
   },
   {
    "id": "close",
    "at": 86.0,
-   "real": 91.521,
+   "real": 91.446,
    "speech": 10.454,
    "len": 10.66,
    "head": 0.206,
    "file": "close.mp3",
-   "file_start": 91.315,
+   "file_start": 91.24,
    "hash": "f24b0aca3c0d",
    "text": "This is my synthetic architecture experiment. Timing, useful AI input and safe action are different tests. Intelligence needs an execution contract.",
    "source": "Dr. Ozgur Ural's open architecture experiment. Timing is simulated; task success and proposal usefulness are not measured.",
@@ -1298,12 +1263,12 @@
   {
    "id": "card",
    "at": 94.0,
-   "real": 102.375,
+   "real": 102.3,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 102.375,
+   "file_start": 102.3,
    "hash": "",
    "text": "",
    "source": "",

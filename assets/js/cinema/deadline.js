@@ -9,8 +9,8 @@
  * A baseline is not claimed safe without its own plant-specific evidence.
  * Every visual and status is a function of seek time, including backwards seek.
  */
-import { AUTHOR, createCinema, captionsFromTimeline, seeded } from './engine.js?v=deadline-matrix-20261030';
-import { buildDeadlineStage, frameDeadlineStage, deadlineDoorState } from './deadline-stage.js?v=matrix-v2-20261031';
+import { AUTHOR, createCinema, captionsFromTimeline, seeded } from './engine.js?v=deadline-20261031-v3';
+import { buildDeadlineStage, frameDeadlineStage, deadlineDoorState } from './deadline-stage.js?v=deadline-20261031-v3';
 
 const T = { hook: 0, beat: 8.5, think: 17, wait: 26, split: 36, stale: 46, contract: 55, limits: 65, share: 74.5, close: 86, card: 94 };
 const D = 98.5;
@@ -20,7 +20,7 @@ const requestedAspect = new URLSearchParams(location.search).get('aspect');
 const ASPECT = requestedAspect === '9x16' || (!requestedAspect && innerWidth / innerHeight < 0.8) ? '9x16' : '16x9';
 
 const TL_DIR = new URL('../../audio/cinema/deadline/', import.meta.url);
-const TL = await fetch(new URL('timeline.json?v=matrix-v2-20261031', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
+const TL = await fetch(new URL('timeline.json?v=deadline-20261031-v3', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
 if (TL) for (const l of TL.lines) if (T[l.id] !== l.at) console.warn(`deadline: cue "${l.id}" is ${T[l.id]} here and ${l.at} in the voice script`);
 function makeWarp(anchors) {
   return real => {
@@ -165,7 +165,7 @@ const film = {
   aspect: ASPECT,
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
-  audio: TL ? new URL(TL.audio + '?v=matrix-v2-20261031', TL_DIR).href : null,
+  audio: TL ? new URL(TL.audio + '?v=deadline-20261031-v3', TL_DIR).href : null,
   captions: TL ? captionsFromTimeline(TL, ASPECT === '9x16' ? 72 : 58) : null,
   build(ctx) {
     const { camera, text } = ctx;
@@ -197,14 +197,14 @@ const film = {
     scrim(T.close - 0.3, 1e9, { x: 0, y: 0, w: 1920, h: 1080 },
           'radial-gradient(ellipse 56% 50% at 50% 50%, rgba(3,5,10,.9) 0%, rgba(3,5,10,.72) 55%, rgba(3,5,10,.15) 100%)');
     text({ at: -3, out: T.beat - .05, cls: 'kick', place: KICK, words: false, dur: 0.01,
-      html: 'The Matrix &middot; an architecture lens' });
+      html: 'AI meets the deadline' });
     text({ at: T.beat, out: T.share - .1, cls: 'kick', place: KICK, words: false,
       html: 'Dr. Ozgur Ural &middot; design study' });
     text({ at: T.share, out: T.close - .3, cls: 'kick', place: KICK, words: false,
-      html: 'The Architect &middot; the larger system' });
+      html: 'Follow the dependency' });
 
     say(-3, T.beat - gone, 'Your AI has a plan.<br><span class="amber">Who sets the rules?</span>',
-        'A route, access and a finite window. The film is a narrative lens.');
+        'A useful answer still needs a valid moment to act.');
     say(T.beat, T.think - gone, 'The world <em>keeps moving</em>.',
         'A periodic controller has a deadline on every job.');
     say(T.think, T.wait - gone, 'One fast answer.<br>Then a <span class="amber">late one</span>.',

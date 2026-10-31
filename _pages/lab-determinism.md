@@ -19,7 +19,7 @@ header:
       <iframe src="{{ '/films/deadline/' | relative_url }}?autoplay=0" title="AI meets the deadline: a narrated film on keeping an AI planner out of a real-time controller's waiting path" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
 
-  <p class="lab-card__lead">The AI knows a route. <strong>Who controls the conditions for taking it?</strong> This film draws on the Matrix trilogy's questions about access and control to explore an architecture problem: when may an AI proposal enter a system that must keep acting on time? The interactive experiment below makes the timing assumptions executable.</p>
+  <p class="lab-card__lead">The model has a proposal. <strong>Who decides whether it can be used?</strong> This film explores an architecture problem: when may an AI proposal enter a system that must keep acting on time? The interactive experiment below makes the timing assumptions executable.</p>
   <div class="lab-card__usecase"><strong>Design study:</strong> <span>Open research direction of the author, not yet published. The film uses schematic event timing; the traces below come from a synthetic scheduling model. Neither is a deployed robot, an AI benchmark or a certification test. The work connects my interests in machine-learning security and real-time systems; it discloses no employer design. The real-time engineering discipline behind it is explored in <a href="/lab/level-d-60hz/">Inside a Level D Flight Simulator</a>.</span></div>
 
   </div>

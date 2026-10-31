@@ -5,7 +5,7 @@
   "true_peak": -2.7,
   "music": {
     "file": "dist/music/mixkit-149-trip-hop-vibes.mp3",
-    "rise": 24.794,
+    "rise": 25.629,
     "rise_on": "think",
     "loops": []
   },
@@ -14,14 +14,14 @@
     {
       "id": "hook",
       "at": 0.0,
-      "source": "The Matrix: knowing versus taking a path, as an explicit narrative reading. The architecture experiment is independent of that fiction.",
-      "text": "In The Matrix, knowing the way and taking it are different problems. A powerful AI can also lack control over the conditions for acting."
+      "source": "An intentionally late proposal in the authored time-window illustration, not a claim about measured model accuracy or the value of reducing future latency.",
+      "text": "A model finds the next move. The opportunity closes before its answer arrives. More intelligence cannot reopen that moment."
     },
     {
       "id": "beat",
       "at": 8.5,
-      "source": "The Matrix Reloaded: Keymaker access and timing dependency, source register in cinema-storytelling-runbook.md. Original schematic time window, not measured robot performance.",
-      "text": "With the Keymaker, that gap becomes a door and a narrow window. Our machine has its own window."
+      "source": "Original periodic-window illustration. The separate lab-deadline-model.js implements chosen periodic controller jobs and deadlines, without simulating a plant.",
+      "text": "An execution loop has to keep acting. It cannot pause the world while a model thinks. Each opening has an expiry."
     },
     {
       "id": "think",
@@ -50,8 +50,8 @@
     {
       "id": "contract",
       "at": 55.0,
-      "source": "The Matrix Revolutions Mobil Ave authority boundary, as an explicit analogy. Actual model checks observation age and context version; neither establishes action safety.",
-      "text": "In Revolutions, Neo's power does not control the Trainman's station. Here, a proposal needs admission: check the observation's age and context before use."
+      "source": "Admission is controlled by the execution policy in this design. Observation-age and context checks are necessary conditions here, not evidence of action safety.",
+      "text": "The proposal cannot grant itself permission. Check when its observation was made, and whether the context still holds. Otherwise, use the baseline controller."
     },
     {
       "id": "limits",
@@ -62,8 +62,8 @@
     {
       "id": "share",
       "at": 74.5,
-      "source": "Architect account in The Matrix Reloaded, not the claim that Zion is another simulation. Structural analogy only. Actual shared stalls are authored events; neither fiction nor analogy validates the engineering claim.",
-      "text": "The Architect describes Zion's rebellion inside a larger cycle. Here is a smaller dependency: two separate workers still share one machine. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence."
+      "source": "The authored shared-resource counterexample. Separate inference removes a waiting dependency under bounded handoff assumptions; it does not establish resource isolation or a worst-case execution bound.",
+      "text": "Two workers now. Pull back and follow the dependency underneath. They still share one resource budget. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence."
     },
     {
       "id": "close",

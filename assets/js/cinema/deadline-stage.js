@@ -1,8 +1,8 @@
-/* Original sets for Deadline. The Matrix is a narrative lens, not evidence.
+/* Original sets for Deadline. The story stands on its architecture experiment.
  * A window closes, work queues, a stale observation travels, then the camera
  * exposes a shared resource. Every pose is computed from authored time.
  * No footage, character likeness, code rain or decorative glitch is used. */
-import { THREE, lerp, ramp, ease, win } from './engine.js?v=deadline-matrix-20261030';
+import { THREE, lerp, ramp, ease, win } from './engine.js?v=deadline-20261031-v3';
 
 const GREEN = 0x7bffb1, AMBER = 0xffbe69, RED = 0xff635b, IVORY = 0xe0e8d7;
 const v = (x, y, z) => new THREE.Vector3(x, y, z);

@@ -8,6 +8,8 @@ const puppeteer = require('puppeteer');
 const voice = require('./cinema/deadline.voice.json');
 const tl = require('../assets/audio/cinema/deadline/timeline.json');
 const BASE = process.env.FILM_BASE || 'http://localhost:4001';
+// Creative influences belong in working research, never in the viewer's film.
+const directReference = /\b(matrix|neo|keymaker|trainman|zion|morpheus|trinity|cypher|seraph|reloaded|revolutions|mimar)\b|\bthe\s+architect\b|\bmobil\s+ave\b/i;
 const realAt = t => {
   const a = tl.anchors;
   let i = 0; while (i < a.length - 2 && t > a[i + 1][1]) i++;
@@ -23,6 +25,8 @@ const isolateAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Isolat
 
 (async () => {
   for (const line of voice.lines) {
+    assert.doesNotMatch(line.text, directReference, line.id + ': standalone narration');
+    assert.doesNotMatch(line.source, directReference, line.id + ': technical evidence stands on its own');
     const built = tl.lines.find(l => l.id === line.id);
     assert.equal(built.text, line.text, line.id + ': current narration');
     assert.equal(built.at, line.at, line.id + ': current cue');
@@ -41,6 +45,8 @@ const isolateAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Isolat
       await page.waitForFunction(() => !!window.CINEMA);
       await page.evaluate(() => window.CINEMA.ready);
       await page.evaluate(() => document.fonts.ready);
+      assert.doesNotMatch(await page.$eval('.cin__ui', el => el.textContent), directReference, 'no reference labels in any on-screen cue');
+      assert.doesNotMatch(await page.$eval('meta[name="description"]', el => el.content), directReference, 'standalone film description');
       assert.deepEqual(await page.evaluate(() => [window.CINEMA.W, window.CINEMA.H]), aspect === '9x16' ? [1080, 1920] : [1920, 1080]);
       const seek = t => page.evaluate(t => window.CINEMA.seek(t), t);
       const read = async authored => {
@@ -61,7 +67,13 @@ const isolateAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Isolat
       await seek(realAt(5));
       assert.equal(await page.$eval('.cin', el => el.dataset.window), 'closed', 'the late key cannot keep its window open');
       await seek(realAt(30));
-      await page.evaluate(() => document.documentElement.classList.add('is-render'));
+      // Check geometry/material restoration independently of fractional-scale
+      // text antialiasing. Cue text and caption layout are checked below.
+      await page.evaluate(() => {
+        document.documentElement.classList.add('is-render');
+        document.querySelector('.cin__ui').style.display = 'none';
+        document.querySelector('.cin-cap').style.visibility = 'hidden';
+      });
       const pixels = await page.screenshot({type:'png'});
       await seek(realAt(83)); await seek(realAt(30));
       const restored = await page.screenshot({type:'png'});
@@ -72,7 +84,11 @@ const isolateAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Isolat
         fs.writeFileSync(path.join(process.env.DEADLINE_SHOTS, `seek-after-${aspect}.png`), restored);
       }
       assert.equal(digest(restored), digest(pixels), 'moving geometry and materials restore on backwards seek');
-      await page.evaluate(() => document.documentElement.classList.remove('is-render'));
+      await page.evaluate(() => {
+        document.documentElement.classList.remove('is-render');
+        document.querySelector('.cin__ui').style.display = '';
+        document.querySelector('.cin-cap').style.visibility = '';
+      });
       const initial = await read(30); await read(83);
       assert.equal((await read(30)).html, initial.html, 'backwards seek restores the actual status');
       await seek(tl.lines.find(l => l.id === 'contract').real + 1);
@@ -137,6 +153,7 @@ const isolateAt=authoredAt(shareLine.real+shareLine.words.find(w=>w[0]==='Isolat
     const lab = await browser.newPage();
     await lab.setViewport({ width: 390, height: 844, hasTouch: true });
     await lab.goto(`${BASE}/lab/determinism/`, { waitUntil: 'networkidle2' });
+    assert.doesNotMatch(await lab.$eval('#lab-det', el => el.textContent), directReference, 'standalone lab copy, including closed details');
     const frame = await lab.$eval('.deadline-film-frame', el => {
       const r = el.getBoundingClientRect(), i = el.querySelector('iframe').getBoundingClientRect();
       return { ratio: r.width / r.height, fill: Math.abs(r.height - i.height) };

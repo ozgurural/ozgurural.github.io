@@ -27,7 +27,7 @@ selection. Durations and tempos are catalogue values, not our measurements.
 Implementation update, 31 October: Deadline's requested replacement now uses
 **Trip Hop Vibes**, Mixkit asset 149. Its source was downloaded from the
 catalogue's own asset URL and a new mixed opening preview was rendered. See
-[the Deadline narrative review](deadline-matrix-review-2026-10-31.md) for the
+[the current Deadline review](deadline-review-2026-10-31.md) for the
 source, licence, edit and verification boundaries. This is a different
 recording from Discover; it is not a claim of matching Clubbed to Death, or
 that a waveform analysis substitutes for a complete listening review. Other

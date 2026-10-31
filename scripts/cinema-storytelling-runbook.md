@@ -24,29 +24,34 @@ examples. Do not reduce this to a fixed cast of software components or limit
 research to those names. Shockvoice is an additional reference requested by
 the owner for depth of analysis and the discovery of connections.
 
+**Inspiration must stay implicit.** The owner's clarification on 31 October
+forbids direct film or character references in narration, on-screen text,
+captions, thumbnails, visitor pages and share copy. Do not announce the
+inspiration or paraphrase recognisable dialogue. Do not map characters to
+software components. Build an original, self-contained argument about the
+research; viewers may make their own connections. The scene register below
+is working research for agents, not material to insert into a film.
+
 **Do not add decorative glitches, distortion, code rain, or similar effects
 as a substitute for an argument.** The owner explicitly rejected even brief
 distortion edits. A substantive animation must depict an event, relationship,
 quantity, decision or consequence that matters to the explanation.
 
-This update authorizes research and this runbook, not a rewrite, render,
-soundtrack replacement, theme change or publication of a new film.
+The research register itself is not an instruction to change other films.
+Follow the current task scope and the owner's existing authorization.
 
-### Subsequent implementation brief and acceptance, 31 October 2026
+### Current implementation brief and acceptance, 31 October 2026
 
-The owner subsequently authorized an implementation and narrowed it to
-AI Meets the Deadline. A first pass improved engineering, mobile layout and
-timing but retained the music and barely expressed the Matrix lens. The owner
-rejected that as missing the brief, and also rejected the animation quality.
+Implementation is authorized for AI Meets the Deadline only. Its story should
+earn the ideas of access, timing, authority and a larger dependency boundary
+through original actions and consequences. Film references must remain
+unspoken and unlabelled. Naming the influence is not a substitute for depth.
 
-For this task, technical checks alone cannot establish completion. Inspect
-actual moving scenes in addition to stills. The narrative must visibly earn
-its connections to access, timing, authority and the larger control boundary;
-adding the word "permission" to the old explanation does not satisfy that aim.
-The soundtrack must actually use a different source asset, rather than a
-retimed old mix. Keep each fiction connection separate from technical evidence.
-Do not label the result "state of the art" merely because it renders or passes CI.
-Preserve the earlier source and exports, and record what remains unverified.
+Technical checks alone cannot establish completion. Inspect moving scenes as
+well as stills. The soundtrack must use the selected different recording,
+rather than a retimed old mix. Keep technical claims grounded in their own
+evidence. Do not label a result "state of the art" merely because it renders
+or passes CI. Preserve earlier source and exports and report unverified work.
 
 ## What this research establishes
 

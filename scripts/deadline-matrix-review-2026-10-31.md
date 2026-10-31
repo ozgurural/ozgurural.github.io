@@ -1,4 +1,8 @@
-# Deadline: Matrix narrative and new score
+# Historical draft: explicit-reference version
+
+Superseded by [the current standalone Deadline review](deadline-review-2026-10-31.md).
+The owner clarified that influences must remain implicit; the reference-led
+narration and labels below are historical and must not be restored.
 
 This supersedes the creative direction of the 30 October review. The owner
 rejected that delivery because technical/mobile improvements had substituted
