@@ -29,8 +29,8 @@ What tends to work for that audience, as a starting point, not a rule:
   clearly about putting AI into real machines (physical AI and robot
   foundation models are a current topic), without hype or fear-mongering.
 - **Spectacle in service of the idea.** The Level D film is the visual bar.
-- **Short enough to finish.** Probably 60 to 100 seconds; the owner allows
-  up to about two minutes if it holds attention.
+- **About two minutes.** The owner considers about two minutes ideal (he
+  rejected 60 to 100 seconds as too short); it must hold attention throughout.
 - **An ending that invites a reply**: the open problem, stated so that an
   expert wants to comment.
 - There is no guarantee of likes; judge it by whether a busy hiring manager
