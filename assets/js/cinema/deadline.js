@@ -10,7 +10,7 @@
  * Every visual and status is a function of seek time, including backwards seek.
  */
 import { AUTHOR, createCinema, captionsFromTimeline, seeded } from './engine.js?v=deadline-matrix-20261030';
-import { buildDeadlineStage, frameDeadlineStage, deadlineDoorState } from './deadline-stage.js?v=20261030';
+import { buildDeadlineStage, frameDeadlineStage, deadlineDoorState } from './deadline-stage.js?v=matrix-v2-20261031';
 
 const T = { hook: 0, beat: 8.5, think: 17, wait: 26, split: 36, stale: 46, contract: 55, limits: 65, share: 74.5, close: 86, card: 94 };
 const D = 98.5;
@@ -20,7 +20,7 @@ const requestedAspect = new URLSearchParams(location.search).get('aspect');
 const ASPECT = requestedAspect === '9x16' || (!requestedAspect && innerWidth / innerHeight < 0.8) ? '9x16' : '16x9';
 
 const TL_DIR = new URL('../../audio/cinema/deadline/', import.meta.url);
-const TL = await fetch(new URL('timeline.json?v=matrix-20261030', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
+const TL = await fetch(new URL('timeline.json?v=matrix-v2-20261031', TL_DIR)).then(r => (r.ok ? r.json() : null)).catch(() => null);
 if (TL) for (const l of TL.lines) if (T[l.id] !== l.at) console.warn(`deadline: cue "${l.id}" is ${T[l.id]} here and ${l.at} in the voice script`);
 function makeWarp(anchors) {
   return real => {
@@ -165,7 +165,7 @@ const film = {
   aspect: ASPECT,
   duration: TL ? TL.duration : D,
   warp: TL ? makeWarp(TL.anchors) : null,
-  audio: TL ? new URL(TL.audio + '?v=matrix-20261030', TL_DIR).href : null,
+  audio: TL ? new URL(TL.audio + '?v=matrix-v2-20261031', TL_DIR).href : null,
   captions: TL ? captionsFromTimeline(TL, ASPECT === '9x16' ? 72 : 58) : null,
   build(ctx) {
     const { camera, text } = ctx;
