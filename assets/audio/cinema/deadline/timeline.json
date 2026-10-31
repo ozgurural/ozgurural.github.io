@@ -59,13 +59,13 @@
    "id": "hook",
    "at": 0.0,
    "real": 0.35,
-   "speech": 9.283,
-   "len": 9.5,
-   "head": 0.217,
+   "speech": 8.884,
+   "len": 9.1,
+   "head": 0.216,
    "file": "hook.mp3",
-   "file_start": 0.133,
-   "hash": "c2bf79642493",
-   "text": "A robot hand has to stay under a moving ball. An AI watches the ball and tells the hand where to go. But what if its answer comes too late?",
+   "file_start": 0.134,
+   "hash": "ef19981f64a6",
+   "text": "A robot arm has to follow a moving part. An AI watches the part and tells the arm where to go. But what if its answer comes too late?",
    "source": "old lab film, scene 1: an answer that arrives after the system needed it; told as a tracking task",
    "words": [
     [
@@ -76,147 +76,142 @@
     [
      "robot",
      0.153,
-     0.519
+     0.531
     ],
     [
-     "hand",
-     0.531,
-     0.825
+     "arm",
+     0.542,
+     0.672
     ],
     [
      "has",
-     0.837,
-     0.991
+     0.684,
+     0.837
     ],
     [
      "to",
-     1.002,
-     1.085
+     0.849,
+     0.932
     ],
     [
-     "stay",
-     1.097,
-     1.356
-    ],
-    [
-     "under",
-     1.368,
-     1.639
+     "follow",
+     0.943,
+     1.238
     ],
     [
      "a",
-     1.651,
-     1.686
+     1.25,
+     1.285
     ],
     [
      "moving",
-     1.698,
-     2.111
+     1.297,
+     1.663
     ],
     [
-     "ball",
-     2.123,
-     2.488
+     "part",
+     1.675,
+     2.123
     ],
     [
      "An",
-     3.299,
-     3.476
+     2.934,
+     3.099
     ],
     [
      "AI",
-     3.488,
-     3.724
+     3.11,
+     3.358
     ],
     [
      "watches",
-     3.735,
-     4.113
+     3.37,
+     3.735
     ],
     [
      "the",
-     4.125,
-     4.219
+     3.747,
+     3.83
     ],
     [
-     "ball",
-     4.231,
-     4.49
+     "part",
+     3.842,
+     4.172
     ],
     [
      "and",
-     4.502,
-     4.584
+     4.184,
+     4.266
     ],
     [
      "tells",
-     4.596,
-     4.856
+     4.278,
+     4.549
     ],
     [
      "the",
-     4.867,
-     4.938
+     4.561,
+     4.667
     ],
     [
-     "hand",
-     4.95,
-     5.257
+     "arm",
+     4.679,
+     4.844
     ],
     [
      "where",
-     5.268,
-     5.422
+     4.856,
+     5.009
     ],
     [
      "to",
-     5.434,
-     5.551
+     5.021,
+     5.139
     ],
     [
      "go",
-     5.563,
-     5.941
+     5.15,
+     5.54
     ],
     [
      "But",
-     6.754,
-     6.919
+     6.353,
+     6.518
     ],
     [
      "what",
-     6.931,
-     7.073
+     6.53,
+     6.672
     ],
     [
      "if",
-     7.084,
-     7.179
+     6.684,
+     6.778
     ],
     [
      "its",
-     7.191,
-     7.344
+     6.79,
+     6.943
     ],
     [
      "answer",
-     7.356,
-     7.662
+     6.955,
+     7.261
     ],
     [
      "comes",
-     7.674,
-     7.945
+     7.273,
+     7.544
     ],
     [
      "too",
-     7.957,
-     8.099
+     7.556,
+     7.698
     ],
     [
      "late",
-     8.11,
-     8.559
+     7.709,
+     8.158
     ]
    ]
   },
@@ -224,149 +219,149 @@
    "id": "beat",
    "at": 11.4,
    "real": 11.75,
-   "speech": 8.88,
-   "len": 9.12,
-   "head": 0.24,
+   "speech": 8.781,
+   "len": 9.02,
+   "head": 0.239,
    "file": "beat.mp3",
-   "file_start": 11.51,
-   "hash": "c1b32e97510d",
-   "text": "The hand is run by a controller, and the controller works on a beat. Many times a second it must move. It can never skip a beat.",
+   "file_start": 11.511,
+   "hash": "e5c0cb9d8016",
+   "text": "The arm is run by a controller, and the controller works on a beat. Many times a second it must move. It can never skip a beat.",
    "source": "old lab film, scene 1: a fixed-rate controller gets the same budget every cycle",
    "words": [
     [
      "The",
      0.0,
-     0.141
+     0.2
     ],
     [
-     "hand",
-     0.153,
-     0.413
+     "arm",
+     0.212,
+     0.389
     ],
     [
      "is",
-     0.425,
-     0.542
+     0.401,
+     0.507
     ],
     [
      "run",
-     0.554,
-     0.79
+     0.519,
+     0.743
     ],
     [
      "by",
-     0.802,
-     0.991
+     0.755,
+     0.943
     ],
     [
      "a",
-     1.002,
-     1.061
+     0.955,
+     1.014
     ],
     [
      "controller",
-     1.073,
-     1.639
+     1.026,
+     1.58
     ],
     [
      "and",
-     1.863,
-     1.969
+     1.804,
+     1.91
     ],
     [
      "the",
-     1.981,
-     2.052
+     1.922,
+     1.981
     ],
     [
      "controller",
-     2.064,
-     2.512
+     1.993,
+     2.429
     ],
     [
      "works",
-     2.524,
-     2.854
+     2.441,
+     2.759
     ],
     [
      "on",
-     2.866,
-     2.948
+     2.771,
+     2.866
     ],
     [
      "a",
-     2.96,
-     3.019
+     2.877,
+     2.925
     ],
     [
      "beat",
-     3.031,
-     3.373
+     2.936,
+     3.278
     ],
     [
      "Many",
-     4.184,
-     4.478
+     4.089,
+     4.384
     ],
     [
      "times",
-     4.49,
-     4.797
+     4.396,
+     4.702
     ],
     [
      "a",
-     4.809,
-     4.856
+     4.714,
+     4.761
     ],
     [
      "second",
-     4.867,
-     5.198
+     4.773,
+     5.103
     ],
     [
      "it",
-     5.209,
-     5.292
+     5.115,
+     5.198
     ],
     [
      "must",
-     5.304,
-     5.563
+     5.209,
+     5.469
     ],
     [
      "move",
-     5.575,
-     6.094
+     5.481,
+     6.0
     ],
     [
      "It",
-     6.908,
-     7.061
+     6.813,
+     6.966
     ],
     [
      "can",
-     7.073,
-     7.214
+     6.978,
+     7.12
     ],
     [
      "never",
-     7.226,
-     7.462
+     7.132,
+     7.367
     ],
     [
      "skip",
-     7.474,
-     7.733
+     7.379,
+     7.639
     ],
     [
      "a",
-     7.745,
-     7.804
+     7.65,
+     7.709
     ],
     [
      "beat",
-     7.816,
-     8.181
+     7.721,
+     8.087
     ]
    ]
   },
@@ -499,13 +494,13 @@
    "id": "wait",
    "at": 33.4,
    "real": 33.75,
-   "speech": 8.656,
-   "len": 8.88,
+   "speech": 8.606,
+   "len": 8.83,
    "head": 0.224,
    "file": "wait.mp3",
    "file_start": 33.526,
-   "hash": "9985a0b8b527",
-   "text": "So suppose the controller waits for every answer. Each slow answer costs it beats. The hand freezes, and the ball gets away.",
+   "hash": "884329be9afd",
+   "text": "So suppose the controller waits for every answer. Each slow answer costs it beats. The arm freezes, and the part gets away.",
    "source": "old lab film, scene 2: blocking inference misses deadlines",
    "words": [
     [
@@ -581,42 +576,42 @@
     [
      "The",
      5.752,
-     5.882
+     5.917
     ],
     [
-     "hand",
-     5.893,
-     6.188
+     "arm",
+     5.929,
+     6.129
     ],
     [
      "freezes",
-     6.2,
-     6.66
+     6.141,
+     6.625
     ],
     [
      "and",
-     6.801,
-     6.896
+     6.742,
+     6.849
     ],
     [
      "the",
-     6.908,
-     6.99
+     6.86,
+     6.931
     ],
     [
-     "ball",
-     7.002,
-     7.238
+     "part",
+     6.943,
+     7.202
     ],
     [
      "gets",
-     7.25,
-     7.474
+     7.214,
+     7.415
     ],
     [
      "away",
-     7.485,
-     7.945
+     7.426,
+     7.875
     ]
    ]
   },
@@ -729,13 +724,13 @@
    "id": "stale",
    "at": 53.6,
    "real": 53.95,
-   "speech": 8.892,
-   "len": 9.12,
+   "speech": 8.822,
+   "len": 9.05,
    "head": 0.228,
    "file": "stale.mp3",
    "file_start": 53.722,
-   "hash": "51a828a87e77",
-   "text": "Nothing is late now. But during a slow answer, the latest one gets old. It describes where the ball was, not where it is.",
+   "hash": "43a22f6df598",
+   "text": "Nothing is late now. But during a slow answer, the latest one gets old. It describes where the part was, not where it is.",
    "source": "old lab film, scene 3: on time, but using an answer about a world that has changed",
    "words": [
     [
@@ -826,37 +821,37 @@
     [
      "the",
      6.424,
-     6.53
+     6.518
     ],
     [
-     "ball",
-     6.542,
-     6.813
+     "part",
+     6.53,
+     6.79
     ],
     [
      "was",
-     6.825,
-     7.037
+     6.801,
+     6.99
     ],
     [
      "not",
-     7.214,
-     7.497
+     7.167,
+     7.438
     ],
     [
      "where",
-     7.509,
-     7.686
+     7.45,
+     7.627
     ],
     [
      "it",
-     7.698,
-     7.827
+     7.639,
+     7.78
     ],
     [
      "is",
-     7.839,
-     8.169
+     7.792,
+     8.11
     ]
    ]
   },
