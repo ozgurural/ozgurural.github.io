@@ -1,81 +1,20 @@
 {
-  "film": "deadline",
-  "voice": "edge:en-GB-RyanNeural",
-  "rate": "+6%",
-  "true_peak": -2.7,
-  "music": {
-    "file": "dist/music/mixkit-149-trip-hop-vibes.mp3",
-    "rise": 25.629,
-    "rise_on": "think",
-    "loops": []
-  },
-  "authored_duration": 98.5,
-  "lines": [
-    {
-      "id": "hook",
-      "at": 0.0,
-      "source": "An intentionally late proposal in the authored time-window illustration, not a claim about measured model accuracy or the value of reducing future latency.",
-      "text": "A model finds the next move. The opportunity closes before its answer arrives. More intelligence cannot reopen that moment."
-    },
-    {
-      "id": "beat",
-      "at": 8.5,
-      "source": "Original periodic-window illustration. The separate lab-deadline-model.js implements chosen periodic controller jobs and deadlines, without simulating a plant.",
-      "text": "An execution loop has to keep acting. It cannot pause the world while a model thinks. Each opening has an expiry."
-    },
-    {
-      "id": "think",
-      "at": 17.0,
-      "source": "Chosen latency pattern, not a claim that every inference system lacks a timing bound.",
-      "text": "One answer arrives in time. The next arrives late. A fast average cannot give that moment back."
-    },
-    {
-      "id": "wait",
-      "at": 26.0,
-      "source": "Synthetic blocking baseline: unfinished work queues later controller jobs.",
-      "text": "Make the controller wait for inference. Now one late answer holds up the work behind it. Watch the queue."
-    },
-    {
-      "id": "split",
-      "at": 36.0,
-      "source": "Synthetic async design: fixed controller and admission costs, bounded handoff and isolated worker assumed.",
-      "text": "Let the AI propose in another worker. A bounded handoff lets this controller keep moving. We have removed the waiting dependency."
-    },
-    {
-      "id": "stale",
-      "at": 46.0,
-      "source": "Observation age and context validity differ from result arrival time.",
-      "text": "But this proposal remembers a world that has moved on. Its arrival is new. Its observation is old."
-    },
-    {
-      "id": "contract",
-      "at": 55.0,
-      "source": "Admission is controlled by the execution policy in this design. Observation-age and context checks are necessary conditions here, not evidence of action safety.",
-      "text": "The proposal cannot grant itself permission. Check when its observation was made, and whether the context still holds. Otherwise, use the baseline controller."
-    },
-    {
-      "id": "limits",
-      "at": 65.0,
-      "source": "Architecture proposal: timing and freshness do not prove action safety; no plant is simulated.",
-      "text": "Permission is conditional. Passing those checks does not make an action safe. Action limits and the baseline need their own evidence."
-    },
-    {
-      "id": "share",
-      "at": 74.5,
-      "source": "The authored shared-resource counterexample. Separate inference removes a waiting dependency under bounded handoff assumptions; it does not establish resource isolation or a worst-case execution bound.",
-      "text": "Two workers now. Pull back and follow the dependency underneath. They still share one resource budget. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence."
-    },
-    {
-      "id": "close",
-      "at": 86.0,
-      "source": "Dr. Ozgur Ural's open architecture experiment. Timing is simulated; task success and proposal usefulness are not measured.",
-      "text": "This is my synthetic architecture experiment. Timing, useful AI input and safe action are different tests. Intelligence needs an execution contract."
-    },
-    {
-      "id": "card",
-      "at": 94.0,
-      "source": "",
-      "text": ""
-    }
-  ]
+ "film": "deadline",
+ "voice": "edge:en-GB-RyanNeural",
+ "rate": "+6%",
+ "music": {"file": "dist/music/mixkit-587-discover.mp3", "rise": 30, "rise_on": "beat", "loops": [{"out": 80.311, "to": 100.08, "xfade": 0.5}]},
+ "authored_duration": 100.0,
+ "lines": [
+  { "id": "hook", "at": 0.0, "source": "old lab film, scene 1, first line", "text": "An AI can plan a robot's next move. But what if the answer arrives after the moment it was needed?" },
+  { "id": "beat", "at": 8.5, "source": "old lab film, scene 1: at sixty hertz the controller gets 16.67 ms, every time", "text": "A machine that moves runs on a beat. Many times a second, its controller has to act. Not usually. Every time." },
+  { "id": "think", "at": 17.0, "source": "old lab film, scene 1: inference time is variable; DeadlineModel's slow request takes several controller ticks", "text": "An AI model keeps a different clock. Most answers come back quickly. Some take far longer, and nobody can say in advance which." },
+  { "id": "wait", "at": 26.0, "source": "old lab film, scene 2: blocking inference delays later jobs too, red squares count missed deadlines", "text": "Make the controller wait for the model, and one slow answer costs it a beat. Then the next. The delay spills into everything queued behind it." },
+  { "id": "split", "at": 36.0, "source": "old lab film, scene 2: a separate worker proposes updates and the controller never waits for it", "text": "So take the model out of the waiting path. The controller keeps its beat whatever happens. The model works beside it and leaves its newest plan." },
+  { "id": "stale", "at": 46.0, "source": "old lab film, scene 3: the loop may stay on time while using an answer about a world that has changed", "text": "That changes how things fail. Every beat is now on time, but a plan can describe a world that has already moved on." },
+  { "id": "contract", "at": 55.0, "source": "old lab film, scene 3: observation timestamp checked before use, fallback when a proposal expires", "text": "So every plan carries the moment it was made. If it is too old, the controller sets it aside and falls back to a safe default." },
+  { "id": "limits", "at": 65.0, "source": "old lab film, scene 3: freshness is only one check; validate action limits separately", "text": "Age is only one check. A fresh plan can still be wrong, so the limits on what the machine may do keep their own guard." },
+  { "id": "share", "at": 74.5, "source": "old lab film, scene 4 and DeadlineModel: async misses are zero when isolated and appear only under shared stalls", "text": "One trap remains. If the model and the controller share a computer, a busy model can still steal the controller's time. Keep them apart, and test it under load." },
+  { "id": "close", "at": 86.0, "source": "old lab film, scene 5 closing line: adopt better intelligence without losing the timing contract", "text": "Better AI will keep arriving. The question is whether a system can take it in without losing its beat." },
+  { "id": "card", "at": 94.0, "source": "", "text": "" }
+ ]
 }

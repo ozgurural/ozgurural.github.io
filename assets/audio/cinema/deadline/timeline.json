@@ -1,56 +1,56 @@
 {
  "film": "deadline",
  "voice": "edge:en-GB-RyanNeural",
- "duration": 106.8,
- "authored": 98.5,
+ "duration": 102.066,
+ "authored": 100.0,
  "anchors": [
   [
    0.0,
    0.0
   ],
   [
-   9.672,
+   8.85,
    8.5
   ],
   [
-   18.194,
+   18.534,
    17.0
   ],
   [
-   27.194,
+   28.066,
    26.0
   ],
   [
-   37.194,
+   38.066,
    36.0
   ],
   [
-   47.194,
+   48.066,
    46.0
   ],
   [
-   56.194,
+   57.066,
    55.0
   ],
   [
-   66.883,
+   67.066,
    65.0
   ],
   [
-   76.383,
+   76.566,
    74.5
   ],
   [
-   91.446,
+   88.066,
    86.0
   ],
   [
-   102.3,
+   96.066,
    94.0
   ],
   [
-   106.8,
-   98.5
+   102.066,
+   100.0
   ]
  ],
  "audio": "soundtrack.mp3",
@@ -59,14 +59,129 @@
    "id": "hook",
    "at": 0.0,
    "real": 0.35,
-   "speech": 8.922,
-   "len": 9.14,
+   "speech": 6.452,
+   "len": 6.67,
    "head": 0.218,
    "file": "hook.mp3",
    "file_start": 0.132,
-   "hash": "9df8160d2486",
-   "text": "A model finds the next move. The opportunity closes before its answer arrives. More intelligence cannot reopen that moment.",
-   "source": "An intentionally late proposal in the authored time-window illustration, not a claim about measured model accuracy or the value of reducing future latency.",
+   "hash": "c2ebed62bcf6",
+   "text": "An AI can plan a robot's next move. But what if the answer arrives after the moment it was needed?",
+   "source": "old lab film, scene 1, first line",
+   "words": [
+    [
+     "An",
+     0.0,
+     0.212
+    ],
+    [
+     "AI",
+     0.224,
+     0.448
+    ],
+    [
+     "can",
+     0.46,
+     0.613
+    ],
+    [
+     "plan",
+     0.625,
+     0.873
+    ],
+    [
+     "a",
+     0.884,
+     0.92
+    ],
+    [
+     "robot's",
+     0.932,
+     1.391
+    ],
+    [
+     "next",
+     1.403,
+     1.698
+    ],
+    [
+     "move",
+     1.71,
+     2.217
+    ],
+    [
+     "But",
+     3.028,
+     3.216
+    ],
+    [
+     "what",
+     3.228,
+     3.393
+    ],
+    [
+     "if",
+     3.405,
+     3.488
+    ],
+    [
+     "the",
+     3.5,
+     3.617
+    ],
+    [
+     "answer",
+     3.629,
+     3.948
+    ],
+    [
+     "arrives",
+     3.959,
+     4.384
+    ],
+    [
+     "after",
+     4.396,
+     4.608
+    ],
+    [
+     "the",
+     4.62,
+     4.691
+    ],
+    [
+     "moment",
+     4.702,
+     5.044
+    ],
+    [
+     "it",
+     5.056,
+     5.127
+    ],
+    [
+     "was",
+     5.139,
+     5.268
+    ],
+    [
+     "needed",
+     5.28,
+     5.728
+    ]
+   ]
+  },
+  {
+   "id": "beat",
+   "at": 8.5,
+   "real": 8.85,
+   "speech": 9.284,
+   "len": 9.5,
+   "head": 0.216,
+   "file": "beat.mp3",
+   "file_start": 8.634,
+   "hash": "6a218e85f995",
+   "text": "A machine that moves runs on a beat. Many times a second, its controller has to act. Not usually. Every time.",
+   "source": "old lab film, scene 1: at sixty hertz the controller gets 16.67 ms, every time",
    "words": [
     [
      "A",
@@ -74,109 +189,119 @@
      0.13
     ],
     [
-     "model",
+     "machine",
      0.141,
-     0.424
-    ],
-    [
-     "finds",
-     0.436,
-     0.79
-    ],
-    [
-     "the",
-     0.802,
-     0.884
-    ],
-    [
-     "next",
-     0.896,
-     1.167
-    ],
-    [
-     "move",
-     1.179,
-     1.71
-    ],
-    [
-     "The",
-     2.521,
-     2.674
-    ],
-    [
-     "opportunity",
-     2.686,
-     3.228
-    ],
-    [
-     "closes",
-     3.24,
-     3.688
-    ],
-    [
-     "before",
-     3.7,
-     3.971
-    ],
-    [
-     "its",
-     3.983,
-     4.124
-    ],
-    [
-     "answer",
-     4.136,
-     4.525
-    ],
-    [
-     "arrives",
-     4.537,
-     5.15
-    ],
-    [
-     "More",
-     5.964,
-     6.224
-    ],
-    [
-     "intelligence",
-     6.235,
-     6.766
-    ],
-    [
-     "cannot",
-     6.778,
-     7.143
-    ],
-    [
-     "reopen",
-     7.155,
-     7.521
+     0.507
     ],
     [
      "that",
-     7.533,
-     7.709
+     0.519,
+     0.672
     ],
     [
-     "moment",
-     7.721,
-     8.193
+     "moves",
+     0.684,
+     0.955
+    ],
+    [
+     "runs",
+     0.967,
+     1.297
+    ],
+    [
+     "on",
+     1.309,
+     1.415
+    ],
+    [
+     "a",
+     1.427,
+     1.486
+    ],
+    [
+     "beat",
+     1.498,
+     1.875
+    ],
+    [
+     "Many",
+     2.686,
+     2.981
+    ],
+    [
+     "times",
+     2.992,
+     3.287
+    ],
+    [
+     "a",
+     3.299,
+     3.346
+    ],
+    [
+     "second",
+     3.358,
+     3.783
+    ],
+    [
+     "its",
+     3.995,
+     4.101
+    ],
+    [
+     "controller",
+     4.113,
+     4.632
+    ],
+    [
+     "has",
+     4.643,
+     4.856
+    ],
+    [
+     "to",
+     4.867,
+     4.974
+    ],
+    [
+     "act",
+     4.985,
+     5.351
+    ],
+    [
+     "Not",
+     6.165,
+     6.471
+    ],
+    [
+     "usually",
+     6.483,
+     6.919
+    ],
+    [
+     "Every",
+     7.733,
+     8.051
+    ],
+    [
+     "time",
+     8.063,
+     8.547
     ]
    ]
   },
   {
-   "id": "beat",
-   "at": 8.5,
-   "real": 9.672,
-   "speech": 8.122,
-   "len": 8.35,
-   "head": 0.228,
-   "file": "beat.mp3",
-   "file_start": 9.444,
-   "hash": "c35e1d677bd9",
-   "text": "An execution loop has to keep acting. It cannot pause the world while a model thinks. Each opening has an expiry.",
-   "source": "Original periodic-window illustration. The separate lab-deadline-model.js implements chosen periodic controller jobs and deadlines, without simulating a plant.",
+   "id": "think",
+   "at": 17.0,
+   "real": 18.534,
+   "speech": 9.132,
+   "len": 9.34,
+   "head": 0.208,
+   "file": "think.mp3",
+   "file_start": 18.326,
+   "hash": "d6e561c0b4aa",
+   "text": "An AI model keeps a different clock. Most answers come back quickly. Some take far longer, and nobody can say in advance which.",
+   "source": "old lab film, scene 1: inference time is variable; DeadlineModel's slow request takes several controller ticks",
    "words": [
     [
      "An",
@@ -184,1091 +309,1101 @@
      0.177
     ],
     [
-     "execution",
+     "AI",
      0.189,
-     0.743
-    ],
-    [
-     "loop",
-     0.755,
-     0.967
-    ],
-    [
-     "has",
-     0.979,
-     1.144
-    ],
-    [
-     "to",
-     1.156,
-     1.238
-    ],
-    [
-     "keep",
-     1.25,
-     1.498
-    ],
-    [
-     "acting",
-     1.509,
-     1.946
-    ],
-    [
-     "It",
-     2.757,
-     2.922
-    ],
-    [
-     "cannot",
-     2.934,
-     3.264
-    ],
-    [
-     "pause",
-     3.275,
-     3.535
-    ],
-    [
-     "the",
-     3.547,
-     3.629
-    ],
-    [
-     "world",
-     3.641,
-     3.983
-    ],
-    [
-     "while",
-     3.995,
-     4.195
-    ],
-    [
-     "a",
-     4.207,
-     4.231
+     0.401
     ],
     [
      "model",
-     4.242,
-     4.537
+     0.413,
+     0.719
     ],
     [
-     "thinks",
-     4.549,
-     5.021
+     "keeps",
+     0.731,
+     1.014
     ],
     [
-     "Each",
-     5.834,
-     6.106
+     "a",
+     1.026,
+     1.097
     ],
     [
-     "opening",
-     6.117,
-     6.53
+     "different",
+     1.108,
+     1.462
     ],
     [
-     "has",
-     6.542,
-     6.672
+     "clock",
+     1.474,
+     1.863
     ],
     [
-     "an",
-     6.684,
-     6.766
-    ],
-    [
-     "expiry",
-     6.778,
-     7.403
-    ]
-   ]
-  },
-  {
-   "id": "think",
-   "at": 17.0,
-   "real": 18.194,
-   "speech": 7.527,
-   "len": 7.75,
-   "head": 0.223,
-   "file": "think.mp3",
-   "file_start": 17.971,
-   "hash": "aecf3f862ecc",
-   "text": "One answer arrives in time. The next arrives late. A fast average cannot give that moment back.",
-   "source": "Chosen latency pattern, not a claim that every inference system lacks a timing bound.",
-   "words": [
-    [
-     "One",
-     0.0,
-     0.307
-    ],
-    [
-     "answer",
-     0.318,
-     0.672
-    ],
-    [
-     "arrives",
-     0.684,
-     1.108
-    ],
-    [
-     "in",
-     1.12,
-     1.226
-    ],
-    [
-     "time",
-     1.238,
-     1.71
-    ],
-    [
-     "The",
-     2.521,
-     2.662
-    ],
-    [
-     "next",
+     "Most",
      2.674,
-     2.981
+     3.063
     ],
     [
-     "arrives",
-     2.992,
-     3.405
+     "answers",
+     3.075,
+     3.441
     ],
     [
-     "late",
-     3.417,
-     3.783
-    ],
-    [
-     "A",
-     4.596,
-     4.726
-    ],
-    [
-     "fast",
-     4.738,
-     5.103
-    ],
-    [
-     "average",
-     5.115,
-     5.469
-    ],
-    [
-     "cannot",
-     5.481,
-     5.775
-    ],
-    [
-     "give",
-     5.787,
-     5.941
-    ],
-    [
-     "that",
-     5.952,
-     6.094
-    ],
-    [
-     "moment",
-     6.106,
-     6.424
+     "come",
+     3.452,
+     3.676
     ],
     [
      "back",
-     6.436,
-     6.801
+     3.688,
+     3.853
+    ],
+    [
+     "quickly",
+     3.865,
+     4.266
+    ],
+    [
+     "Some",
+     5.08,
+     5.374
+    ],
+    [
+     "take",
+     5.386,
+     5.599
+    ],
+    [
+     "far",
+     5.61,
+     5.823
+    ],
+    [
+     "longer",
+     5.834,
+     6.294
+    ],
+    [
+     "and",
+     6.53,
+     6.672
+    ],
+    [
+     "nobody",
+     6.684,
+     7.061
+    ],
+    [
+     "can",
+     7.073,
+     7.226
+    ],
+    [
+     "say",
+     7.238,
+     7.485
+    ],
+    [
+     "in",
+     7.497,
+     7.58
+    ],
+    [
+     "advance",
+     7.591,
+     7.992
+    ],
+    [
+     "which",
+     8.004,
+     8.393
     ]
    ]
   },
   {
    "id": "wait",
    "at": 26.0,
-   "real": 27.194,
-   "speech": 7.664,
-   "len": 7.9,
-   "head": 0.236,
+   "real": 28.066,
+   "speech": 9.255,
+   "len": 9.48,
+   "head": 0.225,
    "file": "wait.mp3",
-   "file_start": 26.958,
-   "hash": "a9e444053b48",
-   "text": "Make the controller wait for inference. Now one late answer holds up the work behind it. Watch the queue.",
-   "source": "Synthetic blocking baseline: unfinished work queues later controller jobs.",
+   "file_start": 27.841,
+   "hash": "534db8cd54c4",
+   "text": "Make the controller wait for the model, and one slow answer costs it a beat. Then the next. The delay spills into everything queued behind it.",
+   "source": "old lab film, scene 2: blocking inference delays later jobs too, red squares count missed deadlines",
    "words": [
     [
      "Make",
      0.0,
-     0.307
+     0.271
     ],
     [
      "the",
-     0.318,
-     0.401
+     0.283,
+     0.366
     ],
     [
      "controller",
-     0.413,
-     0.861
+     0.377,
+     0.802
     ],
     [
      "wait",
-     0.873,
-     1.156
+     0.814,
+     1.073
     ],
     [
      "for",
-     1.167,
-     1.309
+     1.085,
+     1.167
     ],
     [
-     "inference",
-     1.321,
-     1.899
+     "the",
+     1.179,
+     1.25
     ],
     [
-     "Now",
-     2.709,
-     3.016
+     "model",
+     1.262,
+     1.568
+    ],
+    [
+     "and",
+     1.781,
+     1.887
     ],
     [
      "one",
-     3.028,
-     3.275
+     1.899,
+     2.134
     ],
     [
-     "late",
-     3.287,
-     3.57
+     "slow",
+     2.146,
+     2.465
     ],
     [
      "answer",
-     3.582,
-     3.877
+     2.476,
+     2.783
     ],
     [
-     "holds",
-     3.889,
-     4.195
-    ],
-    [
-     "up",
-     4.207,
-     4.337
-    ],
-    [
-     "the",
-     4.349,
-     4.419
-    ],
-    [
-     "work",
-     4.431,
-     4.726
-    ],
-    [
-     "behind",
-     4.738,
-     5.15
+     "costs",
+     2.795,
+     3.137
     ],
     [
      "it",
-     5.162,
-     5.363
+     3.149,
+     3.231
     ],
     [
-     "Watch",
-     6.176,
-     6.459
+     "a",
+     3.243,
+     3.302
+    ],
+    [
+     "beat",
+     3.314,
+     3.679
+    ],
+    [
+     "Then",
+     4.49,
+     4.726
     ],
     [
      "the",
-     6.471,
-     6.554
+     4.738,
+     4.797
     ],
     [
-     "queue",
-     6.566,
-     6.943
+     "next",
+     4.809,
+     5.268
+    ],
+    [
+     "The",
+     6.082,
+     6.235
+    ],
+    [
+     "delay",
+     6.247,
+     6.53
+    ],
+    [
+     "spills",
+     6.542,
+     6.955
+    ],
+    [
+     "into",
+     6.966,
+     7.202
+    ],
+    [
+     "everything",
+     7.214,
+     7.58
+    ],
+    [
+     "queued",
+     7.591,
+     7.898
+    ],
+    [
+     "behind",
+     7.91,
+     8.323
+    ],
+    [
+     "it",
+     8.334,
+     8.535
     ]
    ]
   },
   {
    "id": "split",
    "at": 36.0,
-   "real": 37.194,
-   "speech": 8.721,
-   "len": 8.95,
-   "head": 0.229,
+   "real": 38.066,
+   "speech": 9.1,
+   "len": 9.31,
+   "head": 0.21,
    "file": "split.mp3",
-   "file_start": 36.965,
-   "hash": "8ba4c0898e5d",
-   "text": "Let the AI propose in another worker. A bounded handoff lets this controller keep moving. We have removed the waiting dependency.",
-   "source": "Synthetic async design: fixed controller and admission costs, bounded handoff and isolated worker assumed.",
+   "file_start": 37.856,
+   "hash": "e771c0245450",
+   "text": "So take the model out of the waiting path. The controller keeps its beat whatever happens. The model works beside it and leaves its newest plan.",
+   "source": "old lab film, scene 2: a separate worker proposes updates and the controller never waits for it",
    "words": [
     [
-     "Let",
+     "So",
      0.0,
-     0.224
+     0.189
+    ],
+    [
+     "take",
+     0.2,
+     0.401
     ],
     [
      "the",
-     0.236,
-     0.366
+     0.413,
+     0.472
     ],
     [
-     "AI",
-     0.377,
-     0.613
+     "model",
+     0.484,
+     0.755
     ],
     [
-     "propose",
-     0.625,
-     1.05
+     "out",
+     0.767,
+     0.92
     ],
     [
-     "in",
-     1.061,
-     1.144
-    ],
-    [
-     "another",
-     1.156,
-     1.403
-    ],
-    [
-     "worker",
-     1.415,
-     1.851
-    ],
-    [
-     "A",
-     2.662,
-     2.804
-    ],
-    [
-     "bounded",
-     2.816,
-     3.181
-    ],
-    [
-     "handoff",
-     3.193,
-     3.606
-    ],
-    [
-     "lets",
-     3.617,
-     3.877
-    ],
-    [
-     "this",
-     3.889,
-     4.042
-    ],
-    [
-     "controller",
-     4.054,
-     4.537
-    ],
-    [
-     "keep",
-     4.549,
-     4.785
-    ],
-    [
-     "moving",
-     4.797,
-     5.268
-    ],
-    [
-     "We",
-     6.082,
-     6.247
-    ],
-    [
-     "have",
-     6.259,
-     6.424
-    ],
-    [
-     "removed",
-     6.436,
-     6.813
+     "of",
+     0.932,
+     0.991
     ],
     [
      "the",
-     6.825,
-     6.896
+     1.002,
+     1.061
     ],
     [
      "waiting",
-     6.908,
-     7.285
+     1.073,
+     1.439
     ],
     [
-     "dependency",
-     7.297,
-     8.016
+     "path",
+     1.45,
+     1.922
+    ],
+    [
+     "The",
+     2.733,
+     2.875
+    ],
+    [
+     "controller",
+     2.886,
+     3.334
+    ],
+    [
+     "keeps",
+     3.346,
+     3.641
+    ],
+    [
+     "its",
+     3.653,
+     3.783
+    ],
+    [
+     "beat",
+     3.794,
+     4.03
+    ],
+    [
+     "whatever",
+     4.042,
+     4.396
+    ],
+    [
+     "happens",
+     4.408,
+     4.985
+    ],
+    [
+     "The",
+     5.799,
+     5.941
+    ],
+    [
+     "model",
+     5.952,
+     6.247
+    ],
+    [
+     "works",
+     6.259,
+     6.518
+    ],
+    [
+     "beside",
+     6.53,
+     6.931
+    ],
+    [
+     "it",
+     6.943,
+     7.049
+    ],
+    [
+     "and",
+     7.061,
+     7.167
+    ],
+    [
+     "leaves",
+     7.179,
+     7.474
+    ],
+    [
+     "its",
+     7.485,
+     7.615
+    ],
+    [
+     "newest",
+     7.627,
+     7.969
+    ],
+    [
+     "plan",
+     7.981,
+     8.37
     ]
    ]
   },
   {
    "id": "stale",
    "at": 46.0,
-   "real": 47.194,
-   "speech": 7.618,
-   "len": 7.85,
-   "head": 0.232,
+   "real": 48.066,
+   "speech": 7.465,
+   "len": 7.7,
+   "head": 0.235,
    "file": "stale.mp3",
-   "file_start": 46.962,
-   "hash": "84d407953754",
-   "text": "But this proposal remembers a world that has moved on. Its arrival is new. Its observation is old.",
-   "source": "Observation age and context validity differ from result arrival time.",
+   "file_start": 47.831,
+   "hash": "92eafe72c8d0",
+   "text": "That changes how things fail. Every beat is now on time, but a plan can describe a world that has already moved on.",
+   "source": "old lab film, scene 3: the loop may stay on time while using an answer about a world that has changed",
    "words": [
     [
-     "But",
+     "That",
      0.0,
-     0.177
+     0.224
     ],
     [
-     "this",
-     0.189,
-     0.366
+     "changes",
+     0.236,
+     0.637
     ],
     [
-     "proposal",
-     0.377,
-     0.849
+     "how",
+     0.649,
+     0.802
     ],
     [
-     "remembers",
-     0.861,
-     1.238
+     "things",
+     0.814,
+     1.144
     ],
     [
-     "a",
-     1.25,
-     1.297
+     "fail",
+     1.156,
+     1.627
     ],
     [
-     "world",
-     1.309,
-     1.639
+     "Every",
+     2.438,
+     2.721
     ],
     [
-     "that",
-     1.651,
-     1.757
+     "beat",
+     2.733,
+     2.957
     ],
     [
-     "has",
-     1.769,
-     1.946
+     "is",
+     2.969,
+     3.099
     ],
     [
-     "moved",
-     1.958,
-     2.347
+     "now",
+     3.11,
+     3.334
     ],
     [
      "on",
-     2.358,
-     2.63
+     3.346,
+     3.523
     ],
     [
-     "Its",
-     3.441,
-     3.653
+     "time",
+     3.535,
+     3.9
     ],
     [
-     "arrival",
-     3.665,
-     4.172
+     "but",
+     4.018,
+     4.136
     ],
     [
-     "is",
-     4.184,
-     4.301
+     "a",
+     4.148,
+     4.207
     ],
     [
-     "new",
-     4.313,
-     4.714
+     "plan",
+     4.219,
+     4.514
     ],
     [
-     "Its",
-     5.528,
-     5.752
+     "can",
+     4.525,
+     4.643
     ],
     [
-     "observation",
-     5.764,
-     6.33
+     "describe",
+     4.655,
+     5.044
     ],
     [
-     "is",
-     6.341,
-     6.459
+     "a",
+     5.056,
+     5.103
     ],
     [
-     "old",
-     6.471,
-     6.896
+     "world",
+     5.115,
+     5.433
+    ],
+    [
+     "that",
+     5.445,
+     5.551
+    ],
+    [
+     "has",
+     5.563,
+     5.705
+    ],
+    [
+     "already",
+     5.716,
+     6.106
+    ],
+    [
+     "moved",
+     6.117,
+     6.471
+    ],
+    [
+     "on",
+     6.483,
+     6.754
     ]
    ]
   },
   {
    "id": "contract",
    "at": 55.0,
-   "real": 56.194,
-   "speech": 10.289,
-   "len": 10.51,
-   "head": 0.221,
+   "real": 57.066,
+   "speech": 7.892,
+   "len": 8.11,
+   "head": 0.218,
    "file": "contract.mp3",
-   "file_start": 55.973,
-   "hash": "f933affb0f17",
-   "text": "The proposal cannot grant itself permission. Check when its observation was made, and whether the context still holds. Otherwise, use the baseline controller.",
-   "source": "Admission is controlled by the execution policy in this design. Observation-age and context checks are necessary conditions here, not evidence of action safety.",
+   "file_start": 56.848,
+   "hash": "6000d1a2c3e4",
+   "text": "So every plan carries the moment it was made. If it is too old, the controller sets it aside and falls back to a safe default.",
+   "source": "old lab film, scene 3: observation timestamp checked before use, fallback when a proposal expires",
    "words": [
     [
-     "The",
+     "So",
      0.0,
-     0.141
+     0.248
     ],
     [
-     "proposal",
-     0.153,
-     0.637
+     "every",
+     0.259,
+     0.46
     ],
     [
-     "cannot",
-     0.649,
-     0.932
+     "plan",
+     0.472,
+     0.778
     ],
     [
-     "grant",
-     0.943,
-     1.238
+     "carries",
+     0.79,
+     1.12
     ],
     [
-     "itself",
-     1.25,
-     1.616
+     "the",
+     1.132,
+     1.215
     ],
     [
-     "permission",
-     1.627,
-     2.111
+     "moment",
+     1.226,
+     1.58
     ],
     [
-     "Check",
-     2.922,
-     3.205
-    ],
-    [
-     "when",
-     3.217,
-     3.358
-    ],
-    [
-     "its",
-     3.37,
-     3.476
-    ],
-    [
-     "observation",
-     3.488,
-     4.054
+     "it",
+     1.592,
+     1.686
     ],
     [
      "was",
-     4.066,
-     4.219
+     1.698,
+     1.84
     ],
     [
      "made",
-     4.231,
-     4.584
+     1.851,
+     2.264
     ],
     [
-     "and",
-     4.797,
-     4.915
+     "If",
+     3.075,
+     3.264
     ],
     [
-     "whether",
-     4.926,
-     5.15
+     "it",
+     3.275,
+     3.37
     ],
     [
-     "the",
-     5.162,
-     5.233
+     "is",
+     3.382,
+     3.488
     ],
     [
-     "context",
-     5.245,
-     5.716
+     "too",
+     3.5,
+     3.7
     ],
     [
-     "still",
-     5.728,
-     6.011
-    ],
-    [
-     "holds",
-     6.023,
-     6.554
-    ],
-    [
-     "Otherwise",
-     7.367,
-     8.004
-    ],
-    [
-     "use",
-     8.099,
-     8.299
+     "old",
+     3.712,
+     3.948
     ],
     [
      "the",
-     8.311,
-     8.405
-    ],
-    [
-     "baseline",
-     8.417,
-     8.912
+     4.125,
+     4.195
     ],
     [
      "controller",
-     8.924,
-     9.561
+     4.207,
+     4.643
+    ],
+    [
+     "sets",
+     4.655,
+     4.915
+    ],
+    [
+     "it",
+     4.926,
+     5.009
+    ],
+    [
+     "aside",
+     5.021,
+     5.457
+    ],
+    [
+     "and",
+     5.469,
+     5.587
+    ],
+    [
+     "falls",
+     5.599,
+     5.917
+    ],
+    [
+     "back",
+     5.929,
+     6.117
+    ],
+    [
+     "to",
+     6.129,
+     6.247
+    ],
+    [
+     "a",
+     6.259,
+     6.306
+    ],
+    [
+     "safe",
+     6.318,
+     6.589
+    ],
+    [
+     "default",
+     6.601,
+     7.155
     ]
    ]
   },
   {
    "id": "limits",
    "at": 65.0,
-   "real": 66.883,
-   "speech": 8.565,
-   "len": 8.78,
-   "head": 0.215,
+   "real": 67.066,
+   "speech": 7.243,
+   "len": 7.46,
+   "head": 0.217,
    "file": "limits.mp3",
-   "file_start": 66.668,
-   "hash": "0922b16d3779",
-   "text": "Permission is conditional. Passing those checks does not make an action safe. Action limits and the baseline need their own evidence.",
-   "source": "Architecture proposal: timing and freshness do not prove action safety; no plant is simulated.",
+   "file_start": 66.849,
+   "hash": "961fd4773855",
+   "text": "Age is only one check. A fresh plan can still be wrong, so the limits on what the machine may do keep their own guard.",
+   "source": "old lab film, scene 3: freshness is only one check; validate action limits separately",
    "words": [
     [
-     "Permission",
+     "Age",
      0.0,
-     0.46
+     0.248
     ],
     [
      "is",
-     0.472,
-     0.613
+     0.259,
+     0.342
     ],
     [
-     "conditional",
-     0.625,
-     1.285
+     "only",
+     0.354,
+     0.578
     ],
     [
-     "Passing",
-     2.096,
-     2.521
+     "one",
+     0.59,
+     0.837
     ],
     [
-     "those",
-     2.533,
-     2.78
+     "check",
+     0.849,
+     1.238
     ],
     [
-     "checks",
-     2.792,
-     3.075
+     "A",
+     2.049,
+     2.167
     ],
     [
-     "does",
-     3.087,
-     3.24
+     "fresh",
+     2.179,
+     2.462
     ],
     [
-     "not",
-     3.252,
-     3.441
+     "plan",
+     2.474,
+     2.745
     ],
     [
-     "make",
-     3.452,
-     3.653
+     "can",
+     2.757,
+     2.922
     ],
     [
-     "an",
-     3.665,
-     3.735
+     "still",
+     2.934,
+     3.205
     ],
     [
-     "action",
-     3.747,
-     4.054
+     "be",
+     3.217,
+     3.287
     ],
     [
-     "safe",
-     4.066,
-     4.514
+     "wrong",
+     3.299,
+     3.641
     ],
     [
-     "Action",
-     5.327,
-     5.728
-    ],
-    [
-     "limits",
-     5.74,
-     6.023
-    ],
-    [
-     "and",
-     6.035,
-     6.117
+     "so",
+     3.842,
+     3.924
     ],
     [
      "the",
-     6.129,
-     6.212
+     3.936,
+     4.018
     ],
     [
-     "baseline",
-     6.224,
-     6.754
+     "limits",
+     4.03,
+     4.337
     ],
     [
-     "need",
-     6.766,
-     6.966
+     "on",
+     4.349,
+     4.478
+    ],
+    [
+     "what",
+     4.49,
+     4.62
+    ],
+    [
+     "the",
+     4.632,
+     4.702
+    ],
+    [
+     "machine",
+     4.714,
+     5.044
+    ],
+    [
+     "may",
+     5.056,
+     5.209
+    ],
+    [
+     "do",
+     5.221,
+     5.41
+    ],
+    [
+     "keep",
+     5.422,
+     5.681
     ],
     [
      "their",
-     6.978,
-     7.096
+     5.693,
+     5.811
     ],
     [
      "own",
-     7.108,
-     7.344
+     5.823,
+     6.035
     ],
     [
-     "evidence",
-     7.356,
-     7.851
+     "guard",
+     6.047,
+     6.507
     ]
    ]
   },
   {
    "id": "share",
    "at": 74.5,
-   "real": 76.383,
-   "speech": 14.663,
-   "len": 14.88,
-   "head": 0.217,
+   "real": 76.566,
+   "speech": 10.438,
+   "len": 10.66,
+   "head": 0.222,
    "file": "share.mp3",
-   "file_start": 76.166,
-   "hash": "ff8c62a35772",
-   "text": "Two workers now. Pull back and follow the dependency underneath. They still share one resource budget. Inference can stall control through that shared resource. Isolation and worst-case timing need separate evidence.",
-   "source": "The authored shared-resource counterexample. Separate inference removes a waiting dependency under bounded handoff assumptions; it does not establish resource isolation or a worst-case execution bound.",
+   "file_start": 76.344,
+   "hash": "26714a31d084",
+   "text": "One trap remains. If the model and the controller share a computer, a busy model can still steal the controller's time. Keep them apart, and test it under load.",
+   "source": "old lab film, scene 4 and DeadlineModel: async misses are zero when isolated and appear only under shared stalls",
    "words": [
     [
-     "Two",
+     "One",
      0.0,
-     0.236
+     0.295
     ],
     [
-     "workers",
-     0.248,
-     0.684
+     "trap",
+     0.307,
+     0.59
     ],
     [
-     "now",
-     0.696,
-     1.073
+     "remains",
+     0.601,
+     1.226
     ],
     [
-     "Pull",
-     1.884,
-     2.12
-    ],
-    [
-     "back",
-     2.132,
-     2.332
-    ],
-    [
-     "and",
-     2.344,
-     2.45
-    ],
-    [
-     "follow",
-     2.462,
-     2.709
+     "If",
+     2.037,
+     2.214
     ],
     [
      "the",
-     2.721,
-     2.804
+     2.226,
+     2.308
     ],
     [
-     "dependency",
-     2.816,
-     3.452
-    ],
-    [
-     "underneath",
-     3.464,
-     4.101
-    ],
-    [
-     "They",
-     4.915,
-     5.103
-    ],
-    [
-     "still",
-     5.115,
-     5.41
-    ],
-    [
-     "share",
-     5.422,
-     5.646
-    ],
-    [
-     "one",
-     5.658,
-     5.905
-    ],
-    [
-     "resource",
-     5.917,
-     6.283
-    ],
-    [
-     "budget",
-     6.294,
-     6.778
-    ],
-    [
-     "Inference",
-     7.591,
-     8.051
-    ],
-    [
-     "can",
-     8.063,
-     8.24
-    ],
-    [
-     "stall",
-     8.252,
-     8.558
-    ],
-    [
-     "control",
-     8.57,
-     9.018
-    ],
-    [
-     "through",
-     9.03,
-     9.254
-    ],
-    [
-     "that",
-     9.266,
-     9.419
-    ],
-    [
-     "shared",
-     9.431,
-     9.714
-    ],
-    [
-     "resource",
-     9.726,
-     10.316
-    ],
-    [
-     "Isolation",
-     11.129,
-     11.778
+     "model",
+     2.32,
+     2.58
     ],
     [
      "and",
-     11.79,
-     11.896
+     2.592,
+     2.662
     ],
     [
-     "worst-case",
-     11.908,
-     12.438
+     "the",
+     2.674,
+     2.733
     ],
     [
-     "timing",
-     12.45,
-     12.816
+     "controller",
+     2.745,
+     3.216
     ],
     [
-     "need",
-     12.827,
-     13.051
+     "share",
+     3.228,
+     3.429
     ],
     [
-     "separate",
-     13.063,
-     13.429
+     "a",
+     3.441,
+     3.535
     ],
     [
-     "evidence",
-     13.441,
-     13.936
+     "computer",
+     3.547,
+     4.042
+    ],
+    [
+     "a",
+     4.231,
+     4.29
+    ],
+    [
+     "busy",
+     4.301,
+     4.537
+    ],
+    [
+     "model",
+     4.549,
+     4.808
+    ],
+    [
+     "can",
+     4.82,
+     4.962
+    ],
+    [
+     "still",
+     4.974,
+     5.268
+    ],
+    [
+     "steal",
+     5.28,
+     5.575
+    ],
+    [
+     "the",
+     5.587,
+     5.658
+    ],
+    [
+     "controller's",
+     5.669,
+     6.212
+    ],
+    [
+     "time",
+     6.224,
+     6.648
+    ],
+    [
+     "Keep",
+     7.462,
+     7.709
+    ],
+    [
+     "them",
+     7.721,
+     7.839
+    ],
+    [
+     "apart",
+     7.851,
+     8.346
+    ],
+    [
+     "and",
+     8.547,
+     8.641
+    ],
+    [
+     "test",
+     8.653,
+     8.959
+    ],
+    [
+     "it",
+     8.971,
+     9.066
+    ],
+    [
+     "under",
+     9.077,
+     9.254
+    ],
+    [
+     "load",
+     9.266,
+     9.714
     ]
    ]
   },
   {
    "id": "close",
    "at": 86.0,
-   "real": 91.446,
-   "speech": 10.454,
-   "len": 10.66,
-   "head": 0.206,
+   "real": 88.066,
+   "speech": 6.317,
+   "len": 6.55,
+   "head": 0.233,
    "file": "close.mp3",
-   "file_start": 91.24,
-   "hash": "f24b0aca3c0d",
-   "text": "This is my synthetic architecture experiment. Timing, useful AI input and safe action are different tests. Intelligence needs an execution contract.",
-   "source": "Dr. Ozgur Ural's open architecture experiment. Timing is simulated; task success and proposal usefulness are not measured.",
+   "file_start": 87.833,
+   "hash": "76d0ea9c4044",
+   "text": "Better AI will keep arriving. The question is whether a system can take it in without losing its beat.",
+   "source": "old lab film, scene 5 closing line: adopt better intelligence without losing the timing contract",
    "words": [
     [
-     "This",
+     "Better",
      0.0,
-     0.236
-    ],
-    [
-     "is",
-     0.248,
-     0.354
-    ],
-    [
-     "my",
-     0.366,
-     0.519
-    ],
-    [
-     "synthetic",
-     0.531,
-     1.097
-    ],
-    [
-     "architecture",
-     1.108,
-     1.675
-    ],
-    [
-     "experiment",
-     1.686,
-     2.382
-    ],
-    [
-     "Timing",
-     3.193,
-     3.617
-    ],
-    [
-     "useful",
-     3.806,
-     4.172
+     0.318
     ],
     [
      "AI",
-     4.184,
-     4.467
+     0.33,
+     0.601
     ],
     [
-     "input",
-     4.478,
-     4.797
+     "will",
+     0.613,
+     0.755
     ],
     [
-     "and",
-     4.809,
-     4.903
+     "keep",
+     0.767,
+     0.991
     ],
     [
-     "safe",
-     4.915,
-     5.209
+     "arriving",
+     1.002,
+     1.58
     ],
     [
-     "action",
-     5.221,
-     5.54
+     "The",
+     2.391,
+     2.544
     ],
     [
-     "are",
-     5.551,
-     5.622
+     "question",
+     2.556,
+     2.945
     ],
     [
-     "different",
-     5.634,
-     6.023
+     "is",
+     2.957,
+     3.087
     ],
     [
-     "tests",
-     6.035,
-     6.577
+     "whether",
+     3.099,
+     3.37
     ],
     [
-     "Intelligence",
-     7.391,
-     8.016
+     "a",
+     3.382,
+     3.429
     ],
     [
-     "needs",
-     8.028,
-     8.311
+     "system",
+     3.441,
+     3.794
     ],
     [
-     "an",
-     8.323,
-     8.429
+     "can",
+     3.806,
+     3.948
     ],
     [
-     "execution",
-     8.441,
-     9.03
+     "take",
+     3.959,
+     4.183
     ],
     [
-     "contract",
-     9.042,
-     9.702
+     "it",
+     4.195,
+     4.278
+    ],
+    [
+     "in",
+     4.29,
+     4.396
+    ],
+    [
+     "without",
+     4.408,
+     4.738
+    ],
+    [
+     "losing",
+     4.75,
+     5.08
+    ],
+    [
+     "its",
+     5.091,
+     5.198
+    ],
+    [
+     "beat",
+     5.209,
+     5.61
     ]
    ]
   },
   {
    "id": "card",
    "at": 94.0,
-   "real": 102.3,
+   "real": 96.066,
    "speech": 0.0,
    "len": 0.0,
    "head": 0.0,
    "file": "",
-   "file_start": 102.3,
+   "file_start": 96.066,
    "hash": "",
    "text": "",
    "source": "",

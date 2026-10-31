@@ -2,7 +2,7 @@
 layout: cinema
 permalink: /films/deadline/
 title: "AI meets the deadline"
-description: "A physical AI architecture experiment: a plan needs a valid window, a relevant observation and authority to act. An original mobile film and synthetic architecture experiment. Open research direction, not yet published."
+description: "An AI can plan a robot's next move. What if the answer arrives after it was needed? A narrated film on keeping an AI planner out of a real-time controller's waiting path. An open research direction of the author, not yet published."
 film_module: deadline
 noindex: true
 sitemap: false

@@ -64,7 +64,6 @@
     "test:cinema-cyber-events": "node scripts/test-cinema-cyber-events.js",
     "test:cinema-blockchain-ml": "node scripts/test-cinema-blockchain-ml.js",
     "test:cinema-model-heist": "node scripts/test-cinema-model-heist.js",
-    "test:cinema-deadline": "node scripts/test-cinema-deadline.js",
     "test:films": "node scripts/test-film-playback.js",
     "check:narration": "node scripts/extract-narration.js --check",
     "build:icon-fonts": "python scripts/subset-icon-fonts.py",

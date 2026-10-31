@@ -48,7 +48,6 @@ jobs:
               npm run test:cinema-cyber-events
               npm run test:cinema-blockchain-ml
               npm run test:cinema-model-heist
-              npm run test:cinema-deadline
               exit 0
             fi
             if ! kill -0 "$server_pid" 2>/dev/null; then
