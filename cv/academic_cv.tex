@@ -1,0 +1,163 @@
+\documentclass[10pt,a4paper]{article}
+
+% Academic CV for faculty applications in Turkey (Bilkent, IYTE).
+% Reorganises resume.tex and the _publications/ records; it adds no facts
+% beyond the Google Scholar figures the owner supplied on 2026-11-01.
+% Not built by CI and not linked from the site: build it locally with
+%   latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=<dir> academic_cv.tex
+
+\usepackage[a4paper,margin=0.6in]{geometry}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{mathpazo}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
+\usepackage{xcolor}
+
+% Same reasons as resume.tex: no hyphenation, so an ATS or a search finds
+% whole words.
+\hyphenpenalty=10000
+\emergencystretch=2em
+
+\setlist[itemize]{itemsep=3pt, parsep=0pt, topsep=3pt, leftmargin=*}
+\setlist[enumerate]{itemsep=4pt, parsep=0pt, topsep=3pt, leftmargin=*, before=\raggedright}
+\definecolor{light}{gray}{0.55}
+\newcommand{\spacedhrule}[2]{\vspace{#1}\hrule\vspace{#2}}
+\newcommand{\cvsection}[1]{\par\needspace{4\baselineskip}\vspace{0.5em}{\large\textbf{#1}}\par\vspace{0.1em}\hrule\vspace{0.35em}}
+\newcommand{\cvsub}[1]{\par\needspace{3\baselineskip}\vspace{0.2em}\textit{#1}\par}
+\long\def\entry#1#2#3#4{\par\needspace{4\baselineskip}\noindent\textbf{#1}\hfill{#2}\par\nopagebreak\noindent{#3}\par\nopagebreak#4\par\vspace{0.25em}}
+
+\begin{document}
+\sloppy
+\renewcommand\labelitemi{\textbullet}
+
+\noindent{\LARGE\textbf{Ozgur Ural, Ph.D.}}\hfill{\small\color{light}Curriculum Vitae, \today}\par
+\vspace{0.3em}
+\noindent Leiden, Netherlands \quad\textbullet\quad \href{mailto:drozgurural@gmail.com}{drozgurural@gmail.com} \quad\textbullet\quad +31 6 2903 0434\par
+\noindent \href{https://ozgurural.github.io/}{ozgurural.github.io} \quad\textbullet\quad \href{https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate}{Google Scholar} \quad\textbullet\quad ORCID \href{https://orcid.org/0000-0003-1329-4303}{0000-0003-1329-4303} \quad\textbullet\quad \href{https://linkedin.com/in/uralozgur}{linkedin.com/in/uralozgur}\par
+
+\spacedhrule{0.4em}{0.4em}
+
+Machine learning researcher working on \textbf{trustworthy AI for mission-critical systems}: evidence of how a model was trained and who owns it, robustness against attackers, and predictable timing when a model runs inside a real-time loop. Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University (2025), with a machine-learning dissertation on Proof-of-Learning and model watermarking and three first-author articles in IEEE Access. Over twelve years of industry experience building production systems in cybersecurity, defense and flight simulation, currently at Avion Full Flight Simulators, leading the company's enterprise AI strategy.
+
+\cvsection{RESEARCH INTERESTS}
+\begin{itemize}
+  \item Trustworthy and verifiable machine learning: Proof-of-Learning, model watermarking, model provenance and ownership verification
+  \item Security of machine learning: spoofing attacks on training records, adversarial robustness
+  \item Blockchain-enhanced machine learning
+  \item Machine learning in real-time and safety-critical systems
+  \item Natural language processing for cyber security
+\end{itemize}
+
+\cvsection{EDUCATION}
+
+\entry{Ph.D. in Electrical Engineering and Computer Science}{Aug 2021 -- Aug 2025}{Embry-Riddle Aeronautical University, Daytona Beach, Florida, USA}{%
+\begin{itemize}
+  \item Dissertation: \href{https://commons.erau.edu/edt/905/}{Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking}.
+  \item Advisor: Dr. Kenji Yoshigoe (Committee Chair); committee included IEEE Fellow Dr. Houbing Song.
+\end{itemize}}
+
+\entry{M.Sc. in Cyber Security}{2015 -- 2019}{Middle East Technical University (METU), Ankara, Turkey}{%
+\begin{itemize}
+  \item Thesis: \href{https://open.metu.edu.tr/handle/11511/43747}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data}.
+  \item Advisor: Prof. Cengiz Acart\"urk.
+\end{itemize}}
+
+\entry{B.Sc. in Computer Engineering}{2010 -- 2014}{Middle East Technical University (METU), Ankara, Turkey}{%
+\begin{itemize}
+  \item English-medium programme; entered among roughly the top 1,000 of more than 2 million national candidates.
+\end{itemize}}
+
+\entry{Bachelor of Business Administration}{2012 -- 2017}{Anadolu University, Eskisehir, Turkey}{}
+
+\cvsection{PUBLICATIONS}
+
+\noindent \href{https://scholar.google.com/citations?user=lYx8fqsAAAAJ&hl=en&sortby=pubdate}{Google Scholar} (November 2026): 51 citations, h-index 4.
+
+\cvsub{Journal Articles}
+\begin{enumerate}
+  \item[{[J3]}] \textbf{Ural, O.} and Yoshigoe, K. (2025). \href{https://doi.org/10.1109/ACCESS.2025.3642198}{SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks}. \textit{IEEE Access}, vol. 13, pp. 213067--213091. DOI: 10.1109/ACCESS.2025.3642198. \textit{Research article.}
+  \item[{[J2]}] \textbf{Ural, O.} and Yoshigoe, K. (2024). \href{https://doi.org/10.1109/ACCESS.2024.3489776}{Enhancing Security of Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model Watermarking}. \textit{IEEE Access}, vol. 12, pp. 169567--169591. DOI: 10.1109/ACCESS.2024.3489776. \textit{Research article.}
+  \item[{[J1]}] \textbf{Ural, O.} and Yoshigoe, K. (2023). \href{https://doi.org/10.1109/ACCESS.2023.3344669}{Survey on Blockchain-Enhanced Machine Learning}. \textit{IEEE Access}, vol. 11, pp. 145331--145362. DOI: 10.1109/ACCESS.2023.3344669. \textit{Survey article.}
+\end{enumerate}
+\noindent{\small IEEE Access: 2025 Journal Impact Factor 4.2 (JCR 2026).}
+
+\cvsub{Conference Papers}
+\begin{enumerate}
+  \item[{[C2]}] \textbf{Ural, O.} and Acart\"urk, C. (2021). \href{https://doi.org/10.5220/0010201600660076}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Newspaper Data}. In \textit{Proceedings of the 7th International Conference on Information Systems Security and Privacy (ICISSP 2021)}, pp. 66--76. DOI: 10.5220/0010201600660076.
+  \item[{[C1]}] \textbf{Ural, O.} (2014). \href{https://senior.ceng.metu.edu.tr/2014/clover/}{Clover: Autonomous Cargo and Mail Delivery}. \textit{Turkish Autonomous Robots Conference (TORK 2014)}, Ankara, Turkey.
+\end{enumerate}
+
+\cvsub{Theses}
+\begin{enumerate}
+  \item[{[T2]}] \textbf{Ural, O.} (2025). \href{https://commons.erau.edu/edt/905/}{Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking}. Doctoral dissertation, Embry-Riddle Aeronautical University.
+  \item[{[T1]}] \textbf{Ural, O.} (2019). \href{https://open.metu.edu.tr/handle/11511/43747}{Automatic Detection of Cyber Security Events from Turkish Twitter Stream and Turkish Newspaper Data}. Master's thesis, Middle East Technical University.
+\end{enumerate}
+
+\cvsub{Technical Reports (not peer reviewed)}
+\begin{enumerate}
+  \item[{[R1]}] \textbf{Ural, O.} and Erdur, E. (2016). \href{https://doi.org/10.13140/RG.2.2.24058.08649}{Secure Proxy on Cloud}. Technical report. DOI: 10.13140/RG.2.2.24058.08649.
+\end{enumerate}
+
+\noindent Narrated explainers of this research: \href{https://ozgurural.github.io/lab/}{ozgurural.github.io/lab}.
+
+\cvsection{RESEARCH EXPERIENCE}
+
+\entry{Graduate Research Assistant}{Sep 2021 -- Dec 2024, May 2025 -- Oct 2025}{Embry-Riddle Aeronautical University, Daytona Beach, Florida, USA. Advisor: Dr. Kenji Yoshigoe}{%
+\begin{itemize}
+  \item Original research on verifiable, trustworthy machine learning across Proof-of-Learning, model watermarking and adversarial robustness, published as three first-author IEEE Access articles [J1--J3] and the doctoral dissertation [T2].
+\end{itemize}}
+
+\entry{M.Sc. Thesis Research}{2015 -- 2019}{Middle East Technical University, Ankara, Turkey. Advisor: Prof. Cengiz Acart\"urk}{%
+\begin{itemize}
+  \item Automatic detection of cyber security events from Turkish Twitter and newspaper data [T1], published at ICISSP 2021 [C2].
+\end{itemize}}
+
+\cvsection{PROFESSIONAL SERVICE}
+\begin{itemize}
+  \item \textbf{Program Committee (2026):} NLPAICS 2026, 2nd Workshop on NLP Applied to Information and Cyber Security, Alicante.
+  \item \textbf{Reviewer:} IEEE Access and other journals; IEEE and ACM conferences (security, machine learning, distributed systems).
+\end{itemize}
+
+\cvsection{AWARDS}
+\begin{itemize}
+  \item First Prize, TUBITAK national project competition (2014).
+  \item Second Prize, METU Computer Engineering graduation Demo Day (2014).
+\end{itemize}
+
+\cvsection{INDUSTRY EXPERIENCE}
+
+\entry{Senior Software Engineer}{Oct 2023 -- Present}{Avion Full Flight Simulators, Nieuw-Vennep, Netherlands}{%
+\begin{itemize}
+  \item Lead Avion's enterprise AI strategy: authored the AI adoption roadmap and a three-tier architecture spanning air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge deployment.
+  \item Designed the strategy's proposed AI workflows, each keeping a person accountable for the outcome; built engineering-knowledge retrieval prototypes and the strategy portal end to end.
+  \item Developed real-time simulator software in C, C++ and Scala, including a low-latency telemetry pipeline sustaining approximately 50 GB/s with batching and bounded-queue backpressure.
+\end{itemize}}
+
+\entry{Software Team Lead}{Nov 2020 -- Aug 2021}{Havelsan, Ankara, Turkey}{%
+\begin{itemize}
+  \item Led a team of 14 engineers (developers, QA, DevOps, support) delivering the Havelsan DLP endpoint Data Leakage Prevention product; developed core endpoint-agent features in C, C++, Java and Go.
+\end{itemize}}
+
+\entry{Expert Software Engineer}{Feb 2019 -- Nov 2020}{STM Defence Technologies, Ankara, Turkey}{%
+\begin{itemize}
+  \item Developed mission-control and ground-control components for the Kargu and Togan autonomous UAVs in C++11 with Boost and Qt, under hard-real-time, safety-critical constraints; designed Power-On and Continuous Built-In Tests.
+\end{itemize}}
+
+\entry{Expert Software Engineer}{Jul 2014 -- Feb 2019}{Comodo Cybersecurity, Ankara, Turkey}{%
+\begin{itemize}
+  \item Led design and development of Windows services and applications in C++17 with Boost and WinAPI (Comodo Dome Secure Web Gateway, Comodo Patch Manager, Comodo Dragon browser); established unit testing, code review and Jenkins CI/CD.
+\end{itemize}}
+
+\cvsection{TECHNICAL SKILLS}
+\begin{itemize}
+  \item \textbf{Machine learning:} PyTorch, TensorFlow, scikit-learn, deep learning, LLMs, retrieval-augmented generation, federated learning; model watermarking, Proof-of-Learning, adversarial robustness
+  \item \textbf{Languages:} C, C++, Scala, Python, Go, Java, TypeScript, JavaScript
+  \item \textbf{Systems:} real-time and distributed systems, multithreading, low-latency pipelines, Linux, gRPC, Protobuf, Redis, PostgreSQL, Docker, GitLab CI/CD, Jenkins, Git
+\end{itemize}
+
+\end{document}
