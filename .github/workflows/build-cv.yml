@@ -1,7 +1,8 @@
 name: Build CV PDF
 
-# Compiles cv/resume.tex and publishes it as the site's
-# Ozgur_Ural_PhD_Resume.pdf on every change to the LaTeX source.
+# Compiles cv/resume.tex and cv/academic_cv.tex and publishes them as the
+# site's Ozgur_Ural_PhD_Resume.pdf and Ozgur_Ural_Academic_CV.pdf on every
+# change to the LaTeX source.
 # The path filter is scoped to cv/**, so the resulting PDF commit
 # (at repo root) does not retrigger this workflow — no build loop.
 
@@ -33,13 +34,17 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           working_directory: cv
-          root_file: resume.tex
+          root_file: |
+            resume.tex
+            academic_cv.tex
 
       - name: Publish PDF to site root
-        run: mv cv/resume.pdf Ozgur_Ural_PhD_Resume.pdf
+        run: |
+          mv cv/resume.pdf Ozgur_Ural_PhD_Resume.pdf
+          mv cv/academic_cv.pdf Ozgur_Ural_Academic_CV.pdf
 
       - name: Commit rebuilt PDF
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore(cv): rebuild Ozgur_Ural_PhD_Resume.pdf [skip ci]'
-          file_pattern: Ozgur_Ural_PhD_Resume.pdf
+          commit_message: 'chore(cv): rebuild CV PDFs [skip ci]'
+          file_pattern: Ozgur_Ural_PhD_Resume.pdf Ozgur_Ural_Academic_CV.pdf

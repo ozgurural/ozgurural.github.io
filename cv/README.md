@@ -1,5 +1,8 @@
 # CV / Résumé (LaTeX source)
 
+`academic_cv.tex` builds the academic CV (`Ozgur_Ural_Academic_CV.pdf`, linked
+from /publications/) the same way, in the same workflow.
+
 `resume.tex` is the single source for **Ozgur_Ural_PhD_Resume.pdf** (linked from
 the site nav). It is a self-contained, single-column, ATS-friendly document:
 everything except the horizontal rules and bullets is selectable text, so
