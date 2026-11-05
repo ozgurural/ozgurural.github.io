@@ -151,7 +151,7 @@ I am interested in what happens as more of the world becomes available to learni
     <h2 class="ep-essay__title" id="a-vault-without-a-door-title">A Vault Without a Door</h2>
   </header>
   <figure class="ep-essay__figure">
-    <img src="/images/essays/vault.jpg" alt="An empty stone vault room lit by torchlight, with a small blank plaque on the far wall and no door in sight" width="1280" height="853" loading="lazy" decoding="async">
+    <img src="/images/essays/vault.jpg" alt="A stone vault lit by torches, with seven wooden chairs arranged in a row beneath a bronze plaque on the far wall" width="1024" height="682" loading="lazy" decoding="async">
   </figure>
   <div class="ep-essay__body" markdown="1">
 
