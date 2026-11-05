@@ -112,6 +112,44 @@ const ROOT = path.resolve(__dirname, '..');
     await check('reduced-motion visitors do not get reveal animations', () => !document.querySelector('.ep-fade-in'));
     await check('off-screen back-to-top is not a tab stop', () => document.querySelector('.ep-back-to-top').tabIndex === -1);
 
+    await go('/essays/');
+    await check('essay contents links reach all five essays', () => {
+      const links = [...document.querySelectorAll('nav[aria-label="Essay contents"] a')];
+      const essays = [...document.querySelectorAll('article.ep-essay')];
+      return links.length === 5 && essays.length === 5 && links.every((link, i) =>
+        link.hash === '#' + essays[i].id && link.textContent.trim() === essays[i].querySelector('h2').textContent.trim());
+    });
+    const essayIds = ['watchmakers-trial', 'what-the-camera-saw', 'a-vault-without-a-door',
+      'three-travelers-in-a-desert', 'the-library-that-read-itself'];
+    for (const width of [320, 390, 768, 1280]) {
+      await page.setViewport({ width, height: 900 });
+      await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: width === 1280 ? 'no-preference' : 'reduce' }]);
+      await go('/essays/');
+      await check(`essays fit the viewport at ${width}px`, () => document.documentElement.scrollWidth <= innerWidth + 1);
+      await page.focus('nav[aria-label="Essay contents"] a');
+      for (const id of essayIds) {
+        const hash = await page.evaluate(() => document.activeElement.hash);
+        assert.equal(hash, '#' + id, 'contents keyboard order');
+        await page.keyboard.press('Enter');
+        await page.waitForFunction(essayId => {
+          const target = document.getElementById(essayId);
+          const heading = target.querySelector('h2').getBoundingClientRect();
+          const header = document.querySelector('.masthead').getBoundingClientRect();
+          return location.hash === '#' + essayId && document.activeElement === target
+            && heading.top >= header.bottom && heading.top < header.bottom + 160;
+        }, { timeout: 5000 }, id);
+        checked++;
+        await page.focus(`nav[aria-label="Essay contents"] a[href="#${id}"]`);
+        await page.keyboard.press('Tab');
+      }
+      await page.focus('#the-library-that-read-itself a[href="#essay-contents"]');
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(() => location.hash === '#essay-contents'
+        && document.activeElement.id === 'essay-contents');
+      checked++;
+      console.log(`PASS: essay keyboard navigation and return to contents at ${width}px`);
+    }
+
     assert.deepEqual(errors, [], 'uncaught browser errors');
     console.log(`${checked} interaction checks passed; no uncaught browser errors.`);
   } finally {

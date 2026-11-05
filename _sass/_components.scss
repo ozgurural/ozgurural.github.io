@@ -1112,14 +1112,72 @@
   color: var(--ds-soft);
 }
 
+.page__content .ep-essays__note {
+  max-width: var(--ds-measure);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ds-muted);
+}
+.ep-essays__contents {
+  max-width: var(--ds-measure);
+  margin: 1.8rem 0 2rem;
+  padding: 1.2rem 0;
+  border-block: 1px solid var(--ds-line);
+  scroll-margin-top: 5rem;
+}
+.page__content .ep-essays__contents .ep-eyebrow {
+  margin: 0 0 0.6rem;
+  font-size: 0.76rem;
+  color: var(--ds-accent);
+}
+.ep-essays__contents ol {
+  margin: 0;
+  padding-left: 1.6rem;
+  list-style: decimal;
+}
+.ep-essays__contents li {
+  margin: 0;
+  padding-left: 0.3rem;
+  list-style: decimal;
+}
+.ep-essays__contents li::marker {
+  font-family: var(--ds-font-mono);
+  color: var(--ds-muted);
+}
+.ep-essays__contents a,
+.ep-essay__return a {
+  display: inline-block;
+  padding-block: 0.5rem;
+  min-height: 44px;
+}
+.ep-essays__contents a:focus-visible,
+.ep-essay__return a:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 4px;
+}
+.page__content .ep-essay__return {
+  margin-top: 1rem;
+  font-family: var(--ds-font-sans);
+  font-size: 0.85rem;
+}
 .ep-essay {
   margin: 2.5rem 0;
   padding-top: 2rem;
+  scroll-margin-top: 5rem;
+}
+.ep-essay:focus {
+  outline: none;
+}
+.ep-essay:focus-visible .ep-essay__title {
+  text-decoration: underline;
+  text-decoration-color: var(--ds-accent);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
 }
 .ep-essay__header {
   margin-bottom: 1.4rem;
 }
-.ep-essay__title {
+.page__content .ep-essay__title {
   font-family: var(--ds-font-display);
   font-size: clamp(1.5rem, 2.6vw, 2rem);
   font-weight: 700;
@@ -1229,7 +1287,7 @@
 
 @media (max-width: 600px) {
   .ep-essay { margin: 1.6rem 0; padding-top: 1.4rem; }
-  .ep-essay__title { font-size: 1.45rem; }
+  .page__content .ep-essay__title { font-size: 1.45rem; }
   .ep-essay__body p { font-size: 1rem; line-height: 1.7; }
   .ep-essay__body p:first-child { font-size: 1.06rem; line-height: 1.65; }
   .ep-essay__divider { margin: 2rem auto; }
