@@ -119,6 +119,29 @@ const ROOT = path.resolve(__dirname, '..');
       return links.length === 5 && essays.length === 5 && links.every((link, i) =>
         link.hash === '#' + essays[i].id && link.textContent.trim() === essays[i].querySelector('h2').textContent.trim());
     });
+    for (const selector of ['nav[aria-label="Essay contents"] a[href="#what-the-camera-saw"]',
+      '#the-library-that-read-itself .ep-essay__return a']) {
+      await page.hover(selector);
+      await page.waitForFunction(sel => {
+        const after = getComputedStyle(document.querySelector(sel), '::after');
+        return after.content === 'none' || after.content === 'normal'
+          || after.transform === 'none' || new DOMMatrixReadOnly(after.transform).a >= 0.99;
+      }, { timeout: 5000 }, selector);
+      const underlineCount = await page.$eval(selector, link => {
+        const style = getComputedStyle(link);
+        const after = getComputedStyle(link, '::after');
+        const native = style.textDecorationLine.includes('underline');
+        const decorative = after.content !== 'none' && after.content !== 'normal'
+          && after.display !== 'none' && parseFloat(after.height) > 0
+          && parseFloat(after.opacity) > 0
+          && (after.transform === 'none' || new DOMMatrixReadOnly(after.transform).a >= 0.99);
+        return Number(native) + Number(decorative);
+      });
+      assert.equal(underlineCount, 1, `essay navigation has one hover underline: ${selector}`);
+      checked++;
+    }
+    console.log('PASS: contents and return links have a single hover underline');
+
     const essayIds = ['watchmakers-trial', 'what-the-camera-saw', 'a-vault-without-a-door',
       'three-travelers-in-a-desert', 'the-library-that-read-itself'];
     for (const width of [320, 390, 768, 1280]) {
@@ -127,6 +150,16 @@ const ROOT = path.resolve(__dirname, '..');
       await go('/essays/');
       await check(`essays fit the viewport at ${width}px`, () => document.documentElement.scrollWidth <= innerWidth + 1);
       await page.focus('nav[aria-label="Essay contents"] a');
+      await page.keyboard.press('Tab');
+      await page.keyboard.down('Shift');
+      await page.keyboard.press('Tab');
+      await page.keyboard.up('Shift');
+      await check(`contents keyboard focus is visible at ${width}px`, () => {
+        const focused = document.activeElement;
+        const style = getComputedStyle(focused);
+        return focused.matches('nav[aria-label="Essay contents"] a:focus-visible')
+          && style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) >= 2;
+      });
       for (const id of essayIds) {
         const hash = await page.evaluate(() => document.activeElement.hash);
         assert.equal(hash, '#' + id, 'contents keyboard order');
@@ -143,6 +176,12 @@ const ROOT = path.resolve(__dirname, '..');
         await page.keyboard.press('Tab');
       }
       await page.focus('#the-library-that-read-itself a[href="#essay-contents"]');
+      await check(`return link keyboard focus is visible at ${width}px`, () => {
+        const focused = document.activeElement;
+        const style = getComputedStyle(focused);
+        return focused.matches('.ep-essay__return a:focus-visible')
+          && style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) >= 2;
+      });
       await page.keyboard.press('Enter');
       await page.waitForFunction(() => location.hash === '#essay-contents'
         && document.activeElement.id === 'essay-contents');

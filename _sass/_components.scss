@@ -1150,6 +1150,12 @@
   padding-block: 0.5rem;
   min-height: 44px;
 }
+/* These navigation links use the native hover underline, without a second
+   animated line at the bottom of their padded hit area. */
+.page__content .ep-essays__contents a::after,
+.page__content .ep-essay__return a::after {
+  content: none;
+}
 .ep-essays__contents a:focus-visible,
 .ep-essay__return a:focus-visible {
   outline: 2px solid var(--ds-accent);
