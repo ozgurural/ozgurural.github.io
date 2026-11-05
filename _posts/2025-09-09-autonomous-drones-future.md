@@ -12,7 +12,7 @@ tags:
 description: "Lessons and research questions from mission-control software work, with clear boundaries between engineering experience and future autonomy research."
 
 header:
-  og_image: "lab-og/og-det.png"
+  og_image: "lab-og/og-mission-control.png"
 ---
 
 From February 2019 to November 2020, I worked as an Expert Software Engineer at STM Defence Technologies on mission-control and ground-control systems for Kargu and Togan. My work included C++ components using Boost and Qt under real-time constraints.

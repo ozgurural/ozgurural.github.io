@@ -128,9 +128,13 @@
         var cur=normal.async[upto];
         line(ctx,px(upto),PY0-6,px(upto),PY1,C.ink);
         var state=cur.age===null?'WAITING FOR A FIRST PROPOSAL':cur.fresh?'ADMITTED  age '+cur.age.toFixed(0)+' ms':'EXPIRED  age '+cur.age.toFixed(0)+' ms, using fallback';
+        /* The neighbouring scenes draw their own counters in these same rows,
+           so the footer stays out of both scene crossfades. */
+        ctx.globalAlpha=Math.max(0,Math.min(1,(t-0.6)/0.8,(27-t)/1.4));
         text(ctx,state,48,370,19,cur.fresh?C.green:C.amber);
         text(ctx,'Admitted: '+admitted+'   Fallback: '+fallback,560,370,16,C.muted);
         text(ctx,'A freshness check cannot establish action safety.',48,398,15,C.amber);
+        ctx.globalAlpha=1;
       });
       lower(s, "Asynchrony changes the failure mode. The loop may stay on time while using an answer about a world that has already changed.", 0.8);
       lower(s, "Attach an observation timestamp and a context version. Check both before use, and define the fallback when a proposal expires.", 10);

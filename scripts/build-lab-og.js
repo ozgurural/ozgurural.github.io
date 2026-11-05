@@ -13,7 +13,7 @@ const LABS = [
   { key: "ai-deadline", eyebrow: "AI architecture | Real-time systems", icon: "60",
     title: "AI Meets the Deadline", sub: "Better intelligence. A timing contract.",
     tagline: "Explore inference, expiry, fallback and resource isolation",
-    badge: "DESIGN EXPERIMENT", bg: "#0f172a", accent: "#38bdf8" },
+    badge: "DESIGN EXPERIMENT", bg: "#0f172a", accent: "#38bdf8", iconColor: "#38bdf8" },
   {
     key: "lab",
     eyebrow: "Animated research",
@@ -127,15 +127,16 @@ const LABS = [
     accent: "#58c4dd",
   },
   {
-    key: "det",
-    eyebrow: "Simulation · Hard Real Time",
-    icon: "⏱",
-    title: "Inside a Level D Simulator",
-    sub: "Fidelity earns the trust. Determinism keeps it.",
-    tagline: "Collimated displays, motion cueing, flight-test proof and the 150 ms gate",
-    badge: "LEVEL D",
+    key: "mission-control",
+    eyebrow: "Mission Control · Autonomous Systems",
+    icon: "🛩️",
+    title: "Mission-Control",
+    sub: "Ground control for Kargu and Togan.",
+    tagline: "C++, Boost and Qt under real-time constraints, and the boundary to autonomy research",
+    badge: "ENGINEERING NOTES",
     bg: "#0f172a",
     accent: "#38bdf8",
+    iconColor: "#38bdf8",
   },
   {
     key: "cyb",
@@ -189,7 +190,7 @@ function svg(lab) {
 
   <!-- Icon + Title block. Title font-size scales down for long titles
        so it never clips against the 5-star pip block on the right. -->
-  <text x="80" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${lab.iconSize || 140}" font-weight="700" fill="${lab.key === "ai-deadline" ? lab.accent : "#000"}">${esc(lab.icon)}</text>
+  <text x="80" y="270" font-family="ui-sans-serif, system-ui, sans-serif" font-size="${lab.iconSize || 140}" font-weight="700" fill="${lab.iconColor || "#000"}">${esc(lab.icon)}</text>
   <text x="250" y="265" font-family="Georgia, 'Times New Roman', serif" font-size="${
     lab.title.length > 18 ? 70 : lab.title.length > 14 ? 80 : 96
   }" font-weight="800" fill="#f8fafc">${esc(lab.title)}</text>
