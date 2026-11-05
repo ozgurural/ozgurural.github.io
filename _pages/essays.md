@@ -33,37 +33,37 @@ excerpt: "Five fictional parables about making, seeing, trusting, and the emerge
     <h2 class="ep-essay__title" id="watchmakers-trial-title">The Watchmaker's Trial</h2>
   </header>
   <figure class="ep-essay__figure">
-    <img src="/images/essays/watchmaker.jpg" alt="A woman watchmaker inspecting an open pocket-watch movement beside her workshop ledger in warm lamplight" width="1280" height="853" loading="lazy" decoding="async">
+    <img src="/images/essays/watchmaker.jpg" alt="A watchmaker bent over an open pocket watch on a green work mat, gears and tools laid out around it" width="1280" height="768" loading="lazy" decoding="async">
   </figure>
   <div class="ep-essay__body" markdown="1">
 
-On the morning of her trial, the watchmaker winds the watch. It will not help her if it stops, although running perfectly has not helped her either.
+On the morning of his trial, the watchmaker winds the watch. It will not help him if it stops, although running perfectly has not helped him either.
 
-An apprentice from a rival shop says she bought its movement from him and put her name on the case. He has drawings, dated before the watch was finished. The bridges have the right shape. The teeth have the right count. He lays the pages on the magistrate's desk with the confidence of someone who has brought the past to court.
+An apprentice from a rival shop says he sold the watchmaker a finished movement, which the watchmaker now claims to have made. He has drawings, dated before the watch was finished. The bridges have the right shape. The teeth have the right count. He lays the pages on the magistrate's desk with the confidence of someone who has brought the past to court.
 
 The watchmaker brings a small wooden box. Inside it, the second hand continues its work.
 
 The magistrate studies both exhibits. A drawing can be copied. A watch can be purchased. He asks the question neither object answers: *What happened between the paper and the watch?*
 
-She asks for a screwdriver.
+The watchmaker asks for a screwdriver.
 
-Under the balance bridge are three shallow scratches. She chose their positions before assembling the movement and entered them in her workshop book. The apprentice leans forward. They are not on his drawings.
+Under the balance bridge are three shallow scratches. He chose their positions before assembling the movement and entered them in his workshop book. The apprentice leans forward. They are not on his drawings.
 
-The magistrate has the guild fetch the dated copies of her book. He compares the marks, then chooses two unfinished stages from the record and asks how one became the next. She brings out spare parts, explains the order of the cuts, and works through them at a bench by the window. A clerk measures the result against the entries. Outside, the afternoon bells begin.
+The magistrate has the guild fetch the dated copies of the workshop book. He compares the marks, then chooses two unfinished stages from the record and asks how one became the next. The watchmaker brings out spare parts, explains the order of the cuts, and works through them at a bench by the window. A clerk measures the result against the entries. Outside, the afternoon bells begin.
 
-The magistrate accepts her account of making the movement. The drawings may still belong to the apprentice; that is a different claim. He closes neither question by pretending it is the other.
+The magistrate accepts the watchmaker's account of making the movement. The drawings may still belong to the apprentice; that is a different claim. He closes neither question by pretending it is the other.
 
-As the clerk writes the finding, he notices other names in the book. A spring maker. An engraver. The neighbour who cut a wheel while her own lathe was being repaired. Beside each name is a payment.
+As the clerk writes the finding, he notices other names in the book. A spring maker. An engraver. The neighbour who cut a wheel while the watchmaker's lathe was being repaired. Beside each name is a payment.
 
 *You said you made this watch*, he says.
 
 *I made the movement. I did not make the steel, or invent the hour.*
 
-He hesitates, then copies the names too.
+The clerk hesitates, then copies the names too.
 
-She leaves with the box under her arm. In the square, the clerk catches up and asks whether a watch can really have so many makers.
+The watchmaker leaves with the box under his arm. In the square, the clerk catches up and asks whether a watch can really have so many makers.
 
-*It always did*, she says. *You have only just asked their names.*
+*It always did*, he says. *You have only just asked their names.*
 
 <div class="ep-essay__rule" aria-hidden="true">⋯</div>
 
@@ -87,7 +87,7 @@ As learning becomes a more collective activity, that question grows larger than 
     <h2 class="ep-essay__title" id="what-the-camera-saw-title">What the Camera Saw</h2>
   </header>
   <figure class="ep-essay__figure">
-    <img src="/images/essays/camera.jpg" alt="A woman photographer beside a bellows camera in a canvas tent overlooking a mountain valley, with a photographic plate on the worktable" width="1280" height="853" loading="lazy" decoding="async">
+    <img src="/images/essays/camera.jpg" alt="A photographer silhouetted in a darkened field studio, a wet-plate camera on a tripod facing a mountain valley" width="570" height="379" loading="lazy" decoding="async">
   </figure>
   <div class="ep-essay__body" markdown="1">
 
