@@ -1179,6 +1179,24 @@
 }
 .ep-essay__signoff em { color: var(--ds-muted) !important; }
 
+.ep-essay__figure {
+  max-width: var(--ds-measure);
+  margin: 1.2rem 0 1.8rem;
+}
+.ep-essay__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+.ep-essay__sources {
+  max-width: var(--ds-measure);
+  font-size: 0.85rem !important;
+  line-height: 1.6 !important;
+  color: var(--ds-muted) !important;
+}
+.ep-essay__sources em { color: var(--ds-muted) !important; }
+
 .ep-essay__divider {
   margin: 3rem auto;
   font-family: var(--ds-font-display);
