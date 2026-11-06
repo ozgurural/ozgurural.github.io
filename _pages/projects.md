@@ -44,7 +44,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   <li>
     <div class="meta">2026 · Avion · Applied AI</div>
     <h3 class="title">Engineering knowledge assistant</h3>
-    <p class="desc">A proof of concept offered to staff: it answers from the company's engineering documents and shows where each answer came from. Every reported problem is replayed against each new build. A prototype agent foundation adds tools and a record of actions; verifiable oversight of those actions is the open R&amp;D question.</p>
+    <p class="desc">A proof of concept offered to staff: it answers from the company's engineering documents and shows where each answer came from. Every reported problem is replayed against each new build. A prototype agent foundation adds tools and a record of actions; verifiable oversight of those actions is the open R&amp;D question, in a project I prepared and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme.</p>
   </li>
   <li>
     <div class="meta">2023– · Avion · Real-time systems</div>
@@ -52,9 +52,19 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
     <p class="desc">Real-time simulator software in C, C++ and Scala, and a telemetry pipeline that sustains about 50 GB/s through batching and bounded-queue backpressure, for simulators certified at the highest grade. The field note covers what such a platform offers for evaluating learning systems.</p>
   </li>
   <li>
-    <div class="meta">2024– · Avion · Observability</div>
-    <h3 class="title">Simulator monitoring and diagnostics</h3>
-    <p class="desc">Web applications for the Avion Cloud Environment that monitor, configure and diagnose core simulator components (TypeScript, Svelte, Scala, Python, gRPC): time-aligned state of the kind any learned component would have to be evaluated against.</p>
+    <div class="meta">2024– · Avion · Full-stack platform</div>
+    <h3 class="title">Avion Cloud Environment</h3>
+    <p class="desc">Principal developer (about 70% of commits) of the platform that configures, monitors and diagnoses simulator bus systems: SvelteKit and TypeScript client, Python gRPC backend, Redis and PostgreSQL. It holds time-aligned state of the kind any learned component would have to be evaluated against. Its development was also approved as R&amp;D under WBSO.</p>
+  </li>
+  <li>
+    <div class="meta">2025– · Avion · Delivered software</div>
+    <h3 class="title">Avion Debriefing System</h3>
+    <p class="desc">Records a full-flight-simulator training session (displays, cockpit camera, instructor station, audio), then packages, encrypts and transfers it for replay. C# on .NET 8 with PowerShell tooling and an MSI installer, installed and verified on a simulator, with user and acceptance-test manuals.</p>
+  </li>
+  <li>
+    <div class="meta">2026 · Avion · Tooling</div>
+    <h3 class="title">NavDB Sync</h3>
+    <p class="desc">Version control for simulator navigation databases. Operators keep their custom data through 28-day AIRAC updates, and merges run on the server, so a conflict never reaches an instructor at the simulator. Python and GitLab CI/CD.</p>
   </li>
   <li>
     <div class="meta">2019–2020 · STM · Hard real-time</div>

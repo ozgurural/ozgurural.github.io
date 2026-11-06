@@ -60,15 +60,12 @@ Leiden, Netherlands
 
 Machine learning research scientist and senior software engineer with more than twelve years of professional experience in industry and research, building production systems across cybersecurity, defense, and simulation, now leading enterprise AI strategy and applied GenAI at Avion. Completed a Ph.D. in Electrical Engineering and Computer Science at Embry-Riddle Aeronautical University in the United States (August 2025), with a machine-learning dissertation and three first-author IEEE Access publications: two on Proof-of-Learning and model watermarking, and a survey of blockchain-enhanced machine learning. My work centers on \textbf{trustworthy AI for mission-critical systems}: evidence of how a model was trained and who owns it, robustness against attackers, and predictable timing when a model runs inside a real-time loop.
 
-Systems programming in C, C++ and Scala, real-time distributed architecture and hands-on ML-security research; experienced in leading engineering teams and turning research questions into working prototypes.
-
 \spacedhrule{0.6em}{0.1em}
 
 \roottitle{TECHNICAL SKILLS}
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Languages:} C, C++, Scala, Python, Go, Java, TypeScript, JavaScript
-  \item \textbf{Systems and real-time:} multithreading, async I/O, low-latency, backpressure, Linux, networking, Boost, Qt/QML
-  \item \textbf{Distributed and data:} gRPC, Protobuf, Redis, PostgreSQL, REST, real-time data pipelines
+  \item \textbf{Languages:} C, C++, C\#, Scala, Python, Go, Java, TypeScript, JavaScript
+  \item \textbf{Systems and data:} multithreading, async I/O, low-latency, backpressure, Linux, networking, Boost, Qt/QML; gRPC, Protobuf, Redis, PostgreSQL, REST
   \item \textbf{Machine learning \& AI:} PyTorch, TensorFlow, scikit-learn, deep learning, LLMs, retrieval-augmented generation (RAG), AI agents, on-prem and air-gapped model deployment, federated learning; trustworthy and verifiable ML (model watermarking, Proof-of-Learning, adversarial robustness, model provenance)
   \item \textbf{Web and DevOps:} Svelte, HTML, CSS, Tailwind; Docker, GitLab CI/CD, Jenkins, Git
 \end{itemize}
@@ -79,11 +76,13 @@ Systems programming in C, C++ and Scala, real-time distributed architecture and 
   \headedsubsection{Senior Software Engineer}{Oct 2023 -- Present}{%
     \bodytext{\begin{itemize}
       \item Lead Avion's enterprise AI strategy: authored the AI adoption roadmap and a three-tier architecture spanning air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge deployment.
-      \item Built Avion Assistant, an engineering-knowledge copilot offered to staff as a proof of concept: hybrid keyword and embedding retrieval with cross-encoder reranking, every answer cited to its source page, a credentials check before indexing, a choice of hosted or local models, and golden-question checks on every release (Python, FastAPI, Qdrant, SvelteKit).
-      \item Added a prototype agent foundation that works with files and tools towards an assigned goal and records its actions; current R\&D focus is autonomous engineering agents with verifiable oversight.
-      \item Designed the strategy's proposed AI workflows, each keeping a person accountable for the outcome (repository review agent, RFP accelerator, training-debrief writer), and built the strategy portal end to end (Flask, SQLite, Docker, GitLab CI/CD).
-      \item Developed real-time simulator software in C, C++, and Scala, including a low-latency data pipeline ingesting simulator telemetry, normalizing and serializing to JSON and Protobuf, caching in Redis, persisting in PostgreSQL, and serving the frontend via gRPC and HTTP; sustained approximately 50 GB/s real-time throughput using batching and bounded-queue backpressure.
-      \item Built web applications for the Avion Cloud Environment to monitor, configure, and diagnose core simulator components using TypeScript, Svelte, Scala, Python, and gRPC.
+      \item Won approval for two R\&D projects under WBSO, the Dutch government's R\&D tax-credit programme: sole person responsible for preparing and architecting both, for the Avion Cloud Environment and for autonomous engineering agents with verifiable oversight.
+      \item Built Avion Assistant, an engineering-knowledge copilot offered to staff as a proof of concept: hybrid keyword and embedding retrieval with cross-encoder reranking, every answer cited to its source page, and golden-question checks on every release (Python, FastAPI, Qdrant, SvelteKit); added a prototype agent foundation that works with tools and records its actions.
+      \item Designed the strategy's proposed AI workflows, each keeping a person accountable for the outcome, and built the strategy portal end to end (Flask, SQLite, Docker, GitLab CI/CD).
+      \item Developed real-time simulator software in C, C++, and Scala, including a low-latency telemetry pipeline (JSON and Protobuf, Redis, PostgreSQL, gRPC) sustaining approximately 50 GB/s real-time throughput using batching and bounded-queue backpressure.
+      \item Principal developer of the Avion Cloud Environment (about 70\% of commits since 2024), a platform to configure, monitor and diagnose simulator bus systems (SvelteKit, TypeScript, Python, gRPC, Redis, PostgreSQL).
+      \item Built the Avion Debriefing System: records a full-flight-simulator training session (displays, cockpit camera, instructor station, audio), then packages, encrypts and transfers it (C\#/.NET 8, MSI installer); installed and verified on a simulator.
+      \item Built NavDB Sync, version control for simulator navigation databases: operators keep their custom data through 28-day AIRAC updates, and merges run on the server so a conflict never reaches a simulator (Python, GitLab CI/CD).
     \end{itemize}}%
   }%
 }
@@ -93,7 +92,7 @@ Systems programming in C, C++ and Scala, real-time distributed architecture and 
 \headedsection{\href{https://daytonabeach.erau.edu/}{Embry-Riddle Aeronautical University, Daytona Beach}}{\textsc{Florida, USA}}{%
   \headedsubsection{Graduate Research Assistant}{Sep 2021 -- Dec 2024, May 2025 -- Oct 2025}{%
     \bodytext{\begin{itemize}
-      \item Conducted original research on verifiable, trustworthy machine learning across proof-of-learning, model watermarking, and adversarial robustness, with three first-author papers in IEEE Access (2025 Journal Impact Factor 4.2, JCR 2026).
+      \item Original research on proof-of-learning, model watermarking, and adversarial robustness, with three first-author papers in IEEE Access (2025 Journal Impact Factor 4.2, JCR 2026).
     \end{itemize}}%
   }%
 }
@@ -104,8 +103,7 @@ Systems programming in C, C++ and Scala, real-time distributed architecture and 
   \headedsubsection{Software Team Lead}{Nov 2020 -- Aug 2021}{%
     \bodytext{\href{https://havelsan.com.tr/en/sectors/cyber-security/cyber-security/products/havelsan-dlp}{Havelsan DLP} enterprise Data Leakage Prevention product.
     \begin{itemize}
-      \item Led a team of 14 engineers (developers, QA, DevOps, support) delivering endpoint security software.
-      \item Developed and maintained core features of the endpoint agent in C, C++, Java, and Go.
+      \item Led a team of 14 engineers delivering endpoint security software; built its agent in C, C++, Java, and Go.
     \end{itemize}}%
   }%
 }
@@ -128,8 +126,7 @@ Systems programming in C, C++ and Scala, real-time distributed architecture and 
   \headedsubsection{Expert Software Engineer}{Jul 2014 -- Feb 2019}{%
     \bodytext{\href{https://cdome.comodo.com/}{Comodo Dome Secure Web Gateway}, \href{https://www.itarian.com/patch-management.php}{Comodo Patch Manager}, and the \href{https://www.comodo.com/home/browsers-toolbars/browser.php}{Comodo Dragon} browser.
     \begin{itemize}
-      \item Led design and development of Windows services and applications in C++17 with Boost and WinAPI.
-      \item Established unit testing and code-review practices; implemented CI/CD pipelines with Jenkins.
+      \item Led design and development of Windows services and applications in C++17 with Boost and WinAPI; established unit testing and code review, and CI/CD pipelines with Jenkins.
     \end{itemize}}%
   }%
 }

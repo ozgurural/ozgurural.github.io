@@ -108,7 +108,7 @@ redirect_from:
     <span class="ep-agenda__status">In industry · Avion, 2026</span>
     <h3>Generative AI an engineering company can govern</h3>
     <p>In an engineering company the useful knowledge sits in its own documents and processes, and an AI system has to respect where that data is allowed to go.</p>
-    <p class="ep-agenda__done">I wrote Avion's AI adoption roadmap and a reference architecture spanning on-premises inference, governed cloud APIs and edge workloads, built an engineering-knowledge assistant whose every answer cites its source, offered to staff as a proof of concept, and added a prototype agent foundation that records its actions. The open question is oversight that can be verified: what can be checked about what an agent did. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
+    <p class="ep-agenda__done">I wrote Avion's AI adoption roadmap and a reference architecture spanning on-premises inference, governed cloud APIs and edge workloads, built an engineering-knowledge assistant whose every answer cites its source, offered to staff as a proof of concept, and added a prototype agent foundation that records its actions. The open question is oversight that can be verified: what can be checked about what an agent did, the subject of an R&amp;D project I prepared and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
   </li>
 </ol>
 
@@ -142,7 +142,7 @@ redirect_from:
 <ol class="ep-timeline">
   <li>
     <span class="when">2023–now</span>
-    <span class="what"><strong>Senior Software Engineer, <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a>.</strong> Real-time simulation platforms and cloud-native infrastructure for Level D flight simulators. Since 2026 also the company's AI adoption roadmap and enterprise reference architecture, the platform presenting it, an engineering-knowledge assistant offered to staff as a proof of concept, and a prototype agent foundation.</span>
+    <span class="what"><strong>Senior Software Engineer, <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a>.</strong> Real-time simulation platforms and cloud-native infrastructure for Level D flight simulators: principal developer of the Avion Cloud Environment, builder of the debriefing system. Since 2026 also the company's AI adoption roadmap and enterprise reference architecture, the platform presenting it, an engineering-knowledge assistant offered to staff as a proof of concept, and a prototype agent foundation.</span>
   </li>
   <li>
     <span class="when">2021–2025</span>
