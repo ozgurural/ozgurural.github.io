@@ -39,7 +39,12 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   <li>
     <div class="meta">2026 · Avion · Enterprise AI</div>
     <h3 class="title"><a href="/enterprise-ai-architecture.html">AI strategy and reference architecture</a></h3>
-    <p class="desc">I wrote Avion's AI adoption roadmap and a reference architecture that separates on-premises inference, governed cloud APIs and edge workloads, built the portal that presents it, and built engineering-knowledge retrieval prototypes. The interactive view shows the design, including agents that are proposed rather than deployed.</p>
+    <p class="desc">I wrote Avion's AI adoption roadmap and a reference architecture that separates on-premises inference, governed cloud APIs and edge workloads, and built the portal that presents it. The interactive view shows the design, including agents that are proposed rather than deployed.</p>
+  </li>
+  <li>
+    <div class="meta">2026 · Avion · Applied AI</div>
+    <h3 class="title">Engineering knowledge assistant</h3>
+    <p class="desc">A proof of concept offered to staff: it answers from the company's engineering documents and shows where each answer came from. Every reported problem is replayed against each new build. A prototype agent foundation adds tools and a record of actions; verifiable oversight of those actions is the open R&amp;D question.</p>
   </li>
   <li>
     <div class="meta">2023– · Avion · Real-time systems</div>
@@ -73,7 +78,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
 <p class="ep-lead">Designs from the Avion AI strategy, written as proposals rather than deployments. Each keeps a person accountable for the outcome and works only over approved company data; each would need evaluation before use.</p>
 
 <ul class="ep-concepts">
-  <li><strong>Engineering knowledge copilot.</strong> Version-aware retrieval over engineering documents, with source citations and the specifications a change may affect.</li>
+  <li><strong>Change-impact analysis.</strong> Extends the engineering knowledge assistant above with version-aware retrieval and the specifications a change may affect.</li>
   <li><strong>Repository agent.</strong> Proposes review findings and maps changes to requirements in self-hosted pipelines; release approval stays with the team.</li>
   <li><strong>RFP accelerator.</strong> Drafts cited answers from approved past responses and product documentation, for experts to verify.</li>
   <li><strong>Instructor debrief writer.</strong> Drafts a training debrief from telemetry and instructor notes, with student identifiers removed; the instructor owns the assessment.</li>

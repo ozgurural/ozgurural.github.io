@@ -102,13 +102,13 @@ redirect_from:
     <span class="ep-agenda__status">Open research direction of the author, not yet published</span>
     <h3>AI inside real-time, safety-critical loops</h3>
     <p>A flight simulator answers the pilot within 150 milliseconds, sixty times a second, for hours, and is certified on it. Learned models can make it more realistic, but their timing depends on the input and on whatever shares the processor.</p>
-    <p class="ep-agenda__done">Twelve years of hard-real-time and simulator software, from UAV mission control at STM to Level D simulators at Avion, behind one claim: a model earns a place in the loop only if every frame stays on time. <a href="/lab/level-d-60hz/">The argument, as a film</a> · <a href="/lab/determinism/">an architecture experiment</a> with asynchronous inference, expiry checks and fallback.</p>
+    <p class="ep-agenda__done">Hard-real-time and simulator software, from UAV mission control at STM to Level D simulators at Avion, behind one claim: a model earns a place in the loop only if every frame stays on time. <a href="/lab/level-d-60hz/">The argument, as a film</a> · <a href="/lab/determinism/">an architecture experiment</a> with asynchronous inference, expiry checks and fallback.</p>
   </li>
   <li>
     <span class="ep-agenda__status">In industry · Avion, 2026</span>
     <h3>Generative AI an engineering company can govern</h3>
     <p>In an engineering company the useful knowledge sits in its own documents and processes, and an AI system has to respect where that data is allowed to go.</p>
-    <p class="ep-agenda__done">I wrote Avion's AI adoption roadmap and a reference architecture spanning on-premises inference, governed cloud APIs and edge workloads, and built engineering-knowledge retrieval prototypes. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
+    <p class="ep-agenda__done">I wrote Avion's AI adoption roadmap and a reference architecture spanning on-premises inference, governed cloud APIs and edge workloads, built an engineering-knowledge assistant whose every answer cites its source, offered to staff as a proof of concept, and added a prototype agent foundation that records its actions. The open question is oversight that can be verified: what can be checked about what an agent did. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
   </li>
 </ol>
 
@@ -142,7 +142,7 @@ redirect_from:
 <ol class="ep-timeline">
   <li>
     <span class="when">2023–now</span>
-    <span class="what"><strong>Senior Software Engineer, <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a>.</strong> Real-time simulation platforms and cloud-native infrastructure for Level D flight simulators. Since 2026 also the company's AI adoption roadmap and enterprise reference architecture, the platform presenting it, and engineering-knowledge retrieval prototypes.</span>
+    <span class="what"><strong>Senior Software Engineer, <a href="https://www.aviongroup.aero/">Avion Full Flight Simulators</a>.</strong> Real-time simulation platforms and cloud-native infrastructure for Level D flight simulators. Since 2026 also the company's AI adoption roadmap and enterprise reference architecture, the platform presenting it, an engineering-knowledge assistant offered to staff as a proof of concept, and a prototype agent foundation.</span>
   </li>
   <li>
     <span class="when">2021–2025</span>
