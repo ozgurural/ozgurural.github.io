@@ -186,6 +186,24 @@ export function createCinema(film) {
   const wrap = document.getElementById('cin-wrap');
   if (renderMode) document.documentElement.classList.add('is-render');
 
+  // Create the renderer before any wide stage enters the DOM. If WebGL is
+  // unavailable the constructor throws; catching it here lets the page show a
+  // readable fallback instead of aborting before layout() and leaving an
+  // unscaled 1920px div that scrolls the page sideways.
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: renderMode,
+                                         powerPreference: 'high-performance' });
+  } catch (err) {
+    host.removeAttribute('role');
+    host.style.width = 'min(90vw, 560px)';
+    host.innerHTML = '<p style="margin:0 0 14px;font:500 22px/1.4 \'Inter\',system-ui,sans-serif;color:#e8eef7;">This film is drawn with WebGL, which this browser could not start.</p>' +
+      '<p style="margin:0;font:400 16px/1.5 \'Inter\',system-ui,sans-serif;color:#9fb2d4;">The cited sources and the illustrated lab version are linked at the top of the page.</p>';
+    const controls = wrap.querySelector('.cin-controls');
+    if (controls) controls.style.display = 'none';
+    return;
+  }
+
   const stage = document.createElement('div');
   stage.className = 'cin cin--' + aspect;
   Object.assign(stage.style, { position: 'relative', width: W + 'px', height: H + 'px',
@@ -193,8 +211,6 @@ export function createCinema(film) {
   host.style.position = 'relative';
   host.appendChild(stage);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: renderMode,
-                                             powerPreference: 'high-performance' });
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.setClearColor(0x03050a, 1);
