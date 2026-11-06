@@ -49,7 +49,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   <li>
     <div class="meta">2023– · Avion · Real-time systems</div>
     <h3 class="title"><a href="/posts/2026/05/avion-level-d-ffs/">Software for Level D full-flight simulators</a></h3>
-    <p class="desc">Real-time simulator software in C, C++ and Scala, and a telemetry pipeline that sustains about 50 GB/s through batching and bounded-queue backpressure, for simulators certified at the highest grade. The field note covers what such a platform offers for evaluating learning systems.</p>
+    <p class="desc">Real-time simulator software in C, C++ and Scala, and a telemetry pipeline built on batching and bounded-queue backpressure, for simulators certified at the highest grade. The field note covers what such a platform offers for evaluating learning systems.</p>
   </li>
   <li>
     <div class="meta">2024– · Avion · Full-stack platform</div>

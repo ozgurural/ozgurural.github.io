@@ -123,7 +123,7 @@ redirect_from:
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Real-time &amp; Fault-Tolerant Systems</span>
     <h3>Correct on time, and when parts fail</h3>
-    <p>Real-time simulator software and the services around it (C, C++, Scala, TypeScript, gRPC), including a telemetry pipeline that sustains about 50 GB/s through batching and bounded-queue backpressure.</p>
+    <p>Real-time simulator software and the services around it (C, C++, Scala, TypeScript, gRPC), including a telemetry pipeline built on batching and bounded-queue backpressure.</p>
   </li>
   <li class="ep-pillar">
     <span class="ep-pillar__tag">Security, then ML Security</span>
