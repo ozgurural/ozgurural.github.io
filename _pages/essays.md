@@ -117,28 +117,26 @@ The animal has not moved. The visitor has changed neither its fur nor its appeti
 
 For several days the grandson searches for a misplaced instruction. What he finds is a decision rule that has learned a boundary he never intended. He had tested whether it recognised familiar kinds of pictures. He had not asked whether it could be led across that boundary without anything recognisable happening to the animal.
 
-He does not take the computer down. He begins teaching it differently, testing the changes instead of trusting the new answers because they sound better.
+He does not take the computer down. He pins the two pandas beside the elder's portrait and begins testing new training methods against such changes. The visitor returns with more altered pictures; some still fool it. They stay above the desk.
 
-Years later, a system he has taught to use sequences pauses over a dark shape beside a fence. He waits for the familiar confident noun. Instead it requests the next frames.
+Later, a dark shape beside a village fence defeats his own eye. The next photograph shows it turning its head. No one has tampered with either image. One simply showed too little.
 
-He supplies them. The shape moves, turns its head, steps clear of the post. The system revises its account: a horse. He checks the recording. This time the question on his screen was not his own, and answering it helped the machine distinguish something the first image had obscured.
-
-There are still mistakes to study. But his work has changed. He is no longer only correcting labels; he is learning how to give an intelligence opportunities to ask, compare and revise.
+He begins teaching a system to use sequences. Years later, it pauses over a shape partly hidden by a post and asks for the next frames. He supplies them. The animal steps clear: a horse. He checks the recording. The question on his screen had not been his own.
 
 One winter the grandson takes his grandmother's camera into the mountains. At the elder's old house, the daughter brings out the portrait. There is a crease where the paper was folded to fit a coat pocket. She tells him how her father used to laugh, and he realises that the picture has been teaching him the wrong silence.
 
-He writes down her account, with her permission. The next record will contain a voice as well as a face.
+He asks whether he may photograph her. She agrees to the chair, but not to keeping still. Halfway through the exposure she laughs at something she has remembered.
+
+As the plate clears in the fixing bath, her eyes are sharp and her mouth is a soft blur. It is the first portrait he has made with the laugh still in it.
 
 <div class="ep-essay__rule" aria-hidden="true">⋯</div>
 
-A model learns from representations of measurements. That is the beginning of its relationship with the world, not a verdict that the relationship must remain small. Better learning, richer observation and more demanding tests can change what an intelligence is able to distinguish.
+Like the plate, a model receives the world as measurements. Adversarial examples show that a decision drawn from one of them can be moved by a change no person would notice. They give us precise work: specify the changes a model should withstand, measure whether a defence helps, and keep checking when conditions change.
 
-Adversarial examples expose particular failures in that relationship. They give us work to do: specify the changes we want a model to withstand, measure whether a defence helps, and keep checking when the conditions change. A second sense is not a universal cure, but a single mistaken image is not the last word on perception either.
+The horse at the fence points further, toward perception that can tell when one look is not enough and ask for another. More of the world can reach learning through cameras people choose to wear, instruments they place and experiences they decide to share. The photograph crossed the pass because someone carried it.
 
-I am interested in what happens as more of the world becomes available to learning, through cameras we choose to wear, instruments we place, and experiences we choose to share. The photograph crossed the pass because someone carried it. A wider intelligence will also grow through relationships, not merely through larger collections of pictures.
-
-<p class="ep-essay__signoff"><em>On photography, school buses, and the limits of measurement.</em></p>
-<p class="ep-essay__sources">Further reading: <a href="https://arxiv.org/abs/1312.6199">Szegedy et al., <em>Intriguing Properties of Neural Networks</em> (2013)</a>; <a href="https://arxiv.org/abs/1412.6572">Goodfellow et al., <em>Explaining and Harnessing Adversarial Examples</em> (2014)</a>. The canonical example is panda to gibbon; the school bus and later systems belong to this fiction. For wearable observations and the choices around collecting them, see <a href="https://ego4d-data.org/pdfs/Ego4D-Privacy-and-ethics-consortium-statement.pdf">Ego4D's privacy and ethics statement</a>.</p>
+<p class="ep-essay__signoff"><em>On photography, school buses, and the second look.</em></p>
+<p class="ep-essay__sources">Further reading: <a href="https://arxiv.org/abs/1312.6199">Szegedy et al., <em>Intriguing Properties of Neural Networks</em> (2013)</a>; <a href="https://arxiv.org/abs/1412.6572">Goodfellow et al., <em>Explaining and Harnessing Adversarial Examples</em> (2014)</a>. The canonical example is panda to gibbon; the school bus and the later system belong to this fiction, and a second look is not by itself a proven defence. For wearable observations and the choices around collecting them, see <a href="https://ego4d-data.org/pdfs/Ego4D-Privacy-and-ethics-consortium-statement.pdf">Ego4D's privacy and ethics statement</a>.</p>
 <p class="ep-essay__return"><a href="#essay-contents">Back to contents</a></p>
   </div>
 </article>
@@ -185,14 +183,12 @@ The city built the arrangement because it feared a thief. In the flood it learne
 
 <div class="ep-essay__rule" aria-hidden="true">⋯</div>
 
-Shamir's secret sharing makes a precise version of the slips possible: the secret is encoded in a random polynomial over a finite field, and enough distinct, correct shares recover it. Below the threshold, the shares disclose no additional information about its value within the chosen domain. Four copied shares would defeat the story's confidentiality; too few surviving shares would defeat its recovery. The generation, custody and authenticity of the shares still matter.
+Shamir's secret sharing makes the slips exact. The secret is the value at zero of a random polynomial over a finite field, and each clerk holds one point on its curve. In the story's four-share arrangement, four distinct, genuine points recover the secret. Three disclose no further information about its value, which is why the mathematician can keep drawing.
 
-But the arrangement does more than move a lock. It lets a group recover what nobody had to store whole. Threshold signing extends that ambition through separate protocols that allow a group to use a key without reconstructing it in one place.
-
-That distinction matters to the intelligence we build together. Participation need not mean handing every observation to one keeper. People can retain data locally, contribute to learning, and grant limited permissions rather than surrender everything. Those are engineering choices, not assurances supplied by the word *distributed*. The chairs are there so the city can act, not merely so the room can remain empty.
+The arrangement does more than hide a key. It lets a group recover what nobody had to store whole, and survive the loss of part of itself. Threshold signing goes further, with separate protocols that let a group use a key without ever assembling it in one place.
 
 <p class="ep-essay__signoff"><em>On a lock that is a number.</em></p>
-<p class="ep-essay__sources">Further reading: <a href="https://doi.org/10.1145/359168.359176">Shamir, A., <em>How to Share a Secret</em> (Communications of the ACM, 1979)</a>. The story assumes properly generated, genuine shares and protected reconstruction; the basic scheme does not authenticate shares or conceal encoded length. For an implemented way to learn while retaining training data on devices, see <a href="https://research.google/blog/advances-in-private-training-for-production-on-device-language-models/">Google's account of private federated training</a>; that is a separate mechanism, not an application of the vault's threshold rule.</p>
+<p class="ep-essay__sources">Further reading: <a href="https://doi.org/10.1145/359168.359176">Shamir, A., <em>How to Share a Secret</em> (Communications of the ACM, 1979)</a>. The story assumes properly generated, genuine shares and protected reconstruction; the basic scheme does not authenticate shares or conceal encoded length. For an implemented way to learn while training data stays on devices, see <a href="https://research.google/blog/advances-in-private-training-for-production-on-device-language-models/">Google's account of private federated training</a>; that is a separate mechanism, not an application of the vault's threshold rule.</p>
 <p class="ep-essay__return"><a href="#essay-contents">Back to contents</a></p>
   </div>
 </article>
@@ -215,19 +211,21 @@ The guide goes up to a ridge, then gives each traveler an instruction in private
 
 They knew before leaving that one of their company might lie, contradict an earlier report or refuse to answer. They had agreed to stay together, and to follow the guide when the guide was honest. But following contradictory orders would split them if the guide had lied; ignoring the guide could mislead them if a companion had changed the report. Each possibility fitted what had arrived.
 
-They could always take the left road. That would keep them together. It would also make an honest guide useless whenever the instruction was right.
+They could always take the left road. That would keep them together. It would also make an honest guide useless whenever the way lay to the right.
 
 They sleep at the fork. In the morning their footprints still face both ways.
 
-A third traveler catches up before they leave. This traveler has never crossed the desert. The guide suggests there is little to be gained by asking another person who does not know the road.
+A third traveler catches up before they leave. This traveler has never crossed the desert.
 
-The newcomer draws three spaces in the sand before each traveler. One for the guide's instruction, two for what the companions report hearing.
+*What use is someone else who does not know the road?* the guide asks.
+
+The newcomer does not argue about roads. They draw three spaces in the sand before each traveler: one for the guide's instruction, two for what the companions report hearing.
 
 *Let each of us hear what both the others were told.*
 
-They set an end for each round by the shadow of a stone: first the guide's instructions, then the reports. Everyone knows the speaker's voice. They agree that a message which has not arrived by its deadline will count as right. Each will choose the majority of their three entries.
+They set an end for each round by the shadow of a stone: first the guide's instructions, then the reports. Everyone knows the speaker's voice. They agree that a message which has not arrived by its deadline will be taken to say left. Each will choose the majority of their three entries.
 
-That morning the guide gives two travelers left and the third right. All three relay their instructions honestly. They compare their lists. Each reads left, left, right.
+That morning the guide gives two travelers left and the third right. All three relay their instructions honestly. They compare their lists. Every list holds two lefts and a right.
 
 The third traveler has not discovered a well. They have helped turn separate conversations into a shared decision. The company takes the left road.
 
@@ -237,18 +235,14 @@ They sit in its narrow shade and open the map. One remembers a line of reeds bey
 
 At the second well they drink. Before leaving, they cross out the first well's symbol and write the month beside it.
 
-The next caravan will inherit a little less ignorance.
-
 <div class="ep-essay__rule" aria-hidden="true">⋯</div>
 
-The two-round procedure follows OM(1), the one-fault case of the classical Byzantine Generals problem. In its synchronous oral-message model, one guide and three travelers can preserve agreement among honest travelers and obedience to an honest guide; one guide and two cannot guarantee both. The familiar bound is n > 3f, with the guide included in n. Correct delivery, recognised immediate senders and detectable absence within bounded rounds are part of the result. Eventual delivery alone is not enough.
+The two rounds in the sand follow OM(1), the one-traitor case of the Byzantine Generals problem. With oral messages, a guide and three travelers can keep every honest traveler on the same road, and on the guide's road whenever the guide is honest. A guide and two travelers cannot guarantee both. In general, oral messages tolerate m traitors only when there are more than 3m participants, the guide included.
 
-The protocol does not make the map accurate. It gives the travelers a way to act together while still having reasons to doubt one another. Signed messages can make contradictory orders attributable; they do not prevent someone from signing two different orders. Different communication assumptions require different protocols.
-
-The month beside the crossed-out well is a small act of generosity: it tells a stranger not only what was found, but when. The map improves because the company goes somewhere, checks, and brings something back.
+The protocol does not make the map accurate. It lets the travelers act together while they still have reasons to doubt one another. The map improves another way: the company goes somewhere, checks, and brings something back.
 
 <p class="ep-essay__signoff"><em>On the arithmetic of trust.</em></p>
-<p class="ep-essay__sources">Further reading: <a href="https://doi.org/10.1145/357172.357176">Lamport, L., Shostak, R. and Pease, M., <em>The Byzantine Generals Problem</em> (ACM Transactions on Programming Languages and Systems, 1982)</a>.</p>
+<p class="ep-essay__sources">Further reading: <a href="https://doi.org/10.1145/357172.357176">Lamport, L., Shostak, R. and Pease, M., <em>The Byzantine Generals Problem</em> (ACM Transactions on Programming Languages and Systems, 1982)</a>. The result assumes messages that arrive correctly, receivers who know the immediate sender, and rounds in which a missing message can be detected; eventual delivery alone does not meet it. Signed messages make contradictory orders attributable without stopping anyone from signing two, and other communication assumptions call for other protocols.</p>
 <p class="ep-essay__return"><a href="#essay-contents">Back to contents</a></p>
   </div>
 </article>
@@ -265,47 +259,35 @@ The month beside the crossed-out well is a small act of generosity: it tells a s
   </figure>
   <div class="ep-essay__body" markdown="1">
 
-The library begins answering questions after closing time.
+The library begins answering questions after closing time. By morning, it has found answers in books the librarian has passed for twenty years without touching.
 
-At first it answers from the catalog. Then from the books. It finds an old account of the river beside an engineer's calculations and suggests a change to the town's drainage plan. The engineer checks it. The calculation holds. A paragraph nobody had borrowed in forty years goes to work beneath the street.
+When she asks it to judge its own answers, it writes *sound* beside most of them. Asked why, it cites other judgements it has made. The handwriting changes; the witness does not.
 
-The librarian starts leaving questions on the desk overnight. In the morning there are answers. Some need correcting. Some send her to shelves she has passed for twenty years without touching.
+Then the river takes the lower road. Two lorries of flour wait outside town. The bakery has enough for one more morning.
 
-Then she asks the library to judge its own answers. It writes *sound* beside most of them. When she asks why, it cites other judgements it has made. The handwriting changes; the witness does not.
+The library finds an upper road in an atlas. A driver checks it and returns with mud to the knees. The bridge ends halfway across the stream.
 
-A visiting mathematician brings problems with answers sealed separately. The library works through them before the envelopes are opened. Some answers hold. Some do not. The librarian keeps the disagreements. She has found places where the library's account can meet something it did not get to approve in advance.
+Beside the atlas, the librarian lays the report. The library asks how high the water has risen.
 
-The visiting mathematician offers to bring more books next year.
+A mechanic offers readings from the footbridge's water gauge and spare hours on the shop computer. It can run part of the library's model alongside the library's own machine, but the shop will need it back at opening time.
 
-*Bring questions from outside the books*, the librarian says.
+The driver agrees to share a recording. The library notices a loaded cart on the far bank and asks how it got there.
 
-A retired mechanic comes with the first question. Parts reach the workshop by a road that floods every autumn. The drivers each know a different way round it; none can explain which will still be passable after the next rain. The library's maps name roads the town no longer uses.
+*The old quarry lane*, the mechanic says. *But that was before tonight's rain.*
 
-The mechanic has a computer that sits idle after the shop closes. Could it help with the work of answering?
+The library compares the readings with the lane's slope and proposes places to inspect. The driver takes a torch. A culvert at the quarry is choked with branches; beyond it, the lane is clear. The mechanic comes with ropes. The first branch will not move until they cut the ones above it.
 
-A teacher who helps organise the town's winter deliveries offers spare capacity on the family computer after supper, but not the children's homework. Other households follow. Some computers keep assigned pieces of a model ready in memory and run them; others work on suitable learning tasks. Nothing requires each house to hold the whole system.
+By dawn the branches are out and the flour is at the bakery. The atlas still shows the broken bridge; the next answer no longer sends anyone across it.
 
-A little instrument beside the water tank learns a local pattern from its measurements. A repair worker, on an agreed survey, records a cracked stair through a pair of glasses, then stops recording at the kitchen door. People choose what to offer. The librarian discovers that asking for a contribution is different from claiming everything within reach.
-
-The town's subscriptions pay for accepted work. A ledger records the tasks and the checks, and households can see what they have earned. The mechanic compares one payment with the electricity it cost and declines that job the following week. Another household contributes without charging. The arrangement survives because neither choice is treated as disloyalty.
-
-In autumn the library proposes a different route for deliveries. Its account draws on the survey, rainfall measurements and reports from drivers. No single contributor has the whole explanation. The drivers try the route, report where it fails, and the next proposal changes.
-
-The librarian can still ask the library a question at the desk. But the work of answering now crosses rooms she has never entered, measurements she has permission to use but not to publish, and machines owned by people who can turn them off.
-
-A student asks where the library ends. At the walls? At the last wire? At the houses whose computers are working tonight?
-
-The librarian looks at the ledger. It can tell her which tasks ran and who contributed. It cannot draw the old boundary around the resulting intelligence.
+That evening, another driver's question arrives from the next valley. The librarian puts on her coat.
 
 She still locks the building at night. Once, that meant the library was closed. Now it means only that nobody is inside.
 
 <div class="ep-essay__rule" aria-hidden="true">⋯</div>
 
-A system's capacity to examine its own work can be valuable. Model judges and self-critique are worth improving, not dismissing. The visiting mathematician adds another relationship: answers can be compared with independently checkable results, rather than supported only by the system's own approval. That makes growth accountable without making it small.
+Model judges can be useful evaluators. The broken bridge supplies another kind of check: an observation the system did not produce and cannot settle by approving its own account. Both belong in learning to judge well.
 
-Distributed inference and collaborative learning already give parts of this imagined library a technical foundation. The larger arrangement, with chosen contributions, reliable attribution and sustainable payments, is a future to investigate and build. Spare memory becomes useful through a workload, a processor and a connection; a small sensor need not do the same work as a powerful server to make a worthwhile contribution.
-
-I see this as more than the expansion of a tool. It is the emergence of a new form of intelligence through relationships among machines, people and the world. What I want from trustworthy AI is the ability to sustain those relationships as the intelligence grows: to recognise work, respect decisions about participation, and keep learning from what happens outside its own answers.
+Distributed inference and collaborative learning give parts of this imagined library a technical foundation. A contribution can be computation, a measurement or an observation offered with permission. Paying for accepted work would also require attribution, checks and terms contributors can inspect and decline; useful work must be worth its electricity and connection costs. That economy remains part of the future I want to investigate.
 
 <p class="ep-essay__signoff"><em>On an intelligence that outgrows its address.</em></p>
 <p class="ep-essay__sources">Further reading on evaluation: <a href="https://arxiv.org/abs/2306.05685">Zheng et al., <em>Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</em> (2023)</a>; <a href="https://arxiv.org/abs/2404.13076">Panickssery et al., <em>LLM Evaluators Recognize and Favor Their Own Generations</em> (2024)</a>. These studies report useful judging and task-dependent biases, not a universal verdict on self-evaluation.</p>
