@@ -54,7 +54,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   <li>
     <div class="meta">2024– · Avion · Full-stack platform</div>
     <h3 class="title">Avion Cloud Environment</h3>
-    <p class="desc">Principal developer (about 70% of commits) of the platform that configures, monitors and diagnoses simulator bus systems: SvelteKit and TypeScript client, Python gRPC backend, Redis and PostgreSQL. It holds time-aligned state of the kind any learned component would have to be evaluated against. Its development was also approved as R&amp;D under WBSO.</p>
+    <p class="desc">Principal developer (about 70% of commits) of the platform that configures, monitors and diagnoses simulator bus systems: SvelteKit and TypeScript client, Python gRPC backend, Redis and PostgreSQL, with Scala on the side sending the data. It holds time-aligned state of the kind any learned component would have to be evaluated against. Its development was also approved as R&amp;D under WBSO.</p>
   </li>
   <li>
     <div class="meta">2025– · Avion · Delivered software</div>
