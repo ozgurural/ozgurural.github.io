@@ -56,4 +56,4 @@ Leaving the club didn't mean leaving the habits behind. The discipline of double
 8. [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))
 
 ---
-*Dr. Ozgur Ural connects the discipline of elite sports to high-performance engineering leadership.*
+*Dr. Ozgur Ural is a machine learning research scientist and senior software engineer. He raced with the METU sailing club in Urla, Bodrum and Marmaris.*
