@@ -36,14 +36,14 @@ description: "Technical advisory, ML security and model provenance review, confe
     <p class="desc">2nd Workshop on NLP Applied to Information and Cyber Security. Reviewing submissions on NLP for threat intelligence, abuse detection, and defensive cyber.</p>
   </li>
   <li>
-    <div class="meta">Journal Referee · multi-year</div>
-    <h3 class="title">IEEE Access and peer-reviewed journals in ML security &amp; distributed systems</h3>
-    <p class="desc">Manuscript review across ML security, privacy, distributed systems, and intelligent infrastructure. Frequent reviewer for IEEE Access in the secure-ML track.</p>
+    <div class="meta">Journal Referee · 2024–2025</div>
+    <h3 class="title">Peer-reviewed journals in ML, security &amp; optimization</h3>
+    <p class="desc">Completed manuscript reviews for <strong>IEEE Access</strong> (2024, 2025) and the <strong>Arabian Journal for Science and Engineering</strong> (Springer, 2025), and accepted a review invitation for the <strong>Turkish Journal of Electrical Engineering &amp; Computer Sciences</strong> (TÜBİTAK, 2025). The manuscripts span machine-learning security, blockchain and federated learning, and optimization.</p>
   </li>
   <li>
-    <div class="meta">Conference Reviewer</div>
-    <h3 class="title">IEEE conferences &amp; symposia</h3>
-    <p class="desc">Computer security, data privacy, machine learning, distributed systems, blockchain.</p>
+    <div class="meta">Conference Reviewer · 2026</div>
+    <h3 class="title">ICECI 2026, Emerging Computational Intelligence</h3>
+    <p class="desc">Completed peer review for the 2nd International Conference on Emerging Computational Intelligence (AMU, Aligarh, India).</p>
   </li>
 </ul>
 
