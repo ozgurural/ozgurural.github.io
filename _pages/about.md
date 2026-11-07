@@ -45,7 +45,7 @@ redirect_from:
   <span class="ep-eyebrow">Trustworthy AI · ML security · Real-time &amp; safety-critical systems</span>
   <h1 class="ep-hero__title"><span class="accent">Trustworthy AI</span><br>for mission-critical systems.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, a machine learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>, where I build real-time software for Level D flight simulators and lead the company's AI strategy and reference architecture. My research asks what it takes to trust a model: evidence of how it was trained and who owns it, robustness against attackers, and predictable timing when it runs inside a real-time loop.
+    I'm <strong>Dr. Ozgur Ural</strong>, a machine learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>, where I build real-time software for Level D flight simulators and lead the company's AI research and development, its AI strategy and reference architecture. My research asks what it takes to trust a model: evidence of how it was trained and who owns it, robustness against attackers, and predictable timing when it runs inside a real-time loop.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>
