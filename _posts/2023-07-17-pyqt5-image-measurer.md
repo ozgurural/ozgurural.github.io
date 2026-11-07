@@ -11,7 +11,7 @@ tags:
 
 ---
 
-Python's versatility allows it to create tools for a broad spectrum of professional fields. In this blog post, I walk through building an image measurement tool using PyQt5 - a set of Python bindings for Qt libraries. This tool, tailored for cardiology doctors analyzing EKG (Electrocardiogram) reports, lets users load an image, select two points on the image, and calculate the distance between them.
+In this post I walk through building an image measurement tool using PyQt5, a set of Python bindings for the Qt libraries. This tool, tailored for cardiology doctors analyzing EKG (Electrocardiogram) reports, lets users load an image, select two points on the image, and calculate the distance between them.
 
 This application, named "Image Measurer," was developed for Dr. Görkem Şefik Fatihoğlu, aiding in his analysis of EKG reports.
 
@@ -78,7 +78,7 @@ The `--onefile` option tells PyInstaller to produce a single executable file, wh
 
 We have discussed a PyQt5-based image measurement tool specifically designed for cardiology professionals analyzing EKG reports. This blog post has covered the fundamental code elements, application usage, and the packaging of the application for distribution.
 
-The complete source code for the project is [available on GitHub](https://github.com/ozgurural/image-measurer). This tool is designed to assist medical professionals like Dr. Görkem Şefik Fatihoğlu and improve the EKG analysis process.
+The complete source code for the project is [available on GitHub](https://github.com/ozgurural/image-measurer). This tool is designed to assist medical professionals like Dr. Görkem Şefik Fatihoğlu in their EKG analysis.
 
 Please feel free to reach out to me directly via email for further questions or feedback.
 

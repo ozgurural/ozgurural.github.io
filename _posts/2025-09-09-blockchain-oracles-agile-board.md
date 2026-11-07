@@ -9,7 +9,7 @@ tags:
   - smart-contracts
   - oracles
   - agile
-description: "Traditional agile boards depend on centralized tools and manual updates. As projects span multiple organizations and trust boundaries, these boards struggle ..."
+description: "How blockchain oracles and smart contracts could feed real-world progress into a tamper-evident coordination layer, and the challenges still open."
 
 header:
   og_image: "lab-og/og-oracles.png"
@@ -23,7 +23,7 @@ On-chain smart contracts cannot access external data directly. Oracles solve thi
 
 ## Smart contracts automate the backlog
 
-Once real-world signals reach the chain, smart contracts can enforce workflows without a central administrator. Tasks can be represented as tokens, ERC 721 NFTs or ERC 1155 semi-fungible items, with states such as "todo," "in progress," and "done." Transitions between states are governed by contract logic (e.g., [OpenZeppelin's Governor](https://docs.openzeppelin.com/contracts/5.x/governance)) and triggered by oracle inputs. Milestone payments or reputation updates can execute automatically using [Chainlink Automation](https://docs.chain.link/chainlink-automation/introduction), aligning incentives across globally distributed teams.
+Once real-world signals reach the chain, smart contracts can enforce workflows without a central administrator. Tasks can be represented as tokens, ERC-721 NFTs or ERC-1155 semi-fungible items, with states such as "todo," "in progress," and "done." Transitions between states are governed by contract logic (e.g., [OpenZeppelin's Governor](https://docs.openzeppelin.com/contracts/5.x/governance)) and triggered by oracle inputs. Milestone payments or reputation updates can execute automatically using [Chainlink Automation](https://docs.chain.link/chainlink-automation/introduction), aligning incentives across globally distributed teams.
 
 ## Anonymous task markets and autonomous companies
 
@@ -40,7 +40,7 @@ When these contracts are coupled with decentralized governance frameworks such a
 
 ## Challenges and the road ahead
 
-Oracle reliability, contract upgrades, and user experience remain open challenges. However, advances in decentralized oracle networks, formal verification tools such as [Certora](https://www.certora.com/), and wallet usability are rapidly reducing these barriers. Pilot projects in supply chain management and decentralized autonomous organizations already demonstrate the model.
+Oracle reliability, contract upgrades, and user experience remain open challenges. However, advances in decentralized oracle networks, formal verification tools such as [Certora](https://www.certora.com/), and wallet usability are rapidly reducing these barriers. Pilot projects in supply chain management and decentralized autonomous organizations already explore parts of this model.
 
 ## Outlook
 

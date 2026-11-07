@@ -7,7 +7,7 @@ tags:
   - expat
   - culture
   - comparison
-description: "Living as an expat has given me the chance to compare daily life in the United States and the Netherlands in a way that guidebooks never could. My notebook i..."
+description: "Comparing daily life in the United States and the Netherlands as an expat: work rhythms, transit, bureaucracy, healthcare, and the habits worth keeping from each."
 
 ---
 
@@ -15,9 +15,9 @@ Living as an expat has given me the chance to compare daily life in the United S
 
 ## At-a-glance Cheat Sheet
 
-| Daily life axis | Netherlands (Leiden + frequent trains to Rotterdam) | United States (Daytona Beach + research trips) | Personal cheat code |
+| Daily life axis | Netherlands (Leiden + frequent trains to Nieuw-Vennep) | United States (Daytona Beach + research trips) | Personal cheat code |
 | --- | --- | --- | --- |
-| Commute baseline | 12-minute bike warm-up to Leiden Centraal + 32-minute Intercity with steady Wi-Fi; meeting invites default to 25-minute "train windows." | 18-minute drive when the Space Coast is sleepy; 40–45 minutes if it's raining, race week, or there's a rocket dress rehearsal. | Queue merge requests offline and reward yourself with a kiosk croissant; in Florida, stash granola + a charged SunPass to treat traffic like a boss level. |
+| Commute baseline | 12-minute bike warm-up to Leiden Centraal + a short train ride with steady Wi-Fi; meeting invites default to 25-minute "train windows." | 18-minute drive when the Space Coast is sleepy; 40–45 minutes if it's raining, race week, or there's a rocket dress rehearsal. | Queue merge requests offline and reward yourself with a kiosk croissant; in Florida, stash granola + a charged SunPass to treat traffic like a boss level. |
 | Workday rhythm | 36–40 hours with vacation buffers and colleagues who log off like they mean it. | 45–55 hours in grad-school crunch mode; "quick sync" translates to 7 p.m. Zoom. | Imported Dutch "log-off alarms" to Slack and keep the American appetite for audacious sprint goals: best of both calendars. |
 | Coffee economy | €1.20 self-serve machine, optional stroopwafel, reliable focus achieved by cup two. | $5.35 cold brew plus tip because the barista remembers my thesis topic and my deadline. | Dutch savings flow into the travel fund; stateside I batch-brew between experiments to keep the espresso line from eating the day. |
 | Time off reality | I actually take 24 of the 25 vacation days on offer, and HR cheers when I tack on an extra Friday. | "Unlimited" vacation turns into 10 real days after approvals, promises, and a polite "maybe after launch?" | Book the flight first, file the request second, and share the itinerary so teammates volunteer for coverage. |
@@ -39,7 +39,7 @@ Back in the U.S., my graduate research assistant days at Embry-Riddle Aeronautic
 
 ## Transportation & Mobility
 
-Cycling everywhere in the Netherlands rewired my sense of distance. I measure days in canals crossed and count meetings by the number of times I’ve balanced my backpack on the rear rack before catching the intercity. The NS app is frighteningly accurate: if it promises a 07:58 departure, the train doors sigh shut at 07:58. I slot code reviews between Leiden and Rotterdam because there is dependable Wi-Fi and exactly enough time to draft a merge request.
+Cycling everywhere in the Netherlands rewired my sense of distance. I measure days in canals crossed and count meetings by the number of times I’ve balanced my backpack on the rear rack before catching the intercity. The NS app is frighteningly accurate: if it promises a 07:58 departure, the train doors sigh shut at 07:58. I slot code reviews between Leiden and Nieuw-Vennep because there is dependable Wi-Fi and exactly enough time to draft a merge request.
 
 In Florida, the car becomes my lifeline again. Daytona Beach has buses, but late-night lab work means driving to campus, blasting podcasts, and budgeting extra time for thunderstorms that slow down traffic. I keep a hurricane kit in the trunk next to a well-traveled badge lanyard. Dutch me swears by the OV-chipkaart and rail snacks; American me keeps quarters for toll booths and invests in windshield wipers the way others invest in index funds.
 
@@ -65,11 +65,11 @@ In Daytona Beach, Publix is king, and my cart fills with greens, bagels, and the
 
 Healthcare is the question I get the most. In the Netherlands, I registered with a huisarts (family doctor) who knows my coffee order and my physical therapy exercises. Specialists are a referral away, prescriptions refill online in 24 hours, and bills arrive with the calm energy of a mindful breathing app. I pay a monthly premium, and that is the end of the mystery.
 
-Stateside, I keep spreadsheets of copays, deductibles, and which clinic is "in network" this week. On the plus side, access to leading research hospitals is remarkable; my grad program meant MRI machines down the hall and, across the street, people whose papers I was citing. On the downside, I treat phone calls to insurance providers like prepping for a thesis defense.
+Stateside, I keep spreadsheets of copays, deductibles, and which clinic is "in network" this week. On the plus side, access to leading research hospitals is remarkable, and a university town means no shortage of people whose papers I was citing. On the downside, I treat phone calls to insurance providers like prepping for a thesis defense.
 
 ## Weather, Mood, and Mental Health
 
-Dutch winters are 50 shades of gray, but the country compensates with candles, indoor plants, and cafés that appear to have been decorated by hygge consultants. I learned to schedule midday light-therapy breaks and keep a gratitude log that includes "today I did not fall into a canal."
+Dutch winters are 50 shades of gray, but the country compensates with candles, indoor plants, and cafés that master the Dutch art of gezelligheid. I learned to schedule midday light-therapy breaks and keep a gratitude log that includes "today I did not fall into a canal."
 
 Florida weather is humid drama. Afternoon thunderstorms crash in, and the sun returns as if nothing happened. Vitamin D is plentiful; dehydration lurks. My coping mechanisms include iced coffee diplomacy and gym sessions timed to coincide with the daily rain so the drive home doubles as a free car wash.
 
@@ -85,4 +85,4 @@ In the U.S., strangers compliment your sneakers while you wait for coffee, and i
 - **American superpowers:** Dream-big brainstorming, mentors who cheerlead across time zones, and the ability to assemble a cross-functional team over a single cup of coffee.
 - **Universal lesson:** Home can stretch across two very different coastlines when you treat habits like carry-on luggage: pack light, swap freely, and leave room for souvenirs.
 
-These differences shape daily experiences and remind me that both passports come with habits worth keeping. I’m still learning how to balance tulip-lined bike paths with launch-pad sunsets, and that's a good problem to have.
+These differences shape daily experiences and remind me that both countries come with habits worth keeping. I’m still learning how to balance tulip-lined bike paths with launch-pad sunsets, and that's a good problem to have.

@@ -26,7 +26,7 @@ Those early regattas taught me more than boat handling. We planned our own logis
 
 ## Lessons from the Cockpit
 
-1. Telltales are the boat's heartbeat, glance at them every few seconds.
+1. Telltales are the boat's heartbeat; glance at them every few seconds.
 2. Communication beats heroics; call your moves early and clearly.
 3. If you have time to relax, you have time to coil a line.
 
@@ -50,7 +50,7 @@ Leaving the club didn't mean leaving the habits behind. The discipline of double
 2. [Aegean Offshore Yacht Club](https://www.eayk.org)
 3. [BAYK - Bodrum Offshore Sailing Club](https://bayk.org.tr)
 4. [Marmaris International Race Week](https://www.marmarisraceweek.com)
-5. Jimmy Key Cup regattas, Marmaris
+5. Jimmy Key Cup regattas, Urla
 6. [Baykar Tech](https://www.baykartech.com)
 7. [Yacht racing - Wikipedia](https://en.wikipedia.org/wiki/Yacht_racing)
 8. [Sailing (sport) - Wikipedia](https://en.wikipedia.org/wiki/Sailing_(sport))

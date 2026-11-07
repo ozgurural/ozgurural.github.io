@@ -3,14 +3,16 @@ categories: technical
 permalink: /blog/adversarial-examples-for-proof-of-learning
 title: "Adversarial Examples for Proof of Learning"
 date: 2024-03-02
-description: "Code for paper 'Adversary examples' for Proof of Learning"
+description: "A fork of Zhang et al.'s adversarial-example attack on Proof-of-Learning (IEEE S&P 2022), kept as a runnable reference for testing defences."
 
 header:
   og_image: "lab-og/og-pol.png"
 ---
 
-An implementation of the spoofing attack that Proof-of-Learning has to survive,
-kept as a working reference rather than as a result.
+This is a fork of Zhang et al.'s adversarial-example attack on Proof-of-Learning,
+kept as a working reference rather than as a result. The code accompanies their
+paper ["Adversarial Examples" for Proof-of-Learning](https://arxiv.org/abs/2108.09454)
+(IEEE S&P 2022).
 
 The premise is short. Proof-of-Learning verifies that a model was trained by
 replaying part of the recorded trajectory, so an attacker who holds only the

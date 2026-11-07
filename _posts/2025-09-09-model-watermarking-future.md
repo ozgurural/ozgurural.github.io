@@ -7,7 +7,7 @@ tags:
   - model-watermarking
   - security
   - machine-learning
-description: "Model watermarking embeds identifiable patterns into a model's parameters or outputs so that ownership can be demonstrated without access to the original tra..."
+description: "Model watermarking embeds ownership signals in a model's weights or outputs. How my research pairs those marks with Proof-of-Learning, and where the field is headed."
 
 header:
   og_image: "lab-og/og-wm.png"
@@ -19,7 +19,7 @@ In production settings, watermark checks are only useful when paired with solid 
 
 ## Toward resilient Proof-of-Learning
 
-During my doctorate at Embry-Riddle Aeronautical University I kept returning to the question: how do we prove a model was honestly trained when the hardware, datasets, and even contributors are distributed across continents? Our research investigates how watermarking strengthens Proof-of-Learning (PoL) by binding models to verifiable training artifacts. Feature-based schemes tie a model's internal representations to secret keys, making spoofing attacks detectable [1].
+During my doctorate at Embry-Riddle Aeronautical University I kept returning to the question: how do we prove a model was honestly trained when the hardware, datasets, and even contributors are distributed across continents? Our research investigates how watermarking strengthens Proof-of-Learning (PoL) by binding models to verifiable training artifacts. Feature-based schemes tie a model's internal representations to secret keys, so a forger must reproduce the ownership signal as well as the training log [1].
 
 SecurePoL then trained one design from each of three watermark families (feature-based triggers, sparse parameter perturbations and a non-intrusive auxiliary head) under one regime and compared them [6]. No single family wins, and the question that decides is access: a parameter mark costs almost nothing but can only be read with the weights in hand, a feature-trigger mark can be checked by querying the model from outside, and an auxiliary head leaves the main task untouched but can be replaced.
 

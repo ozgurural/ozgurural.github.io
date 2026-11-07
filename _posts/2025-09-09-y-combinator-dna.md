@@ -9,7 +9,7 @@ tags:
   - y-combinator
   - biology
   - computation
-description: "It started while I was nursing a Saturday-morning coffee and catching up on YouTube. Around the 11:20 mark of this talk, the speaker described the choreograp..."
+description: "A YouTube talk on DNA replication sent me back to the Y combinator: both are fixed-point stories about systems that bootstrap their own continuation."
 
 header:
   og_image: "lab-og/og-gd.png"

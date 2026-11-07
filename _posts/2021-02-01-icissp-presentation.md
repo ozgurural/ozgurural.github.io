@@ -13,7 +13,7 @@ permalink: /posts/2021/02/icissp-presentation/
 
 I gave [this talk](https://www.youtube.com/watch?v=MTFimNPxAKw&t=25s) at the International Conference on Information Systems Security and Privacy, on the paper I wrote with Prof. Cengiz Acartürk. The full record of the work is on its [publication page](/publication/AutomaticDetectionCyberSecurity); this post is about presenting it.
 
-Two points drew the most discussion in the room.
+Two points drew the most discussion in the session.
 
 The first was that the hard part is not the detection step. Turkish is agglutinative, so one stem yields dozens of legal surface forms, and keyword matching reads them as unrelated tokens. The evidence scatters across the vocabulary until there is too little of it per keyword to count. That is solved before detection, by normalising every text through the ITU NLP service, so the preprocessing is part of the detector rather than cleanup around it. The detector itself is deliberately simple: it counts how often each possible target is named per day and flags a day that departs from that target’s own history.
 
