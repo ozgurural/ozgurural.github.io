@@ -8,27 +8,27 @@ tags:
   - proof-of-learning
   - security
   - machine-learning
-description: "Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. I first felt th..."
+description: "Proof of Learning (PoL) proposes a record of training that others can re-check. Its robustness is contested, which is why my work adds a second, independent check."
 
 header:
   og_image: "lab-og/og-pol.png"
 ---
 
-Proof of Learning (PoL) verifies that a model was genuinely trained on claimed data by providing verifiable evidence of the training process. As machine learning systems become pervasive in critical domains, PoL offers a mechanism to ensure trust and accountability in model provenance.
+Proof of Learning (PoL) proposes a record of the training process that others can re-check, so that a party can show it trained a model rather than copied one. Its robustness is contested: Fang et al. (IEEE EuroS&P 2023) show that current PoL verification can be spoofed and argue that a provably robust version needs a better understanding of deep-learning optimisation. That is why my work does not rely on the training record alone.
 
 ## Why PoL Matters in Practice
 
-1. **Model provenance:** PoL links models to their training data and processes, deterring plagiarism and unauthorized reuse. That matters, for example, to a buyer comparing model vendors who needs evidence that a model is not a repackaged public checkpoint.
+1. **Model provenance:** PoL aims to link a model to the training process that produced it, which would deter plagiarism and unauthorized reuse. That matters, for example, to a buyer comparing model vendors who needs evidence that a model is not a repackaged public checkpoint.
 2. **Regulatory compliance:** Governments and industries are moving toward regulations that demand auditable machine learning pipelines.
 3. **Economic incentives:** Integrating PoL with blockchain allows useful training work to replace wasteful mining computations [5].
 
 ## What Our Research Adds
 
-Our research explores model watermarking to protect PoL against spoofing attacks. Feature-based watermarking ties a model to its training data, making forgeries detectable [1]. The dissertation extends these findings and offers deployment guidelines for secure PoL pipelines [2], while earlier survey work examines how blockchain mechanisms complement PoL in decentralized learning environments [3].
+Our research explores model watermarking to protect PoL against spoofing attacks. Feature-based watermarking embeds an ownership mark during training, so a forged training record must also reproduce a mark the forger never embedded; against the attacks we tested this raises the cost of forgery, without making it impossible [1]. The dissertation extends these findings and offers deployment guidelines for secure PoL pipelines [2], while earlier survey work examines how blockchain mechanisms complement PoL in decentralized learning environments [3].
 
 ## Future Outlook
 
-Emerging blockchain protocols employ PoL as a form of Proof-of-Useful-Work, demonstrating how verifiable training can secure decentralized networks while advancing machine learning [4,5]. I expect the next wave of projects to pair PoL attestations with lightweight compliance dashboards so that technical and policy stakeholders share the same view of model lineage. As the demand for trustworthy AI grows, PoL will underpin open model markets, verifiable federated learning, and energy-efficient consensus systems.
+Emerging blockchain protocols employ PoL as a form of Proof-of-Useful-Work, proposing that verifiable training could help secure decentralized networks while advancing machine learning [4,5]. I expect the next wave of projects to pair PoL attestations with lightweight compliance dashboards so that technical and policy stakeholders share the same view of model lineage. As the demand for trustworthy AI grows, PoL will underpin open model markets, verifiable federated learning, and energy-efficient consensus systems.
 
 ## References
 
