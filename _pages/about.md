@@ -20,6 +20,7 @@ redirect_from:
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
   "email": "drozgurural@gmail.com",
+  "identifier": { "@type": "PropertyValue", "propertyID": "Scopus Author ID", "value": "57222520151" },
   "alumniOf": [
     { "@type": "CollegeOrUniversity", "name": "Embry-Riddle Aeronautical University", "url": "https://erau.edu" },
     { "@type": "CollegeOrUniversity", "name": "Middle East Technical University", "url": "https://www.metu.edu.tr/" }
