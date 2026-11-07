@@ -28,7 +28,7 @@ Our research explores model watermarking to protect PoL against spoofing attacks
 
 ## Future Outlook
 
-Emerging blockchain protocols employ PoL as a form of Proof-of-Useful-Work, proposing that verifiable training could help secure decentralized networks while advancing machine learning [4,5]. I expect the next wave of projects to pair PoL attestations with lightweight compliance dashboards so that technical and policy stakeholders share the same view of model lineage. As the demand for trustworthy AI grows, PoL will underpin open model markets, verifiable federated learning, and energy-efficient consensus systems.
+Emerging blockchain protocols employ PoL as a form of Proof-of-Useful-Work, proposing that verifiable training could help secure decentralized networks while advancing machine learning [4,5]. I expect the next wave of projects to pair PoL attestations with lightweight compliance dashboards so that technical and policy stakeholders share the same view of model lineage. If its robustness can be established, verifiable training could underpin open model markets, verifiable federated learning, and energy-efficient consensus systems.
 
 ## References
 
