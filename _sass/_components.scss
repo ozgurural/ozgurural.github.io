@@ -477,6 +477,33 @@
   line-height: 1.55;
   max-width: var(--ds-measure);
 }
+/* A referee card names several venues; one per line with the year set apart
+   scans faster than a run-on sentence. Scoped to the card so the global
+   content-list sizing (1.0625rem/1.7) does not inflate it. */
+.ep-cards .ep-venues {
+  list-style: none;
+  margin: 0.15rem 0 0.55rem;
+  padding: 0;
+}
+.ep-cards .ep-venues li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.22rem 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--ds-muted);
+}
+.ep-cards .ep-venues .venue { color: var(--ds-ink); }
+.ep-cards .ep-venues .yr {
+  flex: none;
+  font-family: var(--ds-font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--ds-muted);
+  white-space: nowrap;
+}
 /* A card can open on a picture of the work: a frame from its film, or the
    interactive page itself. It runs to the card's edges, and its link is a
    second way to the same place as the title, so it is hidden from assistive
