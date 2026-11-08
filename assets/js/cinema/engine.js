@@ -107,7 +107,7 @@ export function setLinePoints(line, pts, pairs = false) {
    focus) rather than run together. A film's corner mark uses the short form,
    "Dr. Ozgur Ural · Trustworthy AI for Mission-Critical Systems". */
 export const AUTHOR = '<span class="by">A film by</span>Dr. Ozgur Ural' +
-  '<span>Machine Learning Research Scientist &amp; Senior Software Engineer</span>' +
+  '<span>AI Research Scientist &amp; Senior Software Engineer</span>' +
   '<span>U.S. Ph.D. in Electrical Engineering and Computer Science</span>' +
   '<span>Trustworthy AI for Mission-Critical Systems</span>' +
   '<span class="url">ozgurural.github.io</span>';

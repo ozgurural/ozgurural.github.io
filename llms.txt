@@ -21,7 +21,7 @@ sitemap: false
 {%- endcomment -%}
 # {{ site.author.name }}
 
-> Machine Learning Research Scientist & Senior Software Engineer, Ph.D. Leads AI research and development and enterprise AI strategy at {{ site.author.employer }}. U.S. doctorate in Electrical Engineering and Computer Science (Embry-Riddle Aeronautical University, 2025) with three first-author IEEE Access papers: two on verifiable machine learning and a survey of blockchain-enhanced machine learning. More than twelve years of professional experience in industry and research, building mission-critical software across defense, cybersecurity and flight simulation. Based in {{ site.author.location }}.
+> AI Research Scientist & Senior Software Engineer, Ph.D. Leads AI research and development and enterprise AI strategy at {{ site.author.employer }}. U.S. doctorate in Electrical Engineering and Computer Science (Embry-Riddle Aeronautical University, 2025) with three first-author IEEE Access papers: two on verifiable machine learning and a survey of blockchain-enhanced machine learning. More than twelve years of professional experience in industry and research, building mission-critical software across defense, cybersecurity and flight simulation. Based in {{ site.author.location }}.
 
 ## Highlights
 

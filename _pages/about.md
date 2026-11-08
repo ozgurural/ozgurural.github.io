@@ -2,7 +2,7 @@
 permalink: /
 title: "Trustworthy AI for Mission-Critical Systems"
 hide_title: true
-excerpt: "Machine learning research scientist and senior software engineer: trustworthy AI for mission-critical systems. U.S. Ph.D., three first-author IEEE Access papers."
+excerpt: "AI research scientist and senior software engineer: trustworthy AI for mission-critical systems. U.S. Ph.D., three first-author IEEE Access papers."
 author_profile: true
 redirect_from:
   - /about/
@@ -16,7 +16,7 @@ redirect_from:
   "name": "Dr. Ozgur Ural",
   "honorificPrefix": "Dr.",
   "jobTitle": {{ site.data.person.job_title | jsonify }},
-  "description": "Machine learning research scientist and senior software engineer at Avion working on trustworthy AI for mission-critical systems: verifiable training and model provenance, adversarial robustness, and AI inside real-time loops. Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University, USA; three first-author IEEE Access papers.",
+  "description": "AI research scientist and senior software engineer at Avion working on trustworthy AI for mission-critical systems: verifiable training and model provenance, adversarial robustness, and AI inside real-time loops. Ph.D. in Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University, USA; three first-author IEEE Access papers.",
   "url": "https://ozgurural.github.io",
   "image": "https://ozgurural.github.io/images/ozgururalpp.webp",
   "email": "drozgurural@gmail.com",
@@ -46,7 +46,7 @@ redirect_from:
   <span class="ep-eyebrow">Trustworthy AI · ML security · Real-time &amp; safety-critical systems</span>
   <h1 class="ep-hero__title"><span class="accent">Trustworthy AI</span><br>for mission-critical systems.</h1>
   <p class="ep-hero__lede">
-    I'm <strong>Dr. Ozgur Ural</strong>, a machine learning research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>, where I build real-time software for Level D flight simulators and lead the company's AI research and development, its AI strategy and reference architecture. My research asks what it takes to trust a model: evidence of how it was trained and who owns it, robustness against attackers, and predictable timing when it runs inside a real-time loop.
+    I'm <strong>Dr. Ozgur Ural</strong>, an AI research scientist and senior software engineer at <a href="https://www.aviongroup.aero/">Avion</a>, where I build real-time software for Level D flight simulators and lead the company's AI research and development, its AI strategy and reference architecture. My research asks what it takes to trust a model: evidence of how it was trained and who owns it, robustness against attackers, and predictable timing when it runs inside a real-time loop.
   </p>
   <p class="ep-hero__status">
     <span class="ep-status-dot" aria-hidden="true"></span>

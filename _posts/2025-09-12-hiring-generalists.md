@@ -52,4 +52,4 @@ Constraints on small teams also demand humility. The ideal generalist is confide
 Hiring generalists early is about building the team you want later. Once the product stabilizes, specialists can join to scale specific functions. The initial generalists will have paved the way, establishing culture, creating foundational systems, and leaving behind documentation that covers the whole product. Their fingerprints are everywhere, from the first commit to the onboarding guide, and that continuity becomes a competitive advantage.
 
 ---
-*Dr. Ozgur Ural is a machine learning research scientist and senior software engineer. He led a team of 14 engineers at Havelsan and has built software across cybersecurity, defense and flight simulation.*
+*Dr. Ozgur Ural is an AI research scientist and senior software engineer. He led a team of 14 engineers at Havelsan and has built software across cybersecurity, defense and flight simulation.*

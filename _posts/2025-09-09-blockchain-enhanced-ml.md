@@ -74,4 +74,4 @@ A ledger does not make a model smarter. It makes the model's history checkable, 
 [1] Dr. Ozgur Ural and Yoshigoe, K. (2023). *Survey on Blockchain-Enhanced Machine Learning*. IEEE Access.
 
 ---
-*Dr. Ozgur Ural is a machine learning research scientist and senior software engineer. This article draws on his IEEE Access survey on blockchain-enhanced machine learning [1].*
+*Dr. Ozgur Ural is an AI research scientist and senior software engineer. This article draws on his IEEE Access survey on blockchain-enhanced machine learning [1].*

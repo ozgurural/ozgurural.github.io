@@ -1271,7 +1271,7 @@
       var name = s.caption("<span style='font-family:var(--ds-font-display); font-size:clamp(1.9rem, 5.2vw, 3.4rem); font-weight:500; line-height:1.08; letter-spacing:0.012em; color:#ffffff; white-space:nowrap;'>Dr. Ozgur Ural</span>",
                            { px: FW / 2, py: FH * 0.411, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
-      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>MACHINE LEARNING RESEARCH SCIENTIST &amp; SENIOR SOFTWARE ENGINEER</span>",
+      var role = s.caption("<span style='font-family:var(--ds-font-mono); font-size:clamp(0.6rem, 2vw, 1.05rem); line-height:1; color:#ffffff; opacity:0.8; letter-spacing:0.15em; text-transform:uppercase; white-space:nowrap;'>AI RESEARCH SCIENTIST &amp; SENIOR SOFTWARE ENGINEER</span>",
                            { px: FW / 2, py: FH * 0.520, anchor: "center", align: "center", panel: false, maxWidth: "100%" });
 
       var url = s.caption("<span style='font-family:var(--ds-font-serif); font-size:clamp(0.8rem, 2.2vw, 1.15rem); color:#ffffff; opacity:0.6; font-style:italic; white-space:nowrap;'>ozgurural.github.io</span>",

@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Dr. Ozgur Ural"
 title_separator          : "-"
 name                     : &name "Dr. Ozgur Ural"
-description              : &description "Trustworthy AI for mission-critical systems: machine learning research scientist and senior software engineer, U.S. Ph.D., three first-author IEEE Access papers."
+description              : &description "Trustworthy AI for mission-critical systems: AI research scientist and senior software engineer, U.S. Ph.D., three first-author IEEE Access papers."
 url                      : https://ozgurural.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -28,7 +28,7 @@ author:
   avatar           : "ozgururalpp.webp"
   name             : "Dr. Ozgur Ural"
   pronouns         : # example: "she/her"
-  bio              : "Machine Learning Research Scientist & Senior Software Engineer | Trustworthy AI for mission-critical systems | U.S. Ph.D. (Embry-Riddle)"
+  bio              : "AI Research Scientist & Senior Software Engineer | Trustworthy AI for mission-critical systems | U.S. Ph.D. (Embry-Riddle)"
   location         : "Leiden, Netherlands"
   employer         : "Avion Full Flight Simulators"
   employer_url     : "https://www.aviongroup.aero/"
@@ -100,9 +100,10 @@ facebook:
   app_id                 :
   publisher              :
 og_image                 : "og-default.png"  # 1200x630 social card (scripts/build-site-og.js)
-og_description           : "Dr. Ozgur Ural. Machine learning research scientist and senior software engineer at Avion: verifiable training, model provenance, adversarial robustness and AI in real-time systems. U.S. Ph.D. and three first-author IEEE Access papers."
+og_description           : "Dr. Ozgur Ural. AI research scientist and senior software engineer at Avion: verifiable training, model provenance, adversarial robustness and AI in real-time systems. U.S. Ph.D. and three first-author IEEE Access papers."
 keywords:
   - Dr. Ozgur Ural
+  - AI Research Scientist
   - Machine Learning Research Scientist
   - Senior Software Engineer
   - Machine Learning Researcher
