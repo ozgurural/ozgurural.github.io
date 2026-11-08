@@ -217,6 +217,9 @@
     margin-top: 10px;
     margin-bottom: 20px;
   }
+
+  // The degree stays on one line: a phone card broke it as "(Embry-" / "Riddle)".
+  .author__nw { white-space: nowrap; }
 }
 
 .author__urls-wrapper {
