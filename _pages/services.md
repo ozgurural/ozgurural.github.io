@@ -55,6 +55,6 @@ description: "Technical advisory, ML security and model provenance review, confe
   </li>
 </ul>
 
-Peer-review activity is also recorded on my <a href="https://orcid.org/0000-0003-1329-4303">ORCID profile</a> (0000-0003-1329-4303).
+Journal-verified reviews are also listed on my <a href="https://www.webofscience.com/wos/author/record/KII-5926-2024">Web of Science researcher profile</a> (ResearcherID KII-5926-2024) and my <a href="https://orcid.org/0000-0003-1329-4303">ORCID profile</a> (0000-0003-1329-4303).
 
 For service invitations, collaborations, or talks: <a href="mailto:drozgurural@gmail.com">drozgurural@gmail.com</a>.
