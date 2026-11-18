@@ -27,13 +27,7 @@ redirect_from:
   ],
   "worksFor": { "@type": "Organization", "name": "Avion Full Flight Simulators", "url": "https://www.aviongroup.aero/" },
   "knowsAbout": {{ site.data.person.knows_about | jsonify }},
-  "sameAs": [
-    "https://scholar.google.com/citations?user=lYx8fqsAAAAJ",
-    "https://orcid.org/0000-0003-1329-4303",
-    "https://www.researchgate.net/profile/Ozgur-Ural",
-    "https://twitter.com/ozgurural",
-    "https://github.com/ozgurural"
-  ]
+  "sameAs": {{ site.social.links | jsonify }}
 }
 </script>
 <!-- Ambient constellation is rendered site-wide via #tsparticles (see
