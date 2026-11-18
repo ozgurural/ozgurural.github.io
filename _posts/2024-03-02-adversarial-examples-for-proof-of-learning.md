@@ -1,6 +1,8 @@
 ---
 categories: technical
 permalink: /blog/adversarial-examples-for-proof-of-learning
+redirect_from:
+  - /blog/adversarial-examples-for-proof-of-learning/
 title: "Adversarial Examples for Proof of Learning"
 date: 2024-03-02
 description: "A fork of Zhang et al.'s adversarial-example attack on Proof-of-Learning (IEEE S&P 2022), kept as a runnable reference for testing defences."

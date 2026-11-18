@@ -1,6 +1,8 @@
 ---
 categories: technical
 permalink: /blog/pyqt5_image_measurer
+redirect_from:
+  - /blog/pyqt5_image_measurer/
 title: "Image Measurement with PyQt5: A Cardiology Aid"
 date: 2023-07-17
 description: "A clinician-calibrated EKG image measurement tool, and how its verified measurements can support human-in-the-loop clinical computer vision."

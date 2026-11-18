@@ -6,6 +6,8 @@ layout: archive
 redirect_from:
   - /technical-blog/
   - /blog.html
+  - /posts/2025/09/slowing-time-novelty/
+  - /posts/2025/09/metu-ceng-devrim/
 description: "Field notes on ML security, proof-of-learning, distributed systems, and high-reliability software for researchers, engineers, and technical leaders."
 
 ---

@@ -1,6 +1,8 @@
 ---
 categories: technical
 permalink: /blog/securepol-with-watermarking
+redirect_from:
+  - /blog/securepol-with-watermarking/
 title: "SecurePoL with Watermarking"
 date: 2024-01-18
 description: "Official code and experiments for my PhD dissertation, 'Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking.'"

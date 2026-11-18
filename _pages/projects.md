@@ -1,5 +1,7 @@
 ---
 permalink: /projects/
+redirect_from:
+  - /portfolio/
 title: "Projects"
 description: "Research code, industry systems and applied AI work by Dr. Ozgur Ural: model provenance, real-time flight simulation, UAV mission control, enterprise AI architecture."
 ---

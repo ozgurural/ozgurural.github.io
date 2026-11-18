@@ -1,5 +1,7 @@
 ---
 permalink: /essays/
+redirect_from:
+  - /talks/
 title: "Essays"
 excerpt: "Five fictional parables about making, seeing, trusting, and the emergence of a shared intelligence."
 ---
