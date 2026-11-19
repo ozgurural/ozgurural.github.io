@@ -35,7 +35,7 @@
         {%- endfor -%}
       </p>
     {% endif %}
-    <p class="pub__venue"><i>{{ post.venue }}</i>, {{ year }}</p>
+    <p class="pub__venue"><i>{{ post.venue }}</i>, {{ year }}{% if post.open_access %} &middot; <span class="pub__badge-oa">Open Access</span>{% endif %}</p>
     <p class="pub__desc" itemprop="description">{{ pub_excerpt }}</p>
     <p class="pub__links">
       {%- if post.paperurl -%}<a href="{{ post.paperurl }}">{% if post.paperurl contains '.pdf' %}PDF{% else %}Paper{% endif %}</a>{%- endif -%}

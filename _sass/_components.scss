@@ -650,6 +650,20 @@
 }
 .pub__authors strong { color: var(--ds-ink); font-weight: 600; }
 .pub__venue { color: var(--ds-muted); }
+.pub__badge-oa {
+  display: inline-block;
+  font-family: var(--ds-font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ds-accent);
+  padding: 0.08rem 0.42rem;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.06);
+  vertical-align: middle;
+}
 .pub__desc {
   margin: 0.5rem 0 0;
   font-size: 0.93rem;
@@ -687,6 +701,124 @@
 @media (prefers-reduced-motion: reduce) {
   .pub__media img { transition: none; }
   .pub:hover .pub__media img { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Publications category jump bar
+   -------------------------------------------------------------------------- */
+.ep-pub-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 2rem;
+}
+.ep-pub-nav__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--ds-line);
+  border-radius: 999px;
+  background: var(--ds-surface);
+  color: var(--ds-body);
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.ep-pub-nav__pill:hover,
+.ep-pub-nav__pill:focus-visible {
+  border-color: var(--ds-accent);
+  color: var(--ds-accent);
+  background: rgba(56, 189, 248, 0.08);
+}
+.ep-pub-nav__pill .count {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--ds-line);
+  color: var(--ds-muted);
+  font-size: 0.68rem;
+}
+
+/* --------------------------------------------------------------------------
+   Life / Travel Stations & Map
+   -------------------------------------------------------------------------- */
+.ep-life-map-wrap {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--ds-line);
+  border-radius: 8px;
+  background: var(--ds-surface);
+  overflow: hidden;
+  margin: 1.5rem 0 2rem;
+  padding: 1rem;
+}
+.ep-life-map {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.ep-life-stations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 0 0 2.5rem;
+}
+@media (max-width: 860px) {
+  .ep-life-stations {
+    grid-template-columns: 1fr;
+  }
+}
+.ep-life-station {
+  padding: 1.25rem;
+  border: 1px solid var(--ds-line);
+  border-radius: 8px;
+  background: var(--ds-surface);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.ep-life-station:hover {
+  border-color: var(--ds-accent);
+}
+.ep-life-station__meta {
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-accent);
+  margin-bottom: 0.4rem;
+}
+.ep-life-station__title {
+  font-family: var(--ds-font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ds-ink);
+  margin: 0 0 0.5rem;
+}
+.ep-life-station__desc {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--ds-muted);
+  margin: 0 0 1rem;
+  flex: 1;
+}
+.ep-life-station__link {
+  font-family: var(--ds-font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--ds-accent);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.ep-life-station__link:hover,
+.ep-life-station__link:focus-visible {
+  text-decoration: underline;
 }
 
 /* --------------------------------------------------------------------------
