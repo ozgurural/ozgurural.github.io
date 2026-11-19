@@ -16,13 +16,20 @@
  * its width while the words inside it run past it.
  */
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 const BASE = process.env.FILM_BASE || 'http://localhost:4000';
 const WIDTHS = [375, 414, 768, 1024, 1280, 1366, 1440, 1536, 1920];
 const args = process.argv.slice(2).map(a => a.replace(/^[A-Za-z]:\/Program Files\/Git/, ''));
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: true });
+  const systemChrome = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ||
+    (fs.existsSync(systemChrome) ? systemChrome : undefined);
+  const browser = await puppeteer.launch({
+    headless: true,
+    ...(executablePath ? { executablePath } : {}),
+  });
   let pages = args;
   if (!pages.length) {
     const p = await browser.newPage();

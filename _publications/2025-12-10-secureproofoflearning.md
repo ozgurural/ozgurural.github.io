@@ -30,6 +30,7 @@ author_list:
 venue_short: "IEEE Access"
 # the film that shows this work (shown on /publications/)
 film: { url: "/lab/training-fingerprint/", image: "securepol", length: "2:02" }
+preview_video: "/assets/video/securepol-preview.webm"
 ---
 
 SecurePoL presents a dual-layer framework that couples immutable Proof-of-Learning logs with three watermarking strategies (feature-based triggers, sparse parameter perturbations, and a non-intrusive auxiliary head), ensuring verification succeeds only when both the training trajectory and watermark are consistent.

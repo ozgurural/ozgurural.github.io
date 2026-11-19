@@ -15,6 +15,7 @@
  *   node scripts/audit-site.js [--base http://localhost:4001] [--max 200]
  */
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 const argv = process.argv.slice(2);
 const arg = (flag, dflt) => {
@@ -236,8 +237,12 @@ const VIEWPORT_CHECKS = () => {
 };
 
 (async () => {
+  const systemChrome = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ||
+    (fs.existsSync(systemChrome) ? systemChrome : undefined);
   const browser = await puppeteer.launch({
     headless: 'new',
+    ...(executablePath ? { executablePath } : {}),
     args: ['--hide-scrollbars', '--autoplay-policy=no-user-gesture-required'],
   });
   const page = await browser.newPage();

@@ -22,8 +22,13 @@
 {% endif %}
 <article class="pub" itemscope itemtype="https://schema.org/ScholarlyArticle">
   {% if post.film.image %}
-    <a class="pub__media" href="{{ post.film.url | relative_url }}" tabindex="-1" aria-hidden="true">
+    <a class="pub__media{% if post.preview_video %} pub__media-preview-enabled{% endif %}"{% if post.preview_video %} data-preview="true"{% endif %} href="{{ post.film.url | relative_url }}" tabindex="-1" aria-hidden="true">
       <img src="{{ '/images/cards/' | append: post.film.image | append: '.webp' | relative_url }}" alt="" width="640" height="336" loading="lazy" decoding="async">
+      {% if post.preview_video %}
+        <video class="pub__media-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+          <source src="{{ post.preview_video | relative_url }}" type="video/webm">
+        </video>
+      {% endif %}
       <span class="media__badge media__badge--play">Film · {{ post.film.length }}</span>
     </a>
   {% else %}

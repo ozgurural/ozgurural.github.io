@@ -234,8 +234,12 @@ async function shot(page, W, H, t) {
 async function closeQuietly(browser) { try { await browser.close(); } catch (e) {} }
 
 function launch() {
+  const systemChrome = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ||
+    (fs.existsSync(systemChrome) ? systemChrome : undefined);
   return puppeteer.launch({
     headless: true,
+    ...(executablePath ? { executablePath } : {}),
     protocolTimeout: 3600000,
     args: ['--ignore-gpu-blocklist', '--enable-gpu', '--use-angle=d3d11', '--enable-webgl'],
   });
