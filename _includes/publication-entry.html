@@ -8,6 +8,13 @@
   assistive tech and the tab order.
 {% endcomment %}
 {% assign year = post.date | date: "%Y" %}
+{% assign is_first_author = false %}
+{% if post.author_list %}
+  {% assign first_a = post.author_list | first %}
+  {% if first_a.family == "Ural" and first_a.given == "Ozgur" %}
+    {% assign is_first_author = true %}
+  {% endif %}
+{% endif %}
 {% if post.description %}
   {% assign pub_excerpt = post.description | markdownify | strip_html %}
 {% else %}
@@ -35,7 +42,7 @@
         {%- endfor -%}
       </p>
     {% endif %}
-    <p class="pub__venue"><i>{{ post.venue }}</i>, {{ year }}{% if post.open_access %} &middot; <span class="pub__badge-oa">Open Access</span>{% endif %}</p>
+    <p class="pub__venue"><i>{{ post.venue }}</i>, {{ year }}{% if is_first_author %} &middot; <span class="pub__badge-fa">{% if post.pub_type == "thesis" %}Sole Author{% else %}First Author{% endif %}</span>{% endif %}{% if post.open_access %} &middot; <span class="pub__badge-oa">Open Access</span>{% endif %}</p>
     <p class="pub__desc" itemprop="description">{{ pub_excerpt }}</p>
     <p class="pub__links">
       {%- if post.paperurl -%}<a href="{{ post.paperurl }}">{% if post.paperurl contains '.pdf' %}PDF{% else %}Paper{% endif %}</a>{%- endif -%}
