@@ -61,28 +61,24 @@ $(document).ready(function () {
   // FitVids init
   fitvids();
 
-  // Lightweight publication-card hover previews. Keep the poster visible and
-  // avoid loading or motion unless the reader explicitly signals hover or
-  // keyboard focus. The source remains silent and plays no more than 3 seconds.
-  if (!reducedMotion.matches) {
-    document.querySelectorAll('.pub__media[data-preview]').forEach(function (media) {
-      const video = media.querySelector('video');
-      if (!video) return;
-      const startPreview = function () {
-        video.play().catch(function () {});
-        media.classList.add('is-previewing');
-      };
-      const stopPreview = function () {
-        video.pause();
-        try { video.currentTime = 0; } catch (event) {}
-        media.classList.remove('is-previewing');
-      };
-      media.addEventListener('mouseenter', startPreview);
-      media.addEventListener('mouseleave', stopPreview);
-      media.addEventListener('focus', startPreview);
-      media.addEventListener('blur', stopPreview);
-    });
-  }
+  // Load a silent, three-second preview only while the pointer is over its card.
+  document.querySelectorAll('.pub__media[data-preview]').forEach(function (media) {
+    const video = media.querySelector('video');
+    if (!video) return;
+    const startPreview = function () {
+      video.play().catch(function () {});
+      media.classList.add('is-previewing');
+    };
+    const stopPreview = function () {
+      video.pause();
+      try { video.currentTime = 0; } catch (event) {}
+      media.classList.remove('is-previewing');
+    };
+    media.addEventListener('mouseenter', startPreview);
+    media.addEventListener('mouseleave', stopPreview);
+    media.addEventListener('focus', startPreview);
+    media.addEventListener('blur', stopPreview);
+  });
 
   // Follow menu drop down
   $(".author__urls-wrapper button").on("click", function () {
