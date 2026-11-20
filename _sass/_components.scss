@@ -857,6 +857,7 @@
   color: var(--ds-accent);
   text-decoration: none;
   display: inline-flex;
+  min-height: 2rem;
   align-items: center;
   gap: 0.25rem;
 }

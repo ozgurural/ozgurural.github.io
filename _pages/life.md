@@ -8,6 +8,8 @@ description: "Personal notes by Dr. Ozgur Ural: the Ph.D. years in Florida, livi
 ---
 <p class="ep-lead">Notes from outside work: the Ph.D. years in Florida, living in the US and then the Netherlands, and racing with the METU sailing team. The technical writing is in the <a href="/blog/">field notes</a>.</p>
 
+## Where I have lived and worked
+
 <div class="ep-life-map-wrap" aria-label="Geographic stations and journey map">
   <svg viewBox="0 0 840 280" class="ep-life-map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map showing life stations in the Netherlands, United States, and Turkey">
     <!-- Graticule lines -->
