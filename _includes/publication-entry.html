@@ -26,6 +26,9 @@
       <img src="{{ '/images/cards/' | append: post.film.image | append: '.webp' | relative_url }}" alt="" width="640" height="336" loading="lazy" decoding="async">
       {% if post.preview_video %}
         <video class="pub__media-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+          {% if post.preview_video_mp4 %}
+            <source src="{{ post.preview_video_mp4 | relative_url }}" type="video/mp4">
+          {% endif %}
           <source src="{{ post.preview_video | relative_url }}" type="video/webm">
         </video>
       {% endif %}

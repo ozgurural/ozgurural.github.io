@@ -28,6 +28,7 @@ venue_short: "IEEE Access"
 # the film that shows this work (shown on /publications/)
 film: { url: "/lab/blockchain-ml/", image: "blockchain-ml", length: "1:50" }
 preview_video: "/assets/video/blockchain-ml-preview.webm"
+preview_video_mp4: "/assets/video/blockchain-ml-preview.mp4"
 ---
 
 Machine learning has three problems a distributed ledger is unusually well suited to. Training data can be poisoned by contributors who still collect a reward. Models leak the data they were trained on. And a finished set of weights records nothing about what happened to it. This survey works through what a ledger actually buys in each case, and is deliberately balanced: it presents the limitations alongside the opportunities.
