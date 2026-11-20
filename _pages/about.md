@@ -57,7 +57,7 @@ redirect_from:
 
 <ul class="ep-cards ep-cards--two">
   <li>
-    <a class="media" href="/lab/training-fingerprint/" tabindex="-1" aria-hidden="true"><img src="/images/cards/securepol.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 2:02</span></a>
+    <a class="media" href="/lab/training-fingerprint/" tabindex="-1" aria-hidden="true" data-preview="true"><img src="/images/cards/securepol.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><video class="media__preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="/assets/video/securepol-preview.mp4" type="video/mp4"><source src="/assets/video/securepol-preview.webm" type="video/webm"></video><span class="media__badge media__badge--play">Film · 2:02</span></a>
     <div class="meta">2025 · IEEE Access</div>
     <h3 class="title"><a href="/publication/2025-secureproofoflearning">SecurePoL: Watermarking + Proof-of-Learning</a></h3>
     <p class="desc">Defends proof-of-learning against spoofing by making verification depend on a feature-based model watermark as well. <a href="/lab/training-fingerprint/">Watch SecurePoL</a>.</p>
@@ -75,7 +75,7 @@ redirect_from:
     <p class="desc">How a certified simulator earns a pilot's trust, and what a learned model would have to keep to run inside its real-time loop. Every rule is cited from the regulation text.</p>
   </li>
   <li>
-    <a class="media" href="/lab/blockchain-ml/" tabindex="-1" aria-hidden="true"><img src="/images/cards/blockchain-ml.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 1:50</span></a>
+    <a class="media" href="/lab/blockchain-ml/" tabindex="-1" aria-hidden="true" data-preview="true"><img src="/images/cards/blockchain-ml.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><video class="media__preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="/assets/video/blockchain-ml-preview.mp4" type="video/mp4"><source src="/assets/video/blockchain-ml-preview.webm" type="video/webm"></video><span class="media__badge media__badge--play">Film · 1:50</span></a>
     <div class="meta">2023 · IEEE Access · Survey</div>
     <h3 class="title"><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a></h3>
     <p class="desc">Reviews the design space where distributed ledgers meet learning systems. <a href="/lab/blockchain-ml/">Watch collaborative AI</a>.</p>

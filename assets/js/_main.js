@@ -62,8 +62,8 @@ $(document).ready(function () {
   fitvids();
 
   // Load a silent, three-second preview only while the pointer is over its card.
-  document.querySelectorAll('.pub__media[data-preview]').forEach(function (media) {
-    const video = media.querySelector('video');
+  document.querySelectorAll('[data-preview]').forEach(function (media) {
+    const video = media.querySelector('.media__preview');
     if (!video) return;
     const startPreview = function () {
       video.play().catch(function () {});

@@ -25,7 +25,7 @@
     <a class="pub__media{% if post.preview_video %} pub__media-preview-enabled{% endif %}"{% if post.preview_video %} data-preview="true"{% endif %} href="{{ post.film.url | relative_url }}" tabindex="-1" aria-hidden="true">
       <img src="{{ '/images/cards/' | append: post.film.image | append: '.webp' | relative_url }}" alt="" width="640" height="336" loading="lazy" decoding="async">
       {% if post.preview_video %}
-        <video class="pub__media-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+        <video class="media__preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
           {% if post.preview_video_mp4 %}
             <source src="{{ post.preview_video_mp4 | relative_url }}" type="video/mp4">
           {% endif %}

@@ -526,6 +526,18 @@
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.media__preview {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.media.is-previewing .media__preview { opacity: 1; }
 .ep-cards > li:hover .media img { transform: scale(1.03); }
 .ep-cards .media__badge {
   position: absolute;
@@ -564,7 +576,7 @@
    -------------------------------------------------------------------------- */
 .pub {
   display: grid;
-  grid-template-columns: 13.5rem minmax(0, 1fr);
+  grid-template-columns: 16rem minmax(0, 1fr);
   gap: 1.25rem;
   align-items: start;
   padding: 1.25rem 0;
@@ -586,20 +598,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.pub__media-preview {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.18s ease;
-}
-.pub__media.is-previewing .pub__media-preview {
-  opacity: 1;
 }
 .pub:hover .pub__media img { transform: scale(1.03); }
 .pub__media .media__badge {
