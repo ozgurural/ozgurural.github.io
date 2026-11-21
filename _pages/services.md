@@ -23,7 +23,7 @@ description: "Technical advisory, ML security and model provenance review, confe
   <li>
     <div class="meta">Speaking</div>
     <h3 class="title">Talks &amp; guest lectures</h3>
-    <p class="desc">Conference talks and guest lectures on proof-of-learning, model watermarking, and engineering systems that stay correct when things fail. See the <a href="/lab/">Research Lab</a> for a preview of how I teach these ideas.</p>
+    <p class="desc">Conference talks and guest lectures on proof-of-learning, model watermarking, and engineering systems that stay correct when things fail. Past talks, with slides, are on <a href="/talks/">Talks</a>; the <a href="/lab/">Research Lab</a> shows how I explain these ideas.</p>
   </li>
 </ul>
 
