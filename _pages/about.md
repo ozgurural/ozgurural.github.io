@@ -66,7 +66,7 @@ redirect_from:
     <a class="media" href="/projects/avion-assistant/" tabindex="-1" aria-hidden="true"><img src="/images/cards/avion-assistant.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge">Case study · Slides</span></a>
     <div class="meta">2026 · Avion · RAG and governed agents</div>
     <h3 class="title"><a href="/projects/avion-assistant/">Avion Assistant: answers you can check, data that stays put</a></h3>
-    <p class="desc">A retrieval-augmented engineering assistant I designed and built alone: hybrid search, every answer cited to its page, release checks that roll a bad build back, and a governance gateway that decides what may leave the company. Part of the <a href="/enterprise-ai-architecture.html">AI strategy and reference architecture</a> I wrote for Avion.</p>
+    <p class="desc">A retrieval-augmented engineering assistant I designed and built alone: hybrid search, every answer cited to its page, release checks that roll a bad build back, and a governance gateway that decides what may leave the company.</p>
   </li>
   <li>
     <a class="media" href="/lab/level-d-60hz/" tabindex="-1" aria-hidden="true"><img src="/images/cards/level-d.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge media__badge--play">Film · 4:40</span></a>
@@ -79,6 +79,12 @@ redirect_from:
     <div class="meta">2023 · IEEE Access · Survey</div>
     <h3 class="title"><a href="/publication/2023-ieee-access-survey">Survey on Blockchain-Enhanced Machine Learning</a></h3>
     <p class="desc">Reviews the design space where distributed ledgers meet learning systems. <a href="/lab/blockchain-ml/">Watch collaborative AI</a>.</p>
+  </li>
+  <li>
+    <a class="media" href="/enterprise-ai-architecture.html" tabindex="-1" aria-hidden="true"><img src="/images/cards/enterprise-ai.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge">Interactive</span></a>
+    <div class="meta">2026 · Avion · Architecture</div>
+    <h3 class="title"><a href="/enterprise-ai-architecture.html">Enterprise AI strategy and reference architecture</a></h3>
+    <p class="desc">The adoption roadmap and reference architecture I wrote for Avion, spanning on-premises inference, governed cloud APIs and edge workloads; the assistant above is the part of it that is built. The design distinguishes prototypes from proposed capabilities.</p>
   </li>
 </ul>
 
