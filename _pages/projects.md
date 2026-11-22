@@ -45,8 +45,13 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   </li>
   <li>
     <div class="meta">2026 · Avion · Applied AI</div>
-    <h3 class="title">Engineering knowledge assistant</h3>
-    <p class="desc">A proof of concept offered to staff: it answers from the company's engineering documents and shows where each answer came from. Every reported problem is replayed against each new build. A prototype agent foundation adds tools and a record of actions; verifiable oversight of those actions is the open R&amp;D question, in a project I prepared and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme.</p>
+    <h3 class="title"><a href="/projects/avion-assistant/">Avion Assistant</a></h3>
+    <p class="desc">An engineering knowledge assistant I designed and built alone, in use by colleagues as a proof of concept: it answers from the company's engineering documents with every source one click away. Hybrid search and reranking, release checks that roll a failing build back, and every reported problem replayed against each new build.</p>
+  </li>
+  <li>
+    <div class="meta">2026 · Avion · WBSO R&amp;D</div>
+    <h3 class="title"><a href="/projects/avion-assistant/#governed-autonomy-avion-04">Governed autonomy (Avion-04)</a></h3>
+    <p class="desc">The R&amp;D project I prepared, architected and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme: a governance service under engineering agents that decides whether a proposed action may run, binds each approval to the state the reviewer saw, and controls what may leave the company. Its outbound boundary enforces the assistant's model calls on a lab deployment; the rest runs on synthetic data, with no accuracy claimed yet.</p>
   </li>
   <li>
     <div class="meta">2023– · Avion · Real-time systems</div>

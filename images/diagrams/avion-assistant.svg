@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 660" width="760" height="660" role="img" aria-labelledby="t d">
+<title id="t">How Avion Assistant answers a question</title>
+<desc id="d">Documents are read, cleaned, checked for credentials, split and indexed with two vectors per passage. A question goes through hybrid search and reranking to five passages, then a governance gateway decides whether they may leave the company: restricted content is answered by a local model, public content may go to a hosted model. The answer is streamed with its sources first and every claim cited. A ledger keeps every question, model call and rating.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#94a3b8"/></marker>
+<style>
+.b{fill:#0f172a;stroke:#334155;stroke-width:1.5}
+.k{fill:#0f172a;stroke:#38bdf8;stroke-width:1.5}
+.o{fill:#0b1120;stroke:#94a3b8;stroke-width:1.5;stroke-dasharray:6 5}
+.h{font:600 15px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:#f1f5f9}
+.p{font:13px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:#cbd5e1}
+.c{font:600 11px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:#38bdf8;letter-spacing:.12em}
+.m{font:12px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:#94a3b8}
+.l{stroke:#94a3b8;stroke-width:1.5;fill:none;marker-end:url(#a)}
+</style>
+</defs>
+<rect width="760" height="660" fill="#0b1120"/>
+<text class="c" x="20" y="30">ONCE, AND ON EVERY CHANGE</text>
+<text class="c" x="400" y="30">ON EVERY QUESTION</text>
+
+<rect class="b" x="20" y="45" width="340" height="66" rx="8"/>
+<text class="h" x="36" y="72">Engineering documents</text>
+<text class="p" x="36" y="94">PDF, Word, Excel, PowerPoint, notes, scans</text>
+
+<rect class="b" x="20" y="145" width="340" height="86" rx="8"/>
+<text class="h" x="36" y="172">Ingestion</text>
+<text class="p" x="36" y="194">read, OCR, clean; credentials removed or</text>
+<text class="p" x="36" y="213">the file held back; split by headings</text>
+
+<rect class="b" x="20" y="265" width="340" height="66" rx="8"/>
+<text class="h" x="36" y="292">Index</text>
+<text class="p" x="36" y="314">a meaning vector and a keyword vector each</text>
+
+<rect class="b" x="20" y="385" width="340" height="86" rx="8"/>
+<text class="h" x="36" y="412">Ledger</text>
+<text class="p" x="36" y="434">every question, model call and rating,</text>
+<text class="p" x="36" y="453">kept with the answer it was about</text>
+
+<path class="l" d="M190 111V143"/>
+<path class="l" d="M190 231V263"/>
+
+<rect class="b" x="400" y="45" width="340" height="66" rx="8"/>
+<text class="h" x="416" y="72">Question</text>
+<text class="p" x="416" y="94">in plain English, no folder to know</text>
+
+<rect class="b" x="400" y="145" width="340" height="66" rx="8"/>
+<text class="h" x="416" y="172">Hybrid search</text>
+<text class="p" x="416" y="194">meaning and exact words, fused by rank</text>
+
+<rect class="b" x="400" y="245" width="340" height="86" rx="8"/>
+<text class="h" x="416" y="272">Reranking</text>
+<text class="p" x="416" y="294">a cross-encoder keeps the five passages</text>
+<text class="p" x="416" y="313">that answer; hand-checked ones first</text>
+
+<rect class="k" x="400" y="365" width="340" height="66" rx="8"/>
+<text class="h" x="416" y="392">Governance gateway</text>
+<text class="p" x="416" y="414">may these passages leave the company?</text>
+
+<rect class="b" x="400" y="475" width="160" height="66" rx="8"/>
+<text class="h" x="414" y="502">Local model</text>
+<text class="p" x="414" y="524">restricted content</text>
+
+<rect class="o" x="580" y="475" width="160" height="66" rx="8"/>
+<text class="h" x="594" y="502">Hosted model</text>
+<text class="p" x="594" y="524">public content only</text>
+
+<rect class="b" x="400" y="575" width="340" height="66" rx="8"/>
+<text class="h" x="416" y="602">Answer</text>
+<text class="p" x="416" y="624">streamed, sources first, every claim cited</text>
+
+<path class="l" d="M570 111V143"/>
+<path class="l" d="M570 211V243"/>
+<path class="l" d="M570 331V363"/>
+<path class="l" d="M480 431V473"/>
+<path class="l" d="M660 431V473"/>
+<path class="l" d="M480 541V573"/>
+<path class="l" d="M660 541V573"/>
+<path class="l" d="M360 298H380V178H398"/>
+
+<text class="m" x="20" y="560">Solid boxes run inside the company.</text>
+<text class="m" x="20" y="580">The dashed box is outside it: only a question</text>
+<text class="m" x="20" y="600">and five public passages may reach it.</text>
+</svg>
