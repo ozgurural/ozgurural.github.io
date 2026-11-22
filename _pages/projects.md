@@ -41,7 +41,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   <li>
     <div class="meta">2026 · Avion · Enterprise AI</div>
     <h3 class="title"><a href="/enterprise-ai-architecture.html">AI strategy and reference architecture</a></h3>
-    <p class="desc">I wrote Avion's AI adoption roadmap and a reference architecture that separates on-premises inference, governed cloud APIs and edge workloads, and built the portal that presents it. The interactive view shows the design, including agents that are proposed rather than deployed.</p>
+    <p class="desc">I wrote Avion's AI adoption roadmap and a reference architecture that separates on-premises inference, governed cloud APIs and edge workloads, and built the portal that presents it. The interactive view shows what runs: the Avion Assistant question path, in daily use, and the Avion-04 agent path, on synthetic data. The other agents in the strategy are named as proposals.</p>
   </li>
   <li>
     <div class="meta">2026 · Avion · Applied AI</div>

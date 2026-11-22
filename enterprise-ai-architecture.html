@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enterprise AI Architecture · Dr. Ozgur Ural</title>
-<meta name="description" content="An interactive reference architecture for governed enterprise AI: a five-gate flow that runs autonomous agents while keeping sensitive data on-premise. Designed by Dr. Ozgur Ural."/>
+<title>AI Strategy and Reference Architecture · Dr. Ozgur Ural</title>
+<meta name="description" content="The AI strategy and reference architecture Dr. Ozgur Ural wrote for Avion, shown as what runs: a cited RAG assistant in daily use, an outbound data boundary, and governed agents."/>
 <link rel="canonical" href="https://ozgurural.github.io/enterprise-ai-architecture.html"/>
 <meta property="og:type" content="article"/>
 <meta property="og:site_name" content="Dr. Ozgur Ural"/>
-<meta property="og:title" content="Enterprise AI Architecture: a five-gate reference design"/>
-<meta property="og:description" content="An interactive reference architecture for governed enterprise AI: air-gapped on-prem models, a policy gate, autonomous agents, human review, and a full audit trail."/>
+<meta property="og:title" content="AI strategy and reference architecture: what runs, and how it is governed"/>
+<meta property="og:description" content="The AI strategy and reference architecture Dr. Ozgur Ural wrote for Avion, shown as what runs: a cited RAG assistant in daily use, an outbound data boundary, and governed agents."/>
 <meta property="og:url" content="https://ozgurural.github.io/enterprise-ai-architecture.html"/>
 <meta property="og:image" content="https://ozgurural.github.io/images/og-default.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Enterprise AI Architecture: a five-gate reference design"/>
-<meta name="twitter:description" content="An interactive reference architecture for governed enterprise AI: air-gapped on-prem models, a policy gate, autonomous agents, human review, and a full audit trail."/>
+<meta name="twitter:title" content="AI strategy and reference architecture: what runs, and how it is governed"/>
+<meta name="twitter:description" content="The AI strategy and reference architecture Dr. Ozgur Ural wrote for Avion, shown as what runs: a cited RAG assistant in daily use, an outbound data boundary, and governed agents."/>
 <meta name="twitter:image" content="https://ozgurural.github.io/images/og-default.png"/>
 <!-- Fonts and icons, self-hosted: see scripts/vendor-webfonts.js --target=arch
      and scripts/vendor-page-icons.js. This page shares nothing with main.css
@@ -9052,12 +9052,15 @@ body.stack-focus #stack-view {
 .demo-bar .demo-tag { margin-left: auto; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
   color: #93a4b8; }
 body.architecture-focus { overflow-x: hidden; }
+.arch-note { max-width: 62rem; margin: 1.1rem auto 0; padding: 0 1.4rem; color: #93a4b8;
+  font: 400 .9rem/1.55 'Inter', system-ui, sans-serif; }
+.arch-note a, .arch-hero__lead a { color: #67e8f9; }
 </style>
 </head>
 <body>
 <nav class="demo-bar">
   <a class="demo-home" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Dr. Ozgur Ural</a>
-  <span class="demo-tag">Reference architecture · interactive</span>
+  <span class="demo-tag">AI strategy · interactive</span>
 </nav>
 <section id="architecture-view">
 <div class="arch-hero arch-hero--restrained">
@@ -9065,13 +9068,13 @@ body.architecture-focus { overflow-x: hidden; }
         <button aria-label="Back to Home" class="detail-back-inline" onclick="location.href='/'" title="Back to Home" type="button">
             <i aria-hidden="true" class="fa-solid fa-arrow-left"></i>
         </button>
-        <span class="arch-hero__eyebrow">Sovereign AI Platform</span>
+        <span class="arch-hero__eyebrow">AI strategy and reference architecture · Avion</span>
     </div>
     <h1 class="arch-hero__title arch-hero__title--serif">
-        How AI runs <span class="arch-hero__title-accent">inside the enterprise</span>
+        AI that an engineering company <span class="arch-hero__title-accent">can check</span>
     </h1>
     <p class="arch-hero__lead arch-hero__lead--wide">
-        Explore a proposed five-gate design for enterprise AI: policy checks, local or approved cloud inference, human review, and audited actions. This is an interactive reference, not a live production system. Model selection, data access, redaction, and provider retention terms must be validated for each deployment.
+        The architecture from the AI strategy I wrote for Avion, shown as what now runs. <a href="/projects/avion-assistant/">Avion Assistant</a>, which I built alone, answers engineers from the company's documents with every source cited, and is in daily use as a proof of concept. Its outbound boundary decides what may leave the company. The agent lane is Avion-04, a governance service built on synthetic data. Pick a workflow or click a step. No document, model, hardware or customer specifics of the company are shown.
     </p>
 </div>
 <!-- Combined Phase Bar and Scenarios into single row to save vertical space -->
@@ -9082,26 +9085,26 @@ body.architecture-focus { overflow-x: hidden; }
     </div>
     
     <!-- Slim breadcrumb phase bar, five short labels, one subtle connector line. -->
-    <ol aria-label="Five-gate flow" class="arch-phase-bar arch-phase-bar--slim" id="arch-phase-bar">
-        <li class="arch-phase" data-anchor-node="source-system" data-phase="trigger">
+    <ol aria-label="Steps in the flow" class="arch-phase-bar arch-phase-bar--slim" id="arch-phase-bar">
+        <li class="arch-phase" data-anchor-node="task-agent" data-phase="ask">
             <span class="arch-phase__num">01</span>
-            <span class="arch-phase__title">Trigger</span>
+            <span class="arch-phase__title">Ask</span>
         </li>
-        <li class="arch-phase" data-anchor-node="policy-router" data-phase="check">
+        <li class="arch-phase" data-anchor-node="rag-db" data-phase="ground">
             <span class="arch-phase__num">02</span>
+            <span class="arch-phase__title">Ground</span>
+        </li>
+        <li class="arch-phase" data-anchor-node="sanitizer" data-phase="check">
+            <span class="arch-phase__num">03</span>
             <span class="arch-phase__title">Check</span>
         </li>
-        <li class="arch-phase" data-anchor-node="task-agent" data-phase="decide">
-            <span class="arch-phase__num">03</span>
+        <li class="arch-phase" data-anchor-node="reviewer" data-phase="decide">
+            <span class="arch-phase__num">04</span>
             <span class="arch-phase__title">Decide</span>
         </li>
-        <li class="arch-phase" data-anchor-node="reviewer" data-phase="review">
-            <span class="arch-phase__num">04</span>
-            <span class="arch-phase__title">Review</span>
-        </li>
-        <li class="arch-phase" data-anchor-node="action-runner" data-phase="act">
+        <li class="arch-phase" data-anchor-node="audit-log" data-phase="record">
             <span class="arch-phase__num">05</span>
-            <span class="arch-phase__title">Act</span>
+            <span class="arch-phase__title">Record</span>
         </li>
     </ol>
 </div>
@@ -9138,6 +9141,7 @@ body.architecture-focus { overflow-x: hidden; }
 
 
 
+<p class="arch-note">Not shown: the further agents in the strategy, such as drafting, debriefing and repository maintenance. They are proposals awaiting a decision, not built, and each keeps a person accountable. <a href="/projects/">Projects</a> separates what is built from what is proposed.</p>
 <div class="arch-step-nav" id="arch-step-nav" style="display:none">
 <button aria-label="Previous step" class="arch-step-btn" id="arch-prev-btn" onclick="archStepNav(-1)" title="Previous step" type="button">
 <i aria-hidden="true" class="fa-solid fa-chevron-left"></i>
@@ -9212,173 +9216,205 @@ body.architecture-focus { overflow-x: hidden; }
       reducedMotionQuery.addEventListener('change', function (e) { prefersReducedMotion = e.matches; });
     }
 
+        // Content rewritten 2026-11-22 from what is built (Avion Assistant,
+        // Avion-04), replacing the February strategy's proposed agents. Each
+        // claim matches /projects/avion-assistant/. Lanes, not gates: the top
+        // band is in daily use, the bottom band runs on synthetic data.
         const ARCH_LAYOUT = {
-            // Phase 1, Trigger
-            'source-system':  { x: 10, y: 48 },
-            // Phase 2, Check (Compliance Guard is both gate and dispatcher)
-            'policy-router':  { x: 25, y: 48 },
-            // Phase 3, Decide (Agent as hub, Knowledge + Brains as resources)
-            'rag-db':         { x: 44, y: 18 },
-            'local-llm':      { x: 64, y: 18 },
-            'task-agent':     { x: 44, y: 50 },
-            'sanitizer':      { x: 44, y: 76 },
-            'api-llm':        { x: 64, y: 76 },
-            // Phase 4, Review
-            'reviewer':       { x: 80, y: 48 },
-            // Phase 5, Act (action-runner above audit-log; both pulled in
-            // from the right edge so the wider node body never clips)
-            'action-runner':  { x: 88, y: 32 },
-            'audit-log':      { x: 88, y: 68 },
+            // Questions lane
+            'task-agent':     { x:  9, y: 32 },
+            'rag-db':         { x: 24, y: 32 },
+            'sanitizer':      { x: 39, y: 32 },
+            'local-llm':      { x: 55, y: 18 },
+            'api-llm':        { x: 55, y: 47 },
+            'reviewer':       { x: 71, y: 32 },
+            'audit-log':      { x: 87, y: 32 },
+            // Agent lane
+            'source-system':  { x:  9, y: 81 },
+            'policy-router':  { x: 39, y: 81 },
+            'approver':       { x: 55, y: 81 },
+            'action-runner':  { x: 71, y: 81 },
+            'audit-chain':    { x: 87, y: 81 },
         };
 
-        // Zone background regions as % of canvas
-        // Zone background bands, one per phase so the CEO's eye follows a
-        // clear left→right flow instead of random islands.
         const ARCH_ZONE_REGIONS = {
-            'intake':      { x:  0, y: 4, w: 14, h: 92, label: 'Trigger' },
-            'dispatch':    { x: 14, y: 4, w: 16, h: 92, label: 'Check' },
-            'specialized': { x: 30, y: 4, w: 44, h: 92, label: 'Decide' },
-            'governance':  { x: 74, y: 4, w: 12, h: 92, label: 'Review' },
-            'execution':   { x: 86, y: 4, w: 14, h: 92, label: 'Act' }
+            'questions': { x: 0, y: 2,  w: 100, h: 60, label: 'Questions · Avion Assistant, in daily use' },
+            'agents':    { x: 0, y: 64, w: 100, h: 34, label: 'Agent changes · Avion-04, built on synthetic data' }
         };
 
+        const ALL_Q = ['ask-public', 'ask-restricted'];
         const ARCHITECTURE_TOPOLOGY = {
             nodes: [
-                { id: 'source-system', title: 'Task/Event Trigger', zone: 'intake', desc: 'A user request or system event that initiates an agentic workflow.', tier: 'tier1', color: '#22d3ee', icon: 'fa-plug-circle-bolt', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Identify trigger source', 'Normalize request payload'], dataIn: ['User signals, API webhooks'], dataOut: ['Standardized Task Envelope'], controls: ['Authentication, Rate Limiting'] },
-                { id: 'rag-db', title: 'Domain Knowledge Base', zone: 'specialized', desc: 'Vector index containing domain-specific procedures, past resolutions, and reference docs.', tier: 'tier1', color: '#06d6a0', icon: 'fa-book-open', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Semantic search for playbook steps', 'Provide factual grounding'], dataIn: ['Domain embeddings'], dataOut: ['Relevant rules & examples'], controls: ['Versioned content, access scoped by domain'] },
-                { id: 'local-llm', title: 'Local Inference', zone: 'specialized', desc: 'The sovereign brain. A locally hosted model running on on-prem hardware, behind the firewall. An agent can call it when policy requires the task to stay on-prem.', tier: 'tier1', color: '#06d6a0', icon: 'fa-microchip', scenarios: ['autonomous-agent', 'multi-agent-flow'], responsibilities: ['Locally hosted model on local GPU', 'Handles Tier-1 reasoning when policy routes it', 'No external call in the illustrated deployment'], dataIn: ['Prompt + grounded context from the agent'], dataOut: ['Answer returned to the agent'], localInference: true, controls: ['Deployment-controlled network boundary', 'Grounded on approved local data'] },
-                { id: 'api-llm', title: 'Governed Cloud API', zone: 'specialized', desc: 'The external brain. An approved cloud model via API with verified retention terms. An agent can call it for complex reasoning only after redaction and a Tier-2 policy decision.', tier: 'tier2', color: '#4facfe', icon: 'fa-cloud-arrow-up', scenarios: ['copilot-agent', 'multi-agent-flow'], responsibilities: ['Approved cloud model via API with verified retention terms', 'Handles complex Tier-2 reasoning', 'Receives redacted input only'], dataIn: ['Redacted prompt from the agent'], dataOut: ['Answer returned to the agent'], controls: ['Verify API retention terms', 'PII-redacted input only', 'Human review before publish'] },
-                { id: 'task-agent', title: 'Task Agent', zone: 'specialized', desc: 'The worker that executes the task (Engineering, Commercial, Quality, …). Based on the policy verdict, the agent picks which brain to call, local model for sovereign work, cloud model for complex Tier-2 reasoning, or both in sequence for a hybrid task. Agents are defined by the job, not the model.', tier: 'cross', color: '#d4a577', icon: 'fa-user-gear', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Picks the right brain for the task', 'Coordinates multi-step reasoning', 'Returns a single answer to the reviewer'], dataIn: ['Task envelope + knowledge context'], dataOut: ['Proposed answer for human review'], controls: ['Bound by Compliance Guard verdict', 'Every brain call is logged'] },
-                { id: 'sanitizer', title: 'Redaction Gateway', zone: 'specialized', desc: 'Strips PII, confidential identifiers, and sensitive terms from any prompt before it reaches the external API brain.', tier: 'cross', color: '#a855f7', icon: 'fa-filter-circle-xmark', scenarios: ['copilot-agent', 'multi-agent-flow'], responsibilities: ['PII and identifier redaction', 'Policy check before API egress'], dataIn: ['Raw prompt from the agent'], dataOut: ['Redacted prompt safe for API'], controls: ['Deterministic rules + LLM review', 'Blocks unsafe content'] },
-                { id: 'policy-router', title: 'Compliance Guard', zone: 'dispatch', desc: 'The gate and the dispatcher. Validates the request against company policy, classifies sensitivity (Tier 1 / Tier 2), and assigns the task to the right agent.', tier: 'cross', color: '#fbbf24', icon: 'fa-user-shield', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Enforce data boundaries', 'Classify Tier 1 vs Tier 2', 'Assign task to the right agent', 'Block unsafe or prohibited requests'], dataIn: ['Task Envelope'], dataOut: ['Scoped task with Go/No-Go verdict'], controls: ['Deterministic rules + LLM evaluation'] },
-                { id: 'reviewer', title: 'Human Co-Pilot', zone: 'governance', desc: 'A human employee acting alongside the agent to approve or edit the final output.', tier: 'cross', color: '#22d3ee', icon: 'fa-user-check', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Review agent proposals', 'Inject human expertise', 'Authorize execution'], dataIn: ['Agent recommendations'], dataOut: ['Final approval/rejection'], controls: ['Audit timeline generation, strict identity'] },
-                { id: 'action-runner', title: 'Action Tools (Actuator)', zone: 'execution', desc: 'The actuator that actually performs system changes, sends emails, or updates Jira.', tier: 'cross', color: '#c084fc', icon: 'fa-hammer', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Execute approved tasks via APIs', 'Update issue trackers'], dataIn: ['Approved action blueprint'], dataOut: ['Success metrics, state changes'], controls: ['Idempotency, dry-run modes'] },
-                { id: 'audit-log', title: 'Explainability Trace', zone: 'execution', desc: 'Immutable log of every agent reasoning step, tool call, and human intervention.', tier: 'cross', color: '#38bdf8', icon: 'fa-list-check', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'], responsibilities: ['Store chronological Agent thoughts', 'Provide audit readouts'], dataIn: ['Agent "think" blocks, state transitions'], dataOut: ['Compliance reports'], controls: ['Append-only, cryptographically verified'] },
+                { id: 'task-agent', title: 'Avion Assistant', zone: 'questions', status: 'use', tier: 'tier1', color: '#22d3ee', icon: 'fa-comments', scenarios: ALL_Q,
+                  desc: "An engineer asks the company's own documents a question in plain English. Designed and built by Dr. Ozgur Ural alone, from the first commit in September 2026: ingestion, search, answering service, interface, deployment and the checks that keep it working. A proof of concept, in daily use by colleagues.",
+                  responsibilities: ['Take the question and run the search', 'Stream the answer with numbered citations', 'Fall back to the next model when one is busy'],
+                  dataIn: ['A question in plain English'], dataOut: ['Search request', 'Answer shown beside its sources'],
+                  controls: ['New behaviour ships behind a setting that is off', 'Each deploy asks the questions that must always work; a lost source rolls the deploy back'] },
+                { id: 'rag-db', title: 'Hybrid search', zone: 'questions', status: 'use', tier: 'tier1', color: '#06d6a0', icon: 'fa-magnifying-glass', scenarios: ALL_Q,
+                  desc: 'Each passage carries a meaning vector and a keyword (BM25) vector, and the two rankings are fused by rank, because two requirement IDs that differ in one digit look alike to an embedding. A cross-encoder then reads each candidate against the question and keeps five.',
+                  responsibilities: ['Meaning and keyword search, fused by rank', 'Rerank and keep five passages', 'Put hand-checked passages first for common questions'],
+                  dataIn: ['The question', 'Index of the company documents'], dataOut: ['Five passages, each with its source and restriction'],
+                  controls: ['Documents, index, search and reranking stay on company machines', 'Credentials removed before indexing, or the file is held back', 'A fixed question set measures every retrieval change'] },
+                { id: 'sanitizer', title: 'Outbound boundary', zone: 'questions', status: 'lab', tier: 'cross', color: '#a855f7', icon: 'fa-shield-halved', scenarios: ALL_Q,
+                  desc: 'Before a model call leaves the company, one gateway reads the restriction of every source in the request and refuses anything that is not public, with a local check for restricted text pasted in without its source. After a week in observe mode it has enforced the Assistant’s model calls on the lab deployment since November 2026.',
+                  responsibilities: ['Read the restriction of every source in the request', 'Refuse a hosted call for anything not public', 'Catch restricted text pasted in without its source'],
+                  dataIn: ['The question and five passages'], dataOut: ['Allow, or refuse and send the call to the local model', 'Its decision, into the record'],
+                  controls: ['Fail-open if it cannot be reached: the call is logged and goes ahead, a proof-of-concept choice a production deployment would reverse'] },
+                { id: 'api-llm', title: 'Hosted model', zone: 'questions', status: 'use', tier: 'tier2', color: '#4facfe', icon: 'fa-cloud-arrow-up', scenarios: ['ask-public'],
+                  desc: 'Only a question and five public passages may leave the company, and nothing else: no document, no index. Which provider is used is not stated here.',
+                  responsibilities: ['Write the answer from the five passages', 'Cite each claim to a passage'],
+                  dataIn: ['A question and five public passages'], dataOut: ['An answer with numbered citations'],
+                  controls: ['Allowed by the outbound boundary first', 'When one model is busy or out of quota, the next answers'] },
+                { id: 'local-llm', title: 'Local model', zone: 'questions', status: 'lab', tier: 'tier1', color: '#06d6a0', icon: 'fa-server', scenarios: ['ask-restricted'],
+                  desc: 'Restricted content is answered by a model on company machines, and the answer says so. On the lab deployment this is where the boundary sends what it refuses to let leave.',
+                  responsibilities: ['Answer when the sources are restricted', 'Mark the answer as answered locally'],
+                  dataIn: ['The question and restricted passages'], dataOut: ['An answer with citations, marked local'],
+                  controls: ['No call leaves the company'] },
+                { id: 'reviewer', title: 'Engineer checks', zone: 'questions', status: 'use', tier: 'cross', color: '#22d3ee', icon: 'fa-user-check', scenarios: ALL_Q,
+                  desc: 'The five source cards appear before the first word of the answer. A click opens the original page beside the conversation with the passage highlighted, so every answer can be checked against its page. A "not indexed" list names every file left out, and why.',
+                  responsibilities: ['Check the answer against its pages', 'Rate it, and say why when it is wrong'],
+                  dataIn: ['Answer, citations, source pages'], dataOut: ['A rating, sometimes with a note'],
+                  controls: ['A reported answer is replayed against every new build', 'The interface says "addressed", never "fixed"; a person decides what is merged'] },
+                { id: 'audit-log', title: 'Ledger', zone: 'questions', status: 'use', tier: 'cross', color: '#38bdf8', icon: 'fa-book', scenarios: ALL_Q,
+                  desc: 'Every question, model call and rating is kept. Explained complaints are judged against the documents, and no verdict is recorded without the quote it rests on, checked against the retrieved text.',
+                  responsibilities: ['Keep every question, model call and rating', 'Feed the replay of reported answers'],
+                  dataIn: ['Question, call, answer, rating'], dataOut: ['Regression checks that fail loudly'],
+                  controls: ['A status is measured, never ticked: a fix that regresses shows as regressed'] },
+
+                { id: 'source-system', title: 'Agent proposes', zone: 'agents', status: 'synthetic', tier: 'cross', color: '#d4a577', icon: 'fa-file-pen', scenarios: ['agent-change'],
+                  desc: 'The next step is assistants that act: an agent proposes a change to an engineering file. Whether that can be overseen in a way that is checkable afterwards is the question of Avion-04, an R&D project Dr. Ozgur Ural prepared, architected and got approved under WBSO, the Dutch government’s R&D tax-credit programme.',
+                  responsibilities: ['Propose an action on one file version'],
+                  dataIn: ['A task'], dataOut: ['A proposed action, tied to the file version it was made against'],
+                  controls: ['An agent holds no write access', 'Every screen a person uses stays inside the Assistant'] },
+                { id: 'policy-router', title: 'Admissibility', zone: 'agents', status: 'synthetic', tier: 'cross', color: '#fbbf24', icon: 'fa-scale-balanced', scenarios: ['agent-change'],
+                  desc: 'For a proposed action on a given file version, the governance service answers proceed, human review or refuse, with its reasons and the evidence that is missing.',
+                  responsibilities: ['Decide proceed, human review or refuse', 'Name the reasons and the missing evidence'],
+                  dataIn: ['Proposed action and file version'], dataOut: ['A decision with reasons'],
+                  controls: ['The rules are first research designs, not reviewed decisions', 'No accuracy claimed yet: that needs reference decisions from an engineer who knows simulator qualification'] },
+                { id: 'approver', title: 'Person approves', zone: 'agents', status: 'synthetic', tier: 'cross', color: '#22d3ee', icon: 'fa-user-check', scenarios: ['agent-change'],
+                  desc: 'An approval is tied to a fingerprint of the state the reviewer looked at and authorises one execution. If the file changes after the review, the approval no longer matches it.',
+                  responsibilities: ['Review the proposal and the reasons', 'Approve, reject or ask for changes'],
+                  dataIn: ['Proposal, decision, evidence'], dataOut: ['An approval bound to what was seen'],
+                  controls: ['One approval, one execution'] },
+                { id: 'action-runner', title: 'Single writer', zone: 'agents', status: 'synthetic', tier: 'cross', color: '#c084fc', icon: 'fa-pen-to-square', scenarios: ['agent-change'],
+                  desc: 'The only component that holds write access checks the decision again at the moment of writing. When a file version is replaced or restored, the service lists which test results and approvals no longer apply. This path has not yet run against a real agent.',
+                  responsibilities: ['Re-check the decision, then write', 'List what a restore invalidates'],
+                  dataIn: ['Approved action'], dataOut: ['The change, and its impact on tests and approvals'],
+                  controls: ['Nothing else can write', 'The decision is checked again when it is used, not only when it is made'] },
+                { id: 'audit-chain', title: 'Hash chain', zone: 'agents', status: 'synthetic', tier: 'cross', color: '#38bdf8', icon: 'fa-link', scenarios: ['agent-change'],
+                  desc: 'Proposals, reviews, checks, approvals and outbound decisions are kept in a hash chain that can be verified, so a record that was altered afterwards shows it.',
+                  responsibilities: ['Record every step in order', 'Let anyone verify the chain'],
+                  dataIn: ['Proposals, reviews, checks, approvals, outbound decisions'], dataOut: ['A verifiable record'],
+                  controls: ['Tampering shows when the chain is verified'] },
             ],
             connections: [
-                { from: 'source-system', to: 'policy-router', label: 'Check policy + assign agent', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
-                { from: 'policy-router', to: 'task-agent', label: 'Assign task to agent', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
-                { from: 'task-agent', to: 'rag-db', label: 'Retrieve approved context', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
-                { from: 'rag-db', to: 'local-llm', label: 'Ground local model prompt', scenarios: ['autonomous-agent', 'multi-agent-flow'] },
-                { from: 'task-agent', to: 'local-llm', label: 'Call sovereign brain (Tier 1)', scenarios: ['autonomous-agent', 'multi-agent-flow'] },
-                { from: 'task-agent', to: 'sanitizer', label: 'Redact before external call', scenarios: ['multi-agent-flow'] },
-                { from: 'rag-db', to: 'sanitizer', label: 'Redact domain context', scenarios: ['copilot-agent'] },
-                { from: 'local-llm', to: 'sanitizer', label: 'Sanitise summary for external prose', scenarios: ['multi-agent-flow'] },
-                { from: 'sanitizer', to: 'api-llm', label: 'Call API brain (redacted)', scenarios: ['copilot-agent', 'multi-agent-flow'] },
-                { from: 'local-llm', to: 'reviewer', label: 'Present sovereign answer', scenarios: ['autonomous-agent'] },
-                { from: 'api-llm', to: 'reviewer', label: 'Present drafted output', scenarios: ['copilot-agent', 'multi-agent-flow'] },
-                { from: 'task-agent', to: 'reviewer', label: 'Present answer to reviewer', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
-                { from: 'reviewer', to: 'action-runner', label: 'Authorize agent action', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
-                { from: 'action-runner', to: 'audit-log', label: 'Log every step', scenarios: ['autonomous-agent', 'copilot-agent', 'multi-agent-flow'] },
+                { from: 'task-agent', to: 'rag-db', scenarios: ALL_Q },
+                { from: 'rag-db', to: 'sanitizer', scenarios: ALL_Q },
+                { from: 'sanitizer', to: 'api-llm', label: 'Public only', scenarios: ['ask-public'] },
+                { from: 'sanitizer', to: 'local-llm', label: 'Restricted stays in', scenarios: ['ask-restricted'] },
+                { from: 'api-llm', to: 'reviewer', label: 'Cited answer', scenarios: ['ask-public'] },
+                { from: 'local-llm', to: 'reviewer', label: 'Cited, marked local', scenarios: ['ask-restricted'] },
+                { from: 'reviewer', to: 'audit-log', scenarios: ALL_Q },
+                { from: 'source-system', to: 'policy-router', label: 'Proposed action', scenarios: ['agent-change'] },
+                { from: 'policy-router', to: 'approver', scenarios: ['agent-change'] },
+                { from: 'approver', to: 'action-runner', scenarios: ['agent-change'] },
+                { from: 'action-runner', to: 'audit-chain', scenarios: ['agent-change'] },
             ],
             zones: {
-                'intake': 'Stimulus',
-                'dispatch': 'Policy & Routing',
-                'specialized': 'Reasoning',
-                'governance': 'Gatekeepers',
-                'execution': 'Action & Log'
+                'questions': 'Questions',
+                'agents': 'Agent changes'
             }
         };
 
         const ARCH_NODE_BY_ID = Object.fromEntries(ARCHITECTURE_TOPOLOGY.nodes.map(node => [node.id, node]));
+        const ARCH_STATUS_LABELS = { use: 'In use', lab: 'Lab', synthetic: 'Synthetic data' };
+        const ARCH_STATUS_LONG = {
+            use: 'In daily use, as a proof of concept',
+            lab: 'Enforcing on the lab deployment since November 2026',
+            synthetic: 'Built and tested on synthetic data'
+        };
+        const ARCH_TIER_LONG = {
+            tier1: 'Stays on company machines',
+            tier2: 'Leaves the company: a question and five public passages only',
+            cross: 'Control and record'
+        };
 
         const ARCHITECTURE_SCENARIOS = {
-            'autonomous-agent': {
-                key: 'autonomous-agent',
-                icon: 'fa-robot',
-                title: 'Sovereign reasoning (local model only)',
-                accent: '#06d6a0',
-                modeLabel: 'Pilot: RFP Accelerator',
-                businessStory: 'Sovereign workflow, with the agent and model intended to remain on-prem and avoid data egress. The local model pilot for this pattern is the RFP Accelerator: Sales asks a dense technical question, the agent pulls from the organization\'s RFP corpus and specs, a local model drafts, and a human approves.',
-                story: 'A request arrives. The Compliance Guard classifies it as Tier 1 and assigns it to an agent. The agent retrieves knowledge from the local RAG index and calls the local model brain to compose the answer. In the illustrated deployment, reasoning and actions stay within the enterprise perimeter.',
-                examples: ['RFP Accelerator (local model pilot)', 'log anomaly resolution', 'simulator restart workflow'],
-                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Brain (local model) -> Human Review -> Executor -> Audit Log.'
-            },
-            'copilot-agent': {
-                key: 'copilot-agent',
-                icon: 'fa-handshake',
-                title: 'External reasoning, safely (cloud model via redaction)',
+            'ask-public': {
+                key: 'ask-public',
+                icon: 'fa-comments',
+                title: 'Ask the documents',
                 accent: '#4facfe',
-                modeLabel: 'Pilot: Instructor Debrief Writer',
-                businessStory: 'External-brain pattern used safely. The proposed example for this path is the Instructor Debrief Writer: every simulator session produces structured flight data and a few instructor notes; the redaction gateway strips trainee identifiers, then cloud model drafts a consistent, on-tone debrief narrative that the instructor reviews, tweaks, and signs.',
-                story: 'A Tier-2 request arrives. The Compliance Guard assigns it to an agent. The agent retrieves relevant procedures from the local domain knowledge base, routes the combined context through the redaction gateway to strip identifiers, calls the cloud model API brain for synthesis, and presents the draft to a human reviewer.',
-                examples: ['Instructor Debrief Writer (proposed example)', 'bid proposal drafting', 'customer-facing incident summary'],
-                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Redaction Gateway -> Brain (cloud model) -> Human Review -> Executor -> Audit Log.'
+                modeLabel: 'In daily use; the boundary check runs on the lab deployment',
+                businessStory: 'An engineer asks a question. Two searches find five passages; the boundary sees they are public, so a hosted model may write the answer. The sources appear first, each claim is cited, and the rating goes into the ledger.',
+                story: 'Assistant -> hybrid search and reranking -> outbound boundary (all sources public) -> hosted model -> engineer checks the cited pages -> ledger.'
             },
-            'multi-agent-flow': {
-                key: 'multi-agent-flow',
-                icon: 'fa-people-group',
-                title: 'Sovereign diagnosis → customer-grade prose (hybrid)',
-                accent: '#a8794a',
-                modeLabel: 'Active: Customer Update Auto-Writer',
-                businessStory: 'The customer-update pattern applies here: an on-prem engineering summary goes through the redaction gateway, cloud model rewrites it as a customer-ready bulletin, and a human approves the send.',
-                story: 'A technical fault is diagnosed on-prem using the local model brain. The task agent then takes the approved summary, passes it through the redaction gateway, and calls the cloud model API brain to rewrite the update for the customer.',
-                examples: ['Customer Update Auto-Writer', 'technical fault to customer update', 'audit finding to external response'],
-                technicalFlow: 'Trigger -> Compliance Guard -> Task Agent -> Knowledge Base -> Brain (local model) -> Redaction Gateway -> Brain (cloud model) -> Human Review -> Executor -> Audit Log.'
+            'ask-restricted': {
+                key: 'ask-restricted',
+                icon: 'fa-lock',
+                title: 'Restricted sources stay inside',
+                accent: '#06d6a0',
+                modeLabel: 'Enforcing on the lab deployment since November 2026',
+                businessStory: 'The same question, but one of the five passages is restricted. The boundary refuses the hosted call, and a model on company machines answers instead, marked as such. Nothing leaves the company.',
+                story: 'Assistant -> hybrid search and reranking -> outbound boundary (a restricted source) -> local model -> engineer checks the cited pages -> ledger.'
+            },
+            'agent-change': {
+                key: 'agent-change',
+                icon: 'fa-file-pen',
+                title: 'An agent proposes a change',
+                accent: '#d4a577',
+                modeLabel: 'Avion-04, built on synthetic data; no accuracy claimed yet',
+                businessStory: 'An agent proposes a change to an engineering file. The governance service decides proceed, human review or refuse, with reasons. A person approves the exact state they saw; the only component with write access checks again before writing; every step is kept in a hash chain.',
+                story: 'Agent proposal -> admissibility (proceed, review, refuse) -> approval bound to the state seen -> single writer re-checks and writes -> hash chain.'
             }
         };
 
         const ARCHITECTURE_PATHS = {
-            'autonomous-agent': ['source-system', 'policy-router', 'task-agent', 'rag-db', 'local-llm', 'reviewer', 'action-runner', 'audit-log'],
-            'copilot-agent': ['source-system', 'policy-router', 'task-agent', 'rag-db', 'sanitizer', 'api-llm', 'reviewer', 'action-runner', 'audit-log'],
-            'multi-agent-flow': ['source-system', 'policy-router', 'task-agent', 'rag-db', 'local-llm', 'sanitizer', 'api-llm', 'reviewer', 'action-runner', 'audit-log'],
+            'ask-public':     ['task-agent', 'rag-db', 'sanitizer', 'api-llm', 'reviewer', 'audit-log'],
+            'ask-restricted': ['task-agent', 'rag-db', 'sanitizer', 'local-llm', 'reviewer', 'audit-log'],
+            'agent-change':   ['source-system', 'policy-router', 'approver', 'action-runner', 'audit-chain'],
         };
 
         const PROJECT_POLICY_PROFILES = {
-            'PRJ-AIR-001': {
-                id: 'PRJ-AIR-001',
-                name: 'Technical Issue Resolution',
-                sensitivity: 'restricted',
-                exportPolicy: 'none',
-                dataClass: 'Secure',
-                scenario: 'autonomous-agent'
+            'Q-PUBLIC': {
+                id: 'Q-PUBLIC',
+                name: 'A question about a public manual',
+                badges: ['Public sources', 'May use a hosted model', 'In daily use'],
+                scenario: 'ask-public'
             },
-            'PRJ-API-014': {
-                id: 'PRJ-API-014',
-                name: 'Contract Drafting Assist',
-                sensitivity: 'low',
-                exportPolicy: 'sanitized',
-                dataClass: 'Internal',
-                scenario: 'copilot-agent'
+            'Q-RESTRICTED': {
+                id: 'Q-RESTRICTED',
+                name: 'A question with a restricted source',
+                badges: ['Restricted source', 'Nothing leaves the company', 'Lab deployment'],
+                scenario: 'ask-restricted'
             },
-            'PRJ-HYB-009': {
-                id: 'PRJ-HYB-009',
-                name: 'Tech-to-Customer Comms',
-                sensitivity: 'mixed',
-                exportPolicy: 'sanitized-summary',
-                dataClass: 'Mixed',
-                scenario: 'multi-agent-flow'
+            'A-CHANGE': {
+                id: 'A-CHANGE',
+                name: 'An agent edits an engineering file',
+                badges: ['Proposed action', 'Writes only after approval', 'Synthetic data'],
+                scenario: 'agent-change'
             }
         };
-        const DEFAULT_PROJECT_ID = 'PRJ-HYB-009';
-        const ARCH_BUSINESS_STAGE_LABELS = {
-            'source-system': 'Initial Trigger',
-            'policy-router': 'Compliance Guard',
-            'rag-db': 'Domain Knowledge',
-            'task-agent': 'Task Agent',
-            'sanitizer': 'Redaction Gateway',
-            'local-llm': 'Local Inference',
-            'api-llm': 'Cloud Inference',
-            'reviewer': 'Human Co-Pilot',
-            'action-runner': 'System Actuator',
-            'audit-log': 'Explanation Trace'
-        };
+        const DEFAULT_PROJECT_ID = 'Q-PUBLIC';
+        const ARCH_BUSINESS_STAGE_LABELS = {};
         const ARCH_PHASE_EXPLANATIONS = {
-            'source-system': 'A request or event arrives. Every step from here is logged.',
-            'policy-router': 'Check policy, classify the data (Tier 1 or Tier 2), and assign the right agent.',
-            'rag-db': 'Ground the answer on approved enterprise documents rather than free-form model memory.',
-            'task-agent': 'The agent does the job. It picks which brain (local model on-prem or cloud model API) to call, based on the task and the policy verdict.',
-            'local-llm': 'local model running on on-prem hardware, the sovereign brain. Called for sensitive, on-prem reasoning.',
-            'sanitizer': 'Strip PII and confidential terms from the prompt before it ever leaves the building.',
-            'api-llm': 'an approved cloud model via API with verified retention terms, the external brain. Called only with redacted, Tier-2-approved content.',
-            'reviewer': 'Keep a person accountable for anything high-impact or external-facing.',
-            'action-runner': 'Run only approved actions through controlled tools and connectors.',
-            'audit-log': 'Record the full trail so every decision can be explained later.'
+            'task-agent': 'An engineer asks in plain English. Sources come first, the answer streams in with citations.',
+            'rag-db': 'Meaning search and keyword search, fused by rank; a cross-encoder keeps five passages.',
+            'sanitizer': 'Reads the restriction of every source and refuses a hosted call for anything not public.',
+            'api-llm': 'Only a question and five public passages leave the company.',
+            'local-llm': 'Restricted content is answered on company machines, and the answer says so.',
+            'reviewer': 'Every answer can be checked against its page, one click away.',
+            'audit-log': 'Every question, model call and rating is kept; reported answers are replayed on each build.',
+            'source-system': 'An agent proposes an action on one version of an engineering file.',
+            'policy-router': 'Proceed, human review or refuse, with reasons and the missing evidence.',
+            'approver': 'The approval is bound to the state the reviewer saw, and authorises one execution.',
+            'action-runner': 'The only writer checks the decision again at the moment of writing.',
+            'audit-chain': 'Every step goes into a hash chain that shows tampering.'
         };
 
         let architectureState = {
-            scenario: 'multi-agent-flow',
-            selectedNodeId: 'source-system',
+            scenario: 'ask-public',
+            selectedNodeId: 'task-agent',
             projectId: DEFAULT_PROJECT_ID,
             viewMode: 'business'
         };
@@ -9400,10 +9436,7 @@ body.architecture-focus { overflow-x: hidden; }
         }
 
         function classifyScenarioFromProject(profile) {
-            if (!profile) return 'multi-agent-flow';
-            if (profile.exportPolicy === 'none' || profile.sensitivity === 'restricted') return 'autonomous-agent';
-            if (profile.sensitivity === 'low' && profile.exportPolicy === 'sanitized') return 'copilot-agent';
-            return profile.scenario || 'multi-agent-flow';
+            return (profile && profile.scenario) || 'ask-public';
         }
 
         function renderProjectContext() {
@@ -9416,24 +9449,7 @@ body.architecture-focus { overflow-x: hidden; }
                 `<option value="${escapeHtml(p.id)}" ${p.id === profile.id ? 'selected' : ''}>${escapeHtml(p.name)}</option>`
             ).join('');
 
-            const sensitivityLabel = {
-                restricted: 'Restricted',
-                mixed: 'Mixed',
-                low: 'Low',
-            }[profile.sensitivity] || profile.sensitivity;
-            const exportLabel = {
-                none: 'no external egress',
-                sanitized: 'sanitised excerpts only',
-                'sanitized-summary': 'sanitised summary only',
-            }[profile.exportPolicy] || profile.exportPolicy;
-
-            // Friendlier metadata: leads with the policy story, hides project ID
-            // unless the user mouses over (kept for engineering reference).
-            meta.innerHTML = `
-                <span title="Project ID: ${escapeHtml(profile.id)}">${escapeHtml(sensitivityLabel)} sensitivity</span>
-                <span>${escapeHtml(exportLabel)}</span>
-                <span>${escapeHtml(profile.dataClass)} data</span>
-            `;
+            meta.innerHTML = (profile.badges || []).map(b => `<span>${escapeHtml(b)}</span>`).join('');
         }
 
         function applyProjectRouting(projectId) {
@@ -9573,9 +9589,9 @@ body.architecture-focus { overflow-x: hidden; }
 
             if (scenarioHost) {
                 const SHORT = {
-                    'autonomous-agent': 'Autonomous',
-                    'copilot-agent':    'Co-Pilot',
-                    'multi-agent-flow': 'Multi-Agent',
+                    'ask-public':     'Ask the documents',
+                    'ask-restricted': 'Restricted stays in',
+                    'agent-change':   'Agent change',
                 };
                 scenarioHost.innerHTML = Object.values(ARCHITECTURE_SCENARIOS).map(s => {
                     const selected = s.key === architectureState.scenario;
@@ -9793,7 +9809,7 @@ body.architecture-focus { overflow-x: hidden; }
                         <div class="arch-node-icon"><i class="fa-solid ${node.icon}" aria-hidden="true"></i></div>
                         <div class="arch-node-body">
                             <div class="arch-node-title">${escapeHtml(getNodeDisplayLabel(node))}</div>
-                            <span class="arch-node-tier ${node.tier}">${node.tier === 'tier1' ? 'T1' : node.tier === 'tier2' ? 'T2' : 'Cross'}</span>
+                            <span class="arch-node-tier ${node.tier}">${escapeHtml(ARCH_STATUS_LABELS[node.status] || '')}</span>
                         </div>
                     `;
                     const selectNode = () => {
@@ -10210,7 +10226,7 @@ body.architecture-focus { overflow-x: hidden; }
                 `;
                 meta.style.display = 'flex';
             }
-            if (tier) tier.textContent = selected.tier === 'tier1' ? 'Tier 1, Local GenAI' : selected.tier === 'tier2' ? 'Tier 2, External GenAI' : 'Cross-tier Orchestration';
+            if (tier) tier.textContent = `${ARCH_STATUS_LONG[selected.status] || ''} · ${ARCH_TIER_LONG[selected.tier] || ''}`;
             function renderList(id, items, iconBadge) {
                 const target = document.getElementById(id);
                 if (target) target.innerHTML = (items||[]).map(item => `<li><i class="fa-solid ${iconBadge}" style="color:var(--hud-color); width:16px" aria-hidden="true"></i> <span>${escapeHtml(item)}</span></li>`).join('');
@@ -10237,26 +10253,27 @@ body.architecture-focus { overflow-x: hidden; }
         // Each phase in the header bar maps to an "anchor" node in the
         // detailed topology. Clicking a phase drills into that node.
         const EXEC_STAGE_ANCHORS = {
-            'trigger': 'source-system',
-            'check':   'policy-router',
-            'decide':  'task-agent',
-            'review':  'reviewer',
-            'act':     'action-runner',
+            'ask':    'task-agent',
+            'ground': 'rag-db',
+            'check':  'sanitizer',
+            'decide': 'reviewer',
+            'record': 'audit-log',
         };
 
-        // Reverse lookup, which phase does each node belong to?
-        // Used to light up the active phase when the user selects any node.
+        // Which phase each node belongs to, in either lane.
         const NODE_TO_PHASE = {
-            'source-system': 'trigger',
+            'task-agent':    'ask',
+            'source-system': 'ask',
+            'rag-db':        'ground',
+            'sanitizer':     'check',
             'policy-router': 'check',
-            'rag-db':        'decide',
-            'task-agent':    'decide',
-            'local-llm':     'decide',
             'api-llm':       'decide',
-            'sanitizer':     'decide',
-            'reviewer':      'review',
-            'action-runner': 'act',
-            'audit-log':     'act',
+            'local-llm':     'decide',
+            'reviewer':      'decide',
+            'approver':      'decide',
+            'action-runner': 'record',
+            'audit-log':     'record',
+            'audit-chain':   'record',
         };
 
         function bindArchPhaseBar() {
@@ -10271,10 +10288,13 @@ body.architecture-focus { overflow-x: hidden; }
                 const title = phase.querySelector('.arch-phase__title')?.textContent || key;
                 const num = phase.querySelector('.arch-phase__num')?.textContent || '';
                 phase.setAttribute('aria-label',
-                    `Gate ${num}: ${title}. Activate to drill into the architecture.`);
+                    `Step ${num}: ${title}. Activate to show this step.`);
 
                 const select = () => {
-                    architectureState.selectedNodeId = anchor;
+                    // Prefer the node of this step in the selected workflow, so
+                    // "Check" means admissibility in the agent lane.
+                    const inRoute = getArchitecturePathNodeIds().filter(id => NODE_TO_PHASE[id] === key);
+                    architectureState.selectedNodeId = inRoute.length ? inRoute[inRoute.length - 1] : anchor;
                     updateArchitectureState();
                     openDrawer();
                     const wrap = document.getElementById('arch-diagram-wrap-el');
