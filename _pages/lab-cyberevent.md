@@ -53,7 +53,7 @@ header:
     <summary>Study scope, limitations and sources</summary>
     <p>The study used historical Turkish Twitter and Hürriyet newspaper data. Its evaluation included confirmed incidents and false alerts, but did not establish how many events were missed. Applying the workflow to another language, source or time period requires fresh evaluation of vocabulary, normalisation and alert thresholds.</p>
     <p>The film illustrates the workflow and reports the original experiment. It is not a comparison against current language models or evidence of a deployed monitoring service. The paper contains the full experimental counts and evaluation criteria.</p>
-    <p><a href="https://doi.org/10.5220/0010201600660076">Read the ICISSP paper</a> by Ural and Acartürk, extending the METU M.Sc. thesis. The text processing uses the <a href="https://tools.nlp.itu.edu.tr/">ITU NLP service</a> (<a href="https://doi.org/10.3115/v1/E14-2001">Eryiğit, 2014</a>).</p>
+    <p><a href="https://doi.org/10.5220/0010201600660076">Read the ICISSP paper</a> by Ural and Acartürk, extending the METU M.Sc. thesis. The text processing uses the <a href="http://tools.nlp.itu.edu.tr/">ITU NLP service</a> (<a href="https://doi.org/10.3115/v1/E14-2001">Eryiğit, 2014</a>).</p>
   </details>
   <p class="lab-film__alt"><a href="{{ '/lab/cyber-events/embed/' | relative_url }}" target="_blank" rel="noopener">Explore the original technical animation</a> for the diagrams and formulas behind the workflow.</p>
   </div>

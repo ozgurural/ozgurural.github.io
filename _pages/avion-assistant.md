@@ -1,7 +1,7 @@
 ---
 permalink: /projects/avion-assistant/
 title: "Avion Assistant"
-description: "A retrieval-augmented generation (RAG) assistant for engineering documents that Dr. Ozgur Ural designed and built alone at Avion: hybrid retrieval, cited answers, a governed boundary for what may leave the company, and release checks that roll a bad build back."
+description: "A RAG assistant for engineering documents that Dr. Ozgur Ural designed and built alone at Avion: cited answers, release checks and a governed data boundary."
 ---
 
 <p class="ep-lead">Engineers at Avion ask the company's own documents a question in plain English and get an answer with its sources one click away: retrieval-augmented generation (RAG), built so that every answer can be checked. I designed and built it alone, from the first commit in September 2026: the ingestion, the search, the answering service, the interface, the deployment and the checks that keep it working. It is a proof of concept, in use by colleagues.</p>
