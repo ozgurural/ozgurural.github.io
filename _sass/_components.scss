@@ -2918,6 +2918,9 @@ body.labf-embed .labf__chrome { display: none; }
   .ep-cards--two > li:last-child:nth-child(odd):has(> .media) > .media {
     grid-column: 1;
     grid-row: 1 / span 4;
+    align-self: stretch;
+    aspect-ratio: auto;
+    min-height: 14rem;
     margin: -1rem 0 -1rem -1.15rem;
     border-bottom: 0;
     border-right: 1px solid var(--ds-line);

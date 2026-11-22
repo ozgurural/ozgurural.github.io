@@ -84,7 +84,7 @@ redirect_from:
     <a class="media" href="/enterprise-ai-architecture.html" tabindex="-1" aria-hidden="true"><img src="/images/cards/enterprise-ai.webp" alt="" width="640" height="336" loading="lazy" decoding="async"><span class="media__badge">Interactive</span></a>
     <div class="meta">2026 · Avion · Architecture</div>
     <h3 class="title"><a href="/enterprise-ai-architecture.html">Enterprise AI strategy and reference architecture</a></h3>
-    <p class="desc">The adoption roadmap and reference architecture I wrote for Avion, spanning on-premises inference, governed cloud APIs and edge workloads; the assistant above is the part of it that is built. The design distinguishes prototypes from proposed capabilities.</p>
+    <p class="desc">The adoption roadmap and reference architecture I wrote for Avion, spanning on-premises inference, governed cloud APIs and edge workloads. The interactive view shows what runs: the assistant's question path and the governed agent path, each step marked in use, lab or synthetic.</p>
   </li>
 </ul>
 
