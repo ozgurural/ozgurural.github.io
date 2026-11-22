@@ -1,12 +1,14 @@
 ---
 permalink: /projects/avion-assistant/
 title: "Avion Assistant"
-description: "An engineering knowledge assistant Dr. Ozgur Ural designed and built alone at Avion: hybrid retrieval, cited answers, a governed boundary for what may leave the company, and release checks that roll a bad build back."
+description: "A retrieval-augmented generation (RAG) assistant for engineering documents that Dr. Ozgur Ural designed and built alone at Avion: hybrid retrieval, cited answers, a governed boundary for what may leave the company, and release checks that roll a bad build back."
 ---
 
-<p class="ep-lead">Engineers at Avion ask the company's own documents a question in plain English and get an answer with its sources one click away. I designed and built it alone, from the first commit in September 2026: the ingestion, the search, the answering service, the interface, the deployment and the checks that keep it working. It is a proof of concept, in use by colleagues.</p>
+<p class="ep-lead">Engineers at Avion ask the company's own documents a question in plain English and get an answer with its sources one click away: retrieval-augmented generation (RAG), built so that every answer can be checked. I designed and built it alone, from the first commit in September 2026: the ingestion, the search, the answering service, the interface, the deployment and the checks that keep it working. It is a proof of concept, in use by colleagues.</p>
 
-<p><em>This page describes my role, the architecture and the engineering practice. It discloses no document, customer, model, hardware or security specifics of the company, and the internal presentation stays internal because it shows company documents.</em></p>
+<p><strong>Slides:</strong> <a href="/projects/avion-assistant/slides/">the presentation I gave inside the company</a>, with company details removed: names made generic, counts and addresses taken out, screens blurred. Click or press the right arrow for each step.</p>
+
+<p><em>This page describes my role, the architecture and the engineering practice. It discloses no document, customer, model, hardware or security specifics of the company.</em></p>
 
 ## The problem
 
