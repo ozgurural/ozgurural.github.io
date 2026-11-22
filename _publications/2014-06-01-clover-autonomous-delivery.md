@@ -3,7 +3,7 @@ title: "Clover: Autonomous Cargo and Mail Delivery"
 collection: publications
 category: conferences
 permalink: /publication/2014-clover-autonomous-delivery
-excerpt: "Undergraduate capstone project demonstrating an autonomous cargo and mail delivery robot, presented at the Turkish Autonomous Robots Conference."
+excerpt: "An autonomous delivery quadrotor, our METU senior project sponsored by Baykar: first prize in TÜBİTAK's national project competition, presented at TORK 2014."
 date: 2014-06-01
 venue: "Turkish Autonomous Robots Conference (TORK 2014)"
 paperurl: "https://senior.ceng.metu.edu.tr/2014/clover/"
@@ -19,4 +19,8 @@ author_list:
 venue_short: "Robotics conference"
 ---
 
-Undergraduate project demonstrating autonomous cargo and mail delivery.
+Clover was our senior project in METU Computer Engineering, started in September 2013: a quadrotor that delivers cargo or mail on its own. A customer puts the parcel on it and either sets the route or names the destination, in which case it finds its own path; it then takes off automatically and delivers.
+
+Four senior students built it (A. Ömer Yamaç, Jonard Doçi, Ozgur Ural and Ö. Faruk Özarslan) in the mobility laboratories of METU-TSK MODSIM, advised by Asst. Prof. Selim Temizer and sponsored by Baykar. It won **first prize in TÜBİTAK's national project competition** and **second prize at the METU CENG graduation Demo Day**, and was presented at TORK 2014.
+
+The [project site](https://senior.ceng.metu.edu.tr/2014/clover/) on METU's servers has the team, the demo video and the poster.

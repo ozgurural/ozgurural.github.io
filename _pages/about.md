@@ -163,6 +163,6 @@ redirect_from:
   </li>
   <li>
     <span class="when">2010–2014</span>
-    <span class="what"><strong>B.Sc. in Computer Engineering, <a href="https://www.metu.edu.tr/">Middle East Technical University (METU)</a>.</strong> Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with <strong>1st prize</strong> at <a href="https://www.tubitak.gov.tr">TÜBİTAK</a>'s national project competition and <strong>2nd prize</strong> at the METU CENG graduation Demo Day.</span>
+    <span class="what"><strong>B.Sc. in Computer Engineering, <a href="https://www.metu.edu.tr/">Middle East Technical University (METU)</a>.</strong> Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with <strong>1st prize</strong> at <a href="https://www.tubitak.gov.tr">TÜBİTAK</a>'s national project competition and <strong>2nd prize</strong> at the METU CENG graduation Demo Day for <a href="https://senior.ceng.metu.edu.tr/2014/clover/">Clover</a>, an autonomous delivery quadrotor built by a team of four and sponsored by Baykar.</span>
   </li>
 </ol>
