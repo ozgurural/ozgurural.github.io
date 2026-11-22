@@ -2902,3 +2902,25 @@ body.labf-embed .labf__chrome { display: none; }
   .post-diagram { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .post-diagram img { width: 860px; max-width: none; }
 }
+
+/* An odd card out at the end of a two-column grid takes the whole row,
+   picture beside text, instead of leaving half a row empty. Measured on the
+   list itself, since whether it has two columns depends on the sidebar. */
+.ep-cards--two { container-type: inline-size; }
+@container (min-width: 39rem) {
+  .ep-cards--two > li:last-child:nth-child(odd):has(> .media) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: 1.25rem;
+  }
+  .ep-cards--two > li:last-child:nth-child(odd):has(> .media) > .media {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    margin: -1rem 0 -1rem -1.15rem;
+    border-bottom: 0;
+    border-right: 1px solid var(--ds-line);
+  }
+  .ep-cards--two > li:last-child:nth-child(odd):has(> .media) > :not(.media) { grid-column: 2; }
+}
