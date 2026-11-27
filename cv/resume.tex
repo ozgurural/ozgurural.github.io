@@ -59,7 +59,7 @@ Leiden, Netherlands
 
 \roottitle{AI Research Scientist \& Senior Software Engineer, Ph.D.}
 
-AI research scientist and senior software engineer with more than twelve years of professional experience in industry and research, building production systems across cybersecurity, defense, and simulation, now leading enterprise AI strategy and applied GenAI at Avion. Completed a Ph.D. in Electrical Engineering and Computer Science at Embry-Riddle Aeronautical University in the United States (August 2025), with a machine-learning dissertation and three first-author IEEE Access publications: two on Proof-of-Learning and model watermarking, and a survey of blockchain-enhanced machine learning. My work centers on \textbf{trustworthy AI for mission-critical systems}: evidence of how a model was trained and who owns it, robustness against attackers, and predictable timing when a model runs inside a real-time loop.
+AI research scientist and senior software engineer with more than twelve years of professional experience in industry and research, building production systems across cybersecurity, defense, and simulation, now leading AI research and development at Avion, where I built a retrieval-augmented engineering assistant in daily use. Completed a Ph.D. in Electrical Engineering and Computer Science at Embry-Riddle Aeronautical University in the United States (August 2025), with a machine-learning dissertation and three first-author IEEE Access publications: two on Proof-of-Learning and model watermarking, and a survey of blockchain-enhanced machine learning. My work centers on \textbf{trustworthy AI for mission-critical systems}: evidence of how a model was trained and who owns it, robustness against attackers, and predictable timing when a model runs inside a real-time loop.
 
 \spacedhrule{0.6em}{0.1em}
 
@@ -67,7 +67,7 @@ AI research scientist and senior software engineer with more than twelve years o
 \begin{itemize}[leftmargin=*]
   \item \textbf{Languages:} C, C++, C\#, Python, TypeScript, JavaScript, Go, Java, Scala
   \item \textbf{Systems and data:} distributed and real-time systems, multithreading, async I/O, low-latency, backpressure, Linux, networking, Boost, Qt/QML; gRPC, Protobuf, Redis, PostgreSQL, REST
-  \item \textbf{Machine learning \& AI:} PyTorch, TensorFlow, scikit-learn, deep learning, LLMs, retrieval-augmented generation (RAG), AI agents, on-prem and air-gapped model deployment, federated learning; trustworthy and verifiable ML (model watermarking, Proof-of-Learning, adversarial robustness, model provenance)
+  \item \textbf{Machine learning \& AI:} PyTorch, TensorFlow, scikit-learn, deep learning, LLMs, retrieval-augmented generation (RAG), AI agents and agent governance, on-prem and air-gapped model deployment, federated learning; trustworthy and verifiable ML (model watermarking, Proof-of-Learning, adversarial robustness, model provenance)
   \item \textbf{Web and DevOps:} Svelte, HTML, CSS, Tailwind; Docker, GitLab CI/CD, Jenkins, Git
 \end{itemize}
 
@@ -77,12 +77,11 @@ AI research scientist and senior software engineer with more than twelve years o
   \headedsubsection{Senior Software Engineer}{Oct 2023 -- Present}{%
     \bodytext{\begin{itemize}
       \item Lead Avion's AI research and development and its enterprise AI strategy: authored the AI adoption roadmap and a three-tier architecture spanning air-gapped on-prem LLMs, a governed cloud-LLM API tier, and edge deployment.
-      \item Won approval for two R\&D projects under WBSO, the Dutch government's R\&D tax-credit programme: sole person responsible for preparing and architecting both, for the Avion Cloud Environment and for autonomous engineering agents with verifiable oversight.
-      \item Designed and built Avion Assistant alone, an engineering-knowledge copilot in use by colleagues as a proof of concept: hybrid keyword and embedding retrieval with cross-encoder reranking, answers cited to their source page, and release checks that roll back a failing build (Python, FastAPI, Qdrant, SvelteKit); now building the governance service for its agents.
-      \item Designed the strategy's proposed AI workflows, each keeping a person accountable for the outcome, and built the strategy portal end to end (Flask, SQLite, Docker, GitLab CI/CD).
+      \item Designed and built Avion Assistant alone, a retrieval-augmented (RAG) engineering-knowledge copilot in daily use by colleagues as a proof of concept: hybrid keyword and embedding retrieval with cross-encoder reranking, answers cited to their source page, and release checks that roll back a failing build (Python, FastAPI, Qdrant, SvelteKit).
+      \item Architect of Avion-04 (autonomous engineering agents with verifiable oversight), an R\&D project I prepared alone and got approved under WBSO, the Dutch R\&D tax-credit programme: a governance service that rules on each proposed agent action and binds approvals to the reviewed state; its outbound data boundary enforces the assistant's model calls on a lab deployment.
       \item Developed real-time software for distributed simulator systems in C, C++, and Scala, including a low-latency telemetry pipeline (JSON and Protobuf, Redis, PostgreSQL, gRPC) using batching and bounded-queue backpressure.
-      \item Principal developer of the Avion Cloud Environment (about 70\% of commits since 2024), a platform to configure, monitor and diagnose simulator bus systems (SvelteKit, TypeScript, Python, gRPC, Redis, PostgreSQL, Scala).
-      \item Built the Avion Debriefing System: records a full-flight-simulator training session (displays, cockpit camera, instructor station, audio), then packages, encrypts and transfers it (C\#/.NET 8, MSI installer); installed and verified on a simulator.
+      \item Principal developer of the Avion Cloud Environment (about 70\% of commits since 2024), whose WBSO R\&D project I also prepared and architected: a platform to configure, monitor and diagnose simulator bus systems (SvelteKit, TypeScript, Python, gRPC, Redis, PostgreSQL, Scala).
+      \item Built the Avion Debriefing System: records a full-flight-simulator training session (displays, cockpit camera, instructor station, audio), then packages, encrypts and transfers it (C\#/.NET 8, MSI installer); verified on a simulator.
       \item Built NavDB Sync, version control for simulator navigation databases: operators keep their custom data through 28-day AIRAC updates, and merges run on the server so a conflict never reaches a simulator (Python, GitLab CI/CD).
     \end{itemize}}%
   }%
@@ -159,7 +158,7 @@ AI research scientist and senior software engineer with more than twelve years o
 \headedsection{\href{http://www.metu.edu.tr/}{Middle East Technical University (METU)}}{\textsc{Ankara, Turkey}}{%
   \headedsubsection{Bachelor of Science in Computer Engineering}{2010 -- 2014}{%
     \begin{itemize}
-      \item Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with First Prize in TUBITAK's national project competition and Second Prize at the METU Computer Engineering graduation Demo Day (2014).
+      \item Turkey's most selective computer engineering program (English-medium), entered among roughly the top 1,000 of more than 2 million national candidates. Graduated with First Prize in TUBITAK's national project competition and Second Prize at the METU CENG graduation Demo Day for Clover, a Baykar-sponsored autonomous delivery drone.
     \end{itemize}%
   }%
 }
@@ -177,7 +176,7 @@ AI research scientist and senior software engineer with more than twelve years o
 \begin{itemize}
   \item Ural, O. and Yoshigoe, K. (2025). \href{https://ieeexplore.ieee.org/document/11293969}{SecurePoL: Integration of Watermarking With Proof-of-Learning to Enhance Security Against Spoofing Attacks}. \textit{IEEE Access}, vol. 13, pp. 213067--213091.
 
-  \item Ural, O. (2025). \href{https://commons.erau.edu/edt/905/}{Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking}. Doctoral dissertation, Embry-Riddle Aeronautical University.
+  \item Ural, O. (2025). Doctoral dissertation, Embry-Riddle Aeronautical University: \href{https://commons.erau.edu/edt/905/}{Enhancing Proof-of-Learning Security Against Spoofing Attacks Using Model Watermarking}.
 
   \item Ural, O. and Yoshigoe, K. (2024). \href{https://ieeexplore.ieee.org/abstract/document/10741282}{Enhancing Security of Proof-of-Learning Against Spoofing Attacks Using Feature-Based Model Watermarking}. \textit{IEEE Access}, vol. 12, pp. 169567--169591.
 
@@ -196,7 +195,7 @@ For full list and citation metrics: \href{https://scholar.google.com/citations?u
 \roottitle{PROFESSIONAL SERVICE}
 
 \begin{itemize}
-  \item \textbf{Reviewer:} IEEE Access; IEEE Transactions on Information Forensics and Security.
+  \item \textbf{Reviewer:} IEEE Transactions on Information Forensics and Security; ACM Transactions on Internet Technology.
   \item \textbf{Program Committee (2026):} NLPAICS 2026, Workshop on NLP Applied to Information and Cyber Security, Alicante.
 \end{itemize}
 
