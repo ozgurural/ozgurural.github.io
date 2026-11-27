@@ -44,9 +44,9 @@ Of the first twenty ratings, four came with a note, and every fix that survived 
 
 Explained complaints are judged against the documents by a model that sees only the retrieved passages, never its own knowledge, and no verdict is recorded without the quote it rests on, which is then checked against the retrieved text, since a model asked to copy a sentence will sometimes invent a plausible one. Run on the real reports, the judge was itself wrong once: the answer and the judge had each picked one row of a spreadsheet that could not answer the question. That is why the boundary is at the merge: the tooling triages, replays and proposes, and a person decides. The interface says "addressed", never "fixed".
 
-## Governed autonomy (Avion-04)
+## Governed autonomy for engineering agents
 
-The next step is assistants that act: agents that propose changes to engineering files. Whether that can be overseen in a way that is checkable afterwards is the question of Avion-04, *Development of autonomous engineering agents with verifiable oversight*, an R&amp;D project I prepared, architected and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme. I am building it as a governance service under the agents; every screen a person uses stays inside the Assistant.
+The next step is assistants that act: agents that propose changes to engineering files. Whether that can be overseen in a way that is checkable afterwards is the question of *Development of autonomous engineering agents with verifiable oversight*, an R&amp;D project I prepared, architected and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme. I am building it as a governance service under the agents; every screen a person uses stays inside the Assistant.
 
 - **Admissibility.** For a proposed action on a given file version, the service answers proceed, human review or refuse, with its reasons and the evidence that is missing.
 - **Approval bound to what the reviewer saw.** An approval is tied to a fingerprint of the state the reviewer looked at and authorises one execution; the decision is checked again at the moment of writing, by the only component that holds write access.

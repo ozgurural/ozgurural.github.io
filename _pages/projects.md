@@ -41,7 +41,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   <li>
     <div class="meta">2026 · Avion · Enterprise AI</div>
     <h3 class="title"><a href="/enterprise-ai-architecture.html">AI strategy and reference architecture</a></h3>
-    <p class="desc">I wrote Avion's AI adoption roadmap and a reference architecture that separates on-premises inference, governed cloud APIs and edge workloads, and built the portal that presents it. The interactive view shows what runs: the Avion Assistant question path, in daily use, and the Avion-04 agent path, on synthetic data. The other agents in the strategy are named as proposals.</p>
+    <p class="desc">I wrote Avion's AI adoption roadmap and a reference architecture that separates on-premises inference, governed cloud APIs and edge workloads, and built the portal that presents it. The interactive view shows what runs: the Avion Assistant question path, in daily use, and the governed agent path, on synthetic data. The other agents in the strategy are named as proposals.</p>
   </li>
   <li>
     <div class="meta">2026 · Avion · Applied AI</div>
@@ -50,7 +50,7 @@ description: "Research code, industry systems and applied AI work by Dr. Ozgur U
   </li>
   <li>
     <div class="meta">2026 · Avion · WBSO R&amp;D</div>
-    <h3 class="title"><a href="/projects/avion-assistant/#governed-autonomy-avion-04">Governed autonomy (Avion-04)</a></h3>
+    <h3 class="title"><a href="/projects/avion-assistant/#governed-autonomy-for-engineering-agents">Governed autonomy for engineering agents</a></h3>
     <p class="desc">The R&amp;D project I prepared, architected and got approved under WBSO, the Dutch government's R&amp;D tax-credit programme: a governance service under engineering agents that decides whether a proposed action may run, binds each approval to the state the reviewer saw, and controls what may leave the company. Its outbound boundary enforces the assistant's model calls on a lab deployment; the rest runs on synthetic data, with no accuracy claimed yet.</p>
   </li>
   <li>

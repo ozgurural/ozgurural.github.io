@@ -9074,7 +9074,7 @@ body.architecture-focus { overflow-x: hidden; }
         AI that an engineering company <span class="arch-hero__title-accent">can check</span>
     </h1>
     <p class="arch-hero__lead arch-hero__lead--wide">
-        The architecture from the AI strategy I wrote for Avion, shown as what now runs. <a href="/projects/avion-assistant/">Avion Assistant</a>, which I built alone, answers engineers from the company's documents with every source cited, and is in daily use as a proof of concept. Its outbound boundary decides what may leave the company. The agent lane is Avion-04, a governance service built on synthetic data. Pick a workflow or click a step. No document, model, hardware or customer specifics of the company are shown.
+        The architecture from the AI strategy I wrote for Avion, shown as what now runs. <a href="/projects/avion-assistant/">Avion Assistant</a>, which I built alone, answers engineers from the company's documents with every source cited, and is in daily use as a proof of concept. Its outbound boundary decides what may leave the company. The agent lane is the governance service for engineering agents, built on synthetic data. Pick a workflow or click a step. No document, model, hardware or customer specifics of the company are shown.
     </p>
 </div>
 <!-- Combined Phase Bar and Scenarios into single row to save vertical space -->
@@ -9239,7 +9239,7 @@ body.architecture-focus { overflow-x: hidden; }
 
         const ARCH_ZONE_REGIONS = {
             'questions': { x: 0, y: 2,  w: 100, h: 60, label: 'Questions · Avion Assistant, in daily use' },
-            'agents':    { x: 0, y: 64, w: 100, h: 34, label: 'Agent changes · Avion-04, built on synthetic data' }
+            'agents':    { x: 0, y: 64, w: 100, h: 34, label: 'Agent changes · governance service, built on synthetic data' }
         };
 
         const ALL_Q = ['ask-public', 'ask-restricted'];
@@ -9282,7 +9282,7 @@ body.architecture-focus { overflow-x: hidden; }
                   controls: ['A status is measured, never ticked: a fix that regresses shows as regressed'] },
 
                 { id: 'source-system', title: 'Agent proposes', zone: 'agents', status: 'synthetic', tier: 'cross', color: '#d4a577', icon: 'fa-file-pen', scenarios: ['agent-change'],
-                  desc: 'The next step is assistants that act: an agent proposes a change to an engineering file. Whether that can be overseen in a way that is checkable afterwards is the question of Avion-04, an R&D project Dr. Ozgur Ural prepared, architected and got approved under WBSO, the Dutch government’s R&D tax-credit programme.',
+                  desc: 'The next step is assistants that act: an agent proposes a change to an engineering file. Whether that can be overseen in a way that is checkable afterwards is the question of an R&D project Dr. Ozgur Ural prepared, architected and got approved under WBSO, the Dutch government’s R&D tax-credit programme.',
                   responsibilities: ['Propose an action on one file version'],
                   dataIn: ['A task'], dataOut: ['A proposed action, tied to the file version it was made against'],
                   controls: ['An agent holds no write access', 'Every screen a person uses stays inside the Assistant'] },
@@ -9363,7 +9363,7 @@ body.architecture-focus { overflow-x: hidden; }
                 icon: 'fa-file-pen',
                 title: 'An agent proposes a change',
                 accent: '#d4a577',
-                modeLabel: 'Avion-04, built on synthetic data; no accuracy claimed yet',
+                modeLabel: 'Governance service, built on synthetic data; no accuracy claimed yet',
                 businessStory: 'An agent proposes a change to an engineering file. The governance service decides proceed, human review or refuse, with reasons. A person approves the exact state they saw; the only component with write access checks again before writing; every step is kept in a hash chain.',
                 story: 'Agent proposal -> admissibility (proceed, review, refuse) -> approval bound to the state seen -> single writer re-checks and writes -> hash chain.'
             }
